@@ -1,0 +1,19 @@
+{
+  "name": "glow-island-game-client",
+  "version": "0.0.1",
+  "description": "Glow Island game client built with Cocos Creator 3.8.x",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "cocos-cli build",
+    "preview": "cocos-cli preview"
+  },
+  "cocos": {
+    "creator_version": "3.8.x",
+    "engine": "cocos-creator"
+  },
+  "keywords": ["cocos-creator", "game", "glow-island"],
+  "license": "UNLICENSED"
+}

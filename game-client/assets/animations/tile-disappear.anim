@@ -1,0 +1,112 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "tile-disappear",
+  "_duration": 0.3,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.UIOpacity": {
+        "opacity": {
+          "keys": [0],
+          "values": [255, 255, 0]
+        }
+      }
+    },
+    "paths": {
+      "": {
+        "props": {
+          "scaleX": {
+            "keys": [0],
+            "values": [1.0, 1.3, 0.0],
+            "easings": ["linear", "cubicIn"]
+          },
+          "scaleY": {
+            "keys": [0],
+            "values": [1.0, 0.7, 0.0],
+            "easings": ["linear", "cubicIn"]
+          }
+        }
+      }
+    }
+  },
+  "keys": [[0, 0.12, 0.3]],
+  "events": [],
+  "_curves": [
+    {
+      "modifiers": ["scaleX"],
+      "keyframes": [
+        {
+          "frame": 0,
+          "value": 1.0,
+          "easing": "linear"
+        },
+        {
+          "frame": 0.12,
+          "value": 1.3,
+          "easing": "cubicIn"
+        },
+        {
+          "frame": 0.3,
+          "value": 0.0,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "modifiers": ["scaleY"],
+      "keyframes": [
+        {
+          "frame": 0,
+          "value": 1.0,
+          "easing": "linear"
+        },
+        {
+          "frame": 0.12,
+          "value": 0.7,
+          "easing": "cubicIn"
+        },
+        {
+          "frame": 0.3,
+          "value": 0.0,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "modifiers": ["opacity"],
+      "keyframes": [
+        {
+          "frame": 0,
+          "value": 255,
+          "easing": "linear"
+        },
+        {
+          "frame": 0.12,
+          "value": 255,
+          "easing": "cubicIn"
+        },
+        {
+          "frame": 0.3,
+          "value": 0,
+          "easing": "linear"
+        }
+      ]
+    }
+  ],
+  "_animationSettings": {
+    "loop": false,
+    "playOnLoad": false
+  },
+  "_meta": {
+    "source": "art-tokens.json",
+    "token_ref": {
+      "duration": "animation.tile_disappear_duration",
+      "easing": "animation.tile_disappear_easing",
+      "scale_peak": "animation.tile_disappear_scale_peak",
+      "scale_peak_time": "animation.tile_disappear_scale_peak_time"
+    },
+    "description": "Tile disappear with squash/stretch: scaleX 1.0→1.3→0, scaleY 1.0→0.7→0, opacity 255→255→0, ease-in over 0.3s. Squash peak at t=0.12s."
+  }
+}

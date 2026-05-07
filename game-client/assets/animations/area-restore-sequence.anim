@@ -1,0 +1,153 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "area-restore-sequence",
+  "_duration": 5.0,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.UIOpacity": {
+        "opacity": {
+          "keys": [0],
+          "values": [0, 255, 255, 255, 255]
+        }
+      }
+    },
+    "paths": {
+      "": {
+        "props": {
+          "scale": {
+            "keys": [0],
+            "values": [
+              {"x": 1.0, "y": 1.0, "z": 1.0},
+              {"x": 1.0, "y": 1.0, "z": 1.0},
+              {"x": 1.0, "y": 1.0, "z": 1.0},
+              {"x": 1.05, "y": 1.05, "z": 1.0},
+              {"x": 1.0, "y": 1.0, "z": 1.0}
+            ],
+            "easings": ["linear", "linear", "cubicInOut", "cubicInOut"]
+          }
+        }
+      },
+      "ColorOverlay": {
+        "props": {
+          "color": {
+            "keys": [0],
+            "values": [
+              {"r": 180, "g": 180, "b": 180, "a": 255},
+              {"r": 255, "g": 255, "b": 255, "a": 255},
+              {"r": 255, "g": 255, "b": 255, "a": 255},
+              {"r": 255, "g": 255, "b": 255, "a": 255},
+              {"r": 255, "g": 255, "b": 255, "a": 255}
+            ],
+            "easings": ["cubicOut", "linear", "linear", "linear"]
+          }
+        }
+      },
+      "GlowLayer": {
+        "comps": {
+          "cc.UIOpacity": {
+            "opacity": {
+              "keys": [0],
+              "values": [0, 0, 0, 255, 0]
+            }
+          }
+        },
+        "props": {
+          "scale": {
+            "keys": [0],
+            "values": [
+              {"x": 1.0, "y": 1.0, "z": 1.0},
+              {"x": 1.0, "y": 1.0, "z": 1.0},
+              {"x": 1.0, "y": 1.0, "z": 1.0},
+              {"x": 1.08, "y": 1.08, "z": 1.0},
+              {"x": 1.0, "y": 1.0, "z": 1.0}
+            ],
+            "easings": ["linear", "linear", "cubicInOut", "cubicInOut"]
+          }
+        }
+      },
+      "DetailLayer": {
+        "comps": {
+          "cc.UIOpacity": {
+            "opacity": {
+              "keys": [0],
+              "values": [0, 0, 255, 255, 255]
+            }
+          }
+        }
+      }
+    }
+  },
+  "keys": [[0, 1.0, 2.5, 4.0, 5.0]],
+  "events": [
+    {
+      "frame": 0,
+      "func": "onRestoreStageStart",
+      "params": ["stage1_color_restore"]
+    },
+    {
+      "frame": 1.0,
+      "func": "onRestoreStageStart",
+      "params": ["stage2_details_appear"]
+    },
+    {
+      "frame": 2.5,
+      "func": "onRestoreStageStart",
+      "params": ["stage3_glow_pulse"]
+    },
+    {
+      "frame": 4.0,
+      "func": "onRestoreStageStart",
+      "params": ["stage4_settle"]
+    },
+    {
+      "frame": 5.0,
+      "func": "onRestoreComplete",
+      "params": []
+    }
+  ],
+  "_stages": [
+    {
+      "id": "stage1_color_restore",
+      "label": "Stage 1: Gray to Color",
+      "start": 0,
+      "end": 1.0,
+      "description": "Fade in from desaturated gray to full color. ColorOverlay transitions from gray (180,180,180) to white (255,255,255) revealing the colorized sprite beneath."
+    },
+    {
+      "id": "stage2_details_appear",
+      "label": "Stage 2: Details / Particles Appear",
+      "start": 1.0,
+      "end": 2.5,
+      "description": "DetailLayer fades in (opacity 0→255). Particle systems triggered via onRestoreStageStart event. Props and foliage details become visible."
+    },
+    {
+      "id": "stage3_glow_pulse",
+      "label": "Stage 3: Glow Pulse",
+      "start": 2.5,
+      "end": 4.0,
+      "description": "GlowLayer pulses in and out (opacity 0→255→0) with a scale bump (1.0→1.08→1.0) creating a bloom/glow effect over the restored area."
+    },
+    {
+      "id": "stage4_settle",
+      "label": "Stage 4: Settle to Final State",
+      "start": 4.0,
+      "end": 5.0,
+      "description": "Root node scale returns to 1.0, all layers settle. Root scale has one final micro-pulse (1.0→1.05→1.0) then holds. Animation ends in final restored state."
+    }
+  ],
+  "_animationSettings": {
+    "loop": false,
+    "playOnLoad": false
+  },
+  "_meta": {
+    "source": "art-tokens.json",
+    "token_ref": {
+      "total_duration": "animation.area_restore_duration",
+      "glow_pulse_period": "animation.area_glow_pulse_period"
+    },
+    "description": "4-stage island area restoration sequence over 5s. Stage1(0-1s): gray→color. Stage2(1-2.5s): details/particles appear. Stage3(2.5-4s): glow pulse bloom. Stage4(4-5s): settle to final state. Uses child node paths: ColorOverlay, GlowLayer, DetailLayer."
+  }
+}

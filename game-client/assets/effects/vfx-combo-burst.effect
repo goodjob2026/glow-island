@@ -1,0 +1,61 @@
+{
+  "__type__": "cc.ParticleAsset",
+  "_meta": {
+    "effect_id": "vfx-combo-burst",
+    "description": "Tile elimination star burst — colorful sparkles on tile elimination, intensity scales with combo level",
+    "trigger": "tile_eliminate",
+    "duration_source": "art-tokens.animation.combo_popup_duration = 0.40s",
+    "combo_scale_note": "Base config is for combo level 1 (threshold=1). Script multiplies totalParticles and startSize by combo_scale_factors below.",
+    "combo_scale_factors": {
+      "combo_1": { "particle_scale": 1.0, "size_scale": 1.0 },
+      "combo_2": { "particle_scale": 1.5, "size_scale": 1.1 },
+      "combo_3": { "particle_scale": 2.0, "size_scale": 1.2 },
+      "combo_4": { "particle_scale": 3.0, "size_scale": 1.5 }
+    },
+    "combo_thresholds_source": "puzzle-mechanics-spec.combo.thresholds = [1, 2, 3, 4]"
+  },
+  "content": {
+    "startColor":    { "r": 255, "g": 215, "b": 0,   "a": 255 },
+    "startColorVar": { "r": 30,  "g": 20,  "b": 60,  "a": 0   },
+    "endColor":      { "r": 255, "g": 255, "b": 255, "a": 0   },
+    "endColorVar":   { "r": 20,  "g": 20,  "b": 20,  "a": 0   },
+
+    "angle": 90,
+    "angleVar": 360,
+
+    "speed": 180,
+    "speedVar": 80,
+
+    "life": 0.38,
+    "lifeVar": 0.10,
+
+    "totalParticles": 40,
+    "emissionRate": 200,
+    "duration": 0.40,
+
+    "emitterMode": 0,
+    "gravity": { "x": 0, "y": -120 },
+    "radialAccel": 20,
+    "tangentialAccel": 10,
+
+    "startSize": 10,
+    "startSizeVar": 5,
+    "endSize": 0,
+    "endSizeVar": 0,
+
+    "startSpin": 0,
+    "startSpinVar": 360,
+    "endSpin": 720,
+    "endSpinVar": 180,
+
+    "posVar": { "x": 8, "y": 8 },
+    "positionType": 0,
+
+    "blendFunc": {
+      "src": 770,
+      "dst": 771
+    },
+
+    "_comment_color": "Golden #FFD700 = rgb(255,215,0) start fading to bright white; radial outward burst; combo_4 threshold triggers screen shake + particle burst per puzzle-mechanics-spec"
+  }
+}

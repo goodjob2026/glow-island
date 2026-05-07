@@ -1,0 +1,168 @@
+{
+  "__type__": "cc.SceneAsset",
+  "_name": "Prototype",
+  "_native": "",
+  "_scene": {
+    "__type__": "cc.Scene",
+    "_name": "Prototype Scene",
+    "_id": "prototype-scene-root",
+    "_active": true,
+    "_children": [
+      {
+        "__type__": "cc.Node",
+        "_name": "Canvas",
+        "_id": "canvas-node",
+        "_active": true,
+        "_components": [
+          {
+            "__type__": "cc.UITransform",
+            "_contentSize": { "__type__": "cc.Size", "width": 750, "height": 1334 },
+            "_anchorPoint": { "__type__": "cc.Vec2", "x": 0.5, "y": 0.5 }
+          },
+          {
+            "__type__": "cc.Canvas",
+            "_id": "canvas-comp",
+            "alignCanvasWithScreen": true
+          }
+        ],
+        "_children": [
+          {
+            "__type__": "cc.Node",
+            "_name": "Board",
+            "_id": "board-node",
+            "_active": true,
+            "_position": { "__type__": "cc.Vec3", "x": 0, "y": -30, "z": 0 },
+            "_components": [
+              {
+                "__type__": "cc.UITransform",
+                "_contentSize": { "__type__": "cc.Size", "width": 528, "height": 528 },
+                "_anchorPoint": { "__type__": "cc.Vec2", "x": 0.5, "y": 0.5 }
+              },
+              {
+                "__type__": "PrototypeBoard",
+                "_id": "prototype-board-comp",
+                "comboLabel": { "__id__": 1 },
+                "clearedLabel": { "__id__": 2 }
+              }
+            ],
+            "_children": []
+          },
+          {
+            "__type__": "cc.Node",
+            "_name": "UI",
+            "_id": "ui-root",
+            "_active": true,
+            "_children": [
+              {
+                "__type__": "cc.Node",
+                "_name": "ComboLabel",
+                "_id": "combo-label-node",
+                "_active": true,
+                "_position": { "__type__": "cc.Vec3", "x": 0, "y": 520, "z": 0 },
+                "_components": [
+                  {
+                    "__type__": "cc.UITransform",
+                    "_contentSize": { "__type__": "cc.Size", "width": 600, "height": 60 },
+                    "_anchorPoint": { "__type__": "cc.Vec2", "x": 0.5, "y": 0.5 }
+                  },
+                  {
+                    "__type__": "cc.Label",
+                    "_id": 1,
+                    "string": "COMBO × 0  (×1.0)",
+                    "horizontalAlign": 1,
+                    "verticalAlign": 1,
+                    "fontSize": 32,
+                    "fontFamily": "Arial",
+                    "color": { "__type__": "cc.Color", "r": 255, "g": 220, "b": 80, "a": 255 }
+                  }
+                ],
+                "_children": []
+              },
+              {
+                "__type__": "cc.Node",
+                "_name": "ClearedLabel",
+                "_id": "cleared-label-node",
+                "_active": true,
+                "_position": { "__type__": "cc.Vec3", "x": 0, "y": 460, "z": 0 },
+                "_components": [
+                  {
+                    "__type__": "cc.UITransform",
+                    "_contentSize": { "__type__": "cc.Size", "width": 400, "height": 50 },
+                    "_anchorPoint": { "__type__": "cc.Vec2", "x": 0.5, "y": 0.5 }
+                  },
+                  {
+                    "__type__": "cc.Label",
+                    "_id": 2,
+                    "string": "Cleared: 0",
+                    "horizontalAlign": 1,
+                    "verticalAlign": 1,
+                    "fontSize": 26,
+                    "fontFamily": "Arial",
+                    "color": { "__type__": "cc.Color", "r": 200, "g": 220, "b": 255, "a": 255 }
+                  }
+                ],
+                "_children": []
+              },
+              {
+                "__type__": "cc.Node",
+                "_name": "ResetButton",
+                "_id": "reset-button-node",
+                "_active": true,
+                "_position": { "__type__": "cc.Vec3", "x": 0, "y": -580, "z": 0 },
+                "_components": [
+                  {
+                    "__type__": "cc.UITransform",
+                    "_contentSize": { "__type__": "cc.Size", "width": 200, "height": 70 },
+                    "_anchorPoint": { "__type__": "cc.Vec2", "x": 0.5, "y": 0.5 }
+                  },
+                  {
+                    "__type__": "cc.Sprite",
+                    "color": { "__type__": "cc.Color", "r": 90, "g": 150, "b": 220, "a": 255 }
+                  },
+                  {
+                    "__type__": "cc.Button",
+                    "_id": "reset-button-comp",
+                    "clickEvents": [
+                      {
+                        "__type__": "cc.ClickEventHandler",
+                        "target": { "__id__": "board-node" },
+                        "component": "PrototypeBoard",
+                        "handler": "onResetClick",
+                        "customEventData": ""
+                      }
+                    ]
+                  }
+                ],
+                "_children": [
+                  {
+                    "__type__": "cc.Node",
+                    "_name": "Label",
+                    "_id": "reset-label-node",
+                    "_active": true,
+                    "_components": [
+                      {
+                        "__type__": "cc.UITransform",
+                        "_contentSize": { "__type__": "cc.Size", "width": 200, "height": 70 },
+                        "_anchorPoint": { "__type__": "cc.Vec2", "x": 0.5, "y": 0.5 }
+                      },
+                      {
+                        "__type__": "cc.Label",
+                        "string": "RESET",
+                        "horizontalAlign": 1,
+                        "verticalAlign": 1,
+                        "fontSize": 28,
+                        "fontFamily": "Arial",
+                        "color": { "__type__": "cc.Color", "r": 255, "g": 255, "b": 255, "a": 255 }
+                      }
+                    ],
+                    "_children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

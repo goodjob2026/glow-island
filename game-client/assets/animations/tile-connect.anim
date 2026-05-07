@@ -1,0 +1,106 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "tile-connect",
+  "_duration": 0.15,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.UITransform": {
+        "contentSize": {
+          "keys": [0],
+          "values": [
+            {"width": 128, "height": 128},
+            {"width": 147.2, "height": 147.2},
+            {"width": 128, "height": 128}
+          ]
+        }
+      },
+      "cc.UIOpacity": {
+        "opacity": {
+          "keys": [0],
+          "values": [255, 200, 255]
+        }
+      }
+    },
+    "paths": {
+      "": {
+        "props": {
+          "scale": {
+            "keys": [0],
+            "values": [
+              {"x": 1.0, "y": 1.0, "z": 1.0},
+              {"x": 1.15, "y": 1.15, "z": 1.0},
+              {"x": 1.0, "y": 1.0, "z": 1.0}
+            ],
+            "easings": ["cubicInOut", "cubicInOut"]
+          }
+        }
+      }
+    }
+  },
+  "keys": [[0, 0.075, 0.15]],
+  "events": [],
+  "_curves": [
+    {
+      "modifiers": [
+        {"__id__": 0}
+      ],
+      "valueAdapter": null,
+      "keyframes": [
+        {
+          "frame": 0,
+          "value": {"x": 1.0, "y": 1.0, "z": 1.0},
+          "easing": "cubicInOut"
+        },
+        {
+          "frame": 0.075,
+          "value": {"x": 1.15, "y": 1.15, "z": 1.0},
+          "easing": "cubicInOut"
+        },
+        {
+          "frame": 0.15,
+          "value": {"x": 1.0, "y": 1.0, "z": 1.0},
+          "easing": "cubicInOut"
+        }
+      ]
+    },
+    {
+      "modifiers": [
+        {"__id__": 1}
+      ],
+      "valueAdapter": null,
+      "keyframes": [
+        {
+          "frame": 0,
+          "value": 255,
+          "easing": "cubicInOut"
+        },
+        {
+          "frame": 0.075,
+          "value": 200,
+          "easing": "cubicInOut"
+        },
+        {
+          "frame": 0.15,
+          "value": 255,
+          "easing": "cubicInOut"
+        }
+      ]
+    }
+  ],
+  "_animationSettings": {
+    "loop": false,
+    "playOnLoad": false
+  },
+  "_meta": {
+    "source": "art-tokens.json",
+    "token_ref": {
+      "duration": "animation.tile_connect_duration",
+      "easing": "animation.tile_connect_easing",
+      "scale_peak": "animation.tile_highlight_scale"
+    },
+    "description": "Tile connection highlight: scale pulse 1.0→1.15→1.0, opacity flash 255→200→255, ease-in-out over 0.15s"
+  }
+}

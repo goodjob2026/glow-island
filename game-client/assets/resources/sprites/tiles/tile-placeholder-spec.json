@@ -1,0 +1,586 @@
+{
+  "_meta": {
+    "project": "Glow Island",
+    "version": "1.0",
+    "created_at": "2026-05-07",
+    "description": "Complete placeholder specification for all 20 tile types. Each tile is 128×128px @2x with 4px bleed. Placeholder colors are derived from art-tokens chapter palettes.",
+    "size_note": "Canvas: 128×128px @2x. Visible draw area: 120×120px (4px bleed each side). Corner radius: 16px."
+  },
+  "global_spec": {
+    "canvas_size_2x": { "w": 128, "h": 128 },
+    "canvas_size_1x": { "w": 64, "h": 64 },
+    "bleed_px": 4,
+    "draw_area_2x": { "w": 120, "h": 120 },
+    "corner_radius_2x": 16,
+    "corner_radius_1x": 8,
+    "color_depth": "RGBA 32-bit",
+    "export_format": "PNG-24 transparent background",
+    "atlas_max_size": "2048×2048",
+    "shadow_baked": "0 3px 0 rgba(0,0,0,0.12)"
+  },
+  "states_spec": {
+    "normal": {
+      "key": "normal",
+      "filename_suffix": "_normal@2x.png",
+      "description": "Default static single-frame PNG. Shadow baked: rgba(0,0,0,0.12) offset 0,3px.",
+      "brightness_modifier": 1.0,
+      "inner_glow": null
+    },
+    "highlighted": {
+      "key": "highlighted",
+      "filename_suffix": "_highlighted@2x.png",
+      "description": "Connection highlight state. Brightness +20%, inner glow rgba(255,255,255,0.35). Can be achieved via runtime shader from Normal frame.",
+      "brightness_modifier": 1.2,
+      "inner_glow": "rgba(255,255,255,0.35)",
+      "scale_hint": 1.05
+    },
+    "disappearing": {
+      "key": "disappearing",
+      "filename_suffix": "_disappear_{frame:02d}@2x.png",
+      "description": "12-frame sequence at 30fps (0.4s total). Scale peaks at 1.08 on frame 4, then shrinks with particle scatter. Final frame fully transparent.",
+      "frame_count": 12,
+      "fps": 30,
+      "duration_seconds": 0.4,
+      "peak_frame": 4,
+      "peak_scale": 1.08,
+      "canvas_size_2x": { "w": 160, "h": 160 }
+    },
+    "special": {
+      "key": "special",
+      "description": "Spine skeleton animation for the 4 special tile types (Bomb/Lightning/Rainbow/Glow). Includes idle (loop 2-3s) and activate (one-shot 0.5-1.0s).",
+      "animations": ["idle", "activate"],
+      "export_files": [".skel", ".atlas", ".png"]
+    }
+  },
+  "tiles": [
+    {
+      "id": "T01",
+      "name_cn": "海浪块",
+      "name_en": "Wave",
+      "chapter": 1,
+      "chapter_name": "海边码头",
+      "color_hex": "#87CEEB",
+      "placeholder_color_hex": "#87CEEB",
+      "placeholder_bg_hex": "#C8E8F5",
+      "size": { "w": 128, "h": 128 },
+      "shape": "wave-rounded-rect",
+      "shape_description": "波形圆角矩形，顶部波浪轮廓，内有细纹",
+      "states": {
+        "normal": { "filename": "t01_wave_normal@2x.png", "directory": "chapter1/" },
+        "highlighted": { "filename": "t01_wave_highlighted@2x.png", "directory": "chapter1/" },
+        "disappearing": {
+          "filename_pattern": "t01_wave_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter1/"
+        }
+      },
+      "filename_pattern": "t01_wave_{state}@2x.png",
+      "art_notes": "顶部波浪轮廓，内有横向细波纹。底部固定阴影烘焙。颜色与第1章码头主色#87CEEB协调。"
+    },
+    {
+      "id": "T02",
+      "name_cn": "木板块",
+      "name_en": "Plank",
+      "chapter": 1,
+      "chapter_name": "海边码头",
+      "color_hex": "#C49A6C",
+      "placeholder_color_hex": "#C49A6C",
+      "placeholder_bg_hex": "#F5DEB3",
+      "size": { "w": 128, "h": 128 },
+      "shape": "rounded-rect-wood",
+      "shape_description": "圆角矩形，横向木纹理，两侧铆钉细节",
+      "states": {
+        "normal": { "filename": "t02_plank_normal@2x.png", "directory": "chapter1/" },
+        "highlighted": { "filename": "t02_plank_highlighted@2x.png", "directory": "chapter1/" },
+        "disappearing": {
+          "filename_pattern": "t02_plank_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter1/"
+        }
+      },
+      "filename_pattern": "t02_plank_{state}@2x.png",
+      "art_notes": "圆角矩形，横向木纹3-4条，两侧各一个铆钉小圆点。木色#C49A6C配米白#F5DEB3作为细节色。"
+    },
+    {
+      "id": "T03",
+      "name_cn": "绳结块",
+      "name_en": "Knot",
+      "chapter": 1,
+      "chapter_name": "海边码头",
+      "color_hex": "#F5DEB3",
+      "placeholder_color_hex": "#F5DEB3",
+      "placeholder_bg_hex": "#E8D4A0",
+      "size": { "w": 128, "h": 128 },
+      "shape": "circle-rope",
+      "shape_description": "圆形+绳圈纹，米白绳结图案，中央麻花纹",
+      "states": {
+        "normal": { "filename": "t03_knot_normal@2x.png", "directory": "chapter1/" },
+        "highlighted": { "filename": "t03_knot_highlighted@2x.png", "directory": "chapter1/" },
+        "disappearing": {
+          "filename_pattern": "t03_knot_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter1/"
+        }
+      },
+      "filename_pattern": "t03_knot_{state}@2x.png",
+      "art_notes": "圆形底，中央绳结麻花纹，米白色#F5DEB3主体，深棕色#C49A6C绳纹细节。"
+    },
+    {
+      "id": "T04",
+      "name_cn": "贝壳块",
+      "name_en": "Shell",
+      "chapter": 1,
+      "chapter_name": "海边码头",
+      "color_hex": "#F4A261",
+      "placeholder_color_hex": "#F4A261",
+      "placeholder_bg_hex": "#FFD4A8",
+      "size": { "w": 128, "h": 128 },
+      "shape": "fan-rounded",
+      "shape_description": "扇形圆角，贝壳轮廓，放射状细线",
+      "states": {
+        "normal": { "filename": "t04_shell_normal@2x.png", "directory": "chapter1/" },
+        "highlighted": { "filename": "t04_shell_highlighted@2x.png", "directory": "chapter1/" },
+        "disappearing": {
+          "filename_pattern": "t04_shell_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter1/"
+        }
+      },
+      "filename_pattern": "t04_shell_{state}@2x.png",
+      "art_notes": "扇形外轮廓，6-8条放射状细纹，暖橙色#F4A261，贝壳底部有小圆弧收口。"
+    },
+    {
+      "id": "T05",
+      "name_cn": "石板块",
+      "name_en": "Cobblestone",
+      "chapter": 2,
+      "chapter_name": "中央小镇",
+      "color_hex": "#D9C9B5",
+      "placeholder_color_hex": "#D9C9B5",
+      "placeholder_bg_hex": "#F5E2BE",
+      "size": { "w": 128, "h": 128 },
+      "shape": "square-rounded-cracks",
+      "shape_description": "正方形圆角+石缝，石板纹，四角有缝隙细节",
+      "states": {
+        "normal": { "filename": "t05_cobblestone_normal@2x.png", "directory": "chapter2/" },
+        "highlighted": { "filename": "t05_cobblestone_highlighted@2x.png", "directory": "chapter2/" },
+        "disappearing": {
+          "filename_pattern": "t05_cobblestone_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter2/"
+        }
+      },
+      "filename_pattern": "t05_cobblestone_{state}@2x.png",
+      "art_notes": "暖米灰#D9C9B5主体，四角有细缝线图案，整体温暖石材感。与第2章色板#F4C95D黄色协调。"
+    },
+    {
+      "id": "T06",
+      "name_cn": "灯笼块",
+      "name_en": "Lantern",
+      "chapter": 2,
+      "chapter_name": "中央小镇",
+      "color_hex": "#F4C95D",
+      "placeholder_color_hex": "#F4C95D",
+      "placeholder_bg_hex": "#FBF0DC",
+      "size": { "w": 128, "h": 128 },
+      "shape": "hexagon-lantern",
+      "shape_description": "六边形，灯笼轮廓，中央光点，两侧穗子",
+      "states": {
+        "normal": { "filename": "t06_lantern_normal@2x.png", "directory": "chapter2/" },
+        "highlighted": { "filename": "t06_lantern_highlighted@2x.png", "directory": "chapter2/" },
+        "disappearing": {
+          "filename_pattern": "t06_lantern_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter2/"
+        }
+      },
+      "filename_pattern": "t06_lantern_{state}@2x.png",
+      "art_notes": "六边形底，灯笼轮廓线，中央小圆光点，两侧各一条穗子线。暖黄#F4C95D主色。"
+    },
+    {
+      "id": "T07",
+      "name_cn": "砖瓦块",
+      "name_en": "Brick",
+      "chapter": 2,
+      "chapter_name": "中央小镇",
+      "color_hex": "#C97D4E",
+      "placeholder_color_hex": "#C97D4E",
+      "placeholder_bg_hex": "#F5E2BE",
+      "size": { "w": 128, "h": 128 },
+      "shape": "rect-rounded-brick",
+      "shape_description": "矩形圆角+砖纹，砖红色，水平砖缝纹理",
+      "states": {
+        "normal": { "filename": "t07_brick_normal@2x.png", "directory": "chapter2/" },
+        "highlighted": { "filename": "t07_brick_highlighted@2x.png", "directory": "chapter2/" },
+        "disappearing": {
+          "filename_pattern": "t07_brick_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter2/"
+        }
+      },
+      "filename_pattern": "t07_brick_{state}@2x.png",
+      "art_notes": "砖红#C97D4E主体，3-4条水平砖缝线，圆角统一16px。暖调与第2章城镇风格协调。"
+    },
+    {
+      "id": "T08",
+      "name_cn": "喷泉块",
+      "name_en": "Fountain",
+      "chapter": 2,
+      "chapter_name": "中央小镇",
+      "color_hex": "#7EC8E3",
+      "placeholder_color_hex": "#7EC8E3",
+      "placeholder_bg_hex": "#C8E8F5",
+      "size": { "w": 128, "h": 128 },
+      "shape": "circle-water",
+      "shape_description": "圆形水面+中央水柱小图标",
+      "states": {
+        "normal": { "filename": "t08_fountain_normal@2x.png", "directory": "chapter2/" },
+        "highlighted": { "filename": "t08_fountain_highlighted@2x.png", "directory": "chapter2/" },
+        "disappearing": {
+          "filename_pattern": "t08_fountain_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter2/"
+        }
+      },
+      "filename_pattern": "t08_fountain_{state}@2x.png",
+      "art_notes": "圆形浅蓝#7EC8E3水面底，中央水柱向上弧形小图案，两侧小水珠。温柔水蓝。"
+    },
+    {
+      "id": "T09",
+      "name_cn": "花朵块",
+      "name_en": "Flower",
+      "chapter": 3,
+      "chapter_name": "花田山坡",
+      "color_hex": "#C9A8D4",
+      "placeholder_color_hex": "#C9A8D4",
+      "placeholder_bg_hex": "#E8DFF0",
+      "size": { "w": 128, "h": 128 },
+      "shape": "5petal-flower-rounded",
+      "shape_description": "花形（5瓣）圆角，薰衣草紫，五瓣简约花形",
+      "states": {
+        "normal": { "filename": "t09_flower_normal@2x.png", "directory": "chapter3/" },
+        "highlighted": { "filename": "t09_flower_highlighted@2x.png", "directory": "chapter3/" },
+        "disappearing": {
+          "filename_pattern": "t09_flower_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter3/"
+        }
+      },
+      "filename_pattern": "t09_flower_{state}@2x.png",
+      "art_notes": "5瓣圆角花形，薰衣草紫#C9A8D4主色，中央小圆蕊，瓣与瓣之间有小缝。治愈系风格。"
+    },
+    {
+      "id": "T10",
+      "name_cn": "叶片块",
+      "name_en": "Leaf",
+      "chapter": 3,
+      "chapter_name": "花田山坡",
+      "color_hex": "#7DBD7A",
+      "placeholder_color_hex": "#7DBD7A",
+      "placeholder_bg_hex": "#D8EAD0",
+      "size": { "w": 128, "h": 128 },
+      "shape": "teardrop-leaf",
+      "shape_description": "水滴形，叶形，中央叶脉，草绿色",
+      "states": {
+        "normal": { "filename": "t10_leaf_normal@2x.png", "directory": "chapter3/" },
+        "highlighted": { "filename": "t10_leaf_highlighted@2x.png", "directory": "chapter3/" },
+        "disappearing": {
+          "filename_pattern": "t10_leaf_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter3/"
+        }
+      },
+      "filename_pattern": "t10_leaf_{state}@2x.png",
+      "art_notes": "水滴/椭圆叶形，草绿#7DBD7A主色，中央一条主叶脉，两侧各2条细叶脉。清新植物感。"
+    },
+    {
+      "id": "T11",
+      "name_cn": "蝴蝶块",
+      "name_en": "Butterfly",
+      "chapter": 3,
+      "chapter_name": "花田山坡",
+      "color_hex": "#F0C060",
+      "placeholder_color_hex": "#F0C060",
+      "placeholder_bg_hex": "#FFE8A8",
+      "size": { "w": 128, "h": 128 },
+      "shape": "butterfly-rounded",
+      "shape_description": "蝴蝶轮廓圆角，金黄蝴蝶简化图形",
+      "states": {
+        "normal": { "filename": "t11_butterfly_normal@2x.png", "directory": "chapter3/" },
+        "highlighted": { "filename": "t11_butterfly_highlighted@2x.png", "directory": "chapter3/" },
+        "disappearing": {
+          "filename_pattern": "t11_butterfly_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter3/"
+        }
+      },
+      "filename_pattern": "t11_butterfly_{state}@2x.png",
+      "art_notes": "展翅蝴蝶简化图形，金黄#F0C060主色，上翅略大，下翅略小，中央身体细线，翅膀有点状纹。"
+    },
+    {
+      "id": "T12",
+      "name_cn": "嫩芽块",
+      "name_en": "Sprout",
+      "chapter": 3,
+      "chapter_name": "花田山坡",
+      "color_hex": "#A8D88A",
+      "placeholder_color_hex": "#A8D88A",
+      "placeholder_bg_hex": "#C8EAC0",
+      "size": { "w": 128, "h": 128 },
+      "shape": "circle-sprout",
+      "shape_description": "圆形+出芽图，浅绿圆形，中央嫩芽破土图案",
+      "states": {
+        "normal": { "filename": "t12_sprout_normal@2x.png", "directory": "chapter3/" },
+        "highlighted": { "filename": "t12_sprout_highlighted@2x.png", "directory": "chapter3/" },
+        "disappearing": {
+          "filename_pattern": "t12_sprout_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter3/"
+        }
+      },
+      "filename_pattern": "t12_sprout_{state}@2x.png",
+      "art_notes": "浅绿圆形#A8D88A底，中央嫩芽图案（两片小叶+茎），生命力勃勃的清新风格。"
+    },
+    {
+      "id": "T13",
+      "name_cn": "原木块",
+      "name_en": "Log",
+      "chapter": 4,
+      "chapter_name": "森林露营地",
+      "color_hex": "#8B6241",
+      "placeholder_color_hex": "#8B6241",
+      "placeholder_bg_hex": "#D8C0A0",
+      "size": { "w": 128, "h": 128 },
+      "shape": "oval-wood-rings",
+      "shape_description": "椭圆形+年轮，年轮纹圆木横截面",
+      "states": {
+        "normal": { "filename": "t13_log_normal@2x.png", "directory": "chapter4/" },
+        "highlighted": { "filename": "t13_log_highlighted@2x.png", "directory": "chapter4/" },
+        "disappearing": {
+          "filename_pattern": "t13_log_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter4/"
+        }
+      },
+      "filename_pattern": "t13_log_{state}@2x.png",
+      "art_notes": "圆木截面，深棕#8B6241主体，3-4圈年轮同心圆，中央最深，向外渐淡。自然质朴。"
+    },
+    {
+      "id": "T14",
+      "name_cn": "苔藓块",
+      "name_en": "Moss",
+      "chapter": 4,
+      "chapter_name": "森林露营地",
+      "color_hex": "#6B9E5E",
+      "placeholder_color_hex": "#6B9E5E",
+      "placeholder_bg_hex": "#D8EAD0",
+      "size": { "w": 128, "h": 128 },
+      "shape": "irregular-rounded",
+      "shape_description": "不规则圆角，苔藓绿，略微不规则边缘",
+      "states": {
+        "normal": { "filename": "t14_moss_normal@2x.png", "directory": "chapter4/" },
+        "highlighted": { "filename": "t14_moss_highlighted@2x.png", "directory": "chapter4/" },
+        "disappearing": {
+          "filename_pattern": "t14_moss_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter4/"
+        }
+      },
+      "filename_pattern": "t14_moss_{state}@2x.png",
+      "art_notes": "苔藓绿#6B9E5E，边缘有轻微凸起不规则感（非完美圆角），表面有小点状苔藓纹理。"
+    },
+    {
+      "id": "T15",
+      "name_cn": "火星块",
+      "name_en": "Ember",
+      "chapter": 4,
+      "chapter_name": "森林露营地",
+      "color_hex": "#FF8C42",
+      "placeholder_color_hex": "#FF8C42",
+      "placeholder_bg_hex": "#FFCCA0",
+      "size": { "w": 128, "h": 128 },
+      "shape": "hexagon-flame",
+      "shape_description": "六边形，橙色六边形，内有火焰简图",
+      "states": {
+        "normal": { "filename": "t15_ember_normal@2x.png", "directory": "chapter4/" },
+        "highlighted": { "filename": "t15_ember_highlighted@2x.png", "directory": "chapter4/" },
+        "disappearing": {
+          "filename_pattern": "t15_ember_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter4/"
+        }
+      },
+      "filename_pattern": "t15_ember_{state}@2x.png",
+      "art_notes": "橙色六边形#FF8C42，中央简化火焰图案（3条向上弧线），暖调与篝火氛围一致。"
+    },
+    {
+      "id": "T16",
+      "name_cn": "帐篷块",
+      "name_en": "Tent",
+      "chapter": 4,
+      "chapter_name": "森林露营地",
+      "color_hex": "#C49A6C",
+      "placeholder_color_hex": "#C49A6C",
+      "placeholder_bg_hex": "#E8C89A",
+      "size": { "w": 128, "h": 128 },
+      "shape": "triangle-rounded-tent",
+      "shape_description": "三角圆角，帐篷三角轮廓，中央拉链线",
+      "states": {
+        "normal": { "filename": "t16_tent_normal@2x.png", "directory": "chapter4/" },
+        "highlighted": { "filename": "t16_tent_highlighted@2x.png", "directory": "chapter4/" },
+        "disappearing": {
+          "filename_pattern": "t16_tent_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter4/"
+        }
+      },
+      "filename_pattern": "t16_tent_{state}@2x.png",
+      "art_notes": "圆角三角帐篷剪影，米棕#C49A6C主色，中央从顶到底一条拉链虚线，底边两角有地钉小细节。"
+    },
+    {
+      "id": "T17",
+      "name_cn": "水雾块",
+      "name_en": "Mist",
+      "chapter": 5,
+      "chapter_name": "温泉山谷",
+      "color_hex": "#B8D4E0",
+      "placeholder_color_hex": "#B8D4E0",
+      "placeholder_bg_hex": "#E4EFF4",
+      "size": { "w": 128, "h": 128 },
+      "shape": "cloud-rounded",
+      "shape_description": "云朵圆角，雾蓝云朵形，边缘模糊感",
+      "states": {
+        "normal": { "filename": "t17_mist_normal@2x.png", "directory": "chapter5/" },
+        "highlighted": { "filename": "t17_mist_highlighted@2x.png", "directory": "chapter5/" },
+        "disappearing": {
+          "filename_pattern": "t17_mist_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter5/"
+        }
+      },
+      "filename_pattern": "t17_mist_{state}@2x.png",
+      "art_notes": "云朵/水雾形外轮廓，雾蓝#B8D4E0主色，边缘柔和（略微羽化效果烘焙进图层），轻盈飘渺感。"
+    },
+    {
+      "id": "T18",
+      "name_cn": "石板块（温泉）",
+      "name_en": "StoneSlate",
+      "chapter": 5,
+      "chapter_name": "温泉山谷",
+      "color_hex": "#A0A8B0",
+      "placeholder_color_hex": "#A0A8B0",
+      "placeholder_bg_hex": "#D0D8E0",
+      "size": { "w": 128, "h": 128 },
+      "shape": "hexagon-slate",
+      "shape_description": "六边形，灰蓝石板，防滑纹纹理",
+      "states": {
+        "normal": { "filename": "t18_stone_slate_normal@2x.png", "directory": "chapter5/" },
+        "highlighted": { "filename": "t18_stone_slate_highlighted@2x.png", "directory": "chapter5/" },
+        "disappearing": {
+          "filename_pattern": "t18_stone_slate_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter5/"
+        }
+      },
+      "filename_pattern": "t18_stone_slate_{state}@2x.png",
+      "art_notes": "六边形灰蓝石板#A0A8B0，表面有细小菱形防滑纹，边缘有倒角感，沉稳温泉石风。"
+    },
+    {
+      "id": "T19",
+      "name_cn": "星光块",
+      "name_en": "Starlight",
+      "chapter": 6,
+      "chapter_name": "夜晚灯塔",
+      "color_hex": "#F5C842",
+      "placeholder_color_hex": "#F5C842",
+      "placeholder_bg_hex": "#1E2E50",
+      "size": { "w": 128, "h": 128 },
+      "shape": "4point-star-rounded",
+      "shape_description": "四角星形圆角，暖黄四角星，中央小圆点",
+      "states": {
+        "normal": { "filename": "t19_starlight_normal@2x.png", "directory": "chapter6/" },
+        "highlighted": { "filename": "t19_starlight_highlighted@2x.png", "directory": "chapter6/" },
+        "disappearing": {
+          "filename_pattern": "t19_starlight_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter6/"
+        }
+      },
+      "filename_pattern": "t19_starlight_{state}@2x.png",
+      "art_notes": "四角星形圆角#F5C842暖黄，中央小圆点，星尖微微发光晕。与深蓝背景#1E2E50强对比，温暖夜光感。"
+    },
+    {
+      "id": "T20",
+      "name_cn": "海浪夜块",
+      "name_en": "NightWave",
+      "chapter": 6,
+      "chapter_name": "夜晚灯塔",
+      "color_hex": "#2D4A7A",
+      "placeholder_color_hex": "#2D4A7A",
+      "placeholder_bg_hex": "#161E30",
+      "size": { "w": 128, "h": 128 },
+      "shape": "wave-rounded-rect-night",
+      "shape_description": "波形圆角矩形，深蓝夜海波形，白色细泡沫线",
+      "states": {
+        "normal": { "filename": "t20_night_wave_normal@2x.png", "directory": "chapter6/" },
+        "highlighted": { "filename": "t20_night_wave_highlighted@2x.png", "directory": "chapter6/" },
+        "disappearing": {
+          "filename_pattern": "t20_night_wave_disappear_{02d}@2x.png",
+          "frames": 12,
+          "directory": "chapter6/"
+        }
+      },
+      "filename_pattern": "t20_night_wave_{state}@2x.png",
+      "art_notes": "深蓝夜海#2D4A7A波形圆角矩形，顶部波浪轮廓，内有1-2条白色细泡沫曲线，神秘夜海氛围。"
+    }
+  ],
+  "special_tiles_spine": {
+    "description": "4 special tile types with Spine skeleton animations. Placed in sprites/tiles/special/ directory.",
+    "tiles": [
+      {
+        "type": "bomb",
+        "color_hex": "#FF6B35",
+        "glow": "rgba(255,107,53,0.55)",
+        "animations": {
+          "idle": { "file": "bomb_idle.skel", "loop": true, "duration_s": 2.0, "desc": "Pulsing breathe animation, slow glow oscillation" },
+          "activate": { "file": "bomb_activate.skel", "loop": false, "duration_s": 0.6, "desc": "Quick shake then explosion burst, triggers EF05" }
+        },
+        "atlas": "bomb_idle.atlas",
+        "texture": "bomb_idle.png"
+      },
+      {
+        "type": "lightning",
+        "color_hex": "#4FC3F7",
+        "glow": "rgba(79,195,247,0.55)",
+        "animations": {
+          "idle": { "file": "lightning_idle.skel", "loop": true, "duration_s": 1.5, "desc": "Electric arc flicker at tile edges, subtle crackle" },
+          "activate": { "file": "lightning_activate.skel", "loop": false, "duration_s": 0.5, "desc": "Bright flash then arc extends to full row/col, triggers EF06" }
+        },
+        "atlas": "lightning_idle.atlas",
+        "texture": "lightning_idle.png"
+      },
+      {
+        "type": "rainbow",
+        "color_hex": "linear #FF6B6B→#4FC3F7",
+        "animations": {
+          "idle": { "file": "rainbow_idle.skel", "loop": true, "duration_s": 3.0, "desc": "Slow color cycle across 6 spectrum hues, gentle shimmer" },
+          "activate": { "file": "rainbow_activate.skel", "loop": false, "duration_s": 0.7, "desc": "Color burst rings outward, triggers EF07" }
+        },
+        "atlas": "rainbow_idle.atlas",
+        "texture": "rainbow_idle.png"
+      },
+      {
+        "type": "glow",
+        "color_hex": "#FFD700",
+        "glow": "rgba(255,215,0,0.65)",
+        "animations": {
+          "idle": { "file": "glow_idle.skel", "loop": true, "duration_s": 2.0, "desc": "Warm golden pulse, opacity 0.5→1.0→0.5, radial glow halo" },
+          "activate": { "file": "glow_activate.skel", "loop": false, "duration_s": 0.8, "desc": "Golden chain particles flow outward, triggers EF03" }
+        },
+        "atlas": "glow_idle.atlas",
+        "texture": "glow_idle.png"
+      }
+    ],
+    "directory": "sprites/tiles/special/"
+  }
+}

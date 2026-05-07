@@ -1,0 +1,156 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "combo-popup",
+  "_duration": 0.4,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.UIOpacity": {
+        "opacity": {
+          "keys": [0],
+          "values": [0, 255, 255, 0]
+        }
+      }
+    },
+    "paths": {
+      "": {
+        "props": {
+          "scale": {
+            "keys": [0],
+            "values": [
+              {"x": 0.0, "y": 0.0, "z": 1.0},
+              {"x": 1.4, "y": 1.4, "z": 1.0},
+              {"x": 1.0, "y": 1.0, "z": 1.0},
+              {"x": 1.0, "y": 1.0, "z": 1.0}
+            ],
+            "easings": ["cubicOut", "cubicInOut", "linear"]
+          },
+          "position": {
+            "keys": [0],
+            "values": [
+              {"x": 0, "y": -20, "z": 0},
+              {"x": 0, "y": 0, "z": 0},
+              {"x": 0, "y": 0, "z": 0},
+              {"x": 0, "y": 30, "z": 0}
+            ],
+            "easings": ["cubicOut", "linear", "cubicIn"]
+          }
+        }
+      }
+    }
+  },
+  "keys": [[0, 0.12, 0.28, 0.4]],
+  "events": [],
+  "_curves": [
+    {
+      "modifiers": ["scale"],
+      "keyframes": [
+        {
+          "frame": 0,
+          "value": {"x": 0.0, "y": 0.0, "z": 1.0},
+          "easing": "cubicOut"
+        },
+        {
+          "frame": 0.12,
+          "value": {"x": 1.4, "y": 1.4, "z": 1.0},
+          "easing": "cubicInOut"
+        },
+        {
+          "frame": 0.28,
+          "value": {"x": 1.0, "y": 1.0, "z": 1.0},
+          "easing": "linear"
+        },
+        {
+          "frame": 0.4,
+          "value": {"x": 1.0, "y": 1.0, "z": 1.0},
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "modifiers": ["opacity"],
+      "keyframes": [
+        {
+          "frame": 0,
+          "value": 0,
+          "easing": "cubicOut"
+        },
+        {
+          "frame": 0.12,
+          "value": 255,
+          "easing": "linear"
+        },
+        {
+          "frame": 0.28,
+          "value": 255,
+          "easing": "cubicIn"
+        },
+        {
+          "frame": 0.4,
+          "value": 0,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "modifiers": ["positionY"],
+      "keyframes": [
+        {
+          "frame": 0,
+          "value": -20,
+          "easing": "cubicOut"
+        },
+        {
+          "frame": 0.12,
+          "value": 0,
+          "easing": "linear"
+        },
+        {
+          "frame": 0.28,
+          "value": 0,
+          "easing": "cubicIn"
+        },
+        {
+          "frame": 0.4,
+          "value": 30,
+          "easing": "linear"
+        }
+      ]
+    }
+  ],
+  "_animationSettings": {
+    "loop": false,
+    "playOnLoad": false
+  },
+  "_intensity": "x2",
+  "_intensityLevels": {
+    "x2": {
+      "scale_peak": 1.4,
+      "label_size_multiplier": 1.0
+    },
+    "x3": {
+      "scale_peak": 1.5,
+      "label_size_multiplier": 1.1
+    },
+    "x4": {
+      "scale_peak": 1.6,
+      "label_size_multiplier": 1.2
+    },
+    "x5plus": {
+      "scale_peak": 1.75,
+      "label_size_multiplier": 1.35
+    }
+  },
+  "_meta": {
+    "source": "art-tokens.json",
+    "token_ref": {
+      "duration": "animation.combo_popup_duration",
+      "easing": "animation.combo_popup_easing",
+      "float_duration": "animation.combo_popup_float_duration",
+      "fade_duration": "animation.combo_popup_fade_duration"
+    },
+    "description": "Combo x2 popup (base intensity): scale 0→1.4→1.0 (spring bounce), opacity 0→255→0 (appear then fade), posY -20→0→+30px (float up), 0.4s total. Intensity multipliers defined in _intensityLevels."
+  }
+}

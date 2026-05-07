@@ -1,0 +1,53 @@
+{
+  "__type__": "cc.ParticleAsset",
+  "_meta": {
+    "effect_id": "vfx-tile-connect",
+    "description": "Connection path light trail — small bright particles emitted along the connection path when two tiles are linked",
+    "trigger": "tile_connect",
+    "duration_source": "art-tokens.animation.tile_connect_duration = 0.15s"
+  },
+  "content": {
+    "startColor":    { "r": 255, "g": 245, "b": 224, "a": 255 },
+    "startColorVar": { "r": 15,  "g": 10,  "b": 20,  "a": 0   },
+    "endColor":      { "r": 255, "g": 245, "b": 224, "a": 0   },
+    "endColorVar":   { "r": 0,   "g": 0,   "b": 0,   "a": 0   },
+
+    "angle": 90,
+    "angleVar": 360,
+
+    "speed": 40,
+    "speedVar": 20,
+
+    "life": 0.12,
+    "lifeVar": 0.04,
+
+    "totalParticles": 20,
+    "emissionRate": 140,
+    "duration": 0.15,
+
+    "emitterMode": 0,
+    "gravity": { "x": 0, "y": 0 },
+    "radialAccel": 0,
+    "tangentialAccel": 0,
+
+    "startSize": 6,
+    "startSizeVar": 3,
+    "endSize": 0,
+    "endSizeVar": 0,
+
+    "startSpin": 0,
+    "startSpinVar": 180,
+    "endSpin": 180,
+    "endSpinVar": 90,
+
+    "posVar": { "x": 4, "y": 4 },
+    "positionType": 0,
+
+    "blendFunc": {
+      "src": 770,
+      "dst": 771
+    },
+
+    "_comment_color": "Warm white #FFF5E0 = rgb(255,245,224); soft additive glow; fast fade matching 0.15s connect animation"
+  }
+}
