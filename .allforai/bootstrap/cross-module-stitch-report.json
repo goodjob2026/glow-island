@@ -1,93 +1,117 @@
 {
-  "validated_at": "2026-05-07T00:00:00.000Z",
-  "endpoints_checked": 5,
-  "mismatches_found": 7,
-  "mismatches_fixed": 7,
-  "endpoint_results": [
+  "meta": {
+    "generated_at": "2026-05-08T00:00:00.000Z",
+    "node": "cross-module-stitch",
+    "authoritative_source": "backend (routes are authoritative; client code must conform)"
+  },
+  "endpoints": [
     {
-      "endpoint": "POST /auth/anonymous",
-      "status": "fixed",
-      "issues": [
-        "ProgressionManager had no auth call at all — no device_id generation, no JWT acquisition, no token/player_id storage",
-        "loadFromCloud and _putWithRetry called /save (no playerId) without Authorization header, making auth impossible"
-      ],
-      "fixes": [
-        "Added initAuth() method to ProgressionManager: generates/persists device_id, detects platform, POST /auth/anonymous, stores JWT in localStorage('glow_auth_token') and player_id in localStorage('glow_player_id')",
-        "Added _getOrCreateDeviceId() and _detectPlatform() helper methods",
-        "Added getAuthToken() and getPlayerId() public accessors"
-      ]
+      "id": "auth_anonymous",
+      "path": "POST /v1/auth/anonymous",
+      "client_file": "game-client/assets/scripts/meta/ProgressionManager.ts",
+      "request_fields": {
+        "spec": ["device_id", "platform", "client_version?"],
+        "backend": ["device_id", "platform", "client_version?"],
+        "client_sends": ["device_id", "platform"],
+        "mismatches": []
+      },
+      "response_fields": {
+        "spec": ["token", "player_id", "is_new_player", "expires_at", "initial_save?{beach_coins,glowstone}"],
+        "backend_returns": ["token", "player_id", "is_new_player", "expires_at", "initial_save?{beach_coins,glowstone}"],
+        "client_reads": ["token", "player_id", "is_new_player", "expires_at", "initial_save.beach_coins", "initial_save.glowstone"],
+        "mismatches": []
+      },
+      "status": "ALIGNED",
+      "fixes_applied": []
     },
     {
-      "endpoint": "GET /save/:playerId",
-      "status": "fixed",
-      "issues": [
-        "Client called GET /save (missing :playerId path segment)",
-        "No Authorization: Bearer header sent",
-        "Response fields not mapped: backend returns beach_coins/glowstone but client expected beachCoins/glowstones"
-      ],
-      "fixes": [
-        "loadFromCloud now fetches /save/${playerId} using stored player_id",
-        "Added Authorization: Bearer ${token} header",
-        "Added mapping of server currency fields: beach_coins→beachCoins, glowstone→glowstones",
-        "Added mapping of updated_at→lastUpdatedAt"
-      ]
+      "id": "get_save",
+      "path": "GET /v1/save/:playerId",
+      "client_file": "game-client/assets/scripts/meta/ProgressionManager.ts (loadFromCloud)",
+      "request_fields": {
+        "spec": "path param playerId + Authorization header",
+        "backend": "path param playerId + JWT preHandler",
+        "client_sends": "path param playerId + Bearer token header",
+        "mismatches": []
+      },
+      "response_fields": {
+        "spec": ["player_id", "chapter_progress", "currency{beach_coins,glowstone}", "materials", "boosters", "decorations", "monthly_card", "settings", "updated_at"],
+        "backend_returns": ["player_id", "chapter_progress", "currency", "materials", "boosters", "decorations", "monthly_card", "settings", "updated_at"],
+        "client_reads": ["player_id", "chapter_progress", "currency.beach_coins", "currency.glowstone", "materials", "updated_at"],
+        "mismatches": []
+      },
+      "status": "ALIGNED",
+      "fixes_applied": []
     },
     {
-      "endpoint": "PUT /save/:playerId",
-      "status": "fixed",
-      "issues": [
-        "Client PUT called /save (missing :playerId path segment)",
-        "No Authorization: Bearer header sent",
-        "PUT body sent entire GameProgress object with wrong field names: currency.beachCoins (should be currency.beach_coins), currency.glowstones (should be currency.glowstone), lastUpdatedAt (should be client_updated_at as top-level field)"
-      ],
-      "fixes": [
-        "_putWithRetry now calls /save/${playerId}",
-        "Added Authorization: Bearer ${token} header",
-        "Constructed apiBody with correct field names: client_updated_at, currency.beach_coins, currency.glowstone, chapter_progress, materials"
-      ]
+      "id": "put_save",
+      "path": "PUT /v1/save/:playerId",
+      "client_file": "game-client/assets/scripts/meta/ProgressionManager.ts (_putWithRetry)",
+      "request_fields": {
+        "spec": ["client_updated_at", "chapter_progress?", "currency?", "materials?", "boosters?", "decorations?", "monthly_card?", "settings?", "client_version?"],
+        "backend_expects": ["client_updated_at", "chapter_progress?", "currency?{beach_coins,glowstone}", "materials?", ...],
+        "client_sends": ["client_updated_at", "currency{beach_coins,glowstone}", "materials", "chapter_progress"],
+        "mismatches": []
+      },
+      "response_fields": {
+        "spec": ["player_id", "updated_at", "checksum"],
+        "backend_returns": ["player_id", "updated_at", "checksum"],
+        "client_reads": "response not destructured — success is checked via res.ok only",
+        "mismatches": []
+      },
+      "status": "ALIGNED",
+      "fixes_applied": []
     },
     {
-      "endpoint": "GET /leaderboard",
-      "status": "fixed",
-      "issues": [
-        "LeaderboardResponse typed my_rank as 'number' but backend returns object { rank, total_score, chapter_reached }",
-        "LeaderboardResponse typed my_entry field which does not exist in backend response",
-        "_renderMyRank read data.my_rank as a number (e.g. #${data.my_rank}) instead of data.my_rank.rank",
-        "_renderMyRank read data.my_entry.display_name which doesn't exist in backend response",
-        "Fetch did not pass player_id query param so backend never returned my_rank",
-        "No Authorization header on leaderboard fetch"
-      ],
-      "fixes": [
-        "Replaced 'my_rank?: number' and 'my_entry?' with correct 'my_rank?: MyRank | null' where MyRank = { rank, total_score, chapter_reached }",
-        "Added MyRank interface matching backend response shape",
-        "_renderMyRank now reads data.my_rank.rank and data.my_rank.total_score",
-        "Display name falls back to entries list lookup or '我' (no fabricated my_entry dependency)",
-        "_loadLeaderboard now passes player_id query param when available",
-        "Added Authorization header from localStorage glow_auth_token",
-        "Added _resolveAuthToken() helper"
-      ]
+      "id": "get_leaderboard",
+      "path": "GET /v1/leaderboard",
+      "client_file": "game-client/assets/scripts/ui/LeaderboardScene.ts",
+      "request_fields": {
+        "spec": ["page?", "limit?", "chapter?", "player_id?"],
+        "backend_expects": ["page?", "limit?", "chapter?", "player_id?"],
+        "client_sends": ["limit=50", "player_id?"],
+        "mismatches": []
+      },
+      "response_fields": {
+        "spec": ["entries[]{rank,player_id,display_name,total_score,chapter_reached,highest_level,updated_at}", "pagination{page,limit,total_entries,total_pages}", "my_rank?{rank,total_score,chapter_reached}"],
+        "backend_returns": ["entries[]", "pagination{page,limit,total_entries,total_pages}", "my_rank?{rank,total_score,chapter_reached}"],
+        "client_reads": ["entries[].rank", "entries[].display_name", "entries[].total_score", "entries[].chapter_reached", "entries[].player_id", "pagination.*", "my_rank.rank", "my_rank.total_score"],
+        "mismatches": []
+      },
+      "status": "ALIGNED",
+      "fixes_applied": []
     },
     {
-      "endpoint": "POST /iap/verify",
-      "status": "fixed",
-      "issues": [
-        "POST /iap/verify requires authentication (preHandler: app.authenticate) but client sent no Authorization header",
-        "Error code 'invalid_receipt' referenced in purchase() return but backend uses 'RECEIPT_INVALID' — client code uses generic string 'RECEIPT_INVALID' which is consistent"
-      ],
-      "fixes": [
-        "verifyWithBackend now reads JWT from localStorage('glow_auth_token') and sends Authorization: Bearer header",
-        "Added _getAuthToken() helper method to IAPManager"
-      ]
+      "id": "verify_iap",
+      "path": "POST /v1/iap/verify",
+      "client_file": "game-client/assets/scripts/shop/IAPManager.ts (verifyWithBackend)",
+      "request_fields": {
+        "spec": ["sku_id", "platform", "receipt_data", "product_id?", "transaction_id?"],
+        "backend_expects": ["sku_id", "platform", "receipt_data", "product_id?", "transaction_id?"],
+        "client_sends": ["sku_id", "platform", "receipt_data", "product_id"],
+        "mismatches": []
+      },
+      "response_fields": {
+        "spec": ["transaction_id", "sku_id", "status", "glowstone_granted", "items_granted[]", "updated_currency{beach_coins,glowstone}", "monthly_card?{active,expires_at}"],
+        "backend_returns": ["transaction_id", "sku_id", "status", "glowstone_granted", "items_granted[]", "updated_currency{beach_coins,glowstone}", "monthly_card?{active,expires_at}"],
+        "client_reads": ["updated_currency.glowstone", "updated_currency.beach_coins", "monthly_card.active", "monthly_card.expires_at"],
+        "mismatches": []
+      },
+      "status": "ALIGNED",
+      "fixes_applied": []
     }
   ],
-  "spec_reconciliation": [
-    {
-      "endpoint": "POST /auth/anonymous",
-      "field": "global.authentication.token_lifetime_seconds",
-      "spec_value": 2592000,
-      "backend_actual": 604800,
-      "note": "Spec records 30-day lifetime; backend signs with expiresIn '7d'. reconciliation_notes field added to endpoint in api-spec.json."
-    }
-  ],
-  "unresolved": []
+  "summary": {
+    "total_endpoints_checked": 5,
+    "mismatches_found": 0,
+    "fixes_applied": 0,
+    "client_files_modified": [],
+    "notes": [
+      "Client internal currency field uses 'glowstones' (plural) but correctly maps to 'glowstone' (singular) when serialising to/deserialising from the API in all call sites.",
+      "ProgressionManager._putWithRetry sends currency.glowstone (singular) — matches backend PutSaveBody interface.",
+      "ProgressionManager.loadFromCloud reads data.currency?.glowstone (singular) — matches backend GET /save response.",
+      "IAPManager.verifyWithBackend reads data.updated_currency.glowstone (singular) — matches backend IAP verify response.",
+      "No client-side fixes were required — the API contract is already consistently aligned."
+    ]
+  }
 }

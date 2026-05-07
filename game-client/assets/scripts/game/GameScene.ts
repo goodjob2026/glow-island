@@ -8,7 +8,7 @@ import { TileGrid, TILE_GRID_EVENT, Point } from '../puzzle/TileGrid';
 import { TileMatcher } from '../puzzle/TileMatcher';
 import { ComboTracker, COMBO_EVENT } from '../puzzle/ComboTracker';
 import { BoardEventManager } from '../puzzle/BoardEventManager';
-import { ObstacleManager } from '../puzzle/ObstacleManager';
+import { ObstacleManager, ObstacleKind } from '../puzzle/ObstacleManager';
 import { SpecialBlockFactory, SpecialBlockType } from '../puzzle/SpecialBlock';
 import { GameSession, GAME_SESSION_EVENT, SessionResult } from './GameSession';
 import { MaterialCollector } from './MaterialCollector';
@@ -132,12 +132,31 @@ export class GameScene extends Component {
       }
 
       // Initialize obstacle manager
-      this._obstacleManager = new ObstacleManager(this._tileGrid);
+      this._obstacleManager = new ObstacleManager();
+      this._obstacleManager.setGrid(this._tileGrid);
+
+      // Load obstacle definitions from level config
+      if (config.obstacles && config.obstacles.length > 0) {
+        const obstacleCells = config.obstacles.flatMap(obs =>
+          (obs.positions as [number, number][]).map(([r, c]) => ({
+            kind: obs.type as ObstacleKind,
+            row: r,
+            col: c,
+          }))
+        );
+        this._obstacleManager.loadObstacles(obstacleCells);
+      }
 
       // Wire board events
       if (this.boardEventManager) {
         this.boardEventManager.setGrid(this._tileGrid);
+        this.boardEventManager.setChapter(this.chapterId);
         this.boardEventManager.initFromLevelConfig(config.board_events);
+
+        // Register board_rotate warning → show visual warning on HUD
+        this.boardEventManager.setBoardRotateWarningCallback(payload => {
+          this._onBoardRotateWarning(payload);
+        });
       }
 
       // Subscribe to TileGrid events
@@ -174,6 +193,7 @@ export class GameScene extends Component {
 
   update(dt: number): void {
     this._obstacleManager?.updateWaterCurrent(dt);
+    this.boardEventManager?.update(dt);
   }
 
   // -------------------------------------------------------------------------
@@ -227,8 +247,21 @@ export class GameScene extends Component {
     // Notify session: consume a move
     this._session?.onMoveMade(this._comboTracker.getComboCount());
 
+    // Notify board event manager of the move (triggers board_rotate warning if threshold met)
+    this.boardEventManager?.onMoveMade();
+
     // Emit matched event with path
     this._tileGrid.emitTilesMatched(path);
+
+    // Run post-match board events (tile_fall, tile_slide, freeze_zone)
+    this.boardEventManager?.onMatchComplete(undefined, matchedPositions);
+
+    // Tick spreading obstacles and check board-overrun game-over condition
+    this._obstacleManager?.tickSpread();
+    if (this._obstacleManager?.isBoardOverrun()) {
+      // Board fully covered by spreading_obstacle → immediate failure
+      this._session?.failNow();
+    }
 
     // Update tiles-cleared count and check objectives
     this._tilesCleared += 2;
@@ -236,8 +269,7 @@ export class GameScene extends Component {
       this._session?.onObjectivesMet();
     }
 
-    // Apply gravity after match
-    this.boardEventManager?.triggerEventNow('tile_gravity');
+    // Apply gravity after match (tile_fall board event also calls applyGravity internally)
     this._tileGrid.applyGravity();
 
     return true;
@@ -305,6 +337,9 @@ export class GameScene extends Component {
   // -------------------------------------------------------------------------
 
   private _onSessionEnded(result: SessionResult): void {
+    // --- SFX: level complete ---
+    AudioManager.getInstance()?.playSFX(SFXKey.LEVEL_COMPLETE);
+
     // Show LevelCompletePopup
     if (this.levelCompletePopup) {
       // Map SessionResult → LevelCompletePopup's SessionResult shape
@@ -345,6 +380,30 @@ export class GameScene extends Component {
 
   private _onSessionStateChanged(_state: string): void {
     // Forward state changes; GameHUD listens directly via its own session listener
+  }
+
+  /**
+   * Called by BoardEventManager when a board_rotate warning period begins.
+   * Flashes a visual warning on the HUD so the player can prepare.
+   */
+  private _onBoardRotateWarning(payload: {
+    topLeft: { row: number; col: number };
+    bottomRight: { row: number; col: number };
+    warningDuration: number;
+  }): void {
+    // Show a rotation warning flash on the HUD node if available.
+    const scene = director.getScene();
+    const warningNode = scene?.getChildByName('BoardRotateWarning');
+    if (warningNode) {
+      warningNode.active = true;
+      const opacity = warningNode.getComponent(UIOpacity) ?? warningNode.addComponent(UIOpacity);
+      opacity.opacity = 200;
+      tween(opacity)
+        .to(payload.warningDuration * 0.5, { opacity: 60 })
+        .to(payload.warningDuration * 0.5, { opacity: 0 })
+        .call(() => { warningNode.active = false; })
+        .start();
+    }
   }
 
   // -------------------------------------------------------------------------

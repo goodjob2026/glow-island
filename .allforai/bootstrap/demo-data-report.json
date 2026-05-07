@@ -1,107 +1,108 @@
 {
-  "created_at": "2026-05-06T22:01:30.000Z",
+  "created_at": "2026-05-07T19:46:10.000Z",
   "backend_status": "running",
   "accounts": [
     {
-      "name": "小岛旅人",
       "device_id": "device_test_001",
       "player_id": "9e069d4e-29f0-485f-b0e0-69c9169890f6",
+      "display_name": "小岛旅人",
       "platform": "ios",
       "status": "created",
-      "save_state": {
-        "chapter": 1,
-        "level": 3,
-        "beach_coins": 80,
-        "glowstone": 0,
-        "materials": { "driftwood": 5 }
+      "save_status": "updated",
+      "save_summary": {
+        "chapter_progress": {
+          "current_chapter": 1,
+          "current_level": 3
+        },
+        "currency": {
+          "beach_coins": 80,
+          "glowstone": 0
+        },
+        "materials": {
+          "shell_fragment": 5
+        }
       },
-      "leaderboard": "not submitted"
+      "leaderboard_score": 320,
+      "leaderboard_chapter": 1
     },
     {
-      "name": "海风寻梦",
       "device_id": "device_test_002",
       "player_id": "cd842408-42be-40e4-8477-cc0e4f8cb649",
+      "display_name": "海风寻梦",
       "platform": "android",
       "status": "created",
-      "save_state": {
-        "chapters_completed": [1, 2],
-        "chapter_3_level": 8,
-        "beach_coins": 350,
-        "glowstone": 15
+      "save_status": "updated",
+      "save_summary": {
+        "chapter_progress": {
+          "current_chapter": 3,
+          "current_level": 8,
+          "completed_chapters": [
+            1,
+            2
+          ]
+        },
+        "currency": {
+          "beach_coins": 350,
+          "glowstone": 15
+        },
+        "total_score": 1850
       },
-      "leaderboard": {
-        "score": 1850,
-        "chapter_reached": 3,
-        "highest_level": 28,
-        "display_name": "海风寻梦"
-      }
+      "leaderboard_score": 1850,
+      "leaderboard_chapter": 3
     },
     {
-      "name": "灯塔守望者",
       "device_id": "device_test_003",
       "player_id": "078050c3-1dda-462b-a176-c9bd933953df",
-      "platform": "ios",
+      "display_name": "灯塔守望者",
+      "platform": "taptap",
       "status": "created",
-      "save_state": {
-        "chapters_completed": [1, 2, 3, 4, 5],
-        "chapter_6_level": 5,
-        "beach_coins": 1200,
-        "glowstone": 88
+      "save_status": "updated",
+      "save_summary": {
+        "chapter_progress": {
+          "current_chapter": 6,
+          "current_level": 5,
+          "completed_chapters": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "currency": {
+          "beach_coins": 1200,
+          "glowstone": 88
+        },
+        "total_score": 8400
       },
-      "leaderboard": {
-        "score": 8400,
-        "chapter_reached": 6,
-        "highest_level": 55,
-        "display_name": "灯塔守望者"
-      }
+      "leaderboard_score": 8400,
+      "leaderboard_chapter": 6
     }
   ],
-  "leaderboard": {
-    "entries_created": 17,
-    "status": "created",
-    "top_3": [
-      { "rank": 1, "name": "岛屿传说人", "score": 9800, "chapter": 6 },
-      { "rank": 2, "name": "灯塔守望者", "score": 8400, "chapter": 6 },
-      { "rank": 3, "name": "古迹研究员", "score": 7200, "chapter": 5 }
-    ],
-    "score_distribution": {
-      "100-999": 3,
-      "1000-2999": 4,
-      "3000-5999": 4,
-      "6000-9999": 5,
-      "10000+": 1
+  "extra_accounts_created": 12,
+  "leaderboard_entries": 30,
+  "leaderboard_sample": [
+    {
+      "rank": 1,
+      "player_id": "40266f0a-55cb-41fc-ab5d-236bd2765564",
+      "display_name": "灵光岛长",
+      "total_score": 9900,
+      "chapter_reached": 6
     },
-    "additional_entries": [
-      { "name": "海浪追逐者", "score": 100, "chapter": 1 },
-      { "name": "沙滩漫步人", "score": 380, "chapter": 1 },
-      { "name": "椰林冒险者", "score": 650, "chapter": 1 },
-      { "name": "礁石探寻者", "score": 950, "chapter": 2 },
-      { "name": "潮汐观察员", "score": 1200, "chapter": 2 },
-      { "name": "贝壳收藏家", "score": 1600, "chapter": 2 },
-      { "name": "珊瑚守护者", "score": 2100, "chapter": 3 },
-      { "name": "深海寻宝人", "score": 2700, "chapter": 3 },
-      { "name": "洋流引导者", "score": 3200, "chapter": 3 },
-      { "name": "星鱼捕手", "score": 4100, "chapter": 4 },
-      { "name": "海洋历险家", "score": 4900, "chapter": 4 },
-      { "name": "水晶洞探险", "score": 5600, "chapter": 4 },
-      { "name": "神庙寻秘者", "score": 6500, "chapter": 5 },
-      { "name": "古迹研究员", "score": 7200, "chapter": 5 },
-      { "name": "岛屿传说人", "score": 9800, "chapter": 6 }
-    ]
-  },
-  "level_editor": {
-    "status": "running",
-    "url": "http://localhost:5173",
-    "note": "Vite dev server starts in 83ms. Production build also verified: 24 modules, 213KB bundle. No errors on build or dev start."
-  },
-  "backend_setup": {
-    "database": "PostgreSQL 15 (started via brew services)",
-    "database_url": "postgresql://postgres:postgres@localhost:5432/glow_island",
-    "prisma_version": "7.8.0",
-    "migration": "prisma db push (schema synced successfully)",
-    "adapter": "@prisma/adapter-pg (required for Prisma v7 client engine)",
-    "port": 3000,
-    "health_check": "http://localhost:3000/health → {status: ok, database: ok}"
-  },
-  "notes": "PostgreSQL 15 was installed but stopped; started via 'brew services start postgresql@15'. Prisma v7 requires explicit driver adapter (@prisma/adapter-pg + pg pool) since datasource URL is no longer configured in schema.prisma — this is the new Prisma 7 model. Added dev/start scripts to backend package.json and installed adapter. All 3 accounts created with real DB records. 17 total leaderboard entries (2 main test accounts + 15 distributed score entries). Level editor confirmed working at http://localhost:5173."
+    {
+      "rank": 2,
+      "player_id": "7c3f48cc-fd6f-478f-b0ca-e475100d78c2",
+      "display_name": "岛屿传说人",
+      "total_score": 9800,
+      "chapter_reached": 6
+    },
+    {
+      "rank": 3,
+      "player_id": "078050c3-1dda-462b-a176-c9bd933953df",
+      "display_name": "灯塔守望者",
+      "total_score": 8400,
+      "chapter_reached": 6
+    }
+  ],
+  "notes": "Backend was not running at task start; started via 'npm run dev' with JWT_SECRET=demo-secret-key. PostgreSQL was already available at localhost:5432. 3 named test accounts created (device_test_001/002/003). Note: is_new_player=false means the accounts already existed from a prior run — data was refreshed. 12 additional anonymous accounts (device_demo_004 through device_demo_015) were created with varied scores covering chapters 1-6 and scores from 100 to 9900. Total leaderboard entries at verification: 30 (includes pre-existing entries from a prior bootstrap run). 灯塔守望者 (device_test_003) ranks #3 overall with score 8400. 海风寻梦 (device_test_002) ranks #18 with score 1850. 小岛旅人 (device_test_001) ranks outside top 20 with score 320. Backend process will be terminated after report write."
 }

@@ -182,6 +182,17 @@ export class GameSession extends EventTarget {
   }
 
   /**
+   * Force the session into the failed state immediately.
+   * Used for board-overrun conditions (spreading obstacle covers entire board)
+   * where there is no move-count path to failure (e.g. levels with no move limit).
+   */
+  failNow(): void {
+    if (this._state !== 'playing') return;
+    this._setState('failed');
+    this.emit(GAME_SESSION_EVENT.SESSION_FAILED);
+  }
+
+  /**
    * Spend glowstones to continue after failure (+5 moves).
    * Returns false if insufficient glowstones or max continues reached.
    */

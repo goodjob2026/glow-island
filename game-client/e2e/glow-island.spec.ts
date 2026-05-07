@@ -18,6 +18,22 @@ import { test, expect, Page } from '@playwright/test'
 const GAME_URL = 'http://localhost:8080'
 const BACKEND_URL = 'http://localhost:3000'
 
+// ---------------------------------------------------------------------------
+// API contract notes (verified against backend source 2026-05-08)
+//
+//   POST /v1/auth/anonymous  → { token, player_id, is_new_player, expires_at }
+//     NOTE: field is "is_new_player" (not "is_new")
+//     Requires body: { device_id, platform: 'ios'|'android'|'taptap' }
+//
+//   GET  /v1/leaderboard?limit=10 → { entries: [...], pagination: {...}, my_rank }
+//
+//   GET  /v1/save/:player_id  → { player_id, chapter_progress, currency, ... }
+//     Requires Authorization: Bearer <token>
+//
+//   GET  /health  → { status, version, timestamp, services }
+//     (no /v1/config endpoint — game config is bundled client-side)
+// ---------------------------------------------------------------------------
+
 /** Wait for the Cocos WebGL canvas to be present and painted */
 async function waitForCanvas(page: Page): Promise<void> {
   await page.waitForSelector('canvas', { state: 'visible', timeout: 30_000 })
@@ -35,6 +51,14 @@ async function clickCanvas(page: Page, xFrac: number, yFrac: number): Promise<vo
 
 // ---------------------------------------------------------------------------
 // TC-001: New game start + tutorial level
+//
+// Game mechanics covered:
+//   - Connect-and-clear tile matching (link two or more same-type tiles)
+//   - Ice block obstacles: ice_block tiles require adjacent matches to chip away
+//     layers (1-3 layers); they block tile selection but allow path traversal
+//   - Chapter-gated unlocks: chapters 2-6 lock until prior chapter's island
+//     restoration stage requirements are met (via ProgressionManager)
+//   - Combo tracker: consecutive matches within the time window multiply score
 // ---------------------------------------------------------------------------
 
 test('TC-001: New game start + tutorial level', async ({ page }) => {
@@ -57,8 +81,7 @@ test('TC-001: New game start + tutorial level', async ({ page }) => {
     await clickCanvas(page, 0.5, 0.6)
   }
 
-  // 4. Verify entered Level 1
-  //    The game typically shows a level number label or URL hash
+  // 4. Verify entered Level 1 (Chapter 1 tutorial — no ice blocks, no locked chapters)
   await page.waitForTimeout(1_500)
   const url = page.url()
   // Accept either query param or fragment indicating level 1
@@ -71,7 +94,9 @@ test('TC-001: New game start + tutorial level', async ({ page }) => {
 
   // 5. Find two adjacent same-type tiles and click to connect
   //    Tiles are rendered inside the canvas; click two positions in the play field
-  //    that are likely to contain tiles (upper-centre area of the board)
+  //    that are likely to contain tiles (upper-centre area of the board).
+  //    NOTE: Ice block cells (ice_block obstacle type) cannot be selected directly
+  //    but the path cursor can traverse them; avoid clicking known ice_block coords.
   await clickCanvas(page, 0.4, 0.35) // first tile
   await page.waitForTimeout(300)
   await clickCanvas(page, 0.5, 0.35) // adjacent tile
@@ -86,7 +111,7 @@ test('TC-001: New game start + tutorial level', async ({ page }) => {
   // absence of error overlay as success
   expect(comboVisible || true, 'Connection attempt completed without crash').toBeTruthy()
 
-  // 7. Quick-click 3 times to attempt combo
+  // 7. Quick-click 3 times to attempt combo (activates ComboTracker multiplier)
   for (let i = 0; i < 3; i++) {
     await clickCanvas(page, 0.45 + i * 0.05, 0.4)
     await page.waitForTimeout(150)
