@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "project_name": "glow-island",
+  "business_domain": "gaming",
+  "business_context": "治愈系现代连连看手游。玩家通过连接消除图块获得材料，在局外轻量地图中修复小岛区域，解锁更多章节。最终目标是让整座小岛重新亮起来。",
+  "tech_stacks": [
+    {
+      "role": "game-client",
+      "language": "TypeScript",
+      "language_version": "5.x",
+      "framework": "Cocos Creator 3.x",
+      "state_management": "Cocos Component lifecycle + EventTarget",
+      "build_tool": "Cocos CLI / cocos-cli"
+    },
+    {
+      "role": "backend",
+      "language": "TypeScript",
+      "language_version": "5.x",
+      "framework": "Fastify 4.x",
+      "orm": "Prisma",
+      "db": "PostgreSQL 16",
+      "build_tool": "tsc"
+    }
+  ],
+  "goals": ["create", "demo", "concept-acceptance"],
+  "product_vision": "治愈系现代连连看：快速连接→combo爽感→修复小岛→解锁新区域，6章节从海边码头到灯塔夜晚，云存档+排行榜+IAP双货币（沙滩币/丹青石）。",
+  "target_stacks": [
+    { "role": "game-client", "language": "TypeScript", "framework": "Cocos Creator 3.x" },
+    { "role": "backend", "language": "TypeScript", "framework": "Fastify + Prisma + PostgreSQL" }
+  ],
+  "ui_fidelity": null,
+  "modules": [
+    {
+      "id": "M001",
+      "path": "game-client/",
+      "role": "game-client",
+      "description": "Cocos Creator 游戏项目：连连看拼图引擎、特殊块系统、岛屿地图、商店、UI系统"
+    },
+    {
+      "id": "M002",
+      "path": "backend/",
+      "role": "backend",
+      "description": "Node.js REST API：匿名认证、云存档、排行榜、IAP收据验证"
+    }
+  ],
+  "build_commands": {
+    "game-client": "npx @cocos/cocos-cli build --platform web-mobile",
+    "backend": "npx tsc --project tsconfig.json"
+  },
+  "test_commands": {
+    "game-client": "npx playwright test",
+    "backend": "npm test"
+  },
+  "detected_patterns": [
+    "F2P游戏",
+    "IAP内购",
+    "双货币体系",
+    "云存档",
+    "全局排行榜",
+    "Meta-Loop岛屿进度",
+    "Combo连击系统",
+    "特殊块触发",
+    "动态棋盘事件"
+  ],
+  "architecture_pattern": "Game-Service Architecture (Cocos + Fastify REST)",
+  "complexity_estimate": "medium",
+  "requires_runtime_env": true
+}

@@ -1,0 +1,337 @@
+{
+  "_meta": {
+    "document": "puzzle-mechanics-spec",
+    "version": "1.0",
+    "date": "2026-05-07",
+    "status": "authoritative",
+    "description": "Glow Island 连连看引擎详细机制规格 — 实现节点权威技术文档"
+  },
+
+  "grid": {
+    "default_size": { "cols": 8, "rows": 8 },
+    "min_size": { "cols": 6, "rows": 6 },
+    "max_size": { "cols": 10, "rows": 10 },
+    "chapter_sizes": [
+      { "chapter": 1, "cols": 6,  "rows": 6,  "note": "宽容入门，海边码头" },
+      { "chapter": 2, "cols": 7,  "rows": 7,  "note": "轻度扩展，中央小镇" },
+      { "chapter": 3, "cols": 8,  "rows": 8,  "note": "标准尺寸，花田山坡" },
+      { "chapter": 4, "cols": 8,  "rows": 8,  "note": "维持标准，森林露营地" },
+      { "chapter": 5, "cols": 9,  "rows": 9,  "note": "加大尺寸，温泉山谷" },
+      { "chapter": 6, "cols": 10, "rows": 10, "note": "最大挑战，夜晚灯塔" }
+    ],
+    "empty_cells": {
+      "allowed": true,
+      "path_traversal": true,
+      "note": "空格可被路径穿越，不计入已占用格子"
+    },
+    "configurable_per_level": true,
+    "note": "关卡JSON可覆盖章节默认尺寸"
+  },
+
+  "tile_types": {
+    "total": 20,
+    "unlock_model": "按章节分组解锁，每章4种主力类型+特殊块",
+    "definitions": [
+      { "id": "tile_01", "name": "珊瑚橙",   "color_hex": "#FF8C5A", "unlock_chapter": 1 },
+      { "id": "tile_02", "name": "海浪蓝",   "color_hex": "#4DA6D4", "unlock_chapter": 1 },
+      { "id": "tile_03", "name": "沙滩米",   "color_hex": "#E8D5A3", "unlock_chapter": 1 },
+      { "id": "tile_04", "name": "海草绿",   "color_hex": "#7BC67A", "unlock_chapter": 1 },
+      { "id": "tile_05", "name": "灯笼黄",   "color_hex": "#FFD166", "unlock_chapter": 2 },
+      { "id": "tile_06", "name": "石板灰",   "color_hex": "#A0A0A0", "unlock_chapter": 2 },
+      { "id": "tile_07", "name": "砖瓦红",   "color_hex": "#C0504D", "unlock_chapter": 2 },
+      { "id": "tile_08", "name": "暖木棕",   "color_hex": "#8B5E3C", "unlock_chapter": 2 },
+      { "id": "tile_09", "name": "薰衣草紫", "color_hex": "#B08DCA", "unlock_chapter": 3 },
+      { "id": "tile_10", "name": "粉樱",     "color_hex": "#F4A7B9", "unlock_chapter": 3 },
+      { "id": "tile_11", "name": "晨雾白",   "color_hex": "#EAF0F6", "unlock_chapter": 3 },
+      { "id": "tile_12", "name": "苔藓绿",   "color_hex": "#4E7C59", "unlock_chapter": 3 },
+      { "id": "tile_13", "name": "深林棕",   "color_hex": "#5C4033", "unlock_chapter": 4 },
+      { "id": "tile_14", "name": "营火橙",   "color_hex": "#E07832", "unlock_chapter": 4 },
+      { "id": "tile_15", "name": "星空靛",   "color_hex": "#3D4A8A", "unlock_chapter": 4 },
+      { "id": "tile_16", "name": "萤光绿",   "color_hex": "#A3E635", "unlock_chapter": 4 },
+      { "id": "tile_17", "name": "温泉白",   "color_hex": "#F0EAE2", "unlock_chapter": 5 },
+      { "id": "tile_18", "name": "矿物蓝",   "color_hex": "#6EB5C0", "unlock_chapter": 5 },
+      { "id": "tile_19", "name": "夜深蓝",   "color_hex": "#1A2A4A", "unlock_chapter": 6 },
+      { "id": "tile_20", "name": "灯塔金",   "color_hex": "#FFB830", "unlock_chapter": 6 }
+    ]
+  },
+
+  "path_rules": {
+    "max_turns": 2,
+    "edge_traverse": true,
+    "min_match_count": 2,
+    "path_length_limit": null,
+    "same_type_required": true,
+    "blocked_by_occupied_cells": true,
+    "empty_cell_passable": true,
+    "description": "两图块可连接的条件：类型相同，且存在一条路径使得：(1) 转弯次数 ≤ 2；(2) 路径不穿过任何已占用图块（空格可穿越）；(3) 路径可沿棋盘外边缘延伸（经典边缘绕行规则）；路径总长度无硬性上限。",
+    "algorithm_hint": "BFS/DFS with turn-count state; states: (x, y, last_direction, turns_used)"
+  },
+
+  "combo": {
+    "window_ms": 2000,
+    "description": "连续匹配之间间隔 < 2000ms 视为同一连击链",
+    "thresholds": [1, 2, 3, 4],
+    "multipliers": [1.0, 1.5, 2.0, 3.0],
+    "threshold_effects": [
+      { "combo_count": 1, "multiplier": 1.0, "effects": [] },
+      { "combo_count": 2, "multiplier": 1.5, "effects": ["音效增强"] },
+      { "combo_count": 3, "multiplier": 2.0, "effects": ["音效增强", "特效升级"] },
+      { "combo_count": 4, "multiplier": 3.0, "effects": ["音效增强", "特效升级", "屏幕震动", "粒子爆发"] }
+    ],
+    "max_multiplier_threshold": 4,
+    "reset_conditions": [
+      "连续两次匹配间隔超过 2000ms",
+      "棋盘当前无任何可用匹配对"
+    ]
+  },
+
+  "special_blocks": [
+    {
+      "id": "bomb",
+      "name": "炸弹",
+      "name_en": "Bomb Tile",
+      "trigger_condition": "3连击时系统自动生成，或关卡JSON预置于棋盘",
+      "effect": "消除以炸弹块为中心的 3×3 范围内所有图块（含障碍物及覆盖层）",
+      "effect_range": { "shape": "square", "radius": 1, "size": "3x3", "center": "bomb_tile_position" },
+      "animation_duration_s": 0.5,
+      "spawn_probability": {
+        "combo_trigger_chance": 1.0,
+        "random_in_level_chance": 0.05,
+        "note": "3连击时必定生成1个；关卡预置概率由关卡JSON指定，默认5%空格随机"
+      },
+      "visual_hint": "橙色闪光球体，激活时爆炸粒子效果"
+    },
+    {
+      "id": "windmill",
+      "name": "风车",
+      "name_en": "Windmill Tile",
+      "trigger_condition": "4连击时系统自动生成，或关卡JSON预置于棋盘",
+      "effect": "清除风车块所在整列（竖列）的所有图块",
+      "effect_range": { "shape": "column", "axis": "vertical", "span": "full_column" },
+      "animation_duration_s": 0.4,
+      "spawn_probability": {
+        "combo_trigger_chance": 1.0,
+        "random_in_level_chance": 0.03,
+        "note": "4连击时必定生成1个；关卡预置概率由关卡JSON指定，默认3%"
+      },
+      "visual_hint": "旋转风车纹理，激活时竖向光柱扫过整列"
+    },
+    {
+      "id": "lantern",
+      "name": "灯光",
+      "name_en": "Lantern Tile",
+      "trigger_condition": "关卡JSON预置于棋盘（不可通过连击生成）",
+      "effect": "自动寻路并连接距离最近的同类型图块，无需玩家手动操作，连接成功后双方消除",
+      "effect_range": { "shape": "auto", "target": "nearest_same_type", "max_search_radius": null },
+      "animation_duration_s": 0.3,
+      "spawn_probability": {
+        "combo_trigger_chance": 0.0,
+        "random_in_level_chance": 0.0,
+        "note": "仅由关卡设计师在关卡JSON中预置，概率由关卡文件决定"
+      },
+      "visual_hint": "橙色光晕脉冲，激活时发光连线飞向目标图块"
+    },
+    {
+      "id": "wave",
+      "name": "海浪",
+      "name_en": "Wave Tile",
+      "trigger_condition": "关卡JSON预置于棋盘（不可通过连击生成）",
+      "effect": "重新随机排列棋盘上所有图块的位置，保持各类型图块数量不变",
+      "effect_range": { "shape": "full_board", "preserves_type_counts": true },
+      "animation_duration_s": 0.8,
+      "spawn_probability": {
+        "combo_trigger_chance": 0.0,
+        "random_in_level_chance": 0.0,
+        "note": "仅由关卡设计师在关卡JSON中预置，通常每关最多1个"
+      },
+      "visual_hint": "蓝色水波纹扩散，激活时全棋盘图块漩涡式重排动画"
+    }
+  ],
+
+  "board_events": [
+    {
+      "id": "tile_gravity",
+      "name": "图块滑落",
+      "name_en": "Tile Gravity",
+      "description": "消除图块后，被消除格上方的图块因重力向下滑落填充空位，新图块从顶部补充",
+      "trigger": "每次消除操作完成后立即触发",
+      "trigger_interval_s": null,
+      "affected_area": { "shape": "column", "span": "affected_columns_only" },
+      "animation": { "style": "slide_down", "duration_per_cell_s": 0.08, "easing": "ease_in_out" },
+      "enabled_by_default": true,
+      "note": "核心棋盘物理，始终开启"
+    },
+    {
+      "id": "water_flow",
+      "name": "水流移动",
+      "name_en": "Water Flow",
+      "description": "特定行或列的图块每隔 N 秒向指定方向移动1格，溢出边界的图块从对侧重新进入",
+      "trigger": "周期性定时触发，触发间隔由关卡JSON指定",
+      "trigger_interval_s": 5,
+      "affected_area": { "shape": "row_or_column", "rows_or_cols": "specified_by_level_json" },
+      "direction": "specified_by_level_json",
+      "wrap_around": true,
+      "animation": { "style": "slide", "duration_s": 0.3 },
+      "enabled_by_default": false,
+      "note": "关卡JSON中配置触发章节及受影响的行/列"
+    },
+    {
+      "id": "freeze_zone",
+      "name": "冰冻",
+      "name_en": "Ice Freeze",
+      "description": "选定区域内的图块被冰封，无法被玩家选中或参与连接；需消除冰层2次（相邻消除触发冰层损耗）才能解冻",
+      "trigger": "关卡开始时预置或由特定条件触发",
+      "trigger_interval_s": null,
+      "affected_area": { "shape": "rectangle", "area": "specified_by_level_json" },
+      "clear_requirement": { "method": "adjacent_match", "required_hits": 2 },
+      "animation": { "style": "ice_crack_shatter", "duration_s": 0.4 },
+      "enabled_by_default": false,
+      "note": "冰层状态：intact(完整) → cracked(龟裂，1次消除后) → cleared(解冻)"
+    },
+    {
+      "id": "vine_spread",
+      "name": "藤蔓扩散",
+      "name_en": "Vine Spread",
+      "description": "藤蔓覆盖格子后，被覆盖的图块无法正常使用；每隔10秒向相邻1格扩散；需先消除藤蔓（相邻消除1次）才能恢复格子可用性",
+      "trigger": "关卡预置初始藤蔓位置，之后周期性扩散",
+      "trigger_interval_s": 10,
+      "spread_radius_per_interval": 1,
+      "affected_area": { "shape": "adjacent_cells", "origin": "current_vine_cells" },
+      "clear_requirement": { "method": "adjacent_match", "required_hits": 1 },
+      "animation": { "style": "vine_grow", "duration_s": 0.5 },
+      "enabled_by_default": false,
+      "note": "藤蔓不阻挡路径，但覆盖的图块无法被选中参与连接"
+    }
+  ],
+
+  "obstacles": [
+    {
+      "id": "ice_block",
+      "name": "冰块",
+      "name_en": "Ice Block",
+      "unlock_chapter": 3,
+      "clear_method": "adjacent_match",
+      "clear_count": 2,
+      "spread_interval_s": null,
+      "blocks_path": false,
+      "effect_on_tile": "图块被锁定，无法参与连接，但路径可绕行穿越其位置（如为空格）",
+      "visual": "蓝色冰晶覆盖图块，第1次消除出现裂纹，第2次消除冰块碎裂",
+      "note": "相邻格子发生消除时损耗1层冰，需2次相邻消除才能解除锁定"
+    },
+    {
+      "id": "weed",
+      "name": "杂草",
+      "name_en": "Weed",
+      "unlock_chapter": 2,
+      "clear_method": "adjacent_match",
+      "clear_count": 1,
+      "spread_interval_s": 15,
+      "blocks_path": false,
+      "effect_on_tile": "占用格子，杂草覆盖的格子无法放置图块（消除后格子恢复可用）",
+      "visual": "绿色草丛覆盖格子，消除时叶片飞散",
+      "note": "杂草每15秒向相邻1格扩散，不阻挡路径但占用格位；相邻图块消除1次即可清除"
+    },
+    {
+      "id": "wooden_crate",
+      "name": "木箱",
+      "name_en": "Wooden Crate",
+      "unlock_chapter": 4,
+      "clear_method": "none",
+      "clear_count": null,
+      "spread_interval_s": null,
+      "blocks_path": true,
+      "effect_on_tile": "永久存在，无法消除；路径不可穿越木箱格子",
+      "visual": "实木纹理箱体，边缘有金属扣",
+      "note": "作为永久地形障碍，关卡设计师用于强制路径规划；木箱位置在关卡JSON中硬编码"
+    },
+    {
+      "id": "water_current",
+      "name": "水流",
+      "name_en": "Water Current",
+      "unlock_chapter": 5,
+      "clear_method": "none",
+      "clear_count": null,
+      "spread_interval_s": null,
+      "direction_change_interval_s": 5,
+      "blocks_path": true,
+      "effect_on_tile": "无法消除；每5秒改变流向，影响该格路径可达性；水流方向变化时实时更新路径计算",
+      "visual": "流动水波纹理格子，箭头图标指示当前流向，方向切换时有旋转动画",
+      "note": "水流格阻挡路径，但流向改变可能开放或封闭路径；路径算法需实时感知当前水流状态"
+    }
+  ],
+
+  "scoring": {
+    "base_score_per_match": 100,
+    "combo_bonus_formula": "score = base_score_per_match * combo_multiplier",
+    "combo_multiplier_lookup": "见 combo.threshold_effects",
+    "special_block_bonus": {
+      "bomb": 500,
+      "windmill": 400,
+      "lantern": 300,
+      "wave": 200
+    },
+    "glow_tile_bonus_multiplier": 3.0,
+    "step_bonus": {
+      "description": "关卡结算时，剩余步数每步额外奖励",
+      "score_per_remaining_step": 50
+    },
+    "star_rating": {
+      "1_star": "完成关卡目标",
+      "2_star": "完成关卡目标 + 剩余步数 ≥ 20% 上限",
+      "3_star": "完成关卡目标 + 剩余步数 ≥ 40% 上限"
+    }
+  },
+
+  "level_completion": {
+    "step_based": true,
+    "time_based": false,
+    "failure_condition": "步数耗尽且关卡目标未达成",
+    "failure_penalty": "无资源扣除，无体力消耗，直接回到关卡起点",
+    "conditions": [
+      {
+        "id": "tile_target",
+        "description": "消除指定数量/类型的图块",
+        "fields": ["target_tile_type", "required_count"],
+        "note": "最常见的关卡目标，关卡JSON中指定"
+      },
+      {
+        "id": "obstacle_clear",
+        "description": "清除棋盘上所有（或指定数量）障碍物",
+        "fields": ["obstacle_type", "required_clear_count"],
+        "note": "障碍清除关卡，章节中段引入"
+      },
+      {
+        "id": "score_target",
+        "description": "在步数限制内达到目标分数",
+        "fields": ["required_score"],
+        "note": "挑战关使用，鼓励连击策略"
+      },
+      {
+        "id": "glow_energy",
+        "description": "积累指定数量的光能（通过消除Glow图块）",
+        "fields": ["required_glow_energy"],
+        "note": "与元循环联动，光能值同步上报给岛屿修复系统"
+      },
+      {
+        "id": "combo_challenge",
+        "description": "达成指定次数的连击（≥指定连击数）",
+        "fields": ["required_combo_count", "min_combo_threshold"],
+        "note": "教学关/挑战关使用，引导玩家学习连击机制"
+      }
+    ],
+    "multi_condition_support": true,
+    "multi_condition_logic": "AND（所有条件同时满足才视为通关）"
+  ],
+
+  "zen_mode": {
+    "enabled": true,
+    "step_limit": false,
+    "failure_possible": false,
+    "scoring_active": true,
+    "special_blocks_active": true,
+    "combo_active": true,
+    "obstacles_active": false,
+    "board_events_active": false,
+    "description": "禅境模式关闭步数上限和失败判定，保留连击和特殊块，关闭障碍和动态棋盘事件，提供零压力消除体验"
+  }
+}

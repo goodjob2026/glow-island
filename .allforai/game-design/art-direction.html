@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 美术方向文档（Art Direction）</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d26;
+      --border: #2a2d3a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --accent2: #86efac;
+      --heading: #f8fafc;
+      --code-bg: #12141c;
+      --tag-bg: #1e3a5f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 0 1rem 4rem;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      margin: 0 -1rem 2.5rem;
+      text-align: center;
+    }
+    .page-header .project-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125,211,252,0.25);
+      margin-bottom: 0.9rem;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--heading);
+      text-shadow: 0 0 40px rgba(125,211,252,0.2);
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--heading);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+    h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
+    h3 { font-size: 1.1rem; color: var(--accent2); }
+    h4 { font-size: 1rem; color: var(--muted); }
+    p { margin: 0.6rem 0 0.9rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { color: var(--heading); font-weight: 600; }
+    em { color: var(--accent2); font-style: normal; }
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      color: var(--muted);
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.87em;
+      background: var(--code-bg);
+      color: var(--accent2);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.4rem;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    ul, ol {
+      padding-left: 1.6rem;
+      margin: 0.5rem 0 1rem;
+    }
+    li { margin: 0.3rem 0; }
+    li > ul, li > ol { margin: 0.2rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    tr:hover td { background: rgba(125,211,252,0.04); }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="project-tag">Glow Island · 发光岛</div>
+    <h1>Glow Island — 美术方向文档（Art Direction）</h1>
+  </div>
+  <div class="container">
+<h1 id="glow-island-art-direction">Glow Island — 美术方向文档（Art Direction）</h1>
+<blockquote>
+<p>版本：1.0 | 日期：2026-05-07 | 状态：已确认</p>
+</blockquote>
+<hr />
+<h2 id="1">1. 整体视觉定位</h2>
+<h3 id="_1">一句话定位</h3>
+<blockquote>
+<p>扁平化轻手绘：褪色水彩起点，随修复进度逐步"点亮"的温柔世界。</p>
+</blockquote>
+<h3 id="_2">核心视觉原则</h3>
+<ul>
+<li><strong>风格</strong>：扁平化 + 轻手绘质感（非像素，非3D写实，非纯矢量）</li>
+<li><strong>质感来源</strong>：笔触边缘保留轻微不规则感，仿佛用水彩笔刷在略带纹理的纸上着色</li>
+<li><strong>饱和度叙事</strong>：修复前低饱和度（灰调/褪色），每个修复阶段饱和度线性提升，章节完整修复后达到满饱和</li>
+<li><strong>光影风格</strong>：柔和阴影（无硬边），阳光永远是"下午三点的温柔斜射"；夜晚场景用暖光光晕而非冷白补光</li>
+<li><strong>UI风格</strong>：圆角卡片，柔和边框，无生硬棱角，白色与主色轻混的背景</li>
+</ul>
+<hr />
+<h2 id="2">2. 美术风格规则</h2>
+<h3 id="21">2.1 线条与边缘</h3>
+<ul>
+<li>所有图形使用柔和轮廓线，线宽 1-2px，颜色为主色加深 30%（非纯黑）</li>
+<li>允许轻微不规则边缘（模拟手绘），但不超过 2px 的抖动幅度</li>
+<li>禁止使用纯黑（#000000）轮廓线；阴影最深色不超过 rgba(50, 30, 20, 0.35)</li>
+</ul>
+<h3 id="22">2.2 色彩填充</h3>
+<ul>
+<li>主色块使用单色平铺 + 顶部轻微高光渐变（高光不超过 15% 透明度）</li>
+<li>纹理层叠不超过 2 层：主色底 + 轻量纸纹叠加（约 8% 不透明度）</li>
+<li>特殊块（Glow Tile / Rainbow Tile）允许动态渐变，其他图块保持静态色</li>
+</ul>
+<h3 id="23">2.3 阴影与深度</h3>
+<ul>
+<li>组件阴影：<code>box-shadow: 0 4px 12px rgba(0,0,0,0.10)</code>（UI层）</li>
+<li>游戏棋盘图块阴影：每个图块下方固定偏移 <code>0 3px 0 rgba(0,0,0,0.12)</code></li>
+<li>场景光影：通过背景色渐变和纹理叠加实现，非实时光影计算</li>
+</ul>
+<h3 id="24">2.4 动画语言</h3>
+<ul>
+<li>过渡曲线统一使用 <code>ease-out</code>（快进慢出），体现"轻落"感</li>
+<li>图块消除：先轻微放大（scale 1.08）再收缩消失（0.3s total）</li>
+<li>修复动画：植物/水流/光效以 <code>ease-in-out</code> 舒缓播放，每阶段 8-15 秒</li>
+<li>连击气泡：弹跳入场（spring curve），0.4s，无过度抖动</li>
+</ul>
+<hr />
+<h2 id="3">3. 章节色彩方向</h2>
+<h3 id="1_1">第1章 — 海边码头（情绪：悠闲）</h3>
+<p><strong>色调关键词</strong>：淡蓝 + 米白，阳光斜射，明亮但饱和度低</p>
+<ul>
+<li><strong>修复前</strong>：褪色的木灰、锈迹棕，整体 HSL 饱和度 ≤ 15%</li>
+<li><strong>修复后</strong>：天空蓝 #87CEEB，沙滩米白 #F5DEB3，海面薄荷 #B2E0D0</li>
+<li><strong>光效</strong>：夕阳橙 #F4A261 作为强调，用于阿海系绳标志性时刻的光晕</li>
+<li><strong>参考画面</strong>：午后港口，光线斜45°从右上角打入，水面有碎金光斑</li>
+<li><strong>棋盘背景</strong>：浅海蓝渐变，底部略深，顶部透向天空色</li>
+</ul>
+<h3 id="2_1">第2章 — 中央小镇（情绪：温暖）</h3>
+<p><strong>色调关键词</strong>：暖黄 + 橙褐，午后阳光打在石板路上，有老房子的气息</p>
+<ul>
+<li><strong>修复前</strong>：青苔灰绿、泥土棕，饱和度 ≤ 20%</li>
+<li><strong>修复后</strong>：暖黄 #F4C95D，橙褐 #C97D4E，石板灰米 #D9C9B5</li>
+<li><strong>光效</strong>：灯笼橙 #E8844A，用于傍晚街道灯光的温暖晕染</li>
+<li><strong>参考画面</strong>：欧式小镇街巷，石板路面有光斑，窗台花盆，石砌喷泉</li>
+<li><strong>棋盘背景</strong>：暖米色砖纹，中央略亮（模拟正午光斑）</li>
+</ul>
+<h3 id="3_1">第3章 — 花田山坡（情绪：治愈）</h3>
+<p><strong>色调关键词</strong>：粉紫 + 草绿，漫山花海，微微薄雾的清晨感</p>
+<ul>
+<li><strong>修复前</strong>：枯草黄、泥土灰，饱和度 ≤ 15%</li>
+<li><strong>修复后</strong>：粉紫 #C9A8D4，薰衣草 #A98BC4，草绿 #7DBD7A，金黄花 #F0C060</li>
+<li><strong>光效</strong>：晨雾白 #F5F0EA，轻微散射叠加于整体</li>
+<li><strong>参考画面</strong>：薰衣草田清晨，浅薄雾弥漫于山腰，逆光下花朵半透明</li>
+<li><strong>棋盘背景</strong>：草绿底，顶部粉雾渐变，边缘有模糊花朵剪影装饰</li>
+</ul>
+<h3 id="4">第4章 — 森林露营地（情绪：安静）</h3>
+<p><strong>色调关键词</strong>：深绿 + 棕褐，树荫斑驳，晚风带点凉意</p>
+<ul>
+<li><strong>修复前</strong>：苔藓绿灰、泥泞棕，饱和度 ≤ 20%，整体偏暗</li>
+<li><strong>修复后</strong>：深林绿 #3D7A4A，苔藓绿 #6B9E5E，棕褐 #8B6241，木色 #C49A6C</li>
+<li><strong>光效</strong>：篝火橙 #FF8C42，树荫光斑 #B8D4A0（柔化光圈）</li>
+<li><strong>参考画面</strong>：夜晚营地，篝火是唯一主光源，树冠形成自然顶棚，星空隐约可见</li>
+<li><strong>棋盘背景</strong>：深绿丛林底，顶部有树冠剪影，篝火光从底部向上渐变晕染</li>
+</ul>
+<h3 id="5">第5章 — 温泉山谷（情绪：放松）</h3>
+<p><strong>色调关键词</strong>：珍珠白 + 雾蓝，水雾弥漫，空气里有淡淡的矿物质气息</p>
+<ul>
+<li><strong>修复前</strong>：泥泞浑浊的泥绿、苔藓灰，水面不透明</li>
+<li><strong>修复后</strong>：珍珠白 #F0EDE8，雾蓝 #B8D4E0，温泉青 #7FBFCC，石板灰 #A0A8B0</li>
+<li><strong>光效</strong>：水雾白 #EAEEF2（大面积低透明度叠加），矿物蓝光斑</li>
+<li><strong>参考画面</strong>：日式温泉晨雾，水面蒸汽上升，远山若隐若现，整体柔焦感</li>
+<li><strong>棋盘背景</strong>：珍珠白底，中央有水雾动态粒子，边缘岩石纹理装饰</li>
+</ul>
+<h3 id="6">第6章 — 夜晚灯塔（情绪：孤独中的温暖）</h3>
+<p><strong>色调关键词</strong>：深蓝夜色 + 暖黄灯光，一束光切开黑暗，海面上有金色的光柱倒影</p>
+<ul>
+<li><strong>修复前</strong>：漆黑深蓝、锈迹铁灰，几乎无光，压抑</li>
+<li><strong>修复后</strong>：深夜蓝 #1A2A4A，星空蓝 #2D4A7A，灯塔暖黄 #F5C842，光柱金 #FFD700</li>
+<li><strong>光效</strong>：灯塔旋转光柱（核心视觉），海面金色倒影，星星点状白光</li>
+<li><strong>参考画面</strong>：深夜灯塔，唯一光源是灯室的旋转光束，海面有金色光道，远处有岛屿轮廓被光照亮</li>
+<li><strong>棋盘背景</strong>：深夜蓝渐变底，顶部星空，底部海浪剪影，光柱从右侧扫入特效</li>
+</ul>
+<hr />
+<h2 id="4_1">4. 图块视觉风格</h2>
+<h3 id="41">4.1 图块基础规格</h3>
+<ul>
+<li><strong>尺寸</strong>：128×128px @2x（64×64px @1x）</li>
+<li><strong>风格</strong>：每种图块有独特的几何形状 + 章节配色，轻手绘质感轮廓</li>
+<li><strong>形状语言</strong>：圆润几何（正方形圆角 16px，圆形，六边形等），避免尖锐角</li>
+</ul>
+<h3 id="42">4.2 图块状态视觉规范</h3>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>视觉效果</th>
+<th>技术实现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Normal（默认）</strong></td>
+<td>标准颜色，无特效，轻微底部阴影</td>
+<td>静态精灵</td>
+</tr>
+<tr>
+<td><strong>Highlighted（连接高亮）</strong></td>
+<td>亮度提升 20%，白色内发光，轻微放大 scale(1.05)</td>
+<td>Shader 或亮度滤镜</td>
+</tr>
+<tr>
+<td><strong>Disappearing（消除中）</strong></td>
+<td>先放大 scale(1.08) 再缩小至 0，粒子爆散</td>
+<td>Spine 动画序列帧</td>
+</tr>
+<tr>
+<td><strong>Special（特殊块发光）</strong></td>
+<td>持续呼吸式脉冲光晕，颜色因类型而异</td>
+<td>循环 Spine 动画</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43">4.3 特殊图块视觉说明</h3>
+<table>
+<thead>
+<tr>
+<th>图块类型</th>
+<th>视觉主色</th>
+<th>特效描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>炸弹块（Bomb Tile）</strong></td>
+<td>橙色 #FF6B35</td>
+<td>橙色闪光球体，表面有动态裂纹纹理，激活时爆炸粒子（红橙黄碎片）</td>
+</tr>
+<tr>
+<td><strong>闪电块（Lightning Tile）</strong></td>
+<td>电蓝色 #4FC3F7</td>
+<td>电弧纹理持续跳动，激活时白色闪光条从中央向两侧横扫</td>
+</tr>
+<tr>
+<td><strong>彩虹块（Rainbow Tile）</strong></td>
+<td>七彩流光</td>
+<td>表面为彩虹渐变循环流动，消除时彩虹粒子爆发，覆盖范围内有弧光</td>
+</tr>
+<tr>
+<td><strong>Glow发光块（Glow Tile）</strong></td>
+<td>金色 #FFD700</td>
+<td>金色/彩色光晕脉冲（呼吸动画 2s 周期），连接时光链动画沿路径流向岛屿</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-ui">5. UI 视觉规范</h2>
+<h3 id="51-ui">5.1 整体 UI 风格</h3>
+<ul>
+<li><strong>设计语言</strong>：柔和卡片系 UI，圆角为主，白色与主色轻混背景</li>
+<li><strong>棋盘占比</strong>：棋盘区域占屏幕 70% 以上，UI 元素退至边缘</li>
+<li><strong>层级</strong>：背景层 → 棋盘层 → 效果层 → UI 覆盖层（透明度友好）</li>
+</ul>
+<h3 id="52">5.2 按钮规范</h3>
+<ul>
+<li><strong>圆角</strong>：12px</li>
+<li><strong>背景</strong>：章节主色渐变（顶部亮 10%，底部为主色）</li>
+<li><strong>文字</strong>：白色，思源圆体 Semi-Bold，16px</li>
+<li><strong>阴影</strong>：<code>0 4px 8px rgba(主色,0.35)</code></li>
+<li><strong>点击态</strong>：scale(0.97)，亮度降低 5%</li>
+</ul>
+<h3 id="53">5.3 弹窗规范</h3>
+<ul>
+<li><strong>圆角</strong>：16px</li>
+<li><strong>背景</strong>：<code>rgba(255,255,255,0.92)</code> + 轻毛玻璃效果</li>
+<li><strong>边框</strong>：<code>1px solid rgba(主色,0.15)</code></li>
+<li><strong>阴影</strong>：<code>0 8px 32px rgba(0,0,0,0.12)</code></li>
+<li><strong>内边距</strong>：24px</li>
+</ul>
+<h3 id="54">5.4 字体规范</h3>
+<ul>
+<li><strong>中文主字体</strong>：思源圆体（Source Han Rounded CN）</li>
+<li>标题：Bold，20-24px</li>
+<li>正文：Regular，14-16px</li>
+<li>辅助：Light，12px</li>
+<li><strong>数字/英文</strong>：自定义圆体数字字体（与主字体视觉风格匹配）</li>
+<li>连击数：Bold，28-40px（大号突出）</li>
+<li>分数/步数：Semi-Bold，18-20px</li>
+</ul>
+<h3 id="55">5.5 图标规范</h3>
+<ul>
+<li><strong>风格</strong>：线面结合图标（Outlined + Filled，视层级选用）</li>
+<li><strong>尺寸规格</strong>：24×24px（小图标），32×32px（功能图标），48×48px（主要图标）</li>
+<li><strong>颜色</strong>：使用章节主色或中性灰，禁止多色图标（Glow特效图标除外）</li>
+<li><strong>圆角</strong>：图标内部形状圆角统一 3px</li>
+</ul>
+<hr />
+<h2 id="6-ui">6. 各章节 UI/棋盘主题适配</h2>
+<p>每章棋盘的 UI 边框和 HUD 元素颜色跟随章节色板切换：</p>
+<table>
+<thead>
+<tr>
+<th>章节</th>
+<th>棋盘边框色</th>
+<th>HUD 主色</th>
+<th>按钮色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第1章 海边码头</td>
+<td>#87CEEB</td>
+<td>#4A9CB5</td>
+<td>#5BAED0</td>
+</tr>
+<tr>
+<td>第2章 中央小镇</td>
+<td>#F4C95D</td>
+<td>#C87D30</td>
+<td>#E08820</td>
+</tr>
+<tr>
+<td>第3章 花田山坡</td>
+<td>#C9A8D4</td>
+<td>#9A6FAD</td>
+<td>#A878BE</td>
+</tr>
+<tr>
+<td>第4章 森林露营地</td>
+<td>#6B9E5E</td>
+<td>#3D7A4A</td>
+<td>#4A8A57</td>
+</tr>
+<tr>
+<td>第5章 温泉山谷</td>
+<td>#B8D4E0</td>
+<td>#5A9AAD</td>
+<td>#6AACC0</td>
+</tr>
+<tr>
+<td>第6章 夜晚灯塔</td>
+<td>#2D4A7A</td>
+<td>#F5C842</td>
+<td>#E5B832</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7">7. 禅境模式视觉</h2>
+<ul>
+<li>棋盘饱和度进一步提升 15%，整体色调更温暖</li>
+<li>边框用轻发光晕替代实线（<code>filter: blur(2px)</code> 轻晕）</li>
+<li>背景增加轻微粒子浮游动效（极低速，约 0.5px/s 漂移）</li>
+<li>无倒计时/步数显示，UI 进一步简化为最小必要信息</li>
+</ul>
+<hr />
+<h2 id="8">8. 修复动画视觉规范</h2>
+<h3 id="_3">阶段表现原则</h3>
+<ul>
+<li><strong>阶段1</strong>：物理修复（木板/石砖/帐篷），动画以"放置到位"为主</li>
+<li><strong>阶段2</strong>：细节恢复（花盆/绳索/灯光），动画以"小物件出现"为主</li>
+<li><strong>阶段3</strong>：生命迹象（人物返回/水流/篝火），动画以"第一次运动"为主，配合情感音效</li>
+<li><strong>阶段4</strong>：完整状态，章节标志性时刻动画（8-15秒），色彩饱和度达到峰值</li>
+</ul>
+<h3 id="_4">色彩饱和度过渡</h3>
+<pre><code>修复前：HSL 饱和度 10-20%，亮度 40-50%（灰暗）
+第1阶段：饱和度 30-40%
+第2阶段：饱和度 50-60%
+第3阶段：饱和度 65-75%
+第4阶段：饱和度 80-95%（满彩）
+</code></pre>
+<hr />
+<h2 id="9">9. 参考风格关键词</h2>
+<p><strong>整体方向</strong>：Stardew Valley 情感温度 × Kurzgesagt 扁平设计语言 × 水彩插画质感</p>
+<p><strong>刻意规避</strong>：<br />
+- 像素艺术（过于复古，不符合目标用户审美）<br />
+- 3D 写实渲染（开发成本高，与治愈风格不符）<br />
+- 卡通夸张变形（Cartoonish deformation，目标情感更"沉静"）<br />
+- 霓虹赛博风（色彩系统冲突）</p>
+<hr />
+<p><em>Art Direction v1.0 · Glow Island · 2026-05-07</em></p>
+    <div class="footer">Glow Island — Generated Documentation · 2026-05-08</div>
+  </div>
+</body>
+</html>

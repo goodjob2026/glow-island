@@ -1,0 +1,240 @@
+{
+  "_meta": {
+    "document": "vfx-spec",
+    "version": "1.0",
+    "date": "2026-05-07",
+    "status": "authoritative",
+    "description": "Complete VFX specification for all Cocos Creator particle effects in Glow Island",
+    "sources": [
+      ".allforai/game-design/art-tokens.json",
+      ".allforai/game-design/puzzle-mechanics-spec.json"
+    ]
+  },
+
+  "effects": [
+    {
+      "id": "vfx-tile-connect",
+      "file": "game-client/assets/effects/vfx-tile-connect.effect",
+      "label": "Connection Path Light Trail",
+      "description": "Small bright warm-white particles emitted along the connection path when two tiles are successfully linked.",
+      "parameters": {
+        "color_start_hex": "#FFF5E0",
+        "color_end_hex": "#FFF5E0",
+        "color_end_alpha": 0,
+        "duration_s": 0.15,
+        "total_particles": 20,
+        "emission_rate": 140,
+        "particle_life_s": 0.12,
+        "start_size": 6,
+        "speed": 40,
+        "emitter_mode": "gravity",
+        "blend_mode": "alpha"
+      },
+      "trigger_conditions": {
+        "event": "TileConnectSuccess",
+        "description": "Fired by MatchEngine when two same-type tiles are connected via a valid path. Spawn one instance per matched pair at the midpoint of the connection path.",
+        "component_event": "onTileMatch"
+      },
+      "integration_notes": {
+        "spawning_component": "TileConnectVFX.ts",
+        "spawn_strategy": "Instantiate ParticleSystem2D node at path midpoint; set position to connection center; play once (duration=0.15s); auto-destroy on finish.",
+        "position_follow": "Optionally place particles along path segments at equal intervals for a chain effect.",
+        "max_simultaneous_instances": 4
+      },
+      "chapter_color_overrides": {
+        "note": "Tint startColor to match chapter special_color for chapter-themed light trails.",
+        "chapter_1": { "startColor_hex": "#F4A261", "name": "海边码头 warm amber" },
+        "chapter_2": { "startColor_hex": "#E8844A", "name": "中央小镇 warm orange" },
+        "chapter_3": { "startColor_hex": "#F0C060", "name": "花田山坡 golden yellow" },
+        "chapter_4": { "startColor_hex": "#FF8C42", "name": "森林露营地 campfire orange" },
+        "chapter_5": { "startColor_hex": "#7FBFCC", "name": "温泉山谷 cool teal" },
+        "chapter_6": { "startColor_hex": "#FFD700", "name": "夜晚灯塔 gold" }
+      },
+      "performance": {
+        "max_simultaneous_instances": 4,
+        "note": "Each match spawns 1 instance; max 4 considering rapid consecutive matches. Low particle count (20) keeps GPU cost negligible."
+      }
+    },
+
+    {
+      "id": "vfx-combo-burst",
+      "file": "game-client/assets/effects/vfx-combo-burst.effect",
+      "label": "Tile Elimination Star Burst",
+      "description": "Burst of golden sparkles on tile elimination. Intensity (particle count and size) scales with the current combo multiplier level.",
+      "parameters": {
+        "color_start_hex": "#FFD700",
+        "color_end_hex": "#FFFFFF",
+        "color_end_alpha": 0,
+        "duration_s": 0.40,
+        "total_particles_base": 40,
+        "emission_rate": 200,
+        "particle_life_s": 0.38,
+        "start_size_base": 10,
+        "speed": 180,
+        "emitter_mode": "gravity",
+        "gravity_y": -120,
+        "blend_mode": "alpha"
+      },
+      "combo_scaling": {
+        "source": "puzzle-mechanics-spec.combo.thresholds = [1, 2, 3, 4]",
+        "levels": [
+          {
+            "combo_count": 1,
+            "multiplier": 1.0,
+            "total_particles": 40,
+            "start_size": 10,
+            "effects_override": []
+          },
+          {
+            "combo_count": 2,
+            "multiplier": 1.5,
+            "total_particles": 60,
+            "start_size": 11,
+            "effects_override": ["音效增强"]
+          },
+          {
+            "combo_count": 3,
+            "multiplier": 2.0,
+            "total_particles": 80,
+            "start_size": 12,
+            "effects_override": ["音效增强", "特效升级"]
+          },
+          {
+            "combo_count": 4,
+            "multiplier": 3.0,
+            "total_particles": 120,
+            "start_size": 15,
+            "effects_override": ["音效增强", "特效升级", "屏幕震动", "粒子爆发"]
+          }
+        ]
+      },
+      "trigger_conditions": {
+        "event": "TileEliminated",
+        "description": "Fired by MatchEngine each time a tile pair is eliminated. The current comboCount is passed as parameter to determine burst intensity.",
+        "component_event": "onTileEliminate(comboCount: number)"
+      },
+      "integration_notes": {
+        "spawning_component": "ComboBurstVFX.ts",
+        "spawn_strategy": "Instantiate at tile center; set totalParticles and startSize dynamically from combo_scaling table before play(); auto-destroy on finish.",
+        "dynamic_params": "Use ps.totalParticles = comboScale.total_particles; ps.startSize = comboScale.start_size; before ps.resetSystem().",
+        "max_simultaneous_instances": 8
+      },
+      "chapter_color_overrides": {
+        "note": "Override startColor with chapter accent for combo bursts that feel native to each chapter.",
+        "chapter_1": { "startColor_hex": "#F4A261" },
+        "chapter_2": { "startColor_hex": "#F4C95D" },
+        "chapter_3": { "startColor_hex": "#C9A8D4" },
+        "chapter_4": { "startColor_hex": "#FF8C42" },
+        "chapter_5": { "startColor_hex": "#7FBFCC" },
+        "chapter_6": { "startColor_hex": "#FFD700" }
+      },
+      "performance": {
+        "max_simultaneous_instances": 8,
+        "note": "Combo-4 burst uses 120 particles; limit concurrent bursts to 8 instances. Pool and recycle nodes."
+      }
+    },
+
+    {
+      "id": "vfx-area-restore",
+      "file": "game-client/assets/effects/vfx-area-restore.effect",
+      "label": "Ambient Fireflies / Flower Petals",
+      "description": "Gentle continuously looping floating particles (fireflies or flower petals) played during island area restoration. Duration is infinite until manually stopped.",
+      "parameters": {
+        "color_start_hex": "#FFE4B5",
+        "color_end_hex": "#98FB98",
+        "color_end_alpha": 0,
+        "duration_s": -1,
+        "loop": true,
+        "total_particles": 25,
+        "emission_rate": 12,
+        "particle_life_s": 2.0,
+        "start_size": 14,
+        "speed": 28,
+        "gravity_y": 30,
+        "emitter_mode": "gravity",
+        "position_type": 1,
+        "blend_mode": "alpha"
+      },
+      "trigger_conditions": {
+        "event": "AreaRestoreBegin",
+        "description": "Fired by IslandRestoreManager when an area's restoration animation sequence starts. Stop on AreaRestoreComplete.",
+        "component_event": "onAreaRestoreStart() / onAreaRestoreComplete()"
+      },
+      "integration_notes": {
+        "spawning_component": "AreaRestoreVFX.ts",
+        "spawn_strategy": "Instantiate persistent node on the restoring area; call ps.play() on AreaRestoreBegin; call ps.stopSystem() on AreaRestoreComplete; fade out over 0.5s then destroy.",
+        "position_note": "positionType=1 (relative) — parent node to the area tile group so particles float in area-local space.",
+        "color_variant": "Use moccasin (#FFE4B5) startColor for day/warm chapters (1–4), pale green (#98FB98) startColor for natural/forest themes (chapter 4–5), deep-sky tones for chapter 6.",
+        "max_simultaneous_instances": 3
+      },
+      "chapter_color_overrides": {
+        "note": "Swap startColor to match each chapter's restore aesthetic.",
+        "chapter_1": { "startColor_hex": "#FFE4B5", "endColor_hex": "#87CEEB", "theme": "sea sparkle" },
+        "chapter_2": { "startColor_hex": "#FFD4A8", "endColor_hex": "#F4C95D", "theme": "warm lantern glow" },
+        "chapter_3": { "startColor_hex": "#C9A8D4", "endColor_hex": "#98FB98", "theme": "petal drift" },
+        "chapter_4": { "startColor_hex": "#A3E635", "endColor_hex": "#98FB98", "theme": "firefly green" },
+        "chapter_5": { "startColor_hex": "#C0E8F0", "endColor_hex": "#B8D4E0", "theme": "hot spring mist" },
+        "chapter_6": { "startColor_hex": "#FFED80", "endColor_hex": "#FFD700", "theme": "golden sparks" }
+      },
+      "performance": {
+        "max_simultaneous_instances": 3,
+        "note": "Low emission rate (12/s) and 25 total particles keeps this lightweight for ambient use. Cap at 3 concurrent restoration areas."
+      }
+    },
+
+    {
+      "id": "vfx-lighthouse-final",
+      "file": "game-client/assets/effects/vfx-lighthouse-final.effect",
+      "label": "Lighthouse Chapter Climax Light Effect",
+      "description": "Full-screen dramatic light rays expanding outward from the lighthouse beacon. Deep blue transitions to bright gold. Chapter 6 exclusive climax effect.",
+      "parameters": {
+        "color_start_hex": "#1C3A6B",
+        "color_end_hex": "#FFD700",
+        "color_end_alpha": 0,
+        "duration_s": 5.0,
+        "total_particles": 60,
+        "emission_rate": 18,
+        "particle_life_s": 4.5,
+        "start_size": 22,
+        "end_size": 6,
+        "emitter_mode": "radial",
+        "start_radius": 0,
+        "end_radius": 420,
+        "blend_mode": "alpha"
+      },
+      "trigger_conditions": {
+        "event": "LighthouseFinalRestore",
+        "description": "Fired by IslandRestoreManager specifically for Chapter 6 final lighthouse restoration. Plays once during the area-restore-sequence climax beat.",
+        "component_event": "onLighthouseFinalRestore()",
+        "chapter_restriction": 6
+      },
+      "integration_notes": {
+        "spawning_component": "LighthouseFinalVFX.ts",
+        "spawn_strategy": "Instantiate at lighthouse beacon world position (screen center); set z-order to tile_effect layer (z=30); play once (5.0s); auto-destroy on finish. Coordinate with lighthouse_beam_rotation (period=4.0s from art-tokens).",
+        "layering": "Place above board (z_index.tile_effect=30) but below HUD (z_index.hud=40) so it doesn't obscure score/steps.",
+        "screen_shake": "Companion CameraShake component triggers on this effect start: amplitude=8px, duration=0.6s, easing=ease-out.",
+        "max_simultaneous_instances": 1
+      },
+      "chapter_color_overrides": {
+        "note": "This effect is Chapter 6 exclusive; no overrides needed. Color palette directly sourced from art-tokens.colors.chapters[5] (id=6): primary=#2D4A7A, accent=#FFD700.",
+        "chapter_6_only": true
+      },
+      "performance": {
+        "max_simultaneous_instances": 1,
+        "note": "60 particles with large size and 5s life; only 1 instance ever plays (chapter 6 final moment). Pre-warm disabled to preserve dramatic first-frame impact."
+      }
+    }
+  ],
+
+  "global_notes": {
+    "engine": "Cocos Creator 3.x, ParticleSystem2D component",
+    "file_format": "cc.ParticleAsset JSON — compatible with Cocos Creator 3.x ParticleSystem2D asset loader",
+    "blend_mode_default": "alpha (src=770/GL_SRC_ALPHA, dst=771/GL_ONE_MINUS_SRC_ALPHA)",
+    "pooling_recommendation": "Use cc.NodePool for vfx-tile-connect and vfx-combo-burst; these are high-frequency. vfx-area-restore and vfx-lighthouse-final are low-frequency and can be instantiate/destroy.",
+    "z_ordering": {
+      "all_vfx_layer": "z_index.tile_effect = 30 (from art-tokens.z_index)",
+      "exception": "vfx-lighthouse-final may be elevated to z=35 (board_event layer) for full-screen drama"
+    },
+    "color_override_api": "Set ps.startColor = new cc.Color(r, g, b, a) before ps.resetSystem() to apply chapter tinting at runtime."
+  }
+}

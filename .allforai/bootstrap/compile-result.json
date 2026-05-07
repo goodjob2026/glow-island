@@ -1,0 +1,22 @@
+{
+  "verified_at": "2026-05-07T00:00:00.000Z",
+  "backend": {
+    "ts_check": "pass",
+    "tests": "warning",
+    "errors": [
+      "No test suite configured — npm test returns 'no test specified' (exit 1). This is the default placeholder script, not a real test failure."
+    ],
+    "attempts": 1
+  },
+  "game_client": {
+    "build": "manual_required",
+    "platform": "web-mobile",
+    "note": "Cocos Dashboard manual build required — cocos-cli not installed",
+    "errors": []
+  },
+  "level_editor": {
+    "build": "pass",
+    "errors": [],
+    "attempts": 1
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "created_at": "2026-05-07T00:00:00.000Z",
+  "product": "Glow Island",
+  "version": "1.0",
+  "one_liner": "治愈系连连看手游：连接图块、积累光能，一点一点把沉睡的小岛唤醒。",
+  "positioning": {
+    "tagline": "治愈系连连看手游：修复光辉岛，让它重新发光。",
+    "description": "Glow Island 是一款以连连看为核心机制、以渐进式岛屿修复为元层叙事的治愈系休闲手游。玩家作为偶然到访的旅人，通过连接消除图块积累光能，驱动光辉岛各区域从荒芜逐步恢复为生机盎然的美丽景象。游戏无体力系统、无倒计时关卡、无强制社交，以'想玩就玩'的自由节奏和精心打磨的视觉治愈体验，成为真正兑现放松承诺的连连看产品。",
+    "genre": "治愈系休闲连连看（Healing Casual Tile-Connect）",
+    "platform": ["iOS", "WebGL"],
+    "target_audience": "25-40岁，偏好低压力放松体验的都市休闲玩家，对精美视觉和有温度的故事内容有较高审美需求"
+  },
+  "roles": [
+    {
+      "id": "player",
+      "name": "Player",
+      "description": "单角色设计，无职业分支。玩家扮演偶然途径光辉岛的旅人，以第一视角体验岛屿从荒芜到繁荣的全程修复。无需命名、无需选择，化身即代入。",
+      "progression": "通过通关关卡积累材料和光能，解锁并修复岛屿各区域，推进6章叙事弧线直至灯塔点亮。"
+    }
+  ],
+  "features": [
+    {
+      "id": "F-001",
+      "name": "连连看核心玩法",
+      "description": "以步数为限的连线消除玩法。玩家连接同色图块形成路径并消除，触发连击奖励光能和材料。无倒计时，无体力消耗。",
+      "category": "core_mechanic",
+      "priority": "must_have"
+    },
+    {
+      "id": "F-002",
+      "name": "渐进式岛屿视觉修复系统",
+      "description": "6章×4阶段共24个修复节点，每个节点对应关卡进度驱动的动态视觉过渡动画。区域从灰调荒废逐步恢复为饱和色彩的生机景象。",
+      "category": "meta_loop",
+      "priority": "must_have"
+    },
+    {
+      "id": "F-003",
+      "name": "光能（Glow Energy）机制",
+      "description": "特殊Glow图块散布关卡中，连接形成'光链'奖励大量光能。光能积累驱动岛屿区域点亮，将消除玩法与岛屿修复叙事在机制层深度绑定。",
+      "category": "core_mechanic",
+      "priority": "must_have"
+    },
+    {
+      "id": "F-004",
+      "name": "无体力自由游玩",
+      "description": "完全移除体力/生命系统。玩家可无限重试关卡，失败仅回到关卡起点不扣资源，退出无惩罚，进度自动保存。",
+      "category": "core_experience",
+      "priority": "must_have"
+    },
+    {
+      "id": "F-005",
+      "name": "禅境模式（Zen Mode）",
+      "description": "每日解锁2-3个无步数限制、无失败判定的纯放松关卡。界面采用柔和配色和慢节奏音乐，完成获得装饰性奖励。",
+      "category": "differentiator",
+      "priority": "must_have"
+    },
+    {
+      "id": "F-006",
+      "name": "6章叙事弧线与NPC",
+      "description": "6个章节对应6个岛屿区域，每章有独立NPC（阿海/阿花/阿林/阿福/阿明），通过肢体语言和环境变化推进无强制对话的沉浸式叙事。",
+      "category": "narrative",
+      "priority": "must_have"
+    },
+    {
+      "id": "F-007",
+      "name": "材料收集与轻量合成",
+      "description": "关卡通关掉落材料（浮木、绳索、花种等），材料自动轻合成驱动区域修复进度条，无复杂配方管理。",
+      "category": "meta_loop",
+      "priority": "must_have"
+    },
+    {
+      "id": "F-008",
+      "name": "4种特殊图块系统",
+      "description": "炸弹块（范围消除）、闪电块（行列消除）、彩虹块（任意色匹配）、Glow发光块（光能加成），丰富关卡策略深度。",
+      "category": "core_mechanic",
+      "priority": "must_have"
+    },
+    {
+      "id": "F-009",
+      "name": "动态棋盘事件",
+      "description": "特定关卡触发棋盘动态变化事件（潮汐、风吹花瓣、萤火虫等），与章节主题呼应，强化环境沉浸感。",
+      "category": "core_mechanic",
+      "priority": "high"
+    },
+    {
+      "id": "F-010",
+      "name": "岛屿记忆时间胶囊",
+      "description": "系统在关键修复节点自动截图存档，积累为'岛屿成长相册'。里程碑节点触发温暖信件格式的成长回顾弹窗，支持一键社交分享。",
+      "category": "retention",
+      "priority": "high"
+    },
+    {
+      "id": "F-011",
+      "name": "双货币经济系统",
+      "description": "沙滩币（软货币，关卡掉落）+ 丹青石（硬货币，付费或少量活动奖励）。消费场景透明，不P2W。",
+      "category": "monetization",
+      "priority": "must_have"
+    },
+    {
+      "id": "F-012",
+      "name": "季节性免费岛屿主题",
+      "description": "每季度更新岛屿视觉主题（春日樱花/夏日珊瑚/秋叶红枫/冬日薄雪），核心主题体验对所有玩家免费开放，限定装饰件可付费解锁。",
+      "category": "live_ops",
+      "priority": "high"
+    },
+    {
+      "id": "F-013",
+      "name": "治愈音频设计",
+      "description": "高质量环境音（海浪/鸟鸣/风铃/雨声）配合情感配乐，音频与视觉修复节奏深度配合，强化放松感。",
+      "category": "core_experience",
+      "priority": "must_have"
+    },
+    {
+      "id": "F-014",
+      "name": "非侵入式IAP触发",
+      "description": "购买提示仅在玩家连续失败3次以上时以场景化方式出现，绝不在游戏流中强制弹窗。",
+      "category": "monetization",
+      "priority": "must_have"
+    }
+  ],
+  "mvp_features": [
+    "F-001",
+    "F-002",
+    "F-003",
+    "F-004",
+    "F-005",
+    "F-006",
+    "F-007",
+    "F-008",
+    "F-011",
+    "F-013",
+    "F-014"
+  ],
+  "errc_highlights": {
+    "must_have": [
+      {
+        "id": "F-004",
+        "name": "无体力自由游玩",
+        "rationale": "四款竞品最高频痛点，是治愈定位的核心信任基础，不可妥协"
+      },
+      {
+        "id": "F-002",
+        "name": "渐进式岛屿视觉修复系统",
+        "rationale": "Glow Island品牌核心，将'Glow'从名称变成机制，是GDD最重要的情感驱动器"
+      },
+      {
+        "id": "F-003",
+        "name": "光能机制",
+        "rationale": "连接消除玩法与岛屿修复叙事的机制桥梁，产品独特性的机制支柱"
+      },
+      {
+        "id": "F-001",
+        "name": "步数制连连看核心玩法",
+        "rationale": "游戏核心乐趣来源，无倒计时设计确保治愈节奏"
+      },
+      {
+        "id": "F-006",
+        "name": "6章叙事与NPC系统",
+        "rationale": "提供通关意义感和情感积累，防止纯机制疲劳"
+      }
+    ],
+    "differentiators": [
+      {
+        "id": "F-005",
+        "name": "禅境模式",
+        "source": "IO-003",
+        "rationale": "竞品无此设计。疲倦型玩家回流钩子，低开发成本高感知价值，是对外传播的标志性功能"
+      },
+      {
+        "id": "F-002",
+        "name": "渐进式岛屿视觉修复",
+        "source": "IO-002",
+        "rationale": "竞品均无'关卡进度→岛屿视觉变化'的深度绑定，竞品无法快速复制的情感体验壁垒"
+      },
+      {
+        "id": "F-003",
+        "name": "光能/Glow图块机制",
+        "source": "ERRC-Create",
+        "rationale": "与产品名深度呼应的独特玩法元素，消除+发光+点亮岛屿的机制联结是原创设计"
+      },
+      {
+        "id": "F-010",
+        "name": "岛屿记忆时间胶囊",
+        "source": "IO-004",
+        "rationale": "长期情感留存机制，里程碑温暖信件设计和UGC社交分享是竞品不具备的情感成就可视化系统"
+      },
+      {
+        "id": "F-012",
+        "name": "季节性免费岛屿主题",
+        "source": "ERRC-Create",
+        "rationale": "对标竞品季节付费墙的差异化承诺，核心主题体验免费是建立玩家信任的重要信号"
+      }
+    ],
+    "eliminate": [
+      "体力/生命值系统",
+      "倒计时关卡",
+      "PvP竞技排行榜",
+      "强制社交/公会义务",
+      "虚假广告素材"
+    ],
+    "reduce": [
+      "复杂社交功能",
+      "助攻器系统复杂度",
+      "人为难度墙",
+      "时限活动密度",
+      "侵入式弹窗购买提示"
+    ]
+  },
+  "success_metrics": {
+    "retention": {
+      "day1": "≥40%",
+      "day7": "≥20%",
+      "day30": "≥10%"
+    },
+    "monetization": {
+      "arpu_day30": "≥$1.5",
+      "iap_conversion": "≥3%",
+      "paying_user_arpu": "≥$15"
+    },
+    "engagement": {
+      "avg_daily_sessions": "≥2.5",
+      "avg_session_duration_min": "≥8",
+      "zen_mode_engagement_rate": "≥25%"
+    },
+    "quality": {
+      "app_store_rating": "≥4.5",
+      "ugc_share_rate_at_milestone": "≥15%"
+    }
+  }
+}

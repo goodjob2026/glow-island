@@ -1,0 +1,148 @@
+{
+  "created_at": "2026-05-07T00:00:00.000Z",
+  "product": "Glow Island",
+  "framework": "Bartle Types + Self-Determination Theory (Deci & Ryan)",
+  "design_note": "Glow Island 以 Explorer 和 Achiever 为主要目标原型，轻度覆盖 Socializer。Killer 原型因无PvP设计空间予以排除。",
+  "archetypes": [
+    {
+      "id": "AP-001",
+      "bartle_type": "Explorer",
+      "name": "探索者",
+      "primary": true,
+      "estimated_proportion": "45%",
+      "profile": {
+        "motivation_summary": "被岛屿逐渐恢复的视觉变化驱动。每次区域修复带来新的场景、NPC、环境细节，是持续游玩的核心动力。",
+        "demographics": "25-40岁，偏好有叙事感和审美价值的休闲游戏，习惯在碎片时间放松，重视视觉体验质量",
+        "play_style": "缓慢细致地探索每个关卡，享受棋盘图案变化；会反复观看修复动画；对NPC故事有情感投入；经常截图分享",
+        "pain_points_in_competitors": [
+          "Candy Crush纯关卡无叙事/视觉成就积累，数字递增没有意义感",
+          "Fishdom虚假广告破坏信任，实际玩法与预期不符",
+          "Gardenscapes修复内容需'消耗星星执行任务'，体验断层感强"
+        ]
+      },
+      "sdt_mapping": {
+        "autonomy": "无体力门控允许随时探索；禅境模式提供无压力探索空间；季节主题免费开放保证内容探索权",
+        "competence": "4阶段修复进度带来持续可见的成果感；光能积累可视化展示'我改变了岛屿'的胜任感",
+        "relatedness": "NPC肢体语言叙事建立情感连接；时间胶囊系统将探索成果转化为可分享的情感记忆"
+      },
+      "key_hooks": [
+        "渐进式岛屿视觉修复（每阶段触发新的视觉变化）",
+        "NPC标志性时刻动画（章节完成情感高潮）",
+        "岛屿记忆时间胶囊（探索成果的长期可视化积累）",
+        "章节色调变化（灰调→饱和色的视觉旅程）"
+      ],
+      "retention_drivers": [
+        "期待下一个修复阶段的视觉变化",
+        "想看到灯塔最终亮起（全岛叙事终局驱动）",
+        "季节主题更新带来的新视觉内容",
+        "岛屿成长相册的情感积累"
+      ],
+      "monetization_fit": {
+        "willingness_to_pay": "中等",
+        "preferred_products": ["季节限定装饰件", "岛屿皮肤", "特效图块皮肤"],
+        "motivation": "为让岛屿更美花钱，而非为解锁进度付费",
+        "anti_patterns": "绝不为被卡关而付费；对强制弹窗极度敏感"
+      }
+    },
+    {
+      "id": "AP-002",
+      "bartle_type": "Achiever",
+      "name": "成就者",
+      "primary": true,
+      "estimated_proportion": "40%",
+      "profile": {
+        "motivation_summary": "喜欢完成关卡、追求连击和完美通关。关卡数字增长、连击记录、星级评定是核心驱动力。",
+        "demographics": "25-35岁，有一定连消游戏经验，在碎片时间寻求有目标感的休闲挑战，追求'完成感'而非'刺激感'",
+        "play_style": "高效规划连线路径，主动追求高连击数；会反复挑战失败关卡；关注材料收集进度和区域修复完成度",
+        "pain_points_in_competitors": [
+          "Candy Crush后期难度墙需付费才能通过，成就感被金钱绑架",
+          "Gardenscapes失败后体力被扣，失败本身变成惩罚",
+          "Fishdom助攻器系统复杂，'完美通关'定义模糊"
+        ]
+      },
+      "sdt_mapping": {
+        "autonomy": "步数制关卡允许玩家自主规划策略，无时间压力；失败不扣资源允许多次尝试不同策略",
+        "competence": "连击反馈系统和特殊块生成规则明确，策略空间清晰；平滑难度曲线确保'我能做到'的持续胜任感",
+        "relatedness": "区域修复完成是'我让它改变了'的具体成就；材料收集进度条提供可量化的阶段性目标"
+      },
+      "key_hooks": [
+        "核心连消机制的连击反馈满足感",
+        "4种特殊块的策略组合深度",
+        "关卡星级评定系统",
+        "材料收集和区域修复的进度条推进",
+        "挑战关的完成奖励"
+      ],
+      "retention_drivers": [
+        "下一章节的关卡解锁",
+        "新障碍类型带来的策略新鲜感",
+        "区域完全修复的完成里程碑",
+        "挑战关额外材料奖励的收益驱动"
+      ],
+      "monetization_fit": {
+        "willingness_to_pay": "中高",
+        "preferred_products": ["续命额外步数（高难度关卡时）", "关卡前助攻器", "月光卡（稳定获取丹青石）"],
+        "motivation": "为在高难度关卡完成目标而付费，付费决策基于关卡难度而非情感",
+        "anti_patterns": "对P2W极度抵制；若感知到难度被人为提高以逼迫付费会直接流失"
+      }
+    },
+    {
+      "id": "AP-003",
+      "bartle_type": "Socializer",
+      "name": "社交者",
+      "primary": false,
+      "estimated_proportion": "15%",
+      "profile": {
+        "motivation_summary": "通过分享岛屿修复成果和与朋友互动获得游戏满足感。非核心原型，以轻度自愿社交为设计边界。",
+        "demographics": "25-45岁，活跃于社交媒体，游戏消费部分由社群/朋友推荐驱动",
+        "play_style": "重视可分享的游戏成果；会截图发朋友圈/微博；关注里程碑弹窗的温情设计；偶尔因为分享内容吸引朋友入坑",
+        "pain_points_in_competitors": [
+          "Township强制社交义务（合作社/Regatta）产生压力感",
+          "Candy Crush好友礼物索取机制制造社交摩擦",
+          "竞技排行榜引发比较焦虑"
+        ]
+      },
+      "sdt_mapping": {
+        "autonomy": "社交完全自愿，无强制团队义务；分享功能随时可用但不强制",
+        "competence": "岛屿修复成果的可视化是值得分享的成就内容",
+        "relatedness": "与朋友共赏岛屿修复进度；时间胶囊分享带来社交共鸣"
+      },
+      "key_hooks": [
+        "岛屿记忆时间胶囊的一键分享功能",
+        "修复前后对比图（天然UGC内容）",
+        "里程碑温暖信件格式（情感性内容更易传播）",
+        "季节主题岛屿的美观截图"
+      ],
+      "retention_drivers": [
+        "朋友分享内容带动的参照效应",
+        "分享后收到朋友反馈的社交反馈循环"
+      ],
+      "monetization_fit": {
+        "willingness_to_pay": "低-中",
+        "preferred_products": ["视觉突出的限定装饰件（分享价值高）", "季节限定皮肤（朋友圈独特性）"],
+        "motivation": "为让分享内容更有特色而付费",
+        "anti_patterns": "强制社交互动和礼物索取是流失的最快路径"
+      }
+    },
+    {
+      "id": "AP-004",
+      "bartle_type": "Killer",
+      "name": "竞争者",
+      "primary": false,
+      "excluded": true,
+      "rationale": "Glow Island无PvP设计空间，治愈定位与竞争性对抗不兼容。竞争性排行榜等机制已从ERRC矩阵中列为'消除'项。此类原型玩家非目标用户，不为其设计。"
+    }
+  ],
+  "archetype_matrix": {
+    "primary_combo": "Explorer × Achiever — 两者在Glow Island的设计中形成互补：探索者被视觉叙事驱动长线留存，成就者被关卡挑战驱动短线活跃，共同支撑留存和变现双目标",
+    "design_tensions": [
+      {
+        "tension": "Explorer希望放慢脚步欣赏，Achiever希望高效推关",
+        "resolution": "禅境模式为Explorer提供专属慢节奏空间，挑战关为Achiever提供高效奖励路径，两套体验并行不矛盾"
+      },
+      {
+        "tension": "Achiever对难度墙付费反感，但续命机制需要付费动机",
+        "resolution": "难度曲线平滑设计降低Achiever遭遇付费墙概率；续命提示设计为帮助而非逼迫，出现时机严格控制在连续失败3次后"
+      }
+    ]
+  }
+}

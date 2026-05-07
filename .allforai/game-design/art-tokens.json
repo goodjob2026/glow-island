@@ -1,0 +1,427 @@
+{
+  "_meta": {
+    "project": "Glow Island",
+    "version": "1.0",
+    "created_at": "2026-05-07T00:00:00+08:00",
+    "description": "Design tokens for colors, typography, spacing, animation, and shadows"
+  },
+
+  "colors": {
+    "brand_primary": "#7EC8E3",
+    "brand_secondary": "#F4C95D",
+    "brand_accent": "#C9A8D4",
+    "brand_dark": "#2D4A7A",
+    "brand_warm": "#FF8C42",
+    "neutral_white": "#FFFFFF",
+    "neutral_off_white": "#F8F5F0",
+    "neutral_light": "#EAE6E1",
+    "neutral_mid": "#C0B8B0",
+    "neutral_dark": "#6A6058",
+    "neutral_text": "#3D3530",
+    "system_success": "#7DBD7A",
+    "system_warning": "#F4C95D",
+    "system_error": "#E05A4A",
+    "system_info": "#7EC8E3",
+
+    "chapters": [
+      {
+        "id": 1,
+        "name": "海边码头",
+        "emotion": "悠闲",
+        "primary": "#87CEEB",
+        "primary_dark": "#4A9CB5",
+        "secondary": "#F5DEB3",
+        "secondary_dark": "#C8A870",
+        "bg": "#E8F4F8",
+        "bg_game": "#C8E8F5",
+        "accent": "#F4A261",
+        "accent_light": "#FFD4A8",
+        "text_on_primary": "#FFFFFF",
+        "text_on_bg": "#2A5068",
+        "board_border": "#87CEEB",
+        "hud_primary": "#4A9CB5",
+        "button_gradient_top": "#70C0E5",
+        "button_gradient_bottom": "#5BAED0",
+        "restore_before_saturation": 0.12,
+        "restore_after_saturation": 0.85,
+        "special_color": "#F4A261",
+        "special_glow": "rgba(244,162,97,0.45)"
+      },
+      {
+        "id": 2,
+        "name": "中央小镇",
+        "emotion": "温暖",
+        "primary": "#F4C95D",
+        "primary_dark": "#C87D30",
+        "secondary": "#C97D4E",
+        "secondary_dark": "#8B5230",
+        "bg": "#FBF0DC",
+        "bg_game": "#F5E2BE",
+        "accent": "#E8844A",
+        "accent_light": "#FFCDA0",
+        "text_on_primary": "#6A3010",
+        "text_on_bg": "#5A3A18",
+        "board_border": "#F4C95D",
+        "hud_primary": "#C87D30",
+        "button_gradient_top": "#F8D870",
+        "button_gradient_bottom": "#E08820",
+        "restore_before_saturation": 0.15,
+        "restore_after_saturation": 0.90,
+        "special_color": "#E8844A",
+        "special_glow": "rgba(232,132,74,0.45)"
+      },
+      {
+        "id": 3,
+        "name": "花田山坡",
+        "emotion": "治愈",
+        "primary": "#C9A8D4",
+        "primary_dark": "#9A6FAD",
+        "secondary": "#7DBD7A",
+        "secondary_dark": "#4A8A47",
+        "bg": "#F3EEF7",
+        "bg_game": "#E8DFF0",
+        "accent": "#F0C060",
+        "accent_light": "#FFE8A8",
+        "text_on_primary": "#FFFFFF",
+        "text_on_bg": "#4A2A60",
+        "board_border": "#C9A8D4",
+        "hud_primary": "#9A6FAD",
+        "button_gradient_top": "#D8B8E4",
+        "button_gradient_bottom": "#A878BE",
+        "restore_before_saturation": 0.10,
+        "restore_after_saturation": 0.92,
+        "special_color": "#F0C060",
+        "special_glow": "rgba(240,192,96,0.45)"
+      },
+      {
+        "id": 4,
+        "name": "森林露营地",
+        "emotion": "安静",
+        "primary": "#6B9E5E",
+        "primary_dark": "#3D7A4A",
+        "secondary": "#8B6241",
+        "secondary_dark": "#5A3D28",
+        "bg": "#EBF2E8",
+        "bg_game": "#D8EAD0",
+        "accent": "#FF8C42",
+        "accent_light": "#FFCCA0",
+        "text_on_primary": "#FFFFFF",
+        "text_on_bg": "#1A3A20",
+        "board_border": "#6B9E5E",
+        "hud_primary": "#3D7A4A",
+        "button_gradient_top": "#80B070",
+        "button_gradient_bottom": "#4A8A57",
+        "restore_before_saturation": 0.15,
+        "restore_after_saturation": 0.88,
+        "special_color": "#FF8C42",
+        "special_glow": "rgba(255,140,66,0.50)"
+      },
+      {
+        "id": 5,
+        "name": "温泉山谷",
+        "emotion": "放松",
+        "primary": "#B8D4E0",
+        "primary_dark": "#5A9AAD",
+        "secondary": "#A0A8B0",
+        "secondary_dark": "#607080",
+        "bg": "#F0EEED",
+        "bg_game": "#E4EFF4",
+        "accent": "#7FBFCC",
+        "accent_light": "#C0E8F0",
+        "text_on_primary": "#1A4050",
+        "text_on_bg": "#2A4A58",
+        "board_border": "#B8D4E0",
+        "hud_primary": "#5A9AAD",
+        "button_gradient_top": "#C8E2EE",
+        "button_gradient_bottom": "#6AACC0",
+        "restore_before_saturation": 0.08,
+        "restore_after_saturation": 0.80,
+        "special_color": "#7FBFCC",
+        "special_glow": "rgba(127,191,204,0.45)"
+      },
+      {
+        "id": 6,
+        "name": "夜晚灯塔",
+        "emotion": "孤独中的温暖",
+        "primary": "#2D4A7A",
+        "primary_dark": "#1A2A4A",
+        "secondary": "#F5C842",
+        "secondary_dark": "#C89820",
+        "bg": "#161E30",
+        "bg_game": "#1E2E50",
+        "accent": "#FFD700",
+        "accent_light": "#FFED80",
+        "text_on_primary": "#FFFFFF",
+        "text_on_bg": "#C8D8F0",
+        "board_border": "#2D4A7A",
+        "hud_primary": "#F5C842",
+        "button_gradient_top": "#3A5A90",
+        "button_gradient_bottom": "#E5B832",
+        "restore_before_saturation": 0.05,
+        "restore_after_saturation": 0.95,
+        "special_color": "#FFD700",
+        "special_glow": "rgba(255,215,0,0.60)"
+      }
+    ],
+
+    "tile_types": {
+      "normal_palette": ["#87CEEB", "#F4C95D", "#C9A8D4", "#7DBD7A", "#F4A261", "#B8D4E0"],
+      "bomb": "#FF6B35",
+      "bomb_glow": "rgba(255,107,53,0.55)",
+      "lightning": "#4FC3F7",
+      "lightning_glow": "rgba(79,195,247,0.55)",
+      "rainbow_start": "#FF6B6B",
+      "rainbow_end": "#4FC3F7",
+      "glow_tile": "#FFD700",
+      "glow_tile_pulse": "rgba(255,215,0,0.65)"
+    },
+
+    "tile_states": {
+      "normal_overlay": "none",
+      "highlighted_brightness": 1.20,
+      "highlighted_inner_glow": "rgba(255,255,255,0.35)",
+      "highlighted_scale": 1.05,
+      "disappearing_scale_peak": 1.08,
+      "disappearing_scale_end": 0,
+      "special_pulse_min_opacity": 0.50,
+      "special_pulse_max_opacity": 1.00
+    },
+
+    "ui": {
+      "card_bg": "rgba(255,255,255,0.92)",
+      "card_border": "rgba(200,190,180,0.20)",
+      "overlay_bg": "rgba(30,20,10,0.50)",
+      "hud_bg": "rgba(255,255,255,0.88)",
+      "input_bg": "rgba(255,255,255,0.95)",
+      "disabled_bg": "rgba(200,200,200,0.40)",
+      "disabled_text": "rgba(120,110,100,0.60)"
+    }
+  },
+
+  "typography": {
+    "font_cn": "SourceHanRoundedCN",
+    "font_cn_fallback": "'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+    "font_number": "GlowIslandNumeric",
+    "font_number_fallback": "'SF Pro Rounded', 'Helvetica Neue', sans-serif",
+    "font_en": "GlowIslandNumeric",
+
+    "weights": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+
+    "sizes": {
+      "display_xl": 40,
+      "display_lg": 32,
+      "title_xl": 24,
+      "title_lg": 20,
+      "title_md": 18,
+      "body_lg": 16,
+      "body_md": 14,
+      "body_sm": 12,
+      "label": 11,
+      "caption": 10
+    },
+
+    "line_heights": {
+      "display": 1.2,
+      "title": 1.3,
+      "body": 1.6,
+      "label": 1.4
+    },
+
+    "letter_spacing": {
+      "display": "-0.02em",
+      "title": "-0.01em",
+      "body": "0em",
+      "label_uppercase": "0.06em"
+    },
+
+    "game_specific": {
+      "combo_number_size": 40,
+      "combo_number_weight": 700,
+      "score_size": 22,
+      "score_weight": 600,
+      "step_count_size": 20,
+      "step_count_weight": 600,
+      "chapter_title_size": 28,
+      "chapter_title_weight": 700,
+      "npc_dialog_size": 15,
+      "npc_dialog_weight": 400,
+      "npc_name_size": 13,
+      "npc_name_weight": 600
+    }
+  },
+
+  "spacing": {
+    "tile_size": 128,
+    "tile_size_1x": 64,
+    "tile_padding": 6,
+    "grid_gap": 4,
+    "grid_gap_highlight": 6,
+
+    "card_radius": 12,
+    "card_radius_lg": 16,
+    "card_radius_sm": 8,
+    "button_radius": 12,
+    "popup_radius": 16,
+    "tag_radius": 6,
+    "icon_radius": 8,
+    "tile_radius": 16,
+    "tile_radius_1x": 8,
+
+    "base": 4,
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "xxl": 32,
+    "xxxl": 48,
+
+    "safe_area_top": 44,
+    "safe_area_bottom": 34,
+    "hud_height": 72,
+    "bottom_nav_height": 80,
+    "board_padding_horizontal": 16,
+    "board_padding_vertical": 12,
+
+    "icon_sm": 24,
+    "icon_md": 32,
+    "icon_lg": 48,
+    "icon_xl": 64,
+    "npc_avatar": 128,
+    "npc_avatar_1x": 64,
+
+    "button_height_sm": 36,
+    "button_height_md": 44,
+    "button_height_lg": 52,
+    "button_padding_horizontal": 20,
+    "popup_padding": 24,
+    "popup_max_width": 320
+  },
+
+  "animation": {
+    "tile_connect_duration": 0.15,
+    "tile_connect_easing": "ease-out",
+    "tile_highlight_scale": 1.05,
+    "tile_highlight_duration": 0.10,
+
+    "tile_disappear_duration": 0.30,
+    "tile_disappear_scale_peak": 1.08,
+    "tile_disappear_scale_peak_time": 0.12,
+    "tile_disappear_easing": "ease-in",
+
+    "tile_fall_duration": 0.25,
+    "tile_fall_easing": "cubic-bezier(0.25,0.46,0.45,0.94)",
+
+    "combo_popup_duration": 0.40,
+    "combo_popup_easing": "cubic-bezier(0.34,1.56,0.64,1)",
+    "combo_popup_float_duration": 0.60,
+    "combo_popup_fade_duration": 0.30,
+
+    "glow_chain_travel_speed_px_per_sec": 600,
+    "glow_chain_easing": "ease-in",
+
+    "special_tile_pulse_period": 2.0,
+    "special_tile_pulse_easing": "ease-in-out",
+
+    "board_event_wave_duration": 0.80,
+    "board_event_fog_fade_duration": 0.60,
+    "board_event_firefly_duration": 2.0,
+
+    "restore_stage_duration_min": 8.0,
+    "restore_stage_duration_max": 15.0,
+    "restore_color_saturation_duration": 3.0,
+    "restore_signature_moment_duration": 12.0,
+
+    "area_restore_duration": 5.0,
+    "area_glow_pulse_period": 3.0,
+
+    "ui_screen_transition_duration": 0.35,
+    "ui_screen_transition_easing": "ease-out",
+    "ui_modal_enter_duration": 0.30,
+    "ui_modal_enter_easing": "cubic-bezier(0.34,1.20,0.64,1)",
+    "ui_modal_exit_duration": 0.20,
+    "ui_tooltip_duration": 0.18,
+    "ui_button_press_duration": 0.10,
+    "ui_button_press_scale": 0.97,
+
+    "lighthouse_beam_rotation_period": 4.0,
+    "campfire_flicker_period": 0.15,
+    "fountain_water_cycle": 1.2,
+    "flower_wave_period": 3.5,
+    "hot_spring_mist_rise_speed": 30
+  },
+
+  "shadows": {
+    "tile_normal": "0 3px 0 rgba(0,0,0,0.12)",
+    "tile_highlighted": "0 3px 0 rgba(0,0,0,0.08), 0 0 12px rgba(255,255,255,0.50)",
+    "tile_special_glow_sm": "0 0 8px rgba(255,215,0,0.45)",
+    "tile_special_glow_md": "0 0 16px rgba(255,215,0,0.55)",
+    "tile_special_glow_lg": "0 0 28px rgba(255,215,0,0.65)",
+
+    "card_sm": "0 2px 8px rgba(0,0,0,0.08)",
+    "card_md": "0 4px 12px rgba(0,0,0,0.10)",
+    "card_lg": "0 8px 24px rgba(0,0,0,0.12)",
+    "card_hover": "0 8px 24px rgba(0,0,0,0.16)",
+
+    "button_primary": "0 4px 8px rgba(0,0,0,0.20)",
+    "button_chapter_1": "0 4px 8px rgba(91,174,208,0.35)",
+    "button_chapter_2": "0 4px 8px rgba(224,136,32,0.35)",
+    "button_chapter_3": "0 4px 8px rgba(168,120,190,0.35)",
+    "button_chapter_4": "0 4px 8px rgba(74,138,87,0.35)",
+    "button_chapter_5": "0 4px 8px rgba(106,172,192,0.35)",
+    "button_chapter_6": "0 4px 8px rgba(229,184,50,0.35)",
+
+    "popup": "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)",
+    "popup_overlay": "0 0 0 100vw rgba(30,20,10,0.50)",
+
+    "hud": "0 2px 8px rgba(0,0,0,0.08)",
+    "npc_avatar": "0 4px 12px rgba(0,0,0,0.15)",
+
+    "lighthouse_beam": "0 0 60px rgba(255,215,0,0.80), 0 0 120px rgba(255,215,0,0.40)",
+    "campfire": "0 0 40px rgba(255,140,66,0.65)",
+    "hot_spring_mist": "0 0 30px rgba(240,238,234,0.70)"
+  },
+
+  "gradients": {
+    "chapter_1_bg": "linear-gradient(180deg, #C8E8F5 0%, #E8F4F8 60%, #F5DEB3 100%)",
+    "chapter_2_bg": "linear-gradient(180deg, #F5E2BE 0%, #FBF0DC 60%, #D9C9B5 100%)",
+    "chapter_3_bg": "linear-gradient(180deg, #E8DFF0 0%, #F3EEF7 50%, #C8EAC0 100%)",
+    "chapter_4_bg": "linear-gradient(180deg, #1E2E18 0%, #2A4A20 40%, #3A5A28 100%)",
+    "chapter_5_bg": "linear-gradient(180deg, #E4EFF4 0%, #F0EEED 50%, #D0E8F0 100%)",
+    "chapter_6_bg": "linear-gradient(180deg, #080E1A 0%, #1E2E50 50%, #1A2A4A 100%)",
+    "rainbow_tile": "linear-gradient(135deg, #FF6B6B, #F4C95D, #7DBD7A, #7EC8E3, #C9A8D4, #FF6B6B)",
+    "glow_tile_aura": "radial-gradient(circle, rgba(255,215,0,0.65) 0%, rgba(255,215,0,0) 70%)",
+    "board_vignette": "radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.25) 100%)"
+  },
+
+  "breakpoints": {
+    "phone_sm": 320,
+    "phone_md": 375,
+    "phone_lg": 414,
+    "phone_xl": 430,
+    "canvas_width_1x": 390,
+    "canvas_height_1x": 844,
+    "canvas_width_2x": 780,
+    "canvas_height_2x": 1688
+  },
+
+  "z_index": {
+    "background": 0,
+    "board": 10,
+    "tile": 20,
+    "tile_effect": 30,
+    "board_event": 35,
+    "hud": 40,
+    "popup_overlay": 50,
+    "popup": 60,
+    "toast": 70,
+    "tutorial_overlay": 80,
+    "loading": 90
+  }
+}

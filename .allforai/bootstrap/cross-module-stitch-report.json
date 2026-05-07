@@ -1,0 +1,93 @@
+{
+  "validated_at": "2026-05-07T00:00:00.000Z",
+  "endpoints_checked": 5,
+  "mismatches_found": 7,
+  "mismatches_fixed": 7,
+  "endpoint_results": [
+    {
+      "endpoint": "POST /auth/anonymous",
+      "status": "fixed",
+      "issues": [
+        "ProgressionManager had no auth call at all — no device_id generation, no JWT acquisition, no token/player_id storage",
+        "loadFromCloud and _putWithRetry called /save (no playerId) without Authorization header, making auth impossible"
+      ],
+      "fixes": [
+        "Added initAuth() method to ProgressionManager: generates/persists device_id, detects platform, POST /auth/anonymous, stores JWT in localStorage('glow_auth_token') and player_id in localStorage('glow_player_id')",
+        "Added _getOrCreateDeviceId() and _detectPlatform() helper methods",
+        "Added getAuthToken() and getPlayerId() public accessors"
+      ]
+    },
+    {
+      "endpoint": "GET /save/:playerId",
+      "status": "fixed",
+      "issues": [
+        "Client called GET /save (missing :playerId path segment)",
+        "No Authorization: Bearer header sent",
+        "Response fields not mapped: backend returns beach_coins/glowstone but client expected beachCoins/glowstones"
+      ],
+      "fixes": [
+        "loadFromCloud now fetches /save/${playerId} using stored player_id",
+        "Added Authorization: Bearer ${token} header",
+        "Added mapping of server currency fields: beach_coins→beachCoins, glowstone→glowstones",
+        "Added mapping of updated_at→lastUpdatedAt"
+      ]
+    },
+    {
+      "endpoint": "PUT /save/:playerId",
+      "status": "fixed",
+      "issues": [
+        "Client PUT called /save (missing :playerId path segment)",
+        "No Authorization: Bearer header sent",
+        "PUT body sent entire GameProgress object with wrong field names: currency.beachCoins (should be currency.beach_coins), currency.glowstones (should be currency.glowstone), lastUpdatedAt (should be client_updated_at as top-level field)"
+      ],
+      "fixes": [
+        "_putWithRetry now calls /save/${playerId}",
+        "Added Authorization: Bearer ${token} header",
+        "Constructed apiBody with correct field names: client_updated_at, currency.beach_coins, currency.glowstone, chapter_progress, materials"
+      ]
+    },
+    {
+      "endpoint": "GET /leaderboard",
+      "status": "fixed",
+      "issues": [
+        "LeaderboardResponse typed my_rank as 'number' but backend returns object { rank, total_score, chapter_reached }",
+        "LeaderboardResponse typed my_entry field which does not exist in backend response",
+        "_renderMyRank read data.my_rank as a number (e.g. #${data.my_rank}) instead of data.my_rank.rank",
+        "_renderMyRank read data.my_entry.display_name which doesn't exist in backend response",
+        "Fetch did not pass player_id query param so backend never returned my_rank",
+        "No Authorization header on leaderboard fetch"
+      ],
+      "fixes": [
+        "Replaced 'my_rank?: number' and 'my_entry?' with correct 'my_rank?: MyRank | null' where MyRank = { rank, total_score, chapter_reached }",
+        "Added MyRank interface matching backend response shape",
+        "_renderMyRank now reads data.my_rank.rank and data.my_rank.total_score",
+        "Display name falls back to entries list lookup or '我' (no fabricated my_entry dependency)",
+        "_loadLeaderboard now passes player_id query param when available",
+        "Added Authorization header from localStorage glow_auth_token",
+        "Added _resolveAuthToken() helper"
+      ]
+    },
+    {
+      "endpoint": "POST /iap/verify",
+      "status": "fixed",
+      "issues": [
+        "POST /iap/verify requires authentication (preHandler: app.authenticate) but client sent no Authorization header",
+        "Error code 'invalid_receipt' referenced in purchase() return but backend uses 'RECEIPT_INVALID' — client code uses generic string 'RECEIPT_INVALID' which is consistent"
+      ],
+      "fixes": [
+        "verifyWithBackend now reads JWT from localStorage('glow_auth_token') and sends Authorization: Bearer header",
+        "Added _getAuthToken() helper method to IAPManager"
+      ]
+    }
+  ],
+  "spec_reconciliation": [
+    {
+      "endpoint": "POST /auth/anonymous",
+      "field": "global.authentication.token_lifetime_seconds",
+      "spec_value": 2592000,
+      "backend_actual": 604800,
+      "note": "Spec records 30-day lifetime; backend signs with expiresIn '7d'. reconciliation_notes field added to endpoint in api-spec.json."
+    }
+  ],
+  "unresolved": []
+}

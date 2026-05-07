@@ -1,0 +1,202 @@
+{
+  "_meta": {
+    "project": "Glow Island",
+    "version": "1.0",
+    "created_at": "2026-05-07T00:00:00+08:00",
+    "description": "Complete animation specification for all Cocos Creator animation clips. Durations sourced from art-tokens.json animation field.",
+    "token_source": "art-tokens.json"
+  },
+
+  "animations": [
+    {
+      "name": "tile-connect",
+      "file": "game-client/assets/animations/tile-connect.anim",
+      "duration": 0.15,
+      "sample_rate": 60,
+      "loop": false,
+      "description": "Tile connection highlight animation. Plays when the player taps/selects a tile that forms a valid connection.",
+      "keyframe_summary": {
+        "scale": "1.0 → 1.15 → 1.0 (pulse at t=0.075s)",
+        "opacity": "255 → 200 → 255 (flash at t=0.075s)"
+      },
+      "keyframes": [
+        {"time": 0,    "scale": 1.0,  "opacity": 255},
+        {"time": 0.075,"scale": 1.15, "opacity": 200},
+        {"time": 0.15, "scale": 1.0,  "opacity": 255}
+      ],
+      "easing": "ease-in-out (cubicInOut)",
+      "token_refs": {
+        "duration": "animation.tile_connect_duration",
+        "scale_peak": "animation.tile_highlight_scale",
+        "easing": "animation.tile_connect_easing"
+      },
+      "trigger_conditions": [
+        "Player taps a tile to begin a chain",
+        "Each tile added to an active connection chain",
+        "Tile highlighted as a valid continuation"
+      ],
+      "integration_notes": {
+        "component": "TileView.ts",
+        "method": "playConnectAnim()",
+        "notes": "Load via cc.AnimationClip asset reference. Play on the tile's cc.Animation component. Does not loop — plays once per connection event."
+      }
+    },
+
+    {
+      "name": "tile-disappear",
+      "file": "game-client/assets/animations/tile-disappear.anim",
+      "duration": 0.3,
+      "sample_rate": 60,
+      "loop": false,
+      "description": "Tile disappear animation with squash and stretch. Plays when a matched tile is removed from the board.",
+      "keyframe_summary": {
+        "scaleX": "1.0 → 1.3 → 0.0 (squash peak at t=0.12s, then collapse)",
+        "scaleY": "1.0 → 0.7 → 0.0 (stretch inverted, peak at t=0.12s)",
+        "opacity": "255 → 255 → 0 (hold full until collapse, then fade)"
+      },
+      "keyframes": [
+        {"time": 0,    "scaleX": 1.0, "scaleY": 1.0, "opacity": 255},
+        {"time": 0.12, "scaleX": 1.3, "scaleY": 0.7, "opacity": 255},
+        {"time": 0.3,  "scaleX": 0.0, "scaleY": 0.0, "opacity": 0}
+      ],
+      "easing": "ease-in (cubicIn for collapse phase)",
+      "token_refs": {
+        "duration": "animation.tile_disappear_duration",
+        "scale_peak": "animation.tile_disappear_scale_peak",
+        "scale_peak_time": "animation.tile_disappear_scale_peak_time",
+        "easing": "animation.tile_disappear_easing"
+      },
+      "trigger_conditions": [
+        "Tile is part of a successfully matched chain",
+        "Bomb special tile explosion clears adjacent tiles",
+        "Board clear event removes all remaining tiles"
+      ],
+      "integration_notes": {
+        "component": "TileView.ts",
+        "method": "playDisappearAnim(onComplete?: () => void)",
+        "notes": "Register an onFinished callback to remove the node from the scene graph after the animation completes. Trigger score particles from the BoardEffectController at t=0.12s (squash peak). Stagger disappear animations by 30ms per tile in a chain for visual delight."
+      }
+    },
+
+    {
+      "name": "combo-popup",
+      "file": "game-client/assets/animations/combo-popup.anim",
+      "duration": 0.4,
+      "sample_rate": 60,
+      "loop": false,
+      "description": "Combo multiplier number popup animation. Base clip uses ×2 intensity. Scale peak and label size multipliers vary by combo level.",
+      "base_intensity": "x2",
+      "keyframe_summary": {
+        "scale": "0 → 1.4 → 1.0 → 1.0 (spring bounce in, settle by t=0.28s)",
+        "opacity": "0 → 255 → 255 → 0 (appear instantly, fade from t=0.28s)",
+        "positionY": "-20 → 0 → 0 → +30 (float upward, accent rise in final phase)"
+      },
+      "keyframes": [
+        {"time": 0,    "scale": 0.0, "opacity": 0,   "posY": -20},
+        {"time": 0.12, "scale": 1.4, "opacity": 255, "posY": 0},
+        {"time": 0.28, "scale": 1.0, "opacity": 255, "posY": 0},
+        {"time": 0.4,  "scale": 1.0, "opacity": 0,   "posY": 30}
+      ],
+      "easing": "cubic-bezier(0.34,1.56,0.64,1) — spring overshoot on scale-in",
+      "intensity_levels": {
+        "x2": {"scale_peak": 1.4,  "label_size_multiplier": 1.0},
+        "x3": {"scale_peak": 1.5,  "label_size_multiplier": 1.1},
+        "x4": {"scale_peak": 1.6,  "label_size_multiplier": 1.2},
+        "x5plus": {"scale_peak": 1.75, "label_size_multiplier": 1.35}
+      },
+      "token_refs": {
+        "duration": "animation.combo_popup_duration",
+        "easing": "animation.combo_popup_easing",
+        "float_duration": "animation.combo_popup_float_duration",
+        "fade_duration": "animation.combo_popup_fade_duration"
+      },
+      "trigger_conditions": [
+        "Player completes a chain of 3+ tiles for the first time in a burst",
+        "Subsequent chains in the same burst increment the combo counter",
+        "Combo popup appears at the centroid of the matched tile group"
+      ],
+      "integration_notes": {
+        "component": "ComboPopupView.ts",
+        "method": "show(comboLevel: number, position: Vec2)",
+        "notes": "Instantiate from a prefab pool. Set the label text (×2, ×3 etc.) before playing. Adjust scale_peak and label fontSize at runtime based on intensity_levels table. Use cc.tween or cc.AnimationClip.play(). Recycle node to pool in onFinished callback. Screen-space coordinates: spawn at world position of tile group center, convert to canvas space."
+      }
+    },
+
+    {
+      "name": "area-restore-sequence",
+      "file": "game-client/assets/animations/area-restore-sequence.anim",
+      "duration": 5.0,
+      "sample_rate": 60,
+      "loop": false,
+      "description": "Full island area restoration cinematic sequence. 4 sequential stages from desaturated gray to fully restored, glowing color.",
+      "stages": [
+        {
+          "stage": 1,
+          "label": "Gray to Color",
+          "time_range": [0, 1.0],
+          "description": "ColorOverlay child node transitions from gray (rgb 180,180,180) to white, revealing the saturated color sprite beneath."
+        },
+        {
+          "stage": 2,
+          "label": "Details / Particles Appear",
+          "time_range": [1.0, 2.5],
+          "description": "DetailLayer child node fades in (opacity 0→255). Particle systems for ambient effects (leaves, sparkles) triggered via animation event onRestoreStageStart('stage2_details_appear')."
+        },
+        {
+          "stage": 3,
+          "label": "Glow Pulse",
+          "time_range": [2.5, 4.0],
+          "description": "GlowLayer child node pulses (opacity 0→255→0, scale 1.0→1.08→1.0) creating a bloom effect. Corresponds to area_glow_pulse_period token."
+        },
+        {
+          "stage": 4,
+          "label": "Settle to Final State",
+          "time_range": [4.0, 5.0],
+          "description": "Root scale has a final micro-pulse (1.0→1.05→1.0). All layers settle. Animation ends with the area in its final restored state."
+        }
+      ],
+      "keyframe_summary": {
+        "root.scale": "1.0 (all stages) → 1.05 at t=4.5 → 1.0 at t=5.0 (final micro-pulse)",
+        "ColorOverlay.color": "(180,180,180,255) → (255,255,255,255) at t=1.0 (gray to white)",
+        "GlowLayer.opacity": "0 → 0 → 255 at t=3.25 → 0 at t=4.0",
+        "GlowLayer.scale": "1.0 → 1.08 at t=3.25 → 1.0 at t=4.0",
+        "DetailLayer.opacity": "0 → 0 at t=1.0 → 255 at t=2.5"
+      },
+      "animation_events": [
+        {"frame": 0,   "func": "onRestoreStageStart", "params": ["stage1_color_restore"]},
+        {"frame": 1.0, "func": "onRestoreStageStart", "params": ["stage2_details_appear"]},
+        {"frame": 2.5, "func": "onRestoreStageStart", "params": ["stage3_glow_pulse"]},
+        {"frame": 4.0, "func": "onRestoreStageStart", "params": ["stage4_settle"]},
+        {"frame": 5.0, "func": "onRestoreComplete",   "params": []}
+      ],
+      "easing": "cubicOut for color transition, cubicInOut for glow pulse",
+      "token_refs": {
+        "total_duration": "animation.area_restore_duration",
+        "glow_pulse_period": "animation.area_glow_pulse_period"
+      },
+      "trigger_conditions": [
+        "Player completes all objectives for an island area",
+        "Final puzzle in an area chapter is solved",
+        "Triggered by AreaManager after victory confirmation dialog"
+      ],
+      "integration_notes": {
+        "component": "AreaRestoreController.ts",
+        "method": "playRestoreSequence(areaNode: Node, chapterId: number)",
+        "required_child_nodes": [
+          "ColorOverlay — cc.Sprite with a white texture, color property animated",
+          "GlowLayer — cc.Sprite with additive blend mode for bloom effect",
+          "DetailLayer — cc.Node containing detail sprites and particle systems"
+        ],
+        "notes": "Attach this AnimationClip to the area root node's cc.Animation component. Listen to animation events via cc.Animation.on('lastframe', ...) or per-frame event callbacks registered with cc.AnimationState. The onRestoreStageStart event params can be used to trigger particle systems on the DetailLayer. Camera should gently zoom in (scale 1.0→1.05) in sync with stage 3 for dramatic effect — implement in AreaRestoreController, not in this clip. Play a chapter-specific ambient sound at t=0 and the 'restore complete' jingle at t=4.5."
+      }
+    }
+  ],
+
+  "global_settings": {
+    "default_sample_rate": 60,
+    "coordinate_system": "Cocos Creator 3.x (Y-up, origin at node pivot)",
+    "scale_type": "Uniform scale unless explicitly noted as scaleX/scaleY",
+    "opacity_range": "0 (transparent) to 255 (opaque), cc.UIOpacity component",
+    "easing_library": "Cocos Creator built-in: linear, cubicIn, cubicOut, cubicInOut; custom cubic-bezier via cc.easing"
+  }
+}

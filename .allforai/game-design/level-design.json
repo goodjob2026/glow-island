@@ -1,0 +1,7982 @@
+{
+  "_meta": {
+    "document": "level-design",
+    "version": "1.0",
+    "date": "2026-05-07",
+    "total_levels": 136,
+    "chapters": 6
+  },
+  "levels": [
+    {
+      "id": "1-1",
+      "chapter": 1,
+      "level": 1,
+      "grid_size": [
+        4,
+        4
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 16
+        }
+      ],
+      "max_moves": null,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [],
+      "material_reward": {
+        "type": "浮木",
+        "amount": 3
+      },
+      "coin_reward": 15,
+      "emotional_note": "第一次连接，应该感觉很自然"
+    },
+    {
+      "id": "1-2",
+      "chapter": 1,
+      "level": 2,
+      "grid_size": [
+        5,
+        5
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 20
+        }
+      ],
+      "max_moves": null,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浮木",
+        "amount": 3
+      },
+      "coin_reward": 18,
+      "emotional_note": "图块落下的瞬间有点惊喜"
+    },
+    {
+      "id": "1-3",
+      "chapter": 1,
+      "level": 3,
+      "grid_size": [
+        5,
+        5
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 24
+        },
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 2,
+          "min_combo_threshold": 2
+        }
+      ],
+      "max_moves": null,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "绳索",
+        "amount": 2
+      },
+      "coin_reward": 20,
+      "emotional_note": "第一次连击，岛上好像有什么活了"
+    },
+    {
+      "id": "1-4",
+      "chapter": 1,
+      "level": 4,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 28
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "绳索",
+        "amount": 2
+      },
+      "coin_reward": 20,
+      "emotional_note": "悠闲地清理沙滩"
+    },
+    {
+      "id": "1-5",
+      "chapter": 1,
+      "level": 5,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_01",
+          "count": 10
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "铁钉",
+        "amount": 2
+      },
+      "coin_reward": 22,
+      "emotional_note": "珊瑚橙的碎片，像午后的阳光"
+    },
+    {
+      "id": "1-6",
+      "chapter": 1,
+      "level": 6,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_02",
+          "count": 12
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "铁钉",
+        "amount": 2
+      },
+      "coin_reward": 22,
+      "emotional_note": "海浪蓝，码头边的颜色"
+    },
+    {
+      "id": "1-7",
+      "chapter": 1,
+      "level": 7,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 30
+        }
+      ],
+      "max_moves": 35,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浮木",
+        "amount": 4
+      },
+      "coin_reward": 25,
+      "emotional_note": "有风，图块随风摇摆"
+    },
+    {
+      "id": "1-8",
+      "chapter": 1,
+      "level": 8,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 32
+        }
+      ],
+      "max_moves": 35,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "桐油",
+        "amount": 1
+      },
+      "coin_reward": 25,
+      "emotional_note": "码头的木板温温的"
+    },
+    {
+      "id": "1-9",
+      "chapter": 1,
+      "level": 9,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 30
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浮木",
+        "amount": 4
+      },
+      "coin_reward": 28,
+      "emotional_note": "阿海把绳子理好了"
+    },
+    {
+      "id": "1-10",
+      "chapter": 1,
+      "level": 10,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_03",
+          "count": 10
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "绳索",
+        "amount": 3
+      },
+      "coin_reward": 29,
+      "emotional_note": "沙滩米，脚踩上去软软的"
+    },
+    {
+      "id": "1-11",
+      "chapter": 1,
+      "level": 11,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 3000
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "铁钉",
+        "amount": 3
+      },
+      "coin_reward": 30,
+      "emotional_note": "连击的声音很好听"
+    },
+    {
+      "id": "1-12",
+      "chapter": 1,
+      "level": 12,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 32
+        },
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 3,
+          "min_combo_threshold": 2
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "桐油",
+        "amount": 2
+      },
+      "coin_reward": 31,
+      "emotional_note": "连击节奏越来越顺手"
+    },
+    {
+      "id": "1-13",
+      "chapter": 1,
+      "level": 13,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_04",
+          "count": 10
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浮木",
+        "amount": 5
+      },
+      "coin_reward": 32,
+      "emotional_note": "海草绿，浅水区漫过脚踝"
+    },
+    {
+      "id": "1-14",
+      "chapter": 1,
+      "level": 14,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 34
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "绳索",
+        "amount": 3
+      },
+      "coin_reward": 33,
+      "emotional_note": "码头的轮廓越来越清晰"
+    },
+    {
+      "id": "1-15",
+      "chapter": 1,
+      "level": 15,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 32
+        }
+      ],
+      "max_moves": 25,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "铁钉",
+        "amount": 4
+      },
+      "coin_reward": 35,
+      "emotional_note": "步数有点少，要仔细想"
+    },
+    {
+      "id": "1-16",
+      "chapter": 1,
+      "level": 16,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 4000
+        }
+      ],
+      "max_moves": 24,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "桐油",
+        "amount": 3
+      },
+      "coin_reward": 37,
+      "emotional_note": "连击才能拿高分"
+    },
+    {
+      "id": "1-17",
+      "chapter": 1,
+      "level": 17,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_01",
+          "count": 14
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_02",
+          "count": 14
+        }
+      ],
+      "max_moves": 26,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浮木",
+        "amount": 6
+      },
+      "coin_reward": 39,
+      "emotional_note": "两色同时清，有点讲究"
+    },
+    {
+      "id": "1-18",
+      "chapter": 1,
+      "level": 18,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 4,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "绳索",
+        "amount": 4
+      },
+      "coin_reward": 41,
+      "emotional_note": "三连击，船回来了"
+    },
+    {
+      "id": "1-19",
+      "chapter": 1,
+      "level": 19,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 36
+        }
+      ],
+      "max_moves": 25,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "铁钉",
+        "amount": 5
+      },
+      "coin_reward": 43,
+      "emotional_note": "最后一关，沉静地完成"
+    },
+    {
+      "id": "1-20",
+      "chapter": 1,
+      "level": 20,
+      "grid_size": [
+        6,
+        6
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 36
+        },
+        {
+          "type": "score_target",
+          "required_score": 4500
+        }
+      ],
+      "max_moves": 24,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "桐油",
+        "amount": 4
+      },
+      "coin_reward": 45,
+      "emotional_note": "夕阳下，第一艘小船回港停靠"
+    },
+    {
+      "id": "2-1",
+      "chapter": 2,
+      "level": 1,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 35
+        }
+      ],
+      "max_moves": 40,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石块",
+        "amount": 3
+      },
+      "coin_reward": 30,
+      "emotional_note": "小镇的石板路，走起来平稳"
+    },
+    {
+      "id": "2-2",
+      "chapter": 2,
+      "level": 2,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_05",
+          "count": 10
+        }
+      ],
+      "max_moves": 38,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "weed",
+          "count": 2,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "木料",
+        "amount": 3
+      },
+      "coin_reward": 32,
+      "emotional_note": "灯笼黄，初见杂草"
+    },
+    {
+      "id": "2-3",
+      "chapter": 2,
+      "level": 3,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 35
+        }
+      ],
+      "max_moves": 38,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "weed",
+          "count": 3,
+          "positions": [
+            [
+              1,
+              1
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "彩釉砖",
+        "amount": 2
+      },
+      "coin_reward": 34,
+      "emotional_note": "杂草清了，路好走了"
+    },
+    {
+      "id": "2-4",
+      "chapter": 2,
+      "level": 4,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_05",
+          "count": 12
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯芯草",
+        "amount": 2
+      },
+      "coin_reward": 36,
+      "emotional_note": "灯笼黄在街角闪着光"
+    },
+    {
+      "id": "2-5",
+      "chapter": 2,
+      "level": 5,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 36
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石块",
+        "amount": 3
+      },
+      "coin_reward": 38,
+      "emotional_note": "温暖，像有人点了盏灯"
+    },
+    {
+      "id": "2-6",
+      "chapter": 2,
+      "level": 6,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 38
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "weed",
+          "count": 3,
+          "positions": [
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石块",
+        "amount": 4
+      },
+      "coin_reward": 40,
+      "emotional_note": "杂草扩散，得快点清"
+    },
+    {
+      "id": "2-7",
+      "chapter": 2,
+      "level": 7,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 4500
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "木料",
+        "amount": 4
+      },
+      "coin_reward": 42,
+      "emotional_note": "石板路上的阳光，数连击"
+    },
+    {
+      "id": "2-8",
+      "chapter": 2,
+      "level": 8,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_06",
+          "count": 10
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "彩釉砖",
+        "amount": 3
+      },
+      "coin_reward": 44,
+      "emotional_note": "石板灰，旧时光的颜色"
+    },
+    {
+      "id": "2-9",
+      "chapter": 2,
+      "level": 9,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 40
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "weed",
+          "count": 4,
+          "positions": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              4
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯芯草",
+        "amount": 3
+      },
+      "coin_reward": 46,
+      "emotional_note": "清草四块，小镇开始呼吸"
+    },
+    {
+      "id": "2-10",
+      "chapter": 2,
+      "level": 10,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_07",
+          "count": 10
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石块",
+        "amount": 5
+      },
+      "coin_reward": 48,
+      "emotional_note": "砖瓦红，老屋的颜色"
+    },
+    {
+      "id": "2-11",
+      "chapter": 2,
+      "level": 11,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 5000
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "木料",
+        "amount": 5
+      },
+      "coin_reward": 50,
+      "emotional_note": "步数紧了，连击更值钱"
+    },
+    {
+      "id": "2-12",
+      "chapter": 2,
+      "level": 12,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 40
+        },
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 3,
+          "min_combo_threshold": 2
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "彩釉砖",
+        "amount": 4
+      },
+      "coin_reward": 52,
+      "emotional_note": "连击声在石板路上回响"
+    },
+    {
+      "id": "2-13",
+      "chapter": 2,
+      "level": 13,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_08",
+          "count": 10
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯芯草",
+        "amount": 4
+      },
+      "coin_reward": 54,
+      "emotional_note": "暖木棕，像刚刨好的原木"
+    },
+    {
+      "id": "2-14",
+      "chapter": 2,
+      "level": 14,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 40
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "weed",
+          "count": 5,
+          "positions": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石块",
+        "amount": 6
+      },
+      "coin_reward": 56,
+      "emotional_note": "五块杂草，但心里踏实"
+    },
+    {
+      "id": "2-15",
+      "chapter": 2,
+      "level": 15,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 5500
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "木料",
+        "amount": 5
+      },
+      "coin_reward": 58,
+      "emotional_note": "喷泉池水快满了"
+    },
+    {
+      "id": "2-16",
+      "chapter": 2,
+      "level": 16,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 42
+        }
+      ],
+      "max_moves": 25,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "weed",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "彩釉砖",
+        "amount": 5
+      },
+      "coin_reward": 55,
+      "emotional_note": "集中清中心，难一点"
+    },
+    {
+      "id": "2-17",
+      "chapter": 2,
+      "level": 17,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 6000
+        }
+      ],
+      "max_moves": 24,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯芯草",
+        "amount": 5
+      },
+      "coin_reward": 58,
+      "emotional_note": "连击才够分"
+    },
+    {
+      "id": "2-18",
+      "chapter": 2,
+      "level": 18,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_05",
+          "count": 12
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_07",
+          "count": 12
+        }
+      ],
+      "max_moves": 26,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石块",
+        "amount": 7
+      },
+      "coin_reward": 61,
+      "emotional_note": "两色搭配，街角真的暖了"
+    },
+    {
+      "id": "2-19",
+      "chapter": 2,
+      "level": 19,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 4,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "木料",
+        "amount": 6
+      },
+      "coin_reward": 64,
+      "emotional_note": "三连击，窗户里透出了光"
+    },
+    {
+      "id": "2-20",
+      "chapter": 2,
+      "level": 20,
+      "grid_size": [
+        7,
+        7
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_07",
+        "tile_08"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 44
+        },
+        {
+          "type": "score_target",
+          "required_score": 6000
+        }
+      ],
+      "max_moves": 24,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "彩釉砖",
+        "amount": 6
+      },
+      "coin_reward": 67,
+      "emotional_note": "喷泉第一次出水，水柱细细的但清透"
+    },
+    {
+      "id": "3-1",
+      "chapter": 3,
+      "level": 1,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 45
+        }
+      ],
+      "max_moves": 42,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "花种",
+        "amount": 3
+      },
+      "coin_reward": 45,
+      "emotional_note": "花田的清晨，薄雾中的颜色"
+    },
+    {
+      "id": "3-2",
+      "chapter": 3,
+      "level": 2,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_09",
+          "count": 10
+        }
+      ],
+      "max_moves": 40,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "腐殖土",
+        "amount": 3
+      },
+      "coin_reward": 47,
+      "emotional_note": "薰衣草紫，第一朵花开了"
+    },
+    {
+      "id": "3-3",
+      "chapter": 3,
+      "level": 3,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 45
+        }
+      ],
+      "max_moves": 40,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 2,
+          "positions": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石阶砖",
+        "amount": 3
+      },
+      "coin_reward": 49,
+      "emotional_note": "冰块第一次出现，试试相邻消除"
+    },
+    {
+      "id": "3-4",
+      "chapter": 3,
+      "level": 4,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 2
+        }
+      ],
+      "max_moves": 38,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浇水壶",
+        "amount": 2
+      },
+      "coin_reward": 51,
+      "emotional_note": "清冰，花田解冻了"
+    },
+    {
+      "id": "3-5",
+      "chapter": 3,
+      "level": 5,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_10",
+          "count": 10
+        }
+      ],
+      "max_moves": 40,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "花种",
+        "amount": 3
+      },
+      "coin_reward": 53,
+      "emotional_note": "粉樱，山坡的颜色"
+    },
+    {
+      "id": "3-6",
+      "chapter": 3,
+      "level": 6,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 48
+        }
+      ],
+      "max_moves": 38,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 3,
+          "positions": [
+            [
+              1,
+              4
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              4,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "腐殖土",
+        "amount": 3
+      },
+      "coin_reward": 55,
+      "emotional_note": "冰块散布，逐个解冻"
+    },
+    {
+      "id": "3-7",
+      "chapter": 3,
+      "level": 7,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 48
+        }
+      ],
+      "max_moves": 35,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 4,
+          "positions": [
+            [
+              0,
+              4
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              7,
+              4
+            ],
+            [
+              4,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "花种",
+        "amount": 4
+      },
+      "coin_reward": 55,
+      "emotional_note": "四角冰块，对称花圃"
+    },
+    {
+      "id": "3-8",
+      "chapter": 3,
+      "level": 8,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 6000
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "腐殖土",
+        "amount": 4
+      },
+      "coin_reward": 58,
+      "emotional_note": "连击声在花田里散开"
+    },
+    {
+      "id": "3-9",
+      "chapter": 3,
+      "level": 9,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 6
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 6,
+          "positions": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石阶砖",
+        "amount": 4
+      },
+      "coin_reward": 61,
+      "emotional_note": "六块冰，花田还在等待"
+    },
+    {
+      "id": "3-10",
+      "chapter": 3,
+      "level": 10,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_11",
+          "count": 12
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浇水壶",
+        "amount": 3
+      },
+      "coin_reward": 64,
+      "emotional_note": "晨雾白，清晨的质感"
+    },
+    {
+      "id": "3-11",
+      "chapter": 3,
+      "level": 11,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_12",
+          "count": 12
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "花种",
+        "amount": 5
+      },
+      "coin_reward": 67,
+      "emotional_note": "苔藓绿，山坡的底色"
+    },
+    {
+      "id": "3-12",
+      "chapter": 3,
+      "level": 12,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 50
+        },
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 4
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              5,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "腐殖土",
+        "amount": 5
+      },
+      "coin_reward": 70,
+      "emotional_note": "同时推进两个目标"
+    },
+    {
+      "id": "3-13",
+      "chapter": 3,
+      "level": 13,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 7000
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石阶砖",
+        "amount": 5
+      },
+      "coin_reward": 73,
+      "emotional_note": "高分挑战，连击是关键"
+    },
+    {
+      "id": "3-14",
+      "chapter": 3,
+      "level": 14,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_09",
+          "count": 14
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浇水壶",
+        "amount": 4
+      },
+      "coin_reward": 76,
+      "emotional_note": "薰衣草盛开，阿花快回来了"
+    },
+    {
+      "id": "3-15",
+      "chapter": 3,
+      "level": 15,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 52
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 5,
+          "positions": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              7
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              7,
+              0
+            ],
+            [
+              7,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "花种",
+        "amount": 6
+      },
+      "coin_reward": 79,
+      "emotional_note": "花田轮廓重新清晰了"
+    },
+    {
+      "id": "3-16",
+      "chapter": 3,
+      "level": 16,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 4,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "腐殖土",
+        "amount": 6
+      },
+      "coin_reward": 82,
+      "emotional_note": "三连击，阿花的歌声飘来了"
+    },
+    {
+      "id": "3-17",
+      "chapter": 3,
+      "level": 17,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 8
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 8,
+          "positions": [
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              6,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石阶砖",
+        "amount": 6
+      },
+      "coin_reward": 85,
+      "emotional_note": "大片冰封，需要耐心"
+    },
+    {
+      "id": "3-18",
+      "chapter": 3,
+      "level": 18,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 50
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 6,
+          "positions": [
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              6,
+              4
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浇水壶",
+        "amount": 5
+      },
+      "coin_reward": 80,
+      "emotional_note": "步数减少，冰还在"
+    },
+    {
+      "id": "3-19",
+      "chapter": 3,
+      "level": 19,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 8000
+        }
+      ],
+      "max_moves": 26,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "花种",
+        "amount": 7
+      },
+      "coin_reward": 84,
+      "emotional_note": "连击到底，拿满分"
+    },
+    {
+      "id": "3-20",
+      "chapter": 3,
+      "level": 20,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 8
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 48
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 8,
+          "positions": [
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              5
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              7,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "腐殖土",
+        "amount": 7
+      },
+      "coin_reward": 88,
+      "emotional_note": "双目标压力关"
+    },
+    {
+      "id": "3-21",
+      "chapter": 3,
+      "level": 21,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_10",
+          "count": 14
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_12",
+          "count": 14
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石阶砖",
+        "amount": 7
+      },
+      "coin_reward": 92,
+      "emotional_note": "粉樱与苔藓绿的对比"
+    },
+    {
+      "id": "3-22",
+      "chapter": 3,
+      "level": 22,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 5,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浇水壶",
+        "amount": 6
+      },
+      "coin_reward": 96,
+      "emotional_note": "五次三连击，花浪涌动"
+    },
+    {
+      "id": "3-23",
+      "chapter": 3,
+      "level": 23,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_05",
+        "tile_06",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 56
+        },
+        {
+          "type": "score_target",
+          "required_score": 8500
+        }
+      ],
+      "max_moves": 26,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 6,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              3,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "花种",
+        "amount": 8
+      },
+      "coin_reward": 100,
+      "emotional_note": "阿花把花束递过来，那是岛上最饱和的一抹色"
+    },
+    {
+      "id": "4-1",
+      "chapter": 4,
+      "level": 1,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 48
+        }
+      ],
+      "max_moves": 42,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "帆布",
+        "amount": 3
+      },
+      "coin_reward": 60,
+      "emotional_note": "树荫斑驳，露营地很安静"
+    },
+    {
+      "id": "4-2",
+      "chapter": 4,
+      "level": 2,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_13",
+          "count": 10
+        }
+      ],
+      "max_moves": 40,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "原木",
+        "amount": 3
+      },
+      "coin_reward": 62,
+      "emotional_note": "深林棕，森林的颜色"
+    },
+    {
+      "id": "4-3",
+      "chapter": 4,
+      "level": 3,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 48
+        }
+      ],
+      "max_moves": 40,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 2,
+          "positions": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "火石",
+        "amount": 2
+      },
+      "coin_reward": 64,
+      "emotional_note": "木箱出现了，路要绕一绕"
+    },
+    {
+      "id": "4-4",
+      "chapter": 4,
+      "level": 4,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_14",
+          "count": 10
+        }
+      ],
+      "max_moves": 38,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 3,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              6,
+              3
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "苔藓清除剂",
+        "amount": 2
+      },
+      "coin_reward": 66,
+      "emotional_note": "营火橙，篝火快点燃了"
+    },
+    {
+      "id": "4-5",
+      "chapter": 4,
+      "level": 5,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 50
+        }
+      ],
+      "max_moves": 38,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "帆布",
+        "amount": 3
+      },
+      "coin_reward": 68,
+      "emotional_note": "四角木箱，路径需要规划"
+    },
+    {
+      "id": "4-6",
+      "chapter": 4,
+      "level": 6,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 4
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 40
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              5,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "wooden_crate",
+          "count": 2,
+          "positions": [
+            [
+              0,
+              4
+            ],
+            [
+              7,
+              3
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "原木",
+        "amount": 3
+      },
+      "coin_reward": 70,
+      "emotional_note": "木箱+冰块，双重障碍"
+    },
+    {
+      "id": "4-7",
+      "chapter": 4,
+      "level": 7,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 50
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "帆布",
+        "amount": 4
+      },
+      "coin_reward": 75,
+      "emotional_note": "木箱围成了一个空心方块"
+    },
+    {
+      "id": "4-8",
+      "chapter": 4,
+      "level": 8,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 7000
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 3,
+          "positions": [
+            [
+              0,
+              3
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              7,
+              4
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "原木",
+        "amount": 4
+      },
+      "coin_reward": 78,
+      "emotional_note": "绕路反而找到了连击"
+    },
+    {
+      "id": "4-9",
+      "chapter": 4,
+      "level": 9,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_15",
+          "count": 12
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "火石",
+        "amount": 3
+      },
+      "coin_reward": 81,
+      "emotional_note": "星空靛，夜幕要降临了"
+    },
+    {
+      "id": "4-10",
+      "chapter": 4,
+      "level": 10,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_16",
+          "count": 12
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "苔藓清除剂",
+        "amount": 3
+      },
+      "coin_reward": 84,
+      "emotional_note": "萤光绿，树丛间的小光点"
+    },
+    {
+      "id": "4-11",
+      "chapter": 4,
+      "level": 11,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 52
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 5,
+          "positions": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              6,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "帆布",
+        "amount": 5
+      },
+      "coin_reward": 87,
+      "emotional_note": "五个木箱，路变窄了"
+    },
+    {
+      "id": "4-12",
+      "chapter": 4,
+      "level": 12,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 6
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 6,
+          "positions": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "wooden_crate",
+          "count": 2,
+          "positions": [
+            [
+              3,
+              3
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "原木",
+        "amount": 5
+      },
+      "coin_reward": 90,
+      "emotional_note": "冰块与木箱共存"
+    },
+    {
+      "id": "4-13",
+      "chapter": 4,
+      "level": 13,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 8000
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              1
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              5,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "火石",
+        "amount": 4
+      },
+      "coin_reward": 93,
+      "emotional_note": "高分+绕行，需要双线思维"
+    },
+    {
+      "id": "4-14",
+      "chapter": 4,
+      "level": 14,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_13",
+          "count": 14
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_14",
+          "count": 14
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 3,
+          "positions": [
+            [
+              0,
+              0
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              7,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "苔藓清除剂",
+        "amount": 4
+      },
+      "coin_reward": 96,
+      "emotional_note": "深林棕配营火橙，篝火燃了"
+    },
+    {
+      "id": "4-15",
+      "chapter": 4,
+      "level": 15,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 4,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "帆布",
+        "amount": 6
+      },
+      "coin_reward": 99,
+      "emotional_note": "三连击，阿林把地图翻正了"
+    },
+    {
+      "id": "4-16",
+      "chapter": 4,
+      "level": 16,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 54
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 6,
+          "positions": [
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              7
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              6,
+              4
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "原木",
+        "amount": 6
+      },
+      "coin_reward": 102,
+      "emotional_note": "六个木箱，路径规划到极致"
+    },
+    {
+      "id": "4-17",
+      "chapter": 4,
+      "level": 17,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 9000
+        },
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 3,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "火石",
+        "amount": 5
+      },
+      "coin_reward": 105,
+      "emotional_note": "高分+连击，篝火要点了"
+    },
+    {
+      "id": "4-18",
+      "chapter": 4,
+      "level": 18,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 52
+        }
+      ],
+      "max_moves": 26,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 6,
+          "positions": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "苔藓清除剂",
+        "amount": 5
+      },
+      "coin_reward": 100,
+      "emotional_note": "木箱变多，步数变少"
+    },
+    {
+      "id": "4-19",
+      "chapter": 4,
+      "level": 19,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 10000
+        }
+      ],
+      "max_moves": 24,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "帆布",
+        "amount": 7
+      },
+      "coin_reward": 105,
+      "emotional_note": "满分挑战，连击到底"
+    },
+    {
+      "id": "4-20",
+      "chapter": 4,
+      "level": 20,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 8
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 48
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 8,
+          "positions": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              7
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              7,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "wooden_crate",
+          "count": 3,
+          "positions": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "原木",
+        "amount": 7
+      },
+      "coin_reward": 110,
+      "emotional_note": "冰+木箱，最强组合"
+    },
+    {
+      "id": "4-21",
+      "chapter": 4,
+      "level": 21,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_15",
+          "count": 14
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_16",
+          "count": 14
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "火石",
+        "amount": 6
+      },
+      "coin_reward": 115,
+      "emotional_note": "星空靛+萤光绿，夜晚降临"
+    },
+    {
+      "id": "4-22",
+      "chapter": 4,
+      "level": 22,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 5,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              1,
+              2
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "苔藓清除剂",
+        "amount": 6
+      },
+      "coin_reward": 120,
+      "emotional_note": "五次三连击，阿林终于让人看清了脸"
+    },
+    {
+      "id": "4-23",
+      "chapter": 4,
+      "level": 23,
+      "grid_size": [
+        8,
+        8
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 56
+        },
+        {
+          "type": "score_target",
+          "required_score": 10000
+        }
+      ],
+      "max_moves": 24,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 5,
+          "positions": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "帆布",
+        "amount": 8
+      },
+      "coin_reward": 125,
+      "emotional_note": "篝火第一次燃起，阿林抬头看星空"
+    },
+    {
+      "id": "5-1",
+      "chapter": 5,
+      "level": 1,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 55
+        }
+      ],
+      "max_moves": 45,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "导水管",
+        "amount": 3
+      },
+      "coin_reward": 80,
+      "emotional_note": "温泉山谷，水雾轻轻弥漫"
+    },
+    {
+      "id": "5-2",
+      "chapter": 5,
+      "level": 2,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_17",
+          "count": 12
+        }
+      ],
+      "max_moves": 43,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "防滑石板",
+        "amount": 3
+      },
+      "coin_reward": 82,
+      "emotional_note": "温泉白，像浴池边的蒸汽"
+    },
+    {
+      "id": "5-3",
+      "chapter": 5,
+      "level": 3,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 55
+        }
+      ],
+      "max_moves": 43,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 2,
+          "positions": [
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              8
+            ]
+          ],
+          "direction": "horizontal"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浴池填缝料",
+        "amount": 2
+      },
+      "coin_reward": 84,
+      "emotional_note": "水流出现了，路径会变"
+    },
+    {
+      "id": "5-4",
+      "chapter": 5,
+      "level": 4,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_18",
+          "count": 12
+        }
+      ],
+      "max_moves": 42,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "香草束",
+        "amount": 2
+      },
+      "coin_reward": 86,
+      "emotional_note": "矿物蓝，温泉的颜色"
+    },
+    {
+      "id": "5-5",
+      "chapter": 5,
+      "level": 5,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 58
+        }
+      ],
+      "max_moves": 42,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 3,
+          "positions": [
+            [
+              2,
+              4
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              8,
+              4
+            ]
+          ],
+          "direction": "vertical"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "导水管",
+        "amount": 3
+      },
+      "coin_reward": 88,
+      "emotional_note": "水流改向，找新路"
+    },
+    {
+      "id": "5-6",
+      "chapter": 5,
+      "level": 6,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 4
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 48
+        }
+      ],
+      "max_moves": 40,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "water_current",
+          "count": 2,
+          "positions": [
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              8
+            ]
+          ],
+          "direction": "horizontal"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "防滑石板",
+        "amount": 3
+      },
+      "coin_reward": 90,
+      "emotional_note": "冰块+水流，温泉还在等"
+    },
+    {
+      "id": "5-7",
+      "chapter": 5,
+      "level": 7,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 58
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 3,
+          "positions": [
+            [
+              0,
+              4
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              8,
+              4
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "导水管",
+        "amount": 4
+      },
+      "coin_reward": 95,
+      "emotional_note": "水流围绕中心，绕行有趣"
+    },
+    {
+      "id": "5-8",
+      "chapter": 5,
+      "level": 8,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 8000
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 3,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "防滑石板",
+        "amount": 4
+      },
+      "coin_reward": 99,
+      "emotional_note": "木箱+得分，多线操作"
+    },
+    {
+      "id": "5-9",
+      "chapter": 5,
+      "level": 9,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_17",
+          "count": 14
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 4,
+          "positions": [
+            [
+              1,
+              4
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              4,
+              7
+            ],
+            [
+              7,
+              4
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浴池填缝料",
+        "amount": 3
+      },
+      "coin_reward": 103,
+      "emotional_note": "温泉白，水雾越来越浓"
+    },
+    {
+      "id": "5-10",
+      "chapter": 5,
+      "level": 10,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 60
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 3,
+          "positions": [
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              6,
+              4
+            ]
+          ],
+          "direction": "varies"
+        },
+        {
+          "id": "ice_block",
+          "count": 4,
+          "positions": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              7,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "香草束",
+        "amount": 3
+      },
+      "coin_reward": 107,
+      "emotional_note": "水流+冰块，综合挑战"
+    },
+    {
+      "id": "5-11",
+      "chapter": 5,
+      "level": 11,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 9000
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              1
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              6,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "导水管",
+        "amount": 5
+      },
+      "coin_reward": 111,
+      "emotional_note": "步数减少，分数更高"
+    },
+    {
+      "id": "5-12",
+      "chapter": 5,
+      "level": 12,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_18",
+          "count": 14
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_17",
+          "count": 14
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "防滑石板",
+        "amount": 5
+      },
+      "coin_reward": 115,
+      "emotional_note": "矿物蓝配温泉白，山谷真的美"
+    },
+    {
+      "id": "5-13",
+      "chapter": 5,
+      "level": 13,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 8
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 8,
+          "positions": [
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              6
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              8
+            ],
+            [
+              6,
+              0
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              8,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "water_current",
+          "count": 2,
+          "positions": [
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              8
+            ]
+          ],
+          "direction": "horizontal"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浴池填缝料",
+        "amount": 4
+      },
+      "coin_reward": 119,
+      "emotional_note": "外圈冰封，内里水流"
+    },
+    {
+      "id": "5-14",
+      "chapter": 5,
+      "level": 14,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 4,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "香草束",
+        "amount": 4
+      },
+      "coin_reward": 123,
+      "emotional_note": "三连击，水雾升起来了"
+    },
+    {
+      "id": "5-15",
+      "chapter": 5,
+      "level": 15,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 62
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 5,
+          "positions": [
+            [
+              1,
+              4
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              4,
+              6
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              7,
+              5
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "导水管",
+        "amount": 6
+      },
+      "coin_reward": 127,
+      "emotional_note": "五个水流，动态棋盘"
+    },
+    {
+      "id": "5-16",
+      "chapter": 5,
+      "level": 16,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 10000
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 5,
+          "positions": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              7,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "防滑石板",
+        "amount": 6
+      },
+      "coin_reward": 131,
+      "emotional_note": "高分关，连击绕木箱"
+    },
+    {
+      "id": "5-17",
+      "chapter": 5,
+      "level": 17,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 62
+        },
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 6
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 6,
+          "positions": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              3,
+              7
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              6,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "water_current",
+          "count": 3,
+          "positions": [
+            [
+              0,
+              4
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              8,
+              4
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浴池填缝料",
+        "amount": 5
+      },
+      "coin_reward": 135,
+      "emotional_note": "三目标并行，阿福踩了踩石板"
+    },
+    {
+      "id": "5-18",
+      "chapter": 5,
+      "level": 18,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_17",
+          "count": 16
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              8
+            ],
+            [
+              6,
+              0
+            ],
+            [
+              6,
+              8
+            ]
+          ],
+          "direction": "vertical"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "香草束",
+        "amount": 5
+      },
+      "coin_reward": 139,
+      "emotional_note": "温泉白盛满了，水面开始映出天空"
+    },
+    {
+      "id": "5-19",
+      "chapter": 5,
+      "level": 19,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 11000
+        },
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 4,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 5,
+          "positions": [
+            [
+              1,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              7,
+              2
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "导水管",
+        "amount": 7
+      },
+      "coin_reward": 143,
+      "emotional_note": "高分+连击，温泉热气弥漫"
+    },
+    {
+      "id": "5-20",
+      "chapter": 5,
+      "level": 20,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 62
+        }
+      ],
+      "max_moves": 26,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 6,
+          "positions": [
+            [
+              0,
+              3
+            ],
+            [
+              0,
+              6
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              8
+            ],
+            [
+              8,
+              3
+            ],
+            [
+              8,
+              6
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "防滑石板",
+        "amount": 7
+      },
+      "coin_reward": 145,
+      "emotional_note": "六个水流，棋盘不断变化"
+    },
+    {
+      "id": "5-21",
+      "chapter": 5,
+      "level": 21,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 12000
+        }
+      ],
+      "max_moves": 24,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浴池填缝料",
+        "amount": 6
+      },
+      "coin_reward": 151,
+      "emotional_note": "最高分挑战，全程连击"
+    },
+    {
+      "id": "5-22",
+      "chapter": 5,
+      "level": 22,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 10
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 56
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 10,
+          "positions": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              4
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              8
+            ],
+            [
+              8,
+              0
+            ],
+            [
+              8,
+              4
+            ],
+            [
+              8,
+              8
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              6,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "wooden_crate",
+          "count": 3,
+          "positions": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "香草束",
+        "amount": 6
+      },
+      "coin_reward": 157,
+      "emotional_note": "外圈全冰封"
+    },
+    {
+      "id": "5-23",
+      "chapter": 5,
+      "level": 23,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_18",
+          "count": 16
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_17",
+          "count": 16
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              8
+            ],
+            [
+              6,
+              0
+            ],
+            [
+              6,
+              8
+            ]
+          ],
+          "direction": "horizontal"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "导水管",
+        "amount": 8
+      },
+      "coin_reward": 163,
+      "emotional_note": "双白色系，温泉水清澈"
+    },
+    {
+      "id": "5-24",
+      "chapter": 5,
+      "level": 24,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 6,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "防滑石板",
+        "amount": 8
+      },
+      "coin_reward": 169,
+      "emotional_note": "六次三连击，阿福慢悠悠滑进温泉"
+    },
+    {
+      "id": "5-25",
+      "chapter": 5,
+      "level": 25,
+      "grid_size": [
+        9,
+        9
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 66
+        },
+        {
+          "type": "score_target",
+          "required_score": 12000
+        }
+      ],
+      "max_moves": 24,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 5,
+          "positions": [
+            [
+              1,
+              4
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              7
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              8,
+              4
+            ]
+          ],
+          "direction": "varies"
+        },
+        {
+          "id": "ice_block",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "浴池填缝料",
+        "amount": 7
+      },
+      "coin_reward": 175,
+      "emotional_note": "温泉水映出天空，阿福说『老喽，但还不错』"
+    },
+    {
+      "id": "6-1",
+      "chapter": 6,
+      "level": 1,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 65
+        }
+      ],
+      "max_moves": 50,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯芯",
+        "amount": 3
+      },
+      "coin_reward": 110,
+      "emotional_note": "灯塔脚下，深蓝夜色里站着阿明"
+    },
+    {
+      "id": "6-2",
+      "chapter": 6,
+      "level": 2,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_19",
+          "count": 12
+        }
+      ],
+      "max_moves": 48,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯油",
+        "amount": 3
+      },
+      "coin_reward": 113,
+      "emotional_note": "夜深蓝，像灯塔外壁的颜色"
+    },
+    {
+      "id": "6-3",
+      "chapter": 6,
+      "level": 3,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_20",
+          "count": 12
+        }
+      ],
+      "max_moves": 48,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "玻璃碎片",
+        "amount": 2
+      },
+      "coin_reward": 116,
+      "emotional_note": "灯塔金，灯还没点上，但已经感觉到了"
+    },
+    {
+      "id": "6-4",
+      "chapter": 6,
+      "level": 4,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 68
+        }
+      ],
+      "max_moves": 46,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 3,
+          "positions": [
+            [
+              0,
+              5
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              9,
+              5
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "铁锻件",
+        "amount": 2
+      },
+      "coin_reward": 119,
+      "emotional_note": "水流绕灯塔，路径漫长"
+    },
+    {
+      "id": "6-5",
+      "chapter": 6,
+      "level": 5,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 4
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 58
+        }
+      ],
+      "max_moves": 46,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              7,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石灰涂料",
+        "amount": 2
+      },
+      "coin_reward": 122,
+      "emotional_note": "四角冰封，灯塔外壁等待修复"
+    },
+    {
+      "id": "6-6",
+      "chapter": 6,
+      "level": 6,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 70
+        }
+      ],
+      "max_moves": 44,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯芯",
+        "amount": 3
+      },
+      "coin_reward": 125,
+      "emotional_note": "木箱布阵，楼梯断了几级"
+    },
+    {
+      "id": "6-7",
+      "chapter": 6,
+      "level": 7,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 70
+        }
+      ],
+      "max_moves": 38,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              5
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              8,
+              5
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯芯",
+        "amount": 4
+      },
+      "coin_reward": 130,
+      "emotional_note": "水流四方，路径在夜色中浮现"
+    },
+    {
+      "id": "6-8",
+      "chapter": 6,
+      "level": 8,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 10000
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              7,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯油",
+        "amount": 4
+      },
+      "coin_reward": 135,
+      "emotional_note": "绕木箱求高分"
+    },
+    {
+      "id": "6-9",
+      "chapter": 6,
+      "level": 9,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_20",
+          "count": 14
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 3,
+          "positions": [
+            [
+              1,
+              5
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              5,
+              9
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "玻璃碎片",
+        "amount": 3
+      },
+      "coin_reward": 140,
+      "emotional_note": "灯塔金越来越多，灯室快擦干净了"
+    },
+    {
+      "id": "6-10",
+      "chapter": 6,
+      "level": 10,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 72
+        },
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 6
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 6,
+          "positions": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              8
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "water_current",
+          "count": 3,
+          "positions": [
+            [
+              0,
+              4
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              9,
+              5
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "铁锻件",
+        "amount": 3
+      },
+      "coin_reward": 145,
+      "emotional_note": "冰块+水流，双重动态"
+    },
+    {
+      "id": "6-11",
+      "chapter": 6,
+      "level": 11,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 11000
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 5,
+          "positions": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              8
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              8,
+              1
+            ],
+            [
+              8,
+              8
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石灰涂料",
+        "amount": 3
+      },
+      "coin_reward": 150,
+      "emotional_note": "木箱迷宫，高分在深处"
+    },
+    {
+      "id": "6-12",
+      "chapter": 6,
+      "level": 12,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 4,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯芯",
+        "amount": 5
+      },
+      "coin_reward": 155,
+      "emotional_note": "三连击，玻璃被一块块擦净了"
+    },
+    {
+      "id": "6-13",
+      "chapter": 6,
+      "level": 13,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_19",
+          "count": 14
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_20",
+          "count": 14
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              9
+            ],
+            [
+              7,
+              0
+            ],
+            [
+              7,
+              9
+            ]
+          ],
+          "direction": "vertical"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯油",
+        "amount": 5
+      },
+      "coin_reward": 160,
+      "emotional_note": "夜深蓝+灯塔金，等待点灯"
+    },
+    {
+      "id": "6-14",
+      "chapter": 6,
+      "level": 14,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 8
+        }
+      ],
+      "max_moves": 38,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 8,
+          "positions": [
+            [
+              0,
+              3
+            ],
+            [
+              0,
+              6
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              9
+            ],
+            [
+              6,
+              0
+            ],
+            [
+              6,
+              9
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              9,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "wooden_crate",
+          "count": 3,
+          "positions": [
+            [
+              4,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "玻璃碎片",
+        "amount": 4
+      },
+      "coin_reward": 165,
+      "emotional_note": "外圈八块冰，中心木箱"
+    },
+    {
+      "id": "6-15",
+      "chapter": 6,
+      "level": 15,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 12000
+        },
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 4,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 4,
+          "positions": [
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              9
+            ],
+            [
+              6,
+              0
+            ],
+            [
+              6,
+              9
+            ]
+          ],
+          "direction": "horizontal"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "铁锻件",
+        "amount": 4
+      },
+      "coin_reward": 170,
+      "emotional_note": "连击+高分，灯芯已换好"
+    },
+    {
+      "id": "6-16",
+      "chapter": 6,
+      "level": 16,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 75
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "wooden_crate",
+          "count": 6,
+          "positions": [
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              8
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              8,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "water_current",
+          "count": 3,
+          "positions": [
+            [
+              0,
+              5
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              9,
+              5
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石灰涂料",
+        "amount": 4
+      },
+      "coin_reward": 175,
+      "emotional_note": "六箱+三流，路径是谜"
+    },
+    {
+      "id": "6-17",
+      "chapter": 6,
+      "level": 17,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_20",
+          "count": 16
+        }
+      ],
+      "max_moves": 30,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 5,
+          "positions": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              9
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              8,
+              0
+            ],
+            [
+              8,
+              9
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯芯",
+        "amount": 6
+      },
+      "coin_reward": 180,
+      "emotional_note": "灯塔金快满了，灯油也注好了"
+    },
+    {
+      "id": "6-18",
+      "chapter": 6,
+      "level": 18,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 10
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 66
+        }
+      ],
+      "max_moves": 36,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 10,
+          "positions": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              5
+            ],
+            [
+              0,
+              9
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              9
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              9,
+              0
+            ],
+            [
+              9,
+              5
+            ],
+            [
+              9,
+              9
+            ]
+          ]
+        },
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯油",
+        "amount": 6
+      },
+      "coin_reward": 185,
+      "emotional_note": "十块冰封+木箱，最复杂障碍关"
+    },
+    {
+      "id": "6-19",
+      "chapter": 6,
+      "level": 19,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 13000
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "玻璃碎片",
+        "amount": 5
+      },
+      "coin_reward": 190,
+      "emotional_note": "连击不断，阿明手握点火装置"
+    },
+    {
+      "id": "6-20",
+      "chapter": 6,
+      "level": 20,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 75
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 6,
+          "positions": [
+            [
+              1,
+              4
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              8,
+              3
+            ],
+            [
+              9,
+              5
+            ]
+          ],
+          "direction": "varies"
+        },
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              7,
+              7
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "铁锻件",
+        "amount": 6
+      },
+      "coin_reward": 195,
+      "emotional_note": "六水流四木箱，黎明前最深的夜"
+    },
+    {
+      "id": "6-21",
+      "chapter": 6,
+      "level": 21,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "score_target",
+          "required_score": 15000
+        }
+      ],
+      "max_moves": 26,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "石灰涂料",
+        "amount": 6
+      },
+      "coin_reward": 203,
+      "emotional_note": "终极高分，连击到极限"
+    },
+    {
+      "id": "6-22",
+      "chapter": 6,
+      "level": 22,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "obstacle_clear",
+          "obstacle_type": "ice_block",
+          "required_clear_count": 12
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 72
+        }
+      ],
+      "max_moves": 34,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "ice_block",
+          "count": 12,
+          "positions": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              4
+            ],
+            [
+              0,
+              7
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              9
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              7,
+              0
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              9,
+              4
+            ],
+            [
+              9,
+              7
+            ]
+          ]
+        },
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯芯",
+        "amount": 8
+      },
+      "coin_reward": 211,
+      "emotional_note": "十二块冰，最终冰封挑战"
+    },
+    {
+      "id": "6-23",
+      "chapter": 6,
+      "level": 23,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_19",
+          "count": 18
+        },
+        {
+          "type": "clear_tiles",
+          "tile_type": "tile_20",
+          "count": 18
+        }
+      ],
+      "max_moves": 28,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 5,
+          "positions": [
+            [
+              0,
+              5
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              5,
+              9
+            ],
+            [
+              7,
+              0
+            ],
+            [
+              9,
+              4
+            ]
+          ],
+          "direction": "varies"
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "灯油",
+        "amount": 8
+      },
+      "coin_reward": 219,
+      "emotional_note": "夜深蓝与灯塔金，各18块"
+    },
+    {
+      "id": "6-24",
+      "chapter": 6,
+      "level": 24,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 6,
+          "min_combo_threshold": 4
+        }
+      ],
+      "max_moves": 32,
+      "initial_board": null,
+      "obstacles": [],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "玻璃碎片",
+        "amount": 7
+      },
+      "coin_reward": 227,
+      "emotional_note": "六次四连击，最强连击挑战"
+    },
+    {
+      "id": "6-25",
+      "chapter": 6,
+      "level": 25,
+      "grid_size": [
+        10,
+        10
+      ],
+      "tile_types": [
+        "tile_01",
+        "tile_02",
+        "tile_03",
+        "tile_04",
+        "tile_09",
+        "tile_10",
+        "tile_11",
+        "tile_12",
+        "tile_13",
+        "tile_14",
+        "tile_15",
+        "tile_16",
+        "tile_17",
+        "tile_18",
+        "tile_19",
+        "tile_20"
+      ],
+      "objectives": [
+        {
+          "type": "clear_tiles",
+          "tile_type": "any",
+          "count": 80
+        },
+        {
+          "type": "score_target",
+          "required_score": 15000
+        },
+        {
+          "type": "combo_challenge",
+          "required_combo_count": 4,
+          "min_combo_threshold": 3
+        }
+      ],
+      "max_moves": 24,
+      "initial_board": null,
+      "obstacles": [
+        {
+          "id": "water_current",
+          "count": 6,
+          "positions": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              9
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              9
+            ],
+            [
+              8,
+              0
+            ],
+            [
+              8,
+              9
+            ]
+          ],
+          "direction": "horizontal"
+        },
+        {
+          "id": "ice_block",
+          "count": 6,
+          "positions": [
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              7
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              8,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "wooden_crate",
+          "count": 4,
+          "positions": [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      ],
+      "special_blocks": [],
+      "board_events": [
+        "tile_gravity"
+      ],
+      "material_reward": {
+        "type": "铁锻件",
+        "amount": 10
+      },
+      "coin_reward": 235,
+      "emotional_note": "灯塔亮起的瞬间，光柱扫过整片海面，岛上所有区域都被照亮了"
+    }
+  ]
+}

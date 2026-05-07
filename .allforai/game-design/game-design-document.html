@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 游戏设计文档（GDD）</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d26;
+      --border: #2a2d3a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --accent2: #86efac;
+      --heading: #f8fafc;
+      --code-bg: #12141c;
+      --tag-bg: #1e3a5f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 0 1rem 4rem;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      margin: 0 -1rem 2.5rem;
+      text-align: center;
+    }
+    .page-header .project-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125,211,252,0.25);
+      margin-bottom: 0.9rem;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--heading);
+      text-shadow: 0 0 40px rgba(125,211,252,0.2);
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--heading);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+    h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
+    h3 { font-size: 1.1rem; color: var(--accent2); }
+    h4 { font-size: 1rem; color: var(--muted); }
+    p { margin: 0.6rem 0 0.9rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { color: var(--heading); font-weight: 600; }
+    em { color: var(--accent2); font-style: normal; }
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      color: var(--muted);
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.87em;
+      background: var(--code-bg);
+      color: var(--accent2);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.4rem;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    ul, ol {
+      padding-left: 1.6rem;
+      margin: 0.5rem 0 1rem;
+    }
+    li { margin: 0.3rem 0; }
+    li > ul, li > ol { margin: 0.2rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    tr:hover td { background: rgba(125,211,252,0.04); }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="project-tag">Glow Island · 发光岛</div>
+    <h1>Glow Island — 游戏设计文档（GDD）</h1>
+  </div>
+  <div class="container">
+<h1 id="glow-island-gdd">Glow Island — 游戏设计文档（GDD）</h1>
+<blockquote>
+<p>版本：1.0 | 日期：2026-05-07 | 状态：已确认</p>
+</blockquote>
+<hr />
+<h2 id="_1">目录</h2>
+<ol>
+<li>游戏定位</li>
+<li>核心体验目标</li>
+<li>核心循环（Core Loop）</li>
+<li>元循环（Meta Loop）</li>
+<li>六章节概览</li>
+<li>特殊系统规格</li>
+<li>关卡设计原则</li>
+<li>音频与视觉方向</li>
+<li>商业化策略概述</li>
+<li>成功指标</li>
+</ol>
+<hr />
+<h2 id="1">1. 游戏定位</h2>
+<h3 id="_2">一句话定位</h3>
+<blockquote>
+<p>一款治愈系连连看手游——用光和连接，把一座沉睡的小岛唤醒。</p>
+</blockquote>
+<h3 id="_3">三句话展开</h3>
+<p>Glow Island 是以步数制连连看为核心机制的休闲手游，玩家通过连接同色图块积累光能，驱动光辉岛各区域从荒芜逐步恢复为生机盎然的美丽景象。游戏无体力系统、无倒计时压力、无强制社交义务，以真正的自由游玩节奏兑现治愈承诺，并通过精心打磨的渐进式视觉修复动画和温情叙事提供竞品无法复制的情感成就感。额外的禅境模式为寻求纯放松的玩家提供零失败压力的消除空间，成为连连看品类中罕见的"真·治愈"产品。</p>
+<h3 id="_4">品类定位</h3>
+<ul>
+<li><strong>品类</strong>：治愈系休闲连连看（Healing Casual Tile-Connect）</li>
+<li><strong>平台</strong>：iOS / WebGL</li>
+<li><strong>目标用户</strong>：25-40岁，偏好低压力放松体验的都市休闲玩家</li>
+<li><strong>情感关键词</strong>：温柔、治愈、成就感、慢下来、自由</li>
+</ul>
+<hr />
+<h2 id="2">2. 核心体验目标</h2>
+<p>基于自我决定理论（Deci &amp; Ryan），Glow Island 的三重内在动机设计：</p>
+<table>
+<thead>
+<tr>
+<th>动机维度</th>
+<th>设计响应</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>自主（Autonomy）</strong></td>
+<td>无体力门控、随时进出、禅境模式可自由选择、季节内容免费开放</td>
+</tr>
+<tr>
+<td><strong>胜任（Competence）</strong></td>
+<td>平滑难度曲线、连击反馈系统、4种特殊块赋予策略感、失败不惩罚资源</td>
+</tr>
+<tr>
+<td><strong>关联（Relatedness）</strong></td>
+<td>NPC温情叙事、岛屿记忆时间胶囊的情感积累、修复动画带来的"我让它改变了"的归属感</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-core-loop">3. 核心循环（Core Loop）</h2>
+<blockquote>
+<p>局内时长：30秒 - 3分钟/关</p>
+</blockquote>
+<pre><code>进入关卡
+    ↓
+观察棋盘布局（图块颜色/位置/特殊块分布）
+    ↓
+规划连接路径（同色图块连线，路径可弯折，最短2个）
+    ↓
+触发消除 → 即时反馈（音效 + 粒子特效 + 连击计数）
+    ↓
+连击积累 → 触发特殊块生成/光能加成
+    ↓
+消除目标图块 / 达成关卡目标
+    ↓
+关卡结算（星级评定 / 材料掉落 / 光能积累）
+    ↓
+返回岛屿世界地图
+</code></pre>
+<h3 id="_5">核心循环设计原则</h3>
+<ul>
+<li><strong>步数制，非时间制</strong>：每关有步数上限，压力来自策略而非焦虑</li>
+<li><strong>连线自由度</strong>：连线路径可弯折绕行（非直线限制），增加策略空间</li>
+<li><strong>即时反馈</strong>：每次连接触发专属音效和粒子效果，形成上瘾性微奖励循环</li>
+<li><strong>失败宽容</strong>：步数耗尽仅回到关卡起点，不扣材料、不消耗体力</li>
+<li><strong>连击奖励</strong>：连续消除同色图块触发连击乘数，3连击以上生成随机特殊块</li>
+</ul>
+<hr />
+<h2 id="4-meta-loop">4. 元循环（Meta Loop）</h2>
+<blockquote>
+<p>局外周期：单次修复动画30秒 - 2分钟，区域完整修复跨越数天游玩</p>
+</blockquote>
+<pre><code>通关关卡
+    ↓
+获得材料掉落（浮木/绳索/花种等，对应章节主题）+ 光能积累
+    ↓
+材料自动轻合成（无复杂配方，系统自动聚合同类材料）
+    ↓
+区域修复进度条推进
+    ↓
+达到阶段阈值 → 触发渐进式修复动画（4阶段之一）
+    ↓
+Glow图块光能积累满阈值 → 触发区域&quot;点亮&quot;视觉特效
+    ↓
+章节完整修复 → 解锁NPC标志性时刻动画 + 下一章节入口
+    ↓
+解锁新关卡包 → 新图块种类 / 新棋盘主题 / 新障碍类型
+</code></pre>
+<h3 id="_6">元循环设计原则</h3>
+<ul>
+<li><strong>进度可感知</strong>：每次关卡结算后立即可见岛屿变化，无需等待</li>
+<li><strong>轻量无负担</strong>：材料系统无库存管理压力，满包自动合成，不造成选择疲劳</li>
+<li><strong>情感奖励密度</strong>：每4-8个关卡触发一次可见的视觉变化，确保玩家长期有期待感</li>
+<li><strong>叙事驱动进度</strong>：每个修复阶段与NPC行为/环境细节深度绑定，进度不只是数字</li>
+</ul>
+<hr />
+<h2 id="5">5. 六章节概览</h2>
+<h3 id="_7">章节设计概览表</h3>
+<table>
+<thead>
+<tr>
+<th>章节</th>
+<th>区域名称</th>
+<th>情绪主题</th>
+<th>解锁条件</th>
+<th>NPC</th>
+<th>标志性视觉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第1章</td>
+<td>海边码头</td>
+<td>悠闲</td>
+<td>关卡1（游戏开始）</td>
+<td>渔夫·阿海</td>
+<td>夕阳下第一艘小船回港，阿海系好缆绳，沉默地笑</td>
+</tr>
+<tr>
+<td>第2章</td>
+<td>中央小镇</td>
+<td>温暖</td>
+<td>关卡15通关</td>
+<td>无专属NPC</td>
+<td>中央喷泉第一次出水，落叶绕着水柱旋转飘走</td>
+</tr>
+<tr>
+<td>第3章</td>
+<td>花田山坡</td>
+<td>治愈</td>
+<td>关卡30通关</td>
+<td>花农·阿花</td>
+<td>阿花递出一束半开的花，颜色是全岛最饱和的一抹</td>
+</tr>
+<tr>
+<td>第4章</td>
+<td>森林露营地</td>
+<td>安静</td>
+<td>关卡45通关</td>
+<td>背包客·阿林</td>
+<td>篝火燃起，阿林抬头看星空，摘下帽子——唯一一次让人看清脸</td>
+</tr>
+<tr>
+<td>第5章</td>
+<td>温泉山谷</td>
+<td>放松</td>
+<td>关卡60通关</td>
+<td>温泉老人·阿福</td>
+<td>温泉清澈后映出天空，阿福俯身看倒影笑说"老喽，但还不错"</td>
+</tr>
+<tr>
+<td>第6章</td>
+<td>夜晚灯塔</td>
+<td>孤独中的温暖</td>
+<td>关卡80通关</td>
+<td>灯塔守护者·阿明</td>
+<td>灯塔点亮，光柱扫过全岛五个修复区域，阿明说"它等了很久了"，肩膀微颤</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_8">章节情绪递进逻辑</h3>
+<pre><code>悠闲（到来/接触）→ 温暖（安定/归属）→ 治愈（感受/共鸣）
+    → 安静（内省/栖息）→ 放松（接纳/沉浸）→ 孤独中的温暖（完成/意义）
+</code></pre>
+<h3 id="_9">各章节视觉色调</h3>
+<ul>
+<li><strong>第1章</strong>：淡蓝+米白，阳光斜射，明亮但饱和度低</li>
+<li><strong>第2章</strong>：暖黄+橙褐，午后阳光打在石板路上</li>
+<li><strong>第3章</strong>：粉紫+草绿，漫山花海，薄雾清晨感</li>
+<li><strong>第4章</strong>：深绿+棕褐，树荫斑驳，晚风带凉意</li>
+<li><strong>第5章</strong>：珍珠白+雾蓝，水雾弥漫，矿物质气息</li>
+<li><strong>第6章</strong>：深蓝夜色+暖黄灯光，一束光切开黑暗</li>
+</ul>
+<hr />
+<h2 id="6">6. 特殊系统规格</h2>
+<h3 id="61">6.1 四种特殊图块</h3>
+<table>
+<thead>
+<tr>
+<th>图块名称</th>
+<th>触发方式</th>
+<th>效果</th>
+<th>视觉表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>炸弹块（Bomb Tile）</strong></td>
+<td>连接5个同色图块</td>
+<td>消除以其为中心的3×3范围内所有图块</td>
+<td>橙色闪光球体，激活时爆炸粒子效果</td>
+</tr>
+<tr>
+<td><strong>闪电块（Lightning Tile）</strong></td>
+<td>连接6个同色图块</td>
+<td>消除同行或同列所有图块（激活时玩家选择方向）</td>
+<td>电弧纹理，激活时白色闪光条横扫</td>
+</tr>
+<tr>
+<td><strong>彩虹块（Rainbow Tile）</strong></td>
+<td>连接7个同色图块 或 特定关卡奖励</td>
+<td>作为通配符与任意颜色图块连接匹配</td>
+<td>七彩流光，消除时彩虹粒子爆发</td>
+</tr>
+<tr>
+<td><strong>Glow发光块（Glow Tile）</strong></td>
+<td>随机散布于关卡棋盘</td>
+<td>连接时产生"光链"效果，光能奖励×3，触发相邻图块短暂发光</td>
+<td>金色/彩色光晕脉冲，连接时光链动画流向岛屿</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62">6.2 动态棋盘事件</h3>
+<p>特定关卡（每章约1/5的关卡触发）会随机发生棋盘动态事件，强化章节主题沉浸感：</p>
+<table>
+<thead>
+<tr>
+<th>章节</th>
+<th>棋盘事件</th>
+<th>效果描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第1章</td>
+<td>海浪涌上棋盘</td>
+<td>每3步，棋盘最底行随机"被海浪冲走"1个图块，需重新规划路径</td>
+</tr>
+<tr>
+<td>第2章</td>
+<td>灯笼点亮</td>
+<td>棋盘中随机1-2格亮起橙色光晕，该格图块与任意相邻色连接时奖励步数+1</td>
+</tr>
+<tr>
+<td>第3章</td>
+<td>花瓣飘落</td>
+<td>每5步，随机1个位置飘落花瓣图块，连接时额外掉落花种材料</td>
+</tr>
+<tr>
+<td>第4章</td>
+<td>萤火虫飞过</td>
+<td>萤火虫短暂照亮被遮挡/障碍覆盖的图块颜色，持续2步</td>
+</tr>
+<tr>
+<td>第5章</td>
+<td>水雾弥漫</td>
+<td>棋盘中央3×3区域图块颜色被雾气遮住，需从周边区域推断颜色</td>
+</tr>
+<tr>
+<td>第6章</td>
+<td>灯塔光扫过</td>
+<td>每8步，光柱扫过棋盘，照亮一整行图块并触发该行所有Glow块的光能奖励</td>
+</tr>
+</tbody>
+</table>
+<h3 id="63">6.3 障碍系统</h3>
+<table>
+<thead>
+<tr>
+<th>障碍类型</th>
+<th>出现章节</th>
+<th>清除方式</th>
+<th>设计意图</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>锁链图块</strong></td>
+<td>第1章引入</td>
+<td>连接该图块所在的消除路径2次</td>
+<td>基础策略阻碍，引导玩家规划路径优先级</td>
+</tr>
+<tr>
+<td><strong>泥沼覆盖</strong></td>
+<td>第2章引入</td>
+<td>连接覆盖格的图块消除</td>
+<td>限制连线可用格数，逼迫玩家绕路规划</td>
+</tr>
+<tr>
+<td><strong>冰封图块</strong></td>
+<td>第3章引入</td>
+<td>消除相邻图块3次解冻</td>
+<td>引入"边际消除"策略，增加关卡维度</td>
+</tr>
+<tr>
+<td><strong>双色迷雾</strong></td>
+<td>第5章引入</td>
+<td>使用彩虹块或同时连接两种颜色</td>
+<td>高难度策略元素，仅出现于后期关卡</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7">7. 关卡设计原则</h2>
+<h3 id="71">7.1 难度曲线设计</h3>
+<ul>
+<li><strong>前15关（教学阶段）</strong>：每关引入1个新概念，不组合，给予充足步数</li>
+<li><strong>16-45关（成长阶段）</strong>：组合机制，适度减少步数裕量，连击奖励设计明确</li>
+<li><strong>46-80关（挑战阶段）</strong>：障碍组合，动态事件引入，部分关卡设计"完美路径"</li>
+<li><strong>80关后（内容阶段）</strong>：复杂棋盘布局，多目标同时达成，禅境模式持续提供放松出口</li>
+</ul>
+<h3 id="72-15-20">7.2 关卡类型分布（每章15-20关）</h3>
+<ul>
+<li><strong>故事关（25%）</strong>：推进NPC叙事，步数宽松，以视觉奖励为主</li>
+<li><strong>普通关（55%）</strong>：标准连线消除，阶梯难度，步数适中</li>
+<li><strong>挑战关（15%）</strong>：限制步数+多障碍，通关奖励额外材料</li>
+<li><strong>禅境关（5%）</strong>：每章2-3关，每日随机开放，无步数无失败</li>
+</ul>
+<h3 id="73">7.3 失败设计原则</h3>
+<ul>
+<li>失败后不弹出购买提示（连续失败2次内）</li>
+<li>第3次失败后，以非侵入方式提示"是否使用助攻器"（场景化提示，非弹窗打断）</li>
+<li>提供"跳过关卡"选项（消耗丹青石），但数量显示透明，杜绝隐藏定价</li>
+</ul>
+<hr />
+<h2 id="8">8. 音频与视觉方向</h2>
+<h3 id="81">8.1 视觉设计方向</h3>
+<ul>
+<li><strong>美术风格</strong>：褪色水彩风，恢复前灰调低饱和，恢复后逐步提升色彩饱和度</li>
+<li><strong>光影效果</strong>：阳光总是"下午三点的温柔斜射"，夜晚以暖黄灯光为主</li>
+<li><strong>修复动画</strong>：每阶段修复动画时长8-15秒，采用Spine动画驱动，植物生长/水流/光效扩散</li>
+<li><strong>UI设计</strong>：简洁克制，棋盘区域占屏幕70%以上，UI元素退至边缘，不遮挡沉浸感</li>
+<li><strong>禅境模式视觉</strong>：饱和度进一步提升，边框用光晕替代线条，整体柔化处理</li>
+</ul>
+<h3 id="82">8.2 音频设计方向</h3>
+<ul>
+<li><strong>环境音分层</strong>：海浪声（底层持续）+ 章节特色音（鸟鸣/风铃/篝火/水声）+ 偶发音效（NPC喃喃）</li>
+<li><strong>消除音效</strong>：连击递进音调，1连击清脆单音→5连击和弦→10+连击加入弦乐收尾</li>
+<li><strong>Glow图块专属音效</strong>：连接Glow图块时加入高频晶体共鸣音，光链动画配合音效传导感</li>
+<li><strong>修复动画音乐</strong>：每次区域修复触发专属30秒情感配乐，基调随章节情绪变化（悠闲→深沉→温暖）</li>
+<li><strong>禅境模式音乐</strong>：环境音+慢板钢琴，BPM约60，无强拍，营造漂浮感</li>
+</ul>
+<hr />
+<h2 id="9">9. 商业化策略概述</h2>
+<blockquote>
+<p>核心原则：<strong>不P2W，只买便利和外观；体验优先，付费锦上添花</strong></p>
+</blockquote>
+<h3 id="91">9.1 双货币体系</h3>
+<ul>
+<li><strong>沙滩币（Beach Coins）</strong>：软货币，关卡通关/每日任务/活动掉落，用于普通助攻器和部分装饰</li>
+<li><strong>丹青石（Glowstone）</strong>：硬货币，付费购买或少量活动奖励，用于续命/跳关/高级道具/限定装饰</li>
+</ul>
+<h3 id="92-iap">9.2 IAP产品目录</h3>
+<table>
+<thead>
+<tr>
+<th>产品名称</th>
+<th>内容</th>
+<th>定位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>小光晶包</td>
+<td>6丹青石</td>
+<td>低门槛入门，试水付费</td>
+</tr>
+<tr>
+<td>中光晶包</td>
+<td>30丹青石</td>
+<td>主力单次购买包</td>
+</tr>
+<tr>
+<td>大光晶包</td>
+<td>88丹青石</td>
+<td>高价值玩家单次大额</td>
+</tr>
+<tr>
+<td>月光卡</td>
+<td>每日登录领取10丹青石×30天（共300丹青石）</td>
+<td>订阅型复购产品，稳定ARPU</td>
+</tr>
+</tbody>
+</table>
+<h3 id="93">9.3 付费点设计</h3>
+<table>
+<thead>
+<tr>
+<th>付费场景</th>
+<th>货币类型</th>
+<th>设计原则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>关卡续命（额外+5步）</td>
+<td>丹青石×6</td>
+<td>仅在连续失败3次后提示，不主动推送</td>
+</tr>
+<tr>
+<td>跳过当前关卡</td>
+<td>丹青石×10</td>
+<td>透明定价，无隐藏费用</td>
+</tr>
+<tr>
+<td>高级助攻器（关卡前使用）</td>
+<td>沙滩币或丹青石</td>
+<td>非通关必需品，难度不依赖助攻器</td>
+</tr>
+<tr>
+<td>岛屿限定装饰件</td>
+<td>丹青石</td>
+<td>纯外观，不影响任何进度</td>
+</tr>
+<tr>
+<td>季节限定图块皮肤</td>
+<td>丹青石</td>
+<td>纯外观，季节主题本身免费</td>
+</tr>
+</tbody>
+</table>
+<h3 id="94">9.4 商业化禁区（不可触碰）</h3>
+<ul>
+<li>不设体力系统的付费续费</li>
+<li>不设核心修复进度的付费加速（修复动画本身免费触发）</li>
+<li>不在失败2次内弹出任何购买提示</li>
+<li>不投放与实际玩法不符的广告素材</li>
+</ul>
+<hr />
+<h2 id="10">10. 成功指标</h2>
+<h3 id="101">10.1 留存目标</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>目标值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>次日留存（D1）</td>
+<td>≥40%</td>
+<td>核心体验首次印象是否成立</td>
+</tr>
+<tr>
+<td>7日留存（D7）</td>
+<td>≥20%</td>
+<td>元循环是否形成习惯</td>
+</tr>
+<tr>
+<td>30日留存（D30）</td>
+<td>≥10%</td>
+<td>叙事和情感绑定是否有效</td>
+</tr>
+</tbody>
+</table>
+<h3 id="102">10.2 商业化目标</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>目标值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>30日ARPU</td>
+<td>≥$1.5</td>
+<td>综合活跃用户人均收入</td>
+</tr>
+<tr>
+<td>IAP转化率</td>
+<td>≥3%</td>
+<td>付费用户渗透率</td>
+</tr>
+<tr>
+<td>付费用户ARPU</td>
+<td>≥$15</td>
+<td>付费用户价值密度</td>
+</tr>
+<tr>
+<td>月卡续订率</td>
+<td>≥60%</td>
+<td>订阅产品健康度</td>
+</tr>
+</tbody>
+</table>
+<h3 id="103">10.3 参与度目标</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>目标值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>日均游玩场次</td>
+<td>≥2.5次</td>
+<td>自由游玩设计的效果验证</td>
+</tr>
+<tr>
+<td>平均场次时长</td>
+<td>≥8分钟</td>
+<td>沉浸感和内容质量指标</td>
+</tr>
+<tr>
+<td>禅境模式启用率</td>
+<td>≥25%</td>
+<td>差异化功能渗透率</td>
+</tr>
+<tr>
+<td>里程碑分享率</td>
+<td>≥15%</td>
+<td>UGC传播钩子有效性</td>
+</tr>
+</tbody>
+</table>
+<h3 id="104">10.4 品质目标</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>目标值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>App Store评分</td>
+<td>≥4.5星</td>
+</tr>
+<tr>
+<td>退款/投诉率</td>
+<td>≤0.5%</td>
+</tr>
+<tr>
+<td>广告真实性好评率</td>
+<td>≥85%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>GDD v1.0 · Glow Island · 2026-05-07</em></p>
+    <div class="footer">Glow Island — Generated Documentation · 2026-05-08</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,556 @@
+{
+  "meta": {
+    "created_at": "2026-05-07T00:00:00.000Z",
+    "product": "Glow Island",
+    "version": "1.0",
+    "description": "双货币经济系统 — 沙滩币（软货币）+ 丹青石（硬货币），材料经济，IAP产品目录"
+  },
+  "currencies": {
+    "soft_currency": {
+      "id": "beach_coins",
+      "name": "沙滩币",
+      "name_en": "Beach Coins",
+      "icon": "shell_coin_warm_orange",
+      "initial_grant": 200,
+      "initial_grant_reason": "新玩家引导赠送，确保首次游玩体验顺畅",
+      "sources": [
+        {
+          "source_id": "level_clear_base",
+          "type": "level_reward",
+          "description": "关卡通关基础奖励",
+          "amount_range": [15, 50],
+          "formula": "base = 15 + floor((level_index / 5)) * 3",
+          "notes": "每5关递增3枚上限，章节BOSS关额外×1.5"
+        },
+        {
+          "source_id": "level_clear_combo_bonus",
+          "type": "level_reward_bonus",
+          "description": "连击/完美通关加成",
+          "multipliers": {
+            "combo_10": 1.2,
+            "combo_20": 1.4,
+            "perfect_clear": 1.5,
+            "no_booster": 1.1
+          },
+          "notes": "可叠加，上限2.0×"
+        },
+        {
+          "source_id": "daily_login",
+          "type": "daily_reward",
+          "description": "每日登录递增奖励",
+          "schedule": [10, 15, 20, 25, 30, 40, 60],
+          "notes": "7天循环，第7天60枚，循环后重置"
+        },
+        {
+          "source_id": "daily_tasks",
+          "type": "task_reward",
+          "description": "日常任务完成（3个/天）",
+          "amount_per_task": [20, 25, 35],
+          "notes": "简单/中等/困难任务对应金额"
+        },
+        {
+          "source_id": "event_levels",
+          "type": "event_reward",
+          "description": "活动关卡通关奖励",
+          "amount_range": [30, 80],
+          "notes": "季节活动期间开放"
+        },
+        {
+          "source_id": "zen_mode",
+          "type": "zen_reward",
+          "description": "禅境模式完成（放松无限关）",
+          "amount_per_session": 10,
+          "notes": "每日上限3次，合计30枚"
+        }
+      ],
+      "sinks": [
+        {
+          "sink_id": "basic_booster_purchase",
+          "type": "booster",
+          "description": "普通助攻器（关卡前使用）",
+          "items": [
+            {"name": "随机消除×1", "cost": 50},
+            {"name": "+3步", "cost": 80},
+            {"name": "行清除", "cost": 100},
+            {"name": "列清除", "cost": 100}
+          ]
+        },
+        {
+          "sink_id": "basic_decoration",
+          "type": "decoration",
+          "description": "基础岛屿小摆件（非限定）",
+          "cost_range": [100, 300],
+          "notes": "永久可购，不限时"
+        },
+        {
+          "sink_id": "material_synthesis_speed",
+          "type": "convenience",
+          "description": "材料轻合成加速（跳过5秒冷却动画）",
+          "cost_per_use": 30,
+          "notes": "非必需，只加速动画，不影响合成结果"
+        }
+      ],
+      "economy_health_targets": {
+        "avg_daily_earn_active_player": 120,
+        "avg_daily_spend_active_player": 80,
+        "target_float_balance": "2-5天消耗量",
+        "inflation_safeguard": "沙滩币上限 9999 枚，超额自动转为装饰抽签票"
+      }
+    },
+    "hard_currency": {
+      "id": "glowstone",
+      "name": "丹青石",
+      "name_en": "Glowstone",
+      "icon": "blue_green_gem_glow_pulse",
+      "initial_grant": 0,
+      "initial_grant_reason": "硬货币不默认赠送，保持稀缺感",
+      "sources": [
+        {
+          "source_id": "iap_purchase",
+          "type": "iap",
+          "description": "IAP付费购买（主要来源）",
+          "notes": "见 iap_skus 字段"
+        },
+        {
+          "source_id": "monthly_card_daily",
+          "type": "subscription_reward",
+          "description": "月卡每日登录领取",
+          "amount_per_day": 10,
+          "total_per_month": 300,
+          "notes": "需持有月卡且当日登录"
+        },
+        {
+          "source_id": "milestone_achievement",
+          "type": "achievement_reward",
+          "description": "里程碑成就一次性奖励",
+          "milestones": [
+            {"trigger": "完成第1章", "amount": 5},
+            {"trigger": "完成第3章", "amount": 8},
+            {"trigger": "完成第6章", "amount": 15},
+            {"trigger": "总计通关50关", "amount": 10},
+            {"trigger": "总计通关100关", "amount": 20},
+            {"trigger": "首次完美通关", "amount": 5}
+          ],
+          "notes": "每个里程碑仅触发一次，总计可得63颗（免费玩家）"
+        },
+        {
+          "source_id": "special_event_perfect",
+          "type": "event_reward",
+          "description": "特定活动关卡完美通关奖励",
+          "amount_per_chapter": [1, 2],
+          "notes": "每章节活动期间最多2颗，极稀缺"
+        }
+      ],
+      "sinks": [
+        {
+          "sink_id": "continue_level",
+          "type": "continue",
+          "description": "关卡续命 +5步",
+          "cost": 6,
+          "max_per_level": 3,
+          "notes": "步数归零时弹出，玩家主动选择；不影响关卡通关判定"
+        },
+        {
+          "sink_id": "skip_level",
+          "type": "skip",
+          "description": "跳过当前关卡（获得基础材料掉落，无星级奖励）",
+          "cost": 10,
+          "notes": "仅在失败结算界面可用"
+        },
+        {
+          "sink_id": "premium_booster",
+          "type": "booster",
+          "description": "高级助攻器（关卡前选配）",
+          "items": [
+            {"name": "彩虹块×1", "cost_glowstone": 3, "cost_beach_coins": 120},
+            {"name": "炸弹块×1", "cost_glowstone": 2, "cost_beach_coins": 90},
+            {"name": "+5步（关卡前）", "cost_glowstone": 5, "cost_beach_coins": 150}
+          ]
+        },
+        {
+          "sink_id": "limited_decoration",
+          "type": "decoration",
+          "description": "岛屿限定装饰件（章节/季节限定）",
+          "cost_range": [10, 30],
+          "notes": "限时销售，到期下架"
+        },
+        {
+          "sink_id": "seasonal_tile_skin",
+          "type": "cosmetic",
+          "description": "季节限定图块皮肤",
+          "cost_range": [15, 40],
+          "notes": "纯视觉，不改变消除机制"
+        },
+        {
+          "sink_id": "npc_interaction_props",
+          "type": "cosmetic",
+          "description": "限定NPC互动道具",
+          "cost_range": [8, 20],
+          "notes": "解锁专属NPC对话和动画"
+        }
+      ],
+      "economy_health_targets": {
+        "free_player_monthly_earn": "最多约 63 颗（成就全收 + 少量活动）",
+        "paying_player_monthly_earn_moonlight_card": "300 颗/月",
+        "target_spend_per_paying_session": "6-30 颗（续命/跳关/装饰）",
+        "scarcity_design": "免费玩家感知稀缺但不绝望；付费玩家感到物有所值"
+      }
+    }
+  },
+  "iap_skus": [
+    {
+      "sku_id": "small_pack",
+      "source_id": "IAP-001",
+      "name": "一抔沙",
+      "name_en": "A Handful of Sand",
+      "original_name": "小光晶包",
+      "glowstone_base": 6,
+      "glowstone_bonus": 0,
+      "glowstone_total": 6,
+      "price_cny": 6,
+      "price_usd": 0.99,
+      "bonus_items": null,
+      "purchase_limit": null,
+      "positioning": "低门槛入门包，卡关时应急续命",
+      "value_per_yuan": 1.0,
+      "trigger_scenario": "关卡连续失败3次后，失败界面场景化提示",
+      "platform_product_ids": {
+        "ios_appstore": "com.glowisland.iap.small_pack",
+        "google_play": "com.glowisland.iap.small_pack",
+        "taptap": "glowisland_small_pack"
+      }
+    },
+    {
+      "sku_id": "medium_pack",
+      "source_id": "IAP-002",
+      "name": "一把贝壳",
+      "name_en": "A Handful of Shells",
+      "original_name": "中光晶包",
+      "glowstone_base": 30,
+      "glowstone_bonus": 3,
+      "glowstone_total": 33,
+      "price_cny": 25,
+      "price_usd": 3.99,
+      "bonus_items": ["专属图块皮肤×1（随机季节款）"],
+      "purchase_limit": null,
+      "positioning": "主力单次购买包，性价比最优",
+      "value_per_yuan": 1.32,
+      "trigger_scenario": "IAP商城主推位",
+      "platform_product_ids": {
+        "ios_appstore": "com.glowisland.iap.medium_pack",
+        "google_play": "com.glowisland.iap.medium_pack",
+        "taptap": "glowisland_medium_pack"
+      }
+    },
+    {
+      "sku_id": "large_pack",
+      "source_id": "IAP-003",
+      "name": "一篮珊瑚",
+      "name_en": "A Basket of Coral",
+      "original_name": "大光晶包",
+      "glowstone_base": 88,
+      "glowstone_bonus": 12,
+      "glowstone_total": 100,
+      "price_cny": 68,
+      "price_usd": 9.99,
+      "bonus_items": ["限定岛屿装饰件×1", "专属图块皮肤×2"],
+      "purchase_limit": null,
+      "positioning": "高价值玩家单次大额消费包，含限定内容增值",
+      "value_per_yuan": 1.47,
+      "trigger_scenario": "IAP商城高价值展示位；章节完成里程碑时的感谢推荐",
+      "platform_product_ids": {
+        "ios_appstore": "com.glowisland.iap.large_pack",
+        "google_play": "com.glowisland.iap.large_pack",
+        "taptap": "glowisland_large_pack"
+      }
+    },
+    {
+      "sku_id": "mega_pack",
+      "source_id": null,
+      "name": "灯塔礼包",
+      "name_en": "Lighthouse Bundle",
+      "glowstone_base": 198,
+      "glowstone_bonus": 42,
+      "glowstone_total": 240,
+      "price_cny": 128,
+      "price_usd": 19.99,
+      "bonus_items": ["限定岛屿装饰件×2", "专属图块皮肤×3", "限定NPC互动道具×1"],
+      "purchase_limit": null,
+      "positioning": "高额单次大礼包，面向重度付费用户",
+      "value_per_yuan": 1.875,
+      "trigger_scenario": "IAP商城顶部展示；重大节日（春节/情人节）限时推荐",
+      "platform_product_ids": {
+        "ios_appstore": "com.glowisland.iap.mega_pack",
+        "google_play": "com.glowisland.iap.mega_pack",
+        "taptap": "glowisland_mega_pack"
+      }
+    },
+    {
+      "sku_id": "monthly_card",
+      "source_id": "IAP-004",
+      "name": "月卡",
+      "name_en": "Moonlight Pass",
+      "original_name": "月光卡",
+      "glowstone_base": 0,
+      "glowstone_bonus": 0,
+      "glowstone_total": 300,
+      "glowstone_delivery": "每日登录领取10颗，持续30天",
+      "price_cny": 30,
+      "price_usd": 4.99,
+      "bonus_items": ["专属月光卡图块皮肤×1", "月卡持有者专属岛屿装饰品×1"],
+      "purchase_limit": null,
+      "is_subscription": true,
+      "subscription_duration_days": 30,
+      "renewal_reminder_days_before": 3,
+      "positioning": "订阅型复购产品，稳定日留存",
+      "value_per_yuan": 10.0,
+      "trigger_scenario": "首充完成后推荐；每日任务界面展示；续卡到期前3天提醒",
+      "platform_product_ids": {
+        "ios_appstore": "com.glowisland.iap.monthly_card",
+        "google_play": "com.glowisland.iap.monthly_card",
+        "taptap": "glowisland_monthly_card"
+      }
+    },
+    {
+      "sku_id": "starter_pack",
+      "source_id": null,
+      "name": "新玩家礼包",
+      "name_en": "New Islander Bundle",
+      "glowstone_base": 50,
+      "glowstone_bonus": 0,
+      "glowstone_total": 50,
+      "price_cny": 18,
+      "price_usd": 2.99,
+      "bonus_items": ["专属新玩家装饰件（灯塔小摆件）×1", "沙滩币×300"],
+      "purchase_limit": 1,
+      "purchase_limit_note": "限购一次，新玩家专属",
+      "eligibility_window_days": 7,
+      "positioning": "新玩家引导付费转化，低价高感知价值",
+      "value_per_yuan": 2.78,
+      "trigger_scenario": "第3关通关后首次提示；IAP界面新玩家专区（7天内可见）",
+      "platform_product_ids": {
+        "ios_appstore": "com.glowisland.iap.starter_pack",
+        "google_play": "com.glowisland.iap.starter_pack",
+        "taptap": "glowisland_starter_pack"
+      }
+    }
+  ],
+  "materials": {
+    "description": "6章节材料体系，每章节1种特色材料，用于岛屿修复建造",
+    "consumption_curve_note": "材料需求随章节递增，前期友好后期适度挑战，确保自然进度不阻塞",
+    "items": [
+      {
+        "material_id": "driftwood",
+        "name": "浮木",
+        "name_en": "Driftwood",
+        "chapter": 1,
+        "chapter_name": "破旧码头",
+        "description": "海浪冲来的原木，温润的浅棕色，修复码头木板的基础材料",
+        "drop_levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "drop_rates": {
+          "1_star": 1,
+          "2_star": 2,
+          "3_star": 3
+        },
+        "repair_cost": {
+          "total_required": 120,
+          "structures": [
+            {"name": "码头入口牌坊", "required": 20},
+            {"name": "主栈桥木板×3段", "required": 30},
+            {"name": "停泊木桩×4", "required": 20},
+            {"name": "渔网挂架×2", "required": 18},
+            {"name": "码头小屋", "required": 32}
+          ]
+        },
+        "avg_earn_per_level": 2.0,
+        "levels_to_complete_chapter": "约50-65关（自然掉落）",
+        "synthesis": {
+          "recipe": null,
+          "notes": "基础材料，不可合成，仅掉落"
+        }
+      },
+      {
+        "material_id": "tropical_flower",
+        "name": "热带花",
+        "name_en": "Tropical Bloom",
+        "chapter": 2,
+        "chapter_name": "废弃花园",
+        "description": "鲜艳的热带花朵，橙黄红三色，修复花园种植床和小径的必要材料",
+        "drop_levels": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+        "drop_rates": {
+          "1_star": 1,
+          "2_star": 2,
+          "3_star": 3
+        },
+        "repair_cost": {
+          "total_required": 160,
+          "structures": [
+            {"name": "花园入口拱门", "required": 25},
+            {"name": "主花坛×4块", "required": 40},
+            {"name": "鹅卵石小径", "required": 30},
+            {"name": "喷水池", "required": 35},
+            {"name": "花园凉亭", "required": 30}
+          ]
+        },
+        "avg_earn_per_level": 2.0,
+        "levels_to_complete_chapter": "约65-80关（自然掉落）",
+        "synthesis": {
+          "recipe": {"driftwood": 3},
+          "output": 1,
+          "beach_coin_cost": 30,
+          "notes": "可用3浮木+30沙滩币合成1朵，应急用"
+        }
+      },
+      {
+        "material_id": "coral_fragment",
+        "name": "珊瑚碎片",
+        "name_en": "Coral Fragment",
+        "chapter": 3,
+        "chapter_name": "沉船遗址",
+        "description": "五彩斑斓的珊瑚骨架碎片，蓝紫色为主，重建沉船陈列和水下观景台的核心材料",
+        "drop_levels": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+        "drop_rates": {
+          "1_star": 1,
+          "2_star": 2,
+          "3_star": 3
+        },
+        "repair_cost": {
+          "total_required": 200,
+          "structures": [
+            {"name": "沉船甲板修复", "required": 40},
+            {"name": "观景瞭望台", "required": 45},
+            {"name": "水下玻璃走廊", "required": 50},
+            {"name": "珊瑚墙装饰×3", "required": 35},
+            {"name": "锚雕塑基座", "required": 30}
+          ]
+        },
+        "avg_earn_per_level": 2.2,
+        "levels_to_complete_chapter": "约75-90关（自然掉落）",
+        "synthesis": {
+          "recipe": {"tropical_flower": 3},
+          "output": 1,
+          "beach_coin_cost": 50,
+          "notes": "可用3热带花+50沙滩币合成，供探索型玩家跨章加速"
+        }
+      },
+      {
+        "material_id": "starfish",
+        "name": "海星",
+        "name_en": "Starfish",
+        "chapter": 4,
+        "chapter_name": "神秘洞窟",
+        "description": "深海五角海星，暗红色带荧光斑点，点亮洞窟灯和修复水晶洞穴结构",
+        "drop_levels": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
+        "drop_rates": {
+          "1_star": 1,
+          "2_star": 2,
+          "3_star": 4
+        },
+        "repair_cost": {
+          "total_required": 240,
+          "structures": [
+            {"name": "洞口石拱门", "required": 40},
+            {"name": "水晶洞壁×4面", "required": 60},
+            {"name": "地下湖栈道", "required": 55},
+            {"name": "发光苔藓装置×6", "required": 42},
+            {"name": "洞窟顶灯×8", "required": 43}
+          ]
+        },
+        "avg_earn_per_level": 2.5,
+        "levels_to_complete_chapter": "约80-95关（自然掉落）",
+        "synthesis": {
+          "recipe": {"coral_fragment": 3},
+          "output": 1,
+          "beach_coin_cost": 70,
+          "notes": "第4章难度上升，合成提供平滑度"
+        }
+      },
+      {
+        "material_id": "ancient_tile",
+        "name": "古陶片",
+        "name_en": "Ancient Shard",
+        "chapter": 5,
+        "chapter_name": "遗忘神庙",
+        "description": "刻有古代文字的彩绘陶片，土黄与青釉交织，修复神庙内外建筑的关键材料",
+        "drop_levels": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
+        "drop_rates": {
+          "1_star": 1,
+          "2_star": 3,
+          "3_star": 5
+        },
+        "repair_cost": {
+          "total_required": 280,
+          "structures": [
+            {"name": "神庙正门石柱×2", "required": 50},
+            {"name": "内殿祭坛", "required": 60},
+            {"name": "壁画回廊", "required": 65},
+            {"name": "天窗玻璃格", "required": 55},
+            {"name": "神庙外围石墙", "required": 50}
+          ]
+        },
+        "avg_earn_per_level": 3.0,
+        "levels_to_complete_chapter": "约80-95关（自然掉落）",
+        "synthesis": {
+          "recipe": {"starfish": 3},
+          "output": 1,
+          "beach_coin_cost": 100,
+          "notes": "高价值合成，消耗沙滩币较多，为高级玩家提供节奏控制手段"
+        }
+      },
+      {
+        "material_id": "moonlight_crystal",
+        "name": "月光水晶",
+        "name_en": "Moonlight Crystal",
+        "chapter": 6,
+        "chapter_name": "岛屿之巅",
+        "description": "传说中只在满月时发光的透明水晶，蓝白色，构建岛屿顶端灯塔和观景台的终极材料",
+        "drop_levels": [51, 52, 53, 54, 55, 56, 57, 58, 59, 60],
+        "drop_rates": {
+          "1_star": 1,
+          "2_star": 3,
+          "3_star": 6
+        },
+        "repair_cost": {
+          "total_required": 320,
+          "structures": [
+            {"name": "登顶石阶", "required": 50},
+            {"name": "观景平台", "required": 70},
+            {"name": "灯塔主体", "required": 80},
+            {"name": "灯塔顶部灯笼", "required": 60},
+            {"name": "水晶装饰环×4", "required": 60}
+          ]
+        },
+        "avg_earn_per_level": 3.5,
+        "levels_to_complete_chapter": "约80-95关（自然掉落）",
+        "synthesis": {
+          "recipe": {"ancient_tile": 3},
+          "output": 1,
+          "beach_coin_cost": 150,
+          "notes": "终章材料，高合成成本对应高仪式感；月光水晶=游戏完成象征"
+        }
+      }
+    ],
+    "cross_chapter_synthesis_enabled": true,
+    "synthesis_note": "每种材料可用前一章节材料×3合成，设计意图：（1）消耗沙滩币创造Sink；（2）防止玩家材料囤积溢出；（3）给快速推进玩家提供跨越路径"
+  },
+  "initial_currency": {
+    "beach_coins": 200,
+    "glowstone": 0,
+    "materials": {
+      "driftwood": 0,
+      "tropical_flower": 0,
+      "coral_fragment": 0,
+      "starfish": 0,
+      "ancient_tile": 0,
+      "moonlight_crystal": 0
+    },
+    "notes": "新玩家仅赠送200沙滩币，引导首次游玩后自然积累"
+  },
+  "economy_balance_notes": {
+    "no_paywall_principle": "所有章节均可在0付费情况下推进，按正常通关速度（70%通关率）约需500-600关完成全6章",
+    "soft_currency_abundance": "沙滩币设计为感知充足，玩家不会产生匮乏焦虑",
+    "hard_currency_scarcity": "丹青石稀缺但不绝望，免费玩家可通过里程碑获得约63颗（约10次续命）",
+    "material_pacing": "每章材料需求约需6-8周自然推进（日均5关），不强制速通",
+    "iap_trigger_compliance": "所有付费提示遵循monetization-design.json中的safe_triggers规则"
+  }
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island 世界观圣经（Worldbuilding Bible）</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d26;
+      --border: #2a2d3a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --accent2: #86efac;
+      --heading: #f8fafc;
+      --code-bg: #12141c;
+      --tag-bg: #1e3a5f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 0 1rem 4rem;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      margin: 0 -1rem 2.5rem;
+      text-align: center;
+    }
+    .page-header .project-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125,211,252,0.25);
+      margin-bottom: 0.9rem;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--heading);
+      text-shadow: 0 0 40px rgba(125,211,252,0.2);
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--heading);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+    h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
+    h3 { font-size: 1.1rem; color: var(--accent2); }
+    h4 { font-size: 1rem; color: var(--muted); }
+    p { margin: 0.6rem 0 0.9rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { color: var(--heading); font-weight: 600; }
+    em { color: var(--accent2); font-style: normal; }
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      color: var(--muted);
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.87em;
+      background: var(--code-bg);
+      color: var(--accent2);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.4rem;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    ul, ol {
+      padding-left: 1.6rem;
+      margin: 0.5rem 0 1rem;
+    }
+    li { margin: 0.3rem 0; }
+    li > ul, li > ol { margin: 0.2rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    tr:hover td { background: rgba(125,211,252,0.04); }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="project-tag">Glow Island · 发光岛</div>
+    <h1>Glow Island 世界观圣经（Worldbuilding Bible）</h1>
+  </div>
+  <div class="container">
+<h1 id="glow-island-worldbuilding-bible">Glow Island 世界观圣经（Worldbuilding Bible）</h1>
+<blockquote>
+<p>版本：1.0 | 创建于 2026-05-07</p>
+</blockquote>
+<hr />
+<h2 id="_1">一、背景故事</h2>
+<p>光辉岛曾是一处宁静的小岛，岛上的灯塔每夜为归港的船只指路。随着时间流逝，岛上的居民陆续离岛，追逐城市里更喧嚣的生活，小岛渐渐沉睡——码头积了尘、花田野草丛生、露营地空无炊烟，连灯塔也悄悄熄灭了。</p>
+<p>玩家是一位偶然途径此地的旅人，乘一艘旧渡船抵达岛屿。岛没有要求任何人来修复它，只是——它在等待。出于心底某种说不清的温柔冲动，玩家决定留下来，把小岛一点一点唤醒。</p>
+<blockquote>
+<p><strong>基调关键词：</strong> 时间流逝、自然沉睡、温柔等待、无声的召唤</p>
+</blockquote>
+<hr />
+<h2 id="_2">二、岛屿整体设定</h2>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>详情</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>岛屿名称</strong></td>
+<td>光辉岛（Glow Island）</td>
+</tr>
+<tr>
+<td><strong>位置感</strong></td>
+<td>热带与温带之间的某片海域，四季温暖，夏天有海风，冬天有薄雾</td>
+</tr>
+<tr>
+<td><strong>面积感</strong></td>
+<td>不大不小——走路半天可以绕完一圈，却有足够多的角落值得探索</td>
+</tr>
+<tr>
+<td><strong>整体氛围</strong></td>
+<td>像一首慢歌的间奏：不急着开始，也不急着结束；阳光总是斜的，永远是下午三点的那种温柔</td>
+</tr>
+<tr>
+<td><strong>视觉基调</strong></td>
+<td>褪色水彩风，恢复前偏灰调，恢复后色彩一点点饱和；夜晚以暖黄灯光为主色</td>
+</tr>
+<tr>
+<td><strong>声音设计方向</strong></td>
+<td>海浪声、木板踩踏声、鸟鸣、偶尔的风铃；对话采用无声文字+角色喃喃自语音效</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="npc">三、NPC 角色档案</h2>
+<h3 id="_3">渔夫·阿海</h3>
+<p><strong>出场区域：</strong> 第1章 · 海边码头</p>
+<p>阿海是岛上最后一个没有离开的老居民。他年纪大了，走不动远路，索性守着码头钓鱼，日子过得简单而知足。他的笑容像晒了太阳的棉被，蓬松又温暖。他不会催促玩家做任何事，只是坐在码头边，偶尔指着某块木料说"那个，我年轻时候用来修船的"。他是玩家在岛上的第一个朋友，也是无声的教程向导。</p>
+<blockquote>
+<p><strong>性格关键词：</strong> 慢吞吞、不多话、笑起来眼睛弯弯、永远备着一壶茶</p>
+</blockquote>
+<hr />
+<h3 id="_4">花农·阿花</h3>
+<p><strong>出场区域：</strong> 第3章 · 花田山坡</p>
+<p>阿花是个扎着草帽的中年女性，说话轻声细语，手上总有泥土的痕迹。她离开过岛一段时间，最终还是被这里的野花香气"叫"回来了。她相信每一株植物都有自己的脾气，修复花田对她来说不是劳动，是重逢。她会在花田边轻声哼歌，玩家靠近时她会停下来，把一束还没全开的花递过来。</p>
+<blockquote>
+<p><strong>性格关键词：</strong> 温柔、耐心、有点害羞、会用植物打比方讲道理</p>
+</blockquote>
+<hr />
+<h3 id="_5">营地背包客·阿林</h3>
+<p><strong>出场区域：</strong> 第4章 · 森林露营地</p>
+<p>阿林是个年轻的旅行者，背着一个大到不像话的登山包，帽子沿压得很低。他话不多，喜欢坐在树根上看地图，或者对着空地发呆。他来这里是为了"找一个安静的地方"，但又说不清自己在找什么。帮他把营地的篝火台重新架好，他会沉默地点点头，然后从包里掏出两个杯子，倒上热茶。</p>
+<blockquote>
+<p><strong>性格关键词：</strong> 安静、内敛、动作比话语多、偶尔说出一句令人回味的话</p>
+</blockquote>
+<hr />
+<h3 id="_6">温泉老爷爷·阿福</h3>
+<p><strong>出场区域：</strong> 第5章 · 温泉山谷</p>
+<p>阿福是个圆圆的老头，总是泡在温泉里，手边放着一本从不翻开的书。他嘴上爱开玩笑，说自己是"泡得最久的石头"，但每次说完都会笑得前仰后合。他见过岛上最热闹的年代，也见过它慢慢沉寂，所以对一切变化都处之泰然。他教玩家的最重要一课是：不用着急，温泉等得起。</p>
+<blockquote>
+<p><strong>性格关键词：</strong> 幽默、豁达、自带暖意、说话爱绕弯子但最终都对</p>
+</blockquote>
+<hr />
+<h3 id="_7">灯塔守护者·阿明</h3>
+<p><strong>出场区域：</strong> 第6章 · 夜晚灯塔</p>
+<p>阿明是灯塔最初的守护者的后人，年纪与阿海相仿。他在岛屿沉睡后独自住在灯塔脚下，从未真正放弃过等待灯塔重新亮起。他沉默、内敛，但眼神里有一种久经等待后的笃定。当灯塔终于亮起的那一刻，他只说了一句话，然后背过身去——玩家看不到他的表情，但能看到他颤抖的肩膀。</p>
+<blockquote>
+<p><strong>性格关键词：</strong> 沉默、坚守、深情克制、见证者而非主角</p>
+</blockquote>
+<hr />
+<h2 id="_8">四、环境叙事原则</h2>
+<blockquote>
+<p><strong>核心理念：</strong> 不用一句说明文字，只用场景变化讲述修复的故事。</p>
+</blockquote>
+<h3 id="_9">原则一：颜色先行</h3>
+<p>场景从灰白色调逐步过渡到饱和色彩。每解锁一个阶段，对应区域的色饱和度提升一档，让玩家在视觉上先感受到"有什么在苏醒"。</p>
+<h3 id="_10">原则二：小细节大情绪</h3>
+<p>不展示宏大场景，只展示小物件的归位——<br />
+- 晾衣绳上多了一件衬衫<br />
+- 码头边多了一只猫<br />
+- 窗台上出现了一盆开花的植物<br />
+- 篝火台的灰里开始有余温的气息</p>
+<h3 id="npc_1">原则三：NPC 的肢体语言叙事</h3>
+<p>NPC 不通过对话倾诉，而通过动作传递情绪——<br />
+- 阿海修好鱼竿后，把竿伸向水面，静静等候<br />
+- 阿花把枯草清走之后，蹲下来摸了摸泥土，轻轻点头<br />
+- 阿林看着篝火烧起来，把帽子摘下来放在膝盖上</p>
+<h3 id="_11">原则四：声音比画面先到</h3>
+<p>区域完全恢复前，可以先"听到"：远处传来的鸟叫，风吹过草丛的声响，偶尔的船只汽笛——声音比画面早一步告诉玩家，岛正在醒来。</p>
+<h3 id="_12">原则五：灯塔是情感锚点</h3>
+<p>整座岛的叙事围绕一个问题展开：<strong>灯塔什么时候会再亮？</strong> 每修复一个区域，灯塔窗里透出的光就多一点点——从完全黑暗，到第6章的大放光明。这一条主线贯穿全局，玩家始终知道自己在做一件有终点、有意义的事。</p>
+<hr />
+<p><em>文档结束 · 世界观版本 1.0</em></p>
+    <div class="footer">Glow Island — Generated Documentation · 2026-05-08</div>
+  </div>
+</body>
+</html>

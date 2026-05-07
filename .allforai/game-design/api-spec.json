@@ -1,0 +1,657 @@
+{
+  "meta": {
+    "created_at": "2026-05-07T00:00:00.000Z",
+    "product": "Glow Island",
+    "version": "1.0",
+    "description": "REST API规格 — 后端服务接口定义",
+    "base_url": "https://api.glow-island.com/v1",
+    "openapi_version": "3.0.3"
+  },
+  "global": {
+    "authentication": {
+      "scheme": "Bearer JWT",
+      "header": "Authorization: Bearer <token>",
+      "token_lifetime_seconds": 2592000,
+      "token_refresh": "客户端在令牌过期前24小时内可调用 POST /auth/refresh 换取新令牌",
+      "anonymous_note": "所有玩家以设备匿名身份创建账号，JWT payload包含 player_id 和 platform"
+    },
+    "rate_limiting": {
+      "default": "60 req/min per IP",
+      "auth_endpoints": "10 req/min per IP",
+      "iap_verify": "20 req/min per player_id",
+      "leaderboard_submit": "30 req/min per player_id"
+    },
+    "common_headers": {
+      "request": {
+        "Content-Type": "application/json",
+        "X-Client-Version": "客户端版本号（用于兼容性检查）",
+        "X-Platform": "ios | android | taptap"
+      },
+      "response": {
+        "Content-Type": "application/json",
+        "X-Request-Id": "UUID请求追踪ID"
+      }
+    },
+    "common_error_codes": {
+      "400": "Bad Request — 请求体格式错误或参数非法",
+      "401": "Unauthorized — JWT缺失或无效",
+      "403": "Forbidden — 权限不足（如修改他人存档）",
+      "404": "Not Found — 资源不存在",
+      "409": "Conflict — 数据冲突（如duplicate IAP receipt）",
+      "422": "Unprocessable Entity — 业务逻辑错误（如货币不足）",
+      "429": "Too Many Requests — 超出频率限制",
+      "500": "Internal Server Error — 服务器内部错误",
+      "503": "Service Unavailable — 服务维护中"
+    },
+    "error_response_schema": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {"type": "string", "description": "机器可读错误码，如 INVALID_RECEIPT"},
+            "message": {"type": "string", "description": "人类可读错误描述"},
+            "details": {"type": "object", "description": "可选的附加调试信息"}
+          },
+          "required": ["code", "message"]
+        }
+      }
+    }
+  },
+  "endpoints": [
+    {
+      "id": "auth_anonymous",
+      "path": "/auth/anonymous",
+      "method": "POST",
+      "summary": "创建匿名玩家账号，返回JWT",
+      "reconciliation_notes": "global.authentication.token_lifetime_seconds 记录为 2592000（30天），但后端实现（auth.ts）签发 expiresIn '7d'（604800秒）。实际有效期以后端代码为准；spec 全局字段待更新。",
+      "description": "设备首次启动时调用。若device_id已存在则返回现有玩家的JWT（幂等）。同时创建player_saves初始存档（beach_coins=200）。",
+      "auth_required": false,
+      "tags": ["auth"],
+      "request_body": {
+        "required": true,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["device_id", "platform"],
+          "properties": {
+            "device_id": {
+              "type": "string",
+              "description": "设备唯一标识符（iOS: IDFV, Android: Android ID, TapTap: openid）",
+              "example": "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
+              "maxLength": 128
+            },
+            "platform": {
+              "type": "string",
+              "enum": ["ios", "android", "taptap"],
+              "example": "ios"
+            },
+            "client_version": {
+              "type": "string",
+              "description": "客户端版本号",
+              "example": "1.0.0"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "已存在玩家 — 返回现有JWT",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "token": {"type": "string", "description": "JWT Bearer Token"},
+              "player_id": {"type": "string", "format": "uuid"},
+              "is_new_player": {"type": "boolean", "example": false},
+              "expires_at": {"type": "string", "format": "date-time"}
+            }
+          }
+        },
+        "201": {
+          "description": "新玩家创建成功",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "token": {"type": "string", "description": "JWT Bearer Token"},
+              "player_id": {"type": "string", "format": "uuid"},
+              "is_new_player": {"type": "boolean", "example": true},
+              "expires_at": {"type": "string", "format": "date-time"},
+              "initial_save": {
+                "type": "object",
+                "description": "新玩家初始存档快照",
+                "properties": {
+                  "beach_coins": {"type": "integer", "example": 200},
+                  "glowstone": {"type": "integer", "example": 0}
+                }
+              }
+            }
+          }
+        },
+        "400": {"description": "参数缺失或格式错误", "error_codes": ["MISSING_DEVICE_ID", "INVALID_PLATFORM"]},
+        "429": {"description": "频率超限"}
+      }
+    },
+    {
+      "id": "auth_refresh",
+      "path": "/auth/refresh",
+      "method": "POST",
+      "summary": "刷新JWT令牌",
+      "description": "用即将过期的JWT换取新令牌，无需重新认证设备。",
+      "auth_required": true,
+      "tags": ["auth"],
+      "request_body": {
+        "required": false,
+        "description": "无请求体，通过Authorization Header传入现有JWT"
+      },
+      "responses": {
+        "200": {
+          "description": "新JWT",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "token": {"type": "string"},
+              "expires_at": {"type": "string", "format": "date-time"}
+            }
+          }
+        },
+        "401": {"description": "JWT无效或已过期超过宽限期", "error_codes": ["TOKEN_EXPIRED", "TOKEN_INVALID"]}
+      }
+    },
+    {
+      "id": "get_save",
+      "path": "/save/:playerId",
+      "method": "GET",
+      "summary": "获取玩家存档数据",
+      "description": "拉取完整存档，客户端启动时同步。JWT中的player_id必须与路径参数匹配（防越权）。",
+      "auth_required": true,
+      "tags": ["save"],
+      "path_parameters": {
+        "playerId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "玩家UUID"
+        }
+      },
+      "request_body": null,
+      "responses": {
+        "200": {
+          "description": "存档数据",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "player_id": {"type": "string", "format": "uuid"},
+              "chapter_progress": {
+                "type": "object",
+                "description": "各章节进度JSONB，key为chapter number (string)",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string", "enum": ["locked", "in_progress", "completed"]},
+                    "stars_earned": {"type": "array", "items": {"type": "integer", "minimum": 0, "maximum": 3}},
+                    "highest_level": {"type": "integer"},
+                    "materials_earned": {"type": "integer"},
+                    "repair_progress": {"type": "object"}
+                  }
+                }
+              },
+              "currency": {
+                "type": "object",
+                "properties": {
+                  "beach_coins": {"type": "integer", "minimum": 0},
+                  "glowstone": {"type": "integer", "minimum": 0}
+                }
+              },
+              "materials": {
+                "type": "object",
+                "properties": {
+                  "driftwood": {"type": "integer", "minimum": 0},
+                  "tropical_flower": {"type": "integer", "minimum": 0},
+                  "coral_fragment": {"type": "integer", "minimum": 0},
+                  "starfish": {"type": "integer", "minimum": 0},
+                  "ancient_tile": {"type": "integer", "minimum": 0},
+                  "moonlight_crystal": {"type": "integer", "minimum": 0}
+                }
+              },
+              "boosters": {"type": "object"},
+              "decorations": {"type": "object"},
+              "monthly_card": {
+                "type": "object",
+                "properties": {
+                  "active": {"type": "boolean"},
+                  "expires_at": {"type": "string", "format": "date-time", "nullable": true},
+                  "last_claimed_date": {"type": "string", "format": "date", "nullable": true}
+                }
+              },
+              "settings": {
+                "type": "object",
+                "properties": {
+                  "sfx": {"type": "boolean"},
+                  "music": {"type": "boolean"},
+                  "notifications": {"type": "boolean"}
+                }
+              },
+              "updated_at": {"type": "string", "format": "date-time"}
+            }
+          }
+        },
+        "401": {"description": "未认证", "error_codes": ["TOKEN_INVALID"]},
+        "403": {"description": "越权访问他人存档", "error_codes": ["FORBIDDEN"]},
+        "404": {"description": "玩家不存在", "error_codes": ["PLAYER_NOT_FOUND"]}
+      }
+    },
+    {
+      "id": "put_save",
+      "path": "/save/:playerId",
+      "method": "PUT",
+      "summary": "更新玩家存档数据",
+      "description": "客户端关卡结算、装饰操作或设置变更后提交。服务端做基础合法性校验（货币不能为负、关卡星级范围合法）。采用乐观并发：若客户端updated_at与服务端不一致则返回409并附带最新存档。",
+      "auth_required": true,
+      "tags": ["save"],
+      "path_parameters": {
+        "playerId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "request_body": {
+        "required": true,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["client_updated_at"],
+          "properties": {
+            "client_updated_at": {
+              "type": "string",
+              "format": "date-time",
+              "description": "客户端持有的上次同步时间戳，用于并发检测"
+            },
+            "chapter_progress": {"type": "object"},
+            "currency": {"type": "object"},
+            "materials": {"type": "object"},
+            "boosters": {"type": "object"},
+            "decorations": {"type": "object"},
+            "monthly_card": {"type": "object"},
+            "settings": {"type": "object"},
+            "client_version": {"type": "string"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "存档保存成功",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "player_id": {"type": "string", "format": "uuid"},
+              "updated_at": {"type": "string", "format": "date-time"},
+              "checksum": {"type": "string", "description": "存档完整性校验哈希"}
+            }
+          }
+        },
+        "400": {"description": "数据非法", "error_codes": ["NEGATIVE_CURRENCY", "INVALID_STAR_RATING", "INVALID_CHAPTER"]},
+        "401": {"description": "未认证"},
+        "403": {"description": "越权"},
+        "409": {
+          "description": "并发冲突 — 服务端存档已被更新",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "error": {"type": "object"},
+              "server_save": {"type": "object", "description": "服务端最新存档，供客户端合并"}
+            }
+          },
+          "error_codes": ["SAVE_CONFLICT"]
+        },
+        "422": {"description": "业务逻辑错误", "error_codes": ["INSUFFICIENT_CURRENCY", "MATERIAL_OVERFLOW"]}
+      }
+    },
+    {
+      "id": "get_leaderboard",
+      "path": "/leaderboard",
+      "method": "GET",
+      "summary": "获取排行榜（分页）",
+      "description": "返回全球排行榜，按总分降序排列，支持分页。同时返回请求玩家的当前排名（如提供playerId）。",
+      "auth_required": false,
+      "tags": ["leaderboard"],
+      "query_parameters": {
+        "page": {
+          "type": "integer",
+          "default": 1,
+          "minimum": 1,
+          "description": "页码"
+        },
+        "limit": {
+          "type": "integer",
+          "default": 50,
+          "minimum": 1,
+          "maximum": 100,
+          "description": "每页条数"
+        },
+        "chapter": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6,
+          "description": "（可选）按章节筛选"
+        },
+        "player_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "（可选）附带返回该玩家排名"
+        }
+      },
+      "request_body": null,
+      "responses": {
+        "200": {
+          "description": "排行榜数据",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "rank": {"type": "integer"},
+                    "player_id": {"type": "string", "format": "uuid"},
+                    "display_name": {"type": "string"},
+                    "total_score": {"type": "integer"},
+                    "chapter_reached": {"type": "integer"},
+                    "highest_level": {"type": "integer"},
+                    "updated_at": {"type": "string", "format": "date-time"}
+                  }
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "page": {"type": "integer"},
+                  "limit": {"type": "integer"},
+                  "total_entries": {"type": "integer"},
+                  "total_pages": {"type": "integer"}
+                }
+              },
+              "my_rank": {
+                "type": "object",
+                "nullable": true,
+                "description": "当提供player_id时返回",
+                "properties": {
+                  "rank": {"type": "integer"},
+                  "total_score": {"type": "integer"},
+                  "chapter_reached": {"type": "integer"}
+                }
+              }
+            }
+          }
+        },
+        "400": {"description": "参数非法", "error_codes": ["INVALID_PAGE", "INVALID_LIMIT"]}
+      }
+    },
+    {
+      "id": "submit_leaderboard",
+      "path": "/leaderboard/submit",
+      "method": "POST",
+      "summary": "提交玩家分数到排行榜",
+      "description": "关卡通关后提交累计总分。服务端验证分数合法性（不低于上次提交），若新分数更高则覆盖，否则保留历史最高分。",
+      "auth_required": true,
+      "tags": ["leaderboard"],
+      "request_body": {
+        "required": true,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["display_name", "total_score", "chapter_reached", "highest_level"],
+          "properties": {
+            "display_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20,
+              "description": "玩家展示名（不含敏感词）"
+            },
+            "total_score": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "玩家总积分（所有关卡分数累计）"
+            },
+            "chapter_reached": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 6
+            },
+            "highest_level": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "排行榜更新成功",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "player_id": {"type": "string", "format": "uuid"},
+              "current_rank": {"type": "integer"},
+              "total_score": {"type": "integer"},
+              "is_personal_best": {"type": "boolean"},
+              "updated_at": {"type": "string", "format": "date-time"}
+            }
+          }
+        },
+        "400": {"description": "参数非法", "error_codes": ["INVALID_DISPLAY_NAME", "SCORE_TOO_LOW"]},
+        "401": {"description": "未认证"},
+        "422": {"description": "分数低于上次有效提交（反作弊）", "error_codes": ["SCORE_ROLLBACK_DETECTED"]}
+      }
+    },
+    {
+      "id": "verify_iap",
+      "path": "/iap/verify",
+      "method": "POST",
+      "summary": "验证IAP收据并发放奖励",
+      "description": "客户端完成App Store / Google Play / TapTap支付后，提交收据由服务端验证。验证通过后幂等地发放丹青石和物品到player_saves。重复收据返回409（已处理）。",
+      "auth_required": true,
+      "tags": ["iap"],
+      "request_body": {
+        "required": true,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["sku_id", "platform", "receipt_data"],
+          "properties": {
+            "sku_id": {
+              "type": "string",
+              "enum": ["small_pack", "medium_pack", "large_pack", "mega_pack", "monthly_card", "starter_pack"],
+              "description": "内部SKU标识符"
+            },
+            "platform": {
+              "type": "string",
+              "enum": ["ios", "android", "taptap"]
+            },
+            "receipt_data": {
+              "type": "string",
+              "description": "平台原始收据数据（iOS: base64编码receipt, Android: purchase token, TapTap: order_id）"
+            },
+            "product_id": {
+              "type": "string",
+              "description": "平台产品ID（如 com.glowisland.iap.small_pack）"
+            },
+            "transaction_id": {
+              "type": "string",
+              "description": "（可选）平台交易ID，用于快速重复检测"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "验证通过，奖励已发放",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "transaction_id": {"type": "string", "format": "uuid", "description": "内部交易ID"},
+              "sku_id": {"type": "string"},
+              "status": {"type": "string", "enum": ["verified"], "example": "verified"},
+              "glowstone_granted": {"type": "integer"},
+              "items_granted": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {"type": "string"},
+                    "item_id": {"type": "string"},
+                    "quantity": {"type": "integer"}
+                  }
+                }
+              },
+              "updated_currency": {
+                "type": "object",
+                "properties": {
+                  "beach_coins": {"type": "integer"},
+                  "glowstone": {"type": "integer"}
+                }
+              },
+              "monthly_card": {
+                "type": "object",
+                "nullable": true,
+                "description": "若购买月卡，返回月卡状态",
+                "properties": {
+                  "active": {"type": "boolean"},
+                  "expires_at": {"type": "string", "format": "date-time"}
+                }
+              }
+            }
+          }
+        },
+        "400": {"description": "请求参数缺失或非法", "error_codes": ["MISSING_RECEIPT", "INVALID_SKU"]},
+        "401": {"description": "未认证"},
+        "402": {"description": "收据验证失败（平台API拒绝）", "error_codes": ["RECEIPT_INVALID", "RECEIPT_EXPIRED"]},
+        "409": {
+          "description": "重复收据 — 已处理过",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "error": {"type": "object"},
+              "original_transaction_id": {"type": "string", "format": "uuid"},
+              "processed_at": {"type": "string", "format": "date-time"}
+            }
+          },
+          "error_codes": ["DUPLICATE_RECEIPT"]
+        },
+        "422": {"description": "业务规则拒绝", "error_codes": ["STARTER_PACK_ALREADY_PURCHASED", "MONTHLY_CARD_ALREADY_ACTIVE"]},
+        "503": {"description": "上游平台IAP验证服务不可用", "error_codes": ["PLATFORM_UNAVAILABLE"]}
+      }
+    },
+    {
+      "id": "claim_daily_reward",
+      "path": "/daily-reward/claim",
+      "method": "POST",
+      "summary": "领取每日奖励（登录签到 + 月卡丹青石）",
+      "description": "玩家每日首次登录时调用。服务端判断登录连击天数，发放对应沙滩币；若持有有效月卡且今日未领，同时发放10颗丹青石。幂等：当日重复调用返回200但不重复发放。",
+      "auth_required": true,
+      "tags": ["reward"],
+      "request_body": {
+        "required": false,
+        "description": "无请求体"
+      },
+      "responses": {
+        "200": {
+          "description": "每日奖励处理结果",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "already_claimed": {"type": "boolean", "description": "今日是否已领取过"},
+              "streak_day": {"type": "integer", "description": "当前连续登录天数 (1-7)"},
+              "beach_coins_granted": {"type": "integer"},
+              "glowstone_granted": {"type": "integer"},
+              "monthly_card_claimed": {"type": "boolean"},
+              "updated_currency": {
+                "type": "object",
+                "properties": {
+                  "beach_coins": {"type": "integer"},
+                  "glowstone": {"type": "integer"}
+                }
+              },
+              "next_reward_preview": {
+                "type": "object",
+                "description": "明日奖励预览",
+                "properties": {
+                  "streak_day": {"type": "integer"},
+                  "beach_coins": {"type": "integer"},
+                  "glowstone": {"type": "integer"}
+                }
+              }
+            }
+          }
+        },
+        "401": {"description": "未认证"}
+      }
+    },
+    {
+      "id": "health",
+      "path": "/health",
+      "method": "GET",
+      "summary": "服务健康检查",
+      "description": "负载均衡器和运维监控使用。不需要认证。返回服务状态和数据库连接状态。",
+      "auth_required": false,
+      "tags": ["infra"],
+      "request_body": null,
+      "responses": {
+        "200": {
+          "description": "服务正常",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": {"type": "string", "enum": ["ok"], "example": "ok"},
+              "version": {"type": "string", "example": "1.0.0"},
+              "timestamp": {"type": "string", "format": "date-time"},
+              "services": {
+                "type": "object",
+                "properties": {
+                  "database": {"type": "string", "enum": ["ok", "degraded", "down"]},
+                  "iap_apple": {"type": "string", "enum": ["ok", "degraded", "down"]},
+                  "iap_google": {"type": "string", "enum": ["ok", "degraded", "down"]}
+                }
+              }
+            }
+          }
+        },
+        "503": {
+          "description": "服务不可用",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": {"type": "string", "enum": ["down", "degraded"]},
+              "services": {"type": "object"}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "implementation_notes": {
+    "save_validation": [
+      "服务端只校验货币非负、星级范围(0-3)、材料非负、章节范围(1-6)",
+      "不还原完整游戏逻辑，客户端为权威（移动端单机游戏），服务端防作弊为辅",
+      "chapter_progress JSONB允许客户端自由扩展字段，服务端不做schema强约束"
+    ],
+    "iap_security": [
+      "iOS收据调用Apple /verifyReceipt API（生产环境）",
+      "Android收据调用Google Play Developer API验证 purchaseToken",
+      "所有收据验证在服务端执行，客户端不可自行标记verified",
+      "transaction_id唯一索引防止双重发放",
+      "starter_pack限购：验证前查询player_id是否有verified状态的starter_pack记录"
+    ],
+    "leaderboard_anti_cheat": [
+      "total_score只增不减（服务端保留历史最高）",
+      "chapter_reached与total_score做粗略合理性检查（每关最高分上限 × 关数）",
+      "display_name过敏感词库（接入第三方审核服务）"
+    ],
+    "monthly_card_delivery": [
+      "月卡购买后在player_saves.monthly_card写入expires_at（now + 30天）",
+      "每日/daily-reward/claim接口检测月卡有效性并发放10颗丹青石",
+      "到期前3天：GET /save 响应中monthly_card.expires_at供客户端展示续订提醒"
+    ],
+    "versioning": "所有接口在 /v1/ 下，未来重大变更使用 /v2/ 并维护 /v1/ 至少6个月"
+  }
+}

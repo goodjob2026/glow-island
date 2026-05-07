@@ -1,0 +1,182 @@
+{
+  "analyzed_at": "2026-05-07T00:00:00.000Z",
+  "competitors": [
+    {
+      "name": "Gardenscapes",
+      "developer": "Playrix",
+      "genre": "builder-puzzle / match-3",
+      "core_mechanic": "Players complete match-3 puzzle levels to earn stars, which are spent to restore a neglected garden. Levels feature explosive power-ups, useful boosters, and chain-reaction mechanics. Over 16,000 levels with seasonal events and limited-time challenges providing new gameplay mechanics.",
+      "meta_loop": "Completing puzzles earns stars → stars unlock garden restoration tasks → restored areas reveal story progression with butler character Austin. Seasonal and event layers add daily engagement.",
+      "stress_mechanisms": [
+        "Lives/energy system (5 lives, refills over time or via IAP)",
+        "Move-count limits per level",
+        "Booster depletion on failed level exit",
+        "Time-limited competition events with score pressure",
+        "Progressive difficulty spikes designed to force booster use"
+      ],
+      "monetization": [
+        "IAP: boosters, extra moves, coin bundles",
+        "IAP: season pass / subscription",
+        "IAP: event-exclusive bundles",
+        "Minimal ads (Playrix prefers IAP-first model)"
+      ],
+      "emotional_positioning": "治愈/叙事沉浸（家园修复叙事 + 轻度故事）",
+      "user_review_pains": [
+        "pay-to-win：竞技/限时活动中不付费几乎无法通关",
+        "关卡难度人为拔高，随机掉落被怀疑有意操纵",
+        "退出关卡会消耗体力和助攻器，惩罚感强",
+        "虚假广告：宣传素材展示的玩法与实际游戏不符",
+        "频繁价格上涨，活动奖励缩水，老玩家流失"
+      ],
+      "strengths": [
+        "叙事+消除深度融合，情感钩子强",
+        "超16000关卡保证超长留存生命周期",
+        "超强品牌认知度，生命周期收入超36亿美元"
+      ],
+      "weaknesses": [
+        "能量/体力系统与治愈定位相矛盾，制造挫败感",
+        "商业化激进，后期深度付费玩家才能顺畅推进",
+        "虚假广告引发大量用户信任危机"
+      ],
+      "estimated_revenue_tier": "top-grossing",
+      "revenue_data": {
+        "annual_2024_usd_m": 504,
+        "lifetime_usd_b": 3.6,
+        "global_rank_2024": 15
+      }
+    },
+    {
+      "name": "Township",
+      "developer": "Playrix",
+      "genre": "farming-city-builder / casual",
+      "core_mechanic": "Players build and manage a farm town—harvesting crops, operating factory chains, fulfilling orders, and expanding territory. A match-3 mini-game component appears during 'Adventure' events. Social 'Regatta' competitions pit teams against each other in timed task challenges.",
+      "meta_loop": "Fulfill orders → earn coins/XP → expand farm buildings and factories → unlock new crops/goods → participate in weekly Regatta team competition. Social layer (co-op teams) drives daily engagement.",
+      "stress_mechanisms": [
+        "Production timers (hours-long factory wait times)",
+        "Regatta time pressure with competitive team tasks",
+        "Resource scarcity driving IAP for Township Cash",
+        "Match-3 event levels with move limits and lives",
+        "Co-op social obligation pressure"
+      ],
+      "monetization": [
+        "IAP: Township Cash (premium currency) for speedups and rare items",
+        "IAP: Growth Packs and Festival Sales bundles",
+        "IAP: decoration and cosmetic packs",
+        "No significant ad revenue (IAP-first)"
+      ],
+      "emotional_positioning": "社交/建设成就感（社区归属 + 建设里程碑）",
+      "user_review_pains": [
+        "Regatta任务设计不合理，要求低等级成员完成高难度任务",
+        "生产等待时间过长，迫使消费加速货币",
+        "活动难度陡增，Township Cash消耗远超奖励价值",
+        "合作社压力：队友不均等贡献导致团队矛盾",
+        "经济系统多次调整，额外步数成本暴涨，奖励未同步"
+      ],
+      "strengths": [
+        "社交/团队玩法增强粘性，600M下载量",
+        "城镇建设视觉成就感强，10年生命周期",
+        "IAP变现效率高，2024年收入4.03亿美元"
+      ],
+      "weaknesses": [
+        "城建+农场+消除三类玩法混搭，核心定位不清晰",
+        "社交压力系统（Regatta）对独游玩家不友好",
+        "等待时间设计本质是付费墙，长期玩家疲劳感强"
+      ],
+      "estimated_revenue_tier": "top-grossing",
+      "revenue_data": {
+        "annual_2024_usd_m": 403,
+        "lifetime_usd_b": 2.1,
+        "global_rank_2024": 16
+      }
+    },
+    {
+      "name": "Fishdom",
+      "developer": "Playrix",
+      "genre": "builder-puzzle / match-3",
+      "core_mechanic": "Players complete match-3 puzzle levels—swapping tiles to create matches triggering chain reactions with firecrackers, depth bombs, dynamite, and lightning power-ups. Puzzle rewards are used to purchase fish, aquatic plants, and decorations to customize a personal aquarium.",
+      "meta_loop": "Solve match-3 puzzles → earn puzzle currency → spend currency on aquarium customization (fish species, decor, tank expansions) → visual aquarium serves as passive reward showcase.",
+      "stress_mechanisms": [
+        "Lives/energy system (lost on failure or level exit)",
+        "Move-count limits per level",
+        "Difficulty spikes designed to exhaust boosters",
+        "Season Pass time pressure",
+        "Limited-time expedition events"
+      ],
+      "monetization": [
+        "IAP: boosters, extra moves, coin bundles",
+        "IAP: Season Pass (significantly price-hiked in 2024)",
+        "IAP: exclusive aquarium decor packs",
+        "No advertising (Playrix IAP-first policy)"
+      ],
+      "emotional_positioning": "治愈/收集（水族馆美化 + 鱼类收集乐趣）",
+      "user_review_pains": [
+        "虚假广告：宣传视频展示的碰撞/策略玩法（pin-pulling等）与实际match-3完全不同",
+        "Season Pass单季价格大幅涨价（50%涨幅），玩家强烈抵制",
+        "后期关卡几乎不用助攻器无法通关，隐性付费墙",
+        "2024年更新削减游戏时长和奖励，同时提高价格",
+        "账单异常扣款且客服响应迟缓，信任危机"
+      ],
+      "strengths": [
+        "水族馆视觉呈现精美，差异化情感钩子",
+        "生命周期收入超20亿美元，品牌成熟",
+        "鱼类/装饰收集机制增强长期留存"
+      ],
+      "weaknesses": [
+        "严重依赖误导性广告吸量，与实际玩法不符引发玩家背叛感",
+        "商业化过度激进，赛季通行证涨价加速核心用户流失",
+        "match-3核心玩法与Gardenscapes高度同质，品牌差异度不足"
+      ],
+      "estimated_revenue_tier": "top-grossing",
+      "revenue_data": {
+        "lifetime_usd_b": 2.0,
+        "note": "2024年收入小幅下滑，具体数字未公开披露"
+      }
+    },
+    {
+      "name": "Candy Crush Saga",
+      "developer": "King (Activision Blizzard)",
+      "genre": "match-3 / pure puzzle",
+      "core_mechanic": "Classic match-3: swap adjacent candies to match 3+ in a row, triggering chain reactions. Special candies include Striped Candies, Wrapped Candies, and Color Bombs. Over 16,000 levels (45-60 new levels added weekly). Occasional tournament events like 'All Stars' with competitive leaderboards.",
+      "meta_loop": "Clear levels → advance episode map → unlock new worlds. Social layer via Facebook friends for lives. Competitive All Stars tournament creates seasonal engagement spikes. No build/decor meta; progression is pure level advancement.",
+      "stress_mechanisms": [
+        "5-lives system (30-min per life regeneration)",
+        "Move-count limits per level",
+        "Time-limit levels in certain modes",
+        "Gold bar scarcity for extra moves/lives",
+        "Competitive tournament leaderboard pressure",
+        "Aggressive pop-up purchase prompts after failure"
+      ],
+      "monetization": [
+        "IAP: Gold bars (lives, extra moves, boosters)",
+        "IAP: Booster bundles",
+        "IAP: All Stars tournament entry/upgrades",
+        "Limited advertising (primarily IAP-driven)",
+        "In-game subscription/pass offers"
+      ],
+      "emotional_positioning": "竞技/大众休闲（简单上手 + 关卡征服感 + 社交攀比）",
+      "user_review_pains": [
+        "体力系统限制每次游玩仅15分钟，打断沉浸感",
+        "后期关卡设计不用付费几乎无法通关，强制付费感强",
+        "金条消耗设计不合理：补充体力需12金条，助攻器15金条+，起步消费$5",
+        "频繁弹出购买提示，反复打断游戏流",
+        "竞技赛事（All Stars）门槛高，普通玩家参与感弱"
+      ],
+      "strengths": [
+        "全球最成功休闲手游IP，273M月活用户",
+        "极低学习曲线，普世吸引力最强",
+        "2024年收入约10.9亿美元，连续三年超10亿"
+      ],
+      "weaknesses": [
+        "纯关卡推图无建造/叙事Meta层，长期留存依赖惯性而非情感绑定",
+        "体力系统是最高频投诉点，与用户'想持续玩'的需求直接对立",
+        "无差异化视觉世界观，全球竞品高度模仿导致同质化"
+      ],
+      "estimated_revenue_tier": "top-grossing",
+      "revenue_data": {
+        "annual_2024_usd_b": 1.09,
+        "lifetime_usd_b": 20,
+        "monthly_active_users_m": 273
+      }
+    }
+  ]
+}

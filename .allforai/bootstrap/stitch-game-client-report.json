@@ -1,0 +1,113 @@
+{
+  "stitched_at": "2026-05-07T00:00:00+08:00",
+  "connections_checked": 24,
+  "connections_fixed": 12,
+  "enum_coverage": {
+    "TileType": {
+      "total": 20,
+      "covered": 20,
+      "gaps": [],
+      "notes": "T01-T08 were already in TILE_TYPE_MAP; T09-T20 mapping entries added to LevelLoader.ts"
+    },
+    "SFXKey": {
+      "total": 12,
+      "covered": 12,
+      "gaps": [],
+      "call_sites": {
+        "TILE_CONNECT": "GameScene.ts:tryMatch()",
+        "TILE_DISAPPEAR": "GameScene.ts:tryMatch()",
+        "COMBO_LV1": "GameHUD.ts:_updateComboDisplay()",
+        "COMBO_LV2": "GameHUD.ts:_updateComboDisplay()",
+        "COMBO_LV3": "GameHUD.ts:_updateComboDisplay()",
+        "SPECIAL_BOMB": "GameScene.ts:triggerSpecialBlock()",
+        "SPECIAL_WINDMILL": "GameScene.ts:triggerSpecialBlock()",
+        "SPECIAL_LIGHT": "GameScene.ts:triggerSpecialBlock()",
+        "SPECIAL_WAVE": "GameScene.ts:triggerSpecialBlock()",
+        "LEVEL_COMPLETE": "LevelCompletePopup.ts:show()",
+        "AREA_RESTORE": "AreaRestorationEffect.ts:playStage() stage=4",
+        "LIGHTHOUSE_ON": "IslandMapScene.ts:_triggerLighthouseFinalEffect()"
+      }
+    },
+    "SpecialBlockType": {
+      "total": 4,
+      "covered": 4,
+      "gaps": [],
+      "notes": "BOMB, WINDMILL, LIGHT, WAVE all have behavior classes in SpecialBlock.ts, SFX in GameScene.ts, and factory coverage with exhaustive switch"
+    }
+  },
+  "fixes_applied": [
+    {
+      "location": "game-client/assets/scripts/game/GameScene.ts",
+      "fix": "Created new file as main game scene controller; wires TileGrid.tilesMatched → tile-disappear.anim; ComboTracker.comboChanged → GameHUD; GameSession.SESSION_ENDED → LevelCompletePopup.show(); GameSession.SESSION_FAILED → failure handling; tryMatch() calls TILE_CONNECT + TILE_DISAPPEAR SFX; triggerSpecialBlock() calls SPECIAL_* SFX for all 4 SpecialBlockType values; SESSION_ENDED navigates to IslandMapScene"
+    },
+    {
+      "location": "game-client/assets/scripts/meta/AreaRestorationEffect.ts",
+      "fix": "Added AudioManager import and playSFX(SFXKey.AREA_RESTORE) call at stage=4 inside playStage()"
+    },
+    {
+      "location": "game-client/assets/scripts/meta/IslandMapScene.ts",
+      "fix": "Added AudioManager import and playSFX(SFXKey.LIGHTHOUSE_ON) in _triggerLighthouseFinalEffect(); added AreaRestorationEffect.playStage(chapterId, 4) call in _refreshAllChapterStates() when restorationStage===4"
+    },
+    {
+      "location": "game-client/assets/scripts/meta/ProgressionManager.ts",
+      "fix": "Added addCurrency(beachCoins, glowstones) method for proper IAP currency credit; added advanceRestorationStage(chapterId) method to increment restorationStage 0→4"
+    },
+    {
+      "location": "game-client/assets/scripts/ui/LevelCompletePopup.ts",
+      "fix": "Added AreaRestorationEffect property; added _tryAdvanceRestoration() helper that calls ProgressionManager.advanceRestorationStage() then AreaRestorationEffect.playStage(); fixed _onBackToMap() scene name from 'MapScene' to 'IslandMapScene'"
+    },
+    {
+      "location": "game-client/assets/scripts/ui/MainMenuScene.ts",
+      "fix": "Added shopButton property (@property Button); registered Button.EventType.CLICK → _onShop() which calls director.loadScene('ShopScene'); wired onDestroy cleanup"
+    },
+    {
+      "location": "game-client/assets/scripts/ui/GameHUD.ts",
+      "fix": "Added shopButton property; registered Button.EventType.CLICK → _onShop() which calls director.loadScene('ShopScene'); wired onDestroy cleanup — enables GameScene → ShopScene transition"
+    },
+    {
+      "location": "game-client/assets/scripts/shop/IAPManager.ts",
+      "fix": "Replaced direct progress.currency mutation with pm.addCurrency() call in both verifyWithBackend success path and sandbox fallback path — uses proper ProgressionManager API"
+    },
+    {
+      "location": "game-client/assets/scripts/game/LevelLoader.ts",
+      "fix": "Extended TILE_TYPE_MAP with all 20 TileType entries (tile_09 through tile_20) so all TileType enum values can be loaded from level configs"
+    }
+  ],
+  "connections_verified": [
+    { "id": 1,  "description": "GameScene listens to TileGrid tilesMatched → plays tile-disappear.anim", "status": "fixed", "file": "GameScene.ts" },
+    { "id": 2,  "description": "GameScene listens to ComboTracker comboChanged → GameHUD.init() wired", "status": "fixed", "file": "GameScene.ts" },
+    { "id": 3,  "description": "GameSession SESSION_ENDED → LevelCompletePopup.show()", "status": "fixed", "file": "GameScene.ts" },
+    { "id": 4,  "description": "LevelCompletePopup → calls ProgressionManager.updateChapterProgress()", "status": "already present", "file": "LevelCompletePopup.ts" },
+    { "id": 5,  "description": "LevelCompletePopup → calls ProgressionManager.advanceRestorationStage() → triggers AreaRestorationEffect.playStage()", "status": "fixed", "file": "LevelCompletePopup.ts" },
+    { "id": 6,  "description": "IslandMapScene on enter → calls ProgressionManager.loadFromCloud()", "status": "already present", "file": "IslandMapScene.ts" },
+    { "id": 7,  "description": "ChapterNode COMPLETED state → AreaRestorationEffect.playStage() called", "status": "fixed", "file": "IslandMapScene.ts" },
+    { "id": 8,  "description": "ShopScene → IAPManager.purchase() → backend /iap/verify → ProgressionManager.addCurrency()", "status": "fixed", "file": "IAPManager.ts + ProgressionManager.ts" },
+    { "id": 9,  "description": "CurrencyDisplay polls ProgressionManager for currency changes (frame poll)", "status": "already present", "file": "CurrencyDisplay.ts" },
+    { "id": 10, "description": "MainMenu → LevelSelectScene (via startButton)", "status": "already present", "file": "MainMenuScene.ts" },
+    { "id": 11, "description": "GameScene complete → IslandMapScene", "status": "fixed", "file": "GameScene.ts" },
+    { "id": 12, "description": "MainMenu → LeaderboardScene", "status": "already present", "file": "MainMenuScene.ts" },
+    { "id": 13, "description": "MainMenu → ShopScene", "status": "fixed", "file": "MainMenuScene.ts" },
+    { "id": 14, "description": "GameScene (HUD) → ShopScene", "status": "fixed", "file": "GameHUD.ts" },
+    { "id": 15, "description": "TileMatcher valid path → AudioManager.playSFX(TILE_CONNECT)", "status": "fixed", "file": "GameScene.ts" },
+    { "id": 16, "description": "Match/clear → TILE_DISAPPEAR SFX", "status": "fixed", "file": "GameScene.ts" },
+    { "id": 17, "description": "ComboTracker lv2 → COMBO_LV1 SFX", "status": "already present", "file": "GameHUD.ts" },
+    { "id": 18, "description": "ComboTracker lv3 → COMBO_LV2 SFX", "status": "already present", "file": "GameHUD.ts" },
+    { "id": 19, "description": "ComboTracker lv4 → COMBO_LV3 SFX", "status": "already present", "file": "GameHUD.ts" },
+    { "id": 20, "description": "SpecialBlock BOMB trigger → SPECIAL_BOMB SFX", "status": "fixed", "file": "GameScene.ts" },
+    { "id": 21, "description": "SpecialBlock WINDMILL trigger → SPECIAL_WINDMILL SFX", "status": "fixed", "file": "GameScene.ts" },
+    { "id": 22, "description": "SpecialBlock LIGHT trigger → SPECIAL_LIGHT SFX", "status": "fixed", "file": "GameScene.ts" },
+    { "id": 23, "description": "AreaRestorationEffect stage 4 → AREA_RESTORE SFX", "status": "fixed", "file": "AreaRestorationEffect.ts" },
+    { "id": 24, "description": "LighthouseFinal (chapter 6 fully restored) → LIGHTHOUSE_ON SFX", "status": "fixed", "file": "IslandMapScene.ts" }
+  ],
+  "unresolved": [
+    {
+      "item": "LevelCompletePopup._onBackToMap scene name was 'MapScene' (typo); corrected to 'IslandMapScene' — runtime scene asset must also be named 'IslandMapScene' in the Cocos Creator project"
+    },
+    {
+      "item": "WAVE SpecialBlock SFX (SPECIAL_WAVE) added in GameScene.triggerSpecialBlock(); actual trigger call site depends on board input controller invoking GameScene.triggerSpecialBlock() with correct type"
+    },
+    {
+      "item": "TileType T09-T20 mapping added to LevelLoader; level-design.json must use 'tile_09'…'tile_20' string keys to reference them"
+    }
+  ]
+}

@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 美术资产规格说明书（Art Asset Spec）</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d26;
+      --border: #2a2d3a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --accent2: #86efac;
+      --heading: #f8fafc;
+      --code-bg: #12141c;
+      --tag-bg: #1e3a5f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 0 1rem 4rem;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      margin: 0 -1rem 2.5rem;
+      text-align: center;
+    }
+    .page-header .project-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125,211,252,0.25);
+      margin-bottom: 0.9rem;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--heading);
+      text-shadow: 0 0 40px rgba(125,211,252,0.2);
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--heading);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+    h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
+    h3 { font-size: 1.1rem; color: var(--accent2); }
+    h4 { font-size: 1rem; color: var(--muted); }
+    p { margin: 0.6rem 0 0.9rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { color: var(--heading); font-weight: 600; }
+    em { color: var(--accent2); font-style: normal; }
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      color: var(--muted);
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.87em;
+      background: var(--code-bg);
+      color: var(--accent2);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.4rem;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    ul, ol {
+      padding-left: 1.6rem;
+      margin: 0.5rem 0 1rem;
+    }
+    li { margin: 0.3rem 0; }
+    li > ul, li > ol { margin: 0.2rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    tr:hover td { background: rgba(125,211,252,0.04); }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="project-tag">Glow Island · 发光岛</div>
+    <h1>Glow Island — 美术资产规格说明书（Art Asset Spec）</h1>
+  </div>
+  <div class="container">
+<h1 id="glow-island-art-asset-spec">Glow Island — 美术资产规格说明书（Art Asset Spec）</h1>
+<blockquote>
+<p>版本：1.0 | 日期：2026-05-07 | 状态：已确认</p>
+</blockquote>
+<hr />
+<h2 id="_1">总览</h2>
+<table>
+<thead>
+<tr>
+<th>资产类别</th>
+<th>数量</th>
+<th>主要目录</th>
+<th>格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>图块精灵（Tile Sprites）</td>
+<td>20种 × 4状态 = 80帧（静态）+ 动画</td>
+<td><code>sprites/tiles/</code></td>
+<td>PNG / Spine</td>
+</tr>
+<tr>
+<td>章节背景（Backgrounds）</td>
+<td>6张 × 2版本（修复前/后）= 12张</td>
+<td><code>sprites/backgrounds/</code></td>
+<td>PNG</td>
+</tr>
+<tr>
+<td>岛屿地图区域（Island Zones）</td>
+<td>6区域 × 5状态（修复前 + 4阶段）= 30张</td>
+<td><code>sprites/island/</code></td>
+<td>PNG / Spine</td>
+</tr>
+<tr>
+<td>NPC角色头像（Characters）</td>
+<td>4个NPC × 3表情 = 12帧（静态）+ 动画</td>
+<td><code>sprites/characters/</code></td>
+<td>PNG / Spine</td>
+</tr>
+<tr>
+<td>UI图标集（UI Icons）</td>
+<td>约30个</td>
+<td><code>sprites/ui/</code></td>
+<td>PNG / SVG</td>
+</tr>
+<tr>
+<td>特效序列帧（Effects）</td>
+<td>8种特效</td>
+<td><code>effects/frames/</code></td>
+<td>PNG序列帧 / Spine</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-tile-sprites">1. 图块精灵（Tile Sprites）</h2>
+<h3 id="11">1.1 基础规格</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单图块尺寸 @2x</td>
+<td>128 × 128 px</td>
+</tr>
+<tr>
+<td>单图块尺寸 @1x</td>
+<td>64 × 64 px</td>
+</tr>
+<tr>
+<td>画布出血区</td>
+<td>4px（四周各留4px透明出血，实际画面区域 120×120 @2x）</td>
+</tr>
+<tr>
+<td>颜色深度</td>
+<td>RGBA 32-bit</td>
+</tr>
+<tr>
+<td>导出格式</td>
+<td>PNG-24（透明背景）</td>
+</tr>
+<tr>
+<td>图集打包</td>
+<td>合并至 Texture Atlas，最大 2048×2048 per atlas</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-20">1.2 图块类型列表（20种）</h3>
+<p>图块类型按章节分组，每章4-5种，视觉风格与章节主色对应。</p>
+<p><strong>第1章 — 海边码头（4种）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>形状</th>
+<th>主色</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T01</td>
+<td>海浪块</td>
+<td>波形圆角矩形</td>
+<td>#87CEEB</td>
+<td>顶部波浪轮廓，内有细纹</td>
+</tr>
+<tr>
+<td>T02</td>
+<td>木板块</td>
+<td>圆角矩形 + 木纹</td>
+<td>#C49A6C</td>
+<td>横向木纹理，两侧铆钉细节</td>
+</tr>
+<tr>
+<td>T03</td>
+<td>绳结块</td>
+<td>圆形 + 绳圈纹</td>
+<td>#F5DEB3</td>
+<td>米白绳结图案，中央麻花纹</td>
+</tr>
+<tr>
+<td>T04</td>
+<td>贝壳块</td>
+<td>扇形圆角</td>
+<td>#F4A261</td>
+<td>贝壳轮廓，放射状细线</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第2章 — 中央小镇（4种）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>形状</th>
+<th>主色</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T05</td>
+<td>石板块</td>
+<td>正方形圆角 + 石缝</td>
+<td>#D9C9B5</td>
+<td>石板纹，四角有缝隙细节</td>
+</tr>
+<tr>
+<td>T06</td>
+<td>灯笼块</td>
+<td>六边形</td>
+<td>#F4C95D</td>
+<td>灯笼轮廓，中央光点，两侧穗子</td>
+</tr>
+<tr>
+<td>T07</td>
+<td>砖瓦块</td>
+<td>矩形圆角 + 砖纹</td>
+<td>#C97D4E</td>
+<td>砖红色，水平砖缝纹理</td>
+</tr>
+<tr>
+<td>T08</td>
+<td>喷泉块</td>
+<td>圆形 + 水滴</td>
+<td>#7EC8E3</td>
+<td>圆形水面 + 中央水柱小图标</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第3章 — 花田山坡（4种）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>形状</th>
+<th>主色</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T09</td>
+<td>花朵块</td>
+<td>花形（5瓣）圆角</td>
+<td>#C9A8D4</td>
+<td>薰衣草紫，五瓣简约花形</td>
+</tr>
+<tr>
+<td>T10</td>
+<td>叶片块</td>
+<td>水滴形</td>
+<td>#7DBD7A</td>
+<td>叶形，中央叶脉，草绿色</td>
+</tr>
+<tr>
+<td>T11</td>
+<td>蝴蝶块</td>
+<td>蝴蝶轮廓圆角</td>
+<td>#F0C060</td>
+<td>金黄蝴蝶简化图形</td>
+</tr>
+<tr>
+<td>T12</td>
+<td>嫩芽块</td>
+<td>圆形 + 出芽图</td>
+<td>#A8D88A</td>
+<td>浅绿圆形，中央嫩芽破土图案</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第4章 — 森林露营地（4种）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>形状</th>
+<th>主色</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T13</td>
+<td>原木块</td>
+<td>椭圆形 + 年轮</td>
+<td>#8B6241</td>
+<td>年轮纹圆木横截面</td>
+</tr>
+<tr>
+<td>T14</td>
+<td>苔藓块</td>
+<td>不规则圆角</td>
+<td>#6B9E5E</td>
+<td>苔藓绿，略微不规则边缘</td>
+</tr>
+<tr>
+<td>T15</td>
+<td>火星块</td>
+<td>六边形</td>
+<td>#FF8C42</td>
+<td>橙色六边形，内有火焰简图</td>
+</tr>
+<tr>
+<td>T16</td>
+<td>帐篷块</td>
+<td>三角圆角</td>
+<td>#C49A6C</td>
+<td>帐篷三角轮廓，中央拉链线</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第5章 — 温泉山谷（2种）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>形状</th>
+<th>主色</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T17</td>
+<td>水雾块</td>
+<td>云朵圆角</td>
+<td>#B8D4E0</td>
+<td>雾蓝云朵形，边缘模糊感</td>
+</tr>
+<tr>
+<td>T18</td>
+<td>石板块（温泉）</td>
+<td>六边形</td>
+<td>#A0A8B0</td>
+<td>灰蓝石板，防滑纹纹理</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第6章 — 夜晚灯塔（2种）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>形状</th>
+<th>主色</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T19</td>
+<td>星光块</td>
+<td>四角星形圆角</td>
+<td>#F5C842</td>
+<td>暖黄四角星，中央小圆点</td>
+</tr>
+<tr>
+<td>T20</td>
+<td>海浪夜块</td>
+<td>波形圆角矩形</td>
+<td>#2D4A7A</td>
+<td>深蓝夜海波形，白色细泡沫线</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13">1.3 四种状态规范</h3>
+<p>每个图块必须提供以下状态：</p>
+<p><strong>状态1：Normal（默认）</strong><br />
+- 文件名：<code>{tile_id}_normal@2x.png</code>（如 <code>t01_wave_normal@2x.png</code>）<br />
+- 静态单帧 PNG<br />
+- 底部固定阴影：<code>rgba(0,0,0,0.12)</code> 偏移 <code>0,3px</code>（烘焙进图层）</p>
+<p><strong>状态2：Highlighted（连接高亮）</strong><br />
+- 文件名：<code>{tile_id}_highlighted@2x.png</code><br />
+- 亮度 +20%，内发光 <code>rgba(255,255,255,0.35)</code>，实际绘制尺寸可略大（128→132px，含光晕，但透明区域留足）<br />
+- 也可通过运行时 Shader 实现，此时只需提供 Normal 帧</p>
+<p><strong>状态3：Disappearing（消除序列帧）</strong><br />
+- 文件名：<code>{tile_id}_disappear_{frame:02d}@2x.png</code>（frame 01-12）<br />
+- 序列帧：12帧，30fps（总时长约0.4s，峰值约第4帧）<br />
+- 帧内容：放大至 140×140（含透明），再收缩+碎裂粒子，末帧全透明</p>
+<p><strong>状态4：Special（特殊块循环动画）</strong><br />
+- 针对4种特殊块（Bomb/Lightning/Rainbow/Glow），提供Spine骨骼动画文件<br />
+- 循环动画：<code>{type}_idle</code> — 持续呼吸/脉冲动画（2-3s周期）<br />
+- 激活动画：<code>{type}_activate</code> — 触发时一次性播放（0.5-1.0s）<br />
+- Spine导出格式：<code>.skel</code> + <code>.atlas</code> + PNG纹理</p>
+<h3 id="14">1.4 命名规范</h3>
+<pre><code>sprites/tiles/
+├── t01_wave_normal@2x.png
+├── t01_wave_highlighted@2x.png
+├── t01_wave_disappear_01@2x.png
+├── ...
+├── t01_wave_disappear_12@2x.png
+├── special/
+│   ├── bomb_idle.skel
+│   ├── bomb_idle.atlas
+│   ├── bomb_idle.png
+│   ├── bomb_activate.skel
+│   ├── lightning_idle.skel
+│   ├── lightning_activate.skel
+│   ├── rainbow_idle.skel
+│   ├── rainbow_activate.skel
+│   ├── glow_idle.skel
+│   └── glow_activate.skel
+</code></pre>
+<hr />
+<h2 id="2-backgrounds">2. 章节背景（Backgrounds）</h2>
+<h3 id="21">2.1 基础规格</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>尺寸</td>
+<td>1080 × 1920 px（Portrait，9:16基准）</td>
+</tr>
+<tr>
+<td>安全区适配</td>
+<td>内容主体在中央 1080×1600 区域内，顶底各留240px溢出</td>
+</tr>
+<tr>
+<td>颜色深度</td>
+<td>RGB 24-bit（无需透明通道）</td>
+</tr>
+<tr>
+<td>导出格式</td>
+<td>PNG-24 或 JPEG（Q95）</td>
+</tr>
+<tr>
+<td>图层说明</td>
+<td>分层导出（可选）：天空层 / 中景层 / 近景层，供视差滚动使用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22">2.2 每章两版本</h3>
+<ul>
+<li><strong>修复前（before）</strong>：整体低饱和度（HSL 饱和度 ≤ 20%），暗调，破败感</li>
+<li><strong>修复后（after）</strong>：满彩，明亮，参考章节色板</li>
+</ul>
+<h3 id="23">2.3 章节背景描述</h3>
+<p><strong>Chapter 1 — 海边码头</strong><br />
+- 构图：码头延伸入海，远处海天线，近景左侧停靠木桩，右侧海面<br />
+- 修复前：灰木板，锈迹木桩，枯草，海面无反射，阴天<br />
+- 修复后：阳光斜射（右上→左下），海面碎金光斑，清澈天空 #87CEEB，温暖沙色码头<br />
+- 特殊元素：夕阳版本（标志性时刻，橙红渐变天空）备用图一张</p>
+<p><strong>Chapter 2 — 中央小镇</strong><br />
+- 构图：石板街道正前方透视，两侧建筑，中央喷泉，远处街道消失点<br />
+- 修复前：荒草蔓延石缝，窗户紧闭，喷泉干涸，落叶堆积，蓝灰调<br />
+- 修复后：暖黄阳光 #F4C95D，窗台花盆，喷泉有水，街灯点亮，傍晚橙光版本备用</p>
+<p><strong>Chapter 3 — 花田山坡</strong><br />
+- 构图：山坡从近景延伸向远处，花田占画面 60%，天空 40%<br />
+- 修复前：枯草黄，花圃轮廓不清，薄雾灰，石阶破损<br />
+- 修复后：薰衣草紫 + 金黄花交错，清晨薄雾（低饱和白雾层叠加），石阶整洁，阿花在中景</p>
+<p><strong>Chapter 4 — 森林露营地</strong><br />
+- 构图：营地中央篝火台，周围树木形成自然圆形空间，顶部树冠框景<br />
+- 修复前：帐篷倒塌，篝火台石圈散乱，苔藓覆盖坐凳，暗绿调<br />
+- 修复后：篝火燃起（暖橙核心光），帐篷挺立，星空隐约可见，夜景为主</p>
+<p><strong>Chapter 5 — 温泉山谷</strong><br />
+- 构图：温泉池居中，周围岩石围绕，远景山峦，水雾弥漫<br />
+- 修复前：水池浑浊，青苔遍布池边，水位极低，灰绿调<br />
+- 修复后：清澈温泉倒映天空（珍珠白反射），水雾动态层，岩石新铺石板，阿福在右侧</p>
+<p><strong>Chapter 6 — 夜晚灯塔</strong><br />
+- 构图：灯塔占画面右侧 1/3，左侧大海，底部有礁石/海浪<br />
+- 修复前：灯塔灰暗，玻璃灰尘，铁锈楼梯断裂，漆黑夜色，无光<br />
+- 修复后：灯塔光柱旋转（动态效果由Spine处理），海面金色倒影，满天星斗，暖黄灯室<br />
+- 全岛俯视版本（标志性时刻用）：俯视角度，光柱扫过全部五个区域，备用图一张</p>
+<h3 id="24">2.4 命名规范</h3>
+<pre><code>sprites/backgrounds/
+├── bg_ch01_harbor_before@2x.png
+├── bg_ch01_harbor_after@2x.png
+├── bg_ch01_harbor_after_sunset@2x.png       (标志性时刻备用)
+├── bg_ch02_town_before@2x.png
+├── bg_ch02_town_after@2x.png
+├── bg_ch02_town_after_evening@2x.png
+├── bg_ch03_flower_before@2x.png
+├── bg_ch03_flower_after@2x.png
+├── bg_ch04_camp_before@2x.png
+├── bg_ch04_camp_after@2x.png
+├── bg_ch05_spring_before@2x.png
+├── bg_ch05_spring_after@2x.png
+├── bg_ch06_lighthouse_before@2x.png
+├── bg_ch06_lighthouse_after@2x.png
+└── bg_ch06_lighthouse_overview@2x.png       (全岛俯视标志性时刻)
+</code></pre>
+<hr />
+<h2 id="3-island-zones">3. 岛屿地图区域（Island Zones）</h2>
+<h3 id="31">3.1 基础规格</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>整体岛屿地图尺寸</td>
+<td>1080 × 1920 px（全岛俯视图）</td>
+</tr>
+<tr>
+<td>单区域图块尺寸</td>
+<td>约 320 × 320 px（含透明边缘，视区域形状定）</td>
+</tr>
+<tr>
+<td>风格</td>
+<td>俯视45°等轴视角，轻手绘扁平化</td>
+</tr>
+<tr>
+<td>格式</td>
+<td>PNG-24（透明背景，可叠加在地图底图上）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32">3.2 修复状态分级</h3>
+<p>每个区域共 5 个状态图：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>文件后缀</th>
+<th>视觉说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>修复前</td>
+<td><code>_s0</code></td>
+<td>破败灰调，低饱和，特征建筑有破损</td>
+</tr>
+<tr>
+<td>第1阶段</td>
+<td><code>_s1</code></td>
+<td>基础修复，结构性变化，饱和度 ~35%</td>
+</tr>
+<tr>
+<td>第2阶段</td>
+<td><code>_s2</code></td>
+<td>细节补全，生活气息出现，饱和度 ~55%</td>
+</tr>
+<tr>
+<td>第3阶段</td>
+<td><code>_s3</code></td>
+<td>生命迹象（人物/水/火），饱和度 ~70%</td>
+</tr>
+<tr>
+<td>第4阶段（完整）</td>
+<td><code>_s4</code></td>
+<td>满彩，章节特色景观完整呈现</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33">3.3 各区域说明</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>区域</th>
+<th>地图位置</th>
+<th>特征建筑/元素</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Z01</td>
+<td>海边码头</td>
+<td>岛屿南端</td>
+<td>木码头、停船木桩、小木船、油灯</td>
+</tr>
+<tr>
+<td>Z02</td>
+<td>中央小镇</td>
+<td>岛屿中央</td>
+<td>石板街、喷泉、木质店铺、灯笼</td>
+</tr>
+<tr>
+<td>Z03</td>
+<td>花田山坡</td>
+<td>岛屿西北</td>
+<td>花圃、石阶、草帽木桩、花海</td>
+</tr>
+<tr>
+<td>Z04</td>
+<td>森林露营地</td>
+<td>岛屿东北</td>
+<td>帐篷、篝火台、坐凳、小灯笼</td>
+</tr>
+<tr>
+<td>Z05</td>
+<td>温泉山谷</td>
+<td>岛屿西南</td>
+<td>温泉池、导水渠、石板步道</td>
+</tr>
+<tr>
+<td>Z06</td>
+<td>夜晚灯塔</td>
+<td>岛屿北端</td>
+<td>灯塔主体、楼梯、灯室、礁石</td>
+</tr>
+</tbody>
+</table>
+<p>同时需要提供：<br />
+- <strong>底图</strong>：<code>island_base_map@2x.png</code>（1080×1920，不含任何区域图块的岛屿轮廓和海洋背景）<br />
+- <strong>灯塔光效叠加层</strong>：<code>island_lighthouse_beam@2x.png</code>（动态Spine，光柱扫过全岛效果）</p>
+<h3 id="34">3.4 命名规范</h3>
+<pre><code>sprites/island/
+├── island_base_map@2x.png
+├── island_lighthouse_beam.skel
+├── zone_ch01_harbor_s0@2x.png
+├── zone_ch01_harbor_s1@2x.png
+├── zone_ch01_harbor_s2@2x.png
+├── zone_ch01_harbor_s3@2x.png
+├── zone_ch01_harbor_s4@2x.png
+├── zone_ch02_town_s0@2x.png
+├── ... (同上规律)
+├── zone_ch06_lighthouse_s4@2x.png
+</code></pre>
+<hr />
+<h2 id="4-npccharacters">4. NPC角色头像（Characters）</h2>
+<h3 id="41">4.1 基础规格</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>头像尺寸</td>
+<td>128 × 128 px @2x（64×64 @1x）</td>
+</tr>
+<tr>
+<td>画框形状</td>
+<td>圆形裁切（内容绘制范围约直径 112px，外留 8px 边框区）</td>
+</tr>
+<tr>
+<td>背景</td>
+<td>透明（圆形外透明，便于 CSS 控制边框色）</td>
+</tr>
+<tr>
+<td>格式</td>
+<td>PNG-24</td>
+</tr>
+<tr>
+<td>表情版本</td>
+<td>每个NPC至少3种：默认/开心/若有所思（悲/思考）</td>
+</tr>
+<tr>
+<td>动画版本</td>
+<td>Spine骨骼动画文件（对话框内使用），含 idle / talk / react 动画</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-npc">4.2 NPC列表</h3>
+<p><strong>NPC01 — 渔夫·阿海（第1章）</strong><br />
+- 外形参考：中年渔夫，戴宽檐草帽，蓝色布衣，肤色较深，沉默寡言气质<br />
+- 表情：默认（平静看海）/ 微笑（系好缆绳后）/ 发呆（看海的若有所思）<br />
+- 特征道具：鱼竿、草帽<br />
+- 颜色和谐：与章节淡蓝+米白协调</p>
+<p><strong>NPC02 — 花农·阿花（第3章）</strong><br />
+- 外形参考：年轻女性，圆脸，头戴草帽（宽边），围裙，清秀温柔<br />
+- 表情：默认（温柔微笑）/ 开心（捧花递出时）/ 专注（蹲地松土时）<br />
+- 特征道具：草帽、浇水壶、花束<br />
+- 颜色和谐：与章节粉紫+草绿协调</p>
+<p><strong>NPC03 — 背包客·阿林（第4章）</strong><br />
+- 外形参考：中等身材，帽沿压低（重要：整章多数时候看不清脸），背包，徒步服装<br />
+- 表情：默认（低帽沿状态）/ 抬头（标志性时刻，看星空时露出脸）/ 沏茶（推杯子时）<br />
+- 特征道具：背包、地图、茶杯、帽子<br />
+- 颜色和谐：与章节深绿+棕褐协调</p>
+<p><strong>NPC04 — 温泉老爷爷·阿福（第5章）</strong><br />
+- 外形参考：老年男性，圆脸，笑纹深，穿浴衣，慈祥幽默<br />
+- 表情：默认（嫌弃/无奈）/ 满意（点头试石板）/ 享受（闭眼泡温泉）<br />
+- 特征道具：毛巾、浴桶<br />
+- 颜色和谐：与章节珍珠白+雾蓝协调</p>
+<p><strong>NPC05 — 灯塔守护者·阿明（第6章）</strong><br />
+- 外形参考：成年男性，沉默，海风感气质，深色大衣，站姿像礁石<br />
+- 表情：默认（仰望灯塔，沉默）/ 手握点火装置（停顿）/ 背身（灯塔亮起时）<br />
+- 特征道具：点火装置、大衣<br />
+- 颜色和谐：与章节深蓝+暖黄协调<br />
+- 备注：第6章专属NPC，编号 NPC05（文档中列4个主要NPC，此为额外必要角色）</p>
+<h3 id="43">4.3 命名规范</h3>
+<pre><code>sprites/characters/
+├── npc_ahai_default@2x.png
+├── npc_ahai_happy@2x.png
+├── npc_ahai_thinking@2x.png
+├── npc_ahai_dialog.skel          (对话动画)
+├── npc_ahua_default@2x.png
+├── npc_ahua_happy@2x.png
+├── npc_ahua_focused@2x.png
+├── npc_ahua_dialog.skel
+├── npc_alin_default@2x.png
+├── npc_alin_uplook@2x.png        (标志性时刻：抬头看星空)
+├── npc_alin_tea@2x.png
+├── npc_alin_dialog.skel
+├── npc_afu_default@2x.png
+├── npc_afu_satisfied@2x.png
+├── npc_afu_enjoying@2x.png
+├── npc_afu_dialog.skel
+├── npc_aming_default@2x.png
+├── npc_aming_holding@2x.png
+├── npc_aming_back@2x.png         (背身望海姿态)
+└── npc_aming_dialog.skel
+</code></pre>
+<hr />
+<h2 id="5-uiui-icons">5. UI图标集（UI Icons）</h2>
+<h3 id="51">5.1 基础规格</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>尺寸规格</td>
+<td>24×24px（小）/ 32×32px（中）/ 48×48px（大）@2x</td>
+</tr>
+<tr>
+<td>风格</td>
+<td>线面结合，圆角统一 3px（线宽约 2px @2x）</td>
+</tr>
+<tr>
+<td>颜色</td>
+<td>单色（章节主色 or 中性灰），可程序化着色</td>
+</tr>
+<tr>
+<td>格式</td>
+<td>PNG-24（透明背景）+ SVG（矢量源文件）</td>
+</tr>
+<tr>
+<td>导出</td>
+<td>按尺寸分层导出，合并到 icon sprite sheet</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-30">5.2 图标清单（约30个）</h3>
+<p><strong>导航与界面（8个）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>尺寸</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IC01</td>
+<td>home</td>
+<td>32px</td>
+<td>房屋图标，返回主界面</td>
+</tr>
+<tr>
+<td>IC02</td>
+<td>settings</td>
+<td>32px</td>
+<td>齿轮图标，设置</td>
+</tr>
+<tr>
+<td>IC03</td>
+<td>back_arrow</td>
+<td>24px</td>
+<td>左箭头，返回上一页</td>
+</tr>
+<tr>
+<td>IC04</td>
+<td>close_x</td>
+<td>24px</td>
+<td>关闭/叉号</td>
+</tr>
+<tr>
+<td>IC05</td>
+<td>menu</td>
+<td>32px</td>
+<td>三横线菜单</td>
+</tr>
+<tr>
+<td>IC06</td>
+<td>info</td>
+<td>24px</td>
+<td>圆圈感叹号，说明</td>
+</tr>
+<tr>
+<td>IC07</td>
+<td>check</td>
+<td>24px</td>
+<td>勾选，确认</td>
+</tr>
+<tr>
+<td>IC08</td>
+<td>map</td>
+<td>32px</td>
+<td>地图展开图标</td>
+</tr>
+</tbody>
+</table>
+<p><strong>游戏道具/助攻（6个）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>尺寸</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IC09</td>
+<td>hint</td>
+<td>48px</td>
+<td>灯泡图标，提示道具</td>
+</tr>
+<tr>
+<td>IC10</td>
+<td>shuffle</td>
+<td>48px</td>
+<td>循环箭头，重排棋盘</td>
+</tr>
+<tr>
+<td>IC11</td>
+<td>add_steps</td>
+<td>48px</td>
+<td>加号+脚印，增加步数</td>
+</tr>
+<tr>
+<td>IC12</td>
+<td>bomb_item</td>
+<td>48px</td>
+<td>炸弹道具（关卡前使用）</td>
+</tr>
+<tr>
+<td>IC13</td>
+<td>lightning_item</td>
+<td>48px</td>
+<td>闪电道具（关卡前使用）</td>
+</tr>
+<tr>
+<td>IC14</td>
+<td>rainbow_item</td>
+<td>48px</td>
+<td>彩虹道具（关卡前使用）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>货币与资源（6个）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>尺寸</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IC15</td>
+<td>beach_coin</td>
+<td>32px</td>
+<td>沙滩币，软货币，圆形贝壳纹</td>
+</tr>
+<tr>
+<td>IC16</td>
+<td>glowstone</td>
+<td>32px</td>
+<td>丹青石，硬货币，发光宝石形</td>
+</tr>
+<tr>
+<td>IC17</td>
+<td>material_wood</td>
+<td>24px</td>
+<td>浮木材料图标</td>
+</tr>
+<tr>
+<td>IC18</td>
+<td>material_rope</td>
+<td>24px</td>
+<td>绳索材料图标</td>
+</tr>
+<tr>
+<td>IC19</td>
+<td>material_seed</td>
+<td>24px</td>
+<td>花种材料图标</td>
+</tr>
+<tr>
+<td>IC20</td>
+<td>material_generic</td>
+<td>24px</td>
+<td>通用材料图标（其他章节）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>进度与状态（6个）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>尺寸</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IC21</td>
+<td>star_empty</td>
+<td>32px</td>
+<td>空星，评级</td>
+</tr>
+<tr>
+<td>IC22</td>
+<td>star_full</td>
+<td>32px</td>
+<td>满星，评级</td>
+</tr>
+<tr>
+<td>IC23</td>
+<td>star_half</td>
+<td>32px</td>
+<td>半星，评级</td>
+</tr>
+<tr>
+<td>IC24</td>
+<td>lock</td>
+<td>32px</td>
+<td>锁，章节未解锁</td>
+</tr>
+<tr>
+<td>IC25</td>
+<td>progress_bar_cap</td>
+<td>24px</td>
+<td>进度条两端圆帽</td>
+</tr>
+<tr>
+<td>IC26</td>
+<td>glow_energy</td>
+<td>32px</td>
+<td>光能图标，光柱+圆形</td>
+</tr>
+</tbody>
+</table>
+<p><strong>社交与分享（4个）</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>名称</th>
+<th>尺寸</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IC27</td>
+<td>share</td>
+<td>32px</td>
+<td>分享箭头</td>
+</tr>
+<tr>
+<td>IC28</td>
+<td>milestone_flag</td>
+<td>32px</td>
+<td>里程碑旗帜</td>
+</tr>
+<tr>
+<td>IC29</td>
+<td>sound_on</td>
+<td>24px</td>
+<td>音量开</td>
+</tr>
+<tr>
+<td>IC30</td>
+<td>sound_off</td>
+<td>24px</td>
+<td>音量关</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53">5.3 命名规范</h3>
+<pre><code>sprites/ui/
+├── ic_home@2x.png
+├── ic_settings@2x.png
+├── ic_back_arrow@2x.png
+├── ic_close@2x.png
+├── ic_menu@2x.png
+├── ic_info@2x.png
+├── ic_check@2x.png
+├── ic_map@2x.png
+├── ic_hint@2x.png
+├── ic_shuffle@2x.png
+├── ic_add_steps@2x.png
+├── ic_item_bomb@2x.png
+├── ic_item_lightning@2x.png
+├── ic_item_rainbow@2x.png
+├── ic_currency_beach_coin@2x.png
+├── ic_currency_glowstone@2x.png
+├── ic_material_wood@2x.png
+├── ic_material_rope@2x.png
+├── ic_material_seed@2x.png
+├── ic_material_generic@2x.png
+├── ic_star_empty@2x.png
+├── ic_star_full@2x.png
+├── ic_star_half@2x.png
+├── ic_lock@2x.png
+├── ic_progress_cap@2x.png
+├── ic_glow_energy@2x.png
+├── ic_share@2x.png
+├── ic_milestone_flag@2x.png
+├── ic_sound_on@2x.png
+├── ic_sound_off@2x.png
+└── svg/                           (矢量源文件)
+    ├── ic_home.svg
+    └── ... (同名SVG文件)
+</code></pre>
+<hr />
+<h2 id="6-effects">6. 特效序列帧（Effects）</h2>
+<h3 id="61">6.1 基础规格</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>帧率</td>
+<td>30fps（大多数特效）/ 60fps（关键核心特效）</td>
+</tr>
+<tr>
+<td>格式</td>
+<td>PNG序列帧 或 Spine骨骼动画</td>
+</tr>
+<tr>
+<td>单帧尺寸</td>
+<td>视特效范围定，详见各特效规格</td>
+</tr>
+<tr>
+<td>透明通道</td>
+<td>RGBA，序列帧全部透明背景</td>
+</tr>
+<tr>
+<td>播放模式</td>
+<td>一次性（Once）或 循环（Loop），详见各特效</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62">6.2 特效列表</h3>
+<p><strong>EF01 — 图块消除特效（Tile Disappear）</strong><br />
+- 触发：任意图块消除时<br />
+- 画布尺寸：160×160 @2x（含出血）<br />
+- 帧数：12帧 @30fps（总时长 0.4s）<br />
+- 内容：图块放大 → 碎裂为6-8个小片 → 粒子扩散消失<br />
+- 粒子颜色：跟随图块颜色，末帧全透明<br />
+- 变体：6种颜色变体（对应6种基础图块色）<br />
+- 命名：<code>fx_tile_disappear_{color}_f{01-12}@2x.png</code></p>
+<p><strong>EF02 — 连击气泡（Combo Popup）</strong><br />
+- 触发：连击数 ≥ 3 时弹出<br />
+- 画布尺寸：200×100 @2x<br />
+- 帧数：15帧 @30fps（总时长 0.5s）<br />
+- 内容：数字+COMBO文字弹入（弹跳曲线）→ 悬停 → 淡出上浮<br />
+- Spine文件（推荐）：<code>fx_combo_popup.skel</code><br />
+- 文字替换：通过Spine slot替换，不分颜色版本<br />
+- 变体：3×3/5×5/10×10连击，字号递增</p>
+<p><strong>EF03 — 光链效果（Glow Chain）</strong><br />
+- 触发：连接 Glow 图块时<br />
+- 画布：全屏叠加层（1080×1920 @2x）<br />
+- Spine文件：<code>fx_glow_chain.skel</code>，路径跟随连接路径动态调整<br />
+- 内容：金色光粒子沿连接路径流动，速度约 600px/s，流向岛屿地图区域<br />
+- 持续时长：约 0.8-1.5s（视路径长短）</p>
+<p><strong>EF04 — 区域修复光效（Area Restore Glow）</strong><br />
+- 触发：区域修复阶段切换时<br />
+- 画布：覆盖区域图块的全区域（约 400×400 @2x）<br />
+- Spine文件：<code>fx_area_restore.skel</code>，含 4 个阶段动画（stage1-4）<br />
+- 内容：白色/金色光波从区域中心向外扩散，持续约 3-5s，配合区域图片切换<br />
+- 第4阶段（完整修复）：额外彩色光晕爆发，约 2s</p>
+<p><strong>EF05 — 炸弹爆炸特效（Bomb Explosion）</strong><br />
+- 触发：炸弹块激活时<br />
+- 画布：640×640 @2x（3×3格范围）<br />
+- Spine文件：<code>fx_bomb_explosion.skel</code><br />
+- 内容：中央橙色爆炸冲击波 → 粒子碎片向外扩散（红/橙/黄）→ 轻微烟雾消散<br />
+- 总时长：约 0.6s</p>
+<p><strong>EF06 — 闪电特效（Lightning Strike）</strong><br />
+- 触发：闪电块激活时<br />
+- 画布：1080×128 @2x（横向全行）或 128×1920 @2x（纵向全列）<br />
+- Spine文件：<code>fx_lightning_row.skel</code> / <code>fx_lightning_col.skel</code><br />
+- 内容：电弧从激活块向两侧延伸 → 白色闪光条横扫 → 消退<br />
+- 总时长：约 0.5s</p>
+<p><strong>EF07 — 彩虹消除特效（Rainbow Burst）</strong><br />
+- 触发：彩虹块消除时<br />
+- 画布：320×320 @2x<br />
+- Spine文件：<code>fx_rainbow_burst.skel</code><br />
+- 内容：七彩环形粒子从中央爆发，向外扩散后淡出<br />
+- 总时长：约 0.7s</p>
+<p><strong>EF08 — 灯塔光柱特效（Lighthouse Beam）</strong><br />
+- 触发：第6章，每8步自动触发 / 标志性时刻全岛版<br />
+- 画布：全屏 1080×1920 @2x<br />
+- Spine文件：<code>fx_lighthouse_beam_row.skel</code>（单行扫过）/ <code>fx_lighthouse_beam_island.skel</code>（全岛扫过）<br />
+- 内容：暖黄光柱从右侧灯塔方向扫过棋盘，光柱内 Glow 块高亮<br />
+- 总时长：单行约 0.5s；全岛版约 3s（标志性时刻）</p>
+<h3 id="63">6.3 命名规范</h3>
+<pre><code>effects/frames/
+├── fx_tile_disappear_blue_f01@2x.png
+├── ... f12@2x.png
+├── fx_tile_disappear_yellow_f01@2x.png
+├── ... (其他颜色)
+├── spine/
+│   ├── fx_combo_popup.skel
+│   ├── fx_combo_popup.atlas
+│   ├── fx_combo_popup.png
+│   ├── fx_glow_chain.skel
+│   ├── fx_glow_chain.atlas
+│   ├── fx_glow_chain.png
+│   ├── fx_area_restore.skel
+│   ├── fx_area_restore.atlas
+│   ├── fx_area_restore.png
+│   ├── fx_bomb_explosion.skel
+│   ├── fx_lightning_row.skel
+│   ├── fx_lightning_col.skel
+│   ├── fx_rainbow_burst.skel
+│   ├── fx_lighthouse_beam_row.skel
+│   └── fx_lighthouse_beam_island.skel
+</code></pre>
+<hr />
+<h2 id="7">7. 交付标准</h2>
+<h3 id="71">7.1 通用交付要求</h3>
+<table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分辨率</td>
+<td>全部以 @2x（高分辨率）为主交付，@1x 可通过自动缩小生成</td>
+</tr>
+<tr>
+<td>色彩空间</td>
+<td>sRGB</td>
+</tr>
+<tr>
+<td>文件大小</td>
+<td>单张 PNG ≤ 500KB（大背景 ≤ 1.5MB），Spine 纹理 ≤ 512KB</td>
+</tr>
+<tr>
+<td>透明通道</td>
+<td>使用透明背景的图，确保边缘无多余像素（无白边/黑边溢出）</td>
+</tr>
+<tr>
+<td>命名</td>
+<td>全部小写+下划线，含@2x/@1x后缀，不使用中文或空格</td>
+</tr>
+<tr>
+<td>版本控制</td>
+<td>文件名含版本号时使用 <code>_v1</code>, <code>_v2</code> 后缀</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-spine">7.2 Spine 动画交付要求</h3>
+<table>
+<thead>
+<tr>
+<th>要求项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spine 版本</td>
+<td>4.1.x（与引擎版本对齐）</td>
+</tr>
+<tr>
+<td>导出格式</td>
+<td>Binary <code>.skel</code> + JSON <code>.json</code>（备用）+ <code>.atlas</code> + PNG 纹理</td>
+</tr>
+<tr>
+<td>纹理尺寸</td>
+<td>2 的幂次：256/512/1024</td>
+</tr>
+<tr>
+<td>命名规范</td>
+<td>Spine 内部动画名称：全英文小写+下划线，如 <code>idle</code>, <code>activate</code>, <code>talk</code></td>
+</tr>
+<tr>
+<td>槽位（Slots）</td>
+<td>可替换颜色/内容的部分使用 Slot，便于程序化控制</td>
+</tr>
+</tbody>
+</table>
+<h3 id="73">7.3 目录结构总览</h3>
+<pre><code>assets/
+├── sprites/
+│   ├── tiles/
+│   │   ├── (20种 × Normal/Highlighted PNG + 消除序列帧)
+│   │   └── special/
+│   │       └── (4种特殊块 Spine 文件)
+│   ├── backgrounds/
+│   │   └── (15张 背景 PNG，含备用版本)
+│   ├── island/
+│   │   ├── island_base_map@2x.png
+│   │   ├── island_lighthouse_beam.skel
+│   │   └── (6区域 × 5状态 = 30张 PNG)
+│   ├── characters/
+│   │   └── (5个NPC × 3表情 PNG + 5个 Spine 对话动画)
+│   └── ui/
+│       ├── (30个图标 PNG @2x)
+│       └── svg/
+│           └── (30个图标 SVG 矢量源文件)
+└── effects/
+    ├── frames/
+    │   └── (图块消除序列帧 PNG)
+    └── spine/
+        └── (8种特效 Spine 文件)
+</code></pre>
+<hr />
+<h2 id="8">8. 优先级与分批交付建议</h2>
+<h3 id="1mvp">批次1（MVP，游戏原型验证所需）</h3>
+<ul>
+<li>6种基础图块 Normal 状态（各章1种代表图块）</li>
+<li>第1章背景（修复前+后）</li>
+<li>所有图块消除序列帧（通用版）</li>
+<li>UI图标集（按钮/货币/步数，约15个）</li>
+</ul>
+<h3 id="21_1">批次2（第1章完整体验）</h3>
+<ul>
+<li>第1章4种图块全部4状态</li>
+<li>第1章岛屿区域5个修复状态</li>
+<li>NPC01 阿海全套头像 + 对话动画</li>
+<li>炸弹/闪电/彩虹/Glow 特殊块 Spine 动画</li>
+<li>连击气泡特效</li>
+</ul>
+<h3 id="32-4">批次3（第2-4章）</h3>
+<ul>
+<li>第2-4章图块、背景、岛屿区域</li>
+<li>NPC02 阿花 / NPC03 阿林全套</li>
+<li>光链特效 + 区域修复光效</li>
+</ul>
+<h3 id="45-6">批次4（第5-6章 + 完整交付）</h3>
+<ul>
+<li>第5-6章图块、背景、岛屿区域</li>
+<li>NPC04 阿福 / NPC05 阿明全套</li>
+<li>灯塔光柱特效（含全岛版）</li>
+<li>全部剩余UI图标</li>
+<li>资产全量审查与优化</li>
+</ul>
+<hr />
+<p><em>Art Asset Spec v1.0 · Glow Island · 2026-05-07</em></p>
+    <div class="footer">Glow Island — Generated Documentation · 2026-05-08</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,492 @@
+{
+  "_meta": {
+    "document": "progression-curve",
+    "version": "1.0",
+    "date": "2026-05-07",
+    "description": "章节解锁条件、区域修复配方、关卡耗时分布与金币收益投射曲线"
+  },
+
+  "chapter_unlock_conditions": [
+    {
+      "chapter": 1,
+      "name": "海边码头",
+      "unlock_at_level": "default_start",
+      "required_materials": [],
+      "required_coins": 0,
+      "note": "游戏初始章节，无需解锁"
+    },
+    {
+      "chapter": 2,
+      "name": "中央小镇",
+      "unlock_at_level": "1-15",
+      "required_materials": [
+        { "type": "浮木", "amount": 15 },
+        { "type": "绳索", "amount": 10 },
+        { "type": "铁钉", "amount": 8 }
+      ],
+      "required_coins": 200,
+      "note": "完成海边码头第15关后，提交材料解锁中央小镇"
+    },
+    {
+      "chapter": 3,
+      "name": "花田山坡",
+      "unlock_at_level": "2-15",
+      "required_materials": [
+        { "type": "石块", "amount": 18 },
+        { "type": "木料", "amount": 15 },
+        { "type": "彩釉砖", "amount": 10 }
+      ],
+      "required_coins": 350,
+      "note": "完成中央小镇第15关后，提交材料解锁花田山坡"
+    },
+    {
+      "chapter": 4,
+      "name": "森林露营地",
+      "unlock_at_level": "3-15",
+      "required_materials": [
+        { "type": "花种", "amount": 20 },
+        { "type": "腐殖土", "amount": 18 },
+        { "type": "石阶砖", "amount": 12 }
+      ],
+      "required_coins": 500,
+      "note": "完成花田山坡第15关后，提交材料解锁森林露营地"
+    },
+    {
+      "chapter": 5,
+      "name": "温泉山谷",
+      "unlock_at_level": "4-15",
+      "required_materials": [
+        { "type": "帆布", "amount": 22 },
+        { "type": "原木", "amount": 20 },
+        { "type": "火石", "amount": 14 },
+        { "type": "苔藓清除剂", "amount": 12 }
+      ],
+      "required_coins": 700,
+      "note": "完成森林露营地第15关后，提交材料解锁温泉山谷"
+    },
+    {
+      "chapter": 6,
+      "name": "夜晚灯塔",
+      "unlock_at_level": "5-15",
+      "required_materials": [
+        { "type": "导水管", "amount": 25 },
+        { "type": "防滑石板", "amount": 22 },
+        { "type": "浴池填缝料", "amount": 16 },
+        { "type": "香草束", "amount": 14 }
+      ],
+      "required_coins": 950,
+      "note": "完成温泉山谷第15关后，提交材料解锁夜晚灯塔"
+    }
+  ],
+
+  "area_repair_recipes": [
+    {
+      "chapter": 1,
+      "area": "海边码头",
+      "stages": [
+        {
+          "stage": 1,
+          "label": "修复码头地板",
+          "unlock_after_level": "1-5",
+          "materials": [{ "type": "浮木", "amount": 8 }, { "type": "铁钉", "amount": 4 }],
+          "coins": 50
+        },
+        {
+          "stage": 2,
+          "label": "安装绳索与小油灯",
+          "unlock_after_level": "1-10",
+          "materials": [{ "type": "绳索", "amount": 6 }, { "type": "桐油", "amount": 3 }],
+          "coins": 80
+        },
+        {
+          "stage": 3,
+          "label": "修好鱼竿与停船木桩",
+          "unlock_after_level": "1-15",
+          "materials": [{ "type": "浮木", "amount": 10 }, { "type": "绳索", "amount": 8 }, { "type": "铁钉", "amount": 6 }],
+          "coins": 120
+        },
+        {
+          "stage": 4,
+          "label": "第一艘船回港",
+          "unlock_after_level": "1-20",
+          "materials": [{ "type": "浮木", "amount": 12 }, { "type": "绳索", "amount": 10 }, { "type": "铁钉", "amount": 8 }, { "type": "桐油", "amount": 5 }],
+          "coins": 200
+        }
+      ]
+    },
+    {
+      "chapter": 2,
+      "area": "中央小镇",
+      "stages": [
+        {
+          "stage": 1,
+          "label": "清理石板路杂草",
+          "unlock_after_level": "2-5",
+          "materials": [{ "type": "石块", "amount": 8 }, { "type": "木料", "amount": 5 }],
+          "coins": 80
+        },
+        {
+          "stage": 2,
+          "label": "开窗+花盆+晾衣绳",
+          "unlock_after_level": "2-10",
+          "materials": [{ "type": "木料", "amount": 10 }, { "type": "彩釉砖", "amount": 6 }],
+          "coins": 120
+        },
+        {
+          "stage": 3,
+          "label": "喷泉重新注水",
+          "unlock_after_level": "2-15",
+          "materials": [{ "type": "石块", "amount": 12 }, { "type": "彩釉砖", "amount": 8 }, { "type": "灯芯草", "amount": 5 }],
+          "coins": 180
+        },
+        {
+          "stage": 4,
+          "label": "街道灯笼点亮",
+          "unlock_after_level": "2-20",
+          "materials": [{ "type": "石块", "amount": 15 }, { "type": "木料", "amount": 12 }, { "type": "彩釉砖", "amount": 10 }, { "type": "灯芯草", "amount": 8 }],
+          "coins": 280
+        }
+      ]
+    },
+    {
+      "chapter": 3,
+      "area": "花田山坡",
+      "stages": [
+        {
+          "stage": 1,
+          "label": "清野草翻土",
+          "unlock_after_level": "3-6",
+          "materials": [{ "type": "腐殖土", "amount": 10 }, { "type": "浇水壶", "amount": 3 }],
+          "coins": 100
+        },
+        {
+          "stage": 2,
+          "label": "第一批花苗破土",
+          "unlock_after_level": "3-11",
+          "materials": [{ "type": "花种", "amount": 12 }, { "type": "腐殖土", "amount": 12 }],
+          "coins": 160
+        },
+        {
+          "stage": 3,
+          "label": "阿花回来了",
+          "unlock_after_level": "3-17",
+          "materials": [{ "type": "花种", "amount": 15 }, { "type": "石阶砖", "amount": 10 }, { "type": "浇水壶", "amount": 5 }],
+          "coins": 220
+        },
+        {
+          "stage": 4,
+          "label": "山坡花海盛开",
+          "unlock_after_level": "3-23",
+          "materials": [{ "type": "花种", "amount": 20 }, { "type": "腐殖土", "amount": 18 }, { "type": "石阶砖", "amount": 14 }, { "type": "浇水壶", "amount": 8 }],
+          "coins": 360
+        }
+      ]
+    },
+    {
+      "chapter": 4,
+      "area": "森林露营地",
+      "stages": [
+        {
+          "stage": 1,
+          "label": "立起帐篷架",
+          "unlock_after_level": "4-6",
+          "materials": [{ "type": "帆布", "amount": 10 }, { "type": "原木", "amount": 8 }],
+          "coins": 120
+        },
+        {
+          "stage": 2,
+          "label": "补全篝火台石圈",
+          "unlock_after_level": "4-11",
+          "materials": [{ "type": "原木", "amount": 12 }, { "type": "苔藓清除剂", "amount": 6 }],
+          "coins": 180
+        },
+        {
+          "stage": 3,
+          "label": "篝火点燃",
+          "unlock_after_level": "4-17",
+          "materials": [{ "type": "原木", "amount": 15 }, { "type": "火石", "amount": 8 }, { "type": "苔藓清除剂", "amount": 8 }],
+          "coins": 260
+        },
+        {
+          "stage": 4,
+          "label": "营地灯笼挂起，阿林递茶",
+          "unlock_after_level": "4-23",
+          "materials": [{ "type": "帆布", "amount": 18 }, { "type": "原木", "amount": 18 }, { "type": "火石", "amount": 12 }, { "type": "苔藓清除剂", "amount": 10 }],
+          "coins": 420
+        }
+      ]
+    },
+    {
+      "chapter": 5,
+      "area": "温泉山谷",
+      "stages": [
+        {
+          "stage": 1,
+          "label": "疏通导水渠",
+          "unlock_after_level": "5-7",
+          "materials": [{ "type": "导水管", "amount": 12 }, { "type": "浴池填缝料", "amount": 5 }],
+          "coins": 150
+        },
+        {
+          "stage": 2,
+          "label": "清理青苔铺防滑石",
+          "unlock_after_level": "5-13",
+          "materials": [{ "type": "防滑石板", "amount": 14 }, { "type": "浴池填缝料", "amount": 8 }],
+          "coins": 220
+        },
+        {
+          "stage": 3,
+          "label": "水雾升起",
+          "unlock_after_level": "5-19",
+          "materials": [{ "type": "导水管", "amount": 16 }, { "type": "防滑石板", "amount": 16 }, { "type": "香草束", "amount": 8 }],
+          "coins": 320
+        },
+        {
+          "stage": 4,
+          "label": "阿福滑进温泉",
+          "unlock_after_level": "5-25",
+          "materials": [{ "type": "导水管", "amount": 20 }, { "type": "防滑石板", "amount": 20 }, { "type": "浴池填缝料", "amount": 14 }, { "type": "香草束", "amount": 12 }],
+          "coins": 520
+        }
+      ]
+    },
+    {
+      "chapter": 6,
+      "area": "夜晚灯塔",
+      "stages": [
+        {
+          "stage": 1,
+          "label": "粉刷外壁修楼梯",
+          "unlock_after_level": "6-6",
+          "materials": [{ "type": "铁锻件", "amount": 10 }, { "type": "石灰涂料", "amount": 8 }],
+          "coins": 180
+        },
+        {
+          "stage": 2,
+          "label": "擦净灯室玻璃",
+          "unlock_after_level": "6-12",
+          "materials": [{ "type": "玻璃碎片", "amount": 12 }, { "type": "石灰涂料", "amount": 10 }],
+          "coins": 260
+        },
+        {
+          "stage": 3,
+          "label": "换灯芯注灯油",
+          "unlock_after_level": "6-19",
+          "materials": [{ "type": "灯芯", "amount": 15 }, { "type": "灯油", "amount": 15 }, { "type": "铁锻件", "amount": 12 }],
+          "coins": 380
+        },
+        {
+          "stage": 4,
+          "label": "灯塔大灯点亮，光柱扫过全岛",
+          "unlock_after_level": "6-25",
+          "materials": [{ "type": "灯芯", "amount": 20 }, { "type": "灯油", "amount": 20 }, { "type": "玻璃碎片", "amount": 16 }, { "type": "铁锻件", "amount": 16 }, { "type": "石灰涂料", "amount": 14 }],
+          "coins": 650
+        }
+      ]
+    }
+  ],
+
+  "level_completion_time_distribution": {
+    "description": "各章节单关预估完成时间分布（按难度段细分），单位：秒",
+    "chapters": [
+      {
+        "chapter": 1,
+        "easy_levels": { "range": "1-1 to 1-8", "avg_seconds": 75, "p10_seconds": 45, "p90_seconds": 120 },
+        "standard_levels": { "range": "1-9 to 1-14", "avg_seconds": 100, "p10_seconds": 65, "p90_seconds": 160 },
+        "challenge_levels": { "range": "1-15 to 1-20", "avg_seconds": 130, "p10_seconds": 80, "p90_seconds": 210 }
+      },
+      {
+        "chapter": 2,
+        "easy_levels": { "range": "2-1 to 2-5", "avg_seconds": 90, "p10_seconds": 55, "p90_seconds": 140 },
+        "standard_levels": { "range": "2-6 to 2-15", "avg_seconds": 115, "p10_seconds": 70, "p90_seconds": 180 },
+        "challenge_levels": { "range": "2-16 to 2-20", "avg_seconds": 150, "p10_seconds": 90, "p90_seconds": 240 }
+      },
+      {
+        "chapter": 3,
+        "easy_levels": { "range": "3-1 to 3-6", "avg_seconds": 105, "p10_seconds": 65, "p90_seconds": 160 },
+        "standard_levels": { "range": "3-7 to 3-17", "avg_seconds": 135, "p10_seconds": 80, "p90_seconds": 210 },
+        "challenge_levels": { "range": "3-18 to 3-23", "avg_seconds": 175, "p10_seconds": 105, "p90_seconds": 270 }
+      },
+      {
+        "chapter": 4,
+        "easy_levels": { "range": "4-1 to 4-6", "avg_seconds": 115, "p10_seconds": 70, "p90_seconds": 175 },
+        "standard_levels": { "range": "4-7 to 4-17", "avg_seconds": 150, "p10_seconds": 90, "p90_seconds": 230 },
+        "challenge_levels": { "range": "4-18 to 4-23", "avg_seconds": 200, "p10_seconds": 120, "p90_seconds": 310 }
+      },
+      {
+        "chapter": 5,
+        "easy_levels": { "range": "5-1 to 5-6", "avg_seconds": 130, "p10_seconds": 80, "p90_seconds": 200 },
+        "standard_levels": { "range": "5-7 to 5-19", "avg_seconds": 170, "p10_seconds": 100, "p90_seconds": 260 },
+        "challenge_levels": { "range": "5-20 to 5-25", "avg_seconds": 220, "p10_seconds": 130, "p90_seconds": 340 }
+      },
+      {
+        "chapter": 6,
+        "easy_levels": { "range": "6-1 to 6-6", "avg_seconds": 145, "p10_seconds": 90, "p90_seconds": 220 },
+        "standard_levels": { "range": "6-7 to 6-19", "avg_seconds": 190, "p10_seconds": 115, "p90_seconds": 290 },
+        "challenge_levels": { "range": "6-20 to 6-25", "avg_seconds": 260, "p10_seconds": 155, "p90_seconds": 400 }
+      }
+    ],
+    "total_estimated_playtime_hours": {
+      "median_player": 18.5,
+      "casual_player": 28.0,
+      "fast_player": 12.0,
+      "note": "不含重复失败关卡时间；中等玩家假设每关平均失败0.4次"
+    }
+  },
+
+  "coin_income_projection": {
+    "description": "各章节金币收益投射（含基础奖励 + 三星额外奖励），假设玩家全部完成",
+    "assumptions": {
+      "star_rate_1star": 0.30,
+      "star_rate_2star": 0.45,
+      "star_rate_3star": 0.25,
+      "repeat_fail_extra_attempts_avg": 0.4
+    },
+    "chapters": [
+      {
+        "chapter": 1,
+        "levels": 20,
+        "base_coin_per_level_avg": 28,
+        "two_star_bonus": 10,
+        "three_star_bonus": 20,
+        "weighted_avg_coin_per_level": 36,
+        "chapter_total_coins": 720,
+        "cumulative_total": 720
+      },
+      {
+        "chapter": 2,
+        "levels": 20,
+        "base_coin_per_level_avg": 45,
+        "two_star_bonus": 15,
+        "three_star_bonus": 30,
+        "weighted_avg_coin_per_level": 57,
+        "chapter_total_coins": 1140,
+        "cumulative_total": 1860
+      },
+      {
+        "chapter": 3,
+        "levels": 23,
+        "base_coin_per_level_avg": 62,
+        "two_star_bonus": 20,
+        "three_star_bonus": 40,
+        "weighted_avg_coin_per_level": 78,
+        "chapter_total_coins": 1794,
+        "cumulative_total": 3654
+      },
+      {
+        "chapter": 4,
+        "levels": 23,
+        "base_coin_per_level_avg": 88,
+        "two_star_bonus": 25,
+        "three_star_bonus": 50,
+        "weighted_avg_coin_per_level": 108,
+        "chapter_total_coins": 2484,
+        "cumulative_total": 6138
+      },
+      {
+        "chapter": 5,
+        "levels": 25,
+        "base_coin_per_level_avg": 118,
+        "two_star_bonus": 30,
+        "three_star_bonus": 60,
+        "weighted_avg_coin_per_level": 144,
+        "chapter_total_coins": 3600,
+        "cumulative_total": 9738
+      },
+      {
+        "chapter": 6,
+        "levels": 25,
+        "base_coin_per_level_avg": 155,
+        "two_star_bonus": 40,
+        "three_star_bonus": 80,
+        "weighted_avg_coin_per_level": 189,
+        "chapter_total_coins": 4725,
+        "cumulative_total": 14463
+      }
+    ],
+    "grand_total_coins_all_chapters": 14463,
+    "daily_active_user_income_estimate": {
+      "sessions_per_day": 3,
+      "levels_per_session": 4,
+      "avg_coin_per_level_cross_chapter": 102,
+      "estimated_daily_coins": 1224,
+      "note": "基于全章节混合难度平均值，中等玩家每日估算"
+    }
+  },
+
+  "difficulty_curve_summary": {
+    "description": "全局难度曲线描述，用于关卡编辑器难度热力图",
+    "curve_type": "gradual_ascent_with_chapter_resets",
+    "chapter_reset_behavior": "每章开始前3关难度回落约15%，给予缓冲期",
+    "overall_shape": "6段锯齿上升曲线，每段内部三段式（宽松-标准-挑战）",
+    "difficulty_ratings": [
+      { "level_range": "1-1 to 1-3",  "difficulty": 1.0, "label": "新手教学" },
+      { "level_range": "1-4 to 1-8",  "difficulty": 1.5, "label": "章1宽松" },
+      { "level_range": "1-9 to 1-14", "difficulty": 2.2, "label": "章1标准" },
+      { "level_range": "1-15 to 1-20","difficulty": 3.0, "label": "章1挑战" },
+      { "level_range": "2-1 to 2-5",  "difficulty": 2.5, "label": "章2宽松" },
+      { "level_range": "2-6 to 2-15", "difficulty": 3.5, "label": "章2标准" },
+      { "level_range": "2-16 to 2-20","difficulty": 4.5, "label": "章2挑战" },
+      { "level_range": "3-1 to 3-6",  "difficulty": 3.8, "label": "章3宽松" },
+      { "level_range": "3-7 to 3-17", "difficulty": 5.0, "label": "章3标准" },
+      { "level_range": "3-18 to 3-23","difficulty": 6.2, "label": "章3挑战" },
+      { "level_range": "4-1 to 4-6",  "difficulty": 5.2, "label": "章4宽松" },
+      { "level_range": "4-7 to 4-17", "difficulty": 6.5, "label": "章4标准" },
+      { "level_range": "4-18 to 4-23","difficulty": 8.0, "label": "章4挑战" },
+      { "level_range": "5-1 to 5-6",  "difficulty": 6.8, "label": "章5宽松" },
+      { "level_range": "5-7 to 5-19", "difficulty": 8.2, "label": "章5标准" },
+      { "level_range": "5-20 to 5-25","difficulty": 9.5, "label": "章5挑战" },
+      { "level_range": "6-1 to 6-6",  "difficulty": 8.0, "label": "章6宽松" },
+      { "level_range": "6-7 to 6-19", "difficulty": 9.2, "label": "章6标准" },
+      { "level_range": "6-20 to 6-25","difficulty": 10.0, "label": "章6终极" }
+    ]
+  },
+
+  "material_economy_balance": {
+    "description": "各章节材料产出与修复消耗的平衡验证",
+    "chapters": [
+      {
+        "chapter": 1,
+        "total_material_yield": { "浮木": 52, "绳索": 38, "铁钉": 36, "桐油": 18 },
+        "total_repair_cost":   { "浮木": 45, "绳索": 34, "铁钉": 26, "桐油": 8 },
+        "surplus_pct": 18,
+        "balance_note": "宽松盈余，给新手预留容错"
+      },
+      {
+        "chapter": 2,
+        "total_material_yield": { "石块": 68, "木料": 62, "彩釉砖": 44, "灯芯草": 36 },
+        "total_repair_cost":   { "石块": 59, "木料": 55, "彩釉砖": 38, "灯芯草": 26 },
+        "surplus_pct": 14,
+        "balance_note": "略有盈余，鼓励探索"
+      },
+      {
+        "chapter": 3,
+        "total_material_yield": { "花种": 90, "腐殖土": 86, "石阶砖": 72, "浇水壶": 54 },
+        "total_repair_cost":   { "花种": 80, "腐殖土": 78, "石阶砖": 62, "浇水壶": 44 },
+        "surplus_pct": 12,
+        "balance_note": "收支趋于平衡"
+      },
+      {
+        "chapter": 4,
+        "total_material_yield": { "帆布": 92, "原木": 96, "火石": 64, "苔藓清除剂": 60 },
+        "total_repair_cost":   { "帆布": 86, "原木": 88, "火石": 56, "苔藓清除剂": 52 },
+        "surplus_pct": 8,
+        "balance_note": "紧平衡，鼓励全关完成"
+      },
+      {
+        "chapter": 5,
+        "total_material_yield": { "导水管": 128, "防滑石板": 124, "浴池填缝料": 88, "香草束": 76 },
+        "total_repair_cost":   { "导水管": 120, "防滑石板": 116, "浴池填缝料": 82, "香草束": 68 },
+        "surplus_pct": 7,
+        "balance_note": "略紧，高难度关给充足产出"
+      },
+      {
+        "chapter": 6,
+        "total_material_yield": { "灯芯": 150, "灯油": 152, "玻璃碎片": 104, "铁锻件": 116, "石灰涂料": 96 },
+        "total_repair_cost":   { "灯芯": 140, "灯油": 142, "玻璃碎片": 96, "铁锻件": 106, "石灰涂料": 86 },
+        "surplus_pct": 7,
+        "balance_note": "终章保持紧平衡，全通后有足量盈余触发结局动画"
+      }
+    ]
+  }
+}

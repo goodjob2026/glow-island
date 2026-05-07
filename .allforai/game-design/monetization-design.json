@@ -1,0 +1,184 @@
+{
+  "created_at": "2026-05-07T00:00:00.000Z",
+  "product": "Glow Island",
+  "version": "1.0",
+  "philosophy": {
+    "core_principle": "不P2W，只买便利和外观。治愈感的底层是安全感——玩家在不付费的情况下能完整体验游戏核心内容，付费仅提供锦上添花的便利和个性化选项。",
+    "trust_commitments": [
+      "所有IAP定价结构透明，不频繁调整价格",
+      "购买提示仅在玩家连续失败3次以上后以场景化方式出现，绝不强制弹窗打断游戏流",
+      "核心修复进度不可购买加速（修复动画免费触发）",
+      "所有广告素材100%展示真实连连看玩法，无误导性内容",
+      "季节性核心主题体验对所有玩家免费开放"
+    ]
+  },
+  "currency_system": {
+    "soft_currency": {
+      "name": "沙滩币",
+      "name_en": "Beach Coins",
+      "icon_description": "贝壳形状金币，暖橙色",
+      "acquire_methods": [
+        "关卡通关（主要来源，掉落量与星级正相关）",
+        "每日登录奖励（递增式，第7天最高）",
+        "完成日常任务（3个任务/天，小额奖励）",
+        "活动关卡通关",
+        "禅境模式完成（小额）"
+      ],
+      "spend_methods": [
+        "普通助攻器（关卡前使用，提升初始优势）",
+        "部分基础装饰件（岛屿小摆件）",
+        "材料轻合成加速（非必需，可选便利）"
+      ],
+      "design_note": "沙滩币供给充足，使玩家始终感到不匮乏。核心设计不依赖沙滩币产生付费压力。"
+    },
+    "hard_currency": {
+      "name": "丹青石",
+      "name_en": "Glowstone",
+      "icon_description": "发光的蓝绿色宝石，带光晕脉冲动画",
+      "acquire_methods": [
+        "IAP付费购买（主要来源）",
+        "月光卡每日登录领取",
+        "里程碑成就奖励（少量，非主力来源）",
+        "特定活动关卡完美通关奖励（极少量）"
+      ],
+      "spend_methods": [
+        "关卡续命（额外+5步）",
+        "跳过当前关卡",
+        "高级助攻器（强力效果）",
+        "岛屿限定装饰件",
+        "季节限定图块皮肤",
+        "限定NPC互动道具"
+      ],
+      "design_note": "丹青石稀缺性设计为有价值的资源，但免费玩家通过活动可获取少量，确保不产生完全剥夺感。"
+    }
+  },
+  "iap_products": [
+    {
+      "id": "IAP-001",
+      "name": "小光晶包",
+      "name_en": "Small Glowstone Pack",
+      "glowstone_amount": 6,
+      "bonus_items": null,
+      "price_usd": 0.99,
+      "price_cny": 6,
+      "positioning": "低门槛入门包，试水付费用户的第一步",
+      "target_archetype": ["Achiever（关卡卡关时的应急续命）"],
+      "trigger_scenario": "关卡连续失败3次后，场景化提示'6颗丹青石可续命'"
+    },
+    {
+      "id": "IAP-002",
+      "name": "中光晶包",
+      "name_en": "Medium Glowstone Pack",
+      "glowstone_amount": 30,
+      "bonus_items": ["专属图块皮肤×1（随机季节款）"],
+      "price_usd": 4.99,
+      "price_cny": 30,
+      "positioning": "主力单次购买包，性价比最优，覆盖多次续命或购买1-2件装饰",
+      "target_archetype": ["Achiever", "Explorer"],
+      "trigger_scenario": "IAP商城主推位；月光卡旁边的对比参考"
+    },
+    {
+      "id": "IAP-003",
+      "name": "大光晶包",
+      "name_en": "Large Glowstone Pack",
+      "glowstone_amount": 88,
+      "bonus_items": ["限定岛屿装饰件×1", "专属图块皮肤×2"],
+      "price_usd": 12.99,
+      "price_cny": 88,
+      "positioning": "高价值玩家单次大额消费包，含限定内容增值",
+      "target_archetype": ["Explorer（限定装饰驱动）", "Achiever（储备丹青石）"],
+      "trigger_scenario": "IAP商城高价值展示位；章节完成里程碑时的感谢推荐"
+    },
+    {
+      "id": "IAP-004",
+      "name": "月光卡",
+      "name_en": "Moonlight Pass",
+      "glowstone_amount": 300,
+      "daily_reward": "每日登录领取10丹青石，连续30天",
+      "bonus_items": ["专属月光卡图块皮肤", "月卡持有者专属岛屿装饰品×1"],
+      "price_usd": 4.99,
+      "price_cny": 28,
+      "positioning": "订阅型复购产品，稳定玩家日留存，提升ARPU可预测性",
+      "target_archetype": ["所有付费原型"],
+      "trigger_scenario": "首充完成后推荐；每日任务界面展示；续卡提醒",
+      "renewal_design": "到期前3天提醒，支持自动续订，随时可取消，权益说明清晰透明"
+    }
+  ],
+  "spend_scenarios": [
+    {
+      "scenario": "关卡续命",
+      "currency": "丹青石",
+      "cost": 6,
+      "description": "关卡步数耗尽时，消耗6丹青石获得额外+5步",
+      "trigger_condition": "步数归零时主动弹出（非强制，玩家可直接退出重试）",
+      "non_p2w_compliance": true,
+      "design_note": "关卡难度设计不依赖续命达成通关，续命是可选便利而非通关必需"
+    },
+    {
+      "scenario": "跳过关卡",
+      "currency": "丹青石",
+      "cost": 10,
+      "description": "支付丹青石直接通过当前关卡，获得基础材料掉落（无星级奖励）",
+      "trigger_condition": "在关卡结算失败界面提供选项，玩家主动选择",
+      "non_p2w_compliance": true,
+      "design_note": "定价透明，消耗不高于3次续命成本，让卡关玩家有体面的退出选择"
+    },
+    {
+      "scenario": "高级助攻器（关卡前）",
+      "currency": "丹青石或沙滩币",
+      "cost": "2-5丹青石 或 50-150沙滩币",
+      "description": "进入关卡前可选配强力助攻器（如：彩虹块×1、炸弹块×1、+3步）",
+      "trigger_condition": "关卡开始前的可选配置界面，玩家主动触发",
+      "non_p2w_compliance": true,
+      "design_note": "助攻器提供便利，但关卡通关不依赖助攻器，无助攻器状态可正常通关"
+    },
+    {
+      "scenario": "岛屿限定装饰件",
+      "currency": "丹青石",
+      "cost": "10-30丹青石",
+      "description": "章节专属装饰品（码头灯笼、花田风车、营地旗帜等），纯视觉增益",
+      "trigger_condition": "岛屿地图界面的装饰商店；章节完成时的限定展示",
+      "non_p2w_compliance": true,
+      "design_note": "不影响任何游戏进度，仅提升岛屿视觉个性化程度"
+    },
+    {
+      "scenario": "季节限定图块皮肤",
+      "currency": "丹青石",
+      "cost": "15-40丹青石",
+      "description": "将关卡图块替换为当季主题视觉风格（樱花/珊瑚/枫叶/雪花），季节主题本身免费",
+      "trigger_condition": "季节主题更新时的专属商城展示",
+      "non_p2w_compliance": true,
+      "design_note": "图块皮肤为纯视觉替换，不改变消除机制，核心季节体验无需付费"
+    }
+  ],
+  "iap_trigger_rules": {
+    "safe_triggers": [
+      "玩家主动打开IAP商城",
+      "连续失败3次以上时的场景化提示（非弹窗，内嵌在失败界面）",
+      "章节完成后的成就里程碑展示（温和推荐，非强制）",
+      "月光卡即将到期的续订提醒（仅在持有月卡用户的到期前3天）"
+    ],
+    "forbidden_triggers": [
+      "连续失败2次以内弹出任何购买提示",
+      "在关卡进行中弹出购买弹窗",
+      "在任何场景强制拦截游戏流的购买弹窗",
+      "利用倒计时或限时提示制造FOMO焦虑",
+      "在NPC叙事动画中插入商业化内容"
+    ]
+  },
+  "monetization_principles": {
+    "no_p2w": "核心修复进度不可购买加速；所有关卡可在不付费的情况下通过；付费不提供战斗力或竞技优势",
+    "transparent_pricing": "IAP价格清晰展示，不频繁调整，不设隐藏费用，不设混淆定价（如'原价99现价6'的虚假折扣）",
+    "friction_free_experience": "付费决策完全由玩家主动发起，系统不主动打断游戏心流推送购买",
+    "seasonal_access": "每季度免费主题更新保证所有玩家均可体验核心季节内容，付费仅为个性化和加速"
+  },
+  "revenue_model_targets": {
+    "primary_revenue_driver": "月光卡订阅（稳定复购）+ 中/大光晶包（高价值用户单次消费）",
+    "secondary_revenue_driver": "装饰件和皮肤（Explorer原型）+ 续命和助攻（Achiever原型）",
+    "arpu_target_day30": "$1.5",
+    "iap_conversion_target": "3%",
+    "paying_user_arpu_target": "$15",
+    "moonlight_pass_renewal_target": "60%",
+    "ltv_cac_philosophy": "通过高留存和低UA成本（真实广告吸引精准用户）实现健康LTV:CAC比率，而非依赖激进弹窗提升短期ARPU"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-05-07T00:00:00.000Z",
+  "node_version": "v25.9.0",
+  "postgresql": "not_running",
+  "cocos_creator": "not_found",
+  "jwt_secret": "configured",
+  "database_url": "configured",
+  "apple_iap": "sandbox_mode",
+  "projects_initialized": ["game-client", "backend", "tools/level-editor"]
+}

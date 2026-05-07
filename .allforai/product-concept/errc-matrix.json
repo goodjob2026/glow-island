@@ -1,0 +1,98 @@
+{
+  "created_at": "2026-05-07T00:00:00.000Z",
+  "product": "Glow Island",
+  "positioning_summary": "治愈系连连看手游：通过连接/消除图块修复小岛，以渐进式岛屿视觉恢复为核心情感奖励，面向追求低压力、高审美体验的休闲玩家。",
+  "eliminate": [
+    {
+      "item": "体力/生命值系统（Energy / Lives System）",
+      "rationale": "四款竞品的最高频投诉点。体力耗尽强制等待或付费，与治愈定位直接冲突——治愈感需要'想玩就玩'的自由，倒计时只会制造焦虑。Glow Island应允许无限游玩，通过关卡设计自然节奏控制，而非人工门控。"
+    },
+    {
+      "item": "倒计时关卡（Countdown / Time-Limit Levels）",
+      "rationale": "时间压力激活玩家焦虑应激反应，与放松/治愈情感目标不兼容。消除此机制可保证游戏节奏始终舒缓，所有关卡以步数为限而非时间。"
+    },
+    {
+      "item": "PvP竞技排行榜（PvP / Competitive Leaderboard）",
+      "rationale": "Candy Crush All Stars等竞技赛事对普通玩家制造比较焦虑。Glow Island定位为个人沉浸式治愈体验，竞争性对抗与品牌调性不符，予以消除。"
+    },
+    {
+      "item": "强制社交/公会义务（Mandatory Co-op / Guild Obligations）",
+      "rationale": "Township的Regatta是用户投诉重灾区——团队任务分配不均、成员压力大。Glow Island以单人叙事为主，不设强制团队活动，避免社交义务带来的负罪感。"
+    },
+    {
+      "item": "虚假广告素材（Misleading Advertising Creatives）",
+      "rationale": "Fishdom/Gardenscapes因展示与实际玩法不符的宣传视频遭遇大规模用户信任危机。Glow Island所有投放素材必须真实反映核心玩法，以信任和口碑为增长基础。"
+    }
+  ],
+  "reduce": [
+    {
+      "item": "复杂社交功能（Complex Social Features）",
+      "rationale": "保留轻度自愿社交（好友分享进度、观赏岛屿），但大幅削减排行榜、好友攀比、礼物索取等社交摩擦点。单人沉浸体验优先，社交作为可选增益而非必需。"
+    },
+    {
+      "item": "助攻器/增益系统复杂度（Booster System Complexity）",
+      "rationale": "竞品助攻器种类繁多且与付费深度绑定，形成学习负担和付费暗示。Glow Island简化助攻器类型，降低玩家对其的认知和依赖，游戏难度设计不依赖助攻器来'解锁'通关。"
+    },
+    {
+      "item": "关卡难度墙（Artificial Difficulty Spikes）",
+      "rationale": "竞品普遍利用人为拔高关卡难度来逼迫IAP消费。Glow Island采用平滑难度曲线，挫败感控制在舒适区内，以让玩家持续享受'我能做到'的成就感为目标。"
+    },
+    {
+      "item": "时限活动密度（High-Frequency Time-Limited Events）",
+      "rationale": "每周多个限时活动带来FOMO压力（Township/Gardenscapes均有此问题）。Glow Island减少活动频次，提高每次活动的内容质量，避免将玩家日程变成'作业清单'。"
+    },
+    {
+      "item": "侵入式弹窗购买提示（Aggressive IAP Pop-ups）",
+      "rationale": "Candy Crush频繁弹出的购买提示是投诉重灾区。Glow Island的商业化提示应自然融入场景，避免打断游戏心流，IAP以锦上添花而非必需品呈现。"
+    }
+  ],
+  "raise": [
+    {
+      "item": "视觉美感与艺术品质（Visual Aesthetics / Art Quality）",
+      "rationale": "治愈系产品的核心差异壁垒。相比竞品通用的卡通风格，Glow Island以精美的岛屿环境视觉——光影效果、植被动态、水体反射——作为核心情感输出媒介，每次修复都是视觉奖励。"
+    },
+    {
+      "item": "音效与音乐治愈感（Healing Audio Design）",
+      "rationale": "音频是治愈体验的关键但被竞品普遍忽视的维度。Glow Island投入高质量环境音（海浪、鸟鸣、雨声）和情感配乐，音频设计与视觉修复节奏深度配合，强化放松感。"
+    },
+    {
+      "item": "核心玩法反馈满足感（Core Mechanic Satisfaction）",
+      "rationale": "连连看图块连接的消除反馈（音效+粒子效果+连锁动画）需要达到'令人愉悦上瘾'的程度。每一次成功连接都应提供即时情感奖励，是玩家留存的微循环基础。"
+    },
+    {
+      "item": "叙事沉浸感（Narrative Immersion）",
+      "rationale": "Gardenscapes证明轻叙事对中核休闲玩家有强力留存效果。Glow Island以岛屿故事为背景，每个区域修复解锁新的环境叙事片段，让进度不止是关卡数字，而是真实的故事推进。"
+    },
+    {
+      "item": "无障碍游玩体验（Frictionless Play Experience）",
+      "rationale": "移除所有打断游戏流的摩擦点（体力、强制教程、弹窗），使玩家可以随时进入心流状态。'放下手机时想着游戏'比'被强制留在游戏里'更有价值。"
+    }
+  ],
+  "create": [
+    {
+      "item": "渐进式岛屿视觉恢复系统（Progressive Island Visual Restoration）",
+      "rationale": "四款竞品均无此设计：关卡进度直接映射为岛屿从荒芜到繁荣的视觉变化。玩家看到枯萎植物重新绽放、废墟变成建筑、黑暗角落被'光'照亮，形成竞品无法复制的情感成就感。",
+      "implementation": "将岛屿地图拆分为若干'恢复区域'，每个区域由若干关卡进度驱动。关卡通关后触发该区域的动态过渡动画——植物生长、建筑修缮、光效扩散。整岛修复进度持久保存并作为社交展示内容。"
+    },
+    {
+      "item": "光能/发光图块机制（Glow Tile / Light Energy Mechanic）",
+      "rationale": "与产品名称'Glow Island'深度呼应的独特玩法元素。竞品match-3/连连看均无'光'作为核心机制——通过连接发光图块积累光能，光能用于'点亮'岛屿区域，将消除玩法与岛屿修复叙事形成有机机制联结。",
+      "implementation": "特殊Glow图块散布在关卡中，连接Glow图块产生'光链'奖励大量光能分。光能积累到阈值时在世界地图层触发岛屿某区域点亮的视觉动画。不同颜色Glow图块对应岛屿不同区域（海滩/森林/建筑）。"
+    },
+    {
+      "item": "治愈模式/冥想关卡（Zen Mode / Healing Levels）",
+      "rationale": "竞品无此设计。对于高压玩家提供'无失败状态'的纯放松关卡——无步数限制、无体力消耗、无评分，仅享受消除动画和音效。作为差异化功能吸引竞品流失的疲倦玩家。",
+      "implementation": "每日解锁1-3个禅模式关卡，界面采用更柔和的配色和更慢的音乐节奏。完成禅模式关卡可获得装饰性奖励（无战斗力影响），作为'礼物'而非任务。"
+    },
+    {
+      "item": "时间胶囊/记忆存档系统（Island Memory / Time-Capsule System）",
+      "rationale": "独有的长期情感留存机制。竞品的进度是线性单向的，Glow Island允许玩家保存岛屿修复前后的对比快照，并在特定里程碑（7天/30天/100关）展示'你让这座岛重生了'的成就时刻。",
+      "implementation": "系统在玩家修复关键区域时自动截图存档，积累为'岛屿成长相册'。分享功能允许玩家将前后对比图发布社交媒体，形成天然UGC传播。里程碑弹窗设计为温暖的'信件'格式而非冷冰冰的数据统计。"
+    },
+    {
+      "item": "无付费墙的季节性岛屿主题（Free Seasonal Island Skins）",
+      "rationale": "竞品季节内容几乎全部与付费绑定（Fishdom Season Pass大幅涨价引发玩家强烈不满）。Glow Island的季节主题（春日樱花岛/夏日珊瑚岛/秋叶红枫岛）作为免费内容更新，付费仅加速解锁或购买限定装饰，核心季节体验对所有玩家开放。",
+      "implementation": "每季度更新岛屿视觉主题（背景、图块皮肤、音乐），所有玩家均可体验。季节限定装饰件通过付费或活动获取，但不影响核心修复进度。季节主题作为营销钩子驱动回流和新增。"
+    }
+  ]
+}
