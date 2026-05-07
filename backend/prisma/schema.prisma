@@ -1,0 +1,104 @@
+// ============================================================
+// Glow Island — Prisma Schema
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Player {
+  id        String   @id @default(uuid()) @db.Uuid
+  deviceId  String   @unique @map("device_id")
+  platform  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  save             PlayerSave?
+  leaderboardEntry LeaderboardEntry?
+  iapTransactions  IapTransaction[]
+  dailyRewards     PlayerDailyReward[]
+
+  @@map("players")
+}
+
+model PlayerSave {
+  id              String   @id @default(uuid()) @db.Uuid
+  playerId        String   @unique @map("player_id") @db.Uuid
+  chapterProgress Json     @default("{}") @map("chapter_progress")
+  currency        Json     @default("{\"beach_coins\": 200, \"glowstone\": 0}") @map("currency")
+  materials       Json     @default("{\"driftwood\": 0, \"tropical_flower\": 0, \"coral_fragment\": 0, \"starfish\": 0, \"ancient_tile\": 0, \"moonlight_crystal\": 0}") @map("materials")
+  boosters        Json     @default("{}") @map("boosters")
+  decorations     Json     @default("{}") @map("decorations")
+  monthlyCard     Json     @default("{\"active\": false, \"expires_at\": null, \"last_claimed_date\": null}") @map("monthly_card")
+  settings        Json     @default("{\"sfx\": true, \"music\": true, \"notifications\": true}") @map("settings")
+  clientVersion   String?  @map("client_version")
+  checksum        String?
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([updatedAt])
+  @@map("player_saves")
+}
+
+model LeaderboardEntry {
+  id             String   @id @default(uuid()) @db.Uuid
+  playerId       String   @unique @map("player_id") @db.Uuid
+  displayName    String   @map("display_name")
+  totalScore     BigInt   @default(0) @map("total_score")
+  chapterReached Int      @default(1) @map("chapter_reached")
+  highestLevel   Int      @default(1) @map("highest_level")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([totalScore(sort: Desc), updatedAt(sort: Desc)])
+  @@index([chapterReached(sort: Desc), totalScore(sort: Desc)])
+  @@map("leaderboard_entries")
+}
+
+model IapTransaction {
+  id               String    @id @default(uuid()) @db.Uuid
+  playerId         String    @map("player_id") @db.Uuid
+  productId        String    @map("product_id")
+  skuId            String    @map("sku_id")
+  platform         String
+  receiptData      String    @map("receipt_data")
+  transactionId    String?   @unique @map("transaction_id")
+  amountCents      Int       @map("amount_cents")
+  currencyCode     String    @default("CNY") @map("currency_code")
+  status           String    @default("pending")
+  glowstoneGranted Int       @default(0) @map("glowstone_granted")
+  itemsGranted     Json      @default("[]") @map("items_granted")
+  verifiedAt       DateTime? @map("verified_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Restrict)
+
+  @@index([playerId])
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+  @@map("iap_transactions")
+}
+
+model PlayerDailyReward {
+  id         String   @id @default(uuid()) @db.Uuid
+  playerId   String   @map("player_id") @db.Uuid
+  rewardDate DateTime @map("reward_date") @db.Date
+  rewardType String   @map("reward_type")
+  beachCoins Int      @default(0) @map("beach_coins")
+  glowstone  Int      @default(0) @map("glowstone")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, rewardDate, rewardType])
+  @@index([playerId, rewardDate(sort: Desc)])
+  @@map("player_daily_rewards")
+}

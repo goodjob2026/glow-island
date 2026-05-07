@@ -1,0 +1,246 @@
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
+import { PrismaClient } from '@prisma/client'
+import { SKU_CONFIG } from '../types/index'
+
+interface IapVerifyBody {
+  sku_id: string
+  platform: string
+  receipt_data: string
+  product_id?: string
+  transaction_id?: string
+}
+
+const VALID_PLATFORMS = ['ios', 'android', 'taptap']
+const VALID_SKUS = Object.keys(SKU_CONFIG)
+
+export async function iapRoutes(app: FastifyInstance, prisma: PrismaClient): Promise<void> {
+  // POST /iap/verify
+  app.post(
+    '/iap/verify',
+    { preHandler: app.authenticate },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const playerId = request.jwtPayload.player_id
+      const body = request.body as IapVerifyBody
+
+      // Validate required fields
+      if (!body.receipt_data) {
+        return reply.status(400).send({
+          error: { code: 'MISSING_RECEIPT', message: 'receipt_data is required' },
+        })
+      }
+
+      if (!body.sku_id || !VALID_SKUS.includes(body.sku_id)) {
+        return reply.status(400).send({
+          error: {
+            code: 'INVALID_SKU',
+            message: `sku_id must be one of: ${VALID_SKUS.join(', ')}`,
+          },
+        })
+      }
+
+      if (!body.platform || !VALID_PLATFORMS.includes(body.platform)) {
+        return reply.status(400).send({
+          error: {
+            code: 'INVALID_PLATFORM',
+            message: `platform must be one of: ${VALID_PLATFORMS.join(', ')}`,
+          },
+        })
+      }
+
+      const sku = SKU_CONFIG[body.sku_id]
+
+      // Quick duplicate check by transaction_id (if provided)
+      if (body.transaction_id) {
+        const existingByTxId = await prisma.iapTransaction.findUnique({
+          where: { transactionId: body.transaction_id },
+        })
+        if (existingByTxId) {
+          return reply.status(409).send({
+            error: {
+              code: 'DUPLICATE_RECEIPT',
+              message: 'This transaction has already been processed',
+            },
+            original_transaction_id: existingByTxId.id,
+            processed_at: existingByTxId.createdAt.toISOString(),
+          })
+        }
+      }
+
+      // Also check by receipt_data for duplicate detection
+      const existingByReceipt = await prisma.iapTransaction.findFirst({
+        where: {
+          receiptData: body.receipt_data,
+          status: { in: ['verified', 'pending'] },
+        },
+      })
+      if (existingByReceipt) {
+        return reply.status(409).send({
+          error: {
+            code: 'DUPLICATE_RECEIPT',
+            message: 'This receipt has already been processed',
+          },
+          original_transaction_id: existingByReceipt.id,
+          processed_at: existingByReceipt.createdAt.toISOString(),
+        })
+      }
+
+      // Business rule checks
+      if (sku.is_starter_pack) {
+        const alreadyBought = await prisma.iapTransaction.findFirst({
+          where: {
+            playerId,
+            skuId: 'starter_pack',
+            status: 'verified',
+          },
+        })
+        if (alreadyBought) {
+          return reply.status(422).send({
+            error: {
+              code: 'STARTER_PACK_ALREADY_PURCHASED',
+              message: 'Starter pack can only be purchased once',
+            },
+          })
+        }
+      }
+
+      if (sku.is_monthly_card) {
+        const save = await prisma.playerSave.findUnique({ where: { playerId } })
+        if (save) {
+          const monthlyCard = save.monthlyCard as {
+            active?: boolean
+            expires_at?: string | null
+          }
+          if (monthlyCard?.active && monthlyCard.expires_at) {
+            const expiresAt = new Date(monthlyCard.expires_at)
+            if (expiresAt > new Date()) {
+              return reply.status(422).send({
+                error: {
+                  code: 'MONTHLY_CARD_ALREADY_ACTIVE',
+                  message: 'Monthly card is already active',
+                },
+              })
+            }
+          }
+        }
+      }
+
+      // In sandbox/development mode: skip Apple/Google verification
+      // Production: call Apple /verifyReceipt or Google Play Developer API
+      const isDevelopment =
+        process.env.NODE_ENV === 'development' || process.env.APPLE_IAP === 'sandbox'
+
+      if (!isDevelopment) {
+        // Production IAP verification would go here
+        // For now, we proceed as verified
+      }
+
+      // Generate a synthetic transaction ID for sandbox
+      const platformTransactionId =
+        body.transaction_id ?? `sandbox_${Date.now()}_${Math.random().toString(36).slice(2)}`
+
+      const productId = body.product_id ?? sku.product_id
+      const now = new Date()
+
+      // Perform DB operations in a transaction
+      const result = await prisma.$transaction(async (tx) => {
+        // Create IAP transaction record
+        const iapTx = await tx.iapTransaction.create({
+          data: {
+            playerId,
+            productId,
+            skuId: body.sku_id,
+            platform: body.platform,
+            receiptData: body.receipt_data,
+            transactionId: platformTransactionId,
+            amountCents: sku.amount_cents,
+            currencyCode: 'CNY',
+            status: 'verified',
+            glowstoneGranted: sku.glowstone,
+            itemsGranted: sku.items,
+            verifiedAt: now,
+          },
+        })
+
+        // Get current save
+        const currentSave = await tx.playerSave.findUnique({ where: { playerId } })
+        if (!currentSave) {
+          throw new Error('SAVE_NOT_FOUND')
+        }
+
+        const currency = currentSave.currency as { beach_coins: number; glowstone: number }
+        const newGlowstone = (currency.glowstone ?? 0) + sku.glowstone
+
+        // Determine beach_coins delta from starter pack
+        let beachCoinsDelta = 0
+        for (const item of sku.items) {
+          if (item.type === 'currency' && item.item_id === 'beach_coins') {
+            beachCoinsDelta += item.quantity
+          }
+        }
+
+        const updatedCurrency = {
+          beach_coins: (currency.beach_coins ?? 0) + beachCoinsDelta,
+          glowstone: newGlowstone,
+        }
+
+        // Update boosters if starter pack includes them
+        let updatedBoosters = currentSave.boosters as Record<string, number>
+        for (const item of sku.items) {
+          if (item.type === 'booster') {
+            updatedBoosters = {
+              ...updatedBoosters,
+              [item.item_id]: ((updatedBoosters[item.item_id] as number) ?? 0) + item.quantity,
+            }
+          }
+        }
+
+        // Update monthly card if applicable
+        let updatedMonthlyCard = currentSave.monthlyCard
+        if (sku.is_monthly_card) {
+          const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
+          updatedMonthlyCard = {
+            active: true,
+            expires_at: expiresAt.toISOString(),
+            purchased_at: now.toISOString(),
+            last_claimed_date: null,
+            days_claimed: 0,
+            transaction_id: iapTx.id,
+          }
+        }
+
+        const updatedSave = await tx.playerSave.update({
+          where: { playerId },
+          data: {
+            currency: updatedCurrency as object,
+            boosters: updatedBoosters as object,
+            monthlyCard: updatedMonthlyCard as object,
+          },
+        })
+
+        return { iapTx, updatedSave, updatedCurrency }
+      })
+
+      const responseBody: Record<string, unknown> = {
+        transaction_id: result.iapTx.id,
+        sku_id: body.sku_id,
+        status: 'verified',
+        glowstone_granted: sku.glowstone,
+        items_granted: sku.items,
+        updated_currency: result.updatedCurrency,
+      }
+
+      if (sku.is_monthly_card) {
+        const mc = result.updatedSave.monthlyCard as {
+          active: boolean
+          expires_at: string | null
+        }
+        responseBody.monthly_card = {
+          active: mc.active,
+          expires_at: mc.expires_at,
+        }
+      }
+
+      return reply.send(responseBody)
+    }
+  )
+}
