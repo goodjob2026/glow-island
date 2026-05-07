@@ -1,10 +1,23 @@
 {
   "_meta": {
     "document": "puzzle-mechanics-spec",
-    "version": "1.0",
-    "date": "2026-05-07",
+    "version": "2.0",
+    "date": "2026-05-08",
     "status": "authoritative",
-    "description": "Glow Island 连连看引擎详细机制规格 — 实现节点权威技术文档"
+    "description": "Glow Island 连连看引擎详细机制规格 — 实现节点权威技术文档（v2：新增障碍系统、重力力学、传送门、渐进章节解锁）",
+    "changelog": "v2: 添加冰封块(ch2)、锁链+传送门(ch3)、单路径约束(ch4)、重力系统tile_fall/tile_slide/board_rotate(ch5)、扩散障碍藤蔓/苔藓(ch6)；强化特殊块描述；增加章节解锁对照表；gameplay目标对标天天爱消除连击满足感"
+  },
+
+  "gameplay_feel": {
+    "reference": "天天爱消除 (Chinese Candy Crush)",
+    "principles": [
+      "每次成功匹配必须有清晰、爽快的视觉+音效反馈",
+      "连击链应产生渐进式增强的爆炸/粒子特效，3连击以上全屏震动",
+      "特殊块激活时动画不可跳过，持续时间控制在0.3~0.8s以保持节奏感",
+      "障碍物被清除时应有专属'解锁'音效+碎裂/解冻/断链粒子效果",
+      "重力下落使用弹性缓动(ease_in_bounce)，强化物理真实感",
+      "每章首次引入新机制时，通过引导关卡（无惩罚）让玩家自然学会"
+    ]
   },
 
   "grid": {
@@ -63,8 +76,13 @@
     "same_type_required": true,
     "blocked_by_occupied_cells": true,
     "empty_cell_passable": true,
-    "description": "两图块可连接的条件：类型相同，且存在一条路径使得：(1) 转弯次数 ≤ 2；(2) 路径不穿过任何已占用图块（空格可穿越）；(3) 路径可沿棋盘外边缘延伸（经典边缘绕行规则）；路径总长度无硬性上限。",
-    "algorithm_hint": "BFS/DFS with turn-count state; states: (x, y, last_direction, turns_used)"
+    "portal_traversal": {
+      "enabled": true,
+      "turn_cost": 0,
+      "description": "路径穿越传送门不消耗转弯次数，传送门视为零代价的空间折叠；BFS需将出口坐标注入队列并保持当前方向和转弯计数不变"
+    },
+    "description": "两图块可连接的条件：类型相同，且存在一条路径使得：(1) 转弯次数 ≤ 2；(2) 路径不穿过任何已占用图块（空格可穿越）；(3) 路径可沿棋盘外边缘延伸（经典边缘绕行规则）；(4) 传送门视为零转弯代价的空间折叠点；路径总长度无硬性上限。",
+    "algorithm_hint": "BFS/DFS with turn-count state; states: (x, y, last_direction, turns_used); portal cells: on entry push exit_cell with same direction and turns_used unchanged"
   },
 
   "combo": {
@@ -90,6 +108,8 @@
       "id": "bomb",
       "name": "炸弹",
       "name_en": "Bomb Tile",
+      "display_name_zh": "炸弹",
+      "display_name_en": "Bomb",
       "trigger_condition": "3连击时系统自动生成，或关卡JSON预置于棋盘",
       "effect": "消除以炸弹块为中心的 3×3 范围内所有图块（含障碍物及覆盖层）",
       "effect_range": { "shape": "square", "radius": 1, "size": "3x3", "center": "bomb_tile_position" },
@@ -99,29 +119,38 @@
         "random_in_level_chance": 0.05,
         "note": "3连击时必定生成1个；关卡预置概率由关卡JSON指定，默认5%空格随机"
       },
-      "visual_hint": "橙色闪光球体，激活时爆炸粒子效果"
+      "visual_hint": "橙色闪光球体，激活时爆炸粒子+冲击波环扩散，配合低频'砰'爆炸音效，3×3范围逐格飞散"
     },
     {
       "id": "windmill",
       "name": "风车",
       "name_en": "Windmill Tile",
+      "display_name_zh": "风车（行消）",
+      "display_name_en": "Windmill (Row/Column Clear)",
       "trigger_condition": "4连击时系统自动生成，或关卡JSON预置于棋盘",
-      "effect": "清除风车块所在整列（竖列）的所有图块",
-      "effect_range": { "shape": "column", "axis": "vertical", "span": "full_column" },
+      "effect": "清除风车块所在整行（横行）及整列（竖列）的所有图块；行消和列消同时触发，形成十字清除",
+      "effect_range": {
+        "shape": "cross",
+        "row": { "axis": "horizontal", "span": "full_row" },
+        "column": { "axis": "vertical", "span": "full_column" },
+        "note": "同时清除风车所在行和列，形成十字爆炸效果"
+      },
       "animation_duration_s": 0.4,
       "spawn_probability": {
         "combo_trigger_chance": 1.0,
         "random_in_level_chance": 0.03,
         "note": "4连击时必定生成1个；关卡预置概率由关卡JSON指定，默认3%"
       },
-      "visual_hint": "旋转风车纹理，激活时竖向光柱扫过整列"
+      "visual_hint": "旋转风车纹理，激活时横竖双光柱同时扫过整行整列，光柱扫过处图块向两侧飞散，配合高频'唰唰'扫除音效"
     },
     {
       "id": "lantern",
       "name": "灯光",
       "name_en": "Lantern Tile",
+      "display_name_zh": "灯光（自动连接）",
+      "display_name_en": "Lantern (Auto-Connect)",
       "trigger_condition": "关卡JSON预置于棋盘（不可通过连击生成）",
-      "effect": "自动寻路并连接距离最近的同类型图块，无需玩家手动操作，连接成功后双方消除",
+      "effect": "自动寻路并连接距离最近的同类型图块，无需玩家手动操作，连接成功后双方消除；若无同类型图块可达，灯光块持续脉冲等待",
       "effect_range": { "shape": "auto", "target": "nearest_same_type", "max_search_radius": null },
       "animation_duration_s": 0.3,
       "spawn_probability": {
@@ -129,37 +158,236 @@
         "random_in_level_chance": 0.0,
         "note": "仅由关卡设计师在关卡JSON中预置，概率由关卡文件决定"
       },
-      "visual_hint": "橙色光晕脉冲，激活时发光连线飞向目标图块"
+      "visual_hint": "橙色光晕持续脉冲，激活时发光连线高速飞向目标图块，目标图块同时发光响应，双方爆发光点消除"
     },
     {
       "id": "wave",
       "name": "海浪",
       "name_en": "Wave Tile",
+      "display_name_zh": "海浪（重排）",
+      "display_name_en": "Wave (Reshuffle)",
       "trigger_condition": "关卡JSON预置于棋盘（不可通过连击生成）",
-      "effect": "重新随机排列棋盘上所有图块的位置，保持各类型图块数量不变",
-      "effect_range": { "shape": "full_board", "preserves_type_counts": true },
+      "effect": "重新随机排列棋盘上所有图块的位置，保持各类型图块数量不变；重排后若仍无可用匹配对则再次重排（最多3次自动重排）",
+      "effect_range": { "shape": "full_board", "preserves_type_counts": true, "max_auto_retry": 3 },
       "animation_duration_s": 0.8,
       "spawn_probability": {
         "combo_trigger_chance": 0.0,
         "random_in_level_chance": 0.0,
         "note": "仅由关卡设计师在关卡JSON中预置，通常每关最多1个"
       },
-      "visual_hint": "蓝色水波纹扩散，激活时全棋盘图块漩涡式重排动画"
+      "visual_hint": "蓝色水波纹从中心扩散至边缘，激活时全棋盘图块漩涡式上扬后重新落下，配合'哗'海浪音效，重排过程持续0.8s"
+    }
+  ],
+
+  "obstacles": [
+    {
+      "id": "ice_block",
+      "type": "ice_block",
+      "display_name_zh": "冰封块",
+      "display_name_en": "Ice Block",
+      "description": "图块被冰层封印，无法被玩家选中或参与连接；需通过相邻格子的消除操作逐层剥离冰层（支持1~3层），每次相邻消除击碎一层",
+      "mechanics": {
+        "layer_range": [1, 2, 3],
+        "clear_method": "adjacent_match",
+        "clear_count_per_layer": 1,
+        "total_hits_required": "等于layer数量，layer=1时1次，layer=3时3次",
+        "blocks_tile_selection": true,
+        "blocks_path": false,
+        "path_traversal_note": "冰封块位置路径可绕行穿越（若为空格），但冰封图块本身阻挡路径"
+      },
+      "chapter_unlock": 2,
+      "visual_hint": "蓝色冰晶覆盖图块；layer=3时厚重冰柱+白色反光；layer=2时出现龟裂纹；layer=1时薄冰残片；消除最后一层时冰晶炸裂+水滴粒子飞溅，配合'咔嚓'碎冰音效"
+    },
+    {
+      "id": "chain_lock",
+      "type": "chain_lock",
+      "display_name_zh": "锁链",
+      "display_name_en": "Chain Lock",
+      "description": "图块被锁链捆绑，必须将该图块本身匹配N次（每次直接参与连接算一次）才能解除锁链；解锁前图块可被选中但每次匹配消耗一个锁链环",
+      "mechanics": {
+        "required_matches": "由关卡JSON指定，通常1~3次",
+        "clear_method": "direct_match",
+        "clear_count_note": "图块本身必须参与N次成功匹配，相邻消除不计数",
+        "blocks_tile_selection": false,
+        "blocks_path": false,
+        "tile_survives_after_match": true,
+        "tile_survives_note": "前N-1次匹配图块不消除，仅减少锁链环数；第N次匹配后锁链脱落，图块正常消除"
+      },
+      "chapter_unlock": 3,
+      "visual_hint": "金属锁链缠绕图块外框，每次匹配一个链环断裂+金属叮当音效；最后一环断裂时锁链飞散+图块发光消除"
+    },
+    {
+      "id": "portal",
+      "type": "portal",
+      "display_name_zh": "传送门",
+      "display_name_en": "Portal",
+      "description": "棋盘上成对出现的两个传送门格子（同色配对）；连线路径进入传送门入口，从另一端传送门出口继续延伸，传送过程不消耗转弯次数",
+      "mechanics": {
+        "pair_count": "每组传送门2个，关卡可有多组（不同颜色区分配对）",
+        "turn_cost": 0,
+        "path_entry": "路径进入传送门格子时，自动从配对出口以相同方向继续；若方向冲突则可从出口以当前积累转弯数继续",
+        "blocks_path": false,
+        "tile_on_portal": "传送门格子本身不放置普通图块，仅作路径通道",
+        "bfs_hint": "BFS状态中遇到portal_entry格子，将对应portal_exit坐标以相同(direction, turns_used)入队"
+      },
+      "chapter_unlock": 3,
+      "visual_hint": "两个旋转发光圆环（同色），入口有吸入粒子旋涡；路径穿越时粒子从入口吸入、从出口喷出，配合传送嗖声音效"
+    },
+    {
+      "id": "single_path_corridor",
+      "type": "single_path_corridor",
+      "display_name_zh": "单路径通道",
+      "display_name_en": "Single-Path Corridor",
+      "description": "棋盘上特定区域被设定为单路径通道，该区域内只有一条有效路径可通过；所有路经该区域的连线都必须经由这条强制通道，不可绕行",
+      "mechanics": {
+        "area_definition": "由关卡JSON定义corridor格子坐标列表及强制通行方向",
+        "forced_path_direction": "specified_by_level_json",
+        "bypass_allowed": false,
+        "blocks_path_outside_corridor": true,
+        "blocks_path_note": "通道区域两侧格子被标记为不可穿越，迫使路径经由通道格子",
+        "interaction_with_turns": "通道格子本身不增加转弯计数，但进出通道的方向变换照常计入转弯"
+      },
+      "chapter_unlock": 4,
+      "visual_hint": "通道格子有发光箭头指示方向，边界有虚线围栏；路径经过时通道格子依次点亮，配合轻微引导提示音"
+    },
+    {
+      "id": "spreading_obstacle",
+      "type": "spreading_obstacle",
+      "display_name_zh": "扩散障碍（藤蔓/苔藓）",
+      "display_name_en": "Spreading Obstacle (Vine/Moss)",
+      "description": "藤蔓或苔藓从初始格子向外扩散；被覆盖的图块无法被选中参与连接；若扩散填满整个棋盘则关卡失败；通过相邻格子消除1次可清除单格覆盖",
+      "mechanics": {
+        "spread_interval_s": "由关卡JSON指定，默认每回合1格或每10秒1格（步数制关卡用每回合，时间制备用）",
+        "spread_rule": "每次触发时向当前所有藤蔓格的上下左右各1格扩散（若该格未被占用或未有障碍）",
+        "spread_blocked_by": ["wooden_crate", "portal", "single_path_corridor边界"],
+        "clear_method": "adjacent_match",
+        "required_hits": 1,
+        "blocks_tile_selection": true,
+        "blocks_path": false,
+        "failure_condition": "藤蔓占据棋盘所有有效图块格子时触发关卡失败",
+        "visual_variants": [
+          { "variant": "vine", "note": "用于森林/丛林主题关卡，绿色蔓延藤条" },
+          { "variant": "moss", "note": "用于洞穴/潮湿主题关卡，暗绿色苔藓扩散" }
+        ]
+      },
+      "chapter_unlock": 6,
+      "visual_hint": "从初始格子向外蔓延的绿色藤蔓纹理；每次扩散触发时有嫩芽破土动画；相邻消除清除时藤蔓枯萎收缩+叶片飞散；接近满盘时整体颜色变深红警告"
+    },
+    {
+      "id": "weed",
+      "type": "weed",
+      "display_name_zh": "杂草",
+      "display_name_en": "Weed",
+      "description": "杂草占据格子，被覆盖的格子无法放置图块；每15秒向相邻1格扩散；相邻图块消除1次即可清除",
+      "mechanics": {
+        "clear_method": "adjacent_match",
+        "clear_count": 1,
+        "spread_interval_s": 15,
+        "blocks_path": false,
+        "blocks_tile_selection": false,
+        "effect_on_tile": "占用格子，杂草覆盖的格子无法放置图块（消除后格子恢复可用）"
+      },
+      "chapter_unlock": 2,
+      "visual_hint": "绿色草丛覆盖格子，消除时叶片飞散"
+    },
+    {
+      "id": "wooden_crate",
+      "type": "wooden_crate",
+      "display_name_zh": "木箱",
+      "display_name_en": "Wooden Crate",
+      "description": "永久性地形障碍，无法消除；路径不可穿越木箱格子；用于关卡设计师强制规划路径走向",
+      "mechanics": {
+        "clear_method": "none",
+        "clear_count": null,
+        "spread_interval_s": null,
+        "blocks_path": true,
+        "blocks_tile_selection": true,
+        "permanent": true
+      },
+      "chapter_unlock": 4,
+      "visual_hint": "实木纹理箱体，边缘有金属扣；不可交互时显示禁止图标"
+    },
+    {
+      "id": "water_current",
+      "type": "water_current",
+      "display_name_zh": "水流",
+      "display_name_en": "Water Current",
+      "description": "无法消除的动态障碍；每5秒改变流向，影响该格路径可达性；水流方向变化时实时更新路径计算",
+      "mechanics": {
+        "clear_method": "none",
+        "clear_count": null,
+        "spread_interval_s": null,
+        "direction_change_interval_s": 5,
+        "blocks_path": true,
+        "blocks_tile_selection": true,
+        "dynamic_path_note": "路径算法需实时感知当前水流方向；流向改变可能开放或封闭路径，BFS需在每次方向变化后重新计算可达性"
+      },
+      "chapter_unlock": 5,
+      "visual_hint": "流动水波纹理格子，箭头图标指示当前流向，方向切换时有旋转动画"
     }
   ],
 
   "board_events": [
     {
-      "id": "tile_gravity",
-      "name": "图块滑落",
-      "name_en": "Tile Gravity",
-      "description": "消除图块后，被消除格上方的图块因重力向下滑落填充空位，新图块从顶部补充",
-      "trigger": "每次消除操作完成后立即触发",
+      "id": "tile_fall",
+      "name": "方块下落",
+      "name_en": "Tile Fall (Gravity)",
+      "description": "消除图块后，被消除格上方的图块因重力向下滑落填充空位；若顶部有补充池则从顶部补入新图块",
+      "trigger": "每次消除操作完成后立即触发，优先级最高",
       "trigger_interval_s": null,
       "affected_area": { "shape": "column", "span": "affected_columns_only" },
-      "animation": { "style": "slide_down", "duration_per_cell_s": 0.08, "easing": "ease_in_out" },
-      "enabled_by_default": true,
-      "note": "核心棋盘物理，始终开启"
+      "animation": {
+        "style": "slide_down",
+        "easing": "ease_in_bounce",
+        "duration_per_cell_s": 0.08,
+        "chain_reaction": true,
+        "chain_reaction_note": "下落到位后若形成新的可消除对，系统提示（不自动消除）"
+      },
+      "chapter_unlock": 5,
+      "enabled_by_default": false,
+      "note": "第5章解锁的重力系统核心；关卡JSON中以 board_event: tile_fall 字段启用；关卡须在6×6以上棋盘使用"
+    },
+    {
+      "id": "tile_slide",
+      "name": "方块滑落",
+      "name_en": "Tile Slide (Horizontal)",
+      "description": "特定标记为'滑面'的格子上，图块会在重力下落后额外向指定水平方向滑动1格；形成斜向堆积效果",
+      "trigger": "tile_fall完成后，若图块落在滑面格子上则触发水平滑动",
+      "trigger_interval_s": null,
+      "affected_area": { "shape": "marked_cells", "cell_tag": "slide_surface", "defined_in": "level_json" },
+      "slide_direction": "specified_by_level_json",
+      "animation": {
+        "style": "slide_horizontal",
+        "easing": "ease_out",
+        "duration_s": 0.12
+      },
+      "chapter_unlock": 5,
+      "enabled_by_default": false,
+      "note": "需配合tile_fall使用；关卡JSON中标记slide_surface格子及滑动方向；可创造图块聚集特定区域的战术设计"
+    },
+    {
+      "id": "board_rotate",
+      "name": "棋盘旋转",
+      "name_en": "Board Section Rotate",
+      "description": "棋盘特定区域（由关卡JSON定义的矩形子区域）每N步后旋转90°；旋转改变图块位置布局，要求玩家预判旋转后的状态",
+      "trigger": "每N步操作后触发（N由关卡JSON指定，典型值3~5步）",
+      "trigger_interval_s": null,
+      "trigger_on_moves": "specified_by_level_json",
+      "affected_area": {
+        "shape": "sub_rectangle",
+        "area": "specified_by_level_json",
+        "rotation_direction": "clockwise_90deg"
+      },
+      "animation": {
+        "style": "rotate_90",
+        "easing": "ease_in_out",
+        "duration_s": 0.5,
+        "warning_flash_before_s": 1.0,
+        "warning_note": "旋转前1秒在旋转区域边框闪烁警告"
+      },
+      "chapter_unlock": 5,
+      "enabled_by_default": false,
+      "note": "高难度机制，仅用于章节后半段挑战关；旋转区域不可包含portal或single_path_corridor格子；旋转完成后重新计算全盘可达性"
     },
     {
       "id": "water_flow",
@@ -204,59 +432,89 @@
     }
   ],
 
-  "obstacles": [
+  "chapter_mechanics_unlock": [
     {
-      "id": "ice_block",
-      "name": "冰块",
-      "name_en": "Ice Block",
-      "unlock_chapter": 3,
-      "clear_method": "adjacent_match",
-      "clear_count": 2,
-      "spread_interval_s": null,
-      "blocks_path": false,
-      "effect_on_tile": "图块被锁定，无法参与连接，但路径可绕行穿越其位置（如为空格）",
-      "visual": "蓝色冰晶覆盖图块，第1次消除出现裂纹，第2次消除冰块碎裂",
-      "note": "相邻格子发生消除时损耗1层冰，需2次相邻消除才能解除锁定"
+      "chapter": 1,
+      "theme": "海边码头",
+      "grid_size": "6×6",
+      "new_mechanics": ["基础连连看", "连击系统(combo)", "特殊块: 炸弹(3连击生成)"],
+      "obstacles_active": [],
+      "board_events_active": [],
+      "special_blocks_available": ["bomb"],
+      "tile_types_available": ["tile_01", "tile_02", "tile_03", "tile_04"],
+      "design_note": "纯净入门体验，聚焦核心匹配和连击节奏感；前3关为无压力引导关"
     },
     {
-      "id": "weed",
-      "name": "杂草",
-      "name_en": "Weed",
-      "unlock_chapter": 2,
-      "clear_method": "adjacent_match",
-      "clear_count": 1,
-      "spread_interval_s": 15,
-      "blocks_path": false,
-      "effect_on_tile": "占用格子，杂草覆盖的格子无法放置图块（消除后格子恢复可用）",
-      "visual": "绿色草丛覆盖格子，消除时叶片飞散",
-      "note": "杂草每15秒向相邻1格扩散，不阻挡路径但占用格位；相邻图块消除1次即可清除"
+      "chapter": 2,
+      "theme": "中央小镇",
+      "grid_size": "7×7",
+      "new_mechanics": ["解锁: 冰封块 (1层)", "杂草障碍"],
+      "obstacles_active": ["ice_block", "weed"],
+      "board_events_active": [],
+      "special_blocks_available": ["bomb", "windmill"],
+      "tile_types_available": ["tile_01~04", "tile_05", "tile_06", "tile_07", "tile_08"],
+      "ice_block_config": { "layers_used": [1], "note": "仅使用单层冰封，引导玩家学习相邻消除机制" },
+      "design_note": "引入第一个障碍；windmill(4连击)解锁；冰封块用单层降低学习门槛"
     },
     {
-      "id": "wooden_crate",
-      "name": "木箱",
-      "name_en": "Wooden Crate",
-      "unlock_chapter": 4,
-      "clear_method": "none",
-      "clear_count": null,
-      "spread_interval_s": null,
-      "blocks_path": true,
-      "effect_on_tile": "永久存在，无法消除；路径不可穿越木箱格子",
-      "visual": "实木纹理箱体，边缘有金属扣",
-      "note": "作为永久地形障碍，关卡设计师用于强制路径规划；木箱位置在关卡JSON中硬编码"
+      "chapter": 3,
+      "theme": "花田山坡",
+      "grid_size": "8×8",
+      "new_mechanics": ["解锁: 锁链 (1~2环)", "解锁: 传送门", "冰封块升级至2层"],
+      "obstacles_active": ["ice_block", "chain_lock", "portal", "weed"],
+      "board_events_active": [],
+      "special_blocks_available": ["bomb", "windmill", "lantern"],
+      "tile_types_available": ["tile_01~08", "tile_09", "tile_10", "tile_11", "tile_12"],
+      "ice_block_config": { "layers_used": [1, 2] },
+      "chain_lock_config": { "required_matches_range": [1, 2] },
+      "portal_config": { "pairs_per_level": [1], "note": "每关仅1对传送门，引导路径策略" },
+      "design_note": "路径策略深度增加；传送门需配合BFS零转弯代价实现；lantern灯光块作为关卡预置解锁"
     },
     {
-      "id": "water_current",
-      "name": "水流",
-      "name_en": "Water Current",
-      "unlock_chapter": 5,
-      "clear_method": "none",
-      "clear_count": null,
-      "spread_interval_s": null,
-      "direction_change_interval_s": 5,
-      "blocks_path": true,
-      "effect_on_tile": "无法消除；每5秒改变流向，影响该格路径可达性；水流方向变化时实时更新路径计算",
-      "visual": "流动水波纹理格子，箭头图标指示当前流向，方向切换时有旋转动画",
-      "note": "水流格阻挡路径，但流向改变可能开放或封闭路径；路径算法需实时感知当前水流状态"
+      "chapter": 4,
+      "theme": "森林露营地",
+      "grid_size": "8×8",
+      "new_mechanics": ["解锁: 单路径通道", "冰封块升级至3层", "锁链升级至3环", "木箱障碍"],
+      "obstacles_active": ["ice_block", "chain_lock", "portal", "single_path_corridor", "wooden_crate"],
+      "board_events_active": [],
+      "special_blocks_available": ["bomb", "windmill", "lantern", "wave"],
+      "tile_types_available": ["tile_01~12", "tile_13", "tile_14", "tile_15", "tile_16"],
+      "ice_block_config": { "layers_used": [1, 2, 3] },
+      "chain_lock_config": { "required_matches_range": [1, 2, 3] },
+      "design_note": "路径规划挑战达到峰值；单路径通道与传送门组合创造高难度谜题；wave海浪块解锁"
+    },
+    {
+      "chapter": 5,
+      "theme": "温泉山谷",
+      "grid_size": "9×9",
+      "new_mechanics": ["解锁: 重力系统(tile_fall)", "解锁: 方块滑落(tile_slide)", "解锁: 棋盘旋转(board_rotate)", "水流障碍"],
+      "obstacles_active": ["ice_block", "chain_lock", "portal", "single_path_corridor", "wooden_crate", "water_current"],
+      "board_events_active": ["tile_fall", "tile_slide", "board_rotate", "water_flow"],
+      "special_blocks_available": ["bomb", "windmill", "lantern", "wave"],
+      "tile_types_available": ["tile_01~16", "tile_17", "tile_18"],
+      "gravity_config": {
+        "tile_fall_enabled": true,
+        "tile_slide_enabled": "部分关卡",
+        "board_rotate_enabled": "章节后半段挑战关",
+        "note": "重力系统使棋盘动态变化，要求玩家预判下落后的布局"
+      },
+      "design_note": "动态棋盘最高难度阶段；board_rotate仅用于挑战关；需充分测试BFS与重力的交互"
+    },
+    {
+      "chapter": 6,
+      "theme": "夜晚灯塔",
+      "grid_size": "10×10",
+      "new_mechanics": ["解锁: 扩散障碍(藤蔓/苔藓)", "所有机制组合挑战"],
+      "obstacles_active": ["ice_block", "chain_lock", "portal", "single_path_corridor", "wooden_crate", "water_current", "spreading_obstacle"],
+      "board_events_active": ["tile_fall", "tile_slide", "board_rotate", "water_flow", "vine_spread"],
+      "special_blocks_available": ["bomb", "windmill", "lantern", "wave"],
+      "tile_types_available": ["全部20种"],
+      "spreading_obstacle_config": {
+        "spread_trigger": "每步1格（步数制关卡）",
+        "initial_cells": "由关卡JSON指定，通常2~4个初始格",
+        "failure_warning": "占据80%可用格子时触发视觉警告"
+      },
+      "design_note": "最终章综合挑战；扩散障碍制造时间压力；关卡设计应留出清除路线，避免无解局面"
     }
   ],
 
@@ -269,6 +527,13 @@
       "windmill": 400,
       "lantern": 300,
       "wave": 200
+    },
+    "obstacle_clear_bonus": {
+      "ice_block_per_layer": 50,
+      "chain_lock_per_ring": 75,
+      "spreading_obstacle_per_cell": 60,
+      "weed_per_cell": 30,
+      "note": "清除障碍额外计分，鼓励主动清障策略"
     },
     "glow_tile_bonus_multiplier": 3.0,
     "step_bonus": {
@@ -317,11 +582,17 @@
         "description": "达成指定次数的连击（≥指定连击数）",
         "fields": ["required_combo_count", "min_combo_threshold"],
         "note": "教学关/挑战关使用，引导玩家学习连击机制"
+      },
+      {
+        "id": "survival",
+        "description": "在扩散障碍覆盖棋盘之前完成基础消除目标",
+        "fields": ["required_tile_count", "spreading_obstacle_type"],
+        "note": "第6章专属目标类型，制造时间压力感"
       }
     ],
     "multi_condition_support": true,
     "multi_condition_logic": "AND（所有条件同时满足才视为通关）"
-  ],
+  },
 
   "zen_mode": {
     "enabled": true,

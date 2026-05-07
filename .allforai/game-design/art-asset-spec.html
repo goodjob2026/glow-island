@@ -152,7 +152,8 @@
   <div class="container">
 <h1 id="glow-island-art-asset-spec">Glow Island — 美术资产规格说明书（Art Asset Spec）</h1>
 <blockquote>
-<p>版本：1.0 | 日期：2026-05-07 | 状态：已确认</p>
+<p>版本：2.0 | 日期：2026-05-08 | 状态：已确认<br />
+风格基准：Animal Crossing（どうぶつの森）× 日式离岛美学</p>
 </blockquote>
 <hr />
 <h2 id="_1">总览</h2>
@@ -174,7 +175,7 @@
 </tr>
 <tr>
 <td>章节背景（Backgrounds）</td>
-<td>6张 × 2版本（修复前/后）= 12张</td>
+<td>6张 × 2版本（修复前/后）= 12张 + 3张备用</td>
 <td><code>sprites/backgrounds/</code></td>
 <td>PNG</td>
 </tr>
@@ -186,7 +187,7 @@
 </tr>
 <tr>
 <td>NPC角色头像（Characters）</td>
-<td>4个NPC × 3表情 = 12帧（静态）+ 动画</td>
+<td>5个NPC × 3表情 = 15帧（静态）+ Spine动画</td>
 <td><code>sprites/characters/</code></td>
 <td>PNG / Spine</td>
 </tr>
@@ -216,16 +217,12 @@
 </thead>
 <tbody>
 <tr>
-<td>单图块尺寸 @2x</td>
+<td>单图块画布 @2x</td>
 <td>128 × 128 px</td>
 </tr>
 <tr>
-<td>单图块尺寸 @1x</td>
-<td>64 × 64 px</td>
-</tr>
-<tr>
-<td>画布出血区</td>
-<td>4px（四周各留4px透明出血，实际画面区域 120×120 @2x）</td>
+<td>实际绘制区 @2x</td>
+<td>112 × 112 px（四周各留 8px 透明出血）</td>
 </tr>
 <tr>
 <td>颜色深度</td>
@@ -239,271 +236,373 @@
 <td>图集打包</td>
 <td>合并至 Texture Atlas，最大 2048×2048 per atlas</td>
 </tr>
+<tr>
+<td>轮廓线规格</td>
+<td>2px，颜色 = 主色加深32%（非纯黑）</td>
+</tr>
+<tr>
+<td>底部烘焙阴影</td>
+<td><code>0 4px 0 rgba(0,0,0,0.10)</code> 烘焙进图层</td>
+</tr>
+<tr>
+<td>纸纹叠加</td>
+<td>全部图块统一叠加 6% 不透明度轻纸纹（模拟手绘纸感）</td>
+</tr>
 </tbody>
 </table>
 <h3 id="12-20">1.2 图块类型列表（20种）</h3>
-<p>图块类型按章节分组，每章4-5种，视觉风格与章节主色对应。</p>
+<p>图块类型按章节分组，每章3-4种，图案主题来源于日式离岛自然元素。所有图块在32×32px缩略图尺寸下主题轮廓仍可辨认（剪影原则）。</p>
+<hr />
 <p><strong>第1章 — 海边码头（4种）</strong></p>
 <table>
 <thead>
 <tr>
 <th>编号</th>
 <th>名称</th>
-<th>形状</th>
+<th>自然主题</th>
+<th>形状描述</th>
 <th>主色</th>
-<th>说明</th>
+<th>次色/细节色</th>
+<th>绘制说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>T01</td>
-<td>海浪块</td>
-<td>波形圆角矩形</td>
-<td>#87CEEB</td>
-<td>顶部波浪轮廓，内有细纹</td>
+<td>贝壳块</td>
+<td>扇贝正视图</td>
+<td>扇形，底部平，顶部圆弧放射</td>
+<td><code>#F5C842</code> 金黄</td>
+<td><code>#C49240</code> 深金</td>
+<td>主图为扇贝正面：放射状脊线10-12条，底部平直，整体轮廓如日出扇形；脊线用次色描绘，中央有小圆珠点</td>
 </tr>
 <tr>
 <td>T02</td>
 <td>木板块</td>
-<td>圆角矩形 + 木纹</td>
-<td>#C49A6C</td>
-<td>横向木纹理，两侧铆钉细节</td>
+<td>码头旧木板</td>
+<td>圆角矩形，横向木纹</td>
+<td><code>#C4955A</code> 木纹棕</td>
+<td><code>#8B6030</code> 深棕木</td>
+<td>表面3-4条横向轻微波浪纹（模拟木纹），两侧各有一颗铆钉（圆形，次色）；整体色块均匀，木纹细线为主色加深20%</td>
 </tr>
 <tr>
 <td>T03</td>
-<td>绳结块</td>
-<td>圆形 + 绳圈纹</td>
-<td>#F5DEB3</td>
-<td>米白绳结图案，中央麻花纹</td>
+<td>海浪块</td>
+<td>卷浪波纹</td>
+<td>圆角矩形底，顶部有一圈卷浪轮廓</td>
+<td><code>#5BBFB5</code> 海水青</td>
+<td><code>#FFFFFF</code> 白</td>
+<td>底部为纯海水青色块，顶部有一条手绘卷浪（白色弧线+圆卷尖端，笔触感）；底部有2条浅色平行细波纹线</td>
 </tr>
 <tr>
 <td>T04</td>
-<td>贝壳块</td>
-<td>扇形圆角</td>
-<td>#F4A261</td>
-<td>贝壳轮廓，放射状细线</td>
+<td>绳结块</td>
+<td>船锚绳结</td>
+<td>圆形，内有绳圈麻花图案</td>
+<td><code>#E2C48A</code> 温暖沙棕</td>
+<td><code>#A07040</code> 绳索深棕</td>
+<td>圆形图块，表面绘制简化绳结图案：两条粗绳（次色，4px宽）交叉并绕圈，中央有一个小圆结；绳索有轻微编织纹（斜线细纹）</td>
 </tr>
 </tbody>
 </table>
-<p><strong>第2章 — 中央小镇（4种）</strong></p>
+<hr />
+<p><strong>第2章 — 竹林村落（4种）</strong></p>
 <table>
 <thead>
 <tr>
 <th>编号</th>
 <th>名称</th>
-<th>形状</th>
+<th>自然主题</th>
+<th>形状描述</th>
 <th>主色</th>
-<th>说明</th>
+<th>次色/细节色</th>
+<th>绘制说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>T05</td>
-<td>石板块</td>
-<td>正方形圆角 + 石缝</td>
-<td>#D9C9B5</td>
-<td>石板纹，四角有缝隙细节</td>
+<td>竹节块</td>
+<td>竹茎横截</td>
+<td>圆角矩形，竹节分隔为三段</td>
+<td><code>#7DBE77</code> 竹叶绿</td>
+<td><code>#4A7D55</code> 深竹绿</td>
+<td>图块垂直分为3节竹段，每节之间有一条水平浅色节线（次色，2px）；每节竹段有轻微弧面高光（顶部亮，底部略暗）；整体圆润</td>
 </tr>
 <tr>
 <td>T06</td>
-<td>灯笼块</td>
+<td>石灯笼块</td>
+<td>日式石灯笼</td>
 <td>六边形</td>
-<td>#F4C95D</td>
-<td>灯笼轮廓，中央光点，两侧穗子</td>
+<td><code>#8AA880</code> 苔藓灰绿</td>
+<td><code>#F5C842</code> 灯光金黄</td>
+<td>六边形图块，表面绘制简化石灯笼正视图：方形灯室（居中，占面积40%）内有金黄暖光圆斑，下方有台座简化线条；灯室四角有细石纹</td>
 </tr>
 <tr>
 <td>T07</td>
-<td>砖瓦块</td>
-<td>矩形圆角 + 砖纹</td>
-<td>#C97D4E</td>
-<td>砖红色，水平砖缝纹理</td>
+<td>竹叶块</td>
+<td>竹叶簇</td>
+<td>水滴形（略长，叶形）</td>
+<td><code>#5A9A60</code> 翠竹</td>
+<td><code>#3A6A40</code> 深翠</td>
+<td>叶形图块（上窄下圆），表面绘制两到三片竹叶叠加：中央叶脉清晰（次色单线），叶片边缘有轻微锯齿感（手绘笔触）；颜色由顶部浅绿渐向底部深绿</td>
 </tr>
 <tr>
 <td>T08</td>
-<td>喷泉块</td>
-<td>圆形 + 水滴</td>
-<td>#7EC8E3</td>
-<td>圆形水面 + 中央水柱小图标</td>
+<td>纸灯笼块</td>
+<td>方形纸灯笼</td>
+<td>圆角矩形，腰部略收</td>
+<td><code>#EE8C55</code> 暮橙</td>
+<td><code>#F5C842</code> 金黄</td>
+<td>图块形如灯笼——腰部（水平中央）略微收窄5px，顶部和底部各有两条横向装饰线；表面有竖向细纹（灯笼褶皱，4-5条，次色10%透明度）；中央有小六角形深色图案</td>
 </tr>
 </tbody>
 </table>
-<p><strong>第3章 — 花田山坡（4种）</strong></p>
+<hr />
+<p><strong>第3章 — 樱花坡田（4种）</strong></p>
 <table>
 <thead>
 <tr>
 <th>编号</th>
 <th>名称</th>
-<th>形状</th>
+<th>自然主题</th>
+<th>形状描述</th>
 <th>主色</th>
-<th>说明</th>
+<th>次色/细节色</th>
+<th>绘制说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>T09</td>
-<td>花朵块</td>
-<td>花形（5瓣）圆角</td>
-<td>#C9A8D4</td>
-<td>薰衣草紫，五瓣简约花形</td>
+<td>樱花块</td>
+<td>五瓣樱花正视</td>
+<td>花形五瓣（每瓣圆润，微缺口）</td>
+<td><code>#F0C4C4</code> 樱粉</td>
+<td><code>#C8808A</code> 深樱</td>
+<td>五瓣圆润樱花，每瓣顶端有V形缺口（AC式简化）；中央有5-6根花蕊（次色，细线末端小圆点）；整体图块底色为樱粉，轮廓线用深樱色</td>
 </tr>
 <tr>
 <td>T10</td>
-<td>叶片块</td>
-<td>水滴形</td>
-<td>#7DBD7A</td>
-<td>叶形，中央叶脉，草绿色</td>
+<td>宽叶块</td>
+<td>芭蕉/宽叶植物</td>
+<td>椭圆形，中央叶脉突出</td>
+<td><code>#7DBE77</code> 竹叶绿</td>
+<td><code>#4A7D55</code> 深竹绿</td>
+<td>椭圆形叶片，中央主脉为次色粗线（3px），从中央向两侧延伸出6-7条侧脉（次色细线2px）；叶片边缘略不规则（手绘感），顶端有小尖</td>
 </tr>
 <tr>
 <td>T11</td>
 <td>蝴蝶块</td>
-<td>蝴蝶轮廓圆角</td>
-<td>#F0C060</td>
-<td>金黄蝴蝶简化图形</td>
+<td>简化蝴蝶</td>
+<td>蝴蝶翅膀轮廓（左右对称）</td>
+<td><code>#F0C060</code> 金黄花</td>
+<td><code>#C88020</code> 深金橙</td>
+<td>左右对称蝴蝶翅膀，上翅较大（圆润三角），下翅较小（椭圆）；翅面有简化花纹（2-3条弧线，次色）；身体为次色细条，触角为两根弧线+端点圆</td>
 </tr>
 <tr>
 <td>T12</td>
 <td>嫩芽块</td>
-<td>圆形 + 出芽图</td>
-<td>#A8D88A</td>
-<td>浅绿圆形，中央嫩芽破土图案</td>
+<td>破土嫩芽</td>
+<td>圆形底，中央芽形凸出</td>
+<td><code>#A8D888</code> 嫩芽绿</td>
+<td><code>#5A9A60</code> 深绿</td>
+<td>圆形图块，中央绘制一根嫩芽：茎部为次色细线（2px），顶端有两片对称的小圆叶（主色略深）；芽的底部有三条小弧线（模拟土层）；背景有浅色放射纹</td>
 </tr>
 </tbody>
 </table>
-<p><strong>第4章 — 森林露营地（4种）</strong></p>
+<hr />
+<p><strong>第4章 — 松林神社（4种）</strong></p>
 <table>
 <thead>
 <tr>
 <th>编号</th>
 <th>名称</th>
-<th>形状</th>
+<th>自然主题</th>
+<th>形状描述</th>
 <th>主色</th>
-<th>说明</th>
+<th>次色/细节色</th>
+<th>绘制说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>T13</td>
-<td>原木块</td>
-<td>椭圆形 + 年轮</td>
-<td>#8B6241</td>
-<td>年轮纹圆木横截面</td>
+<td>松果块</td>
+<td>松果侧视</td>
+<td>椭圆形，表面鳞片纹</td>
+<td><code>#8B6241</code> 松果棕</td>
+<td><code>#5A3820</code> 深棕</td>
+<td>椭圆松果，表面覆盖规律鳞片（菱形排列，每片鳞片有轻微阴影使其凸出）；顶端有细茎和两片针叶（次色）；底部略尖</td>
 </tr>
 <tr>
 <td>T14</td>
-<td>苔藓块</td>
-<td>不规则圆角</td>
-<td>#6B9E5E</td>
-<td>苔藓绿，略微不规则边缘</td>
+<td>苔藓石块</td>
+<td>圆形石头上长苔藓</td>
+<td>不规则圆形（略方）</td>
+<td><code>#6B9E5E</code> 苔藓绿</td>
+<td><code>#4A7D55</code> 深苔</td>
+<td>圆形略带不规则的石头，表面主要区域为苔藓绿；石头边缘露出灰色石质（<code>#A0A8A0</code>，约15%面积）；苔藓区域有细密的短线纹（手绘草丛感）</td>
 </tr>
 <tr>
 <td>T15</td>
-<td>火星块</td>
-<td>六边形</td>
-<td>#FF8C42</td>
-<td>橙色六边形，内有火焰简图</td>
+<td>鸟居块</td>
+<td>简化鸟居正视</td>
+<td>矩形，顶部有双层横梁</td>
+<td><code>#C8402A</code> 鸟居红</td>
+<td><code>#F5F0E8</code> 月光白</td>
+<td>矩形图块绘制鸟居正视图：两根立柱（次色白，8px宽），顶部一条弯曲的笠木横梁（主色，边缘微弯上翘），笠木下有一条贫木（细横线）；整体背景为主色鸟居红</td>
 </tr>
 <tr>
 <td>T16</td>
-<td>帐篷块</td>
-<td>三角圆角</td>
-<td>#C49A6C</td>
-<td>帐篷三角轮廓，中央拉链线</td>
+<td>注连绳块</td>
+<td>稻草绳+纸垂</td>
+<td>圆角矩形，横向绳索图案</td>
+<td><code>#E2C48A</code> 稻草黄</td>
+<td><code>#8B6030</code> 深棕</td>
+<td>图块中央绘制注连绳：粗麻花绳横贯图块（主色，12px高，有编织纹）；绳上悬挂3个纸垂（白色矩形，底端呈锯齿状）；绳两端有悬挂感（轻微下弧）</td>
 </tr>
 </tbody>
 </table>
-<p><strong>第5章 — 温泉山谷（2种）</strong></p>
+<hr />
+<p><strong>第5章 — 渔村港口（2种）</strong></p>
 <table>
 <thead>
 <tr>
 <th>编号</th>
 <th>名称</th>
-<th>形状</th>
+<th>自然主题</th>
+<th>形状描述</th>
 <th>主色</th>
-<th>说明</th>
+<th>次色/细节色</th>
+<th>绘制说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>T17</td>
-<td>水雾块</td>
-<td>云朵圆角</td>
-<td>#B8D4E0</td>
-<td>雾蓝云朵形，边缘模糊感</td>
+<td>鱼块</td>
+<td>圆润小鱼侧视</td>
+<td>鱼形（椭圆身+扇形尾）</td>
+<td><code>#5BBFB5</code> 海水青</td>
+<td><code>#3A9E94</code> 深海青</td>
+<td>简化圆润小鱼（AC式，无写实细节）：椭圆鱼身，尾部分叉扇形；眼睛一个白色小圆+黑色小圆点；鱼鳍为2片（背鳍+腹鳍，次色）；身体有浅色竖向条纹（3条，透明度20%）</td>
 </tr>
 <tr>
 <td>T18</td>
-<td>石板块（温泉）</td>
-<td>六边形</td>
-<td>#A0A8B0</td>
-<td>灰蓝石板，防滑纹纹理</td>
+<td>渔网块</td>
+<td>渔网纹</td>
+<td>圆角矩形，网格图案</td>
+<td><code>#B89060</code> 亚麻</td>
+<td><code>#7A5A30</code> 深亚麻</td>
+<td>图块表面绘制渔网：斜向网格线（次色，1.5px，间距约14px），网格交叉点有小圆结（次色小圆，直径4px）；图块底色略透出（主色填充，网格作为叠加层）</td>
 </tr>
 </tbody>
 </table>
+<hr />
 <p><strong>第6章 — 夜晚灯塔（2种）</strong></p>
 <table>
 <thead>
 <tr>
 <th>编号</th>
 <th>名称</th>
-<th>形状</th>
+<th>自然主题</th>
+<th>形状描述</th>
 <th>主色</th>
-<th>说明</th>
+<th>次色/细节色</th>
+<th>绘制说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>T19</td>
 <td>星光块</td>
-<td>四角星形圆角</td>
-<td>#F5C842</td>
-<td>暖黄四角星，中央小圆点</td>
+<td>四芒星/星光</td>
+<td>四角星形圆角（如北极星符号）</td>
+<td><code>#F5C842</code> 金黄</td>
+<td><code>#1E2E50</code> 深夜蓝</td>
+<td>四芒星形图块（上下左右四个圆润尖角），中央有一个小实心圆（次色，直径20px）；星形内部有放射渐变（中央亮，向尖角渐暗）；轮廓线为次色</td>
 </tr>
 <tr>
 <td>T20</td>
-<td>海浪夜块</td>
-<td>波形圆角矩形</td>
-<td>#2D4A7A</td>
-<td>深蓝夜海波形，白色细泡沫线</td>
+<td>夜浪块</td>
+<td>深夜海浪</td>
+<td>圆角矩形，波浪轮廓顶</td>
+<td><code>#2A4060</code> 深夜蓝</td>
+<td><code>#F5F0E8</code> 月光白</td>
+<td>与T03海浪块同主题但夜晚色调：底部为深夜蓝色块，顶部有月光白卷浪线；底部有2条更细、更暗的波纹线（次色×50%透明度）；整体比T03更静谧，波纹振幅更小</td>
 </tr>
 </tbody>
 </table>
+<hr />
 <h3 id="13">1.3 四种状态规范</h3>
 <p>每个图块必须提供以下状态：</p>
 <p><strong>状态1：Normal（默认）</strong><br />
-- 文件名：<code>{tile_id}_normal@2x.png</code>（如 <code>t01_wave_normal@2x.png</code>）<br />
-- 静态单帧 PNG<br />
-- 底部固定阴影：<code>rgba(0,0,0,0.12)</code> 偏移 <code>0,3px</code>（烘焙进图层）</p>
+- 文件名：<code>{tile_id}_{name}_normal@2x.png</code>（如 <code>t01_shell_normal@2x.png</code>）<br />
+- 静态单帧 PNG，112×112px实际绘制区，四周8px透明出血<br />
+- 底部烘焙阴影：<code>rgba(0,0,0,0.10)</code> 偏移 <code>0,4px</code>（烘焙进图层）<br />
+- 纸纹叠加：6%不透明度，统一纹理文件</p>
 <p><strong>状态2：Highlighted（连接高亮）</strong><br />
-- 文件名：<code>{tile_id}_highlighted@2x.png</code><br />
-- 亮度 +20%，内发光 <code>rgba(255,255,255,0.35)</code>，实际绘制尺寸可略大（128→132px，含光晕，但透明区域留足）<br />
-- 也可通过运行时 Shader 实现，此时只需提供 Normal 帧</p>
+- 文件名：<code>{tile_id}_{name}_highlighted@2x.png</code><br />
+- 亮度 +20%，内发光 <code>rgba(255,255,255,0.40)</code>，scale效果由Runtime实现（不需要物理放大图层）<br />
+- 可通过Runtime Shader实现，此时只需提供Normal帧即可；若无Shader能力则绘制单独高亮帧</p>
 <p><strong>状态3：Disappearing（消除序列帧）</strong><br />
-- 文件名：<code>{tile_id}_disappear_{frame:02d}@2x.png</code>（frame 01-12）<br />
-- 序列帧：12帧，30fps（总时长约0.4s，峰值约第4帧）<br />
-- 帧内容：放大至 140×140（含透明），再收缩+碎裂粒子，末帧全透明</p>
+- 文件名：<code>{tile_id}_{name}_disappear_{frame:02d}@2x.png</code>（frame 01-12）<br />
+- 序列帧：12帧，30fps（总时长 0.4s）<br />
+- 帧1-3：图块scale 1.0→1.14（含透明出血区扩展），帧4-9：scale 1.14→0 + 旋转±12°，帧10-12：粒子散开（4-6个主题小图标）淡出至透明<br />
+- 粒子形状对应图块主题（贝壳块→贝壳碎片，樱花块→花瓣，鸟居块→红色碎片）<br />
+- 末帧全透明</p>
 <p><strong>状态4：Special（特殊块循环动画）</strong><br />
-- 针对4种特殊块（Bomb/Lightning/Rainbow/Glow），提供Spine骨骼动画文件<br />
-- 循环动画：<code>{type}_idle</code> — 持续呼吸/脉冲动画（2-3s周期）<br />
+- 针对4种特殊块（河豚/金枪鱼/彩虹鱼/萤火提灯），提供Spine骨骼动画文件<br />
+- 循环动画：<code>{type}_idle</code> — 持续呼吸/脉冲动画（2.0-2.8s周期）<br />
 - 激活动画：<code>{type}_activate</code> — 触发时一次性播放（0.5-1.0s）<br />
 - Spine导出格式：<code>.skel</code> + <code>.atlas</code> + PNG纹理</p>
 <h3 id="14">1.4 命名规范</h3>
 <pre><code>sprites/tiles/
-├── t01_wave_normal@2x.png
-├── t01_wave_highlighted@2x.png
-├── t01_wave_disappear_01@2x.png
+├── t01_shell_normal@2x.png
+├── t01_shell_highlighted@2x.png
+├── t01_shell_disappear_01@2x.png
 ├── ...
-├── t01_wave_disappear_12@2x.png
-├── special/
-│   ├── bomb_idle.skel
-│   ├── bomb_idle.atlas
-│   ├── bomb_idle.png
-│   ├── bomb_activate.skel
-│   ├── lightning_idle.skel
-│   ├── lightning_activate.skel
-│   ├── rainbow_idle.skel
-│   ├── rainbow_activate.skel
-│   ├── glow_idle.skel
-│   └── glow_activate.skel
+├── t01_shell_disappear_12@2x.png
+├── t02_plank_normal@2x.png
+├── t02_plank_highlighted@2x.png
+├── t02_plank_disappear_01@2x.png
+├── ...
+├── t03_wave_normal@2x.png
+├── t04_knot_normal@2x.png
+├── t05_bamboo_normal@2x.png
+├── t06_lantern_stone_normal@2x.png
+├── t07_leaf_bamboo_normal@2x.png
+├── t08_lantern_paper_normal@2x.png
+├── t09_sakura_normal@2x.png
+├── t10_broadleaf_normal@2x.png
+├── t11_butterfly_normal@2x.png
+├── t12_sprout_normal@2x.png
+├── t13_pinecone_normal@2x.png
+├── t14_mossy_stone_normal@2x.png
+├── t15_torii_normal@2x.png
+├── t16_shimenawa_normal@2x.png
+├── t17_fish_normal@2x.png
+├── t18_fishnet_normal@2x.png
+├── t19_starlight_normal@2x.png
+├── t20_nightwave_normal@2x.png
+└── special/
+    ├── pufferfish_idle.skel          (T-Bomb: 河豚块)
+    ├── pufferfish_idle.atlas
+    ├── pufferfish_idle.png
+    ├── pufferfish_activate.skel
+    ├── tuna_idle.skel                (T-Lightning: 金枪鱼块)
+    ├── tuna_idle.atlas
+    ├── tuna_idle.png
+    ├── tuna_activate.skel
+    ├── rainbow_fish_idle.skel        (T-Rainbow: 彩虹鱼块)
+    ├── rainbow_fish_idle.atlas
+    ├── rainbow_fish_idle.png
+    ├── rainbow_fish_activate.skel
+    ├── firefly_lantern_idle.skel     (T-Glow: 萤火提灯块)
+    ├── firefly_lantern_idle.atlas
+    ├── firefly_lantern_idle.png
+    └── firefly_lantern_activate.skel
 </code></pre>
 <hr />
 <h2 id="2-backgrounds">2. 章节背景（Backgrounds）</h2>
@@ -536,57 +635,67 @@
 <td>图层说明</td>
 <td>分层导出（可选）：天空层 / 中景层 / 近景层，供视差滚动使用</td>
 </tr>
+<tr>
+<td>风格</td>
+<td>手绘水彩插画风格，AC式正视平面场景，非摄影拟真</td>
+</tr>
 </tbody>
 </table>
-<h3 id="22">2.2 每章两版本</h3>
+<h3 id="22">2.2 每章两版本说明</h3>
 <ul>
-<li><strong>修复前（before）</strong>：整体低饱和度（HSL 饱和度 ≤ 20%），暗调，破败感</li>
-<li><strong>修复后（after）</strong>：满彩，明亮，参考章节色板</li>
+<li><strong>修复前（before）</strong>：整体低饱和度（HSL 饱和度 ≤ 15%），偏灰暗调，元素破败但轮廓完整（如铅笔速写稿）</li>
+<li><strong>修复后（after）</strong>：满彩水彩质感，明亮温暖，参考各章节色板；场景中有角色和活跃的生活元素</li>
 </ul>
 <h3 id="23">2.3 章节背景描述</h3>
-<p><strong>Chapter 1 — 海边码头</strong><br />
-- 构图：码头延伸入海，远处海天线，近景左侧停靠木桩，右侧海面<br />
-- 修复前：灰木板，锈迹木桩，枯草，海面无反射，阴天<br />
-- 修复后：阳光斜射（右上→左下），海面碎金光斑，清澈天空 #87CEEB，温暖沙色码头<br />
-- 特殊元素：夕阳版本（标志性时刻，橙红渐变天空）备用图一张</p>
-<p><strong>Chapter 2 — 中央小镇</strong><br />
-- 构图：石板街道正前方透视，两侧建筑，中央喷泉，远处街道消失点<br />
-- 修复前：荒草蔓延石缝，窗户紧闭，喷泉干涸，落叶堆积，蓝灰调<br />
-- 修复后：暖黄阳光 #F4C95D，窗台花盆，喷泉有水，街灯点亮，傍晚橙光版本备用</p>
-<p><strong>Chapter 3 — 花田山坡</strong><br />
-- 构图：山坡从近景延伸向远处，花田占画面 60%，天空 40%<br />
-- 修复前：枯草黄，花圃轮廓不清，薄雾灰，石阶破损<br />
-- 修复后：薰衣草紫 + 金黄花交错，清晨薄雾（低饱和白雾层叠加），石阶整洁，阿花在中景</p>
-<p><strong>Chapter 4 — 森林露营地</strong><br />
-- 构图：营地中央篝火台，周围树木形成自然圆形空间，顶部树冠框景<br />
-- 修复前：帐篷倒塌，篝火台石圈散乱，苔藓覆盖坐凳，暗绿调<br />
-- 修复后：篝火燃起（暖橙核心光），帐篷挺立，星空隐约可见，夜景为主</p>
-<p><strong>Chapter 5 — 温泉山谷</strong><br />
-- 构图：温泉池居中，周围岩石围绕，远景山峦，水雾弥漫<br />
-- 修复前：水池浑浊，青苔遍布池边，水位极低，灰绿调<br />
-- 修复后：清澈温泉倒映天空（珍珠白反射），水雾动态层，岩石新铺石板，阿福在右侧</p>
-<p><strong>Chapter 6 — 夜晚灯塔</strong><br />
-- 构图：灯塔占画面右侧 1/3，左侧大海，底部有礁石/海浪<br />
-- 修复前：灯塔灰暗，玻璃灰尘，铁锈楼梯断裂，漆黑夜色，无光<br />
-- 修复后：灯塔光柱旋转（动态效果由Spine处理），海面金色倒影，满天星斗，暖黄灯室<br />
-- 全岛俯视版本（标志性时刻用）：俯视角度，光柱扫过全部五个区域，备用图一张</p>
+<p><strong>Chapter 1 — 海边码头（Beach Harbor）</strong><br />
+- 构图：木码头从画面左下向右上延伸入海，右侧海面占画面40%，远处有小岛和灯塔剪影，近景左侧有系船木桩和贝壳风铃<br />
+- 修复前：灰白朽木码头，绳索松垂，海面暗淡无反射，阴天，画面整体HSL饱和度≤12%<br />
+- 修复后：木板暖棕<code>#C4955A</code>，海水青绿<code>#5BBFB5</code>，码头两侧悬挂橙色圆灯笼；光线：金色下午光从右上45°投射，海面有碎金光斑；小木船停靠右侧，船头有贝壳风铃摆动<br />
+- 棋盘内使用背景：浅蓝绿渐变底图（<code>#A8DDD8</code>→<code>#C8EEE8</code>），透明度25%，顶部有极淡海浪线装饰<br />
+- 特殊版本：夕阳版（<code>bg_ch01_harbor_after_sunset@2x.png</code>）— 天空橙红渐变<code>#F4A261</code>→<code>#EE6A30</code>→<code>#1E2E50</code>，海面金色光道，阿海在远处码头系绳剪影</p>
+<p><strong>Chapter 2 — 竹林村落（Bamboo Village）</strong><br />
+- 构图：竹林小径从近景延伸至中景村落入口，近景两侧为翠竹，中景有竹制凉亭，背景为更深的竹林<br />
+- 修复前：竹子倒伏或枯黄，小路泥泞，凉亭屋顶破损，整体灰绿调<br />
+- 修复后：翠竹挺立<code>#7DBE77</code>，小径铺设浅沙色石板，凉亭有绿草顶，路边竹筒花器插有樱粉色山茶；光线：竹林间隙的午后光斑效果（圆形光斑散落地面）<br />
+- 棋盘内使用背景：竹叶绿渐变底图（<code>#C8E8C0</code>→<code>#E0F0D8</code>），透明度25%，有极淡竹节轮廓纹（透明度8%）<br />
+- 特殊版本：无（竹林场景光线变化不如港口戏剧性，无备用版本）</p>
+<p><strong>Chapter 3 — 樱花坡田（Sakura Hillside）</strong><br />
+- 构图：石板坡道从近景向远处延伸，两侧交替种植粉白花田，中景有两棵盛开樱花树，远景可见海岸线<br />
+- 修复前：枯枝樱花树，花田荒芜如枯草，石板路碎裂，整体灰黄调，有淡薄雾<br />
+- 修复后：樱花盛开（粉白花簇<code>#F0D8D8</code>），花田行列整齐，石灯笼点缀坡道，清晨薄雾（白色低透明度层叠加于远景），阿花在中景捧着一束花；花瓣飘落粒子（静止帧绘制3-5片飘落花瓣）<br />
+- 棋盘内使用背景：樱粉渐变底图（<code>#F8E8E8</code>→<code>#FFF5F5</code>），透明度25%，边缘有散落花瓣轮廓</p>
+<p><strong>Chapter 4 — 松林神社（Pine Forest Shrine）</strong><br />
+- 构图：石板参道正面透视，两侧石灯笼对称排列，中景为红色鸟居，背景为神社正面，松树形成天然框架<br />
+- 修复前：鸟居斜倒，石灯笼苔藓横生，参道石板缝草丛，神社门扉关闭，暗绿灰调<br />
+- 修复后：鸟居鲜红<code>#C8402A</code>直立，石灯笼内有暖黄灯光，参道石板清洁，注连绳新换，神社正面可见；光线：夜晚场景，灯笼光是主光源，树冠剪影形成天然顶棚，远处星空隐约可见<br />
+- 棋盘内使用背景：深林绿渐变底图（<code>#3D5040</code>→<code>#5A7058</code>），透明度20%，极淡松针剪影装饰（透明度8%）</p>
+<p><strong>Chapter 5 — 渔村港口（Fishing Village Port）</strong><br />
+- 构图：港口码头正视，3艘不同颜色小木船停靠，近景有渔网木架，路边有鱼类摊位，背景是夕阳海面<br />
+- 修复前：木栈道腐朽，渔网堆废弃，船只无缆绳，店铺封闭，灰棕调<br />
+- 修复后：船只停靠整齐（蓝/红/棕三色），渔网晾晒，鱼摊开张，港口入口有彩旗竹竿，阿福坐在码头右侧；光线：金色下午光，海面暖金倒影，2-3只简化海鸥剪影<br />
+- 棋盘内使用背景：暖金橙渐变底图（<code>#F0D8B0</code>→<code>#E8C890</code>），透明度25%，水面有极淡波纹纹理</p>
+<p><strong>Chapter 6 — 夜晚灯塔（Night Lighthouse）</strong><br />
+- 构图：灯塔占画面右侧1/3（正视），左侧为大海夜景，底部有礁石和橙灯笼，远处有其他岛屿剪影<br />
+- 修复前：灯塔灰暗，玻璃蒙尘，铁楼梯扭曲，漆黑无光，礁石空旷，压抑的深蓝调<br />
+- 修复后：灯塔白色塔身有蓝条纹，灯室金色穹顶，灯光旋转（静止帧绘制光柱方向一瞬），海面金色光道<code>#F5C842</code>，满天星斗（手绘白点+黄点），礁石上橙灯笼发光，阿明在灯塔底部持点火装置背影<br />
+- 棋盘内使用背景：深夜蓝渐变底图（<code>#0E1830</code>→<code>#1E2E50</code>），透明度18%，顶部有10颗静态星点装饰<br />
+- 特殊版本：全岛俯视版（<code>bg_ch06_lighthouse_overview@2x.png</code>）— 45°俯视鸟瞰全岛，灯塔光柱从北端向外旋转扫过，所有5个已修复区域依次可见，用于标志性时刻大结局动画底图</p>
 <h3 id="24">2.4 命名规范</h3>
 <pre><code>sprites/backgrounds/
 ├── bg_ch01_harbor_before@2x.png
 ├── bg_ch01_harbor_after@2x.png
-├── bg_ch01_harbor_after_sunset@2x.png       (标志性时刻备用)
-├── bg_ch02_town_before@2x.png
-├── bg_ch02_town_after@2x.png
-├── bg_ch02_town_after_evening@2x.png
-├── bg_ch03_flower_before@2x.png
-├── bg_ch03_flower_after@2x.png
-├── bg_ch04_camp_before@2x.png
-├── bg_ch04_camp_after@2x.png
-├── bg_ch05_spring_before@2x.png
-├── bg_ch05_spring_after@2x.png
+├── bg_ch01_harbor_after_sunset@2x.png       (夕阳版，标志性时刻)
+├── bg_ch02_village_before@2x.png
+├── bg_ch02_village_after@2x.png
+├── bg_ch03_sakura_before@2x.png
+├── bg_ch03_sakura_after@2x.png
+├── bg_ch04_shrine_before@2x.png
+├── bg_ch04_shrine_after@2x.png
+├── bg_ch05_port_before@2x.png
+├── bg_ch05_port_after@2x.png
 ├── bg_ch06_lighthouse_before@2x.png
 ├── bg_ch06_lighthouse_after@2x.png
-└── bg_ch06_lighthouse_overview@2x.png       (全岛俯视标志性时刻)
+└── bg_ch06_lighthouse_overview@2x.png       (全岛俯视，标志性时刻)
 </code></pre>
 <hr />
 <h2 id="3-island-zones">3. 岛屿地图区域（Island Zones）</h2>
@@ -605,15 +714,15 @@
 </tr>
 <tr>
 <td>单区域图块尺寸</td>
-<td>约 320 × 320 px（含透明边缘，视区域形状定）</td>
+<td>约 340 × 340 px（含透明边缘，视区域形状定）</td>
 </tr>
 <tr>
 <td>风格</td>
-<td>俯视45°等轴视角，轻手绘扁平化</td>
+<td>俯视 45° 等轴视角，手绘水彩扁平化，AC式场景物件简化程度</td>
 </tr>
 <tr>
 <td>格式</td>
-<td>PNG-24（透明背景，可叠加在地图底图上）</td>
+<td>PNG-24（透明背景，叠加在地图底图上）</td>
 </tr>
 </tbody>
 </table>
@@ -631,27 +740,27 @@
 <tr>
 <td>修复前</td>
 <td><code>_s0</code></td>
-<td>破败灰调，低饱和，特征建筑有破损</td>
+<td>铅笔速写感，HSL饱和度≤12%，特征建筑轮廓完整但破败（倒斜/朽烂/无光）</td>
 </tr>
 <tr>
 <td>第1阶段</td>
 <td><code>_s1</code></td>
-<td>基础修复，结构性变化，饱和度 ~35%</td>
+<td>基础结构修复（竖起/替换），饱和度30-38%，色彩出现但不饱满</td>
 </tr>
 <tr>
 <td>第2阶段</td>
 <td><code>_s2</code></td>
-<td>细节补全，生活气息出现，饱和度 ~55%</td>
+<td>细节补全（灯笼/植物/器物），饱和度48-58%，生活气息出现</td>
 </tr>
 <tr>
 <td>第3阶段</td>
 <td><code>_s3</code></td>
-<td>生命迹象（人物/水/火），饱和度 ~70%</td>
+<td>生命迹象（角色/光源/水/动植物），饱和度62-72%</td>
 </tr>
 <tr>
 <td>第4阶段（完整）</td>
 <td><code>_s4</code></td>
-<td>满彩，章节特色景观完整呈现</td>
+<td>满彩，章节特色景观完整，标志性特征建筑状态最佳</td>
 </tr>
 </tbody>
 </table>
@@ -662,7 +771,8 @@
 <th>编号</th>
 <th>区域</th>
 <th>地图位置</th>
-<th>特征建筑/元素</th>
+<th>标志性建筑/元素</th>
+<th>第4阶段最显眼特征</th>
 </tr>
 </thead>
 <tbody>
@@ -670,55 +780,85 @@
 <td>Z01</td>
 <td>海边码头</td>
 <td>岛屿南端</td>
-<td>木码头、停船木桩、小木船、油灯</td>
+<td>木码头、停船木桩、贝壳风铃、小木船</td>
+<td>船头贝壳风铃旋转，橙色灯笼亮起</td>
 </tr>
 <tr>
 <td>Z02</td>
-<td>中央小镇</td>
+<td>竹林村落</td>
 <td>岛屿中央</td>
-<td>石板街、喷泉、木质店铺、灯笼</td>
+<td>竹制凉亭、竹林小径、竹筒花器</td>
+<td>竹林郁郁葱葱，新竹笋从地面长出</td>
 </tr>
 <tr>
 <td>Z03</td>
-<td>花田山坡</td>
+<td>樱花坡田</td>
 <td>岛屿西北</td>
-<td>花圃、石阶、草帽木桩、花海</td>
+<td>石坡道、石灯笼、樱花树、花田</td>
+<td>樱花全开，花瓣飘落粒子持续</td>
 </tr>
 <tr>
 <td>Z04</td>
-<td>森林露营地</td>
+<td>松林神社</td>
 <td>岛屿东北</td>
-<td>帐篷、篝火台、坐凳、小灯笼</td>
+<td>红色鸟居、参道石灯笼、神社正殿</td>
+<td>所有灯笼亮起，注连绳悬挂完整</td>
 </tr>
 <tr>
 <td>Z05</td>
-<td>温泉山谷</td>
+<td>渔村港口</td>
 <td>岛屿西南</td>
-<td>温泉池、导水渠、石板步道</td>
+<td>小木船停靠、渔网木架、鱼类摊位</td>
+<td>三色木船停靠，彩旗迎风</td>
 </tr>
 <tr>
 <td>Z06</td>
 <td>夜晚灯塔</td>
 <td>岛屿北端</td>
-<td>灯塔主体、楼梯、灯室、礁石</td>
+<td>灯塔主体（白塔蓝条纹）、礁石灯笼群</td>
+<td>灯室旋转金色光柱，海面光道</td>
 </tr>
 </tbody>
 </table>
-<p>同时需要提供：<br />
-- <strong>底图</strong>：<code>island_base_map@2x.png</code>（1080×1920，不含任何区域图块的岛屿轮廓和海洋背景）<br />
-- <strong>灯塔光效叠加层</strong>：<code>island_lighthouse_beam@2x.png</code>（动态Spine，光柱扫过全岛效果）</p>
+<p>提供附加资产：<br />
+- <strong>底图</strong>：<code>island_base_map@2x.png</code>（1080×1920，不含任何区域图块的岛屿轮廓+海洋底图，手绘风格，可见周边岛屿小剪影）<br />
+- <strong>灯塔光效叠加层</strong>：<code>island_lighthouse_beam.skel</code>（Spine，旋转金色光柱扫过全岛动效，叠加于地图层之上）</p>
 <h3 id="34">3.4 命名规范</h3>
 <pre><code>sprites/island/
 ├── island_base_map@2x.png
 ├── island_lighthouse_beam.skel
+├── island_lighthouse_beam.atlas
+├── island_lighthouse_beam.png
 ├── zone_ch01_harbor_s0@2x.png
 ├── zone_ch01_harbor_s1@2x.png
 ├── zone_ch01_harbor_s2@2x.png
 ├── zone_ch01_harbor_s3@2x.png
 ├── zone_ch01_harbor_s4@2x.png
-├── zone_ch02_town_s0@2x.png
-├── ... (同上规律)
-├── zone_ch06_lighthouse_s4@2x.png
+├── zone_ch02_village_s0@2x.png
+├── zone_ch02_village_s1@2x.png
+├── zone_ch02_village_s2@2x.png
+├── zone_ch02_village_s3@2x.png
+├── zone_ch02_village_s4@2x.png
+├── zone_ch03_sakura_s0@2x.png
+├── zone_ch03_sakura_s1@2x.png
+├── zone_ch03_sakura_s2@2x.png
+├── zone_ch03_sakura_s3@2x.png
+├── zone_ch03_sakura_s4@2x.png
+├── zone_ch04_shrine_s0@2x.png
+├── zone_ch04_shrine_s1@2x.png
+├── zone_ch04_shrine_s2@2x.png
+├── zone_ch04_shrine_s3@2x.png
+├── zone_ch04_shrine_s4@2x.png
+├── zone_ch05_port_s0@2x.png
+├── zone_ch05_port_s1@2x.png
+├── zone_ch05_port_s2@2x.png
+├── zone_ch05_port_s3@2x.png
+├── zone_ch05_port_s4@2x.png
+├── zone_ch06_lighthouse_s0@2x.png
+├── zone_ch06_lighthouse_s1@2x.png
+├── zone_ch06_lighthouse_s2@2x.png
+├── zone_ch06_lighthouse_s3@2x.png
+└── zone_ch06_lighthouse_s4@2x.png
 </code></pre>
 <hr />
 <h2 id="4-npccharacters">4. NPC角色头像（Characters）</h2>
@@ -732,80 +872,273 @@
 </thead>
 <tbody>
 <tr>
-<td>头像尺寸</td>
-<td>128 × 128 px @2x（64×64 @1x）</td>
+<td>头像画布 @2x</td>
+<td>128 × 128 px</td>
 </tr>
 <tr>
 <td>画框形状</td>
-<td>圆形裁切（内容绘制范围约直径 112px，外留 8px 边框区）</td>
+<td>圆形裁切（直径 112px 有效绘制区，外留 8px 边框区）</td>
 </tr>
 <tr>
 <td>背景</td>
-<td>透明（圆形外透明，便于 CSS 控制边框色）</td>
+<td>透明（圆形外透明，边框由程序绘制）</td>
 </tr>
 <tr>
 <td>格式</td>
 <td>PNG-24</td>
 </tr>
 <tr>
+<td>风格</td>
+<td>Animal Crossing 村民比例：头大身小，大眼睛，明显腮红，简化五官</td>
+</tr>
+<tr>
 <td>表情版本</td>
-<td>每个NPC至少3种：默认/开心/若有所思（悲/思考）</td>
+<td>每个NPC至少3种：默认 / 开心 / 特定情绪（见各NPC说明）</td>
 </tr>
 <tr>
 <td>动画版本</td>
-<td>Spine骨骼动画文件（对话框内使用），含 idle / talk / react 动画</td>
+<td>Spine骨骼动画文件，含 <code>idle</code> / <code>talk</code> / <code>react</code> 动画</td>
 </tr>
 </tbody>
 </table>
-<h3 id="42-npc">4.2 NPC列表</h3>
-<p><strong>NPC01 — 渔夫·阿海（第1章）</strong><br />
-- 外形参考：中年渔夫，戴宽檐草帽，蓝色布衣，肤色较深，沉默寡言气质<br />
-- 表情：默认（平静看海）/ 微笑（系好缆绳后）/ 发呆（看海的若有所思）<br />
-- 特征道具：鱼竿、草帽<br />
-- 颜色和谐：与章节淡蓝+米白协调</p>
-<p><strong>NPC02 — 花农·阿花（第3章）</strong><br />
-- 外形参考：年轻女性，圆脸，头戴草帽（宽边），围裙，清秀温柔<br />
-- 表情：默认（温柔微笑）/ 开心（捧花递出时）/ 专注（蹲地松土时）<br />
-- 特征道具：草帽、浇水壶、花束<br />
-- 颜色和谐：与章节粉紫+草绿协调</p>
-<p><strong>NPC03 — 背包客·阿林（第4章）</strong><br />
-- 外形参考：中等身材，帽沿压低（重要：整章多数时候看不清脸），背包，徒步服装<br />
-- 表情：默认（低帽沿状态）/ 抬头（标志性时刻，看星空时露出脸）/ 沏茶（推杯子时）<br />
-- 特征道具：背包、地图、茶杯、帽子<br />
-- 颜色和谐：与章节深绿+棕褐协调</p>
-<p><strong>NPC04 — 温泉老爷爷·阿福（第5章）</strong><br />
-- 外形参考：老年男性，圆脸，笑纹深，穿浴衣，慈祥幽默<br />
-- 表情：默认（嫌弃/无奈）/ 满意（点头试石板）/ 享受（闭眼泡温泉）<br />
-- 特征道具：毛巾、浴桶<br />
-- 颜色和谐：与章节珍珠白+雾蓝协调</p>
-<p><strong>NPC05 — 灯塔守护者·阿明（第6章）</strong><br />
-- 外形参考：成年男性，沉默，海风感气质，深色大衣，站姿像礁石<br />
-- 表情：默认（仰望灯塔，沉默）/ 手握点火装置（停顿）/ 背身（灯塔亮起时）<br />
-- 特征道具：点火装置、大衣<br />
-- 颜色和谐：与章节深蓝+暖黄协调<br />
-- 备注：第6章专属NPC，编号 NPC05（文档中列4个主要NPC，此为额外必要角色）</p>
+<h3 id="42-npc">4.2 NPC 视觉规格</h3>
+<p><strong>通用规则</strong><br />
+- 头身比：1:1.5（头部直径 = 全身高度 × 40%）<br />
+- 眼睛：水滴形，黑色瞳仁占眼面积 70%<br />
+- 鼻子：单个小圆点（直径4px @2x），无鼻梁线<br />
+- 嘴巴：简短弧线（开心时上弯，不满时下弯），长度≤10px @2x<br />
+- 轮廓线：主色加深32%，2px，圆润无尖角</p>
+<hr />
+<p><strong>NPC01 — 渔夫·阿海（第1章 海边码头）</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代表色</td>
+<td>靛蓝布衣 <code>#4A6D9A</code></td>
+</tr>
+<tr>
+<td>皮肤色</td>
+<td>深褐 <code>#9A6840</code>（日晒型）</td>
+</tr>
+<tr>
+<td>腮红</td>
+<td>无（沉稳气质）</td>
+</tr>
+<tr>
+<td>标志性配件</td>
+<td>宽沿旧草帽（比Saki草帽帽檐更大更旧，有破损线条细节）；右手持木鱼竿（竿长超过身高）</td>
+</tr>
+<tr>
+<td>表情1 Default</td>
+<td>嘴角平直，眼睛半眯（平静看海的远眺眼神）</td>
+</tr>
+<tr>
+<td>表情2 Happy</td>
+<td>嘴角上扬弧线，眼睛微眯成弧形（系好缆绳后的满足）</td>
+</tr>
+<tr>
+<td>表情3 Thinking</td>
+<td>单眉微皱（左眉低右眉平），嘴角微向右歪（若有所思）</td>
+</tr>
+<tr>
+<td>特别规则</td>
+<td>全章多数时候为背面朝向（仅显示草帽背影+蓝布衣后背），正面亮相仅限于标志性时刻Dialog</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>NPC02 — 花农·阿花（第3章 樱花坡田）</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代表色</td>
+<td>草绿围裙 <code>#7DBE77</code> + 樱粉碎花长裙底色 <code>#F0C4C4</code></td>
+</tr>
+<tr>
+<td>皮肤色</td>
+<td>浅 <code>#F5D4B0</code></td>
+</tr>
+<tr>
+<td>腮红</td>
+<td>明显圆形腮红，深粉 <code>#E898A0</code>，直径16px @2x</td>
+</tr>
+<tr>
+<td>标志性配件</td>
+<td>头顶别1朵三瓣小花（与T09樱花块同款简化形状，颜色<code>#F0C4C4</code>+<code>#C8808A</code>中心）；左手持蓝色浇水壶</td>
+</tr>
+<tr>
+<td>表情1 Default</td>
+<td>温柔嘴角微扬，眼睛如AC标准微笑眼（眼角轻微上扬弧线）</td>
+</tr>
+<tr>
+<td>表情2 Happy</td>
+<td>嘴巴大Ω形（充分开心），眼睛完全眯成弧线，腮红加深</td>
+</tr>
+<tr>
+<td>表情3 Focused</td>
+<td>嘴唇微抿（专注），眼神正视略微低头（蹲地松土时），腮红不变</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>NPC03 — 背包客·阿林（第4章 松林神社）</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代表色</td>
+<td>深绿探险外套 <code>#3D6645</code> + 卡其色裤子 <code>#B8985A</code></td>
+</tr>
+<tr>
+<td>皮肤色</td>
+<td>中 <code>#E8B882</code></td>
+</tr>
+<tr>
+<td>腮红</td>
+<td>无</td>
+</tr>
+<tr>
+<td>标志性配件</td>
+<td>宽帽沿渔夫帽（深绿<code>#2A4A30</code>），帽檐压低至眼部（遮住眼睛仅露嘴巴）；背部大背包（深绿色，左侧挂一只竹制小灯笼）</td>
+</tr>
+<tr>
+<td>表情1 Default</td>
+<td>帽沿遮眼，仅可见嘴巴（嘴角平直，平静）</td>
+</tr>
+<tr>
+<td>表情2 Uplook</td>
+<td><strong>特殊</strong>：帽沿向上翻折，露出眼睛（AC微笑眼，眼角温柔上扬），嘴角微开，惊叹表情——仅用于标志性时刻</td>
+</tr>
+<tr>
+<td>表情3 Tea</td>
+<td>帽沿仍低，嘴唇微张（在推茶杯时），手部特写版本</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>NPC04 — 温泉老爷爷·阿福（第5章 渔村港口）</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代表色</td>
+<td>藏青浴衣 <code>#2A4060</code> + 金色腰带 <code>#F5C842</code></td>
+</tr>
+<tr>
+<td>皮肤色</td>
+<td>中 <code>#E8B882</code>（圆脸，笑纹深刻）</td>
+</tr>
+<tr>
+<td>腮红</td>
+<td>明显，深橙圆形腮红 <code>#D06840</code>，直径18px @2x（强化慈祥感）</td>
+</tr>
+<tr>
+<td>标志性配件</td>
+<td>头顶永远顶着一块叠好的白色方巾（方形，<code>#F5F0E8</code>，有规则折痕细线）</td>
+</tr>
+<tr>
+<td>表情1 Default</td>
+<td>嘴角向下弯（反向AC微笑眼，嘴角朝下），眼睛向下弯（"嫌弃/无奈"眼神），但圆圆的橙腮红使整体可爱而非凶悍</td>
+</tr>
+<tr>
+<td>表情2 Satisfied</td>
+<td>嘴角切换为上扬，眼睛眯起成弧线（点头试石板后的满意）</td>
+</tr>
+<tr>
+<td>表情3 Enjoying</td>
+<td>眼睛完全闭合（竖向弧线），嘴角最大上扬，头顶方巾轻微歪斜（泡温泉时的享受）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>NPC05 — 灯塔守护者·阿明（第6章 夜晚灯塔）</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代表色</td>
+<td>深灰蓝大衣 <code>#2A3650</code> + 白色翻领 <code>#F5F0E8</code></td>
+</tr>
+<tr>
+<td>皮肤色</td>
+<td>中 <code>#E8B882</code></td>
+</tr>
+<tr>
+<td>腮红</td>
+<td>无（沉默海风气质）</td>
+</tr>
+<tr>
+<td>标志性配件</td>
+<td>右手握旧式点火装置（黄铜色圆柱形<code>#C49A40</code>，末端有蓝色微光<code>#7ECDE8</code>小圆点）</td>
+</tr>
+<tr>
+<td>表情1 Default</td>
+<td>嘴角略向下（沉默），眼神仰视（向上看灯塔），神情若有所思而非悲伤</td>
+</tr>
+<tr>
+<td>表情2 Holding</td>
+<td>双手握紧点火装置（停顿，即将激活），眼神向下看道具，嘴唇微微抿紧</td>
+</tr>
+<tr>
+<td>表情3 Back</td>
+<td><strong>背面版本</strong>：仅显示大衣后背轮廓和点火装置侧面——这是标志性时刻，无需正面表情，此帧用于灯塔亮起瞬间</td>
+</tr>
+</tbody>
+</table>
 <h3 id="43">4.3 命名规范</h3>
 <pre><code>sprites/characters/
 ├── npc_ahai_default@2x.png
 ├── npc_ahai_happy@2x.png
 ├── npc_ahai_thinking@2x.png
-├── npc_ahai_dialog.skel          (对话动画)
+├── npc_ahai_dialog.skel
+├── npc_ahai_dialog.atlas
 ├── npc_ahua_default@2x.png
 ├── npc_ahua_happy@2x.png
 ├── npc_ahua_focused@2x.png
 ├── npc_ahua_dialog.skel
+├── npc_ahua_dialog.atlas
 ├── npc_alin_default@2x.png
-├── npc_alin_uplook@2x.png        (标志性时刻：抬头看星空)
+├── npc_alin_uplook@2x.png            (标志性时刻：抬头看星空，露脸)
 ├── npc_alin_tea@2x.png
 ├── npc_alin_dialog.skel
+├── npc_alin_dialog.atlas
 ├── npc_afu_default@2x.png
 ├── npc_afu_satisfied@2x.png
 ├── npc_afu_enjoying@2x.png
 ├── npc_afu_dialog.skel
+├── npc_afu_dialog.atlas
 ├── npc_aming_default@2x.png
 ├── npc_aming_holding@2x.png
-├── npc_aming_back@2x.png         (背身望海姿态)
-└── npc_aming_dialog.skel
+├── npc_aming_back@2x.png             (背面望灯塔，标志性时刻)
+├── npc_aming_dialog.skel
+└── npc_aming_dialog.atlas
 </code></pre>
 <hr />
 <h2 id="5-uiui-icons">5. UI图标集（UI Icons）</h2>
@@ -824,19 +1157,19 @@
 </tr>
 <tr>
 <td>风格</td>
-<td>线面结合，圆角统一 3px（线宽约 2px @2x）</td>
+<td>手绘线面结合，轻微线条不规则感（模拟铅笔勾线）；每个图标包含至少一个日式自然元素</td>
 </tr>
 <tr>
 <td>颜色</td>
-<td>单色（章节主色 or 中性灰），可程序化着色</td>
+<td>单色（章节主色 or 木纹棕<code>#C4955A</code>），可程序化着色；禁止多色图标（Glow萤火特效图标除外）</td>
 </tr>
 <tr>
 <td>格式</td>
 <td>PNG-24（透明背景）+ SVG（矢量源文件）</td>
 </tr>
 <tr>
-<td>导出</td>
-<td>按尺寸分层导出，合并到 icon sprite sheet</td>
+<td>禁止</td>
+<td>锐利几何矢量图标（无Material Icon风格），纯黑色图标</td>
 </tr>
 </tbody>
 </table>
@@ -848,6 +1181,7 @@
 <th>编号</th>
 <th>名称</th>
 <th>尺寸</th>
+<th>视觉主题</th>
 <th>说明</th>
 </tr>
 </thead>
@@ -856,49 +1190,57 @@
 <td>IC01</td>
 <td>home</td>
 <td>32px</td>
-<td>房屋图标，返回主界面</td>
+<td>茅草屋顶小屋（AC式简化轮廓）</td>
+<td>返回主界面</td>
 </tr>
 <tr>
 <td>IC02</td>
 <td>settings</td>
 <td>32px</td>
-<td>齿轮图标，设置</td>
+<td>齿轮形，但齿廓圆润如花瓣</td>
+<td>设置</td>
 </tr>
 <tr>
 <td>IC03</td>
 <td>back_arrow</td>
 <td>24px</td>
-<td>左箭头，返回上一页</td>
+<td>竹叶形箭头（叶尖指左）</td>
+<td>返回上一页</td>
 </tr>
 <tr>
 <td>IC04</td>
 <td>close_x</td>
 <td>24px</td>
-<td>关闭/叉号</td>
+<td>圆角X形，两线末端有小圆点</td>
+<td>关闭</td>
 </tr>
 <tr>
 <td>IC05</td>
 <td>menu</td>
 <td>32px</td>
-<td>三横线菜单</td>
+<td>三条竹节形横线</td>
+<td>菜单</td>
 </tr>
 <tr>
 <td>IC06</td>
 <td>info</td>
 <td>24px</td>
-<td>圆圈感叹号，说明</td>
+<td>圆形内有叶脉形"i"</td>
+<td>说明</td>
 </tr>
 <tr>
 <td>IC07</td>
 <td>check</td>
 <td>24px</td>
-<td>勾选，确认</td>
+<td>圆润勾形，末端有小花苞</td>
+<td>确认</td>
 </tr>
 <tr>
 <td>IC08</td>
 <td>map</td>
 <td>32px</td>
-<td>地图展开图标</td>
+<td>展开的手绘地图卷轴轮廓</td>
+<td>地图</td>
 </tr>
 </tbody>
 </table>
@@ -909,6 +1251,7 @@
 <th>编号</th>
 <th>名称</th>
 <th>尺寸</th>
+<th>视觉主题</th>
 <th>说明</th>
 </tr>
 </thead>
@@ -917,37 +1260,43 @@
 <td>IC09</td>
 <td>hint</td>
 <td>48px</td>
-<td>灯泡图标，提示道具</td>
+<td>竹制提灯（与萤火提灯块同款简化）发光</td>
+<td>提示道具</td>
 </tr>
 <tr>
 <td>IC10</td>
 <td>shuffle</td>
 <td>48px</td>
-<td>循环箭头，重排棋盘</td>
+<td>两条小鱼绕圈游动形成循环箭头</td>
+<td>重排棋盘</td>
 </tr>
 <tr>
 <td>IC11</td>
 <td>add_steps</td>
 <td>48px</td>
-<td>加号+脚印，增加步数</td>
+<td>脚印形+圆润加号，左下+右上</td>
+<td>增加步数</td>
 </tr>
 <tr>
 <td>IC12</td>
 <td>bomb_item</td>
 <td>48px</td>
-<td>炸弹道具（关卡前使用）</td>
+<td>河豚脸（膨胀状态，圆眼睛）</td>
+<td>河豚炸弹道具</td>
 </tr>
 <tr>
 <td>IC13</td>
 <td>lightning_item</td>
 <td>48px</td>
-<td>闪电道具（关卡前使用）</td>
+<td>金枪鱼剪影+尾部弧线尾迹</td>
+<td>闪电道具</td>
 </tr>
 <tr>
 <td>IC14</td>
 <td>rainbow_item</td>
 <td>48px</td>
-<td>彩虹道具（关卡前使用）</td>
+<td>彩虹鱼侧视，色彩条纹明显</td>
+<td>彩虹道具</td>
 </tr>
 </tbody>
 </table>
@@ -958,6 +1307,7 @@
 <th>编号</th>
 <th>名称</th>
 <th>尺寸</th>
+<th>视觉主题</th>
 <th>说明</th>
 </tr>
 </thead>
@@ -966,37 +1316,43 @@
 <td>IC15</td>
 <td>beach_coin</td>
 <td>32px</td>
-<td>沙滩币，软货币，圆形贝壳纹</td>
+<td>扇贝正视图（与T01贝壳块同款），金黄色</td>
+<td>沙滩币，软货币</td>
 </tr>
 <tr>
 <td>IC16</td>
 <td>glowstone</td>
 <td>32px</td>
-<td>丹青石，硬货币，发光宝石形</td>
+<td>五边形宝石切面+星形内发光，青绿色</td>
+<td>光石，硬货币</td>
 </tr>
 <tr>
 <td>IC17</td>
 <td>material_wood</td>
 <td>24px</td>
-<td>浮木材料图标</td>
+<td>一节竹子横截面（年轮简化为同心圆）</td>
+<td>竹木材料</td>
 </tr>
 <tr>
 <td>IC18</td>
 <td>material_rope</td>
 <td>24px</td>
-<td>绳索材料图标</td>
+<td>麻花绳结简化形（两条线交叉+圆环）</td>
+<td>绳索材料</td>
 </tr>
 <tr>
 <td>IC19</td>
 <td>material_seed</td>
 <td>24px</td>
-<td>花种材料图标</td>
+<td>两片圆叶中间夹一粒圆种子</td>
+<td>花种材料</td>
 </tr>
 <tr>
 <td>IC20</td>
 <td>material_generic</td>
 <td>24px</td>
-<td>通用材料图标（其他章节）</td>
+<td>礼物袋形（圆底+系绳）</td>
+<td>通用材料</td>
 </tr>
 </tbody>
 </table>
@@ -1007,6 +1363,7 @@
 <th>编号</th>
 <th>名称</th>
 <th>尺寸</th>
+<th>视觉主题</th>
 <th>说明</th>
 </tr>
 </thead>
@@ -1015,37 +1372,43 @@
 <td>IC21</td>
 <td>star_empty</td>
 <td>32px</td>
-<td>空星，评级</td>
+<td>五瓣花形（空，仅轮廓线）</td>
+<td>评级空花</td>
 </tr>
 <tr>
 <td>IC22</td>
 <td>star_full</td>
 <td>32px</td>
-<td>满星，评级</td>
+<td>五瓣花形（填满，金黄<code>#F5C842</code>）</td>
+<td>评级满花</td>
 </tr>
 <tr>
 <td>IC23</td>
 <td>star_half</td>
 <td>32px</td>
-<td>半星，评级</td>
+<td>五瓣花形（左半填满，右半空）</td>
+<td>评级半花</td>
 </tr>
 <tr>
 <td>IC24</td>
 <td>lock</td>
 <td>32px</td>
-<td>锁，章节未解锁</td>
+<td>圆润挂锁形，锁扣为竹节形</td>
+<td>章节未解锁</td>
 </tr>
 <tr>
 <td>IC25</td>
 <td>progress_bar_cap</td>
 <td>24px</td>
-<td>进度条两端圆帽</td>
+<td>竹节圆头（进度条两端圆帽）</td>
+<td>进度条端头</td>
 </tr>
 <tr>
 <td>IC26</td>
 <td>glow_energy</td>
 <td>32px</td>
-<td>光能图标，光柱+圆形</td>
+<td>竹制提灯+外圈光晕</td>
+<td>光能图标</td>
 </tr>
 </tbody>
 </table>
@@ -1056,6 +1419,7 @@
 <th>编号</th>
 <th>名称</th>
 <th>尺寸</th>
+<th>视觉主题</th>
 <th>说明</th>
 </tr>
 </thead>
@@ -1064,24 +1428,28 @@
 <td>IC27</td>
 <td>share</td>
 <td>32px</td>
-<td>分享箭头</td>
+<td>樱花枝形（主枝向右，分叉两点）</td>
+<td>分享</td>
 </tr>
 <tr>
 <td>IC28</td>
 <td>milestone_flag</td>
 <td>32px</td>
-<td>里程碑旗帜</td>
+<td>竹竿上挂三角旗（彩旗风格）</td>
+<td>里程碑</td>
 </tr>
 <tr>
 <td>IC29</td>
 <td>sound_on</td>
 <td>24px</td>
+<td>贝壳形（侧视，模拟音波扩散）</td>
 <td>音量开</td>
 </tr>
 <tr>
 <td>IC30</td>
 <td>sound_off</td>
 <td>24px</td>
+<td>贝壳形+X标记</td>
 <td>音量关</td>
 </tr>
 </tbody>
@@ -1099,18 +1467,18 @@
 ├── ic_hint@2x.png
 ├── ic_shuffle@2x.png
 ├── ic_add_steps@2x.png
-├── ic_item_bomb@2x.png
-├── ic_item_lightning@2x.png
-├── ic_item_rainbow@2x.png
-├── ic_currency_beach_coin@2x.png
-├── ic_currency_glowstone@2x.png
-├── ic_material_wood@2x.png
+├── ic_item_pufferfish@2x.png         (河豚炸弹道具图标)
+├── ic_item_tuna@2x.png               (金枪鱼闪电道具图标)
+├── ic_item_rainbowfish@2x.png        (彩虹鱼道具图标)
+├── ic_currency_shell@2x.png          (沙滩币贝壳图标)
+├── ic_currency_glowstone@2x.png      (光石图标)
+├── ic_material_bamboo@2x.png
 ├── ic_material_rope@2x.png
 ├── ic_material_seed@2x.png
 ├── ic_material_generic@2x.png
-├── ic_star_empty@2x.png
-├── ic_star_full@2x.png
-├── ic_star_half@2x.png
+├── ic_flower_empty@2x.png            (评级空花)
+├── ic_flower_full@2x.png             (评级满花)
+├── ic_flower_half@2x.png             (评级半花)
 ├── ic_lock@2x.png
 ├── ic_progress_cap@2x.png
 ├── ic_glow_energy@2x.png
@@ -1118,7 +1486,7 @@
 ├── ic_milestone_flag@2x.png
 ├── ic_sound_on@2x.png
 ├── ic_sound_off@2x.png
-└── svg/                           (矢量源文件)
+└── svg/
     ├── ic_home.svg
     └── ... (同名SVG文件)
 </code></pre>
@@ -1150,8 +1518,8 @@
 <td>RGBA，序列帧全部透明背景</td>
 </tr>
 <tr>
-<td>播放模式</td>
-<td>一次性（Once）或 循环（Loop），详见各特效</td>
+<td>风格要求</td>
+<td>特效粒子形状对应自然元素（贝壳碎片、花瓣、气泡、竹叶），非抽象几何粒子</td>
 </tr>
 </tbody>
 </table>
@@ -1160,76 +1528,79 @@
 - 触发：任意图块消除时<br />
 - 画布尺寸：160×160 @2x（含出血）<br />
 - 帧数：12帧 @30fps（总时长 0.4s）<br />
-- 内容：图块放大 → 碎裂为6-8个小片 → 粒子扩散消失<br />
-- 粒子颜色：跟随图块颜色，末帧全透明<br />
-- 变体：6种颜色变体（对应6种基础图块色）<br />
-- 命名：<code>fx_tile_disappear_{color}_f{01-12}@2x.png</code></p>
+- 内容：帧1-3图块放大1.14×；帧4-9缩至0同时旋转±12°；帧10-12：4-6个该图块的主题粒子向外散开淡出<br />
+- <strong>主题粒子对应</strong>：T01贝壳→贝壳碎片；T03海浪→水滴；T05竹节→竹叶；T06石灯笼→光点；T09樱花→花瓣；T13松果→松针；T15鸟居→红色碎片；T17鱼→鱼鳞片；T19星光→星点<br />
+- 命名：<code>fx_tile_disappear_{tile_id}_f{01-12}@2x.png</code>（或使用颜色变体版：<code>fx_tile_disappear_{color}_f{01-12}@2x.png</code>，6色版）</p>
 <p><strong>EF02 — 连击气泡（Combo Popup）</strong><br />
 - 触发：连击数 ≥ 3 时弹出<br />
-- 画布尺寸：200×100 @2x<br />
-- 帧数：15帧 @30fps（总时长 0.5s）<br />
-- 内容：数字+COMBO文字弹入（弹跳曲线）→ 悬停 → 淡出上浮<br />
+- 画布尺寸：220×110 @2x<br />
 - Spine文件（推荐）：<code>fx_combo_popup.skel</code><br />
-- 文字替换：通过Spine slot替换，不分颜色版本<br />
-- 变体：3×3/5×5/10×10连击，字号递增</p>
-<p><strong>EF03 — 光链效果（Glow Chain）</strong><br />
-- 触发：连接 Glow 图块时<br />
+- 内容：对话气泡形（底部有三角指向标）从触发位置弹入（spring曲线，scale 0→1.2→1.0，0.3s）→ 悬停1.2s → 上浮淡出（0.4s）<br />
+- 气泡样式：深珊瑚背景<code>#C85A40</code>，月光白边框3px，数字金黄<code>#F5C842</code>Bold，COMBO文字月光白Regular<br />
+- 变体：3×3/5×5/10×10连击字号递增（24px/32px/48px）</p>
+<p><strong>EF03 — 萤火光链效果（Firefly Chain）</strong><br />
+- 触发：连接 Glow萤火提灯块 时<br />
 - 画布：全屏叠加层（1080×1920 @2x）<br />
-- Spine文件：<code>fx_glow_chain.skel</code>，路径跟随连接路径动态调整<br />
-- 内容：金色光粒子沿连接路径流动，速度约 600px/s，流向岛屿地图区域<br />
-- 持续时长：约 0.8-1.5s（视路径长短）</p>
+- Spine文件：<code>fx_firefly_chain.skel</code>，路径跟随连接路径动态调整<br />
+- 内容：金色光粒子（形如萤火虫，圆形光点+轻微尾迹）沿连接路径游动，速度约 500px/s，流向岛屿地图区域；途经图块时短暂发亮<br />
+- 持续时长：约 1.0-1.8s（视路径长短）</p>
 <p><strong>EF04 — 区域修复光效（Area Restore Glow）</strong><br />
 - 触发：区域修复阶段切换时<br />
 - 画布：覆盖区域图块的全区域（约 400×400 @2x）<br />
 - Spine文件：<code>fx_area_restore.skel</code>，含 4 个阶段动画（stage1-4）<br />
-- 内容：白色/金色光波从区域中心向外扩散，持续约 3-5s，配合区域图片切换<br />
-- 第4阶段（完整修复）：额外彩色光晕爆发，约 2s</p>
-<p><strong>EF05 — 炸弹爆炸特效（Bomb Explosion）</strong><br />
-- 触发：炸弹块激活时<br />
+- 内容：白色/金色光波从区域中心向外扩散，持续约 3-5s，配合区域图片crossfade切换<br />
+- 第4阶段（完整修复）：额外该章节主题粒子雨（樱花章节散落花瓣；神社章节散出光点；灯塔章节金色光芒），约 2.5s</p>
+<p><strong>EF05 — 河豚爆炸特效（Pufferfish Pop）</strong><br />
+- 触发：炸弹（河豚）块激活时<br />
 - 画布：640×640 @2x（3×3格范围）<br />
-- Spine文件：<code>fx_bomb_explosion.skel</code><br />
-- 内容：中央橙色爆炸冲击波 → 粒子碎片向外扩散（红/橙/黄）→ 轻微烟雾消散<br />
-- 总时长：约 0.6s</p>
-<p><strong>EF06 — 闪电特效（Lightning Strike）</strong><br />
-- 触发：闪电块激活时<br />
-- 画布：1080×128 @2x（横向全行）或 128×1920 @2x（纵向全列）<br />
-- Spine文件：<code>fx_lightning_row.skel</code> / <code>fx_lightning_col.skel</code><br />
-- 内容：电弧从激活块向两侧延伸 → 白色闪光条横扫 → 消退<br />
-- 总时长：约 0.5s</p>
-<p><strong>EF07 — 彩虹消除特效（Rainbow Burst）</strong><br />
-- 触发：彩虹块消除时<br />
+- Spine文件：<code>fx_pufferfish_pop.skel</code><br />
+- 内容：中央河豚夸张膨胀（scale 1.0→2.0，0.3s）→ "啵"一声爆开（圆形白色冲击波向外扩散）→ 大量圆形气泡粒子向外飞散（<code>#A8E0D8</code>浅蓝绿色气泡，直径8-24px随机）→ 泡泡逐渐升起消散<br />
+- 总时长：约 0.8s（比原炸弹特效更慢更轻盈，保持治愈感）<br />
+- 无火焰粒子，气泡替代碎片</p>
+<p><strong>EF06 — 金枪鱼闪电特效（Tuna Dash）</strong><br />
+- 触发：闪电（金枪鱼）块激活时<br />
+- 画布：1080×160 @2x（横向全行）或 160×1920 @2x（纵向全列）<br />
+- Spine文件：<code>fx_tuna_dash_row.skel</code> / <code>fx_tuna_dash_col.skel</code><br />
+- 内容：金枪鱼剪影从激活块高速横扫全行（留下银蓝色<code>#7ECDE8</code>光影残像3-5帧）→ 扫过的图块短暂闪白→ 金枪鱼在边缘消失（溅出水花）<br />
+- 总时长：约 0.5s（横扫速度 2000px/s）</p>
+<p><strong>EF07 — 彩虹鱼爆发特效（Rainbow Fish Burst）</strong><br />
+- 触发：彩虹鱼块消除时<br />
 - 画布：320×320 @2x<br />
 - Spine文件：<code>fx_rainbow_burst.skel</code><br />
-- 内容：七彩环形粒子从中央爆发，向外扩散后淡出<br />
-- 总时长：约 0.7s</p>
+- 内容：彩虹鱼旋转一圈（360°，0.3s）→ 爆开为7条颜色各异的鱼鳞片，向外放射扩散（鳞片形如椭圆，每片携带不同彩色）→ 鳞片淡出消失<br />
+- 总时长：约 0.8s</p>
 <p><strong>EF08 — 灯塔光柱特效（Lighthouse Beam）</strong><br />
 - 触发：第6章，每8步自动触发 / 标志性时刻全岛版<br />
 - 画布：全屏 1080×1920 @2x<br />
 - Spine文件：<code>fx_lighthouse_beam_row.skel</code>（单行扫过）/ <code>fx_lighthouse_beam_island.skel</code>（全岛扫过）<br />
-- 内容：暖黄光柱从右侧灯塔方向扫过棋盘，光柱内 Glow 块高亮<br />
-- 总时长：单行约 0.5s；全岛版约 3s（标志性时刻）</p>
+- 内容：金黄光柱（宽约80px，<code>#F5C842</code>+透明度渐变边缘）从右侧灯塔方向扫过棋盘，光柱内所有Glow萤火块的光芒瞬间加强（亮度+40%）<br />
+- 单行版总时长：约 0.6s；全岛标志性时刻版：约 4s（缓慢旋转扫过全图）</p>
 <h3 id="63">6.3 命名规范</h3>
 <pre><code>effects/frames/
-├── fx_tile_disappear_blue_f01@2x.png
-├── ... f12@2x.png
-├── fx_tile_disappear_yellow_f01@2x.png
-├── ... (其他颜色)
-├── spine/
-│   ├── fx_combo_popup.skel
-│   ├── fx_combo_popup.atlas
-│   ├── fx_combo_popup.png
-│   ├── fx_glow_chain.skel
-│   ├── fx_glow_chain.atlas
-│   ├── fx_glow_chain.png
-│   ├── fx_area_restore.skel
-│   ├── fx_area_restore.atlas
-│   ├── fx_area_restore.png
-│   ├── fx_bomb_explosion.skel
-│   ├── fx_lightning_row.skel
-│   ├── fx_lightning_col.skel
-│   ├── fx_rainbow_burst.skel
-│   ├── fx_lighthouse_beam_row.skel
-│   └── fx_lighthouse_beam_island.skel
+├── fx_tile_disappear_teal_f01@2x.png       (海水青色系图块消除)
+├── ...
+├── fx_tile_disappear_teal_f12@2x.png
+├── fx_tile_disappear_pink_f01@2x.png       (樱粉色系)
+├── fx_tile_disappear_gold_f01@2x.png       (金黄色系)
+├── fx_tile_disappear_green_f01@2x.png      (竹绿色系)
+├── fx_tile_disappear_red_f01@2x.png        (鸟居红色系)
+├── fx_tile_disappear_navy_f01@2x.png       (夜蓝色系)
+└── spine/
+    ├── fx_combo_popup.skel
+    ├── fx_combo_popup.atlas
+    ├── fx_combo_popup.png
+    ├── fx_firefly_chain.skel               (萤火光链，替代原glow_chain)
+    ├── fx_firefly_chain.atlas
+    ├── fx_firefly_chain.png
+    ├── fx_area_restore.skel
+    ├── fx_area_restore.atlas
+    ├── fx_area_restore.png
+    ├── fx_pufferfish_pop.skel              (河豚爆炸，替代原bomb_explosion)
+    ├── fx_tuna_dash_row.skel               (金枪鱼横扫，替代原lightning_row)
+    ├── fx_tuna_dash_col.skel
+    ├── fx_rainbow_burst.skel
+    ├── fx_lighthouse_beam_row.skel
+    └── fx_lighthouse_beam_island.skel
 </code></pre>
 <hr />
 <h2 id="7">7. 交付标准</h2>
@@ -1266,6 +1637,10 @@
 <td>版本控制</td>
 <td>文件名含版本号时使用 <code>_v1</code>, <code>_v2</code> 后缀</td>
 </tr>
+<tr>
+<td>风格一致性检查</td>
+<td>所有图块在同一灰度图中，色彩明度排序符合Art Direction第2.4节对比度要求</td>
+</tr>
 </tbody>
 </table>
 <h3 id="72-spine">7.2 Spine 动画交付要求</h3>
@@ -1291,11 +1666,11 @@
 </tr>
 <tr>
 <td>命名规范</td>
-<td>Spine 内部动画名称：全英文小写+下划线，如 <code>idle</code>, <code>activate</code>, <code>talk</code></td>
+<td>Spine 内部动画名称：全英文小写+下划线，如 <code>idle</code>, <code>activate</code>, <code>talk</code>, <code>react_happy</code></td>
 </tr>
 <tr>
 <td>槽位（Slots）</td>
-<td>可替换颜色/内容的部分使用 Slot，便于程序化控制</td>
+<td>可替换颜色/内容的部分使用 Slot，便于程序化控制（如Combo气泡中的数字文字）</td>
 </tr>
 </tbody>
 </table>
@@ -1303,11 +1678,11 @@
 <pre><code>assets/
 ├── sprites/
 │   ├── tiles/
-│   │   ├── (20种 × Normal/Highlighted PNG + 消除序列帧)
+│   │   ├── (20种 × Normal/Highlighted PNG + 12帧消除序列帧)
 │   │   └── special/
-│   │       └── (4种特殊块 Spine 文件)
+│   │       └── (4种特殊块 Spine 文件：pufferfish/tuna/rainbow_fish/firefly_lantern)
 │   ├── backgrounds/
-│   │   └── (15张 背景 PNG，含备用版本)
+│   │   └── (12张基础背景 PNG + 2张标志性时刻备用版本)
 │   ├── island/
 │   │   ├── island_base_map@2x.png
 │   │   ├── island_lighthouse_beam.skel
@@ -1320,7 +1695,7 @@
 │           └── (30个图标 SVG 矢量源文件)
 └── effects/
     ├── frames/
-    │   └── (图块消除序列帧 PNG)
+    │   └── (图块消除序列帧 PNG，6色系 × 12帧)
     └── spine/
         └── (8种特效 Spine 文件)
 </code></pre>
@@ -1328,35 +1703,39 @@
 <h2 id="8">8. 优先级与分批交付建议</h2>
 <h3 id="1mvp">批次1（MVP，游戏原型验证所需）</h3>
 <ul>
-<li>6种基础图块 Normal 状态（各章1种代表图块）</li>
+<li>第1章4种图块（T01-T04）Normal状态</li>
 <li>第1章背景（修复前+后）</li>
-<li>所有图块消除序列帧（通用版）</li>
-<li>UI图标集（按钮/货币/步数，约15个）</li>
+<li>通用图块消除序列帧（海水青色系 + 金黄色系，代表2种色系）</li>
+<li>UI图标集核心15个（IC01-IC08 导航 + IC15/IC16 货币 + IC21-IC24 进度）</li>
 </ul>
 <h3 id="21_1">批次2（第1章完整体验）</h3>
 <ul>
-<li>第1章4种图块全部4状态</li>
-<li>第1章岛屿区域5个修复状态</li>
-<li>NPC01 阿海全套头像 + 对话动画</li>
-<li>炸弹/闪电/彩虹/Glow 特殊块 Spine 动画</li>
-<li>连击气泡特效</li>
+<li>T01-T04全部4状态（含Highlighted + 消除帧主题粒子）</li>
+<li>第1章岛屿区域5个修复状态（Z01）</li>
+<li>NPC01 阿海全套（3表情 + Spine对话动画）</li>
+<li>4种特殊块Spine动画（pufferfish/tuna/rainbow_fish/firefly_lantern）</li>
+<li>EF02连击气泡 + EF03萤火光链特效</li>
 </ul>
 <h3 id="32-4">批次3（第2-4章）</h3>
 <ul>
-<li>第2-4章图块、背景、岛屿区域</li>
-<li>NPC02 阿花 / NPC03 阿林全套</li>
-<li>光链特效 + 区域修复光效</li>
+<li>T05-T16全部图块（12种）4状态</li>
+<li>第2-4章背景（修复前+后）</li>
+<li>Z02-Z04岛屿区域全5状态</li>
+<li>NPC02阿花 / NPC03阿林全套</li>
+<li>EF04区域修复光效 + EF05河豚爆炸 + EF06金枪鱼闪电</li>
 </ul>
 <h3 id="45-6">批次4（第5-6章 + 完整交付）</h3>
 <ul>
-<li>第5-6章图块、背景、岛屿区域</li>
-<li>NPC04 阿福 / NPC05 阿明全套</li>
-<li>灯塔光柱特效（含全岛版）</li>
-<li>全部剩余UI图标</li>
-<li>资产全量审查与优化</li>
+<li>T17-T20全部图块4状态</li>
+<li>第5-6章背景（含标志性时刻备用版本）</li>
+<li>Z05-Z06岛屿区域全5状态 + 全岛底图</li>
+<li>NPC04阿福 / NPC05阿明全套</li>
+<li>EF07彩虹鱼爆发 + EF08灯塔光柱（含全岛版）</li>
+<li>剩余UI图标（IC09-IC14道具 + IC17-IC20材料 + IC25-IC30）</li>
+<li>全资产风格一致性审查（灰度对比度测试 + 剪影识别度测试）</li>
 </ul>
 <hr />
-<p><em>Art Asset Spec v1.0 · Glow Island · 2026-05-07</em></p>
+<p><em>Art Asset Spec v2.0 · Glow Island · 2026-05-08</em></p>
     <div class="footer">Glow Island — Generated Documentation · 2026-05-08</div>
   </div>
 </body>
