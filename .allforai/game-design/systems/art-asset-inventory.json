@@ -1,0 +1,744 @@
+{
+  "version": "2.0",
+  "generated": "2026-05-08",
+  "source_spec": "art-asset-spec.md v2.0",
+  "total_assets": 343,
+  "total_assets_note": "Includes all individual files: PNG frames (tile normals, highlights, disappear sequences, NPC expressions, backgrounds, island zones, UI icons), Spine bundles (.skel+.atlas+.png counted as 1 unit each), and SVG sources.",
+  "by_category": {
+    "tiles": {
+      "count": 24,
+      "breakdown": "20 base tiles + 4 special tiles",
+      "format": "png",
+      "format_special": "spine",
+      "size": "128x128",
+      "effective_draw_area": "112x112",
+      "states_per_base_tile": 4,
+      "note": "Normal + Highlighted = 2 PNG each; Disappearing = 12 PNG frames each; Special tiles use Spine only"
+    },
+    "characters": {
+      "count": 6,
+      "breakdown": "5 NPCs (3 expressions each = 15 PNG) + 5 Spine dialog bundles; 1 placeholder for protagonist Saki (not yet specced)",
+      "format": "spine",
+      "states_per_char": 5,
+      "states_note": "idle / talk / react (Spine animations); Default / Situational_1 / Situational_2 (static PNG expressions)",
+      "canvas_size": "128x128",
+      "draw_area": "112x112 circle"
+    },
+    "backgrounds": {
+      "count": 14,
+      "breakdown": "6 chapters × 2 versions (before/after) = 12; +1 sunset variant (ch01); +1 lighthouse overview (ch06)",
+      "format": "png",
+      "size": "1080x1920"
+    },
+    "island_zones": {
+      "count": 33,
+      "breakdown": "1 base map + 1 Spine lighthouse beam + 6 zones × 5 repair states = 30 zone PNGs",
+      "format": "png",
+      "size": "approx_340x340_per_zone"
+    },
+    "ui": {
+      "count": 30,
+      "format": "png",
+      "format_secondary": "svg",
+      "sizes_px": [24, 32, 48],
+      "note": "Each icon delivered as PNG @2x + SVG vector source"
+    },
+    "vfx": {
+      "count": 8,
+      "breakdown": "EF01-EF08",
+      "format": "spine_and_png_sequences",
+      "png_sequences": "6 colour variants × 12 frames = 72 PNG files (EF01 tile disappear)",
+      "spine_bundles": 8
+    }
+  },
+  "assets": [
+    {
+      "id": "t01_shell",
+      "name": "贝壳块",
+      "category": "tile",
+      "chapter": 1,
+      "theme": "扇贝正视图",
+      "primary_color": "#F5C842",
+      "path": "assets/sprites/tiles/t01_shell_normal@2x.png",
+      "files": [
+        "t01_shell_normal@2x.png",
+        "t01_shell_highlighted@2x.png",
+        "t01_shell_disappear_01@2x.png … t01_shell_disappear_12@2x.png"
+      ],
+      "milestone_gate": "batch_1"
+    },
+    {
+      "id": "t02_plank",
+      "name": "木板块",
+      "category": "tile",
+      "chapter": 1,
+      "theme": "码头旧木板",
+      "primary_color": "#C4955A",
+      "path": "assets/sprites/tiles/t02_plank_normal@2x.png",
+      "files": [
+        "t02_plank_normal@2x.png",
+        "t02_plank_highlighted@2x.png",
+        "t02_plank_disappear_01-12@2x.png"
+      ],
+      "milestone_gate": "batch_1"
+    },
+    {
+      "id": "t03_wave",
+      "name": "海浪块",
+      "category": "tile",
+      "chapter": 1,
+      "theme": "卷浪波纹",
+      "primary_color": "#5BBFB5",
+      "path": "assets/sprites/tiles/t03_wave_normal@2x.png",
+      "files": [
+        "t03_wave_normal@2x.png",
+        "t03_wave_highlighted@2x.png",
+        "t03_wave_disappear_01-12@2x.png"
+      ],
+      "milestone_gate": "batch_1"
+    },
+    {
+      "id": "t04_knot",
+      "name": "绳结块",
+      "category": "tile",
+      "chapter": 1,
+      "theme": "船锚绳结",
+      "primary_color": "#E2C48A",
+      "path": "assets/sprites/tiles/t04_knot_normal@2x.png",
+      "files": [
+        "t04_knot_normal@2x.png",
+        "t04_knot_highlighted@2x.png",
+        "t04_knot_disappear_01-12@2x.png"
+      ],
+      "milestone_gate": "batch_1"
+    },
+    {
+      "id": "t05_bamboo",
+      "name": "竹节块",
+      "category": "tile",
+      "chapter": 2,
+      "theme": "竹茎横截",
+      "primary_color": "#7DBE77",
+      "path": "assets/sprites/tiles/t05_bamboo_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t06_lantern_stone",
+      "name": "石灯笼块",
+      "category": "tile",
+      "chapter": 2,
+      "theme": "日式石灯笼",
+      "primary_color": "#8AA880",
+      "path": "assets/sprites/tiles/t06_lantern_stone_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t07_leaf_bamboo",
+      "name": "竹叶块",
+      "category": "tile",
+      "chapter": 2,
+      "theme": "竹叶簇",
+      "primary_color": "#5A9A60",
+      "path": "assets/sprites/tiles/t07_leaf_bamboo_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t08_lantern_paper",
+      "name": "纸灯笼块",
+      "category": "tile",
+      "chapter": 2,
+      "theme": "方形纸灯笼",
+      "primary_color": "#EE8C55",
+      "path": "assets/sprites/tiles/t08_lantern_paper_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t09_sakura",
+      "name": "樱花块",
+      "category": "tile",
+      "chapter": 3,
+      "theme": "五瓣樱花正视",
+      "primary_color": "#F0C4C4",
+      "path": "assets/sprites/tiles/t09_sakura_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t10_broadleaf",
+      "name": "宽叶块",
+      "category": "tile",
+      "chapter": 3,
+      "theme": "芭蕉/宽叶植物",
+      "primary_color": "#7DBE77",
+      "path": "assets/sprites/tiles/t10_broadleaf_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t11_butterfly",
+      "name": "蝴蝶块",
+      "category": "tile",
+      "chapter": 3,
+      "theme": "简化蝴蝶",
+      "primary_color": "#F0C060",
+      "path": "assets/sprites/tiles/t11_butterfly_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t12_sprout",
+      "name": "嫩芽块",
+      "category": "tile",
+      "chapter": 3,
+      "theme": "破土嫩芽",
+      "primary_color": "#A8D888",
+      "path": "assets/sprites/tiles/t12_sprout_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t13_pinecone",
+      "name": "松果块",
+      "category": "tile",
+      "chapter": 4,
+      "theme": "松果侧视",
+      "primary_color": "#8B6241",
+      "path": "assets/sprites/tiles/t13_pinecone_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t14_mossy_stone",
+      "name": "苔藓石块",
+      "category": "tile",
+      "chapter": 4,
+      "theme": "圆形石头上长苔藓",
+      "primary_color": "#6B9E5E",
+      "path": "assets/sprites/tiles/t14_mossy_stone_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t15_torii",
+      "name": "鸟居块",
+      "category": "tile",
+      "chapter": 4,
+      "theme": "简化鸟居正视",
+      "primary_color": "#C8402A",
+      "path": "assets/sprites/tiles/t15_torii_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t16_shimenawa",
+      "name": "注连绳块",
+      "category": "tile",
+      "chapter": 4,
+      "theme": "稻草绳+纸垂",
+      "primary_color": "#E2C48A",
+      "path": "assets/sprites/tiles/t16_shimenawa_normal@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "t17_fish",
+      "name": "鱼块",
+      "category": "tile",
+      "chapter": 5,
+      "theme": "圆润小鱼侧视",
+      "primary_color": "#5BBFB5",
+      "path": "assets/sprites/tiles/t17_fish_normal@2x.png",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "t18_fishnet",
+      "name": "渔网块",
+      "category": "tile",
+      "chapter": 5,
+      "theme": "渔网纹",
+      "primary_color": "#B89060",
+      "path": "assets/sprites/tiles/t18_fishnet_normal@2x.png",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "t19_starlight",
+      "name": "星光块",
+      "category": "tile",
+      "chapter": 6,
+      "theme": "四芒星/星光",
+      "primary_color": "#F5C842",
+      "path": "assets/sprites/tiles/t19_starlight_normal@2x.png",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "t20_nightwave",
+      "name": "夜浪块",
+      "category": "tile",
+      "chapter": 6,
+      "theme": "深夜海浪",
+      "primary_color": "#2A4060",
+      "path": "assets/sprites/tiles/t20_nightwave_normal@2x.png",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "t_special_pufferfish",
+      "name": "河豚块（T-Bomb）",
+      "category": "tile_special",
+      "chapter": "all",
+      "theme": "膨胀呼吸动画",
+      "spine_key": "pufferfish",
+      "path": "assets/sprites/tiles/special/pufferfish_idle.skel",
+      "files": [
+        "pufferfish_idle.skel",
+        "pufferfish_idle.atlas",
+        "pufferfish_idle.png",
+        "pufferfish_activate.skel"
+      ],
+      "milestone_gate": "batch_2"
+    },
+    {
+      "id": "t_special_tuna",
+      "name": "金枪鱼块（T-Lightning）",
+      "category": "tile_special",
+      "chapter": "all",
+      "theme": "尾鳍脉冲摆动",
+      "spine_key": "tuna",
+      "path": "assets/sprites/tiles/special/tuna_idle.skel",
+      "files": [
+        "tuna_idle.skel",
+        "tuna_idle.atlas",
+        "tuna_idle.png",
+        "tuna_activate.skel"
+      ],
+      "milestone_gate": "batch_2"
+    },
+    {
+      "id": "t_special_rainbow_fish",
+      "name": "彩虹鱼块（T-Rainbow）",
+      "category": "tile_special",
+      "chapter": "all",
+      "theme": "色彩条纹循环",
+      "spine_key": "rainbow_fish",
+      "path": "assets/sprites/tiles/special/rainbow_fish_idle.skel",
+      "files": [
+        "rainbow_fish_idle.skel",
+        "rainbow_fish_idle.atlas",
+        "rainbow_fish_idle.png",
+        "rainbow_fish_activate.skel"
+      ],
+      "milestone_gate": "batch_2"
+    },
+    {
+      "id": "t_special_firefly_lantern",
+      "name": "萤火提灯块（T-Glow）",
+      "category": "tile_special",
+      "chapter": "all",
+      "theme": "光晕脉冲呼吸",
+      "spine_key": "firefly_lantern",
+      "path": "assets/sprites/tiles/special/firefly_lantern_idle.skel",
+      "files": [
+        "firefly_lantern_idle.skel",
+        "firefly_lantern_idle.atlas",
+        "firefly_lantern_idle.png",
+        "firefly_lantern_activate.skel"
+      ],
+      "milestone_gate": "batch_2"
+    },
+    {
+      "id": "npc_ahai",
+      "name": "渔夫·阿海",
+      "category": "character",
+      "chapter": 1,
+      "representative_color": "#4A6D9A",
+      "skin_color": "#9A6840",
+      "blush": false,
+      "spine_animations": ["idle", "talk", "react"],
+      "expressions": ["default", "happy", "thinking"],
+      "path": "assets/sprites/characters/npc_ahai_default@2x.png",
+      "files": [
+        "npc_ahai_default@2x.png",
+        "npc_ahai_happy@2x.png",
+        "npc_ahai_thinking@2x.png",
+        "npc_ahai_dialog.skel",
+        "npc_ahai_dialog.atlas"
+      ],
+      "milestone_gate": "batch_2"
+    },
+    {
+      "id": "npc_ahua",
+      "name": "花农·阿花",
+      "category": "character",
+      "chapter": 3,
+      "representative_color": "#7DBE77",
+      "skin_color": "#F5D4B0",
+      "blush": "#E898A0",
+      "blush_size_px_2x": 16,
+      "spine_animations": ["idle", "talk", "react"],
+      "expressions": ["default", "happy", "focused"],
+      "path": "assets/sprites/characters/npc_ahua_default@2x.png",
+      "files": [
+        "npc_ahua_default@2x.png",
+        "npc_ahua_happy@2x.png",
+        "npc_ahua_focused@2x.png",
+        "npc_ahua_dialog.skel",
+        "npc_ahua_dialog.atlas"
+      ],
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "npc_alin",
+      "name": "背包客·阿林",
+      "category": "character",
+      "chapter": 4,
+      "representative_color": "#3D6645",
+      "skin_color": "#E8B882",
+      "blush": false,
+      "spine_animations": ["idle", "talk", "react"],
+      "expressions": ["default", "uplook", "tea"],
+      "special_note": "uplook表情仅用于标志性时刻，帽沿翻折露脸",
+      "path": "assets/sprites/characters/npc_alin_default@2x.png",
+      "files": [
+        "npc_alin_default@2x.png",
+        "npc_alin_uplook@2x.png",
+        "npc_alin_tea@2x.png",
+        "npc_alin_dialog.skel",
+        "npc_alin_dialog.atlas"
+      ],
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "npc_afu",
+      "name": "温泉老爷爷·阿福",
+      "category": "character",
+      "chapter": 5,
+      "representative_color": "#2A4060",
+      "skin_color": "#E8B882",
+      "blush": "#D06840",
+      "blush_size_px_2x": 18,
+      "spine_animations": ["idle", "talk", "react"],
+      "expressions": ["default", "satisfied", "enjoying"],
+      "path": "assets/sprites/characters/npc_afu_default@2x.png",
+      "files": [
+        "npc_afu_default@2x.png",
+        "npc_afu_satisfied@2x.png",
+        "npc_afu_enjoying@2x.png",
+        "npc_afu_dialog.skel",
+        "npc_afu_dialog.atlas"
+      ],
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "npc_aming",
+      "name": "灯塔守护者·阿明",
+      "category": "character",
+      "chapter": 6,
+      "representative_color": "#2A3650",
+      "skin_color": "#E8B882",
+      "blush": false,
+      "spine_animations": ["idle", "talk", "react"],
+      "expressions": ["default", "holding", "back"],
+      "special_note": "back表情（背面）用于标志性时刻灯塔亮起瞬间",
+      "path": "assets/sprites/characters/npc_aming_default@2x.png",
+      "files": [
+        "npc_aming_default@2x.png",
+        "npc_aming_holding@2x.png",
+        "npc_aming_back@2x.png",
+        "npc_aming_dialog.skel",
+        "npc_aming_dialog.atlas"
+      ],
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "bg_ch01_harbor",
+      "name": "海边码头背景",
+      "category": "background",
+      "chapter": 1,
+      "size": "1080x1920",
+      "path": "assets/sprites/backgrounds/bg_ch01_harbor_after@2x.png",
+      "files": [
+        "bg_ch01_harbor_before@2x.png",
+        "bg_ch01_harbor_after@2x.png",
+        "bg_ch01_harbor_after_sunset@2x.png"
+      ],
+      "milestone_gate": "batch_1"
+    },
+    {
+      "id": "bg_ch02_village",
+      "name": "竹林村落背景",
+      "category": "background",
+      "chapter": 2,
+      "size": "1080x1920",
+      "path": "assets/sprites/backgrounds/bg_ch02_village_after@2x.png",
+      "files": [
+        "bg_ch02_village_before@2x.png",
+        "bg_ch02_village_after@2x.png"
+      ],
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "bg_ch03_sakura",
+      "name": "樱花坡田背景",
+      "category": "background",
+      "chapter": 3,
+      "size": "1080x1920",
+      "path": "assets/sprites/backgrounds/bg_ch03_sakura_after@2x.png",
+      "files": [
+        "bg_ch03_sakura_before@2x.png",
+        "bg_ch03_sakura_after@2x.png"
+      ],
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "bg_ch04_shrine",
+      "name": "松林神社背景",
+      "category": "background",
+      "chapter": 4,
+      "size": "1080x1920",
+      "path": "assets/sprites/backgrounds/bg_ch04_shrine_after@2x.png",
+      "files": [
+        "bg_ch04_shrine_before@2x.png",
+        "bg_ch04_shrine_after@2x.png"
+      ],
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "bg_ch05_port",
+      "name": "渔村港口背景",
+      "category": "background",
+      "chapter": 5,
+      "size": "1080x1920",
+      "path": "assets/sprites/backgrounds/bg_ch05_port_after@2x.png",
+      "files": [
+        "bg_ch05_port_before@2x.png",
+        "bg_ch05_port_after@2x.png"
+      ],
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "bg_ch06_lighthouse",
+      "name": "夜晚灯塔背景",
+      "category": "background",
+      "chapter": 6,
+      "size": "1080x1920",
+      "path": "assets/sprites/backgrounds/bg_ch06_lighthouse_after@2x.png",
+      "files": [
+        "bg_ch06_lighthouse_before@2x.png",
+        "bg_ch06_lighthouse_after@2x.png",
+        "bg_ch06_lighthouse_overview@2x.png"
+      ],
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "island_base_map",
+      "name": "全岛底图",
+      "category": "island_zone",
+      "chapter": "all",
+      "size": "1080x1920",
+      "path": "assets/sprites/island/island_base_map@2x.png",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "island_lighthouse_beam",
+      "name": "灯塔光柱叠加层",
+      "category": "island_zone",
+      "chapter": 6,
+      "format": "spine",
+      "path": "assets/sprites/island/island_lighthouse_beam.skel",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "zone_ch01_harbor",
+      "name": "海边码头区域",
+      "category": "island_zone",
+      "chapter": 1,
+      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "path": "assets/sprites/island/zone_ch01_harbor_s0@2x.png",
+      "milestone_gate": "batch_2"
+    },
+    {
+      "id": "zone_ch02_village",
+      "name": "竹林村落区域",
+      "category": "island_zone",
+      "chapter": 2,
+      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "path": "assets/sprites/island/zone_ch02_village_s0@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "zone_ch03_sakura",
+      "name": "樱花坡田区域",
+      "category": "island_zone",
+      "chapter": 3,
+      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "path": "assets/sprites/island/zone_ch03_sakura_s0@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "zone_ch04_shrine",
+      "name": "松林神社区域",
+      "category": "island_zone",
+      "chapter": 4,
+      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "path": "assets/sprites/island/zone_ch04_shrine_s0@2x.png",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "zone_ch05_port",
+      "name": "渔村港口区域",
+      "category": "island_zone",
+      "chapter": 5,
+      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "path": "assets/sprites/island/zone_ch05_port_s0@2x.png",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "zone_ch06_lighthouse",
+      "name": "夜晚灯塔区域",
+      "category": "island_zone",
+      "chapter": 6,
+      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "path": "assets/sprites/island/zone_ch06_lighthouse_s0@2x.png",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "ui_navigation",
+      "name": "导航与界面图标组",
+      "category": "ui",
+      "icons": ["IC01_home", "IC02_settings", "IC03_back_arrow", "IC04_close_x", "IC05_menu", "IC06_info", "IC07_check", "IC08_map"],
+      "count": 8,
+      "sizes_px": [24, 32],
+      "path": "assets/sprites/ui/",
+      "milestone_gate": "batch_1"
+    },
+    {
+      "id": "ui_items",
+      "name": "游戏道具图标组",
+      "category": "ui",
+      "icons": ["IC09_hint", "IC10_shuffle", "IC11_add_steps", "IC12_bomb_item", "IC13_lightning_item", "IC14_rainbow_item"],
+      "count": 6,
+      "sizes_px": [48],
+      "path": "assets/sprites/ui/",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "ui_currency",
+      "name": "货币与资源图标组",
+      "category": "ui",
+      "icons": ["IC15_beach_coin", "IC16_glowstone", "IC17_material_wood", "IC18_material_rope", "IC19_material_seed", "IC20_material_generic"],
+      "count": 6,
+      "sizes_px": [24, 32],
+      "path": "assets/sprites/ui/",
+      "milestone_gate": "batch_1"
+    },
+    {
+      "id": "ui_progress",
+      "name": "进度与状态图标组",
+      "category": "ui",
+      "icons": ["IC21_star_empty", "IC22_star_full", "IC23_star_half", "IC24_lock", "IC25_progress_bar_cap", "IC26_glow_energy"],
+      "count": 6,
+      "sizes_px": [24, 32],
+      "path": "assets/sprites/ui/",
+      "milestone_gate": "batch_1"
+    },
+    {
+      "id": "ui_social",
+      "name": "社交与分享图标组",
+      "category": "ui",
+      "icons": ["IC27_share", "IC28_milestone_flag", "IC29_sound_on", "IC30_sound_off"],
+      "count": 4,
+      "sizes_px": [24, 32],
+      "path": "assets/sprites/ui/",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "fx_tile_disappear",
+      "name": "图块消除特效",
+      "category": "vfx",
+      "trigger": "任意图块消除时",
+      "canvas": "160x160",
+      "frames": 12,
+      "fps": 30,
+      "duration_s": 0.4,
+      "color_variants": ["teal", "pink", "gold", "green", "red", "navy"],
+      "format": "png_sequence",
+      "path": "assets/effects/frames/fx_tile_disappear_teal_f01@2x.png",
+      "milestone_gate": "batch_1"
+    },
+    {
+      "id": "fx_combo_popup",
+      "name": "连击气泡",
+      "category": "vfx",
+      "trigger": "连击数 >= 3",
+      "canvas": "220x110",
+      "format": "spine",
+      "path": "assets/effects/spine/fx_combo_popup.skel",
+      "milestone_gate": "batch_2"
+    },
+    {
+      "id": "fx_firefly_chain",
+      "name": "萤火光链效果",
+      "category": "vfx",
+      "trigger": "连接T-Glow萤火提灯块时",
+      "canvas": "1080x1920_fullscreen_overlay",
+      "format": "spine",
+      "path": "assets/effects/spine/fx_firefly_chain.skel",
+      "milestone_gate": "batch_2"
+    },
+    {
+      "id": "fx_area_restore",
+      "name": "区域修复光效",
+      "category": "vfx",
+      "trigger": "区域修复阶段切换时",
+      "canvas": "400x400",
+      "format": "spine",
+      "path": "assets/effects/spine/fx_area_restore.skel",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "fx_pufferfish_pop",
+      "name": "河豚爆炸特效",
+      "category": "vfx",
+      "trigger": "T-Bomb炸弹块激活时",
+      "canvas": "640x640",
+      "duration_s": 0.8,
+      "format": "spine",
+      "path": "assets/effects/spine/fx_pufferfish_pop.skel",
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "fx_tuna_dash",
+      "name": "金枪鱼闪电横扫",
+      "category": "vfx",
+      "trigger": "T-Lightning闪电块激活时",
+      "canvas_row": "1080x160",
+      "canvas_col": "160x1920",
+      "duration_s": 0.5,
+      "format": "spine",
+      "path": "assets/effects/spine/fx_tuna_dash_row.skel",
+      "files": [
+        "fx_tuna_dash_row.skel",
+        "fx_tuna_dash_col.skel"
+      ],
+      "milestone_gate": "batch_3"
+    },
+    {
+      "id": "fx_rainbow_burst",
+      "name": "彩虹鱼爆发特效",
+      "category": "vfx",
+      "trigger": "T-Rainbow彩虹鱼块消除时",
+      "canvas": "320x320",
+      "duration_s": 0.8,
+      "format": "spine",
+      "path": "assets/effects/spine/fx_rainbow_burst.skel",
+      "milestone_gate": "batch_4"
+    },
+    {
+      "id": "fx_lighthouse_beam",
+      "name": "灯塔光柱特效",
+      "category": "vfx",
+      "trigger": "第6章每8步自动触发 / 标志性时刻全岛版",
+      "canvas": "1080x1920_fullscreen",
+      "duration_row_s": 0.6,
+      "duration_island_s": 4.0,
+      "format": "spine",
+      "path": "assets/effects/spine/fx_lighthouse_beam_row.skel",
+      "files": [
+        "fx_lighthouse_beam_row.skel",
+        "fx_lighthouse_beam_island.skel"
+      ],
+      "milestone_gate": "batch_4"
+    }
+  ]
+}

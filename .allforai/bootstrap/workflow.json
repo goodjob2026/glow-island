@@ -9,9 +9,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "narrative-designer",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "blocked_by": [],
-      "unlocks": ["core-loop-design", "character-arc-design", "art-direction"],
+      "unlocks": [
+        "core-loop-design",
+        "character-arc-design",
+        "art-direction"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/worldbuilding.html",
         ".allforai/game-design/systems/worldbuilding.json"
@@ -22,9 +28,18 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "lead-designer",
-      "discipline_reviewers": ["systems-designer"],
-      "blocked_by": ["worldbuilding"],
-      "unlocks": ["ftue-design", "monetization-design", "level-design", "audio-design"],
+      "discipline_reviewers": [
+        "systems-designer"
+      ],
+      "blocked_by": [
+        "worldbuilding"
+      ],
+      "unlocks": [
+        "ftue-design",
+        "monetization-design",
+        "level-design",
+        "audio-design"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/core-loop.html",
         ".allforai/game-design/systems/core-mechanics.json"
@@ -35,9 +50,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "narrative-designer",
-      "discipline_reviewers": ["lead-designer"],
-      "blocked_by": ["worldbuilding"],
-      "unlocks": ["game-design-finalize"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "blocked_by": [
+        "worldbuilding"
+      ],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/character-arc.html",
         ".allforai/game-design/systems/character-arc.json"
@@ -48,9 +69,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "ux-designer",
-      "discipline_reviewers": ["lead-designer"],
-      "blocked_by": ["core-loop-design"],
-      "unlocks": ["game-design-finalize"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "blocked_by": [
+        "core-loop-design"
+      ],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/ftue.html",
         ".allforai/game-design/systems/ftue.json"
@@ -61,9 +88,17 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "monetization-designer",
-      "discipline_reviewers": ["lead-designer", "numeric-designer"],
-      "blocked_by": ["core-loop-design"],
-      "unlocks": ["retention-hook-design", "progression-curve-design"],
+      "discipline_reviewers": [
+        "lead-designer",
+        "numeric-designer"
+      ],
+      "blocked_by": [
+        "core-loop-design"
+      ],
+      "unlocks": [
+        "retention-hook-design",
+        "progression-curve-design"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/monetization.html",
         ".allforai/game-design/systems/monetization-design.json"
@@ -74,9 +109,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "systems-designer",
-      "discipline_reviewers": ["lead-designer"],
-      "blocked_by": ["monetization-design"],
-      "unlocks": ["meta-game-design"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "blocked_by": [
+        "monetization-design"
+      ],
+      "unlocks": [
+        "meta-game-design"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/retention-hook.html",
         ".allforai/game-design/systems/retention-hook.json"
@@ -87,9 +128,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "systems-designer",
-      "discipline_reviewers": ["lead-designer"],
-      "blocked_by": ["retention-hook-design"],
-      "unlocks": ["game-design-finalize"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "blocked_by": [
+        "retention-hook-design"
+      ],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/meta-game.html",
         ".allforai/game-design/systems/meta-game.json"
@@ -100,9 +147,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "level-designer",
-      "discipline_reviewers": ["lead-designer"],
-      "blocked_by": ["core-loop-design"],
-      "unlocks": ["puzzle-design"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "blocked_by": [
+        "core-loop-design"
+      ],
+      "unlocks": [
+        "puzzle-design"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/level-design.html",
         ".allforai/game-design/systems/level-design.json"
@@ -113,9 +166,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "level-designer",
-      "discipline_reviewers": ["lead-designer"],
-      "blocked_by": ["level-design"],
-      "unlocks": ["game-design-finalize"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "blocked_by": [
+        "level-design"
+      ],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/puzzle-design.html",
         ".allforai/game-design/systems/puzzle-design.json"
@@ -126,9 +185,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "numeric-designer",
-      "discipline_reviewers": ["lead-designer"],
-      "blocked_by": ["monetization-design"],
-      "unlocks": ["game-design-finalize"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "blocked_by": [
+        "monetization-design"
+      ],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/progression-curve.html",
         ".allforai/game-design/systems/progression-curve.json"
@@ -139,9 +204,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "audio-director",
-      "discipline_reviewers": ["lead-designer"],
-      "blocked_by": ["core-loop-design"],
-      "unlocks": ["game-design-finalize"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "blocked_by": [
+        "core-loop-design"
+      ],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/audio-design.html",
         ".allforai/game-design/systems/audio-design.json"
@@ -152,9 +223,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "art-director",
-      "discipline_reviewers": ["lead-designer"],
-      "blocked_by": ["worldbuilding"],
-      "unlocks": ["art-spec-design"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "blocked_by": [
+        "worldbuilding"
+      ],
+      "unlocks": [
+        "art-spec-design"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/art-direction-v2.html"
       ]
@@ -164,9 +241,15 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "concept-artist",
-      "discipline_reviewers": ["art-director"],
-      "blocked_by": ["art-direction"],
-      "unlocks": ["ai-art-generation"],
+      "discipline_reviewers": [
+        "art-director"
+      ],
+      "blocked_by": [
+        "art-direction"
+      ],
+      "unlocks": [
+        "ai-art-generation"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/art-spec.html",
         ".allforai/game-design/systems/art-asset-inventory.json"
@@ -176,8 +259,12 @@
       "id": "ai-art-generation",
       "capability": "game-design",
       "human_gate": false,
-      "blocked_by": ["art-spec-design"],
-      "unlocks": ["game-design-finalize"],
+      "blocked_by": [
+        "art-spec-design"
+      ],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "exit_artifacts": [
         ".allforai/game-design/systems/ai-art-manifest.json"
       ]
@@ -187,7 +274,9 @@
       "capability": "game-design",
       "human_gate": true,
       "discipline_owner": "lead-designer",
-      "discipline_reviewers": ["producer"],
+      "discipline_reviewers": [
+        "producer"
+      ],
       "blocked_by": [
         "ftue-design",
         "meta-game-design",
@@ -218,8 +307,14 @@
       "id": "setup-runtime-env",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["game-design-finalize"],
-      "unlocks": ["implement-puzzle-core", "implement-backend-api", "level-editor-tool"],
+      "blocked_by": [
+        "game-design-finalize"
+      ],
+      "unlocks": [
+        "implement-puzzle-core",
+        "implement-backend-api",
+        "level-editor-tool"
+      ],
       "exit_artifacts": [
         ".allforai/bootstrap/runtime-env.json",
         "game-client/package.json",
@@ -232,8 +327,15 @@
       "id": "implement-puzzle-core",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["game-design-finalize", "setup-runtime-env"],
-      "unlocks": ["implement-special-mechanics", "implement-game-session", "stitch-game-client"],
+      "blocked_by": [
+        "game-design-finalize",
+        "setup-runtime-env"
+      ],
+      "unlocks": [
+        "implement-special-mechanics",
+        "implement-game-session",
+        "stitch-game-client"
+      ],
       "exit_artifacts": [
         "game-client/assets/scripts/puzzle/TileGrid.ts",
         "game-client/assets/scripts/puzzle/TileMatcher.ts",
@@ -245,8 +347,12 @@
       "id": "implement-special-mechanics",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["implement-puzzle-core"],
-      "unlocks": ["stitch-game-client"],
+      "blocked_by": [
+        "implement-puzzle-core"
+      ],
+      "unlocks": [
+        "stitch-game-client"
+      ],
       "exit_artifacts": [
         "game-client/assets/scripts/puzzle/SpecialBlock.ts",
         "game-client/assets/scripts/puzzle/BoardEventManager.ts",
@@ -257,8 +363,12 @@
       "id": "implement-game-session",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["implement-puzzle-core"],
-      "unlocks": ["stitch-game-client"],
+      "blocked_by": [
+        "implement-puzzle-core"
+      ],
+      "unlocks": [
+        "stitch-game-client"
+      ],
       "exit_artifacts": [
         "game-client/assets/scripts/game/GameSession.ts",
         "game-client/assets/scripts/game/LevelLoader.ts",
@@ -270,8 +380,12 @@
       "id": "implement-island-map",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["game-design-finalize"],
-      "unlocks": ["stitch-game-client"],
+      "blocked_by": [
+        "game-design-finalize"
+      ],
+      "unlocks": [
+        "stitch-game-client"
+      ],
       "exit_artifacts": [
         "game-client/assets/scripts/meta/IslandMapScene.ts",
         "game-client/assets/scripts/meta/ChapterNode.ts",
@@ -283,8 +397,12 @@
       "id": "implement-ui-systems",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["game-design-finalize"],
-      "unlocks": ["stitch-game-client"],
+      "blocked_by": [
+        "game-design-finalize"
+      ],
+      "unlocks": [
+        "stitch-game-client"
+      ],
       "exit_artifacts": [
         "game-client/assets/scripts/ui/MainMenuScene.ts",
         "game-client/assets/scripts/ui/GameHUD.ts",
@@ -297,8 +415,15 @@
       "id": "implement-backend-api",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["game-design-finalize", "setup-runtime-env"],
-      "unlocks": ["implement-shop-iap", "cross-module-stitch", "demo-forge"],
+      "blocked_by": [
+        "game-design-finalize",
+        "setup-runtime-env"
+      ],
+      "unlocks": [
+        "implement-shop-iap",
+        "cross-module-stitch",
+        "demo-forge"
+      ],
       "exit_artifacts": [
         "backend/src/server.ts",
         "backend/src/routes/auth.ts",
@@ -312,8 +437,12 @@
       "id": "implement-shop-iap",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["implement-backend-api"],
-      "unlocks": ["stitch-game-client"],
+      "blocked_by": [
+        "implement-backend-api"
+      ],
+      "unlocks": [
+        "stitch-game-client"
+      ],
       "exit_artifacts": [
         "game-client/assets/scripts/shop/ShopScene.ts",
         "game-client/assets/scripts/shop/CurrencyDisplay.ts",
@@ -325,8 +454,12 @@
       "id": "implement-audio",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["game-design-finalize"],
-      "unlocks": ["stitch-game-client"],
+      "blocked_by": [
+        "game-design-finalize"
+      ],
+      "unlocks": [
+        "stitch-game-client"
+      ],
       "exit_artifacts": [
         "game-client/assets/scripts/audio/AudioManager.ts",
         "game-client/assets/scripts/audio/AudioConfig.ts"
@@ -336,8 +469,13 @@
       "id": "level-editor-tool",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["game-design-finalize", "setup-runtime-env"],
-      "unlocks": ["demo-forge"],
+      "blocked_by": [
+        "game-design-finalize",
+        "setup-runtime-env"
+      ],
+      "unlocks": [
+        "demo-forge"
+      ],
       "exit_artifacts": [
         "tools/level-editor/src/App.tsx",
         "tools/level-editor/src/components/GridEditor.tsx",
@@ -358,7 +496,10 @@
         "implement-shop-iap",
         "implement-audio"
       ],
-      "unlocks": ["cross-module-stitch", "compile-verify"],
+      "unlocks": [
+        "cross-module-stitch",
+        "compile-verify"
+      ],
       "exit_artifacts": [
         ".allforai/bootstrap/stitch-game-client-report.json"
       ]
@@ -367,8 +508,13 @@
       "id": "cross-module-stitch",
       "capability": "translate",
       "human_gate": false,
-      "blocked_by": ["stitch-game-client", "implement-backend-api"],
-      "unlocks": ["compile-verify"],
+      "blocked_by": [
+        "stitch-game-client",
+        "implement-backend-api"
+      ],
+      "unlocks": [
+        "compile-verify"
+      ],
       "exit_artifacts": [
         ".allforai/bootstrap/cross-module-stitch-report.json"
       ]
@@ -377,8 +523,14 @@
       "id": "compile-verify",
       "capability": "compile-verify",
       "human_gate": false,
-      "blocked_by": ["stitch-game-client", "cross-module-stitch"],
-      "unlocks": ["demo-forge", "e2e-test"],
+      "blocked_by": [
+        "stitch-game-client",
+        "cross-module-stitch"
+      ],
+      "unlocks": [
+        "demo-forge",
+        "e2e-test"
+      ],
       "exit_artifacts": [
         ".allforai/bootstrap/compile-result.json"
       ]
@@ -387,8 +539,14 @@
       "id": "demo-forge",
       "capability": "demo-forge",
       "human_gate": false,
-      "blocked_by": ["compile-verify", "level-editor-tool", "implement-backend-api"],
-      "unlocks": ["e2e-test"],
+      "blocked_by": [
+        "compile-verify",
+        "level-editor-tool",
+        "implement-backend-api"
+      ],
+      "unlocks": [
+        "e2e-test"
+      ],
       "exit_artifacts": [
         ".allforai/bootstrap/demo-data-report.json"
       ]
@@ -397,8 +555,13 @@
       "id": "e2e-test",
       "capability": "product-verify",
       "human_gate": false,
-      "blocked_by": ["compile-verify", "demo-forge"],
-      "unlocks": ["concept-acceptance"],
+      "blocked_by": [
+        "compile-verify",
+        "demo-forge"
+      ],
+      "unlocks": [
+        "concept-acceptance"
+      ],
       "exit_artifacts": [
         ".allforai/bootstrap/e2e-report.json"
       ]
@@ -407,7 +570,9 @@
       "id": "concept-acceptance",
       "capability": "concept-acceptance",
       "human_gate": false,
-      "blocked_by": ["e2e-test"],
+      "blocked_by": [
+        "e2e-test"
+      ],
       "unlocks": [],
       "exit_artifacts": [
         ".allforai/product-concept/concept-baseline.json",
@@ -415,5 +580,287 @@
       ]
     }
   ],
-  "transition_log": []
+  "transition_log": [
+    {
+      "node": "worldbuilding",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        "allforai/game-design/worldbuilding.html",
+        ".allforai/game-design/systems/worldbuilding.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "core-loop-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/core-loop.html",
+        ".allforai/game-design/systems/core-mechanics.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "monetization-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/monetization.html",
+        ".allforai/game-design/systems/monetization-design.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "level-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/level-design.html",
+        ".allforai/game-design/systems/level-design.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "puzzle-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/puzzle-design.html",
+        ".allforai/game-design/systems/puzzle-design.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "progression-curve-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/progression-curve.html",
+        ".allforai/game-design/systems/progression-curve.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "art-direction",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/art-direction-v2.html"
+      ],
+      "error": null
+    },
+    {
+      "node": "art-spec-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/art-spec.html",
+        ".allforai/game-design/systems/art-asset-inventory.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "character-arc-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/character-arc.html",
+        ".allforai/game-design/systems/character-arc.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "ftue-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/ftue.html",
+        ".allforai/game-design/systems/ftue.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "retention-hook-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/retention-hook.html",
+        ".allforai/game-design/systems/retention-hook.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "audio-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/audio-design.html",
+        ".allforai/game-design/systems/audio-design.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "meta-game-design",
+      "status": "completed",
+      "started_at": "2026-05-08T12:00:00Z",
+      "completed_at": "2026-05-08T12:30:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/meta-game.html",
+        ".allforai/game-design/systems/meta-game.json"
+      ],
+      "error": null
+    },
+    {
+      "node": "setup-runtime-env",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "implement-puzzle-core",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "implement-special-mechanics",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "implement-game-session",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "implement-island-map",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "implement-ui-systems",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "implement-backend-api",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "implement-shop-iap",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "implement-audio",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "level-editor-tool",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "stitch-game-client",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "cross-module-stitch",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "compile-verify",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "demo-forge",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "e2e-test",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "concept-acceptance",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [],
+      "error": null
+    },
+    {
+      "node": "game-design-finalize",
+      "status": "completed",
+      "started_at": "2026-05-08T00:00:00Z",
+      "completed_at": "2026-05-08T12:40:00Z",
+      "artifacts_created": [
+        ".allforai/game-design/gdd-dashboard.html",
+        ".allforai/game-design/game-design-doc.json"
+      ],
+      "error": null
+    }
+  ]
 }

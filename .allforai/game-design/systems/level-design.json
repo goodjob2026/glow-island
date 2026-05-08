@@ -1,0 +1,200 @@
+{
+  "version": "2.0",
+  "generated_at": "2026-05-08",
+  "source": "level-design.json + progression-curve.json",
+  "total_levels": 136,
+  "chapters": 6,
+  "grid_range": {
+    "min": [4, 4],
+    "max": [10, 10]
+  },
+  "chapters_detail": [
+    {
+      "chapter": 1,
+      "theme": "海边码头",
+      "level_count": 22,
+      "level_range": "1-1 ~ 1-22",
+      "grid_range": "4×4 → 6×6",
+      "tile_types_introduced": ["T01", "T02", "T03", "T04"],
+      "unlock_condition": "default_start",
+      "material_reward": "shell_fragment"
+    },
+    {
+      "chapter": 2,
+      "theme": "中央小镇",
+      "level_count": 23,
+      "level_range": "2-1 ~ 2-23",
+      "grid_range": "6×6 → 7×7",
+      "tile_types_introduced": ["T05", "T06", "T07", "T08"],
+      "unlock_condition": "complete 1-15 + materials",
+      "material_reward": "clay_shard"
+    },
+    {
+      "chapter": 3,
+      "theme": "花田山坡",
+      "level_count": 23,
+      "level_range": "3-1 ~ 3-23",
+      "grid_range": "6×6 → 7×7",
+      "tile_types_introduced": ["T09", "T10", "T11", "T12"],
+      "unlock_condition": "complete 2-15 + materials",
+      "material_reward": "pine_needle"
+    },
+    {
+      "chapter": 4,
+      "theme": "森林露营地",
+      "level_count": 22,
+      "level_range": "4-1 ~ 4-22",
+      "grid_range": "7×7 → 8×8",
+      "tile_types_introduced": ["T13", "T14", "T15", "T16"],
+      "unlock_condition": "complete 3-15 + materials",
+      "material_reward": "torii_fragment"
+    },
+    {
+      "chapter": 5,
+      "theme": "温泉山谷",
+      "level_count": 23,
+      "level_range": "5-1 ~ 5-23",
+      "grid_range": "8×8 → 9×9",
+      "tile_types_introduced": ["T17", "T18"],
+      "unlock_condition": "complete 4-15 + materials",
+      "material_reward": "rope_fiber"
+    },
+    {
+      "chapter": 6,
+      "theme": "夜晚灯塔",
+      "level_count": 23,
+      "level_range": "6-1 ~ 6-23",
+      "grid_range": "8×8 → 10×10",
+      "tile_types_introduced": ["T19", "T20"],
+      "unlock_condition": "complete 5-15 + materials",
+      "material_reward": "lantern_glass"
+    }
+  ],
+  "mechanics_by_chapter": {
+    "1": {
+      "new_mechanics": ["基础连连看", "连击系统(combo)", "特殊块:bomb(3连击)"],
+      "obstacles_introduced": [],
+      "board_events_introduced": [],
+      "special_blocks_available": ["bomb"]
+    },
+    "2": {
+      "new_mechanics": ["冰封块(1层)", "杂草障碍", "风车(4连击)"],
+      "obstacles_introduced": ["ice_block", "weed"],
+      "board_events_introduced": [],
+      "special_blocks_available": ["bomb", "windmill"]
+    },
+    "3": {
+      "new_mechanics": ["锁链(1~2环)", "传送门(零转弯代价)", "冰封块升级至2层", "灯光块(关卡预置)"],
+      "obstacles_introduced": ["chain_lock", "portal"],
+      "board_events_introduced": [],
+      "special_blocks_available": ["bomb", "windmill", "lantern"]
+    },
+    "4": {
+      "new_mechanics": ["单路径通道", "木箱障碍(永久)", "冰封块升级至3层", "锁链升级至3环", "海浪块(关卡预置)"],
+      "obstacles_introduced": ["single_path_corridor", "wooden_crate"],
+      "board_events_introduced": [],
+      "special_blocks_available": ["bomb", "windmill", "lantern", "wave"]
+    },
+    "5": {
+      "new_mechanics": ["重力下落(tile_fall)", "方块滑落(tile_slide)", "棋盘旋转(board_rotate)", "水流障碍"],
+      "obstacles_introduced": ["water_current"],
+      "board_events_introduced": ["tile_fall", "tile_slide", "board_rotate", "water_flow"],
+      "special_blocks_available": ["bomb", "windmill", "lantern", "wave"]
+    },
+    "6": {
+      "new_mechanics": ["扩散障碍(藤蔓/苔藓)", "所有20种图块全部启用", "全机制组合挑战"],
+      "obstacles_introduced": ["spreading_obstacle"],
+      "board_events_introduced": ["vine_spread"],
+      "special_blocks_available": ["bomb", "windmill", "lantern", "wave"]
+    }
+  },
+  "objective_types": [
+    {
+      "type": "clear_tiles",
+      "introduced_chapter": 1,
+      "description": "消除指定数量的图块（任意颜色或指定颜色）",
+      "key_fields": ["tile_type", "count"]
+    },
+    {
+      "type": "clear_ice",
+      "introduced_chapter": 2,
+      "description": "解冻指定数量的冰封块（在冰块附近完成匹配）",
+      "key_fields": ["count"]
+    },
+    {
+      "type": "free_chains",
+      "introduced_chapter": 3,
+      "description": "解开指定数量的锁链（在锁链附近完成 required_matches 次匹配）",
+      "key_fields": ["count"]
+    },
+    {
+      "type": "traverse_path",
+      "introduced_chapter": 4,
+      "description": "穿越指定数量的单路径通道（路径内的格子按顺序连接消除）",
+      "key_fields": ["corridor_count"]
+    },
+    {
+      "type": "survive_spread",
+      "introduced_chapter": 6,
+      "description": "在步数耗尽前阻止扩散障碍占满指定数量的格子",
+      "key_fields": ["tile_count", "spreading_obstacle_type"]
+    }
+  ],
+  "obstacle_types": [
+    { "type": "ice_block", "introduced_chapter": 2, "max_layers": 3 },
+    { "type": "weed", "introduced_chapter": 2 },
+    { "type": "chain_lock", "introduced_chapter": 3, "max_rings": 3 },
+    { "type": "portal", "introduced_chapter": 3, "roles": ["entry", "exit"] },
+    { "type": "single_path_corridor", "introduced_chapter": 4 },
+    { "type": "wooden_crate", "introduced_chapter": 4, "permanent": true },
+    { "type": "water_current", "introduced_chapter": 5 },
+    { "type": "spreading_obstacle", "introduced_chapter": 6, "variants": ["moss", "vine"] }
+  ],
+  "special_block_types": [
+    { "type": "bomb", "introduced_chapter": 1, "trigger": "3-combo", "effect": "3×3 area clear" },
+    { "type": "windmill", "introduced_chapter": 2, "trigger": "4-combo", "effect": "row + column clear" },
+    { "type": "lantern", "introduced_chapter": 3, "trigger": "preset", "effect": "reveal/activate all ice and chains" },
+    { "type": "wave", "introduced_chapter": 4, "trigger": "preset", "effect": "full-row slide" }
+  ],
+  "board_event_types": [
+    { "type": "tile_fall", "introduced_chapter": 5 },
+    { "type": "tile_slide", "introduced_chapter": 5 },
+    { "type": "board_rotate", "introduced_chapter": 5 },
+    { "type": "water_flow", "introduced_chapter": 5 },
+    { "type": "vine_spread", "introduced_chapter": 6 }
+  ],
+  "pacing": "3:1 standard:breather",
+  "pacing_detail": {
+    "pattern": "每3关标准难度后安排1关喘息关",
+    "breather_criteria": "目标数较前3关降低约30%，emotional_note含轻松意象",
+    "examples": ["1-5 (Breather: sit on the pier)", "5-15 (a bamboo ladle of spring water)"]
+  },
+  "difficulty_curve": {
+    "type": "gradual_ascent_with_chapter_resets",
+    "chapter_reset_behavior": "每章开始前3关难度回落约15%，给予缓冲期",
+    "overall_shape": "6段锯齿上升曲线，每段内部三段式（宽松-标准-挑战）",
+    "range": { "min": 1.0, "max": 10.0 }
+  },
+  "tutorial_levels": {
+    "1-1": "无文字教学：初识连接（直线连接同色图块）",
+    "1-2": "无文字教学：目标数量感知（目标计数器 UI 引导）",
+    "1-3": "无文字教学：折线路径探索（L形路径连接）"
+  },
+  "json_format": {
+    "schema_version": "2.0",
+    "required_fields": ["id", "chapter", "level", "grid_size", "tile_types", "objectives", "max_moves", "obstacles", "special_blocks", "board_events", "material_reward", "coin_reward"],
+    "optional_fields": ["emotional_note"],
+    "id_format": "<chapter>-<level>",
+    "grid_size_format": "[width, height]",
+    "max_moves_null_means": "unlimited (tutorial levels only)"
+  },
+  "economy": {
+    "total_coin_reward_all_chapters": 14463,
+    "material_surplus_pct_range": "7%–18% (tighter in later chapters)",
+    "estimated_playtime_hours": {
+      "fast_player": 12.0,
+      "median_player": 18.5,
+      "casual_player": 28.0
+    }
+  }
+}

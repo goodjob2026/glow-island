@@ -1,0 +1,91 @@
+{
+  "schema": "ai-art-manifest-v1",
+  "generated_at": "2026-05-08T12:30:00Z",
+  "status": "spec_complete_generation_deferred",
+  "note": "AI art generation deferred — requires FLUX 2 Pro / Imagen 4 API keys. This manifest documents what will be generated. Run ai-art-generation node with AI tools configured to produce actual assets.",
+  "source_spec": ".allforai/game-design/systems/art-asset-inventory.json",
+  "total_assets_planned": 343,
+  "generation_priority": [
+    {
+      "priority": 1,
+      "milestone": "alpha",
+      "description": "Core tile set (20 base tiles × 4 states) + 4 special tiles",
+      "asset_count": 24,
+      "ai_tool": "flux-2-pro",
+      "style_prompt_base": "Animal Crossing style, rounded soft shapes, pastel warm colors, Japanese island theme, white background, 128x128 pixel icon, clean edges"
+    },
+    {
+      "priority": 2,
+      "milestone": "alpha",
+      "description": "Chapter backgrounds (12 before/after + 2 special)",
+      "asset_count": 14,
+      "ai_tool": "imagen-4",
+      "style_prompt_base": "Japanese island landscape, Animal Crossing aesthetic, soft pastel colors, warm sunlight, 1080x1920 portrait, healing atmosphere"
+    },
+    {
+      "priority": 3,
+      "milestone": "alpha",
+      "description": "Island zone states (1 base map + 30 zone PNGs)",
+      "asset_count": 31,
+      "ai_tool": "imagen-4",
+      "style_prompt_base": "Top-down Japanese island map, Animal Crossing art style, soft greens and blues, restoration states from grey to vibrant"
+    },
+    {
+      "priority": 4,
+      "milestone": "beta",
+      "description": "NPC character expressions (5 NPCs × 3 expressions)",
+      "asset_count": 15,
+      "ai_tool": "flux-2-pro",
+      "style_prompt_base": "Animal Crossing character style, Japanese villager, soft rounded features, warm expression, transparent background"
+    },
+    {
+      "priority": 5,
+      "milestone": "beta",
+      "description": "UI icons and elements",
+      "asset_count": 30,
+      "ai_tool": "flux-2-pro",
+      "style_prompt_base": "Mobile game UI icon, flat design, warm pastel Japanese theme, clean vector-style"
+    },
+    {
+      "priority": 6,
+      "milestone": "gold",
+      "description": "VFX sprite sequences and remaining assets",
+      "asset_count": 229,
+      "ai_tool": "flux-2-pro",
+      "style_prompt_base": "Game VFX particle effects, sparkle and glow, warm pastel colors, Japanese aesthetic"
+    }
+  ],
+  "tile_prompts": [
+    {"tile_id": "T01", "name_jp": "石", "prompt": "smooth grey stone, rounded shape, Animal Crossing style icon, pastel, 128x128, white background"},
+    {"tile_id": "T02", "name_jp": "木", "prompt": "small wooden log, rounded shape, Animal Crossing style icon, warm brown, 128x128, white background"},
+    {"tile_id": "T03", "name_jp": "貝", "prompt": "spiral seashell, soft pink, rounded, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T04", "name_jp": "花", "prompt": "small flower blossom, pink petals, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T05", "name_jp": "陶器", "prompt": "small ceramic pot, light blue glaze, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T06", "name_jp": "茶碗", "prompt": "tea bowl, warm beige, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T07", "name_jp": "土", "prompt": "lump of clay, earthy brown, rounded, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T08", "name_jp": "釉", "prompt": "glaze drop, shiny blue-green, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T09", "name_jp": "苔", "prompt": "moss clump, deep green, soft texture, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T10", "name_jp": "種", "prompt": "seed pods, warm tan, rounded, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T11", "name_jp": "葉", "prompt": "leaf, bright green, soft shape, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T12", "name_jp": "茸", "prompt": "small mushroom, red cap white spots, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T13", "name_jp": "石畳", "prompt": "cobblestone tile piece, grey-brown, flat, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T14", "name_jp": "提灯", "prompt": "paper lantern, soft orange glow, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T15", "name_jp": "縄", "prompt": "coiled rope, natural hemp color, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T16", "name_jp": "桜", "prompt": "cherry blossom petal, soft pink, delicate, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T17", "name_jp": "石英", "prompt": "quartz crystal, translucent white with pink tint, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T18", "name_jp": "星砂", "prompt": "star sand grain, tiny white star shape, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T19", "name_jp": "灯油", "prompt": "lamp oil bottle, amber liquid, warm glass, Animal Crossing style icon, 128x128, white background"},
+    {"tile_id": "T20", "name_jp": "硝子", "prompt": "glass shard, clear with light blue tint, Animal Crossing style icon, 128x128, white background"}
+  ],
+  "generation_config": {
+    "primary_tool": "flux-2-pro",
+    "fallback_tool": "imagen-4",
+    "output_format": "png",
+    "output_size": "128x128",
+    "style_lora": null,
+    "negative_prompt": "photorealistic, dark colors, aggressive, sharp edges, complex background, text"
+  },
+  "deferred_reason": "AI generation tools (FLUX 2 Pro / Imagen 4) require API key configuration via /setup. All prompts are ready — run after /setup check confirms ai-gateway tools.",
+  "estimated_generation_time_minutes": 45,
+  "total_api_calls_estimated": 343
+}

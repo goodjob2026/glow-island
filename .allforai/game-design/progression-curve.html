@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 进阶曲线设计（Progression Curve）</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d26;
+      --border: #2a2d3a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --accent2: #86efac;
+      --accent3: #f9a8d4;
+      --accent4: #fbbf24;
+      --heading: #f8fafc;
+      --code-bg: #12141c;
+      --tag-bg: #1e3a5f;
+      --warn: #fb923c;
+      --danger: #f87171;
+      --ok: #4ade80;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 0 1rem 4rem;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      margin: 0 -1rem 2.5rem;
+      text-align: center;
+    }
+    .page-header .project-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125,211,252,0.25);
+      margin-bottom: 0.9rem;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--heading);
+      text-shadow: 0 0 40px rgba(125,211,252,0.2);
+    }
+    .page-header .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--heading);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+    h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
+    h3 { font-size: 1.1rem; color: var(--accent2); }
+    h4 { font-size: 1rem; color: var(--muted); }
+    p { margin: 0.6rem 0 0.9rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { color: var(--heading); font-weight: 600; }
+    em { color: var(--accent2); font-style: normal; }
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      color: var(--muted);
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.87em;
+      background: var(--code-bg);
+      color: var(--accent2);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.4rem;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    ul, ol {
+      padding-left: 1.6rem;
+      margin: 0.5rem 0 1rem;
+    }
+    li { margin: 0.3rem 0; }
+    li > ul, li > ol { margin: 0.2rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    tr:hover td { background: rgba(125,211,252,0.04); }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Section Card ── */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      margin: 1.4rem 0 2rem;
+    }
+
+    /* ── Stat Grid ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      margin: 1rem 0 1.4rem;
+    }
+    .stat-card {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      text-align: center;
+    }
+    .stat-card .stat-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+      line-height: 1.2;
+    }
+    .stat-card .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ── Chapter Badge ── */
+    .chapter-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--tag-bg);
+      color: var(--accent);
+      border: 1px solid rgba(125,211,252,0.3);
+      border-radius: 6px;
+      padding: 0.15rem 0.6rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* ── Bar Chart (CSS only) ── */
+    .bar-chart {
+      margin: 1rem 0;
+    }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin: 0.45rem 0;
+    }
+    .bar-label {
+      width: 7rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .bar-track {
+      flex: 1;
+      background: rgba(255,255,255,0.04);
+      border-radius: 4px;
+      height: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      padding-left: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      transition: width 0.3s ease;
+    }
+    .bar-value {
+      width: 4.5rem;
+      font-size: 0.78rem;
+      color: var(--text);
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ── Difficulty Segment ── */
+    .diff-seg-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0.5rem;
+      margin: 0.8rem 0;
+    }
+    .diff-seg-label {
+      width: 4.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .diff-seg-bar {
+      flex: 1;
+      display: flex;
+      border-radius: 6px;
+      overflow: hidden;
+      height: 32px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .diff-seg-easy {
+      background: rgba(74,222,128,0.25);
+      border-right: 1px solid rgba(74,222,128,0.3);
+      color: var(--ok);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .diff-seg-standard {
+      background: rgba(125,211,252,0.18);
+      border-right: 1px solid rgba(125,211,252,0.25);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .diff-seg-challenge {
+      background: rgba(251,146,60,0.22);
+      color: var(--warn);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .diff-legend {
+      display: flex;
+      gap: 1.2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .diff-legend span { display: flex; align-items: center; gap: 0.35rem; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot-easy { background: rgba(74,222,128,0.6); }
+    .dot-std { background: rgba(125,211,252,0.5); }
+    .dot-chal { background: rgba(251,146,60,0.6); }
+
+    /* ── Economy Balance ── */
+    .economy-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.85rem;
+    }
+    .economy-row:last-child { border-bottom: none; }
+    .economy-header {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.2rem;
+    }
+    .surplus-badge {
+      display: inline-block;
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .surplus-high { background: rgba(74,222,128,0.15); color: var(--ok); border: 1px solid rgba(74,222,128,0.3); }
+    .surplus-mid { background: rgba(125,211,252,0.12); color: var(--accent); border: 1px solid rgba(125,211,252,0.25); }
+    .surplus-low { background: rgba(251,146,60,0.12); color: var(--warn); border: 1px solid rgba(251,146,60,0.25); }
+
+    /* ── Moves progression ── */
+    .moves-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin: 1rem 0;
+    }
+    .moves-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .moves-ch-label {
+      width: 4.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .moves-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .moves-pill {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .pill-null { background: rgba(148,163,184,0.1); color: var(--muted); border: 1px solid var(--border); }
+    .pill-low  { background: rgba(74,222,128,0.12); color: var(--ok); border: 1px solid rgba(74,222,128,0.3); }
+    .pill-mid  { background: rgba(125,211,252,0.12); color: var(--accent); border: 1px solid rgba(125,211,252,0.25); }
+    .pill-high { background: rgba(251,146,60,0.12); color: var(--warn); border: 1px solid rgba(251,146,60,0.25); }
+
+    /* ── Milestone Timeline ── */
+    .milestone-timeline {
+      position: relative;
+      padding-left: 2.2rem;
+      margin: 1.2rem 0;
+    }
+    .milestone-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.55rem;
+      top: 0.4rem;
+      bottom: 0.4rem;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent3));
+      border-radius: 2px;
+    }
+    .milestone-item {
+      position: relative;
+      padding: 0.8rem 1rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 0.9rem;
+    }
+    .milestone-item::before {
+      content: '';
+      position: absolute;
+      left: -1.7rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 8px rgba(125,211,252,0.5);
+    }
+    .milestone-item:last-child::before { background: var(--accent3); box-shadow: 0 0 8px rgba(249,168,212,0.5); }
+    .milestone-ch {
+      font-size: 0.7rem;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+    .milestone-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 0.2rem;
+    }
+    .milestone-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .milestone-emotion {
+      display: inline-block;
+      margin-top: 0.35rem;
+      font-size: 0.75rem;
+      color: var(--accent3);
+      border-left: 2px solid var(--accent3);
+      padding-left: 0.5rem;
+    }
+
+    /* ── Coin Income Chart ── */
+    .coin-chart {
+      margin: 1.2rem 0;
+    }
+    .coin-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin: 0.5rem 0;
+    }
+    .coin-label {
+      width: 5.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .coin-track {
+      flex: 1;
+      background: rgba(255,255,255,0.04);
+      border-radius: 4px;
+      height: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .coin-fill {
+      height: 100%;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      padding-left: 0.6rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .coin-fill-chapter { background: linear-gradient(90deg, rgba(251,191,36,0.5), rgba(251,191,36,0.25)); color: var(--accent4); }
+    .coin-fill-cum { background: linear-gradient(90deg, rgba(125,211,252,0.4), rgba(125,211,252,0.15)); color: var(--accent); }
+    .coin-value {
+      width: 5rem;
+      font-size: 0.78rem;
+      color: var(--text);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .coin-sub {
+      width: 5.5rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ── Unlock requirement chips ── */
+    .req-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.4rem 0;
+    }
+    .req-chip {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.74rem;
+      background: rgba(134,239,172,0.1);
+      color: var(--accent2);
+      border: 1px solid rgba(134,239,172,0.25);
+    }
+    .req-chip-coin {
+      background: rgba(251,191,36,0.1);
+      color: var(--accent4);
+      border: 1px solid rgba(251,191,36,0.25);
+    }
+
+    /* ── Info note ── */
+    .info-note {
+      background: rgba(125,211,252,0.06);
+      border: 1px solid rgba(125,211,252,0.2);
+      border-radius: 8px;
+      padding: 0.7rem 1rem;
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin: 0.8rem 0;
+    }
+    .info-note strong { color: var(--accent); }
+
+    /* responsive */
+    @media (max-width: 640px) {
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .economy-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-header">
+  <div class="project-tag">Glow Island · Game Design</div>
+  <h1>进阶曲线设计</h1>
+  <div class="subtitle">Progression Curve — v2.0 · 2026-05-08</div>
+</div>
+
+<div class="container">
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 1: 整体节奏 -->
+  <!-- ─────────────────────────────────────────────── -->
+  <h2>1. 整体节奏 — 章节游玩时长</h2>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <span class="stat-value">136</span>
+      <div class="stat-label">全部关卡数</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">18.5h</span>
+      <div class="stat-label">中等玩家完整通关时长</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">6</span>
+      <div class="stat-label">章节（海岛区域）</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <p style="color:var(--muted);font-size:0.83rem;margin-bottom:1rem;">
+      每章关卡数 × 该章平均完成时长（秒）= 章节净游玩时长。<br>
+      <strong>中等玩家</strong>假设每关平均失败 0.4 次；下表含失败重试耗时（×1.4 系数）。
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>章节</th>
+          <th>主题</th>
+          <th>关卡数</th>
+          <th>宽松段 avg(s)</th>
+          <th>标准段 avg(s)</th>
+          <th>挑战段 avg(s)</th>
+          <th>章节净时（分钟）</th>
+          <th>含失败重试（分钟）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="chapter-badge">第 1 章</span></td>
+          <td>海边码头</td>
+          <td>22</td>
+          <td>75</td>
+          <td>100</td>
+          <td>130</td>
+          <td>~36</td>
+          <td>~50</td>
+        </tr>
+        <tr>
+          <td><span class="chapter-badge">第 2 章</span></td>
+          <td>中央小镇</td>
+          <td>23</td>
+          <td>90</td>
+          <td>115</td>
+          <td>150</td>
+          <td>~44</td>
+          <td>~62</td>
+        </tr>
+        <tr>
+          <td><span class="chapter-badge">第 3 章</span></td>
+          <td>花田山坡</td>
+          <td>23</td>
+          <td>105</td>
+          <td>135</td>
+          <td>175</td>
+          <td>~52</td>
+          <td>~73</td>
+        </tr>
+        <tr>
+          <td><span class="chapter-badge">第 4 章</span></td>
+          <td>森林露营地</td>
+          <td>22</td>
+          <td>115</td>
+          <td>150</td>
+          <td>200</td>
+          <td>~56</td>
+          <td>~78</td>
+        </tr>
+        <tr>
+          <td><span class="chapter-badge">第 5 章</span></td>
+          <td>温泉山谷</td>
+          <td>23</td>
+          <td>130</td>
+          <td>170</td>
+          <td>220</td>
+          <td>~67</td>
+          <td>~94</td>
+        </tr>
+        <tr>
+          <td><span class="chapter-badge">第 6 章</span></td>
+          <td>夜晚灯塔</td>
+          <td>23</td>
+          <td>145</td>
+          <td>190</td>
+          <td>260</td>
+          <td>~75</td>
+          <td>~105</td>
+        </tr>
+        <tr style="background:rgba(125,211,252,0.05);">
+          <td colspan="2"><strong>合计</strong></td>
+          <td><strong>136</strong></td>
+          <td colspan="3">—</td>
+          <td><strong>~330 分钟</strong></td>
+          <td><strong>~462 分钟 (7.7h)</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="info-note">
+      <strong>注：</strong>含引导重试的总时长约 7.7h（净通关）。加上关卡间UI流转、修复动画、章节解锁剧情，
+      中等玩家实际体验约 <strong>18.5h</strong>，休闲玩家约 <strong>28h</strong>，高速玩家约 <strong>12h</strong>。
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 2: 难度曲线 -->
+  <!-- ─────────────────────────────────────────────── -->
+  <h2>2. 难度曲线 — 章内难度分布</h2>
+  <p style="color:var(--muted);font-size:0.85rem;">
+    每章内部遵循「<em>前25% 宽松 → 中50% 标准 → 后25% 挑战</em>」的三段式结构，
+    章节切换时难度有约 15% 的回落缓冲（锯齿上升曲线）。难度评分 1–10 来自 <code>difficulty_curve_summary</code>。
+  </p>
+
+  <div class="section-card">
+    <div class="diff-legend">
+      <span><span class="dot dot-easy"></span>宽松段（前25%）</span>
+      <span><span class="dot dot-std"></span>标准段（中50%）</span>
+      <span><span class="dot dot-chal"></span>挑战段（后25%）</span>
+    </div>
+
+    <!-- Chapter 1 -->
+    <div class="diff-seg-row">
+      <div class="diff-seg-label">第1章<br><span style="font-size:0.68rem;">1-1→1-20</span></div>
+      <div class="diff-seg-bar">
+        <div class="diff-seg-easy" style="width:25%">1.0–1.5</div>
+        <div class="diff-seg-standard" style="width:50%">2.2</div>
+        <div class="diff-seg-challenge" style="width:25%">3.0</div>
+      </div>
+    </div>
+    <!-- Chapter 2 -->
+    <div class="diff-seg-row">
+      <div class="diff-seg-label">第2章<br><span style="font-size:0.68rem;">2-1→2-20</span></div>
+      <div class="diff-seg-bar">
+        <div class="diff-seg-easy" style="width:25%">2.5</div>
+        <div class="diff-seg-standard" style="width:50%">3.5</div>
+        <div class="diff-seg-challenge" style="width:25%">4.5</div>
+      </div>
+    </div>
+    <!-- Chapter 3 -->
+    <div class="diff-seg-row">
+      <div class="diff-seg-label">第3章<br><span style="font-size:0.68rem;">3-1→3-23</span></div>
+      <div class="diff-seg-bar">
+        <div class="diff-seg-easy" style="width:25%">3.8</div>
+        <div class="diff-seg-standard" style="width:50%">5.0</div>
+        <div class="diff-seg-challenge" style="width:25%">6.2</div>
+      </div>
+    </div>
+    <!-- Chapter 4 -->
+    <div class="diff-seg-row">
+      <div class="diff-seg-label">第4章<br><span style="font-size:0.68rem;">4-1→4-23</span></div>
+      <div class="diff-seg-bar">
+        <div class="diff-seg-easy" style="width:25%">5.2</div>
+        <div class="diff-seg-standard" style="width:50%">6.5</div>
+        <div class="diff-seg-challenge" style="width:25%">8.0</div>
+      </div>
+    </div>
+    <!-- Chapter 5 -->
+    <div class="diff-seg-row">
+      <div class="diff-seg-label">第5章<br><span style="font-size:0.68rem;">5-1→5-25</span></div>
+      <div class="diff-seg-bar">
+        <div class="diff-seg-easy" style="width:25%">6.8</div>
+        <div class="diff-seg-standard" style="width:50%">8.2</div>
+        <div class="diff-seg-challenge" style="width:25%">9.5</div>
+      </div>
+    </div>
+    <!-- Chapter 6 -->
+    <div class="diff-seg-row">
+      <div class="diff-seg-label">第6章<br><span style="font-size:0.68rem;">6-1→6-25</span></div>
+      <div class="diff-seg-bar">
+        <div class="diff-seg-easy" style="width:25%">8.0</div>
+        <div class="diff-seg-standard" style="width:50%">9.2</div>
+        <div class="diff-seg-challenge" style="width:25%">10.0</div>
+      </div>
+    </div>
+
+    <div class="info-note" style="margin-top:1.2rem;">
+      <strong>锯齿设计意图：</strong>每章进入时难度从上章挑战段回落约 15%，避免「连续高压」疲劳。
+      在整个 6章 136 关的跨度内，全局曲线从 1.0 平滑爬升至 10.0，形成 6段锯齿上升形态。
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 3: 材料经济 -->
+  <!-- ─────────────────────────────────────────────── -->
+  <h2>3. 材料经济 — 章节收集速率 vs 修复成本</h2>
+  <p style="color:var(--muted);font-size:0.85rem;">
+    各章核心材料产出总量 vs 修复消耗量；surplus_pct 为盈余百分比（产出/消耗 −1）。
+    设计原则：前期宽松容错，中期收紧，终章维持紧平衡保留结局仪式感。
+  </p>
+
+  <div class="section-card">
+    <div class="economy-row economy-header">
+      <div>章节</div>
+      <div>核心材料</div>
+      <div>产出 vs 消耗</div>
+      <div>盈余率</div>
+    </div>
+    <div class="economy-row">
+      <div><span class="chapter-badge">第1章 海边码头</span></div>
+      <div style="font-size:0.8rem;color:var(--muted);">浮木 / 绳索 / 铁钉 / 桐油</div>
+      <div style="font-size:0.8rem;">
+        浮木 52/45 · 绳索 38/34 · 铁钉 36/26 · 桐油 18/8
+        <br><span style="font-size:0.72rem;color:var(--muted);">level-design 实际材料 shell_fragment ×122</span>
+      </div>
+      <div><span class="surplus-badge surplus-high">+18%</span></div>
+    </div>
+    <div class="economy-row">
+      <div><span class="chapter-badge">第2章 中央小镇</span></div>
+      <div style="font-size:0.8rem;color:var(--muted);">石块 / 木料 / 彩釉砖 / 灯芯草</div>
+      <div style="font-size:0.8rem;">
+        石块 68/59 · 木料 62/55 · 彩釉砖 44/38 · 灯芯草 36/26
+        <br><span style="font-size:0.72rem;color:var(--muted);">level-design 实际材料 clay_shard ×150</span>
+      </div>
+      <div><span class="surplus-badge surplus-high">+14%</span></div>
+    </div>
+    <div class="economy-row">
+      <div><span class="chapter-badge">第3章 花田山坡</span></div>
+      <div style="font-size:0.8rem;color:var(--muted);">花种 / 腐殖土 / 石阶砖 / 浇水壶</div>
+      <div style="font-size:0.8rem;">
+        花种 90/80 · 腐殖土 86/78 · 石阶砖 72/62 · 浇水壶 54/44
+        <br><span style="font-size:0.72rem;color:var(--muted);">level-design 实际材料 pine_needle ×167</span>
+      </div>
+      <div><span class="surplus-badge surplus-mid">+12%</span></div>
+    </div>
+    <div class="economy-row">
+      <div><span class="chapter-badge">第4章 森林露营地</span></div>
+      <div style="font-size:0.8rem;color:var(--muted);">帆布 / 原木 / 火石 / 苔藓清除剂</div>
+      <div style="font-size:0.8rem;">
+        帆布 92/86 · 原木 96/88 · 火石 64/56 · 苔藓清除剂 60/52
+        <br><span style="font-size:0.72rem;color:var(--muted);">level-design 实际材料 torii_fragment ×182</span>
+      </div>
+      <div><span class="surplus-badge surplus-low">+8%</span></div>
+    </div>
+    <div class="economy-row">
+      <div><span class="chapter-badge">第5章 温泉山谷</span></div>
+      <div style="font-size:0.8rem;color:var(--muted);">导水管 / 防滑石板 / 浴池填缝料 / 香草束</div>
+      <div style="font-size:0.8rem;">
+        导水管 128/120 · 防滑石板 124/116 · 填缝料 88/82 · 香草束 76/68
+        <br><span style="font-size:0.72rem;color:var(--muted);">level-design 实际材料 rope_fiber ×214</span>
+      </div>
+      <div><span class="surplus-badge surplus-low">+7%</span></div>
+    </div>
+    <div class="economy-row">
+      <div><span class="chapter-badge">第6章 夜晚灯塔</span></div>
+      <div style="font-size:0.8rem;color:var(--muted);">灯芯 / 灯油 / 玻璃碎片 / 铁锻件 / 石灰涂料</div>
+      <div style="font-size:0.8rem;">
+        灯芯 150/140 · 灯油 152/142 · 玻璃 104/96 · 铁锻件 116/106 · 石灰 96/86
+        <br><span style="font-size:0.72rem;color:var(--muted);">level-design 实际材料 lantern_glass ×247</span>
+      </div>
+      <div><span class="surplus-badge surplus-low">+7%</span></div>
+    </div>
+
+    <div class="info-note" style="margin-top:1rem;">
+      <strong>可持续性结论：</strong>6个章节材料经济全部为正盈余（+7%～+18%），不存在无法完成修复的阻塞点。
+      前两章盈余高（14–18%）给新手容错；后三章收紧至 7–8% 营造资源压力感，鼓励全关完成以维持健康库存。
+      <br>材料名称在 <code>progression-curve.json</code>（建筑修复维度）与 <code>level-design.json</code>（关卡掉落 token 维度）存在映射分层，合成桥接由 <code>economy-model.json</code> 跨章合成规则负责。
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 4: 步数配置 -->
+  <!-- ─────────────────────────────────────────────── -->
+  <h2>4. 步数配置 — max_moves 演进</h2>
+  <p style="color:var(--muted);font-size:0.85rem;">
+    <code>max_moves</code> 从早期关卡的 <code>null</code>（无限步）逐步演进至 30→40 的固定步数上限，
+    是难度工程的核心压力旋钮。以下为各章实际分布（来自 level-design.json 136 关统计）。
+  </p>
+
+  <div class="section-card">
+    <table>
+      <thead>
+        <tr>
+          <th>章节</th>
+          <th>null 关卡数</th>
+          <th>有限步关卡数</th>
+          <th>步数范围</th>
+          <th>平均步数（有限步）</th>
+          <th>演进阶段</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="chapter-badge">第1章</span></td>
+          <td>11 关（50%）</td>
+          <td>11 关（50%）</td>
+          <td>20–29</td>
+          <td>24.5</td>
+          <td><span class="moves-pill pill-null">过渡期：无限→限步</span></td>
+        </tr>
+        <tr>
+          <td><span class="chapter-badge">第2章</span></td>
+          <td>7 关（30%）</td>
+          <td>16 关（70%）</td>
+          <td>28–37</td>
+          <td>31.6</td>
+          <td><span class="moves-pill pill-low">主步数收敛阶段</span></td>
+        </tr>
+        <tr>
+          <td><span class="chapter-badge">第3章</span></td>
+          <td>0 关（0%）</td>
+          <td>23 关（100%）</td>
+          <td>29–40</td>
+          <td>34.2</td>
+          <td><span class="moves-pill pill-mid">全面限步，步数拉伸</span></td>
+        </tr>
+        <tr>
+          <td><span class="chapter-badge">第4章</span></td>
+          <td>0 关（0%）</td>
+          <td>22 关（100%）</td>
+          <td>35–40</td>
+          <td>38.3</td>
+          <td><span class="moves-pill pill-mid">步数区间收拢至35–40</span></td>
+        </tr>
+        <tr>
+          <td><span class="chapter-badge">第5章</span></td>
+          <td>0 关（0%）</td>
+          <td>23 关（100%）</td>
+          <td>40–40</td>
+          <td>40.0</td>
+          <td><span class="moves-pill pill-high">全部固定 40 步</span></td>
+        </tr>
+        <tr>
+          <td><span class="chapter-badge">第6章</span></td>
+          <td>0 关（0%）</td>
+          <td>23 关（100%）</td>
+          <td>40–40</td>
+          <td>40.0</td>
+          <td><span class="moves-pill pill-high">全部固定 40 步 + 高密度棋盘</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="moves-timeline" style="margin-top:1.2rem;">
+      <div class="moves-row">
+        <div class="moves-ch-label">第1章</div>
+        <div class="moves-pills">
+          <span class="moves-pill pill-null">null ×11</span>
+          <span class="moves-pill pill-low">20步</span>
+          <span class="moves-pill pill-low">22步</span>
+          <span class="moves-pill pill-low">25步</span>
+          <span class="moves-pill pill-low">29步</span>
+        </div>
+      </div>
+      <div class="moves-row">
+        <div class="moves-ch-label">第2章</div>
+        <div class="moves-pills">
+          <span class="moves-pill pill-null">null ×7</span>
+          <span class="moves-pill pill-low">28步</span>
+          <span class="moves-pill pill-low">30步</span>
+          <span class="moves-pill pill-mid">35步</span>
+          <span class="moves-pill pill-mid">37步</span>
+        </div>
+      </div>
+      <div class="moves-row">
+        <div class="moves-ch-label">第3章</div>
+        <div class="moves-pills">
+          <span class="moves-pill pill-low">29步</span>
+          <span class="moves-pill pill-mid">32步</span>
+          <span class="moves-pill pill-mid">35步</span>
+          <span class="moves-pill pill-mid">38步</span>
+          <span class="moves-pill pill-high">40步</span>
+        </div>
+      </div>
+      <div class="moves-row">
+        <div class="moves-ch-label">第4章</div>
+        <div class="moves-pills">
+          <span class="moves-pill pill-mid">35步</span>
+          <span class="moves-pill pill-mid">37步</span>
+          <span class="moves-pill pill-high">39步</span>
+          <span class="moves-pill pill-high">40步</span>
+        </div>
+      </div>
+      <div class="moves-row">
+        <div class="moves-ch-label">第5–6章</div>
+        <div class="moves-pills">
+          <span class="moves-pill pill-high">全部 40 步</span>
+          <span style="font-size:0.75rem;color:var(--muted);display:flex;align-items:center;">棋盘扩张 8×8→10×10 补偿感知难度</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-note">
+      <strong>设计意图：</strong>ch1 采用混合 null/限步过渡，使新玩家在探索中自然感知「步数限制」的存在。
+      ch3 起全面清除 null 关，与锁链/传送门等高复杂度机制同步引入，步数压力成为核心挑战维度。
+      ch5–ch6 步数上限锁定 40，通过棋盘扩大（8×8→10×10）和障碍密度提升制造更高感知难度，而非单纯缩减步数。
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 5: 里程碑 -->
+  <!-- ─────────────────────────────────────────────── -->
+  <h2>5. 里程碑 — 章节解锁的情感节点</h2>
+  <p style="color:var(--muted);font-size:0.85rem;">
+    每个章节的解锁不仅是「通过关 X-15」，而是材料提交 + 沙滩币 + 修复动画共同触发的仪式时刻。
+    以下为 6 个核心情感节点设计。
+  </p>
+
+  <div class="section-card">
+    <div class="milestone-timeline">
+
+      <div class="milestone-item">
+        <div class="milestone-ch">第1章 · 海边码头 · 默认解锁</div>
+        <div class="milestone-title">「第一步踏上沙滩」</div>
+        <div class="milestone-note">无任何解锁门槛，游戏开场即进入。码头残破，海风轻拂，基础连连看教学在此展开。</div>
+        <div class="milestone-emotion">情感基调：好奇与温柔的期待 — 这座岛屿在等你。</div>
+      </div>
+
+      <div class="milestone-item">
+        <div class="milestone-ch">第2章 · 中央小镇 · 解锁于 1-15 通关后</div>
+        <div class="milestone-title">「码头修缮完毕，第一艘船进港」</div>
+        <div class="milestone-note">
+          需提交：浮木 ×15 · 绳索 ×10 · 铁钉 ×8 · 沙滩币 200。
+          <div class="req-chips">
+            <span class="req-chip">浮木 ×15</span>
+            <span class="req-chip">绳索 ×10</span>
+            <span class="req-chip">铁钉 ×8</span>
+            <span class="req-chip-coin req-chip">200 沙滩币</span>
+          </div>
+          修复动画：码头木板拼接，旗帜升起，船只缓缓靠岸。阿海奔跑欢迎。
+        </div>
+        <div class="milestone-emotion">情感基调：成就感与连接感 — 小镇的门向你开了。</div>
+      </div>
+
+      <div class="milestone-item">
+        <div class="milestone-ch">第3章 · 花田山坡 · 解锁于 2-15 通关后</div>
+        <div class="milestone-title">「喷泉注水，街道灯笼全亮」</div>
+        <div class="milestone-note">
+          需提交：石块 ×18 · 木料 ×15 · 彩釉砖 ×10 · 沙滩币 350。
+          <div class="req-chips">
+            <span class="req-chip">石块 ×18</span>
+            <span class="req-chip">木料 ×15</span>
+            <span class="req-chip">彩釉砖 ×10</span>
+            <span class="req-chip-coin req-chip">350 沙滩币</span>
+          </div>
+          修复动画：喷泉水柱升起，灯笼依次点亮，小镇映在水面。
+        </div>
+        <div class="milestone-emotion">情感基调：温暖的繁荣感 — 生活在这里流动起来了。</div>
+      </div>
+
+      <div class="milestone-item">
+        <div class="milestone-ch">第4章 · 森林露营地 · 解锁于 3-15 通关后</div>
+        <div class="milestone-title">「阿花回来了 — 山坡花海初绽」</div>
+        <div class="milestone-note">
+          需提交：花种 ×20 · 腐殖土 ×18 · 石阶砖 ×12 · 沙滩币 500。
+          <div class="req-chips">
+            <span class="req-chip">花种 ×20</span>
+            <span class="req-chip">腐殖土 ×18</span>
+            <span class="req-chip">石阶砖 ×12</span>
+            <span class="req-chip-coin req-chip">500 沙滩币</span>
+          </div>
+          修复动画：镜头从荒地拉开，花苞逐一绽放，阿花奔跑穿过花海。
+        </div>
+        <div class="milestone-emotion">情感基调：自然的呼唤与归属感 — 野性与宁静并存。</div>
+      </div>
+
+      <div class="milestone-item">
+        <div class="milestone-ch">第5章 · 温泉山谷 · 解锁于 4-15 通关后</div>
+        <div class="milestone-title">「篝火点燃，阿林递出第一杯茶」</div>
+        <div class="milestone-note">
+          需提交：帆布 ×22 · 原木 ×20 · 火石 ×14 · 苔藓清除剂 ×12 · 沙滩币 700。
+          <div class="req-chips">
+            <span class="req-chip">帆布 ×22</span>
+            <span class="req-chip">原木 ×20</span>
+            <span class="req-chip">火石 ×14</span>
+            <span class="req-chip">苔藓清除剂 ×12</span>
+            <span class="req-chip-coin req-chip">700 沙滩币</span>
+          </div>
+          修复动画：石圈篝火点燃，帐篷布幔抖开，营地灯笼挂起，茶香飘散。
+        </div>
+        <div class="milestone-emotion">情感基调：温泉热气与水声 — 治愈与深层放松。</div>
+      </div>
+
+      <div class="milestone-item">
+        <div class="milestone-ch">第6章 · 夜晚灯塔 · 解锁于 5-15 通关后</div>
+        <div class="milestone-title">「灯塔大灯点亮，光柱扫过全岛」</div>
+        <div class="milestone-note">
+          需提交：导水管 ×25 · 防滑石板 ×22 · 浴池填缝料 ×16 · 香草束 ×14 · 沙滩币 950。
+          <div class="req-chips">
+            <span class="req-chip">导水管 ×25</span>
+            <span class="req-chip">防滑石板 ×22</span>
+            <span class="req-chip">浴池填缝料 ×16</span>
+            <span class="req-chip">香草束 ×14</span>
+            <span class="req-chip-coin req-chip">950 沙滩币</span>
+          </div>
+          修复动画：灯塔顶部缓缓旋转，白色光柱依次扫过码头、小镇、花田、营地、温泉，全岛 6 个区域同时亮起。
+        </div>
+        <div class="milestone-emotion">情感基调：史诗级完成感 — 我们把这座岛屿唤醒了。</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 6: 沙滩币收入预测曲线 -->
+  <!-- ─────────────────────────────────────────────── -->
+  <h2>6. 沙滩币收入预测曲线</h2>
+  <p style="color:var(--muted);font-size:0.85rem;">
+    含关卡基础奖励 + 星级加成（1★ 30% / 2★ 45% / 3★ 25%）的加权估算。
+    假设玩家全部完成各章关卡，不含日常任务、活动、登录奖励。
+  </p>
+
+  <div class="section-card">
+    <h3 style="margin-top:0;">章节金币收益（章节内累计）</h3>
+    <div class="coin-chart">
+      <div class="coin-row">
+        <div class="coin-label">第1章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-chapter" style="width:15.3%">720</div></div>
+        <div class="coin-value">720 枚</div>
+        <div class="coin-sub">avg 36/关</div>
+      </div>
+      <div class="coin-row">
+        <div class="coin-label">第2章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-chapter" style="width:24.2%">1140</div></div>
+        <div class="coin-value">1,140 枚</div>
+        <div class="coin-sub">avg 57/关</div>
+      </div>
+      <div class="coin-row">
+        <div class="coin-label">第3章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-chapter" style="width:38.1%">1794</div></div>
+        <div class="coin-value">1,794 枚</div>
+        <div class="coin-sub">avg 78/关</div>
+      </div>
+      <div class="coin-row">
+        <div class="coin-label">第4章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-chapter" style="width:52.7%">2484</div></div>
+        <div class="coin-value">2,484 枚</div>
+        <div class="coin-sub">avg 108/关</div>
+      </div>
+      <div class="coin-row">
+        <div class="coin-label">第5章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-chapter" style="width:76.4%">3600</div></div>
+        <div class="coin-value">3,600 枚</div>
+        <div class="coin-sub">avg 144/关</div>
+      </div>
+      <div class="coin-row">
+        <div class="coin-label">第6章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-chapter" style="width:100%">4725</div></div>
+        <div class="coin-value">4,725 枚</div>
+        <div class="coin-sub">avg 189/关</div>
+      </div>
+    </div>
+
+    <hr style="margin:1.2rem 0;">
+    <h3>累计金币（全通关）</h3>
+    <div class="coin-chart">
+      <div class="coin-row">
+        <div class="coin-label">完成第1章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-cum" style="width:5.0%"></div></div>
+        <div class="coin-value">720 枚</div>
+      </div>
+      <div class="coin-row">
+        <div class="coin-label">完成第2章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-cum" style="width:12.9%"></div></div>
+        <div class="coin-value">1,860 枚</div>
+      </div>
+      <div class="coin-row">
+        <div class="coin-label">完成第3章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-cum" style="width:25.3%"></div></div>
+        <div class="coin-value">3,654 枚</div>
+      </div>
+      <div class="coin-row">
+        <div class="coin-label">完成第4章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-cum" style="width:42.4%"></div></div>
+        <div class="coin-value">6,138 枚</div>
+      </div>
+      <div class="coin-row">
+        <div class="coin-label">完成第5章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-cum" style="width:67.3%"></div></div>
+        <div class="coin-value">9,738 枚</div>
+      </div>
+      <div class="coin-row">
+        <div class="coin-label">完成第6章</div>
+        <div class="coin-track"><div class="coin-fill coin-fill-cum" style="width:100%"></div></div>
+        <div class="coin-value">14,463 枚</div>
+      </div>
+    </div>
+
+    <hr style="margin:1.2rem 0;">
+    <h3>日活玩家每日估算</h3>
+    <div class="stat-grid" style="margin-top:0.8rem;">
+      <div class="stat-card">
+        <span class="stat-value">1,224</span>
+        <div class="stat-label">每日沙滩币（中等玩家）<br>3次会话 × 4关 × avg 102枚/关</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">120</span>
+        <div class="stat-label">目标日赚（active 玩家）<br>economy-model 健康阈值</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">80</span>
+        <div class="stat-label">目标日花（active 玩家）<br>助攻 + 装饰 Sink</div>
+      </div>
+    </div>
+
+    <div class="info-note">
+      <strong>累计解锁费用汇总：</strong>全6章解锁共需沙滩币
+      <strong>200+350+500+700+950 = 2,700 枚</strong>（约第4章完成后自然积累可覆盖）。
+      全6章修复建筑共需金币奖励
+      <strong>50+80+120+200+80+120+180+280+100+160+220+360+120+180+260+420+150+220+320+520+180+260+380+650 = 5,610 枚</strong>（修复消耗由14,463全通累计金币支撑，有余量）。
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="footer">
+    Glow Island · 进阶曲线设计 v2.0 · 2026-05-08<br>
+    数据源：progression-curve.json v2.0 · economy-model.json v1.0 · level-design.json v2.0 (136 levels)
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 美术资产规格总表 v2.0</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d26;
+      --surface2: #20232f;
+      --border: #2a2d3a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --accent2: #86efac;
+      --heading: #f8fafc;
+      --code-bg: #12141c;
+      --tag-bg: #1e3a5f;
+      --warm: #f5c842;
+      --coral: #e8866a;
+      --teal: #5bbfb5;
+      --green: #7dbe77;
+      --red: #c8402a;
+      --pink: #f0c4c4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 0 1rem 5rem;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2rem 2.5rem;
+      margin: 0 -1rem 2.5rem;
+      text-align: center;
+    }
+    .page-header .project-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125,211,252,0.25);
+      margin-bottom: 0.9rem;
+    }
+    .page-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--heading);
+      text-shadow: 0 0 40px rgba(245,200,66,0.35);
+      margin-bottom: 0.5rem;
+    }
+    .page-header .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .page-header .subtitle span { color: var(--warm); }
+
+    /* ── Layout ── */
+    .container { max-width: 1060px; margin: 0 auto; }
+
+    /* ── Typography ── */
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--warm);
+      border-left: 4px solid var(--warm);
+      padding-left: 0.85rem;
+      margin: 2.8rem 0 1rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent2);
+      margin: 2rem 0 0.7rem;
+    }
+    h4 {
+      font-size: 1rem;
+      color: var(--accent);
+      margin: 1.5rem 0 0.5rem;
+    }
+    p { margin: 0.5rem 0 0.8rem; color: var(--text); }
+    strong { color: var(--heading); font-weight: 600; }
+
+    /* ── Section block ── */
+    .section-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 1.6rem;
+    }
+
+    /* ── Summary cards ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+    .summary-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+    .summary-card:hover { border-color: var(--warm); }
+    .summary-card .cat-icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .summary-card .cat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .summary-card .cat-count {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--warm);
+      line-height: 1;
+    }
+    .summary-card .cat-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+    .total-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #1e3a5f, #12263f);
+      border: 1px solid rgba(125,211,252,0.3);
+      border-radius: 8px;
+      padding: 0.6rem 1.4rem;
+      color: var(--accent);
+      font-size: 0.88rem;
+      margin: 0.5rem 0 1.2rem;
+    }
+    .total-badge strong { color: var(--warm); font-size: 1.2rem; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    thead tr { background: #161924; }
+    thead th {
+      text-align: left;
+      padding: 0.65rem 0.9rem;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.025); }
+    td {
+      padding: 0.6rem 0.9rem;
+      color: var(--text);
+      vertical-align: top;
+    }
+    td.id-col {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.82rem;
+      color: var(--warm);
+      white-space: nowrap;
+    }
+    td.name-col { font-weight: 600; color: var(--heading); }
+    td.desc-col { color: var(--muted); font-size: 0.84rem; }
+
+    /* colour swatch */
+    .swatch {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 5px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* ── Badge / tags ── */
+    .badge {
+      display: inline-block;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .badge-png  { background: #1e3a5f; color: #7dd3fc; }
+    .badge-spine { background: #1e4a35; color: #86efac; }
+    .badge-svg  { background: #3a2e10; color: #f5c842; }
+    .badge-ch1  { background: #1a2e38; color: var(--teal); }
+    .badge-ch2  { background: #1a2e1a; color: var(--green); }
+    .badge-ch3  { background: #2e2020; color: var(--pink); }
+    .badge-ch4  { background: #1e1012; color: #c8402a; border: 1px solid rgba(200,64,42,0.3); }
+    .badge-ch5  { background: #302010; color: #e2c48a; }
+    .badge-ch6  { background: #0e1830; color: var(--accent); }
+
+    /* ── Code blocks ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 0.82rem;
+      color: var(--accent2);
+      line-height: 1.7;
+      margin: 0.8rem 0;
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 0.87em;
+      background: var(--code-bg);
+      color: var(--accent2);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+    }
+
+    /* ── Spec row ── */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 0.7rem;
+      margin: 0.8rem 0;
+    }
+    .spec-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .spec-item .spec-key {
+      font-size: 0.78rem;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .spec-item .spec-val {
+      font-size: 0.85rem;
+      color: var(--heading);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* ── Chapter group header ── */
+    .chapter-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.6rem 0;
+      margin: 1.5rem 0 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .chapter-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .chapter-header h4 { margin: 0; }
+
+    /* ── NPC cards ── */
+    .npc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .npc-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem;
+      transition: border-color 0.2s;
+    }
+    .npc-card:hover { border-color: var(--accent); }
+    .npc-card .npc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.7rem;
+    }
+    .npc-card .npc-id {
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      background: var(--code-bg);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+    .npc-card .npc-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin: 0.2rem 0 0.1rem;
+    }
+    .npc-card .npc-chapter { font-size: 0.78rem; color: var(--muted); }
+    .npc-card .npc-color-bar {
+      height: 3px;
+      border-radius: 2px;
+      margin: 0.7rem 0;
+    }
+    .npc-card .npc-attr {
+      font-size: 0.82rem;
+      margin: 0.25rem 0;
+    }
+    .npc-card .npc-attr span { color: var(--muted); margin-right: 0.4rem; }
+    .npc-card .npc-states { margin-top: 0.7rem; }
+    .npc-card .state-pill {
+      display: inline-block;
+      padding: 0.12rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin: 0.15rem 0.2rem 0.15rem 0;
+    }
+
+    /* ── Effect cards ── */
+    .fx-list { display: flex; flex-direction: column; gap: 0.8rem; margin: 1rem 0; }
+    .fx-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 0.8rem 1.2rem;
+      align-items: start;
+    }
+    .fx-card .fx-id {
+      font-family: monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--warm);
+      background: var(--code-bg);
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .fx-card .fx-name {
+      font-weight: 600;
+      color: var(--heading);
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+    .fx-card .fx-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .fx-card .fx-meta strong { color: var(--text); }
+
+    /* ── Delivery spec table ── */
+    .delivery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin: 1rem 0;
+    }
+    @media (max-width: 640px) { .delivery-grid { grid-template-columns: 1fr; } }
+    .delivery-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.7rem 1rem;
+    }
+    .delivery-item .d-key {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .delivery-item .d-val {
+      font-size: 0.87rem;
+      color: var(--heading);
+    }
+
+    /* ── Batch delivery ── */
+    .batch-timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin: 1rem 0;
+    }
+    .batch-timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: var(--border);
+    }
+    .batch-item {
+      position: relative;
+      margin-bottom: 1.2rem;
+    }
+    .batch-item::before {
+      content: '';
+      position: absolute;
+      left: -1.65rem;
+      top: 7px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--warm);
+      border: 2px solid var(--bg);
+    }
+    .batch-item .batch-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--warm);
+      margin-bottom: 0.2rem;
+    }
+    .batch-item .batch-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    /* ── Nav TOC ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .toc h3 { margin-top: 0; font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .toc ol {
+      padding-left: 1.4rem;
+      margin-top: 0.6rem;
+    }
+    .toc li { margin: 0.3rem 0; }
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .toc a:hover { color: var(--warm); }
+
+    /* ── Notice ── */
+    .notice {
+      background: rgba(245,200,66,0.06);
+      border: 1px solid rgba(245,200,66,0.2);
+      border-radius: 8px;
+      padding: 0.7rem 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0.8rem 0;
+    }
+    .notice strong { color: var(--warm); }
+
+    /* ── Footer ── */
+    .page-footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="project-tag">Art Asset Spec · Concept Artist Review</div>
+  <h1>Glow Island 美术资产规格总表</h1>
+  <p class="subtitle">
+    版本 <span>v2.0</span> &nbsp;·&nbsp; 日期 <span>2026-05-08</span> &nbsp;·&nbsp; 风格基准：Animal Crossing × 日式离岛美学
+  </p>
+</header>
+
+<div class="container">
+
+  <!-- TOC -->
+  <nav class="toc">
+    <h3>目录</h3>
+    <ol>
+      <li><a href="#overview">资产分类总览</a></li>
+      <li><a href="#tiles">图块资产表（T01–T20 + 4种特殊块）</a></li>
+      <li><a href="#characters">角色资产表（6角色，Spine骨骼）</a></li>
+      <li><a href="#backgrounds">场景资产（6章节背景）</a></li>
+      <li><a href="#ui">UI资产（木质告示牌 / 按钮 / HUD）</a></li>
+      <li><a href="#vfx">特效资产（粒子特效列表）</a></li>
+      <li><a href="#delivery">交付规范（格式 / 命名 / 目录）</a></li>
+    </ol>
+  </nav>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- 1. OVERVIEW -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="overview">
+    <h2>1 · 资产分类总览</h2>
+
+    <div class="total-badge">
+      资产总量：<strong>~340+</strong> 个独立文件（含序列帧展开）
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="cat-icon">🟦</div>
+        <div class="cat-label">图块</div>
+        <div class="cat-count">24</div>
+        <div class="cat-sub">20基础 + 4特殊 | PNG/Spine</div>
+      </div>
+      <div class="summary-card">
+        <div class="cat-icon">🟩</div>
+        <div class="cat-label">角色</div>
+        <div class="cat-count">6</div>
+        <div class="cat-sub">5 NPC + 1主角 | Spine骨骼</div>
+      </div>
+      <div class="summary-card">
+        <div class="cat-icon">🟧</div>
+        <div class="cat-label">背景</div>
+        <div class="cat-count">14</div>
+        <div class="cat-sub">12基础 + 2标志性备用</div>
+      </div>
+      <div class="summary-card">
+        <div class="cat-icon">🟨</div>
+        <div class="cat-label">岛屿地图</div>
+        <div class="cat-count">33</div>
+        <div class="cat-sub">底图+光效 + 6区域×5状态</div>
+      </div>
+      <div class="summary-card">
+        <div class="cat-icon">🟥</div>
+        <div class="cat-label">UI图标</div>
+        <div class="cat-count">30</div>
+        <div class="cat-sub">PNG@2x + SVG矢量源</div>
+      </div>
+      <div class="summary-card">
+        <div class="cat-icon">🟪</div>
+        <div class="cat-label">特效</div>
+        <div class="cat-count">8</div>
+        <div class="cat-sub">序列帧 + Spine动画</div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h3>按格式分布</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>类别</th>
+              <th>主格式</th>
+              <th>辅助格式</th>
+              <th>单图尺寸</th>
+              <th>图集打包</th>
+              <th>总文件估算</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name-col">图块精灵</td>
+              <td><span class="badge badge-png">PNG-24</span></td>
+              <td><span class="badge badge-spine">Spine .skel</span></td>
+              <td>128×128 px @2x</td>
+              <td>≤ 2048×2048 per atlas</td>
+              <td>~20×14帧 + 4×Spine</td>
+            </tr>
+            <tr>
+              <td class="name-col">章节背景</td>
+              <td><span class="badge badge-png">PNG-24 / JPEG Q95</span></td>
+              <td>—</td>
+              <td>1080×1920 px</td>
+              <td>不打包</td>
+              <td>14张</td>
+            </tr>
+            <tr>
+              <td class="name-col">岛屿地图区域</td>
+              <td><span class="badge badge-png">PNG-24</span></td>
+              <td><span class="badge badge-spine">Spine .skel</span></td>
+              <td>~340×340 px</td>
+              <td>不打包</td>
+              <td>33张 + 1 Spine</td>
+            </tr>
+            <tr>
+              <td class="name-col">NPC角色</td>
+              <td><span class="badge badge-png">PNG-24</span></td>
+              <td><span class="badge badge-spine">Spine .skel</span></td>
+              <td>128×128 px（圆形头像）</td>
+              <td>可打包</td>
+              <td>15张PNG + 5 Spine</td>
+            </tr>
+            <tr>
+              <td class="name-col">UI图标</td>
+              <td><span class="badge badge-png">PNG-24</span></td>
+              <td><span class="badge badge-svg">SVG</span></td>
+              <td>24/32/48 px @2x</td>
+              <td>可打包</td>
+              <td>30 PNG + 30 SVG</td>
+            </tr>
+            <tr>
+              <td class="name-col">特效</td>
+              <td><span class="badge badge-spine">Spine .skel</span></td>
+              <td><span class="badge badge-png">PNG序列帧</span></td>
+              <td>视特效范围定</td>
+              <td>Spine atlas</td>
+              <td>6色×12帧 + 8 Spine</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- 2. TILES -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="tiles">
+    <h2>2 · 图块资产表</h2>
+
+    <div class="section-block">
+      <h3>基础规格</h3>
+      <div class="spec-grid">
+        <div class="spec-item"><span class="spec-key">画布尺寸 @2x</span><span class="spec-val">128 × 128 px</span></div>
+        <div class="spec-item"><span class="spec-key">实际绘制区</span><span class="spec-val">112 × 112 px（四周8px出血）</span></div>
+        <div class="spec-item"><span class="spec-key">颜色深度</span><span class="spec-val">RGBA 32-bit</span></div>
+        <div class="spec-item"><span class="spec-key">导出格式</span><span class="spec-val">PNG-24（透明背景）</span></div>
+        <div class="spec-item"><span class="spec-key">图集打包</span><span class="spec-val">Texture Atlas，≤ 2048×2048</span></div>
+        <div class="spec-item"><span class="spec-key">轮廓线</span><span class="spec-val">2px，主色加深32%（非纯黑）</span></div>
+        <div class="spec-item"><span class="spec-key">底部烘焙阴影</span><span class="spec-val">0 4px rgba(0,0,0,0.10)</span></div>
+        <div class="spec-item"><span class="spec-key">纸纹叠加</span><span class="spec-val">6% 不透明度统一纹理</span></div>
+      </div>
+
+      <h3>四种状态规范</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>状态</th>
+              <th>文件命名模式</th>
+              <th>帧数</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="id-col">Normal</td>
+              <td><code>{id}_{name}_normal@2x.png</code></td>
+              <td>1帧</td>
+              <td>静态，烘焙阴影 + 纸纹</td>
+            </tr>
+            <tr>
+              <td class="id-col">Highlighted</td>
+              <td><code>{id}_{name}_highlighted@2x.png</code></td>
+              <td>1帧（或Shader）</td>
+              <td>亮度+20%，内发光 rgba(255,255,255,0.40)</td>
+            </tr>
+            <tr>
+              <td class="id-col">Disappearing</td>
+              <td><code>{id}_{name}_disappear_{01-12}@2x.png</code></td>
+              <td>12帧 @30fps（0.4s）</td>
+              <td>帧1-3放大→帧4-9旋转缩小→帧10-12主题粒子散开</td>
+            </tr>
+            <tr>
+              <td class="id-col">Special</td>
+              <td><code>{type}_idle.skel / {type}_activate.skel</code></td>
+              <td>Spine循环+一次性</td>
+              <td>仅4种特殊块，idle周期2.0-2.8s</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Chapter 1 -->
+    <div class="chapter-header">
+      <div class="chapter-dot" style="background:#5bbfb5;"></div>
+      <h4>第1章 — 海边码头（Beach Harbor）</h4>
+      <span class="badge badge-ch1">Ch.1</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>编号</th><th>名称</th><th>自然主题</th><th>形状</th><th>主色</th><th>次色</th><th>命名键</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id-col">T01</td>
+            <td class="name-col">贝壳块</td>
+            <td>扇贝正视图</td>
+            <td>扇形，顶部圆弧放射</td>
+            <td><span class="swatch" style="background:#F5C842;"></span>#F5C842 金黄</td>
+            <td><span class="swatch" style="background:#C49240;"></span>#C49240 深金</td>
+            <td><code>t01_shell</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T02</td>
+            <td class="name-col">木板块</td>
+            <td>码头旧木板</td>
+            <td>圆角矩形，横向木纹</td>
+            <td><span class="swatch" style="background:#C4955A;"></span>#C4955A 木纹棕</td>
+            <td><span class="swatch" style="background:#8B6030;"></span>#8B6030 深棕木</td>
+            <td><code>t02_plank</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T03</td>
+            <td class="name-col">海浪块</td>
+            <td>卷浪波纹</td>
+            <td>圆角矩形底，顶部卷浪轮廓</td>
+            <td><span class="swatch" style="background:#5BBFB5;"></span>#5BBFB5 海水青</td>
+            <td><span class="swatch" style="background:#FFFFFF;"></span>#FFFFFF 白</td>
+            <td><code>t03_wave</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T04</td>
+            <td class="name-col">绳结块</td>
+            <td>船锚绳结</td>
+            <td>圆形，内有绳圈麻花图案</td>
+            <td><span class="swatch" style="background:#E2C48A;"></span>#E2C48A 温暖沙棕</td>
+            <td><span class="swatch" style="background:#A07040;"></span>#A07040 绳索深棕</td>
+            <td><code>t04_knot</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Chapter 2 -->
+    <div class="chapter-header">
+      <div class="chapter-dot" style="background:#7DBE77;"></div>
+      <h4>第2章 — 竹林村落（Bamboo Village）</h4>
+      <span class="badge badge-ch2">Ch.2</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>编号</th><th>名称</th><th>自然主题</th><th>形状</th><th>主色</th><th>次色</th><th>命名键</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id-col">T05</td>
+            <td class="name-col">竹节块</td>
+            <td>竹茎横截</td>
+            <td>圆角矩形，3段竹节</td>
+            <td><span class="swatch" style="background:#7DBE77;"></span>#7DBE77 竹叶绿</td>
+            <td><span class="swatch" style="background:#4A7D55;"></span>#4A7D55 深竹绿</td>
+            <td><code>t05_bamboo</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T06</td>
+            <td class="name-col">石灯笼块</td>
+            <td>日式石灯笼</td>
+            <td>六边形</td>
+            <td><span class="swatch" style="background:#8AA880;"></span>#8AA880 苔藓灰绿</td>
+            <td><span class="swatch" style="background:#F5C842;"></span>#F5C842 灯光金黄</td>
+            <td><code>t06_lantern_stone</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T07</td>
+            <td class="name-col">竹叶块</td>
+            <td>竹叶簇</td>
+            <td>水滴形，略长</td>
+            <td><span class="swatch" style="background:#5A9A60;"></span>#5A9A60 翠竹</td>
+            <td><span class="swatch" style="background:#3A6A40;"></span>#3A6A40 深翠</td>
+            <td><code>t07_leaf_bamboo</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T08</td>
+            <td class="name-col">纸灯笼块</td>
+            <td>方形纸灯笼</td>
+            <td>圆角矩形，腰部略收</td>
+            <td><span class="swatch" style="background:#EE8C55;"></span>#EE8C55 暮橙</td>
+            <td><span class="swatch" style="background:#F5C842;"></span>#F5C842 金黄</td>
+            <td><code>t08_lantern_paper</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Chapter 3 -->
+    <div class="chapter-header">
+      <div class="chapter-dot" style="background:#F0C4C4;"></div>
+      <h4>第3章 — 樱花坡田（Sakura Hillside）</h4>
+      <span class="badge badge-ch3">Ch.3</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>编号</th><th>名称</th><th>自然主题</th><th>形状</th><th>主色</th><th>次色</th><th>命名键</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id-col">T09</td>
+            <td class="name-col">樱花块</td>
+            <td>五瓣樱花正视</td>
+            <td>五瓣圆润花形，微缺口</td>
+            <td><span class="swatch" style="background:#F0C4C4;"></span>#F0C4C4 樱粉</td>
+            <td><span class="swatch" style="background:#C8808A;"></span>#C8808A 深樱</td>
+            <td><code>t09_sakura</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T10</td>
+            <td class="name-col">宽叶块</td>
+            <td>芭蕉/宽叶植物</td>
+            <td>椭圆形，叶脉突出</td>
+            <td><span class="swatch" style="background:#7DBE77;"></span>#7DBE77 竹叶绿</td>
+            <td><span class="swatch" style="background:#4A7D55;"></span>#4A7D55 深竹绿</td>
+            <td><code>t10_broadleaf</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T11</td>
+            <td class="name-col">蝴蝶块</td>
+            <td>简化蝴蝶</td>
+            <td>左右对称翅膀轮廓</td>
+            <td><span class="swatch" style="background:#F0C060;"></span>#F0C060 金黄花</td>
+            <td><span class="swatch" style="background:#C88020;"></span>#C88020 深金橙</td>
+            <td><code>t11_butterfly</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T12</td>
+            <td class="name-col">嫩芽块</td>
+            <td>破土嫩芽</td>
+            <td>圆形底，中央芽形凸出</td>
+            <td><span class="swatch" style="background:#A8D888;"></span>#A8D888 嫩芽绿</td>
+            <td><span class="swatch" style="background:#5A9A60;"></span>#5A9A60 深绿</td>
+            <td><code>t12_sprout</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Chapter 4 -->
+    <div class="chapter-header">
+      <div class="chapter-dot" style="background:#C8402A;"></div>
+      <h4>第4章 — 松林神社（Pine Forest Shrine）</h4>
+      <span class="badge badge-ch4">Ch.4</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>编号</th><th>名称</th><th>自然主题</th><th>形状</th><th>主色</th><th>次色</th><th>命名键</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id-col">T13</td>
+            <td class="name-col">松果块</td>
+            <td>松果侧视</td>
+            <td>椭圆形，鳞片菱形排列</td>
+            <td><span class="swatch" style="background:#8B6241;"></span>#8B6241 松果棕</td>
+            <td><span class="swatch" style="background:#5A3820;"></span>#5A3820 深棕</td>
+            <td><code>t13_pinecone</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T14</td>
+            <td class="name-col">苔藓石块</td>
+            <td>圆石上长苔藓</td>
+            <td>不规则圆形（略方）</td>
+            <td><span class="swatch" style="background:#6B9E5E;"></span>#6B9E5E 苔藓绿</td>
+            <td><span class="swatch" style="background:#4A7D55;"></span>#4A7D55 深苔</td>
+            <td><code>t14_mossy_stone</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T15</td>
+            <td class="name-col">鸟居块</td>
+            <td>简化鸟居正视</td>
+            <td>矩形，顶部双层横梁</td>
+            <td><span class="swatch" style="background:#C8402A;"></span>#C8402A 鸟居红</td>
+            <td><span class="swatch" style="background:#F5F0E8;"></span>#F5F0E8 月光白</td>
+            <td><code>t15_torii</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T16</td>
+            <td class="name-col">注连绳块</td>
+            <td>稻草绳+纸垂</td>
+            <td>圆角矩形，横向绳索图案</td>
+            <td><span class="swatch" style="background:#E2C48A;"></span>#E2C48A 稻草黄</td>
+            <td><span class="swatch" style="background:#8B6030;"></span>#8B6030 深棕</td>
+            <td><code>t16_shimenawa</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Chapter 5 -->
+    <div class="chapter-header">
+      <div class="chapter-dot" style="background:#E2C48A;"></div>
+      <h4>第5章 — 渔村港口（Fishing Village Port）</h4>
+      <span class="badge badge-ch5">Ch.5</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>编号</th><th>名称</th><th>自然主题</th><th>形状</th><th>主色</th><th>次色</th><th>命名键</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id-col">T17</td>
+            <td class="name-col">鱼块</td>
+            <td>圆润小鱼侧视</td>
+            <td>椭圆身+扇形尾</td>
+            <td><span class="swatch" style="background:#5BBFB5;"></span>#5BBFB5 海水青</td>
+            <td><span class="swatch" style="background:#3A9E94;"></span>#3A9E94 深海青</td>
+            <td><code>t17_fish</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T18</td>
+            <td class="name-col">渔网块</td>
+            <td>渔网纹</td>
+            <td>圆角矩形，斜向网格</td>
+            <td><span class="swatch" style="background:#B89060;"></span>#B89060 亚麻</td>
+            <td><span class="swatch" style="background:#7A5A30;"></span>#7A5A30 深亚麻</td>
+            <td><code>t18_fishnet</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Chapter 6 -->
+    <div class="chapter-header">
+      <div class="chapter-dot" style="background:#7dd3fc;"></div>
+      <h4>第6章 — 夜晚灯塔（Night Lighthouse）</h4>
+      <span class="badge badge-ch6">Ch.6</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>编号</th><th>名称</th><th>自然主题</th><th>形状</th><th>主色</th><th>次色</th><th>命名键</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id-col">T19</td>
+            <td class="name-col">星光块</td>
+            <td>四芒星/星光</td>
+            <td>四角星形圆角</td>
+            <td><span class="swatch" style="background:#F5C842;"></span>#F5C842 金黄</td>
+            <td><span class="swatch" style="background:#1E2E50;"></span>#1E2E50 深夜蓝</td>
+            <td><code>t19_starlight</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T20</td>
+            <td class="name-col">夜浪块</td>
+            <td>深夜海浪</td>
+            <td>圆角矩形，波浪轮廓顶</td>
+            <td><span class="swatch" style="background:#2A4060;"></span>#2A4060 深夜蓝</td>
+            <td><span class="swatch" style="background:#F5F0E8;"></span>#F5F0E8 月光白</td>
+            <td><code>t20_nightwave</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Special tiles -->
+    <h3>4种特殊块（Spine骨骼动画）</h3>
+    <div class="notice"><strong>注意：</strong>特殊块仅提供 Spine 动画文件，不需要额外静态PNG帧（Spine导出纹理中已包含）。</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>类型</th><th>名称</th><th>主题</th><th>idle周期</th><th>activate时长</th><th>Spine键名</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id-col">T-Bomb</td>
+            <td class="name-col">河豚块</td>
+            <td>膨胀呼吸动画</td>
+            <td>2.4s</td>
+            <td>0.5s</td>
+            <td><code>pufferfish</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T-Lightning</td>
+            <td class="name-col">金枪鱼块</td>
+            <td>尾鳍脉冲摆动</td>
+            <td>2.0s</td>
+            <td>0.6s</td>
+            <td><code>tuna</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T-Rainbow</td>
+            <td class="name-col">彩虹鱼块</td>
+            <td>色彩条纹循环</td>
+            <td>2.8s</td>
+            <td>0.8s</td>
+            <td><code>rainbow_fish</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">T-Glow</td>
+            <td class="name-col">萤火提灯块</td>
+            <td>光晕脉冲呼吸</td>
+            <td>2.2s</td>
+            <td>1.0s</td>
+            <td><code>firefly_lantern</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>命名规范示例</h3>
+    <pre>sprites/tiles/
+├── t01_shell_normal@2x.png
+├── t01_shell_highlighted@2x.png
+├── t01_shell_disappear_01@2x.png  …  t01_shell_disappear_12@2x.png
+├── t09_sakura_normal@2x.png
+├── ...
+└── special/
+    ├── pufferfish_idle.skel     pufferfish_idle.atlas     pufferfish_idle.png
+    ├── pufferfish_activate.skel
+    ├── tuna_idle.skel           tuna_idle.atlas           tuna_idle.png
+    ├── rainbow_fish_idle.skel   rainbow_fish_idle.atlas   rainbow_fish_idle.png
+    ├── firefly_lantern_idle.skel   firefly_lantern_idle.atlas   firefly_lantern_idle.png
+    └── firefly_lantern_activate.skel</pre>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- 3. CHARACTERS -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="characters">
+    <h2>3 · 角色资产表</h2>
+
+    <div class="section-block">
+      <h3>通用角色规格</h3>
+      <div class="spec-grid">
+        <div class="spec-item"><span class="spec-key">头像画布 @2x</span><span class="spec-val">128 × 128 px</span></div>
+        <div class="spec-item"><span class="spec-key">有效绘制区</span><span class="spec-val">圆形，直径112px</span></div>
+        <div class="spec-item"><span class="spec-key">背景</span><span class="spec-val">透明（圆形外透明）</span></div>
+        <div class="spec-item"><span class="spec-key">格式</span><span class="spec-val">PNG-24 + Spine .skel</span></div>
+        <div class="spec-item"><span class="spec-key">头身比</span><span class="spec-val">1:1.5（AC式大头）</span></div>
+        <div class="spec-item"><span class="spec-key">眼睛</span><span class="spec-val">水滴形，黑色瞳仁占70%</span></div>
+        <div class="spec-item"><span class="spec-key">鼻子</span><span class="spec-val">单个小圆点，直径4px @2x</span></div>
+        <div class="spec-item"><span class="spec-key">嘴巴</span><span class="spec-val">简短弧线，长度≤10px @2x</span></div>
+        <div class="spec-item"><span class="spec-key">轮廓线</span><span class="spec-val">2px，主色加深32%</span></div>
+        <div class="spec-item"><span class="spec-key">Spine动画</span><span class="spec-val">idle / talk / react</span></div>
+      </div>
+    </div>
+
+    <div class="npc-grid">
+
+      <!-- NPC01 -->
+      <div class="npc-card">
+        <div class="npc-header">
+          <div>
+            <div class="npc-id">NPC01</div>
+            <div class="npc-name">渔夫·阿海</div>
+            <div class="npc-chapter">第1章 — 海边码头</div>
+          </div>
+          <span class="badge badge-ch1">Ch.1</span>
+        </div>
+        <div class="npc-color-bar" style="background: linear-gradient(90deg, #4A6D9A, #9A6840);"></div>
+        <div class="npc-attr"><span>代表色</span><span class="swatch" style="background:#4A6D9A;"></span>#4A6D9A 靛蓝布衣</div>
+        <div class="npc-attr"><span>皮肤色</span><span class="swatch" style="background:#9A6840;"></span>#9A6840 深褐（日晒型）</div>
+        <div class="npc-attr"><span>腮红</span>无（沉稳气质）</div>
+        <div class="npc-attr"><span>标志配件</span>宽沿旧草帽 + 右手木鱼竿</div>
+        <div class="npc-states">
+          <div class="state-pill">Default — 平静远眺</div>
+          <div class="state-pill">Happy — 满足系绳</div>
+          <div class="state-pill">Thinking — 若有所思</div>
+          <div class="state-pill">Spine: idle / talk / react</div>
+        </div>
+      </div>
+
+      <!-- NPC02 -->
+      <div class="npc-card">
+        <div class="npc-header">
+          <div>
+            <div class="npc-id">NPC02</div>
+            <div class="npc-name">花农·阿花</div>
+            <div class="npc-chapter">第3章 — 樱花坡田</div>
+          </div>
+          <span class="badge badge-ch3">Ch.3</span>
+        </div>
+        <div class="npc-color-bar" style="background: linear-gradient(90deg, #7DBE77, #F0C4C4);"></div>
+        <div class="npc-attr"><span>代表色</span><span class="swatch" style="background:#7DBE77;"></span>草绿围裙 + <span class="swatch" style="background:#F0C4C4;"></span>樱粉碎花裙</div>
+        <div class="npc-attr"><span>皮肤色</span><span class="swatch" style="background:#F5D4B0;"></span>#F5D4B0 浅肤</div>
+        <div class="npc-attr"><span>腮红</span><span class="swatch" style="background:#E898A0;"></span>#E898A0，明显圆形，16px @2x</div>
+        <div class="npc-attr"><span>标志配件</span>头顶别樱花 + 左手蓝色浇水壶</div>
+        <div class="npc-states">
+          <div class="state-pill">Default — 温柔微笑</div>
+          <div class="state-pill">Happy — Ω形大笑</div>
+          <div class="state-pill">Focused — 专注松土</div>
+          <div class="state-pill">Spine: idle / talk / react</div>
+        </div>
+      </div>
+
+      <!-- NPC03 -->
+      <div class="npc-card">
+        <div class="npc-header">
+          <div>
+            <div class="npc-id">NPC03</div>
+            <div class="npc-name">背包客·阿林</div>
+            <div class="npc-chapter">第4章 — 松林神社</div>
+          </div>
+          <span class="badge badge-ch4">Ch.4</span>
+        </div>
+        <div class="npc-color-bar" style="background: linear-gradient(90deg, #3D6645, #B8985A);"></div>
+        <div class="npc-attr"><span>代表色</span><span class="swatch" style="background:#3D6645;"></span>深绿探险外套 + <span class="swatch" style="background:#B8985A;"></span>卡其裤</div>
+        <div class="npc-attr"><span>皮肤色</span><span class="swatch" style="background:#E8B882;"></span>#E8B882</div>
+        <div class="npc-attr"><span>腮红</span>无</div>
+        <div class="npc-attr"><span>标志配件</span>帽沿压低遮眼 + 背部大背包（挂竹灯笼）</div>
+        <div class="npc-states">
+          <div class="state-pill">Default — 帽沿遮眼</div>
+          <div class="state-pill">Uplook — 抬帽惊叹★</div>
+          <div class="state-pill">Tea — 推茶手部特写</div>
+          <div class="state-pill">Spine: idle / talk / react</div>
+        </div>
+      </div>
+
+      <!-- NPC04 -->
+      <div class="npc-card">
+        <div class="npc-header">
+          <div>
+            <div class="npc-id">NPC04</div>
+            <div class="npc-name">温泉老爷爷·阿福</div>
+            <div class="npc-chapter">第5章 — 渔村港口</div>
+          </div>
+          <span class="badge badge-ch5">Ch.5</span>
+        </div>
+        <div class="npc-color-bar" style="background: linear-gradient(90deg, #2A4060, #F5C842);"></div>
+        <div class="npc-attr"><span>代表色</span><span class="swatch" style="background:#2A4060;"></span>藏青浴衣 + <span class="swatch" style="background:#F5C842;"></span>金色腰带</div>
+        <div class="npc-attr"><span>皮肤色</span><span class="swatch" style="background:#E8B882;"></span>#E8B882 圆脸，笑纹深刻</div>
+        <div class="npc-attr"><span>腮红</span><span class="swatch" style="background:#D06840;"></span>#D06840，超大圆形，18px @2x</div>
+        <div class="npc-attr"><span>标志配件</span>头顶永远顶着白色方巾</div>
+        <div class="npc-states">
+          <div class="state-pill">Default — 嫌弃/无奈（反向笑）</div>
+          <div class="state-pill">Satisfied — 点头满意</div>
+          <div class="state-pill">Enjoying — 泡温泉享受</div>
+          <div class="state-pill">Spine: idle / talk / react</div>
+        </div>
+      </div>
+
+      <!-- NPC05 -->
+      <div class="npc-card">
+        <div class="npc-header">
+          <div>
+            <div class="npc-id">NPC05</div>
+            <div class="npc-name">灯塔守护者·阿明</div>
+            <div class="npc-chapter">第6章 — 夜晚灯塔</div>
+          </div>
+          <span class="badge badge-ch6">Ch.6</span>
+        </div>
+        <div class="npc-color-bar" style="background: linear-gradient(90deg, #2A3650, #C49A40);"></div>
+        <div class="npc-attr"><span>代表色</span><span class="swatch" style="background:#2A3650;"></span>深灰蓝大衣 + <span class="swatch" style="background:#F5F0E8;"></span>白色翻领</div>
+        <div class="npc-attr"><span>皮肤色</span><span class="swatch" style="background:#E8B882;"></span>#E8B882</div>
+        <div class="npc-attr"><span>腮红</span>无（沉默海风气质）</div>
+        <div class="npc-attr"><span>标志配件</span>右手黄铜点火装置（蓝色微光末端）</div>
+        <div class="npc-states">
+          <div class="state-pill">Default — 仰视灯塔</div>
+          <div class="state-pill">Holding — 握紧点火装置</div>
+          <div class="state-pill">Back — 背面望灯塔★</div>
+          <div class="state-pill">Spine: idle / talk / react</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notice">
+      <strong>★ 标志性时刻表情</strong>：阿林的 <code>uplook</code>（抬帽露脸）和阿明的 <code>back</code>（背面望灯塔）仅用于章节标志性时刻对话，其他状态均使用 Default/Happy 系列。
+    </div>
+
+    <h3>命名规范</h3>
+    <pre>sprites/characters/
+├── npc_ahai_default@2x.png    npc_ahai_happy@2x.png     npc_ahai_thinking@2x.png
+├── npc_ahai_dialog.skel       npc_ahai_dialog.atlas
+├── npc_ahua_default@2x.png    npc_ahua_happy@2x.png     npc_ahua_focused@2x.png
+├── npc_ahua_dialog.skel       npc_ahua_dialog.atlas
+├── npc_alin_default@2x.png    npc_alin_uplook@2x.png    npc_alin_tea@2x.png
+├── npc_alin_dialog.skel       npc_alin_dialog.atlas
+├── npc_afu_default@2x.png     npc_afu_satisfied@2x.png  npc_afu_enjoying@2x.png
+├── npc_afu_dialog.skel        npc_afu_dialog.atlas
+├── npc_aming_default@2x.png   npc_aming_holding@2x.png  npc_aming_back@2x.png
+├── npc_aming_dialog.skel      npc_aming_dialog.atlas</pre>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- 4. BACKGROUNDS -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="backgrounds">
+    <h2>4 · 场景资产</h2>
+
+    <div class="section-block">
+      <h3>背景基础规格</h3>
+      <div class="spec-grid">
+        <div class="spec-item"><span class="spec-key">尺寸</span><span class="spec-val">1080 × 1920 px（Portrait 9:16）</span></div>
+        <div class="spec-item"><span class="spec-key">安全区</span><span class="spec-val">中央1080×1600，顶底各240px出血</span></div>
+        <div class="spec-item"><span class="spec-key">颜色深度</span><span class="spec-val">RGB 24-bit（无透明通道）</span></div>
+        <div class="spec-item"><span class="spec-key">导出格式</span><span class="spec-val">PNG-24 或 JPEG Q95</span></div>
+        <div class="spec-item"><span class="spec-key">分层可选</span><span class="spec-val">天空层 / 中景层 / 近景层（视差）</span></div>
+        <div class="spec-item"><span class="spec-key">风格</span><span class="spec-val">手绘水彩插画，AC式正视平面</span></div>
+      </div>
+    </div>
+
+    <h3>修复前/后说明</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>版本</th><th>后缀</th><th>色调</th><th>关键视觉</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id-col">修复前</td>
+            <td><code>_before</code></td>
+            <td>HSL饱和度 ≤ 15%，偏灰暗</td>
+            <td>破败但轮廓完整，如铅笔速写稿</td>
+          </tr>
+          <tr>
+            <td class="id-col">修复后</td>
+            <td><code>_after</code></td>
+            <td>满彩水彩质感，明亮温暖</td>
+            <td>章节特色景观完整，角色出现</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>6章节背景规格</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>章节</th><th>场景名</th><th>标志色板</th><th>修复后关键视觉</th><th>棋盘底图色</th><th>特殊版本</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id-col">Ch.1</td>
+            <td class="name-col">海边码头</td>
+            <td><span class="swatch" style="background:#5BBFB5;"></span><span class="swatch" style="background:#C4955A;"></span><span class="swatch" style="background:#EE8C55;"></span></td>
+            <td>木板暖棕码头，橙灯笼，金色下午光，贝壳风铃小木船</td>
+            <td>#A8DDD8→#C8EEE8（25%透明）</td>
+            <td>夕阳版 <code>_after_sunset</code></td>
+          </tr>
+          <tr>
+            <td class="id-col">Ch.2</td>
+            <td class="name-col">竹林村落</td>
+            <td><span class="swatch" style="background:#7DBE77;"></span><span class="swatch" style="background:#F0C4C4;"></span></td>
+            <td>翠竹挺立，竹径石板，竹筒花器，午后光斑</td>
+            <td>#C8E8C0→#E0F0D8（25%透明）</td>
+            <td>无</td>
+          </tr>
+          <tr>
+            <td class="id-col">Ch.3</td>
+            <td class="name-col">樱花坡田</td>
+            <td><span class="swatch" style="background:#F0C4C4;"></span><span class="swatch" style="background:#F0D8D8;"></span></td>
+            <td>樱花全开，花田整齐，石灯笼，阿花捧花，飘落花瓣</td>
+            <td>#F8E8E8→#FFF5F5（25%透明）</td>
+            <td>无</td>
+          </tr>
+          <tr>
+            <td class="id-col">Ch.4</td>
+            <td class="name-col">松林神社</td>
+            <td><span class="swatch" style="background:#C8402A;"></span><span class="swatch" style="background:#F5C842;"></span></td>
+            <td>鸟居鲜红，石灯笼暖光，注连绳，夜晚星空</td>
+            <td>#3D5040→#5A7058（20%透明）</td>
+            <td>无</td>
+          </tr>
+          <tr>
+            <td class="id-col">Ch.5</td>
+            <td class="name-col">渔村港口</td>
+            <td><span class="swatch" style="background:#E2C48A;"></span><span class="swatch" style="background:#5BBFB5;"></span></td>
+            <td>三色木船，晾晒渔网，鱼摊开张，金色海面，阿福坐码头</td>
+            <td>#F0D8B0→#E8C890（25%透明）</td>
+            <td>无</td>
+          </tr>
+          <tr>
+            <td class="id-col">Ch.6</td>
+            <td class="name-col">夜晚灯塔</td>
+            <td><span class="swatch" style="background:#1E2E50;"></span><span class="swatch" style="background:#F5C842;"></span></td>
+            <td>灯塔白塔蓝条纹，金色光柱，满天星斗，阿明背影</td>
+            <td>#0E1830→#1E2E50（18%透明）</td>
+            <td>全岛俯视版 <code>_overview</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>岛屿地图区域（Island Zones）</h3>
+    <div class="section-block">
+      <div class="spec-grid">
+        <div class="spec-item"><span class="spec-key">整体地图尺寸</span><span class="spec-val">1080 × 1920 px</span></div>
+        <div class="spec-item"><span class="spec-key">单区域图块</span><span class="spec-val">约 340 × 340 px（含透明边缘）</span></div>
+        <div class="spec-item"><span class="spec-key">视角风格</span><span class="spec-val">俯视45° 等轴，手绘水彩扁平化</span></div>
+        <div class="spec-item"><span class="spec-key">格式</span><span class="spec-val">PNG-24（透明背景叠加）</span></div>
+      </div>
+      <div class="table-wrap" style="margin-top:1rem;">
+        <table>
+          <thead>
+            <tr><th>状态</th><th>后缀</th><th>饱和度</th><th>视觉描述</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="id-col">修复前</td><td><code>_s0</code></td><td>≤ 12%</td><td>铅笔速写，破败轮廓</td></tr>
+            <tr><td class="id-col">第1阶段</td><td><code>_s1</code></td><td>30-38%</td><td>基础结构修复，色彩初现</td></tr>
+            <tr><td class="id-col">第2阶段</td><td><code>_s2</code></td><td>48-58%</td><td>细节补全，生活气息</td></tr>
+            <tr><td class="id-col">第3阶段</td><td><code>_s3</code></td><td>62-72%</td><td>生命迹象，角色/光源/水</td></tr>
+            <tr><td class="id-col">第4阶段</td><td><code>_s4</code></td><td>满彩</td><td>章节景观完整，标志特征最佳</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3>命名规范</h3>
+    <pre>sprites/backgrounds/
+├── bg_ch01_harbor_before@2x.png        bg_ch01_harbor_after@2x.png
+├── bg_ch01_harbor_after_sunset@2x.png  (夕阳版★)
+├── bg_ch02_village_before@2x.png       bg_ch02_village_after@2x.png
+├── bg_ch03_sakura_before@2x.png        bg_ch03_sakura_after@2x.png
+├── bg_ch04_shrine_before@2x.png        bg_ch04_shrine_after@2x.png
+├── bg_ch05_port_before@2x.png          bg_ch05_port_after@2x.png
+├── bg_ch06_lighthouse_before@2x.png    bg_ch06_lighthouse_after@2x.png
+└── bg_ch06_lighthouse_overview@2x.png  (全岛俯视★)
+
+sprites/island/
+├── island_base_map@2x.png
+├── island_lighthouse_beam.skel / .atlas / .png
+├── zone_ch01_harbor_s0@2x.png  …  zone_ch01_harbor_s4@2x.png
+├── zone_ch02_village_s0@2x.png …  zone_ch02_village_s4@2x.png
+├── zone_ch03_sakura_s0@2x.png  …  zone_ch03_sakura_s4@2x.png
+├── zone_ch04_shrine_s0@2x.png  …  zone_ch04_shrine_s4@2x.png
+├── zone_ch05_port_s0@2x.png    …  zone_ch05_port_s4@2x.png
+└── zone_ch06_lighthouse_s0@2x.png … zone_ch06_lighthouse_s4@2x.png</pre>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- 5. UI -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="ui">
+    <h2>5 · UI资产</h2>
+
+    <div class="section-block">
+      <h3>UI图标基础规格</h3>
+      <div class="spec-grid">
+        <div class="spec-item"><span class="spec-key">尺寸规格 @2x</span><span class="spec-val">24px / 32px / 48px</span></div>
+        <div class="spec-item"><span class="spec-key">风格</span><span class="spec-val">手绘线面结合，铅笔勾线感</span></div>
+        <div class="spec-item"><span class="spec-key">颜色</span><span class="spec-val">单色 / 章节主色 / 木纹棕 #C4955A</span></div>
+        <div class="spec-item"><span class="spec-key">格式</span><span class="spec-val">PNG-24（透明）+ SVG矢量源</span></div>
+        <div class="spec-item"><span class="spec-key">禁止</span><span class="spec-val">锐利几何矢量 / 纯黑图标</span></div>
+        <div class="spec-item"><span class="spec-key">主题要求</span><span class="spec-val">每图标含至少1个日式自然元素</span></div>
+      </div>
+    </div>
+
+    <h3>导航与界面（8个）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>编号</th><th>名称</th><th>尺寸</th><th>视觉主题</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td class="id-col">IC01</td><td class="name-col">home</td><td>32px</td><td>茅草屋顶小屋（AC式轮廓）</td><td>返回主界面</td></tr>
+          <tr><td class="id-col">IC02</td><td class="name-col">settings</td><td>32px</td><td>齿轮，但齿廓圆润如花瓣</td><td>设置</td></tr>
+          <tr><td class="id-col">IC03</td><td class="name-col">back_arrow</td><td>24px</td><td>竹叶形箭头（叶尖指左）</td><td>返回上一页</td></tr>
+          <tr><td class="id-col">IC04</td><td class="name-col">close_x</td><td>24px</td><td>圆角X形，末端小圆点</td><td>关闭</td></tr>
+          <tr><td class="id-col">IC05</td><td class="name-col">menu</td><td>32px</td><td>三条竹节形横线</td><td>菜单</td></tr>
+          <tr><td class="id-col">IC06</td><td class="name-col">info</td><td>24px</td><td>圆形内叶脉形 "i"</td><td>说明</td></tr>
+          <tr><td class="id-col">IC07</td><td class="name-col">check</td><td>24px</td><td>圆润勾形，末端有小花苞</td><td>确认</td></tr>
+          <tr><td class="id-col">IC08</td><td class="name-col">map</td><td>32px</td><td>展开的手绘地图卷轴轮廓</td><td>地图</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>游戏道具/助攻（6个）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>编号</th><th>名称</th><th>尺寸</th><th>视觉主题</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td class="id-col">IC09</td><td class="name-col">hint</td><td>48px</td><td>竹制提灯发光（萤火提灯块同款）</td><td>提示道具</td></tr>
+          <tr><td class="id-col">IC10</td><td class="name-col">shuffle</td><td>48px</td><td>两条小鱼绕圈成循环箭头</td><td>重排棋盘</td></tr>
+          <tr><td class="id-col">IC11</td><td class="name-col">add_steps</td><td>48px</td><td>脚印形+圆润加号</td><td>增加步数</td></tr>
+          <tr><td class="id-col">IC12</td><td class="name-col">bomb_item</td><td>48px</td><td>河豚脸（膨胀状，圆眼睛）</td><td>河豚炸弹道具</td></tr>
+          <tr><td class="id-col">IC13</td><td class="name-col">lightning_item</td><td>48px</td><td>金枪鱼剪影+尾部弧线尾迹</td><td>闪电道具</td></tr>
+          <tr><td class="id-col">IC14</td><td class="name-col">rainbow_item</td><td>48px</td><td>彩虹鱼侧视，色彩条纹明显</td><td>彩虹道具</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>货币与资源（6个）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>编号</th><th>名称</th><th>尺寸</th><th>视觉主题</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td class="id-col">IC15</td><td class="name-col">beach_coin</td><td>32px</td><td>扇贝正视图，金黄色（同T01）</td><td>沙滩币（软货币）</td></tr>
+          <tr><td class="id-col">IC16</td><td class="name-col">glowstone</td><td>32px</td><td>五边形宝石+星形内发光，青绿</td><td>光石（硬货币）</td></tr>
+          <tr><td class="id-col">IC17</td><td class="name-col">material_wood</td><td>24px</td><td>竹子横截面，年轮简化</td><td>竹木材料</td></tr>
+          <tr><td class="id-col">IC18</td><td class="name-col">material_rope</td><td>24px</td><td>麻花绳结简化形</td><td>绳索材料</td></tr>
+          <tr><td class="id-col">IC19</td><td class="name-col">material_seed</td><td>24px</td><td>两片圆叶夹一粒圆种子</td><td>花种材料</td></tr>
+          <tr><td class="id-col">IC20</td><td class="name-col">material_generic</td><td>24px</td><td>礼物袋形（圆底+系绳）</td><td>通用材料</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>进度与状态（6个）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>编号</th><th>名称</th><th>尺寸</th><th>视觉主题</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td class="id-col">IC21</td><td class="name-col">star_empty</td><td>32px</td><td>五瓣花形（空，仅轮廓线）</td><td>评级空花</td></tr>
+          <tr><td class="id-col">IC22</td><td class="name-col">star_full</td><td>32px</td><td>五瓣花形（满，金黄#F5C842）</td><td>评级满花</td></tr>
+          <tr><td class="id-col">IC23</td><td class="name-col">star_half</td><td>32px</td><td>五瓣花形（左半填满，右半空）</td><td>评级半花</td></tr>
+          <tr><td class="id-col">IC24</td><td class="name-col">lock</td><td>32px</td><td>圆润挂锁形，锁扣为竹节形</td><td>章节未解锁</td></tr>
+          <tr><td class="id-col">IC25</td><td class="name-col">progress_bar_cap</td><td>24px</td><td>竹节圆头（进度条端帽）</td><td>进度条端头</td></tr>
+          <tr><td class="id-col">IC26</td><td class="name-col">glow_energy</td><td>32px</td><td>竹制提灯+外圈光晕</td><td>光能图标</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>社交与分享（4个）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>编号</th><th>名称</th><th>尺寸</th><th>视觉主题</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td class="id-col">IC27</td><td class="name-col">share</td><td>32px</td><td>樱花枝形（主枝右延，分叉两点）</td><td>分享</td></tr>
+          <tr><td class="id-col">IC28</td><td class="name-col">milestone_flag</td><td>32px</td><td>竹竿上挂三角彩旗</td><td>里程碑</td></tr>
+          <tr><td class="id-col">IC29</td><td class="name-col">sound_on</td><td>24px</td><td>贝壳形（侧视，模拟音波扩散）</td><td>音量开</td></tr>
+          <tr><td class="id-col">IC30</td><td class="name-col">sound_off</td><td>24px</td><td>贝壳形+X标记</td><td>音量关</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>命名规范</h3>
+    <pre>sprites/ui/
+├── ic_home@2x.png          ic_settings@2x.png       ic_back_arrow@2x.png
+├── ic_close@2x.png         ic_menu@2x.png            ic_info@2x.png
+├── ic_check@2x.png         ic_map@2x.png
+├── ic_hint@2x.png          ic_shuffle@2x.png         ic_add_steps@2x.png
+├── ic_item_pufferfish@2x.png  ic_item_tuna@2x.png    ic_item_rainbowfish@2x.png
+├── ic_currency_shell@2x.png   ic_currency_glowstone@2x.png
+├── ic_material_bamboo@2x.png  ic_material_rope@2x.png
+├── ic_material_seed@2x.png    ic_material_generic@2x.png
+├── ic_flower_empty@2x.png  ic_flower_full@2x.png     ic_flower_half@2x.png
+├── ic_lock@2x.png          ic_progress_cap@2x.png    ic_glow_energy@2x.png
+├── ic_share@2x.png         ic_milestone_flag@2x.png
+├── ic_sound_on@2x.png      ic_sound_off@2x.png
+└── svg/   (同名 .svg 矢量源文件 × 30)</pre>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- 6. VFX -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="vfx">
+    <h2>6 · 特效资产</h2>
+
+    <div class="section-block">
+      <h3>特效基础规格</h3>
+      <div class="spec-grid">
+        <div class="spec-item"><span class="spec-key">帧率</span><span class="spec-val">30fps（大多数） / 60fps（核心）</span></div>
+        <div class="spec-item"><span class="spec-key">格式</span><span class="spec-val">PNG序列帧 + Spine骨骼动画</span></div>
+        <div class="spec-item"><span class="spec-key">透明通道</span><span class="spec-val">RGBA，全部透明背景</span></div>
+        <div class="spec-item"><span class="spec-key">粒子风格</span><span class="spec-val">自然元素（花瓣/气泡/竹叶），非抽象几何</span></div>
+      </div>
+    </div>
+
+    <div class="fx-list">
+
+      <div class="fx-card">
+        <div class="fx-id">EF01</div>
+        <div>
+          <div class="fx-name">图块消除特效（Tile Disappear）</div>
+          <div class="fx-meta">
+            <strong>画布：</strong>160×160 @2x &nbsp;
+            <strong>帧数：</strong>12帧 @30fps（0.4s）&nbsp;
+            <strong>触发：</strong>任意图块消除<br>
+            <strong>格式：</strong><span class="badge badge-png">PNG序列帧</span>&nbsp;
+            <strong>命名：</strong><code>fx_tile_disappear_{color}_f{01-12}@2x.png</code><br>
+            <strong>6色系：</strong>teal / pink / gold / green / red / navy<br>
+            <strong>粒子对应：</strong>T01→贝壳碎片 · T03→水滴 · T05→竹叶 · T09→花瓣 · T15→红色碎片 · T19→星点
+          </div>
+        </div>
+      </div>
+
+      <div class="fx-card">
+        <div class="fx-id">EF02</div>
+        <div>
+          <div class="fx-name">连击气泡（Combo Popup）</div>
+          <div class="fx-meta">
+            <strong>画布：</strong>220×110 @2x &nbsp;
+            <strong>格式：</strong><span class="badge badge-spine">Spine fx_combo_popup.skel</span><br>
+            <strong>触发：</strong>连击 ≥ 3 时弹出 &nbsp;
+            <strong>动画：</strong>spring弹入→悬停1.2s→上浮淡出（总~1.9s）<br>
+            <strong>样式：</strong>深珊瑚背景 #C85A40，月光白边框3px，数字金黄 #F5C842<br>
+            <strong>变体：</strong>3×3 / 5×5 / 10×10（字号 24px / 32px / 48px 递增）
+          </div>
+        </div>
+      </div>
+
+      <div class="fx-card">
+        <div class="fx-id">EF03</div>
+        <div>
+          <div class="fx-name">萤火光链（Firefly Chain）</div>
+          <div class="fx-meta">
+            <strong>画布：</strong>全屏叠加层 1080×1920 @2x &nbsp;
+            <strong>格式：</strong><span class="badge badge-spine">Spine fx_firefly_chain.skel</span><br>
+            <strong>触发：</strong>连接 T-Glow 萤火提灯块时 &nbsp;
+            <strong>时长：</strong>1.0–1.8s（视路径长短）<br>
+            <strong>内容：</strong>金色光粒子沿连接路径游动（500px/s），途经图块短暂发亮
+          </div>
+        </div>
+      </div>
+
+      <div class="fx-card">
+        <div class="fx-id">EF04</div>
+        <div>
+          <div class="fx-name">区域修复光效（Area Restore Glow）</div>
+          <div class="fx-meta">
+            <strong>画布：</strong>约400×400 @2x &nbsp;
+            <strong>格式：</strong><span class="badge badge-spine">Spine fx_area_restore.skel</span>（含4阶段动画）<br>
+            <strong>触发：</strong>区域修复阶段切换时 &nbsp;
+            <strong>时长：</strong>3–5s（crossfade配合）<br>
+            <strong>第4阶段额外：</strong>章节主题粒子雨（樱花/光点/金色光芒），约2.5s
+          </div>
+        </div>
+      </div>
+
+      <div class="fx-card">
+        <div class="fx-id">EF05</div>
+        <div>
+          <div class="fx-name">河豚爆炸特效（Pufferfish Pop）</div>
+          <div class="fx-meta">
+            <strong>画布：</strong>640×640 @2x（3×3格范围）&nbsp;
+            <strong>格式：</strong><span class="badge badge-spine">Spine fx_pufferfish_pop.skel</span><br>
+            <strong>触发：</strong>T-Bomb 激活 &nbsp;
+            <strong>时长：</strong>约0.8s<br>
+            <strong>内容：</strong>河豚夸张膨胀→圆形冲击波→气泡粒子飞散（#A8E0D8，8-24px）→升起消散<br>
+            <strong>注意：</strong>无火焰粒子，气泡替代碎片，保持治愈感
+          </div>
+        </div>
+      </div>
+
+      <div class="fx-card">
+        <div class="fx-id">EF06</div>
+        <div>
+          <div class="fx-name">金枪鱼闪电横扫（Tuna Dash）</div>
+          <div class="fx-meta">
+            <strong>画布：</strong>1080×160（行）/ 160×1920（列）@2x &nbsp;
+            <strong>格式：</strong><span class="badge badge-spine">Spine fx_tuna_dash_row.skel / fx_tuna_dash_col.skel</span><br>
+            <strong>触发：</strong>T-Lightning 激活 &nbsp;
+            <strong>时长：</strong>约0.5s（速度2000px/s）<br>
+            <strong>内容：</strong>金枪鱼剪影高速横扫全行，银蓝色光影残像 #7ECDE8，边缘水花
+          </div>
+        </div>
+      </div>
+
+      <div class="fx-card">
+        <div class="fx-id">EF07</div>
+        <div>
+          <div class="fx-name">彩虹鱼爆发（Rainbow Fish Burst）</div>
+          <div class="fx-meta">
+            <strong>画布：</strong>320×320 @2x &nbsp;
+            <strong>格式：</strong><span class="badge badge-spine">Spine fx_rainbow_burst.skel</span><br>
+            <strong>触发：</strong>T-Rainbow 消除时 &nbsp;
+            <strong>时长：</strong>约0.8s<br>
+            <strong>内容：</strong>彩虹鱼旋转360°→爆开为7色鱼鳞片放射扩散→鳞片淡出
+          </div>
+        </div>
+      </div>
+
+      <div class="fx-card">
+        <div class="fx-id">EF08</div>
+        <div>
+          <div class="fx-name">灯塔光柱扫射（Lighthouse Beam）</div>
+          <div class="fx-meta">
+            <strong>画布：</strong>全屏 1080×1920 @2x &nbsp;
+            <strong>格式：</strong><span class="badge badge-spine">Spine fx_lighthouse_beam_row.skel / fx_lighthouse_beam_island.skel</span><br>
+            <strong>触发：</strong>第6章每8步 / 标志性时刻全岛版 &nbsp;
+            <strong>时长：</strong>单行0.6s / 全岛4s（缓慢旋转）<br>
+            <strong>内容：</strong>金黄光柱（#F5C842，宽80px）从右侧扫过，Glow块光芒瞬间+40%
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h3>命名规范</h3>
+    <pre>effects/frames/
+├── fx_tile_disappear_teal_f01@2x.png … fx_tile_disappear_teal_f12@2x.png
+├── fx_tile_disappear_pink_f01@2x.png  fx_tile_disappear_gold_f01@2x.png
+├── fx_tile_disappear_green_f01@2x.png fx_tile_disappear_red_f01@2x.png
+└── fx_tile_disappear_navy_f01@2x.png
+
+effects/spine/
+├── fx_combo_popup.skel        fx_combo_popup.atlas      fx_combo_popup.png
+├── fx_firefly_chain.skel      fx_firefly_chain.atlas    fx_firefly_chain.png
+├── fx_area_restore.skel       fx_area_restore.atlas     fx_area_restore.png
+├── fx_pufferfish_pop.skel     fx_tuna_dash_row.skel     fx_tuna_dash_col.skel
+├── fx_rainbow_burst.skel
+├── fx_lighthouse_beam_row.skel
+└── fx_lighthouse_beam_island.skel</pre>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- 7. DELIVERY -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="delivery">
+    <h2>7 · 交付规范</h2>
+
+    <h3>通用文件要求</h3>
+    <div class="delivery-grid">
+      <div class="delivery-item"><div class="d-key">分辨率</div><div class="d-val">@2x 为主交付，@1x 通过自动缩小生成</div></div>
+      <div class="delivery-item"><div class="d-key">色彩空间</div><div class="d-val">sRGB</div></div>
+      <div class="delivery-item"><div class="d-key">PNG 文件大小</div><div class="d-val">单张 ≤ 500KB，大背景 ≤ 1.5MB</div></div>
+      <div class="delivery-item"><div class="d-key">Spine 纹理大小</div><div class="d-val">≤ 512KB</div></div>
+      <div class="delivery-item"><div class="d-key">透明通道</div><div class="d-val">边缘无多余像素，无白边/黑边溢出</div></div>
+      <div class="delivery-item"><div class="d-key">命名规则</div><div class="d-val">全部小写+下划线，含@2x/@1x后缀，不含中文/空格</div></div>
+      <div class="delivery-item"><div class="d-key">版本号</div><div class="d-val">更新版本使用 _v1 / _v2 后缀</div></div>
+      <div class="delivery-item"><div class="d-key">风格一致性</div><div class="d-val">全部图块在灰度图中，明度排序符合对比度要求</div></div>
+    </div>
+
+    <h3>Spine 动画交付要求</h3>
+    <div class="delivery-grid">
+      <div class="delivery-item"><div class="d-key">Spine 版本</div><div class="d-val">4.1.x（与引擎版本对齐）</div></div>
+      <div class="delivery-item"><div class="d-key">导出格式</div><div class="d-val">Binary .skel + JSON .json（备用）+ .atlas + PNG</div></div>
+      <div class="delivery-item"><div class="d-key">纹理尺寸</div><div class="d-val">2的幂次：256 / 512 / 1024</div></div>
+      <div class="delivery-item"><div class="d-key">动画命名</div><div class="d-val">全英文小写+下划线，如 idle / activate / talk / react_happy</div></div>
+      <div class="delivery-item"><div class="d-key">Slots</div><div class="d-val">可替换颜色/内容部分使用Slot，便于程序化控制</div></div>
+    </div>
+
+    <h3>目录结构总览</h3>
+    <pre>assets/
+├── sprites/
+│   ├── tiles/
+│   │   ├── (20种 × Normal/Highlighted PNG + 12帧消除序列帧)
+│   │   └── special/
+│   │       └── (4种特殊块 Spine: pufferfish / tuna / rainbow_fish / firefly_lantern)
+│   ├── backgrounds/
+│   │   └── (12张基础背景PNG + 2张标志性时刻备用版本)
+│   ├── island/
+│   │   ├── island_base_map@2x.png
+│   │   ├── island_lighthouse_beam.skel / .atlas / .png
+│   │   └── (6区域 × 5状态 = 30张 PNG)
+│   ├── characters/
+│   │   └── (5个NPC × 3表情PNG + 5个 Spine 对话动画)
+│   └── ui/
+│       ├── (30个图标 PNG @2x)
+│       └── svg/
+│           └── (30个图标 SVG 矢量源文件)
+└── effects/
+    ├── frames/
+    │   └── (图块消除序列帧PNG，6色系 × 12帧 = 72张)
+    └── spine/
+        └── (8种特效 Spine 文件)</pre>
+
+    <h3>分批交付建议</h3>
+    <div class="batch-timeline">
+      <div class="batch-item">
+        <div class="batch-label">批次1 — MVP原型验证</div>
+        <div class="batch-desc">T01–T04 Normal状态 · Ch.1背景修复前/后 · 消除序列帧（海水青+金黄） · UI图标核心15个（IC01-08 + IC15/16 + IC21-24）</div>
+      </div>
+      <div class="batch-item">
+        <div class="batch-label">批次2 — 第1章完整体验</div>
+        <div class="batch-desc">T01–T04全4状态（Highlighted+消除粒子） · Z01岛屿区域5状态 · NPC01阿海全套 · 4种特殊块Spine · EF02连击气泡 + EF03萤火光链</div>
+      </div>
+      <div class="batch-item">
+        <div class="batch-label">批次3 — 第2-4章</div>
+        <div class="batch-desc">T05–T16全12种图块4状态 · Ch.2-4背景修复前/后 · Z02-Z04岛屿区域全5状态 · NPC02阿花 + NPC03阿林 · EF04区域修复 + EF05河豚爆炸 + EF06金枪鱼闪电</div>
+      </div>
+      <div class="batch-item">
+        <div class="batch-label">批次4 — 第5-6章 + 完整交付</div>
+        <div class="batch-desc">T17–T20全4状态 · Ch.5-6背景含标志性时刻备用版本 · Z05-Z06岛屿+全岛底图 · NPC04阿福 + NPC05阿明 · EF07彩虹鱼 + EF08灯塔光柱（全岛版） · 剩余UI图标 · 全资产风格一致性审查</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  Art Asset Spec v2.0 &nbsp;·&nbsp; Glow Island &nbsp;·&nbsp; 2026-05-08 &nbsp;·&nbsp; 供概念设计师审阅
+</footer>
+
+</body>
+</html>

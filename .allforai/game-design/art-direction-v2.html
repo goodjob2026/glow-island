@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 美术方向文档 v2.0</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d26;
+      --border: #2a2d3a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --accent2: #86efac;
+      --heading: #f8fafc;
+      --code-bg: #12141c;
+      --tag-bg: #1e3a5f;
+      --warm: #f5c842;
+      --coral: #e8866a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 0 1rem 4rem;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2rem 2.5rem;
+      margin: 0 -1rem 2.5rem;
+      text-align: center;
+    }
+    .page-header .project-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125,211,252,0.25);
+      margin-bottom: 0.9rem;
+    }
+    .page-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--heading);
+      text-shadow: 0 0 40px rgba(245,200,66,0.3);
+      margin-bottom: 0.5rem;
+    }
+    .page-header .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .page-header .subtitle span {
+      color: var(--warm);
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--heading);
+      margin-top: 2.2rem;
+      margin-bottom: 0.65rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+    h2 {
+      font-size: 1.35rem;
+      border-left: 3px solid var(--warm);
+      padding-left: 0.75rem;
+      color: var(--warm);
+    }
+    h3 { font-size: 1.1rem; color: var(--accent2); }
+    h4 { font-size: 1rem; color: var(--accent); }
+    p { margin: 0.6rem 0 0.9rem; }
+    strong { color: var(--heading); font-weight: 600; }
+    em { color: var(--accent2); font-style: normal; }
+    blockquote {
+      border-left: 3px solid var(--warm);
+      padding: 0.6rem 1rem;
+      background: var(--surface);
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      color: var(--muted);
+      font-style: italic;
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 0.87em;
+      background: var(--code-bg);
+      color: var(--accent2);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.4rem;
+    }
+    pre code { background: none; border: none; padding: 0; font-size: 0.85rem; color: var(--text); }
+    ul, ol { padding-left: 1.6rem; margin: 0.5rem 0 1rem; }
+    li { margin: 0.3rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 0.88rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.65rem 0.9rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    tr:hover td { background: rgba(245,200,66,0.04); }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Swatch ── */
+    .swatch {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.12);
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .swatch-lg {
+      display: inline-block;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      vertical-align: middle;
+    }
+    .swatch-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .hex-label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.8rem;
+      color: var(--accent2);
+    }
+
+    /* ── Chapter color bands ── */
+    .chapter-band {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 48px;
+      margin: 0.5rem 0;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .chapter-band-seg {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Saturation progression bar ── */
+    .sat-bar {
+      display: flex;
+      gap: 6px;
+      margin: 0.8rem 0;
+      align-items: center;
+    }
+    .sat-seg {
+      height: 36px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 0 10px;
+      flex: 1;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* ── NPC card ── */
+    .npc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem 1.6rem;
+      margin: 1.2rem 0;
+    }
+    .npc-card h4 {
+      font-size: 1.05rem;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .npc-badge {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.68rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125,211,252,0.2);
+      letter-spacing: 0.06em;
+    }
+    .npc-props {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1.2rem;
+      margin-top: 0.8rem;
+    }
+    .npc-prop {
+      font-size: 0.85rem;
+    }
+    .npc-prop .label {
+      color: var(--muted);
+      font-size: 0.75rem;
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+    .special-rule {
+      background: rgba(245,200,66,0.07);
+      border-left: 3px solid var(--warm);
+      border-radius: 0 6px 6px 0;
+      padding: 0.5rem 0.8rem;
+      margin-top: 0.8rem;
+      font-size: 0.84rem;
+      color: var(--text);
+    }
+    .special-rule .label {
+      color: var(--warm);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    /* ── Tile grid ── */
+    .tile-demo {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      border: 2px solid rgba(255,255,255,0.15);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.25);
+      flex-shrink: 0;
+    }
+
+    /* ── Chapter area card ── */
+    .area-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 1.2rem 0;
+    }
+    .area-card-header {
+      padding: 0.85rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .area-card-body {
+      padding: 0 1.4rem 1.2rem;
+    }
+    .area-num {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1;
+      opacity: 0.9;
+    }
+    .area-title-block .en { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
+    .area-title-block .zh { font-size: 1.1rem; font-weight: 600; color: var(--heading); }
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin: 0.8rem 0;
+    }
+    .before-box, .after-box {
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.84rem;
+    }
+    .before-box {
+      background: rgba(100,100,120,0.12);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: var(--muted);
+    }
+    .after-box {
+      background: rgba(245,200,66,0.06);
+      border: 1px solid rgba(245,200,66,0.18);
+      color: var(--text);
+    }
+    .before-box .tag, .after-box .tag {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .before-box .tag { color: #64748b; }
+    .after-box .tag { color: var(--warm); }
+
+    /* ── Anim spec box ── */
+    .anim-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin: 0.8rem 0;
+    }
+    .anim-box h4 { margin-top: 0; font-size: 0.95rem; }
+    .param-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.84rem;
+    }
+    .param-row:last-child { border-bottom: none; }
+    .param-name { color: var(--muted); }
+    .param-val { font-family: "JetBrains Mono", monospace; color: var(--accent2); font-size: 0.82rem; }
+
+    /* ── Skin tone row ── */
+    .skin-swatches {
+      display: flex;
+      gap: 0.6rem;
+      margin: 0.6rem 0;
+      flex-wrap: wrap;
+    }
+    .skin-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.25rem 0.6rem 0.25rem 0.25rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ── UI component preview ── */
+    .ui-preview {
+      background: #1a1d26;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    /* ── Prohibition list ── */
+    .prohibition-tag {
+      display: inline-block;
+      background: rgba(224,90,74,0.12);
+      border: 1px solid rgba(224,90,74,0.3);
+      color: #f87171;
+      font-size: 0.78rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      margin: 0.2rem;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.6rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .toc-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+    .toc ol {
+      padding-left: 1.2rem;
+      margin: 0;
+    }
+    .toc li { margin: 0.25rem 0; font-size: 0.9rem; }
+    .toc a { color: var(--accent); }
+    .toc a:hover { color: var(--warm); }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="project-tag">Glow Island · 发光岛</div>
+  <h1>美术方向文档 Art Direction</h1>
+  <div class="subtitle">版本 <span>2.0</span> &nbsp;·&nbsp; 日期 <span>2026-05-08</span> &nbsp;·&nbsp; 状态 <span>已确认</span></div>
+  <div class="subtitle" style="margin-top:0.4rem;">风格基准：Animal Crossing（どうぶつの森）× 日式离岛美学</div>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <div class="toc-title">目录 Contents</div>
+    <ol>
+      <li><a href="#s1">风格哲学 Style Philosophy</a></li>
+      <li><a href="#s2">色彩系统 Color Palette</a></li>
+      <li><a href="#s3">角色设计规范 Character Design</a></li>
+      <li><a href="#s4">图块视觉设计 Tile Visual Design</a></li>
+      <li><a href="#s5">UI / UX 视觉语言</a></li>
+      <li><a href="#s6">环境设计 Environmental Design</a></li>
+      <li><a href="#s7">动画风格规范 Animation Style</a></li>
+    </ol>
+  </div>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <h1 id="s1">1. 风格哲学 Style Philosophy</h1>
+
+  <blockquote>动物森友会式的温柔日式离岛：圆润、手绘、柔暖，随修复进度从褪色枯岛逐步"亮起"的治愈世界。</blockquote>
+
+  <h2>为什么选择 Animal Crossing 风格</h2>
+  <p>Animal Crossing 的视觉语言天然降低认知负担：每个物件轮廓简洁、颜色区分鲜明、信息密度低而情感密度高。玩家在直觉层面就能识别图块类型，不需要"读"图块——只需"感受"它。这与 Glow Island 的消除玩法高度契合：快速连接靠的是图形识别，而非文字逻辑。</p>
+
+  <h3>三项核心原则</h3>
+  <ul>
+    <li><strong>圆润优先</strong>：所有形状使用大圆角（≥16px），避免尖角。角色头身比接近 1:1.5 的 Q 版比例，四肢短而圆。</li>
+    <li><strong>手绘质感</strong>：轮廓线保留轻微不规则感（模拟铅笔起稿），主色块用单色平铺＋顶部极淡高光，整体如水彩图鉴插画风格。</li>
+    <li><strong>暖色主导</strong>：整体色温偏暖（金色下午光），冷色仅用于水面和夜晚章节。目标饱和度 55–75%，避免过度饱和的鲜艳卡通风。</li>
+  </ul>
+
+  <h2>AC × Glow Island 对照表</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Animal Crossing 特征</th>
+        <th>Glow Island 对应体现</th>
+        <th>设计意图</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>柔和轮廓线，非纯黑描边</td>
+        <td>轮廓色 = 主色加深 30%（非 #000000）</td>
+        <td>避免视觉刺激，保持有机感</td>
+      </tr>
+      <tr>
+        <td>Q 版角色，大头圆身</td>
+        <td>Saki 和 NPC 头身比 1:1.5，眼睛占脸 1/3</td>
+        <td>提升亲和力与情感共鸣</td>
+      </tr>
+      <tr>
+        <td>木质 / 竹制 / 自然材料 UI</td>
+        <td>木牌对话框，树叶按钮，椰壳货币图标</td>
+        <td>强化日式离岛世界观沉浸感</td>
+      </tr>
+      <tr>
+        <td>每个岛民有独特剪影</td>
+        <td>每个 NPC 单色剪影可识别，无视分辨率</td>
+        <td>32px 缩略图仍可辨认身份</td>
+      </tr>
+      <tr>
+        <td>环境物件有轻微"呼吸"弹动</td>
+        <td>Idle 动画包含 0.5Hz 轻微上下浮动</td>
+        <td>赋予世界"活着"的生命感</td>
+      </tr>
+      <tr>
+        <td>柔和环境音映射视觉节奏</td>
+        <td>（音频参考，不在本文档范围）</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>刻意与 AC 的差异化</h2>
+  <ul>
+    <li>色调更偏向日式传统：增加鸟居红、藏青、竹绿</li>
+    <li>游戏机制视觉（图块消除、连击反馈）用自然元素替代 AC 家具系统</li>
+    <li>主角 Saki 有独立日式少女身份，非 AC 圆头动物造型</li>
+  </ul>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <h1 id="s2">2. 色彩系统 Color Palette</h1>
+
+  <h2>2.1 全局色板（15 色）</h2>
+  <table>
+    <thead>
+      <tr><th>色彩角色</th><th>色名</th><th>Hex</th><th>色块</th><th>主要用途</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>主背景沙</td><td>Island Sand</td>
+        <td><code>#F7EDD8</code></td>
+        <td><div class="swatch" style="background:#F7EDD8;"></div></td>
+        <td>UI 底板、对话框背景</td>
+      </tr>
+      <tr>
+        <td>暖珊瑚</td><td>Coral Warm</td>
+        <td><code>#E8866A</code></td>
+        <td><div class="swatch" style="background:#E8866A;"></div></td>
+        <td>主按钮、强调色</td>
+      </tr>
+      <tr>
+        <td>柔珊瑚淡</td><td>Coral Soft</td>
+        <td><code>#F2A98A</code></td>
+        <td><div class="swatch" style="background:#F2A98A;"></div></td>
+        <td>按钮高光、进度条填充</td>
+      </tr>
+      <tr>
+        <td>海水青</td><td>Ocean Teal</td>
+        <td><code>#5BBFB5</code></td>
+        <td><div class="swatch" style="background:#5BBFB5;"></div></td>
+        <td>水系图块、第 1 章主色</td>
+      </tr>
+      <tr>
+        <td>竹叶绿</td><td>Bamboo Green</td>
+        <td><code>#7DBE77</code></td>
+        <td><div class="swatch" style="background:#7DBE77;"></div></td>
+        <td>自然图块、第 2 章森林色</td>
+      </tr>
+      <tr>
+        <td>樱粉</td><td>Sakura Pink</td>
+        <td><code>#F0C4C4</code></td>
+        <td><div class="swatch" style="background:#F0C4C4;"></div></td>
+        <td>第 3 章花圃色、点缀</td>
+      </tr>
+      <tr>
+        <td>木纹棕</td><td>Driftwood</td>
+        <td><code>#C4955A</code></td>
+        <td><div class="swatch" style="background:#C4955A;"></div></td>
+        <td>木质 UI、T02 木板块</td>
+      </tr>
+      <tr>
+        <td>温暖沙棕</td><td>Warm Dune</td>
+        <td><code>#E2C48A</code></td>
+        <td><div class="swatch" style="background:#E2C48A;"></div></td>
+        <td>沙滩底图、绳结系色</td>
+      </tr>
+      <tr>
+        <td>金黄午光</td><td>Golden Hour</td>
+        <td><code>#F5C842</code></td>
+        <td><div class="swatch" style="background:#F5C842;"></div></td>
+        <td>灯塔高光、Glow 块、星光</td>
+      </tr>
+      <tr>
+        <td>暮橙</td><td>Dusk Orange</td>
+        <td><code>#EE8C55</code></td>
+        <td><div class="swatch" style="background:#EE8C55;"></div></td>
+        <td>第 1 章夕阳、灯笼暖光</td>
+      </tr>
+      <tr>
+        <td>深夜蓝</td><td>Night Indigo</td>
+        <td><code>#1E2E50</code></td>
+        <td><div class="swatch" style="background:#1E2E50;"></div></td>
+        <td>第 6 章夜空底色</td>
+      </tr>
+      <tr>
+        <td>月光白</td><td>Moonlight</td>
+        <td><code>#F5F0E8</code></td>
+        <td><div class="swatch" style="background:#F5F0E8;"></div></td>
+        <td>文字底色、UI 高光区</td>
+      </tr>
+      <tr>
+        <td>苔藓深绿</td><td>Forest Moss</td>
+        <td><code>#4A7D55</code></td>
+        <td><div class="swatch" style="background:#4A7D55;"></div></td>
+        <td>第 4 章森林、树干阴影</td>
+      </tr>
+      <tr>
+        <td>鸟居红</td><td>Torii Red</td>
+        <td><code>#C8402A</code></td>
+        <td><div class="swatch" style="background:#C8402A;"></div></td>
+        <td>神社标志色、第 5 章重音</td>
+      </tr>
+      <tr>
+        <td>岩石灰蓝</td><td>Stone Blue</td>
+        <td><code>#8EA0AA</code></td>
+        <td><div class="swatch" style="background:#8EA0AA;"></div></td>
+        <td>第 6 章礁石、石板纹</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>2.2 章节主色对照</h2>
+  <table>
+    <thead>
+      <tr><th>章节</th><th>场景</th><th>主色</th><th>辅色</th><th>强调色</th><th>色彩预览</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>第 1 章</strong></td>
+        <td>海边码头</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#5BBFB5;"></div><span class="hex-label">#5BBFB5</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F7EDD8;"></div><span class="hex-label">#F7EDD8</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#EE8C55;"></div><span class="hex-label">#EE8C55</span></div></td>
+        <td>
+          <div class="chapter-band">
+            <div class="chapter-band-seg" style="background:#5BBFB5;color:#1a4040;">主色</div>
+            <div class="chapter-band-seg" style="background:#F7EDD8;color:#6a5030;">辅色</div>
+            <div class="chapter-band-seg" style="background:#EE8C55;color:#fff;">强调</div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>第 2 章</strong></td>
+        <td>竹林村落</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#7DBE77;"></div><span class="hex-label">#7DBE77</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C4955A;"></div><span class="hex-label">#C4955A</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F5C842;"></div><span class="hex-label">#F5C842</span></div></td>
+        <td>
+          <div class="chapter-band">
+            <div class="chapter-band-seg" style="background:#7DBE77;color:#1a4020;">主色</div>
+            <div class="chapter-band-seg" style="background:#C4955A;color:#fff;">辅色</div>
+            <div class="chapter-band-seg" style="background:#F5C842;color:#5a3800;">强调</div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>第 3 章</strong></td>
+        <td>樱花坡田</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F0C4C4;"></div><span class="hex-label">#F0C4C4</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#7DBE77;"></div><span class="hex-label">#7DBE77</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#FFFFFF;border-color:#ddd;"></div><span class="hex-label">#FFFFFF</span></div></td>
+        <td>
+          <div class="chapter-band">
+            <div class="chapter-band-seg" style="background:#F0C4C4;color:#8a3050;">主色</div>
+            <div class="chapter-band-seg" style="background:#7DBE77;color:#1a4020;">辅色</div>
+            <div class="chapter-band-seg" style="background:#FFFFFF;color:#888;">强调</div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>第 4 章</strong></td>
+        <td>松林神社</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#4A7D55;"></div><span class="hex-label">#4A7D55</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C4955A;"></div><span class="hex-label">#C4955A</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C8402A;"></div><span class="hex-label">#C8402A</span></div></td>
+        <td>
+          <div class="chapter-band">
+            <div class="chapter-band-seg" style="background:#4A7D55;color:#e0ffe8;">主色</div>
+            <div class="chapter-band-seg" style="background:#C4955A;color:#fff;">辅色</div>
+            <div class="chapter-band-seg" style="background:#C8402A;color:#fff;">强调</div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>第 5 章</strong></td>
+        <td>渔村港口</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C4955A;"></div><span class="hex-label">#C4955A</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#5BBFB5;"></div><span class="hex-label">#5BBFB5</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F5C842;"></div><span class="hex-label">#F5C842</span></div></td>
+        <td>
+          <div class="chapter-band">
+            <div class="chapter-band-seg" style="background:#C4955A;color:#fff;">主色</div>
+            <div class="chapter-band-seg" style="background:#5BBFB5;color:#1a4040;">辅色</div>
+            <div class="chapter-band-seg" style="background:#F5C842;color:#5a3800;">强调</div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>第 6 章</strong></td>
+        <td>夜晚灯塔</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#1E2E50;"></div><span class="hex-label">#1E2E50</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#8EA0AA;"></div><span class="hex-label">#8EA0AA</span></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F5C842;"></div><span class="hex-label">#F5C842</span></div></td>
+        <td>
+          <div class="chapter-band">
+            <div class="chapter-band-seg" style="background:#1E2E50;color:#a0c0f0;">主色</div>
+            <div class="chapter-band-seg" style="background:#8EA0AA;color:#1a2a3a;">辅色</div>
+            <div class="chapter-band-seg" style="background:#F5C842;color:#5a3800;">强调</div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>2.3 修复进度饱和度叙事</h2>
+  <p>与 AC 岛屿"荒岛开拓"节奏相似，修复前是褪色速写，修复后是完整水彩画稿。</p>
+  <div class="sat-bar">
+    <div class="sat-seg" style="background:hsl(30,11%,45%);color:#ccc;">s0<br><small>8–15%</small></div>
+    <div class="sat-seg" style="background:hsl(30,33%,60%);color:#5a3000;">s1<br><small>28–38%</small></div>
+    <div class="sat-seg" style="background:hsl(30,53%,65%);color:#5a3000;">s2<br><small>48–58%</small></div>
+    <div class="sat-seg" style="background:hsl(30,67%,68%);color:#3a1800;">s3<br><small>62–72%</small></div>
+    <div class="sat-seg" style="background:hsl(30,82%,72%);color:#3a1800;">s4<br><small>75–88%</small></div>
+  </div>
+  <ul>
+    <li><strong>s0 修复前</strong>：饱和度 8–15%，亮度 42–48% — 褪色枯岛，铅笔草稿感</li>
+    <li><strong>s1 第1阶段</strong>：饱和度 28–38% — 轮廓找回，淡彩涂色</li>
+    <li><strong>s2 第2阶段</strong>：饱和度 48–58% — 生活气息，色彩入稿</li>
+    <li><strong>s3 第3阶段</strong>：饱和度 62–72% — 角色回归，满生命力</li>
+    <li><strong>s4 第4阶段</strong>：饱和度 75–88% — 完整水彩，光效全开</li>
+  </ul>
+
+  <h2>2.4 色彩对比度要求（降低认知负担核心规则）</h2>
+  <table>
+    <thead>
+      <tr><th>规则</th><th>参数</th><th>目的</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>相邻章节图块色相差</td><td>≥ 30°（HSL 色环）</td><td>章节视觉分区明确</td></tr>
+      <tr><td>同章节内图块明度差</td><td>≥ 20%</td><td>快速识别图块类型</td></tr>
+      <tr><td>灰度模式可区分</td><td>剪影原则，全部 20 种图块</td><td>色觉障碍用户可用性</td></tr>
+      <tr><td>最低饱和度</td><td>≥ 20%（禁止纯灰色图块）</td><td>保持视觉活力</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <h1 id="s3">3. 角色设计规范 Character Design</h1>
+
+  <h2>3.1 主角 山田律 / Saki（咲）</h2>
+
+  <div class="npc-card" style="border-color:rgba(240,196,196,0.35);">
+    <h4>
+      山田律（Yamada Ritsu）/ Saki
+      <span class="npc-badge">主角 · 玩家角色</span>
+    </h4>
+
+    <h3 style="margin-top:0.8rem;">体型与比例</h3>
+    <table>
+      <thead><tr><th>部位</th><th>规格</th></tr></thead>
+      <tbody>
+        <tr><td>头身比</td><td>1 : 1.5（头部极大，接近 AC 村民比例）</td></tr>
+        <tr><td>头部</td><td>正圆形，直径占全身高 40%；耳朵小圆形，略低于头顶</td></tr>
+        <tr><td>眼睛</td><td>水滴形，黑色瞳仁占眼面积 70%，静止时略带向下弯曲的温柔感</td></tr>
+        <tr><td>鼻嘴</td><td>鼻子仅一个小圆点，嘴巴用简短弧线；AC 式"省略鼻梁"原则</td></tr>
+        <tr><td>身体</td><td>圆筒形，无明显腰线；手臂短而圆，如两根小香肠</td></tr>
+        <tr><td>腿脚</td><td>短腿，脚部略大于手，增加稳定感和可爱感</td></tr>
+      </tbody>
+    </table>
+
+    <h3>服装（夏日离岛版）</h3>
+    <table>
+      <thead><tr><th>部件</th><th>描述</th><th>色值</th><th></th></tr></thead>
+      <tbody>
+        <tr>
+          <td>上衣</td>
+          <td>宽松圆领短袖，袖口竹叶印花（深绿 2px 线条）</td>
+          <td><code>#F0C4C4</code></td>
+          <td><div class="swatch" style="background:#F0C4C4;"></div></td>
+        </tr>
+        <tr>
+          <td>短裤</td>
+          <td>宽松百慕大款</td>
+          <td><code>#F7EDD8</code></td>
+          <td><div class="swatch" style="background:#F7EDD8;"></div></td>
+        </tr>
+        <tr>
+          <td>帽子</td>
+          <td>宽沿草帽，本色麻纹，帽带珊瑚色</td>
+          <td><code>#E8866A</code></td>
+          <td><div class="swatch" style="background:#E8866A;"></div></td>
+        </tr>
+        <tr>
+          <td>鞋</td>
+          <td>简单圆头凉鞋</td>
+          <td><code>#C4955A</code></td>
+          <td><div class="swatch" style="background:#C4955A;"></div></td>
+        </tr>
+        <tr>
+          <td>背包</td>
+          <td>海藻绿小背包，贝壳形状扣子（永远携带）</td>
+          <td><code>#7DBE77</code></td>
+          <td><div class="swatch" style="background:#7DBE77;"></div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>表情规范（三套）</h3>
+    <table>
+      <thead><tr><th>状态</th><th>触发场景</th><th>表情描述</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Default</strong></td><td>默认游览</td><td>嘴角微微上翘，眼睛半开，放松状态</td></tr>
+        <tr><td><strong>Happy</strong></td><td>关卡完成</td><td>月亮形眯眼，嘴巴大"Ω"形，双手握拳举起</td></tr>
+        <tr><td><strong>Thinking</strong></td><td>关卡提示</td><td>一只眼眯起，嘴角歪向一侧，食指点嘴角</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>3.2 丸山ひなた（Maruyama Hinata）</h2>
+
+  <div class="npc-card" style="border-color:rgba(245,200,66,0.35);">
+    <h4>
+      丸山ひなた
+      <span class="npc-badge">核心情感线 NPC</span>
+    </h4>
+    <p style="color:var(--muted);font-size:0.9rem;">渔夫家出身，现为岛上民宿经营者。太阳晒出的古铜肤色，常年操持渔具让她的手掌宽厚而有力；但笑起来眼角弯成月牙时，那种温柔又完全盖过了她粗糙的外表。</p>
+
+    <div class="npc-props">
+      <div class="npc-prop">
+        <span class="label">标志性配件</span>
+        木制发簪（梳在左耳上方，竹段造型，顶端镶嵌一粒小贝壳）
+      </div>
+      <div class="npc-prop">
+        <span class="label">特征饰物</span>
+        右手无名指：渔夫绳结戒指（粗麻绳，椰棕色，非金属）
+      </div>
+      <div class="npc-prop">
+        <span class="label">肤色</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#C8935A;"></div>
+          <span class="hex-label">#C8935A 日晒深色（深褐中色）</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">腮红</span>
+        存在，椭圆形橙棕腮红（比 Saki 更明显，体现户外劳动感）
+      </div>
+    </div>
+
+    <h3 style="margin-top:1rem;">服装</h3>
+    <table>
+      <thead><tr><th>部件</th><th>描述</th><th>色值</th><th></th></tr></thead>
+      <tbody>
+        <tr>
+          <td>上衣</td>
+          <td>宽松麻布系扣衬衣，半敞，袖口挽起（露出前臂）</td>
+          <td><code>#E2C48A</code></td>
+          <td><div class="swatch" style="background:#E2C48A;"></div></td>
+        </tr>
+        <tr>
+          <td>下装</td>
+          <td>藏青色渔夫裤，裤脚卷起至膝下</td>
+          <td><code>#2A4060</code></td>
+          <td><div class="swatch" style="background:#2A4060;"></div></td>
+        </tr>
+        <tr>
+          <td>腰带</td>
+          <td>宽腰带，深棕布料</td>
+          <td><code>#5A3820</code></td>
+          <td><div class="swatch" style="background:#5A3820;"></div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>情绪状态</h3>
+    <table>
+      <thead><tr><th>状态</th><th>表情描述</th><th>肢体语言</th></tr></thead>
+      <tbody>
+        <tr><td><strong>日常（Casual）</strong></td><td>嘴角微翘，眼神直视，神情专注</td><td>双手放身前，重心稍前倾</td></tr>
+        <tr><td><strong>开心（Warm）</strong></td><td>眼角弯成月牙，嘴巴稍开，腮红加深</td><td>身体微向律方向倾，单手轻搭腰侧</td></tr>
+        <tr><td><strong>担忧（Worry）</strong></td><td>眉头微蹙，嘴唇轻抿，眼神向下</td><td>双手交握放胸前</td></tr>
+        <tr><td><strong>惊喜（Surprise）</strong></td><td>眼睛瞬间变圆（打破月牙习惯），嘴巴小"o"</td><td>全身微后仰，随即重新靠近</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>3.3 NPC 通用设计原则</h2>
+
+  <h3>剪影规则</h3>
+  <ul>
+    <li>每个 NPC 有 1 个标志性道具 / 配件，使其黑色剪影与其他 NPC <strong>完全不同</strong></li>
+    <li>体型有明显差异：高 / 矮 / 圆 / 细，不允许两个 NPC 体型相近</li>
+  </ul>
+
+  <h3>皮肤色值（仅限 4 色）</h3>
+  <div class="skin-swatches">
+    <div class="skin-chip"><div class="swatch" style="background:#F5D4B0;width:20px;height:20px;border-radius:4px;"></div>#F5D4B0 浅</div>
+    <div class="skin-chip"><div class="swatch" style="background:#E8B882;width:20px;height:20px;border-radius:4px;"></div>#E8B882 中</div>
+    <div class="skin-chip"><div class="swatch" style="background:#C8935A;width:20px;height:20px;border-radius:4px;"></div>#C8935A 深</div>
+    <div class="skin-chip"><div class="swatch" style="background:#9A6840;width:20px;height:20px;border-radius:4px;"></div>#9A6840 深褐</div>
+  </div>
+
+  <h2>3.4 各章节 NPC 视觉细节</h2>
+
+  <!-- NPC01 -->
+  <div class="npc-card">
+    <h4>
+      NPC01 — 渔夫·阿海
+      <span class="npc-badge">第 1 章 · 海边码头</span>
+    </h4>
+    <div class="npc-props">
+      <div class="npc-prop">
+        <span class="label">体型</span>
+        中等身高，圆肩，手臂略粗（常年拉网）
+      </div>
+      <div class="npc-prop">
+        <span class="label">皮肤</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#9A6840;"></div>
+          <span class="hex-label">#9A6840 深褐（日晒）</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">代表色</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#4A6D9A;"></div>
+          <span class="hex-label">#4A6D9A 靛蓝布衣</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">腮红</span>
+        无（沉稳气质）
+      </div>
+    </div>
+    <div class="npc-prop" style="margin-top:0.6rem;">
+      <span class="label">标志性配件</span>
+      宽沿草帽（比 Saki 更旧更大，帽沿有破损线条）+ 右手常拿鱼竿
+    </div>
+    <div class="special-rule">
+      <span class="label">特别规则</span>
+      第 1 章多数时候<strong>背对玩家看海</strong>，正面亮相仅在标志性时刻。背影构图本身就是情感设计——对应 Saki 初到岛上的陌生感。
+    </div>
+  </div>
+
+  <!-- NPC02 -->
+  <div class="npc-card">
+    <h4>
+      NPC02 — 花农·阿花
+      <span class="npc-badge">第 3 章 · 樱花坡田</span>
+    </h4>
+    <div class="npc-props">
+      <div class="npc-prop">
+        <span class="label">体型</span>
+        矮小圆润，头略大，圆脸
+      </div>
+      <div class="npc-prop">
+        <span class="label">皮肤</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#F5D4B0;"></div>
+          <span class="hex-label">#F5D4B0 浅</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">代表色</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#7DBE77;"></div>
+          <span class="hex-label">#7DBE77 草绿围裙</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">腮红</span>
+        圆形深粉腮红，明显
+      </div>
+    </div>
+    <div class="npc-prop" style="margin-top:0.6rem;">
+      <span class="label">标志性配件</span>
+      头顶别着一朵三瓣花（与章节 T09 相同花形）+ 左手常端浇水壶；粉底碎花长裙（<code>#F0C4C4</code> 底色）
+    </div>
+    <div class="special-rule">
+      <span class="label">特别规则</span>
+      蹲地时身体变得更圆（膝盖消失，仅剩圆形轮廓）——这是阿花最可爱的剪影形态，章节修复动画必用此姿态。
+    </div>
+  </div>
+
+  <!-- NPC03 -->
+  <div class="npc-card">
+    <h4>
+      NPC03 — 背包客·阿林
+      <span class="npc-badge">第 4 章 · 松林神社</span>
+    </h4>
+    <div class="npc-props">
+      <div class="npc-prop">
+        <span class="label">体型</span>
+        偏高细，肩宽，有探险家气质
+      </div>
+      <div class="npc-prop">
+        <span class="label">皮肤</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#E8B882;"></div>
+          <span class="hex-label">#E8B882 中</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">代表色</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#3D6645;"></div>
+          <span class="hex-label">#3D6645 深绿探险外套</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">腮红</span>
+        无
+      </div>
+    </div>
+    <div class="npc-prop" style="margin-top:0.6rem;">
+      <span class="label">标志性配件</span>
+      帽沿压低的渔夫帽（多数时候遮住眼睛，仅露嘴巴）+ 大型背包（背包上挂着小灯笼）
+    </div>
+    <div class="special-rule">
+      <span class="label">特别规则 — 关键设计</span>
+      第 4 章完成时阿林抬头仰望星空，这是<strong>全章唯一露出眼睛的时刻</strong>，眼神设计为温柔上弯（AC"微笑眼"变体）。这一刻的情感冲击来自整章的眼睛缺席。
+    </div>
+  </div>
+
+  <!-- NPC04 -->
+  <div class="npc-card">
+    <h4>
+      NPC04 — 温泉老爷爷·阿福
+      <span class="npc-badge">第 5 章 · 渔村港口</span>
+    </h4>
+    <div class="npc-props">
+      <div class="npc-prop">
+        <span class="label">体型</span>
+        矮胖圆，肚子圆鼓（穿浴衣时如一颗圆球）
+      </div>
+      <div class="npc-prop">
+        <span class="label">皮肤</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#E8B882;"></div>
+          <span class="hex-label">#E8B882 中</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">代表色</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#2A4060;"></div>
+          <span class="hex-label">#2A4060 藏青浴衣</span>
+          &nbsp;
+          <div class="swatch" style="background:#F5C842;"></div>
+          <span class="hex-label">#F5C842 金色腰带</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">腮红</span>
+        深橙腮红，明显（配合笑纹增强慈祥感）
+      </div>
+    </div>
+    <div class="npc-prop" style="margin-top:0.6rem;">
+      <span class="label">标志性配件</span>
+      头顶始终顶着一块叠好的白色方巾（AC 式夸张道具，是其剪影的绝对识别点）
+    </div>
+    <div class="special-rule">
+      <span class="label">特别规则 — 反差设计</span>
+      默认表情是"嫌弃 / 无奈"的眯眼撇嘴（眼睛向下弯，嘴角朝下），但腮红的存在使其整体可爱而非凶狠——AC 式"反差萌"。
+    </div>
+  </div>
+
+  <!-- NPC05 -->
+  <div class="npc-card">
+    <h4>
+      NPC05 — 灯塔守护者·阿明
+      <span class="npc-badge">第 6 章 · 夜晚灯塔</span>
+    </h4>
+    <div class="npc-props">
+      <div class="npc-prop">
+        <span class="label">体型</span>
+        偏高，微弯腰（习惯性的沉思姿态）
+      </div>
+      <div class="npc-prop">
+        <span class="label">皮肤</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#E8B882;"></div>
+          <span class="hex-label">#E8B882 中</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">代表色</span>
+        <div class="swatch-row" style="margin-top:0.3rem;">
+          <div class="swatch" style="background:#2A3650;"></div>
+          <span class="hex-label">#2A3650 深灰蓝大衣</span>
+        </div>
+      </div>
+      <div class="npc-prop">
+        <span class="label">腮红</span>
+        无
+      </div>
+    </div>
+    <div class="npc-prop" style="margin-top:0.6rem;">
+      <span class="label">标志性配件</span>
+      右手握旧式点火装置（黄铜色圆柱形，末端发微光）；大衣领口白色翻领细节
+    </div>
+    <div class="special-rule">
+      <span class="label">特别规则 — 情感高峰</span>
+      标志性时刻（灯塔亮起）阿明<strong>背对玩家</strong>，仅看到大衣后背和点亮灯塔的剪影。这个构图本身就是情感高峰，无需正面表情。与阿海的背影构图形成全游戏叙事闭环。
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <h1 id="s4">4. 图块视觉设计 Tile Visual Design</h1>
+
+  <h2>4.1 图块基础规格</h2>
+  <table>
+    <thead><tr><th>项目</th><th>规格</th></tr></thead>
+    <tbody>
+      <tr><td>画布尺寸 @2x</td><td>128 × 128 px</td></tr>
+      <tr><td>实际绘制区 @2x</td><td>112 × 112 px（四周各留 8px 透明出血）</td></tr>
+      <tr><td>基础形状</td><td>圆角矩形（圆角半径 24px），自然形态使用有机轮廓</td></tr>
+      <tr><td>轮廓线</td><td>2px，颜色 = 主色加深 32%，非纯黑</td></tr>
+      <tr><td>底部阴影</td><td><code>0 4px 0 rgba(0,0,0,0.10)</code>，烘焙进图层</td></tr>
+      <tr><td>纸纹叠加</td><td>6% 不透明度轻纸纹底，全部图块统一（模拟手绘纸感）</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4.2 全部 20 种图块（T01–T20）</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>色块</th>
+        <th>图块名称</th>
+        <th>形态描述</th>
+        <th>主色</th>
+        <th>辅色</th>
+        <th>日式自然主题</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>T01</strong></td>
+        <td><div class="tile-demo" style="background:#5BBFB5;">🐚</div></td>
+        <td>贝壳块</td>
+        <td>螺旋形贝壳，顶视图，放射状纹路</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#5BBFB5;"></div><code>#5BBFB5</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#A8DDD8;"></div><code>#A8DDD8</code></div></td>
+        <td>🌊 海浪 / 潮间带</td>
+      </tr>
+      <tr>
+        <td><strong>T02</strong></td>
+        <td><div class="tile-demo" style="background:#C4955A;">🪵</div></td>
+        <td>木板块</td>
+        <td>横纹木板，3-4 条平行纹理，圆角</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C4955A;"></div><code>#C4955A</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#A07840;"></div><code>#A07840</code></div></td>
+        <td>🏚 码头木桩</td>
+      </tr>
+      <tr>
+        <td><strong>T03</strong></td>
+        <td><div class="tile-demo" style="background:#EE8C55;">🏮</div></td>
+        <td>灯笼块</td>
+        <td>圆形竹制灯笼，正视图，有提绳</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#EE8C55;"></div><code>#EE8C55</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F5C842;"></div><code>#F5C842</code></div></td>
+        <td>🎆 夏日祭</td>
+      </tr>
+      <tr>
+        <td><strong>T04</strong></td>
+        <td><div class="tile-demo" style="background:#7DBE77;">🎋</div></td>
+        <td>竹节块</td>
+        <td>竹节截面，圆形，有节点圆环</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#7DBE77;"></div><code>#7DBE77</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#4A7D55;"></div><code>#4A7D55</code></div></td>
+        <td>🎍 竹林</td>
+      </tr>
+      <tr>
+        <td><strong>T05</strong></td>
+        <td><div class="tile-demo" style="background:#E2C48A;">🪢</div></td>
+        <td>绳结块</td>
+        <td>双股绳结，有机形状，绳纹清晰</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#E2C48A;"></div><code>#E2C48A</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C4955A;"></div><code>#C4955A</code></div></td>
+        <td>⚓ 渔具 / 绳索</td>
+      </tr>
+      <tr>
+        <td><strong>T06</strong></td>
+        <td><div class="tile-demo" style="background:#F0C4C4;">🌸</div></td>
+        <td>樱花块</td>
+        <td>五瓣樱花，正视图，花心金色点</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F0C4C4;"></div><code>#F0C4C4</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F5C842;"></div><code>#F5C842</code></div></td>
+        <td>🌸 春日樱花</td>
+      </tr>
+      <tr>
+        <td><strong>T07</strong></td>
+        <td><div class="tile-demo" style="background:#F7EDD8;">🥚</div></td>
+        <td>鹅卵石块</td>
+        <td>光滑椭圆石，表面有一条浅色纹</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F7EDD8;"></div><code>#F7EDD8</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C4955A;"></div><code>#C4955A</code></div></td>
+        <td>🏔 溪涧石</td>
+      </tr>
+      <tr>
+        <td><strong>T08</strong></td>
+        <td><div class="tile-demo" style="background:#4A7D55;">🍀</div></td>
+        <td>苔藓块</td>
+        <td>圆形苔藓垫，顶视图，有起伏纹理</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#4A7D55;"></div><code>#4A7D55</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#7DBE77;"></div><code>#7DBE77</code></div></td>
+        <td>🌿 神社苔石</td>
+      </tr>
+      <tr>
+        <td><strong>T09</strong></td>
+        <td><div class="tile-demo" style="background:#F0C4C4;border-color:#C8402A;">🌺</div></td>
+        <td>山茶花块</td>
+        <td>三瓣花，叶片对称，有中央花蕊点</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F0C4C4;"></div><code>#F0C4C4</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C8402A;"></div><code>#C8402A</code></div></td>
+        <td>🌺 日式庭院</td>
+      </tr>
+      <tr>
+        <td><strong>T10</strong></td>
+        <td><div class="tile-demo" style="background:#8EA0AA;">🪨</div></td>
+        <td>礁石块</td>
+        <td>不规则多边形礁石，有平台感</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#8EA0AA;"></div><code>#8EA0AA</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#5A7080;"></div><code>#5A7080</code></div></td>
+        <td>🌊 海边礁石</td>
+      </tr>
+      <tr>
+        <td><strong>T11</strong></td>
+        <td><div class="tile-demo" style="background:#F5C842;">⭐</div></td>
+        <td>星砂块</td>
+        <td>小五角星形状，略圆润，如星砂颗粒</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F5C842;"></div><code>#F5C842</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#E8A820;"></div><code>#E8A820</code></div></td>
+        <td>✨ 星砂海滩</td>
+      </tr>
+      <tr>
+        <td><strong>T12</strong></td>
+        <td><div class="tile-demo" style="background:#5BBFB5;">🐟</div></td>
+        <td>小鱼块</td>
+        <td>侧视小鱼，流线形，有鳞片简化纹</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#5BBFB5;"></div><code>#5BBFB5</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#3A9E94;"></div><code>#3A9E94</code></div></td>
+        <td>🎣 渔港</td>
+      </tr>
+      <tr>
+        <td><strong>T13</strong></td>
+        <td><div class="tile-demo" style="background:#7DBE77;">🍃</div></td>
+        <td>竹叶块</td>
+        <td>三片竹叶扇形排列，叶脉清晰</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#7DBE77;"></div><code>#7DBE77</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#4A7D55;"></div><code>#4A7D55</code></div></td>
+        <td>🎋 竹林村落</td>
+      </tr>
+      <tr>
+        <td><strong>T14</strong></td>
+        <td><div class="tile-demo" style="background:#C8402A;">⛩</div></td>
+        <td>鸟居块</td>
+        <td>简化正视鸟居，双柱横梁，红漆感</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C8402A;"></div><code>#C8402A</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F5C842;"></div><code>#F5C842</code></div></td>
+        <td>⛩ 神社</td>
+      </tr>
+      <tr>
+        <td><strong>T15</strong></td>
+        <td><div class="tile-demo" style="background:#1E2E50;">🌙</div></td>
+        <td>夜月块</td>
+        <td>弯月形，内有云朵简化轮廓</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#1E2E50;"></div><code>#1E2E50</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F5F0E8;"></div><code>#F5F0E8</code></div></td>
+        <td>🌙 夜晚灯塔</td>
+      </tr>
+      <tr>
+        <td><strong>T16</strong></td>
+        <td><div class="tile-demo" style="background:#E8866A;">🦀</div></td>
+        <td>螃蟹块</td>
+        <td>正视小螃蟹，圆形身体，双螯明显</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#E8866A;"></div><code>#E8866A</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C45A3A;"></div><code>#C45A3A</code></div></td>
+        <td>🦀 潮间带</td>
+      </tr>
+      <tr>
+        <td><strong>T17</strong></td>
+        <td><div class="tile-demo" style="background:#F5D4B0;">🍙</div></td>
+        <td>稻穗块</td>
+        <td>饱满稻穗，弯垂形，有颗粒感</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F5D4B0;"></div><code>#F5D4B0</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#E2C48A;"></div><code>#E2C48A</code></div></td>
+        <td>🌾 秋收田园</td>
+      </tr>
+      <tr>
+        <td><strong>T18</strong></td>
+        <td><div class="tile-demo" style="background:#4A7D55;">🌲</div></td>
+        <td>松针块</td>
+        <td>松针束，扇形展开，深绿团块</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#4A7D55;"></div><code>#4A7D55</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#2E5235;"></div><code>#2E5235</code></div></td>
+        <td>🌲 松林神社</td>
+      </tr>
+      <tr>
+        <td><strong>T19</strong></td>
+        <td><div class="tile-demo" style="background:#8EA0AA;border-color:#5A7080;">🐠</div></td>
+        <td>水母块</td>
+        <td>半透明圆盖水母，触须 4 根，柔和</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#8EA0AA;"></div><code>#8EA0AA</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#B8D4E0;"></div><code>#B8D4E0</code></div></td>
+        <td>🌊 深海</td>
+      </tr>
+      <tr>
+        <td><strong>T20</strong></td>
+        <td><div class="tile-demo" style="background:#F5C842;box-shadow:0 0 12px rgba(245,200,66,0.7);">🪔</div></td>
+        <td>提灯块</td>
+        <td>竹制方形提灯，内发光，有提绳</td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#F5C842;"></div><code>#F5C842</code></div></td>
+        <td><div class="swatch-row"><div class="swatch" style="background:#C4955A;"></div><code>#C4955A</code></div></td>
+        <td>🏮 灯节 / 夏祭</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4.3 图块状态视觉规范</h2>
+  <table>
+    <thead>
+      <tr><th>状态</th><th>视觉效果</th><th>技术方案</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Normal</strong></td>
+        <td>标准色，无特效，底部烘焙阴影 <code>0 4px 0 rgba(0,0,0,0.10)</code></td>
+        <td>静态 PNG</td>
+      </tr>
+      <tr>
+        <td><strong>Highlighted</strong></td>
+        <td>白色内发光 <code>rgba(255,255,255,0.4)</code>，scale(1.06)，轮廓线变亮</td>
+        <td>Runtime Shader 或独立帧</td>
+      </tr>
+      <tr>
+        <td><strong>Disappearing</strong></td>
+        <td>scale 1.0 → 1.12 → 0，旋转 ±12°，散出 4–6 个主题粒子（贝壳碎片 / 花瓣）</td>
+        <td>Spine 序列帧，12 帧 @30fps</td>
+      </tr>
+      <tr>
+        <td><strong>Special</strong></td>
+        <td>持续呼吸发光（2.5s 周期），光晕颜色对应类型</td>
+        <td>Spine 循环动画</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4.4 特殊图块（AC 风格重新定义）</h2>
+  <table>
+    <thead>
+      <tr><th>图块类型</th><th>自然主题</th><th>视觉主色</th><th></th><th>特效描述</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>炸弹块</strong></td>
+        <td>河豚 — 鼓胀圆球形，眼睛瞪大</td>
+        <td><code>#F5A840</code></td>
+        <td><div class="swatch" style="background:#F5A840;"></div></td>
+        <td>激活时夸张膨胀再"啵"爆开，散出气泡粒子（非火焰，保持治愈感）</td>
+      </tr>
+      <tr>
+        <td><strong>闪电块</strong></td>
+        <td>闪光金枪鱼 — 流线形，金属光泽</td>
+        <td><code>#7ECDE8</code></td>
+        <td><div class="swatch" style="background:#7ECDE8;"></div></td>
+        <td>激活时鱼形残影横扫全行 / 列，电光为浅蓝非强白</td>
+      </tr>
+      <tr>
+        <td><strong>彩虹块</strong></td>
+        <td>彩虹鱼（热带鱼）— 色彩条纹清晰</td>
+        <td>七彩渐变</td>
+        <td><div class="swatch" style="background:linear-gradient(135deg,#FF6B6B,#F4C95D,#7DBD7A,#7EC8E3,#C9A8D4);"></div></td>
+        <td>色彩条纹缓慢沿鱼身流动（非闪烁），消除时彩色鱼鳞粒子扩散</td>
+      </tr>
+      <tr>
+        <td><strong>Glow 发光块</strong></td>
+        <td>萤火虫提灯 — 竹制提灯，内部温暖光芒</td>
+        <td><code>#F5C842</code></td>
+        <td><div class="swatch" style="background:#F5C842;box-shadow:0 0 6px rgba(245,200,66,0.8);"></div></td>
+        <td>提灯内光芒呼吸式脉冲（2s 周期），连接时金色光粒子沿路径如萤火虫飞行</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <h1 id="s5">5. UI / UX 视觉语言</h1>
+
+  <h2>5.1 木牌系 UI（Wood Sign UI）</h2>
+  <p>所有 UI 元素的材质参考来自 AC 中的木质告示牌、竹简、晒干的贝壳和天然石板。</p>
+
+  <h3>禁止使用的视觉元素</h3>
+  <div style="margin:0.6rem 0;">
+    <span class="prohibition-tag">✗ 金属光泽（铬钢感渐变）</span>
+    <span class="prohibition-tag">✗ 硬边几何（直角矩形 / 菱形）</span>
+    <span class="prohibition-tag">✗ 霓虹色（#00FFFF 类）</span>
+    <span class="prohibition-tag">✗ 阴影透明度 > 15%</span>
+    <span class="prohibition-tag">✗ 像素艺术风格</span>
+    <span class="prohibition-tag">✗ 3D 拟物化写实 UI</span>
+    <span class="prohibition-tag">✗ 纯黑 #000000</span>
+  </div>
+
+  <h2>5.2 对话框 / 弹窗规范</h2>
+  <table>
+    <thead><tr><th>属性</th><th>规格</th></tr></thead>
+    <tbody>
+      <tr><td>形状</td><td>圆角矩形，圆角半径 20px</td></tr>
+      <tr><td>背景材质</td><td>米色木纹底 <code>#E8D8B4</code> + 3–5 条横向波浪纹（透明度 15%）</td></tr>
+      <tr><td>边框</td><td>4px 深棕木框线 <code>#8B6030</code>，外侧 1px 米白高光 <code>#F7EDD8</code></td></tr>
+      <tr><td>顶部装饰</td><td>竹钉图案，圆形 <code>#7A5030</code>，直径 16px，居中</td></tr>
+      <tr><td>文字</td><td>思源圆体 Regular，<code>#3A2810</code> 深棕，行高 1.6</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5.3 按钮规范</h2>
+  <table>
+    <thead><tr><th>类型</th><th>形状</th><th>背景</th><th>文字</th><th>边框 / 特效</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>主要按钮</strong>（确认/开始）</td>
+        <td>高 48px，圆角 24px（药丸形）</td>
+        <td>珊瑚橙渐变 <code>#F0997A</code> → <code>#E8866A</code></td>
+        <td>月光白 <code>#F5F0E8</code>，SemiBold，16px</td>
+        <td>2px 深珊瑚 <code>#B85A40</code>，底 3px 偏移（物理重量感）；点击整体下移 2px，颜色加深 8%</td>
+      </tr>
+      <tr>
+        <td><strong>次要按钮</strong>（取消/关闭）</td>
+        <td>同主要按钮</td>
+        <td>米色木牌 <code>#E8D8B4</code></td>
+        <td>深棕 <code>#5A3820</code></td>
+        <td>2px <code>#B89060</code></td>
+      </tr>
+      <tr>
+        <td><strong>图标按钮</strong>（道具类）</td>
+        <td>56×56px 圆形</td>
+        <td>米白 <code>#F7EDD8</code> + 主题色图标</td>
+        <td>—</td>
+        <td>3px 棕色木纹圈 <code>#C4955A</code>；悬停：主题色底，图标变白</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>5.4 HUD 元素规范</h2>
+  <table>
+    <thead><tr><th>HUD 元素</th><th>形状</th><th>配色</th><th>规格</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>步数计数器</strong></td>
+        <td>叶形或扇贝形容器（非矩形）</td>
+        <td>深珊瑚 <code>#C85A40</code>，低步数变红 <code>#C82020</code></td>
+        <td>月光白数字，Bold，28px；屏幕右上角</td>
+      </tr>
+      <tr>
+        <td><strong>分数进度条</strong></td>
+        <td>竹节形进度条（分段，每段为一节竹），圆角 5px</td>
+        <td>填充竹叶绿 <code>#7DBE77</code>，底色深棕木 <code>#8B6030</code></td>
+        <td>段落之间 2px 暗棕分隔线 <code>#5A3820</code></td>
+      </tr>
+      <tr>
+        <td><strong>连击泡泡</strong></td>
+        <td>对话气泡轮廓，圆角矩形，底部小三角尖</td>
+        <td>深珊瑚 <code>#C85A40</code>，边框月光白 3px</td>
+        <td>金色 <code>#F5C842</code>，Bold，32–48px；从下往上弹出，scale 1.2→1.0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>5.5 货币图标视觉</h2>
+  <table>
+    <thead><tr><th>货币</th><th>形状</th><th>主色</th><th></th><th>特效</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>沙滩币</strong>（软货币）</td>
+        <td>圆形 32px，扇贝正视图，放射状细线</td>
+        <td><code>#F5C842</code> 金黄</td>
+        <td><div class="swatch" style="background:#F5C842;"></div></td>
+        <td>2px 深金 <code>#B8902A</code> 边框，轻微贝壳光泽渐变</td>
+      </tr>
+      <tr>
+        <td><strong>光石</strong>（硬货币）</td>
+        <td>五边形宝石切面，中央星形内发光</td>
+        <td><code>#5BBFB5</code>→<code>#3A9E94</code> 渐变</td>
+        <td><div class="swatch" style="background:linear-gradient(135deg,#5BBFB5,#3A9E94);"></div></td>
+        <td>静止时 0.8Hz 轻微脉动光晕，高光为月光白</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>5.6 字体规范</h2>
+  <table>
+    <thead><tr><th>用途</th><th>字体</th><th>字重</th><th>大小</th><th>颜色</th></tr></thead>
+    <tbody>
+      <tr><td>关卡名（标题）</td><td>思源圆体</td><td>Bold 700</td><td>22px</td><td><code>#3A2810</code></td></tr>
+      <tr><td>NPC 对话（正文）</td><td>思源圆体</td><td>Regular 400</td><td>15px，行高 1.65</td><td><code>#3A2810</code></td></tr>
+      <tr><td>辅助信息</td><td>思源圆体</td><td>Light 300</td><td>12px</td><td><code>#7A6040</code></td></tr>
+      <tr><td>步数 / 分数</td><td>思源圆体</td><td>SemiBold 600</td><td>20px</td><td>章节主色</td></tr>
+      <tr><td>连击数</td><td>思源圆体</td><td>Bold 700</td><td>32–48px（随连击层级增大）</td><td><code>#F5C842</code></td></tr>
+      <tr><td>英文 / 备用</td><td>SF Pro Rounded / Nunito</td><td>—</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <h1 id="s6">6. 环境设计 Environmental Design</h1>
+
+  <h2>6.1 整体环境风格原则</h2>
+  <ul>
+    <li><strong>棋盘背景</strong>：可透视渐变底图，透明度 20–35%，不干扰图块识别</li>
+    <li><strong>区域场景图</strong>（全岛地图视角）：45° 俯视，手绘水彩风格</li>
+    <li><strong>过渡动画背景</strong>：章节开始 / 结束时的全屏场景插画</li>
+  </ul>
+
+  <h2>6.2 各章节区域详细设定</h2>
+
+  <!-- Ch1 -->
+  <div class="area-card">
+    <div class="area-card-header" style="background:linear-gradient(135deg,#0a2a3a,#0d3a50);">
+      <div class="area-num" style="color:#5BBFB5;">01</div>
+      <div class="area-title-block">
+        <div class="zh">海边码头</div>
+        <div class="en">BEACH HARBOR · 情绪基调：悠闲的南海小渔村午后</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:6px;">
+        <div class="swatch-lg" style="background:#5BBFB5;"></div>
+        <div class="swatch-lg" style="background:#F7EDD8;"></div>
+        <div class="swatch-lg" style="background:#EE8C55;"></div>
+      </div>
+    </div>
+    <div class="area-card-body">
+      <div class="before-after">
+        <div class="before-box">
+          <span class="tag">修复前</span>
+          褪色木桩码头，绳索松垂，木板灰朽，海面无反射，阴天压抑
+        </div>
+        <div class="after-box">
+          <span class="tag">修复后</span>
+          弯曲木码头延伸入水，竹制灯笼（橙光 #EE8C55），小木船 + 贝壳风铃，远处小岛剪影；金色下午光从右上方 45° 投射
+        </div>
+      </div>
+      <p><strong>棋盘背景</strong>：浅蓝绿渐变 <code>#A8DDD8</code>→<code>#C8EEE8</code>，顶部低透明度海浪线条</p>
+      <p><strong>标志性时刻场景</strong>：夕阳版，天空 <code>#F4A261</code>→<code>#EE6A30</code>，海面金色光道，阿海在远处码头系绳（背影）</p>
+    </div>
+  </div>
+
+  <!-- Ch2 -->
+  <div class="area-card">
+    <div class="area-card-header" style="background:linear-gradient(135deg,#0d2a10,#1a4020);">
+      <div class="area-num" style="color:#7DBE77;">02</div>
+      <div class="area-title-block">
+        <div class="zh">竹林村落</div>
+        <div class="en">BAMBOO VILLAGE · 情绪基调：翠竹掩映的宁静村庄</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:6px;">
+        <div class="swatch-lg" style="background:#7DBE77;"></div>
+        <div class="swatch-lg" style="background:#C4955A;"></div>
+        <div class="swatch-lg" style="background:#F5C842;"></div>
+      </div>
+    </div>
+    <div class="area-card-body">
+      <div class="before-after">
+        <div class="before-box">
+          <span class="tag">修复前</span>
+          竹子倒伏，小路泥泞，屋檐破损，竹篱笆散落
+        </div>
+        <div class="after-box">
+          <span class="tag">修复后</span>
+          竹林小径（地面浅沙 #E8D4A0），路边竹制灯笼台（方形纸灯笼），小型竹制凉亭，竹筒花器插山茶花；背景竹林渐层（近处深绿 #4A7D55，远处浅绿 #A0D898）
+        </div>
+      </div>
+      <p><strong>棋盘背景</strong>：竹叶绿渐变 <code>#C8E8C0</code>→<code>#E0F0D8</code>，背景竹节轮廓（透明度 10%）</p>
+      <p><strong>标志性时刻场景</strong>：新竹笋破土而出（从地面向上动画），象征村落重生</p>
+    </div>
+  </div>
+
+  <!-- Ch3 -->
+  <div class="area-card">
+    <div class="area-card-header" style="background:linear-gradient(135deg,#2a1520,#3d2030);">
+      <div class="area-num" style="color:#F0C4C4;">03</div>
+      <div class="area-title-block">
+        <div class="zh">樱花坡田</div>
+        <div class="en">SAKURA HILLSIDE · 情绪基调：花瓣飘落的温柔坡田清晨</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:6px;">
+        <div class="swatch-lg" style="background:#F0C4C4;"></div>
+        <div class="swatch-lg" style="background:#7DBE77;"></div>
+        <div class="swatch-lg" style="background:#FFFFFF;border-color:#ddd;"></div>
+      </div>
+    </div>
+    <div class="area-card-body">
+      <div class="before-after">
+        <div class="before-box">
+          <span class="tag">修复前</span>
+          樱花树枯枝，花田荒芜，石板路碎裂，薄雾灰调
+        </div>
+        <div class="after-box">
+          <span class="tag">修复后</span>
+          圆形粉白花簇树冠（#F0D8D8），永远有轻微花瓣飘落粒子；石板坡道 + 小石灯笼；花田行列交替种植；清晨侧光，山腰薄雾层
+        </div>
+      </div>
+      <p><strong>棋盘背景</strong>：樱粉渐变 <code>#F8E8E8</code>→<code>#FFF5F5</code>，边缘散落花瓣剪影（5–7 个随机位置）</p>
+      <p><strong>标志性时刻场景</strong>：整个坡田花海满开，花瓣漫天，阿花在画面中央捧起一束花</p>
+    </div>
+  </div>
+
+  <!-- Ch4 -->
+  <div class="area-card">
+    <div class="area-card-header" style="background:linear-gradient(135deg,#0d1a0a,#1a3015);">
+      <div class="area-num" style="color:#7DBE77;">04</div>
+      <div class="area-title-block">
+        <div class="zh">松林神社</div>
+        <div class="en">PINE FOREST SHRINE · 情绪基调：树荫深处的静谧古神社</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:6px;">
+        <div class="swatch-lg" style="background:#4A7D55;"></div>
+        <div class="swatch-lg" style="background:#C4955A;"></div>
+        <div class="swatch-lg" style="background:#C8402A;"></div>
+      </div>
+    </div>
+    <div class="area-card-body">
+      <div class="before-after">
+        <div class="before-box">
+          <span class="tag">修复前</span>
+          鸟居倒斜，石灯笼苔藓横生，神社铃铛绳断落，石阶碎裂
+        </div>
+        <div class="after-box">
+          <span class="tag">修复后</span>
+          红色鸟居 #C8402A（金字装饰线）；石灯笼排列小径；茅草屋顶神社（深绿 #3D6645 木构件，注连绳）；巨大松树背景；铺设浅灰石板，缝隙苔藓
+        </div>
+      </div>
+      <p><strong>棋盘背景</strong>：深林绿渐变 <code>#3D5040</code>→<code>#5A7058</code>，极淡松针剪影（透明度 8%）</p>
+      <p><strong>标志性时刻场景</strong>：夜晚，神社内所有灯笼同时亮起；阿林在场景最远处抬头仰望星空（<strong>全章唯一露脸</strong>）</p>
+    </div>
+  </div>
+
+  <!-- Ch5 -->
+  <div class="area-card">
+    <div class="area-card-header" style="background:linear-gradient(135deg,#2a1a00,#3a2810);">
+      <div class="area-num" style="color:#C4955A;">05</div>
+      <div class="area-title-block">
+        <div class="zh">渔村港口</div>
+        <div class="en">FISHING VILLAGE PORT · 情绪基调：夕阳下的热闹渔村小港</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:6px;">
+        <div class="swatch-lg" style="background:#C4955A;"></div>
+        <div class="swatch-lg" style="background:#5BBFB5;"></div>
+        <div class="swatch-lg" style="background:#F5C842;"></div>
+      </div>
+    </div>
+    <div class="area-card-body">
+      <div class="before-after">
+        <div class="before-box">
+          <span class="tag">修复前</span>
+          木栈道腐朽，渔网堆弃，船舶无缆绳，店铺门窗封闭
+        </div>
+        <div class="after-box">
+          <span class="tag">修复后</span>
+          3 艘不同颜色小木船（蓝/红/棕）；晾晒渔网；鱼类摊位（#5BBFB5 色调）；两根绑彩旗竹竿（珊瑚+竹绿交替）；海面金色夕阳倒影，海鸥 V 形剪影
+        </div>
+      </div>
+      <p><strong>棋盘背景</strong>：暖金橙渐变 <code>#F0D8B0</code>→<code>#E8C890</code>，低透明度水面波纹纹理</p>
+      <p><strong>标志性时刻场景</strong>：港口灯笼全亮，阿福坐在码头边泡脚，满意地点头</p>
+    </div>
+  </div>
+
+  <!-- Ch6 -->
+  <div class="area-card">
+    <div class="area-card-header" style="background:linear-gradient(135deg,#040810,#0e1828);">
+      <div class="area-num" style="color:#F5C842;">06</div>
+      <div class="area-title-block">
+        <div class="zh">夜晚灯塔</div>
+        <div class="en">NIGHT LIGHTHOUSE · 情绪基调：深夜孤岛，一束光切开黑暗</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:6px;">
+        <div class="swatch-lg" style="background:#1E2E50;"></div>
+        <div class="swatch-lg" style="background:#8EA0AA;"></div>
+        <div class="swatch-lg" style="background:#F5C842;box-shadow:0 0 8px rgba(245,200,66,0.6);"></div>
+      </div>
+    </div>
+    <div class="area-card-body">
+      <div class="before-after">
+        <div class="before-box">
+          <span class="tag">修复前</span>
+          灯塔灯室玻璃蒙尘，铁锈楼梯扭曲，礁石上寸草不生，漆黑
+        </div>
+        <div class="after-box">
+          <span class="tag">修复后</span>
+          白色圆柱塔身（#3A5080 蓝条纹装饰），金色穹顶灯室；光柱 #F5C842 从灯室向外旋转；密集星空（白点+黄点混合），偶有流星；礁石上橙色灯笼随光照摇摆
+        </div>
+      </div>
+      <p><strong>棋盘背景</strong>：深夜蓝渐变 <code>#0E1830</code>→<code>#1E2E50</code>，顶部 8–12 颗静态星点</p>
+      <p><strong>标志性时刻场景</strong>：全岛俯视，灯塔光柱缓慢旋转，将所有 5 个已修复区域依次照亮——光柱扫过时饱和度瞬间提升再恢复（全游戏情感高峰）</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <h1 id="s7">7. 动画风格规范 Animation Style</h1>
+
+  <h2>7.1 AC 式动画四原则</h2>
+  <table>
+    <thead><tr><th>关键词</th><th>技术描述</th><th>体现场景</th></tr></thead>
+    <tbody>
+      <tr><td><strong>慢起快落</strong></td><td>ease-out 曲线优先</td><td>图块高亮入场、弹窗出现</td></tr>
+      <tr><td><strong>轻微过冲</strong></td><td>scale 峰值 > 目标值（1.2→1.0 而非直接到 1.0）</td><td>连击泡泡、修复动画</td></tr>
+      <tr><td><strong>呼吸感</strong></td><td>振幅小（±2–3px / ±0.02 scale），周期长（2–3s）</td><td>NPC Idle，特殊块持续动画</td></tr>
+      <tr><td><strong>弹性</strong></td><td>Spring 曲线，有 damping 参数</td><td>所有弹出类 UI</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7.2 Spring 曲线参数规范</h2>
+
+  <div class="anim-box">
+    <h4>连击气泡（Combo Popup）Spring</h4>
+    <div class="param-row"><span class="param-name">stiffness</span><span class="param-val">280</span></div>
+    <div class="param-row"><span class="param-name">damping</span><span class="param-val">22</span></div>
+    <div class="param-row"><span class="param-name">scale 序列</span><span class="param-val">0 → 1.2 → 1.0</span></div>
+    <div class="param-row"><span class="param-name">总时长</span><span class="param-val">0.40s</span></div>
+    <div class="param-row"><span class="param-name">悬停后淡出</span><span class="param-val">1.2s 后 ease-in 0.4s 向上淡出</span></div>
+  </div>
+
+  <div class="anim-box">
+    <h4>弹窗入场（Modal Enter）Spring</h4>
+    <div class="param-row"><span class="param-name">cubic-bezier</span><span class="param-val">cubic-bezier(0.34, 1.20, 0.64, 1)</span></div>
+    <div class="param-row"><span class="param-name">scale 序列</span><span class="param-val">0.7 → 1.05 → 1.0</span></div>
+    <div class="param-row"><span class="param-name">时长</span><span class="param-val">0.30s</span></div>
+    <div class="param-row"><span class="param-name">背景遮罩</span><span class="param-val">透明度 0 → 0.5，0.3s ease-out</span></div>
+  </div>
+
+  <h2>7.3 图块动画帧序列</h2>
+
+  <div class="anim-box">
+    <h4>图块消除（12帧 @30fps）</h4>
+    <div class="param-row"><span class="param-name">帧 1–3（32ms）</span><span class="param-val">scale 1.0 → 1.14，ease-out</span></div>
+    <div class="param-row"><span class="param-name">帧 4–7（53ms）</span><span class="param-val">scale 1.14 → 0，旋转 ±12°（随机方向）</span></div>
+    <div class="param-row"><span class="param-name">粒子</span><span class="param-val">4–6 个，主题元素缩小版，随机方向扩散，总时长 0.3s</span></div>
+  </div>
+
+  <div class="anim-box">
+    <h4>图块高亮（Highlighted State）</h4>
+    <div class="param-row"><span class="param-name">进入高亮</span><span class="param-val">scale 1.0 → 1.06，0.2s ease-out；内发光 0 → 目标亮度</span></div>
+    <div class="param-row"><span class="param-name">保持高亮</span><span class="param-val">极慢脉动，振幅 ±0.02 scale，周期 1.5s</span></div>
+    <div class="param-row"><span class="param-name">退出高亮</span><span class="param-val">scale 1.06 → 1.0，0.15s ease-in</span></div>
+  </div>
+
+  <h2>7.4 角色 Idle 动画参数</h2>
+  <table>
+    <thead><tr><th>动作</th><th>振幅</th><th>周期</th><th>曲线</th></tr></thead>
+    <tbody>
+      <tr><td>上身上下浮动</td><td>2–3px</td><td>2.5–3s</td><td>ease-in-out</td></tr>
+      <tr><td>眨眼（眼皮下降）</td><td>—</td><td>每 4–6 秒一次</td><td>0.15s 线性</td></tr>
+      <tr><td>左右轻摇头</td><td>±5°</td><td>随机 8–12s 触发</td><td>ease-in-out</td></tr>
+      <tr><td>手臂小摆动</td><td>±8°（前臂）</td><td>随机触发</td><td>ease-in-out</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7.5 特殊图块 Idle 呼吸</h2>
+  <table>
+    <thead><tr><th>图块</th><th>动画描述</th><th>周期</th><th>色彩变化</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>🪔 Glow 提灯块</td>
+        <td>内光芒 scale 0.85 → 1.15 → 0.85</td>
+        <td>2.0s，ease-in-out</td>
+        <td><code>#F5C842</code> → <code>#FFE580</code></td>
+      </tr>
+      <tr>
+        <td>🌈 彩虹鱼块</td>
+        <td>颜色条纹沿鱼身向尾方向流动，速度 20px/s</td>
+        <td>不停歇</td>
+        <td>七色循环流动</td>
+      </tr>
+      <tr>
+        <td>🐡 河豚块</td>
+        <td>轻微膨胀收缩，scale 0.95 → 1.05，有轻微不规则性</td>
+        <td>2.8s</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>🐠 金枪鱼块</td>
+        <td>身体轻微左右摆动 ±3°</td>
+        <td>1.8s</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>7.6 场景过渡动画</h2>
+  <table>
+    <thead><tr><th>过渡类型</th><th>动画方式</th><th>时长</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>章节间过渡</td>
+        <td>白色圆形从中央向外扩散（AC 经典手法），cover + reveal，全屏时显示下一章节主题图标 0.3s</td>
+        <td>0.5s + 0.5s</td>
+      </tr>
+      <tr>
+        <td>修复完成（阶段切换）</td>
+        <td>区域图片 crossfade + 白色光波从区域中心向外扩散（透明度 1→0）</td>
+        <td>0.8s / 0.6s</td>
+      </tr>
+      <tr>
+        <td>第 4 阶段（满修复）</td>
+        <td>额外金色粒子雨，形状为章节主题元素</td>
+        <td>2.5s</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>参考风格坐标</h2>
+  <table>
+    <thead><tr><th>参考作品</th><th>借鉴维度</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Animal Crossing New Horizons</strong>（核心参考）</td><td>角色比例、UI 材质、动画弹性、自然元素设计语言</td></tr>
+      <tr><td><strong>Wytchwood</strong>（2021）</td><td>手绘水彩质感的自然主题物件设计</td></tr>
+      <tr><td><strong>A Short Hike</strong></td><td>低饱和度手绘户外场景的构图方式</td></tr>
+      <tr><td><strong>浮世绘简化线条 × 现代扁平化</strong></td><td>古风插画中的日式离岛美学</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    Art Direction v2.0 &nbsp;·&nbsp; Glow Island 发光岛 &nbsp;·&nbsp; 2026-05-08<br>
+    风格基准：Animal Crossing（どうぶつの森）× 日式离岛美学
+  </div>
+
+</div><!-- .container -->
+</body>
+</html>

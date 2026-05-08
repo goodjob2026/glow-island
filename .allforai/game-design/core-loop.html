@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 核心循环设计（Core Loop）</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d26;
+      --border: #2a2d3a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --accent2: #86efac;
+      --heading: #f8fafc;
+      --code-bg: #12141c;
+      --tag-bg: #1e3a5f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 0 1rem 4rem;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      margin: 0 -1rem 2.5rem;
+      text-align: center;
+    }
+    .page-header .project-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125,211,252,0.25);
+      margin-bottom: 0.9rem;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--heading);
+      text-shadow: 0 0 40px rgba(125,211,252,0.2);
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--heading);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+    h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
+    h3 { font-size: 1.1rem; color: var(--accent2); }
+    h4 { font-size: 1rem; color: var(--muted); }
+    p { margin: 0.6rem 0 0.9rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { color: var(--heading); font-weight: 600; }
+    em { color: var(--accent2); font-style: normal; }
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      color: var(--muted);
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.87em;
+      background: var(--code-bg);
+      color: var(--accent2);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.4rem;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    ul, ol {
+      padding-left: 1.6rem;
+      margin: 0.5rem 0 1rem;
+    }
+    li { margin: 0.3rem 0; }
+    li > ul, li > ol { margin: 0.2rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    tr:hover td { background: rgba(125,211,252,0.04); }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Core loop diagram styles */
+    .loop-diagram {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+      margin: 1.2rem 0 1.6rem;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 0.88rem;
+    }
+    .loop-node {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 0.4rem 1rem;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .loop-arrow {
+      display: block;
+      color: var(--muted);
+      padding: 0.2rem 0 0.2rem 2.5rem;
+      font-size: 0.95rem;
+    }
+    .loop-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.5rem 0;
+      flex-wrap: wrap;
+    }
+    .loop-row .loop-node { flex-shrink: 0; }
+    .loop-connector {
+      color: var(--accent);
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    /* Combo tier badges */
+    .combo-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .combo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      text-align: center;
+    }
+    .combo-card .tier { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+    .combo-card .mult { font-size: 1.1rem; color: var(--accent2); font-weight: 600; }
+    .combo-card .label { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+    .combo-card .effects { font-size: 0.75rem; color: var(--text); margin-top: 0.4rem; line-height: 1.4; }
+    .combo-card.tier-4 { border-color: var(--accent); background: rgba(125,211,252,0.07); }
+
+    /* Motivation loop */
+    .motivation-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .motivation-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+    }
+    .motivation-card .type-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .motivation-card h4 {
+      margin-top: 0;
+      color: var(--heading);
+      font-size: 0.95rem;
+    }
+    .motivation-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0.3rem 0 0;
+    }
+
+    /* Section number badge */
+    .section-num {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      border-radius: 50%;
+      width: 1.6rem;
+      height: 1.6rem;
+      line-height: 1.6rem;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+    /* Principle list */
+    .principle-list {
+      list-style: none;
+      padding: 0;
+    }
+    .principle-list li {
+      background: var(--surface);
+      border-left: 3px solid var(--accent2);
+      border-radius: 0 6px 6px 0;
+      padding: 0.55rem 1rem;
+      margin: 0.5rem 0;
+      font-size: 0.92rem;
+    }
+    .principle-list li strong { color: var(--accent2); }
+
+    /* No-system badges */
+    .badge-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 0.75rem 0 1.2rem;
+    }
+    .badge {
+      display: inline-block;
+      border-radius: 6px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .badge-green { background: rgba(134,239,172,0.12); color: #86efac; border: 1px solid rgba(134,239,172,0.3); }
+    .badge-blue  { background: rgba(125,211,252,0.12); color: #7dd3fc; border: 1px solid rgba(125,211,252,0.3); }
+    .badge-red   { background: rgba(252,165,165,0.12); color: #fca5a5; border: 1px solid rgba(252,165,165,0.3); }
+    .badge-yellow{ background: rgba(253,224,71,0.12);  color: #fde047; border: 1px solid rgba(253,224,71,0.3);  }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="project-tag">Glow Island · 核心循环设计</div>
+    <h1>Core Loop Design — 核心循环设计文档</h1>
+  </div>
+  <div class="container">
+
+    <blockquote>
+      <p>版本：2.0 &nbsp;|&nbsp; 日期：2026-05-08 &nbsp;|&nbsp; 状态：已确认 &nbsp;|&nbsp; 来源：GDD v2.1 + puzzle-mechanics-spec v2.0</p>
+    </blockquote>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="core-loop">1. 核心循环（Core Loop）</h2>
+
+    <p>每局关卡时长 <strong>30 秒 – 3 分钟</strong>，以步数制驱动，无倒计时压力。</p>
+
+    <div class="loop-diagram">
+      <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;row-gap:0.8rem;">
+        <span class="loop-node">选关</span>
+        <span class="loop-connector">→</span>
+        <span class="loop-node">连连看（30s–3min）</span>
+        <span class="loop-connector">→</span>
+        <span class="loop-node">材料奖励</span>
+        <span class="loop-connector">→</span>
+        <span class="loop-node">岛屿修复进度</span>
+        <span class="loop-connector">→</span>
+        <span class="loop-node">章节解锁</span>
+      </div>
+      <div style="margin-top:1.2rem;color:var(--muted);font-size:0.82rem;line-height:1.8;">
+        <div>选关 &nbsp;→&nbsp; 进入关卡（律翻出旧物 / 走进荒芜角落）</div>
+        <div style="padding-left:1.5rem;">↓ 观察棋盘布局（图块颜色 / 位置 / 特殊块分布）</div>
+        <div style="padding-left:1.5rem;">↓ 规划连接路径（同色记忆碎片连线，路径可弯折，最短2个）</div>
+        <div style="padding-left:1.5rem;">↓ 触发消除 → 即时反馈（音效 + 粒子特效 + 连击计数）</div>
+        <div style="padding-left:1.5rem;">↓ 连击积累 → 触发特殊块生成 / 光能加成</div>
+        <div style="padding-left:1.5rem;">↓ 消除目标图块 / 达成关卡目标</div>
+        <div style="padding-left:1.5rem;">↓ 关卡结算（星级评定 / 材料掉落 / 光能积累）</div>
+        <div style="padding-left:1.5rem;">↓ 返回輝島世界地图 → <strong style="color:var(--accent)">章节解锁 / 下一关</strong></div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="meta-loop">2. 元循环（Meta Loop）</h2>
+
+    <p>局外周期：单次修复动画 30 秒 – 2 分钟，区域完整修复跨越数天游玩。</p>
+
+    <div class="loop-diagram">
+      <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;row-gap:0.8rem;">
+        <span class="loop-node" style="border-color:var(--accent2);color:var(--accent2);">关卡</span>
+        <span class="loop-connector" style="color:var(--accent2);">→</span>
+        <span class="loop-node" style="border-color:var(--accent2);color:var(--accent2);">材料</span>
+        <span class="loop-connector" style="color:var(--accent2);">→</span>
+        <span class="loop-node" style="border-color:var(--accent2);color:var(--accent2);">修复</span>
+        <span class="loop-connector" style="color:var(--accent2);">→</span>
+        <span class="loop-node" style="border-color:var(--accent2);color:var(--accent2);">叙事</span>
+        <span class="loop-connector" style="color:var(--accent2);">→</span>
+        <span class="loop-node" style="border-color:var(--accent2);color:var(--accent2);">下一章节</span>
+      </div>
+      <div style="margin-top:1.2rem;color:var(--muted);font-size:0.82rem;line-height:1.8;">
+        <div>通关关卡</div>
+        <div style="padding-left:1.5rem;">↓ 获得材料掉落（浮木/绳索/花种/陶片/温泉石等，对应章节主题）+ 光能积累</div>
+        <div style="padding-left:1.5rem;">↓ 材料自动轻合成（无复杂配方，系统自动聚合同类材料）</div>
+        <div style="padding-left:1.5rem;">↓ 区域修复进度条推进</div>
+        <div style="padding-left:1.5rem;">↓ 达到阶段阈值 → 触发渐进式修复动画（4阶段之一）</div>
+        <div style="padding-left:1.5rem;">↓ Glow图块光能积累满阈值 → 触发区域"点亮"视觉特效</div>
+        <div style="padding-left:1.5rem;">↓ 章节完整修复 → 解锁 NPC 标志性时刻动画 + 丸山渉记忆日志碎片 + 下一章节入口</div>
+        <div style="padding-left:1.5rem;">↓ <strong style="color:var(--accent2)">解锁新关卡包 → 新图块种类 / 新棋盘主题 / 新障碍类型</strong></div>
+      </div>
+    </div>
+
+    <h3>元循环层级（Layers）</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>层级</th><th>触发频率</th><th>玩家所得</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>puzzle（局内）</td><td>每局 30s–3min</td><td>步数消耗、连击反馈、即时爽快感</td></tr>
+        <tr><td>2</td><td>material_reward（材料）</td><td>每关结算后</td><td>浮木/绳索/花种/陶片等资源</td></tr>
+        <tr><td>3</td><td>island_restoration（修复）</td><td>每 4–8 关一次可见变化</td><td>渐进式视觉修复动画、区域点亮</td></tr>
+        <tr><td>4</td><td>narrative_unlock（叙事）</td><td>每章节完成</td><td>NPC 时刻动画、渉的记忆日志、情感线推进</td></tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="session-design">3. 会话设计原则（Session Design）</h2>
+
+    <div class="badge-row">
+      <span class="badge badge-green">步数制（Currency: Steps）</span>
+      <span class="badge badge-red">无倒计时（No Timer）</span>
+      <span class="badge badge-red">无体力系统（No Energy）</span>
+      <span class="badge badge-blue">失败零惩罚（No Resource Loss）</span>
+      <span class="badge badge-yellow">禅境模式（Zen Mode）</span>
+    </div>
+
+    <ul class="principle-list">
+      <li><strong>步数制，非时间制</strong>：每关有步数上限，压力来自策略而非焦虑——就像律在岛上慢慢生活，没有截止日期</li>
+      <li><strong>连线自由度</strong>：路径可弯折绕行（最多2次转弯），非直线限制，增加策略空间</li>
+      <li><strong>即时反馈</strong>：每次连接触发专属音效和粒子效果，形成上瘾性微奖励循环</li>
+      <li><strong>失败宽容</strong>：步数耗尽仅回到关卡起点，不扣材料、不消耗体力——岛不会因为你慢一点就放弃你</li>
+      <li><strong>禅境出口</strong>：每章2–3个禅境关，关闭步数上限和失败判定，提供零压力消除体验</li>
+      <li><strong>无体力门控</strong>：随时进出，无需等待体力恢复，真正自由游玩节奏</li>
+    </ul>
+
+    <table>
+      <thead>
+        <tr><th>维度</th><th>设定</th><th>设计意图</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>局内货币</td><td>步数（Steps）</td><td>策略压力而非时间焦虑</td></tr>
+        <tr><td>最短会话</td><td>30 秒</td><td>碎片时间友好</td></tr>
+        <tr><td>典型会话</td><td>90 秒</td><td>单关完成感</td></tr>
+        <tr><td>最长会话</td><td>3 分钟</td><td>挑战关上限</td></tr>
+        <tr><td>计时器</td><td>无</td><td>消除时间焦虑</td></tr>
+        <tr><td>体力系统</td><td>无</td><td>兑现治愈承诺</td></tr>
+        <tr><td>失败惩罚</td><td>无资源扣除</td><td>岛不放弃玩家</td></tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="combo-system">4. 连击系统（Combo System）</h2>
+
+    <blockquote>
+      <p>参考手感：<strong>天天爱消除</strong>——每次成功匹配有清晰爽快的视觉+音效反馈，连击链产生渐进增强的爆炸/粒子特效。</p>
+    </blockquote>
+
+    <p>连续匹配之间间隔 <code>&lt; 2000ms</code> 视为同一连击链，超时或无可用匹配对时重置。</p>
+
+    <div class="combo-row">
+      <div class="combo-card">
+        <div class="tier">×1</div>
+        <div class="mult">×1.0</div>
+        <div class="label">Combo 1</div>
+        <div class="effects">基础消除<br>清脆单音</div>
+      </div>
+      <div class="combo-card">
+        <div class="tier">×2</div>
+        <div class="mult">×1.5</div>
+        <div class="label">Combo 2</div>
+        <div class="effects">音效增强<br>粒子提升</div>
+      </div>
+      <div class="combo-card">
+        <div class="tier">×3</div>
+        <div class="mult">×2.0</div>
+        <div class="label">Combo 3</div>
+        <div class="effects">音效增强<br>特效升级<br>炸弹块生成</div>
+      </div>
+      <div class="combo-card tier-4">
+        <div class="tier">×4</div>
+        <div class="mult">×3.0</div>
+        <div class="label">Combo 4+</div>
+        <div class="effects">音效增强<br>特效升级<br>屏幕震动<br>粒子爆发</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>连击数</th><th>乘数</th><th>窗口（ms）</th><th>特殊块生成</th><th>视觉效果</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>×1.0</td><td rowspan="4" style="vertical-align:middle;text-align:center;">2000 ms</td><td>—</td><td>清脆单音，基础粒子</td></tr>
+        <tr><td>2</td><td>×1.5</td><td>—</td><td>音效增强</td></tr>
+        <tr><td>3</td><td>×2.0</td><td>炸弹块（Bomb）必定生成</td><td>特效升级，全屏微震</td></tr>
+        <tr><td>4+</td><td>×3.0</td><td>风车块（Windmill）必定生成</td><td>屏幕震动 + 粒子爆发</td></tr>
+      </tbody>
+    </table>
+
+    <h3>连击重置条件</h3>
+    <ul>
+      <li>连续两次匹配间隔超过 <code>2000ms</code></li>
+      <li>棋盘当前无任何可用匹配对</li>
+    </ul>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="special-blocks">5. 四种特殊图块（Special Blocks）</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>图块</th>
+          <th>ID</th>
+          <th>触发方式</th>
+          <th>效果</th>
+          <th>视觉表现</th>
+          <th>动画时长</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>炸弹（Bomb）</strong></td>
+          <td><code>bomb</code></td>
+          <td>3连击自动生成 / 关卡预置</td>
+          <td>以炸弹块为中心的 <strong>3×3 范围</strong>内所有图块消除（含障碍物及覆盖层）</td>
+          <td>橙色闪光球体，爆炸粒子+冲击波环扩散，3×3范围逐格飞散</td>
+          <td>0.5 s</td>
+        </tr>
+        <tr>
+          <td><strong>风车（Windmill）</strong></td>
+          <td><code>windmill</code></td>
+          <td>4连击自动生成 / 关卡预置</td>
+          <td>清除风车块所在<strong>整行+整列</strong>所有图块（十字消除，同时触发）</td>
+          <td>旋转风车纹理，横竖双光柱同时扫过，图块向两侧飞散</td>
+          <td>0.4 s</td>
+        </tr>
+        <tr>
+          <td><strong>灯光（Light / Lantern）</strong></td>
+          <td><code>lantern</code></td>
+          <td>仅关卡预置（不可连击生成）</td>
+          <td><strong>自动寻路</strong>连接距离最近的同类型图块，无需玩家操作，连接成功后双方消除</td>
+          <td>橙色光晕持续脉冲，发光连线高速飞向目标，双方光点爆发消除</td>
+          <td>0.3 s</td>
+        </tr>
+        <tr>
+          <td><strong>海浪（Wave）</strong></td>
+          <td><code>wave</code></td>
+          <td>仅关卡预置（不可连击生成）</td>
+          <td><strong>重新随机排列</strong>棋盘上所有图块位置（保持各类型图块数量不变）；重排后无可用匹配则再次重排，最多3次</td>
+          <td>蓝色水波纹从中心扩散，全棋盘漩涡式上扬后重新落下，配合哗海浪音效</td>
+          <td>0.8 s</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <blockquote>
+      <p>所有特殊块激活动画不可跳过（0.3–0.8s），保持节奏感。障碍物被清除时有专属碎裂/断链粒子效果。</p>
+    </blockquote>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="chapter-mechanics">6. 章节机制解锁表（Chapter Mechanics Unlock）</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>章节</th>
+          <th>区域</th>
+          <th>棋盘尺寸</th>
+          <th>新增机制</th>
+          <th>可用特殊块</th>
+          <th>障碍类型</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Ch1</strong></td>
+          <td>海边码头</td>
+          <td>6×6</td>
+          <td><em>基础连连看 + 连击系统（combo）</em>；炸弹块（3连击生成）；前3关无压力引导</td>
+          <td>bomb</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><strong>Ch2</strong></td>
+          <td>中央小镇</td>
+          <td>7×7</td>
+          <td><em>冰封块（ice_block，1层引入）</em>；杂草障碍（weed）；风车块（4连击）解锁</td>
+          <td>bomb, windmill</td>
+          <td>ice_block, weed</td>
+        </tr>
+        <tr>
+          <td><strong>Ch3</strong></td>
+          <td>花田山坡</td>
+          <td>8×8</td>
+          <td><em>锁链（chain_lock，1–2环）+ 传送门（portal）</em>；冰封块升级至2层；灯光块（lantern）关卡预置解锁</td>
+          <td>bomb, windmill, lantern</td>
+          <td>ice_block, chain_lock, portal, weed</td>
+        </tr>
+        <tr>
+          <td><strong>Ch4</strong></td>
+          <td>森林露营地</td>
+          <td>8×8</td>
+          <td><em>单路径通道（single_path_corridor）</em>；冰封块升至3层；锁链升至3环；木箱障碍（wooden_crate）；海浪块（wave）解锁</td>
+          <td>bomb, windmill, lantern, wave</td>
+          <td>ice_block, chain_lock, portal, single_path_corridor, wooden_crate</td>
+        </tr>
+        <tr>
+          <td><strong>Ch5</strong></td>
+          <td>温泉山谷</td>
+          <td>9×9</td>
+          <td><em>重力系统（tile_fall / tile_slide / board_rotate）</em>；水流障碍（water_current）；board_rotate 仅用于挑战关</td>
+          <td>bomb, windmill, lantern, wave</td>
+          <td>+ water_current；重力事件: tile_fall, tile_slide, board_rotate</td>
+        </tr>
+        <tr>
+          <td><strong>Ch6</strong></td>
+          <td>夜晚灯塔</td>
+          <td>10×10</td>
+          <td><em>扩散障碍（spreading_obstacle：藤蔓/苔藓）</em>；所有机制组合挑战；20种图块全解锁；占80%可用格触发视觉警告</td>
+          <td>bomb, windmill, lantern, wave</td>
+          <td>全部 + spreading_obstacle；事件: tile_fall, tile_slide, board_rotate, water_flow, vine_spread</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="player-motivation">7. 玩家动机循环（Player Motivation Loop）</h2>
+
+    <blockquote>
+      <p>基于 Bartle 玩家分类与自我决定理论（Deci &amp; Ryan），Glow Island 针对核心受众设计了双轴动机引擎。</p>
+    </blockquote>
+
+    <div class="motivation-grid">
+      <div class="motivation-card">
+        <div class="type-label">Bartle Type — Explorer</div>
+        <h4>探索者：治愈体验驱动</h4>
+        <p>岛屿修复的渐进视觉变化、丸山渉记忆日志的碎片解锁、每章色调与叙事的情绪递进——让探索型玩家持续有"下一个发现"的期待感。</p>
+        <p style="margin-top:0.5rem;color:var(--accent2);">设计响应：每4–8关触发一次可见视觉变化；修复动画总有一个温柔小细节（一只猫、晾衣绳上多了一件衣服）。</p>
+      </div>
+      <div class="motivation-card">
+        <div class="type-label">Bartle Type — Achiever</div>
+        <h4>成就者：岛屿修复完成感</h4>
+        <p>星级评定、剩余步数奖励、连击乘数系统——让成就型玩家在每局都有具体可量化的目标，并通过章节进度条感受宏观成长。</p>
+        <p style="margin-top:0.5rem;color:var(--accent2);">设计响应：3星通关 = 剩余步数≥40%上限；连击×3.0触发全屏爽快感；每章完整修复解锁标志性NPC时刻动画。</p>
+      </div>
+      <div class="motivation-card">
+        <div class="type-label">SDT — Autonomy（自主）</div>
+        <h4>自主感：无门控自由游玩</h4>
+        <p>无体力系统、无倒计时、随时进出、禅境模式自由选择——玩家的节奏由玩家掌控，治愈承诺从设计层面兑现。</p>
+        <p style="margin-top:0.5rem;color:var(--accent2);">核心功能：F-004 无体力自由游玩；禅境关每章2–3个；步数制不强迫速度。</p>
+      </div>
+      <div class="motivation-card">
+        <div class="type-label">SDT — Competence（胜任）</div>
+        <h4>胜任感：平滑难度曲线</h4>
+        <p>前15关纯净入门，每关引入1个新概念；4种特殊块赋予策略感；失败不惩罚资源，降低挫败感，让玩家在每局都能找到"我做到了"的时刻。</p>
+        <p style="margin-top:0.5rem;color:var(--accent2);">失败设计：连续2次失败内不弹出购买提示；第3次失败后场景化非侵入提示助攻器。</p>
+      </div>
+    </div>
+
+    <h3>情感循环完整路径</h3>
+    <div class="loop-diagram">
+      <div style="color:var(--muted);font-size:0.85rem;line-height:2.1;">
+        <div><span style="color:var(--accent)">律抵达輝島（到来·悠闲）</span></div>
+        <div style="padding-left:2rem;">↓ 每局连连看 → 连击爽快感 → 材料掉落</div>
+        <div style="padding-left:2rem;">↓ 修复进度推进 → 岛屿渐进视觉变化（玩家感知"我让它改变了"）</div>
+        <div style="padding-left:2rem;">↓ NPC时刻动画 + 渉的记忆日志解锁 → 情感共鸣</div>
+        <div style="padding-left:2rem;">↓ 律与ひなた情感线一点点清晰 → 叙事驱动进度</div>
+        <div style="padding-left:2rem;">↓ 第6章灯塔点亮 → 律与岛互相唤醒</div>
+        <div style="padding-left:2rem;color:var(--accent2);">↓ <strong>玩家情感成就感 → 留存 + 分享 + 复玩</strong></div>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="footer">Glow Island · Core Loop Design v2.0 · 輝島 · 2026-05-08</div>
+  </div>
+</body>
+</html>

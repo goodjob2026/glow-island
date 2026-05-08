@@ -1,0 +1,1137 @@
+{
+  "schema": "audio-design-v1",
+  "generated_at": "2026-05-08T12:00:00Z",
+  "project": "glow-island",
+  "area": "輝島 (Kagayaki-jima)",
+  "audio_identity": {
+    "genre": "acoustic + ambient + light electronic",
+    "mood": "healing, unhurried, quietly joyful",
+    "key_instruments": [
+      "acoustic guitar",
+      "koto (琴)",
+      "soft piano",
+      "ocean ambience",
+      "wind chimes",
+      "wooden geta on stone",
+      "birdsong",
+      "cicada",
+      "gentle hand percussion",
+      "light ambient pads"
+    ],
+    "forbidden_sounds": [
+      "aggressive percussion",
+      "distorted bass",
+      "high-BPM electronic",
+      "triumphant brass fanfares",
+      "urgent alarm sounds",
+      "harsh buzzer tones",
+      "rapid-fire drum machines",
+      "EDM drops"
+    ],
+    "aesthetic_references": [
+      "どうぶつの森 (Animal Crossing) — K.K. Slider acoustic warmth",
+      "天天爱消除 (Happy Match) — satisfying short SFX, escalating combo tones",
+      "Joe Hisaishi — space and breath in melodic lines",
+      "Nujabes — understated groove without aggression"
+    ]
+  },
+  "sfx_catalogue": [
+    {
+      "key": "sfx_connect",
+      "design_label": "tile_connect",
+      "event": "Two tiles successfully connected via path",
+      "feel": "Soft resonant chime — like a small bell touched briefly; gentle, satisfying, never harsh",
+      "sonic_description": "Short 80ms attack, 600ms decay. Tuned to D major pentatonic. Slight reverb tail suggests open space.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.85,
+      "pitch_variance": "±3 semitones randomized per call for naturalness",
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.TILE_CONNECT",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_disappear",
+      "design_label": "tile_clear",
+      "event": "Tile pair clears from the board",
+      "feel": "Light sparkle burst — crystalline, airy, brief shimmer of light",
+      "sonic_description": "High-frequency shimmer 200–4000 Hz, 350ms total. Soft pitch-up envelope. Suggests dissolution into light.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.8,
+      "pitch_variance": "±2 semitones",
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.TILE_DISAPPEAR",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_combo1",
+      "design_label": "combo_x2",
+      "event": "x2 combo chain achieved",
+      "feel": "Two ascending notes — warmly playful, a musical 'yes'",
+      "sonic_description": "Two notes, interval of a perfect fifth (D→A). Koto pluck timbre. 400ms total. Second note slightly louder.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.9,
+      "pitch_variance": "none — must feel consistent to train player expectation",
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.COMBO_LV1",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_combo2",
+      "design_label": "combo_x3",
+      "event": "x3 combo chain achieved",
+      "feel": "Three ascending notes, brighter — the melody grows with each chain",
+      "sonic_description": "Three notes ascending D→F#→A (major triad). Mixed koto + soft piano. 600ms. Third note has shimmer tail.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.95,
+      "pitch_variance": "none",
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.COMBO_LV2",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_combo3",
+      "design_label": "combo_x4_plus",
+      "event": "x4+ combo chain achieved",
+      "feel": "Cascade of notes, celebratory — full pentatonic run upward, warm and radiant",
+      "sonic_description": "6-note pentatonic cascade D→E→F#→A→B→D'. Acoustic guitar + koto + chime layer. 900ms. Ends with resonant sustain.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "critical",
+      "volume_relative": 1.0,
+      "pitch_variance": "none",
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.COMBO_LV3",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_special_bomb",
+      "design_label": "special_bomb",
+      "event": "Bomb special block activates",
+      "feel": "Muffled pop + resonant chime — earthy, satisfying, not explosive",
+      "sonic_description": "Low soft pop (like cork from bottle, ~200Hz), immediately followed by upward chime (750ms total). Natural, organic.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.9,
+      "pitch_variance": "none",
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.SPECIAL_BOMB",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_special_windmill",
+      "design_label": "special_line_clear",
+      "event": "Windmill/line-clear special block activates",
+      "feel": "Swoosh + clear tone — a gentle sweep across the board, airy and satisfying",
+      "sonic_description": "Soft whoosh (filtered white noise, 300ms) transitioning into a clear single bell tone (A4, 400ms decay). Suggests horizontal motion.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.88,
+      "pitch_variance": "none",
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.SPECIAL_WINDMILL",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_special_light",
+      "design_label": "special_auto_connect",
+      "event": "Light/auto-connect special block activates",
+      "feel": "Shimmer + connection chain — magical, sequential, like tiny links of light snapping together",
+      "sonic_description": "High shimmer swell (200ms), followed by 4 rapid mini-chimes in sequence (each 80ms). Total ~600ms. Sparkle-chain character.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.9,
+      "pitch_variance": "±1 semitone on chain chimes",
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.SPECIAL_LIGHT",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_special_wave",
+      "design_label": "special_reshuffle",
+      "event": "Wave/reshuffle special block activates",
+      "feel": "Swirl + rearrange whoosh — oceanic, circular, like the board breathing and resetting",
+      "sonic_description": "Circular whoosh (filtered noise panning left→right→center, 400ms). Followed by soft wave-crash tail (300ms). Ocean character intentional.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.85,
+      "pitch_variance": "none",
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.SPECIAL_WAVE",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_level_complete",
+      "design_label": "level_complete",
+      "event": "Level successfully completed",
+      "feel": "Ascending arpeggio, warm — a gentle moment of accomplishment, not triumphant fanfare",
+      "sonic_description": "D major arpeggio D→F#→A→D' (4-note, 1.2s total). Acoustic guitar + soft piano. Ends with gentle sustain pad. Warm, not loud.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "critical",
+      "volume_relative": 0.95,
+      "pitch_variance": "none",
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.LEVEL_COMPLETE",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_area_restore",
+      "design_label": "area_restore",
+      "event": "Chapter area restoration ceremony completes",
+      "feel": "Multi-layer swell, emotional peak — the island breathes back to life; tears welcome",
+      "sonic_description": "8-12 seconds. Begins with solo koto note, piano joins at 2s, acoustic guitar at 4s, ambient nature sounds rise at 6s. Peak at 9s with full gentle ensemble, decays to silence. Non-looping.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "critical",
+      "volume_relative": 1.0,
+      "pitch_variance": "none",
+      "duration_seconds": 10,
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.AREA_RESTORE",
+      "milestone_gate": "beta"
+    },
+    {
+      "key": "sfx_lighthouse_on",
+      "design_label": "lighthouse_final",
+      "event": "Final lighthouse illumination — game's emotional climax",
+      "feel": "Full ambient swell + distant bell — the island restored; a moment of profound peace",
+      "sonic_description": "20-30 seconds. Solo piano intro (0-5s), koto joins (5-10s), ocean ambience rises (10-15s), full ensemble with wind chimes, guitar, ambient pads (15-22s), distant bell resonates and all fades to gentle ocean sound (22-28s). One-time play only, no loop.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "critical",
+      "volume_relative": 1.0,
+      "pitch_variance": "none",
+      "duration_seconds": 25,
+      "one_time_play": true,
+      "verified_in_audio_config": true,
+      "audio_config_enum": "SFXKey.LIGHTHOUSE_ON",
+      "milestone_gate": "gold"
+    }
+  ],
+  "ui_sounds": [
+    {
+      "key": "ui_button_tap",
+      "event": "Any interactive button pressed",
+      "feel": "Soft organic click — like pressing a smooth wooden button; warm, tactile, never harsh",
+      "sonic_description": "Short 60ms transient. Muted wooden tap timbre (~400Hz). Slight presence boost at 2kHz for clarity.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "medium",
+      "volume_relative": 0.7,
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_menu_open",
+      "event": "Menu or panel slides into view",
+      "feel": "Paper slide or gentle whoosh — like unfolding a hand-drawn map; organic, unhurried",
+      "sonic_description": "200ms soft swoosh, gentle high-frequency content. Paper texture character. Slight low-end warmth.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "low",
+      "volume_relative": 0.6,
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_menu_close",
+      "event": "Menu or panel closes/slides away",
+      "feel": "Gentle reverse whoosh — same paper texture, direction reversed; feels like folding away",
+      "sonic_description": "180ms soft reverse swoosh. Mirror of menu_open with slight pitch-down tail.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "low",
+      "volume_relative": 0.55,
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_shop_item_select",
+      "event": "Shop item highlighted or selected",
+      "feel": "Coin shimmer — light metallic ring; pleasant, suggests value without being garish",
+      "sonic_description": "High metallic shimmer, 300ms. Slight pitch bend up. Suggests small coin spinning to rest.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "medium",
+      "volume_relative": 0.75,
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_dialogue_advance",
+      "event": "Dialogue text advances (per character or per tap)",
+      "feel": "Subtle text-reveal tick — like a typewriter but softer; organic, never irritating at rapid pace",
+      "sonic_description": "Very short 30ms soft click. Low volume. Slightly randomized pitch ±2 semitones to avoid robotic repetition. No metallic quality.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "low",
+      "volume_relative": 0.4,
+      "pitch_variance": "±2 semitones randomized",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_error_cannot_do",
+      "event": "Invalid action attempted (no valid path, board locked, etc.)",
+      "feel": "Gentle low tone — a soft 'no' that does not scold; like a hollow wooden knock",
+      "sonic_description": "80ms low hollow tap (~180Hz). No sharp attack. Slight warmth. EXPLICITLY NOT a buzzer or alarm.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "medium",
+      "volume_relative": 0.65,
+      "forbidden_note": "Must not use buzzer, harsh click, or any tone above 800Hz",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_notification_badge",
+      "event": "Notification dot/badge appears on icon",
+      "feel": "Soft single chime — one note, minimal, gentle attention without urgency",
+      "sonic_description": "Single C5 chime, 400ms decay. Soft attack. Not piercing. Like a distant door bell.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "low",
+      "volume_relative": 0.5,
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_island_map_open",
+      "event": "Island map screen opens",
+      "feel": "Ambient swell in — as if stepping outside and hearing the island for the first time again",
+      "sonic_description": "600ms gentle ambient pad swell. Ocean breath character. Feels like opening a door to the outside.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "medium",
+      "volume_relative": 0.7,
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_chapter_unlock",
+      "event": "New chapter becomes available",
+      "feel": "Reveal magic shimmer — something new has appeared; wonder, not excitement",
+      "sonic_description": "Rising shimmer 400ms + soft chime at peak. Pentatonic scale fragment. Sparkle character without aggression.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.85,
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_material_collect",
+      "event": "Craft material or collectible picked up",
+      "feel": "Small satisfying plop — like a smooth pebble dropped into calm water; immediately delightful",
+      "sonic_description": "Short 120ms water-drop plop. Soft low-mid thud with high shimmer tail. Organic, physical.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "medium",
+      "volume_relative": 0.75,
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_daily_reward_open",
+      "event": "Daily login reward opened",
+      "feel": "Warmth swell — like morning light arriving; a small moment of being cared for",
+      "sonic_description": "800ms warm pad swell. Major chord. Acoustic guitar strum at onset. Ends with gentle shimmer. Not loud.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "medium",
+      "volume_relative": 0.8,
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "ui_hinata_moment",
+      "event": "ひなた NPC moment or special interaction beat",
+      "feel": "Soft single-note resonance — intimate, present, as if she is just beside you",
+      "sonic_description": "Single note, soft piano or koto. E4 or A4, 800ms sustain. No attack transient. Pure, quiet, personal.",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.6,
+      "milestone_gate": "beta"
+    }
+  ],
+  "bgm_chapters": [
+    {
+      "chapter": 1,
+      "area": "漁港 (Harbor)",
+      "bgm_key": "bgm_chapter1_seaside",
+      "audio_config_enum": "BGMKey.CHAPTER_1",
+      "emotional_tone": "Curious, slightly melancholic — the feeling of arriving somewhere unfamiliar but quietly beautiful",
+      "emotional_arc_stage": "burnout → discovery",
+      "instruments": [
+        "acoustic guitar (fingerpicked, primary melody)",
+        "ocean wave field recording (continuous ambient bed)",
+        "occasional distant seagull",
+        "soft wind chime on phrase endings",
+        "sparse piano counter-melody"
+      ],
+      "bpm": 62,
+      "bpm_range": "60-64",
+      "key_signature": "G major / E minor",
+      "looping": true,
+      "loop_point_note": "Loop seamlessly at phrase end; ocean waves provide natural crossfade camouflage",
+      "adaptive_notes": "Base layer = ocean ambience only. Melody layer (guitar) fades in after 10s of active play. Intensity layer activates on 3+ combo — adds soft percussion (hand drum, very subtle).",
+      "production_notes": "Morning light character. Music should have gaps and breathing room. Ocean waves audible during silences. Never dense.",
+      "milestone_gate": "alpha"
+    },
+    {
+      "chapter": 2,
+      "area": "陶芸工房 (Pottery Studio)",
+      "bgm_key": "bgm_chapter2_town",
+      "audio_config_enum": "BGMKey.CHAPTER_2",
+      "emotional_tone": "Focused, rhythmic — the meditative repetition of craft; hands working, mind quiet",
+      "emotional_arc_stage": "discovery → early healing",
+      "instruments": [
+        "koto (primary melody, plucked patterns)",
+        "soft hand percussion (light clay-tapping rhythm, 2-3 hit pattern)",
+        "low ambient hum (pottery wheel ambience)",
+        "occasional wooden block accent",
+        "sparse acoustic guitar at phrase ends"
+      ],
+      "bpm": 72,
+      "bpm_range": "70-74",
+      "key_signature": "D pentatonic",
+      "looping": true,
+      "loop_point_note": "Loop point aligns with 4-bar koto phrase end",
+      "adaptive_notes": "Base layer = pottery wheel hum + occasional clay sounds. Melody layer = koto. Intensity layer on 3+ combo = adds hand percussion becomes more prominent.",
+      "production_notes": "Rhythmic but never urgent. Repetitive koto patterns should feel hypnotic, not monotonous. Clay-work rhythm is the heartbeat.",
+      "milestone_gate": "alpha"
+    },
+    {
+      "chapter": 3,
+      "area": "海辺の森 (Coastal Forest)",
+      "bgm_key": "bgm_chapter3_flower",
+      "audio_config_enum": "BGMKey.CHAPTER_3",
+      "emotional_tone": "Wonder, expansive — stepping into dappled light; the forest is ancient and welcoming",
+      "emotional_arc_stage": "healing — mid journey",
+      "instruments": [
+        "soft piano (primary melody, wide intervals suggesting space)",
+        "wind ambience field recording (continuous)",
+        "birdsong (multiple species, natural rhythm)",
+        "light guitar harmonics (periodic)",
+        "distant cicada (summer character)",
+        "long reverb on all melodic elements"
+      ],
+      "bpm": 58,
+      "bpm_range": "56-60",
+      "key_signature": "A major",
+      "looping": true,
+      "loop_point_note": "Long loop (4-5 minutes) to avoid obvious repetition; birdsong variation ensures freshness",
+      "adaptive_notes": "Base layer = wind + birdsong field recording. Melody layer = piano with heavy reverb. Intensity layer = adds guitar harmonics and brief cicada swell.",
+      "production_notes": "Most spacious of all chapters. Piano notes should decay fully before next note. Heavy reverb suggests cathedral-like forest canopy. Sunlight-through-leaves quality.",
+      "milestone_gate": "alpha"
+    },
+    {
+      "chapter": 4,
+      "area": "石畳の小道 (Stone Path)",
+      "bgm_key": "bgm_chapter4_forest",
+      "audio_config_enum": "BGMKey.CHAPTER_4",
+      "emotional_tone": "Introspective, quiet — walking alone with thoughts; finding peace in solitude",
+      "emotional_arc_stage": "healing → connection",
+      "instruments": [
+        "solo piano (minimal, widely spaced chords — OR —",
+        "solo acoustic guitar (fingerpicked, choose one primary)",
+        "distant wind ambience (very low in mix)",
+        "occasional sound of footsteps on stone (subtle, not metronomic)",
+        "silence as a compositional element"
+      ],
+      "bpm": 52,
+      "bpm_range": "50-54",
+      "key_signature": "C major / A minor",
+      "looping": true,
+      "loop_point_note": "Long silences are intentional and part of the composition. Loop should not feel abrupt.",
+      "adaptive_notes": "Base layer = minimal wind ambience, mostly silence. Melody layer = solo instrument, very sparse. Intensity layer on 3+ combo = adds second instrument (the one not chosen as primary) very softly.",
+      "production_notes": "MOST MINIMAL chapter. Silences must not feel like audio dropout — use very subtle ambient room tone underneath. Production note: do NOT fill all the space. Less is more.",
+      "milestone_gate": "alpha"
+    },
+    {
+      "chapter": 5,
+      "area": "崖の展望台 (Cliff Lookout)",
+      "bgm_key": "bgm_chapter5_hotspring",
+      "audio_config_enum": "BGMKey.CHAPTER_5",
+      "emotional_tone": "Awe, slightly tense — standing at the edge of everything; beauty and vertigo together",
+      "emotional_arc_stage": "connection → resilience",
+      "instruments": [
+        "layered ambient pads (low, slowly evolving)",
+        "koto (intermittent, like thoughts arriving unbidden)",
+        "wind field recording (stronger here — coastal cliff)",
+        "distant ocean below (low rumble, felt more than heard)",
+        "sparse piano phrases at 'star appearance' moments"
+      ],
+      "bpm": 68,
+      "bpm_range": "66-70",
+      "key_signature": "F# minor",
+      "looping": true,
+      "loop_point_note": "Music builds slowly over session duration. Hour-long ambient variation recommended.",
+      "adaptive_notes": "Base layer = ambient pads + wind. Melody layer = koto intermittent phrases. Intensity layer = piano joins + ambient layers swell at dusk transition moment.",
+      "production_notes": "Must feel like a long-exposure photograph. Slow-building. Session-length variation important. Stars appearing at dusk is a visual trigger — music should swell subtly at this moment.",
+      "milestone_gate": "beta"
+    },
+    {
+      "chapter": 6,
+      "area": "輝く灯台 (Glowing Lighthouse)",
+      "bgm_key": "bgm_chapter6_lighthouse",
+      "audio_config_enum": "BGMKey.CHAPTER_6",
+      "emotional_tone": "Emotional climax — from quiet arrival to radiant restoration; every instrument earned",
+      "emotional_arc_stage": "resilience → restoration",
+      "instruments": [
+        "solo piano (start — intimate, sparse)",
+        "acoustic guitar (joins at mid-point)",
+        "koto (joins approaching climax)",
+        "wind chimes (climax layer)",
+        "ocean ambience (always present, swells at climax)",
+        "ambient pads (builds from nothing to full)",
+        "distant bell (finale moment only)"
+      ],
+      "bpm": 64,
+      "bpm_range": "62-66",
+      "key_signature": "D major",
+      "looping": false,
+      "loop_point_note": "Non-looping by design. Ends with natural silence. If level not finished, loops a short ambient section (ocean + piano only) quietly.",
+      "adaptive_notes": "Dynamic structure: quiet start → gradual build → radiant finish. All adaptive layers are used in final chapter. The lighthouse activation (sfx_lighthouse_on) is the emotional peak and should be preceded by 2s of near-silence.",
+      "production_notes": "The only chapter where full ensemble is justified. Every instrument is added slowly, as if being restored along with the island. Nothing added before it is earned.",
+      "milestone_gate": "gold"
+    }
+  ],
+  "bgm_scenes": [
+    {
+      "scene": "main_menu",
+      "description": "Main menu / island map overview",
+      "bgm_key": "bgm_menu",
+      "audio_config_enum": "BGMKey.MAIN_MENU",
+      "instruments": [
+        "acoustic guitar (gentle picking, primary)",
+        "distant ocean field recording",
+        "occasional wind chime",
+        "sparse piano accent"
+      ],
+      "bpm": 60,
+      "duration": "loop",
+      "emotional_tone": "Gentle invitation — the island is waiting, peaceful, no urgency",
+      "looping": true,
+      "production_notes": "Should feel like the opening credits of a Studio Ghibli film. Player should feel safe and welcomed.",
+      "milestone_gate": "alpha"
+    },
+    {
+      "scene": "level_complete_sting",
+      "description": "Short non-looping stinger played on level clear screen",
+      "instruments": [
+        "acoustic guitar arpeggio",
+        "soft piano",
+        "single wind chime accent at peak"
+      ],
+      "bpm": 72,
+      "duration_seconds": 5,
+      "duration_range": "4-6 seconds",
+      "emotional_tone": "Warm accomplishment — gentle, not triumphant; satisfaction without fanfare",
+      "looping": false,
+      "key_signature": "D major",
+      "production_notes": "4-note ascending arpeggio + single resonant chord hold. Fades naturally to silence. Transitions to BGM resume after.",
+      "milestone_gate": "alpha"
+    },
+    {
+      "scene": "restoration_ceremony",
+      "description": "Chapter restoration ceremony — played when chapter's island area is visually restored",
+      "instruments": [
+        "koto (solo opening)",
+        "piano (joins at 2s)",
+        "acoustic guitar (joins at 4s)",
+        "nature ambience (rises at 6s)",
+        "full gentle ensemble (peak at 8-9s)"
+      ],
+      "bpm": 60,
+      "duration_seconds": 10,
+      "duration_range": "8-12 seconds",
+      "emotional_tone": "Emotional release — the island is alive again; earned, quiet, profound",
+      "looping": false,
+      "key_signature": "G major",
+      "production_notes": "One sting per chapter unlock. The full 6-chapter journey should feel like progressively more instruments are joining. Ch1 restoration = simplest, Ch6 = most layered.",
+      "restoration_variants": {
+        "chapter_1_variant": "Solo guitar + single wind chime",
+        "chapter_2_variant": "Koto + guitar",
+        "chapter_3_variant": "Piano + guitar + birdsong",
+        "chapter_4_variant": "Piano + guitar + ambient pads",
+        "chapter_5_variant": "Full ensemble minus bell",
+        "chapter_6_variant": "Full ensemble including distant bell (triggers sfx_lighthouse_on)"
+      },
+      "milestone_gate": "beta"
+    },
+    {
+      "scene": "lighthouse_finale",
+      "description": "One-time lighthouse illumination sequence — game's ultimate emotional climax",
+      "instruments": [
+        "solo piano (0-5s)",
+        "koto joins (5-10s)",
+        "ocean ambience rises (10-15s)",
+        "acoustic guitar joins (12-15s)",
+        "wind chimes added (15-18s)",
+        "ambient pads at full (18-22s)",
+        "distant bell resonates (22-25s)",
+        "all fades to ocean only (25-28s)"
+      ],
+      "bpm": 64,
+      "duration_seconds": 25,
+      "duration_range": "20-30 seconds",
+      "emotional_tone": "The island restored — quiet triumph, tears welcome, no words needed",
+      "looping": false,
+      "key_signature": "D major",
+      "one_time_play": true,
+      "production_notes": "This plays ONCE in the player's lifetime. Preceded by 2s near-silence. Must earn every second. Should work as a standalone piece. The moment the lighthouse light sweeps across the island — this is Japanese concept of 物の哀れ (mono no aware) rendered in sound.",
+      "milestone_gate": "gold"
+    }
+  ],
+  "voice_style": {
+    "full_voice_acting": false,
+    "murmur_style": "japanese_wordless_minimal",
+    "hinata_audio": "1-2_syllables_optional",
+    "narration_mode": "text_only_with_ambient_swell",
+    "delivery_philosophy": "Sound suggests emotion. Words carry meaning. Never both at once.",
+    "律_yamada_ritz": {
+      "character": "山田律 (Player character — protagonist)",
+      "voice_approach": "No voice. Internal monologue is text only.",
+      "audio_cue": "Ambient music swells subtly during key journal/reflection moments",
+      "chapter_complete_murmur": "Optional faint exhale or 'ん...' — delivered via text typing effect with subtle breath audio",
+      "notes": "律 is the player's vessel. Voice would break immersion. Silence is character."
+    },
+    "hinata": {
+      "character": "ひなた (Island companion)",
+      "syllables_max": 2,
+      "allowed_vocalizations": [
+        { "text": "律さん…", "note": "Soft, two-syllable call — appears in emotional chapter moments" },
+        { "text": "うん", "note": "Single affirmative murmur — warmth, acceptance" },
+        { "text": "ふふ", "note": "Soft laugh — two syllables, gentle, not loud" }
+      ],
+      "audio_cue": "ui_hinata_moment plays simultaneously",
+      "notes": "Voice recorded breathy, warm, close-mic. Never projected. Feels like the person next to you speaking, not performing.",
+      "milestone_gate": "beta"
+    },
+    "npc_磯部健三": {
+      "character": "磯部健三 (Harbor fisherman — gruff warmth)",
+      "vocalizations": [
+        { "text": "はは", "note": "Gruff warm laugh — occasional, earned, not frequent" }
+      ],
+      "timbre": "Low, resonant, chest voice. Warm despite roughness.",
+      "milestone_gate": "beta"
+    },
+    "npc_桐島梅子": {
+      "character": "桐島梅子 (Pottery studio proprietor)",
+      "vocalizations": [
+        { "text": "[contented hum]", "note": "Wordless melody hum while working — no specific syllables, just warmth" }
+      ],
+      "timbre": "Mid-range, calm, slightly raspy with age. Like someone who has found their place.",
+      "milestone_gate": "beta"
+    },
+    "npc_海野夏帆": {
+      "character": "海野夏帆 (Forest botanist — curious)",
+      "vocalizations": [
+        { "text": "あっ", "note": "Surprised exclamation when discovering rare plants — bright, genuine" }
+      ],
+      "timbre": "Bright, higher register, enthusiastic but not loud.",
+      "milestone_gate": "beta"
+    },
+    "npc_丸山冬子": {
+      "character": "丸山冬子 (Stone path hermit — near silence)",
+      "vocalizations": [
+        { "text": "…ありがとう", "note": "Single rare vocalization — extremely quiet, deeply sincere. Triggers only once in the game." }
+      ],
+      "timbre": "Almost a whisper. Elderly. Fragile but not weak.",
+      "milestone_gate": "gold"
+    },
+    "npc_丸山渉": {
+      "character": "丸山渉 (Absent — appears only through journal)",
+      "vocalizations": [],
+      "audio_approach": "Journal reading = text only. Ambient music swells during journal entries. No voice ever.",
+      "notes": "Absence is presence. The swelling ambient music IS his voice.",
+      "milestone_gate": "gold"
+    }
+  },
+  "adaptive_system": {
+    "description": "Three-layer adaptive music system that responds to player engagement without ever jarring",
+    "layers": [
+      {
+        "name": "base",
+        "description": "Always playing — ambient/environmental sounds specific to each chapter area",
+        "examples": ["ocean waves", "pottery wheel hum", "wind in forest", "cliff wind", "silence + room tone"],
+        "volume": "always_on",
+        "crossfade_behavior": "always_playing"
+      },
+      {
+        "name": "melody",
+        "description": "Primary musical melody layer — instruments carrying the chapter theme",
+        "trigger_condition": "fade_in after 10+ seconds of active puzzle engagement",
+        "fade_in_seconds": 3,
+        "fade_out_condition": "player pauses or exits level — 5 second fade out",
+        "volume": "fades in to 0.8 of full",
+        "notes": "Ensures first moments in a level are peaceful ambient only. Music rewards engagement."
+      },
+      {
+        "name": "intensity",
+        "description": "Additional layer activated by combo chains — adds texture and energy",
+        "trigger_condition": "3+ consecutive combo chains achieved",
+        "fade_in_seconds": 0.5,
+        "fade_out_condition": "3 seconds after last combo ends",
+        "fade_out_seconds": 3,
+        "volume": "fades in to 0.6 of full",
+        "notes": "Subtle. Should feel like the music notices the combo, not react frantically. Small percussion or secondary instrument."
+      }
+    ],
+    "crossfade_rules": {
+      "chapter_transition_seconds": 2,
+      "cut_policy": "never_hard_cut",
+      "transition_method": "fade_out_current_then_fade_in_new",
+      "exception": "lighthouse_finale — always fades in from near-silence, no previous music overlap"
+    },
+    "low_resource_mode": {
+      "trigger": "low_battery OR low_data_mode OR player_setting",
+      "behavior": "base_layer_only",
+      "bitrate": "lower_bitrate_variants",
+      "notes": "Ambient base layer alone should always feel complete and appropriate. Never silent."
+    },
+    "session_variation": {
+      "description": "Long sessions should feel different from short sessions",
+      "mechanism": "Hour-long ambient variations on base layer. Melody layer uses variant recordings. Time-of-day parameter (if device clock available) shifts ambience warmth.",
+      "time_of_day": {
+        "morning": "brighter reverb, more birdsong",
+        "afternoon": "cicada louder, warmer tone",
+        "evening": "cooler reverb, softer dynamics",
+        "night": "most minimal, stars/silence character"
+      }
+    }
+  },
+  "asset_list": [
+    {
+      "asset_id": "bgm_menu",
+      "type": "bgm",
+      "description": "Main menu / island map BGM",
+      "format": "ogg + mp3",
+      "duration": "loop (3-5 min)",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "bgm_chapter1_seaside",
+      "type": "bgm",
+      "description": "Chapter 1 — Harbor BGM (3 adaptive layers)",
+      "format": "ogg + mp3",
+      "duration": "loop (3-4 min)",
+      "layers": ["base_ocean", "melody_guitar", "intensity_percussion"],
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "bgm_chapter2_town",
+      "type": "bgm",
+      "description": "Chapter 2 — Pottery Studio BGM (3 adaptive layers)",
+      "format": "ogg + mp3",
+      "duration": "loop (3-4 min)",
+      "layers": ["base_wheel_hum", "melody_koto", "intensity_hand_perc"],
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "bgm_chapter3_flower",
+      "type": "bgm",
+      "description": "Chapter 3 — Coastal Forest BGM (3 adaptive layers)",
+      "format": "ogg + mp3",
+      "duration": "loop (4-5 min)",
+      "layers": ["base_wind_birds", "melody_piano", "intensity_harmonics"],
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "bgm_chapter4_forest",
+      "type": "bgm",
+      "description": "Chapter 4 — Stone Path BGM (3 adaptive layers)",
+      "format": "ogg + mp3",
+      "duration": "loop (5-6 min)",
+      "layers": ["base_silence_room_tone", "melody_solo_instrument", "intensity_second_instrument"],
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "bgm_chapter5_hotspring",
+      "type": "bgm",
+      "description": "Chapter 5 — Cliff Lookout BGM (3 adaptive layers)",
+      "format": "ogg + mp3",
+      "duration": "loop (5-6 min, hour variant recommended)",
+      "layers": ["base_cliff_wind_pads", "melody_koto_intermittent", "intensity_piano_swell"],
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "bgm_chapter6_lighthouse",
+      "type": "bgm",
+      "description": "Chapter 6 — Lighthouse BGM (dynamic, non-looping main + ambient fallback loop)",
+      "format": "ogg + mp3",
+      "duration": "non-loop main: 8-10 min + ambient fallback loop: 2 min",
+      "layers": ["dynamic_swell_main", "ambient_fallback_loop"],
+      "milestone_gate": "gold",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sting_level_complete",
+      "type": "sting",
+      "description": "Level complete stinger",
+      "format": "ogg + mp3",
+      "duration": "5s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sting_restoration_ch1",
+      "type": "sting",
+      "description": "Chapter 1 restoration ceremony sting",
+      "format": "ogg + mp3",
+      "duration": "10s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sting_restoration_ch2",
+      "type": "sting",
+      "description": "Chapter 2 restoration ceremony sting",
+      "format": "ogg + mp3",
+      "duration": "10s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sting_restoration_ch3",
+      "type": "sting",
+      "description": "Chapter 3 restoration ceremony sting",
+      "format": "ogg + mp3",
+      "duration": "10s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sting_restoration_ch4",
+      "type": "sting",
+      "description": "Chapter 4 restoration ceremony sting",
+      "format": "ogg + mp3",
+      "duration": "10s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sting_restoration_ch5",
+      "type": "sting",
+      "description": "Chapter 5 restoration ceremony sting",
+      "format": "ogg + mp3",
+      "duration": "12s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sting_restoration_ch6",
+      "type": "sting",
+      "description": "Chapter 6 restoration / lighthouse finale sting",
+      "format": "ogg + mp3",
+      "duration": "25s",
+      "milestone_gate": "gold",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_connect",
+      "type": "sfx",
+      "description": "Tile connect chime",
+      "format": "ogg + mp3",
+      "duration": "0.7s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_disappear",
+      "type": "sfx",
+      "description": "Tile clear sparkle",
+      "format": "ogg + mp3",
+      "duration": "0.35s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_combo1",
+      "type": "sfx",
+      "description": "x2 combo two-note",
+      "format": "ogg + mp3",
+      "duration": "0.4s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_combo2",
+      "type": "sfx",
+      "description": "x3 combo three-note",
+      "format": "ogg + mp3",
+      "duration": "0.6s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_combo3",
+      "type": "sfx",
+      "description": "x4+ combo cascade",
+      "format": "ogg + mp3",
+      "duration": "0.9s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_special_bomb",
+      "type": "sfx",
+      "description": "Bomb special block",
+      "format": "ogg + mp3",
+      "duration": "0.75s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_special_windmill",
+      "type": "sfx",
+      "description": "Line clear special block",
+      "format": "ogg + mp3",
+      "duration": "0.7s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_special_light",
+      "type": "sfx",
+      "description": "Auto-connect special block",
+      "format": "ogg + mp3",
+      "duration": "0.6s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_special_wave",
+      "type": "sfx",
+      "description": "Reshuffle special block",
+      "format": "ogg + mp3",
+      "duration": "0.7s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_level_complete",
+      "type": "sfx",
+      "description": "Level complete arpeggio",
+      "format": "ogg + mp3",
+      "duration": "1.2s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_area_restore",
+      "type": "sfx",
+      "description": "Area restoration swell",
+      "format": "ogg + mp3",
+      "duration": "10s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "sfx_lighthouse_on",
+      "type": "sfx",
+      "description": "Lighthouse finale swell + bell",
+      "format": "ogg + mp3",
+      "duration": "25s",
+      "milestone_gate": "gold",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_button_tap",
+      "type": "ui_sfx",
+      "description": "Button tap click",
+      "format": "ogg + mp3",
+      "duration": "0.06s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_menu_open",
+      "type": "ui_sfx",
+      "description": "Menu open whoosh",
+      "format": "ogg + mp3",
+      "duration": "0.2s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_menu_close",
+      "type": "ui_sfx",
+      "description": "Menu close reverse whoosh",
+      "format": "ogg + mp3",
+      "duration": "0.18s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_shop_item_select",
+      "type": "ui_sfx",
+      "description": "Shop item selection shimmer",
+      "format": "ogg + mp3",
+      "duration": "0.3s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_dialogue_advance",
+      "type": "ui_sfx",
+      "description": "Dialogue text tick",
+      "format": "ogg + mp3",
+      "duration": "0.03s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_error_cannot_do",
+      "type": "ui_sfx",
+      "description": "Error soft hollow tap",
+      "format": "ogg + mp3",
+      "duration": "0.08s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_notification_badge",
+      "type": "ui_sfx",
+      "description": "Notification single chime",
+      "format": "ogg + mp3",
+      "duration": "0.4s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_island_map_open",
+      "type": "ui_sfx",
+      "description": "Island map ambient swell",
+      "format": "ogg + mp3",
+      "duration": "0.6s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_chapter_unlock",
+      "type": "ui_sfx",
+      "description": "Chapter unlock shimmer",
+      "format": "ogg + mp3",
+      "duration": "0.4s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_material_collect",
+      "type": "ui_sfx",
+      "description": "Material collect plop",
+      "format": "ogg + mp3",
+      "duration": "0.12s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_daily_reward_open",
+      "type": "ui_sfx",
+      "description": "Daily reward warmth swell",
+      "format": "ogg + mp3",
+      "duration": "0.8s",
+      "milestone_gate": "alpha",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "ui_hinata_moment",
+      "type": "ui_sfx",
+      "description": "ひなた character moment resonance",
+      "format": "ogg + mp3",
+      "duration": "0.8s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "voice_hinata_ritsu_san",
+      "type": "voice",
+      "description": "ひなた — '律さん…' whisper",
+      "format": "ogg + mp3",
+      "duration": "0.8s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "voice_hinata_un",
+      "type": "voice",
+      "description": "ひなた — 'うん' affirmative murmur",
+      "format": "ogg + mp3",
+      "duration": "0.3s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "voice_hinata_fufu",
+      "type": "voice",
+      "description": "ひなた — 'ふふ' soft laugh",
+      "format": "ogg + mp3",
+      "duration": "0.5s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "voice_isobe_haha",
+      "type": "voice",
+      "description": "磯部健三 — 'はは' warm laugh",
+      "format": "ogg + mp3",
+      "duration": "0.6s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "voice_kirima_hum",
+      "type": "voice",
+      "description": "桐島梅子 — contented wordless hum",
+      "format": "ogg + mp3",
+      "duration": "2.0s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "voice_umino_a",
+      "type": "voice",
+      "description": "海野夏帆 — 'あっ' surprised exclamation",
+      "format": "ogg + mp3",
+      "duration": "0.3s",
+      "milestone_gate": "beta",
+      "status": "spec_only"
+    },
+    {
+      "asset_id": "voice_maruyama_fuyu_arigatou",
+      "type": "voice",
+      "description": "丸山冬子 — '…ありがとう' near-whisper (one-time)",
+      "format": "ogg + mp3",
+      "duration": "1.2s",
+      "milestone_gate": "gold",
+      "status": "spec_only"
+    }
+  ],
+  "total_asset_count": {
+    "bgm_files": 7,
+    "sting_files": 7,
+    "gameplay_sfx": 12,
+    "ui_sfx": 12,
+    "voice_clips": 7,
+    "total": 45
+  },
+  "audio_manager_integration": {
+    "bgm_api": "AudioManager.playBGM(key: BGMKey, fadeDuration: number)",
+    "sfx_api": "AudioManager.playSFX(key: SFXKey)",
+    "chapter_api": "AudioManager.playChapterBGM(chapterId: number)",
+    "fade_behavior": "All BGM transitions use tween-based volume fade — no hard cuts",
+    "volume_persistence": "BGM and SFX volumes persisted to sys.localStorage",
+    "file_path_convention": "audio/bgm/{BGMKey} and audio/sfx/{SFXKey}",
+    "adaptive_system_note": "Current AudioManager.ts supports single BGM source. Adaptive 3-layer system requires extending to multi-source or using a dedicated AdaptiveBGMManager class. Suggested sprint: beta milestone."
+  }
+}

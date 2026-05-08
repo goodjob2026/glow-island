@@ -1,0 +1,32 @@
+{
+  "version": "2.0",
+  "core_loop": {
+    "type": "match-connect puzzle",
+    "session_duration_s": { "min": 30, "typical": 90, "max": 180 },
+    "currency": "steps",
+    "no_timer": true,
+    "no_energy": true
+  },
+  "meta_loop": {
+    "layers": ["puzzle", "material_reward", "island_restoration", "narrative_unlock"]
+  },
+  "combo_system": {
+    "window_ms": 2000,
+    "thresholds": [1, 2, 3, 4],
+    "multipliers": [1.0, 1.5, 2.0, 3.0]
+  },
+  "special_blocks": [
+    {"type": "bomb", "effect": "3x3_clear"},
+    {"type": "windmill", "effect": "row_and_column_clear"},
+    {"type": "light", "effect": "auto_connect_nearest"},
+    {"type": "wave", "effect": "reshuffle_board"}
+  ],
+  "chapter_mechanics_unlock": {
+    "ch1": "basic_tiles_combo",
+    "ch2": "ice_block",
+    "ch3": "chain_lock_portal",
+    "ch4": "single_path_corridor",
+    "ch5": "gravity_slide_rotate",
+    "ch6": "spreading_obstacle"
+  }
+}

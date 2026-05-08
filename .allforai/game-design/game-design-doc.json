@@ -1,0 +1,584 @@
+{
+  "game_title": "Glow Island — 輝島の光",
+  "scenario": "casual-mobile",
+  "design_version": "1.0.0",
+  "generated_at": "2026-05-08T12:30:00Z",
+  "engine": "cocos-creator-3.x",
+  "backend": "fastify-prisma-postgresql",
+  "platforms": ["iOS", "WebGL"],
+  "player_roles": [
+    {
+      "role_id": "healer",
+      "archetype": "治愈型玩家",
+      "motivation": "放松减压，视觉美感奖励",
+      "pain_points": ["不喜欢体力限制", "讨厌倒计时压力", "抗拒P2W排行"]
+    },
+    {
+      "role_id": "story-seeker",
+      "archetype": "故事型玩家",
+      "motivation": "追寻律与ひなた的情感线，解锁渉的记忆碎片",
+      "pain_points": ["害怕错过叙事内容", "希望有存档", "不喜欢强制社交"]
+    },
+    {
+      "role_id": "completionist",
+      "archetype": "完成型玩家",
+      "motivation": "全岛修复，全收集，全关卡三星",
+      "pain_points": ["难度不公平感", "收集内容太碎", "无进度可视化"]
+    }
+  ],
+  "protagonist": {
+    "name_jp": "山田律",
+    "name_romaji": "Yamada Ritsu",
+    "age": 29,
+    "gender": "male",
+    "occupation": "東京広告クリエイティブ・ディレクター (Tokyo advertising creative director)",
+    "backstory": "Five years of Tokyo advertising burnout; received a mysterious ink-brushed letter from lighthouse keeper Maruyama Wataru; took long leave and arrived by ferry",
+    "inner_theme": "Rediscovering what truly matters",
+    "arc_type": "positive",
+    "wound": "5年間の燃え尽き症候群。意味と美しさへの繋がりを失った。",
+    "lie": "「成功こそが唯一重要なことだ。美しさは無駄なものだ。」",
+    "truth": "「手仕事には本質的な価値がある。今この瞬間にいることで十分だ。」",
+    "narrative_vehicle": "In-game diary — short entries, precise copywriter's language"
+  },
+  "romantic_interest": {
+    "name_jp": "丸山ひなた",
+    "name_romaji": "Maruyama Hinata",
+    "age": 24,
+    "gender": "female",
+    "role": "Granddaughter of lighthouse keeper Maruyama Wataru",
+    "arc_type": "parallel-revelation",
+    "occupation": "Returned from Osaka design school",
+    "wound": "祖父の死と帰郷の間で引き裂かれた自分。",
+    "truth": "「記憶は分かち合うことで、初めて生き続ける。」",
+    "signature_object": "祖父の形見の指輪をコードに通したもの (grandfather's fisherman ring on a cord)",
+    "romantic_thread_note": "恋愛は暗示のみ。告白なし、キスなし。律への感情は行動と間合いで表現される。",
+    "chapter_arc": "Ch1 dockside passing → Ch2 occasional help → Ch3 guide through flower fields → Ch4 absent but present → Ch5 fishing lesson + journal reading (core chapter) → Ch6 lighthouse lighting moment"
+  },
+  "setting": {
+    "island_name": "輝島",
+    "island_name_romaji": "Kagayaki-jima",
+    "island_name_meaning": "辉之岛",
+    "style": "Japanese island — contemporary era",
+    "location": "Southwest Japan seas, between Kyushu and Nansei Islands",
+    "climate": "warm and humid, four seasons",
+    "visual_baseline": "Animal Crossing soft pastels — rounded forms, low-saturation warm tones; pre-restoration grey-white, each repair raises saturation one step",
+    "audio_direction": "ocean waves, wooden geta footsteps, wind chimes, shamisen, cicada changes; dialogue uses Japanese mumble SFX, no full voice",
+    "tone": ["healing", "slow-burn romance", "memory", "restoration", "escape-and-landing", "tenderness-in-exhaustion"],
+    "chapters": [
+      { "id": 1, "title": "到来", "arc_keyword": "逃离", "area": "漁港 (Harbor)", "npc": "磯部健三" },
+      { "id": 2, "title": "扎根", "arc_keyword": "扎根", "area": "陶芸工房 (Pottery Studio)", "npc": "桐島梅子" },
+      { "id": 3, "title": "感受", "arc_keyword": "感受", "area": "海辺の森 (Coastal Forest)", "npc": "海野夏帆" },
+      { "id": 4, "title": "栖息", "arc_keyword": "栖息", "area": "石畳の小道 (Stone Path)", "npc": null },
+      { "id": 5, "title": "接受", "arc_keyword": "接受", "area": "崖の展望台 (Cliff Lookout)", "npc": "丸山ひなた (core)" },
+      { "id": 6, "title": "点亮", "arc_keyword": "点亮", "area": "輝く灯台 (Lighthouse)", "npc": "丸山冬子" }
+    ]
+  },
+  "core_loop": {
+    "type": "match-connect puzzle (连连看)",
+    "algorithm": "BFS ≤2 turns",
+    "session_duration_s": { "min": 30, "typical": 90, "max": 180 },
+    "currency": "steps (no timer, no energy)",
+    "no_timer": true,
+    "no_energy": true,
+    "meta_loop_layers": ["puzzle", "material_reward", "island_restoration", "narrative_unlock"],
+    "combo_system": {
+      "window_ms": 2000,
+      "thresholds": [1, 2, 3, 4],
+      "multipliers": [1.0, 1.5, 2.0, 3.0]
+    },
+    "gameplay_feel_reference": "天天爱消除 (Chinese Candy Crush) — satisfying combos, escalating SFX, special block chain reactions"
+  },
+  "chapter_mechanics": {
+    "ch1": { "theme": "海边码头", "new_mechanics": ["基础连连看", "连击系统(combo)", "特殊块: 炸弹(3连击)"], "special_blocks": ["bomb"], "tile_types": ["T01","T02","T03","T04"] },
+    "ch2": { "theme": "中央小镇", "new_mechanics": ["冰封块(1层)", "杂草障碍", "风车(4连击)"], "new_obstacles": ["ice_block","weed"], "special_blocks": ["bomb","windmill"], "tile_types": ["T05","T06","T07","T08"] },
+    "ch3": { "theme": "花田山坡", "new_mechanics": ["锁链(1~2环)", "传送门(零转弯代价)", "灯光块"], "new_obstacles": ["chain_lock","portal"], "special_blocks": ["bomb","windmill","lantern"], "tile_types": ["T09","T10","T11","T12"] },
+    "ch4": { "theme": "森林露营地", "new_mechanics": ["单路径通道", "木箱障碍(永久)", "海浪块"], "new_obstacles": ["single_path_corridor","wooden_crate"], "special_blocks": ["bomb","windmill","lantern","wave"], "tile_types": ["T13","T14","T15","T16"] },
+    "ch5": { "theme": "温泉山谷", "new_mechanics": ["重力下落", "方块滑落", "棋盘旋转", "水流障碍"], "new_obstacles": ["water_current"], "board_events": ["tile_fall","tile_slide","board_rotate","water_flow"], "tile_types": ["T17","T18"] },
+    "ch6": { "theme": "夜晚灯塔", "new_mechanics": ["扩散障碍(藤蔓/苔藓)", "所有20种图块全部启用", "全机制组合挑战"], "new_obstacles": ["spreading_obstacle"], "board_events": ["vine_spread"], "tile_types": ["T19","T20"] }
+  },
+  "special_blocks": [
+    { "type": "bomb",     "name_cn": "炸弹",  "trigger": "3-combo or level-preset", "effect": "3×3 area clear",       "spawn_on_combo": 3 },
+    { "type": "windmill", "name_cn": "风车",  "trigger": "4-combo or level-preset", "effect": "row + column clear (cross)", "spawn_on_combo": 4 },
+    { "type": "lantern",  "name_cn": "灯光",  "trigger": "level-preset only",       "effect": "auto-connect nearest same-type tile", "spawn_on_combo": null },
+    { "type": "wave",     "name_cn": "海浪",  "trigger": "level-preset only",       "effect": "reshuffle board (preserves counts, max 3 auto-retry)", "spawn_on_combo": null }
+  ],
+  "puzzle_system": {
+    "path_rules": {
+      "algorithm": "BFS",
+      "max_turns": 2,
+      "portal_turn_cost": 0,
+      "bfs_state": "(x, y, last_direction, turns_used)",
+      "edge_traverse": true,
+      "same_type_required": true,
+      "blocked_by_occupied_cells": true
+    },
+    "tile_types_count": 20,
+    "tile_types": [
+      { "code": "T01", "name": "珊瑚橙",   "color": "#FF8C5A", "chapter": 1 },
+      { "code": "T02", "name": "海浪蓝",   "color": "#4DA6D4", "chapter": 1 },
+      { "code": "T03", "name": "沙滩米",   "color": "#E8D5A3", "chapter": 1 },
+      { "code": "T04", "name": "海草绿",   "color": "#7BC67A", "chapter": 1 },
+      { "code": "T05", "name": "灯笼黄",   "color": "#FFD166", "chapter": 2 },
+      { "code": "T06", "name": "石板灰",   "color": "#A0A0A0", "chapter": 2 },
+      { "code": "T07", "name": "砖瓦红",   "color": "#C0504D", "chapter": 2 },
+      { "code": "T08", "name": "暖木棕",   "color": "#8B5E3C", "chapter": 2 },
+      { "code": "T09", "name": "薰衣草紫", "color": "#B08DCA", "chapter": 3 },
+      { "code": "T10", "name": "粉樱",     "color": "#F4A7B9", "chapter": 3 },
+      { "code": "T11", "name": "晨雾白",   "color": "#EAF0F6", "chapter": 3 },
+      { "code": "T12", "name": "苔藓绿",   "color": "#4E7C59", "chapter": 3 },
+      { "code": "T13", "name": "深林棕",   "color": "#5C4033", "chapter": 4 },
+      { "code": "T14", "name": "营火橙",   "color": "#E07832", "chapter": 4 },
+      { "code": "T15", "name": "星空靛",   "color": "#3D4A8A", "chapter": 4 },
+      { "code": "T16", "name": "萤光绿",   "color": "#A3E635", "chapter": 4 },
+      { "code": "T17", "name": "温泉白",   "color": "#F0EAE2", "chapter": 5 },
+      { "code": "T18", "name": "矿物蓝",   "color": "#6EB5C0", "chapter": 5 },
+      { "code": "T19", "name": "夜深蓝",   "color": "#1A2A4A", "chapter": 6 },
+      { "code": "T20", "name": "灯塔金",   "color": "#FFB830", "chapter": 6 }
+    ],
+    "obstacle_types": [
+      { "type": "ice_block",           "chapter": 2, "max_layers": 3, "clear_method": "adjacent_match" },
+      { "type": "weed",                "chapter": 2, "clear_method": "adjacent_match", "spread_interval_s": 15 },
+      { "type": "chain_lock",          "chapter": 3, "max_rings": 3,  "clear_method": "direct_match" },
+      { "type": "portal",              "chapter": 3, "turn_cost": 0,  "permanent": true },
+      { "type": "single_path_corridor","chapter": 4, "blocks_path": true, "permanent": true },
+      { "type": "wooden_crate",        "chapter": 4, "blocks_path": true, "permanent": true },
+      { "type": "water_current",       "chapter": 5, "dynamic": true, "direction_change_interval_s": 5 },
+      { "type": "spreading_obstacle",  "chapter": 6, "variants": ["vine","moss"], "spread_per_step": 1 }
+    ]
+  },
+  "level_structure": {
+    "total_levels": 136,
+    "chapters": 6,
+    "grid_range": { "min": [4, 4], "max": [10, 10] },
+    "pacing": "3:1 standard:breather ratio",
+    "difficulty_curve": "gradual_ascent_with_chapter_resets (15% reset per chapter start)",
+    "estimated_playtime_hours": {
+      "fast_player": 12.0,
+      "median_player": 18.5,
+      "casual_player": 28.0
+    },
+    "total_coin_reward": 14463,
+    "chapters_detail": [
+      { "chapter": 1, "theme": "海边码头", "count": 22, "range": "1-1~1-22", "grid": "4×4→6×6", "material": "shell_fragment" },
+      { "chapter": 2, "theme": "中央小镇", "count": 23, "range": "2-1~2-23", "grid": "6×6→7×7", "material": "clay_shard" },
+      { "chapter": 3, "theme": "花田山坡", "count": 23, "range": "3-1~3-23", "grid": "6×6→7×7", "material": "pine_needle" },
+      { "chapter": 4, "theme": "森林露营地","count": 22, "range": "4-1~4-22", "grid": "7×7→8×8", "material": "torii_fragment" },
+      { "chapter": 5, "theme": "温泉山谷", "count": 23, "range": "5-1~5-23", "grid": "8×8→9×9", "material": "rope_fiber" },
+      { "chapter": 6, "theme": "夜晚灯塔", "count": 23, "range": "6-1~6-23", "grid": "8×8→10×10","material": "lantern_glass" }
+    ],
+    "objective_types": ["clear_tiles", "clear_ice", "free_chains", "traverse_path", "survive_spread"]
+  },
+  "progression": {
+    "total_chapters": 6,
+    "total_levels": 136,
+    "median_player_hours": 18.5,
+    "fast_player_hours": 12.0,
+    "casual_player_hours": 28.0,
+    "grand_total_coins": 14463,
+    "chapter_unlock_conditions": [
+      { "chapter": 1, "unlock_at": "default_start",  "required_coins": 0 },
+      { "chapter": 2, "unlock_at": "level 1-15",     "required_coins": 200 },
+      { "chapter": 3, "unlock_at": "level 2-15",     "required_coins": 350 },
+      { "chapter": 4, "unlock_at": "level 3-15",     "required_coins": 500 },
+      { "chapter": 5, "unlock_at": "level 4-15",     "required_coins": 700 },
+      { "chapter": 6, "unlock_at": "level 5-15",     "required_coins": 950 }
+    ],
+    "material_economy_surplus_pct": [18, 14, 12, 8, 7, 7],
+    "max_moves_progression": {
+      "ch1": "null (tutorial) → 20-29 steps",
+      "ch2": "28-37 steps",
+      "ch3": "29-40 steps (fully step-limited)",
+      "ch4": "35-40 steps",
+      "ch5": "fixed 40 steps",
+      "ch6": "fixed 40 steps + high-density board"
+    },
+    "difficulty_segments": [
+      { "range": "1-1→1-3",   "difficulty": 1.0, "label": "新手教学" },
+      { "range": "1-4→1-8",   "difficulty": 1.5, "label": "章1宽松" },
+      { "range": "1-9→1-14",  "difficulty": 2.2, "label": "章1标准" },
+      { "range": "1-15→1-20", "difficulty": 3.0, "label": "章1挑战" },
+      { "range": "2-1→2-5",   "difficulty": 2.5, "label": "章2宽松" },
+      { "range": "3-18→3-23", "difficulty": 6.2, "label": "章3挑战" },
+      { "range": "4-18→4-23", "difficulty": 8.0, "label": "章4挑战" },
+      { "range": "5-20→5-25", "difficulty": 9.5, "label": "章5挑战" },
+      { "range": "6-20→6-25", "difficulty": 10.0,"label": "章6终极" }
+    ]
+  },
+  "character_arcs": {
+    "protagonist_ritsu": {
+      "arc_type": "positive",
+      "wound": "5年広告燃え尽き — 美しさへの繋がりを失った",
+      "truth_discovered": "手仕事には本質的な価値がある。今この瞬間にいることで十分だ。",
+      "chapter_progression": ["逃离 (escape)", "扎根 (take root)", "感受 (feel)", "栖息 (rest)", "接受 (accept)", "点亮 (illuminate)"]
+    },
+    "hinata": {
+      "arc_type": "parallel-revelation",
+      "wound": "祖父の死と帰郷の間で引き裂かれた自分",
+      "truth_discovered": "記憶は分かち合うことで、初めて生き続ける。",
+      "romantic_thread": "implicit only — no confession, no kiss; expressed through action and timing"
+    },
+    "wataru_absent_catalyst": {
+      "arc_type": "absent-revealed",
+      "medium": "6 handwritten journal entries, one per chapter completion",
+      "purpose": "Constructs Wataru's complete life of vigil; explains why he wrote the letter: 'The island believed the right person would come'"
+    },
+    "supporting_npcs": [
+      { "name": "磯部健三", "role": "fisherman mentor", "chapter": 1, "function": "teaches value of hand-work" },
+      { "name": "桐島梅子", "role": "pottery challenger", "chapter": 2, "function": "breaks Ritsu's perfectionism" },
+      { "name": "海野夏帆", "role": "nature guide awakener", "chapter": 3, "function": "re-ignites Ritsu's dormant wonder" },
+      { "name": "丸山冬子", "role": "final gatekeeper", "chapter": 6, "function": "delivers Wataru's final journal entry" }
+    ],
+    "memory_fragments": {
+      "total": 6,
+      "trigger": "chapter_restoration_complete",
+      "viewer_ui": "memory_journal_book_style",
+      "all_collected_reward": "special illustration — Wataru and young Hinata at the lighthouse"
+    }
+  },
+  "ftue": {
+    "philosophy": "teach-through-level-design",
+    "no_popup_rule": true,
+    "total_duration_seconds": 390,
+    "total_duration_label": "~6.5 minutes",
+    "steps": 8,
+    "tutorial_levels": ["1-1 (4×4, 4 pairs, zero obstacles)", "1-2 (5×5, 6 pairs, 1 wall gap, first combo)", "1-3 (5×5, 7 pairs, 2 gaps, restoration cutscene)"],
+    "flow": [
+      { "step": 1, "name": "律の到着 — Opening cutscene", "duration_s": 15 },
+      { "step": 2, "name": "ひなたとの出会い — Hinata hands Ritsu the letter", "duration_s": 10 },
+      { "step": 3, "name": "港の風景 — Island overview, desolate harbor", "duration_s": 5 },
+      { "step": 4, "name": "Level 1-1 — Discover straight-line connection", "duration_s": 75 },
+      { "step": 5, "name": "Level 1-2 — Blocked paths + first combo", "duration_s": 90 },
+      { "step": 6, "name": "Level 1-3 — Restoration cutscene + Hinata", "duration_s": 120 },
+      { "step": 7, "name": "素材を得る — First driftwood material reward", "duration_s": 10 },
+      { "step": 8, "name": "港が少し、戻ってきた — Map reveal + meta-loop established", "duration_s": 15 }
+    ],
+    "d1_setup": {
+      "hinata_appearances": 2,
+      "restoration_areas_completed": 1,
+      "island_map_unlocked": true,
+      "emotional_hooks": ["Purpose established via letter", "ひなた present but not attached", "Puzzle-restoration loop understood without exposition"]
+    },
+    "prohibited_patterns": ["popup tutorials", "forced-tap arrows", "timer pressure", "directive language"]
+  },
+  "retention_system": {
+    "no_stamina_gate": true,
+    "no_countdown_timers": true,
+    "max_daily_notifications": 1,
+    "soft_streak_system": true,
+    "streak_break_response": "welcome_back_gift (no penalty)",
+    "hinata_story_beats": {
+      "total": 12,
+      "beats": [
+        { "id": "ch1-a", "trigger": "Ch1 full restoration", "type": "fishing rod left at guesthouse door" },
+        { "id": "ch1-b", "trigger": "Level 1-10 clear",     "type": "broken window silently repaired" },
+        { "id": "ch2-a", "trigger": "Ch2 first level",      "type": "pottery shard in mailbox with her name" },
+        { "id": "ch2-b", "trigger": "Ch2 50% restored",     "type": "pottery lesson — hand-to-hand without words" },
+        { "id": "ch3-a", "trigger": "Ch3 area first enter", "type": "sitting together at forest edge in silence" },
+        { "id": "ch3-b", "trigger": "Ch3 milestone",        "type": "her forest sketch with Ritsu's silhouette" },
+        { "id": "ch4-a", "trigger": "Ch4 area first enter", "type": "her footprints diverging on the stone path" },
+        { "id": "ch4-b", "trigger": "Ch4 50% restored",     "type": "hand-drawn map to lighthouse, no signature" },
+        { "id": "ch5-a", "trigger": "Ch5 first level",      "type": "fishing lesson, shares her catch silently" },
+        { "id": "ch5-b", "trigger": "Ch5 50% restored",     "type": "reads Wataru's journal aloud at cliff" },
+        { "id": "ch6-a", "trigger": "Ch6 first level",      "type": "seen touching lighthouse wall alone" },
+        { "id": "ch6-b", "trigger": "Final restoration",    "type": "silent walk up lighthouse stairs together — ending" }
+      ]
+    },
+    "daily_reward_calendar": {
+      "week1": "narrative-framed material gifts + Hinata welcome note on Day 1",
+      "week2_to_4": "alternating rare materials and Wataru memory fragment hints",
+      "d30_plus": "4-season cycle (spring/summer/autumn/winter) with exclusive seasonal materials"
+    },
+    "push_notifications": {
+      "opt_in": true,
+      "max_per_day": 1,
+      "silence_after_d30": true,
+      "voice": "island-perspective, warm, never urgent",
+      "example": "「律さん、今日の潮目は穏やかです。島が待っています。」"
+    },
+    "retention_milestones": {
+      "d1": "what-changed-overnight open loop — harbor restoration overnight",
+      "d7": "dream sequence chapter preview + soft leaderboard opt-in",
+      "d30": "memory fragment system fully engaged — Hinata reveals grandfather's reason"
+    }
+  },
+  "meta_game": {
+    "island_map": {
+      "total_areas": 6,
+      "visual_states": ["desolate", "stirring", "blooming", "radiant"],
+      "lighthouse_always_visible": true,
+      "areas": [
+        { "chapter": 1, "area_id": "harbor",         "area_jp": "漁港",      "material": "浮木 (Driftwood)" },
+        { "chapter": 2, "area_id": "pottery_studio", "area_jp": "陶芸工房",  "material": "陶土 (Clay)" },
+        { "chapter": 3, "area_id": "coastal_forest", "area_jp": "海辺の森",  "material": "苔と種 (Moss & Seeds)" },
+        { "chapter": 4, "area_id": "stone_path",     "area_jp": "石畳の小道","material": "石畳石 (Paving Stones)" },
+        { "chapter": 5, "area_id": "cliff_lookout",  "area_jp": "崖の展望台","material": "崖の石英 (Cliff Quartz)" },
+        { "chapter": 6, "area_id": "lighthouse",     "area_jp": "輝く灯台",  "material": "灯油 + 硝子 (Lamp Oil + Glass)" }
+      ]
+    },
+    "chapter_unlock_ceremony": {
+      "steps": 6,
+      "description": "final_level_complete → area_restoration_animation (3s) → camera_pan_to_next_area (2s) → hinata_hint_line (5s) → new_chapter_unlock (1s) → memory_fragment_unlock (3s)"
+    },
+    "material_system": {
+      "normal_drop_qty": "2-5 per level",
+      "rare_drop_trigger": "combo_chain_4+",
+      "rare_drop_chance": 0.15,
+      "no_decay": true,
+      "no_expiry": true
+    },
+    "memory_room": {
+      "fragments": 6,
+      "presentation": "journal page turn, black ink on aged paper",
+      "all_collected_reward": "special illustration — Wataru and young Hinata at lighthouse"
+    },
+    "no_battle_pass": true,
+    "no_pvp": true,
+    "no_timers": true,
+    "no_energy_system": true,
+    "design_philosophy": "Finite, timeless experience — the island waits for the player, always. No FOMO. Completionist satisfaction replaces anxiety."
+  },
+  "monetization": {
+    "soft_currency": { "id": "beach_coins", "name": "沙滩币", "initial_grant": 200, "daily_earn_active": 120, "cap": 9999 },
+    "hard_currency": { "id": "glow_stones", "name": "丹青石", "free_player_monthly_max": 63, "monthly_card_monthly": 300 },
+    "iap_skus": [
+      { "sku": "small_pack",    "name": "一抔沙",   "price_usd": 0.99,  "glow_stones": 6,   "note": "低门槛入门包" },
+      { "sku": "starter_pack",  "name": "新玩家礼包","price_usd": 2.99,  "glow_stones": 50,  "limit": 1, "window_days": 7 },
+      { "sku": "medium_pack",   "name": "一把贝壳", "price_usd": 3.99,  "glow_stones": 33,  "note": "主力单次购买" },
+      { "sku": "monthly_card",  "name": "月卡",     "price_usd": 4.99,  "glow_stones": 300, "subscription": true },
+      { "sku": "large_pack",    "name": "一篮珊瑚", "price_usd": 9.99,  "glow_stones": 100 },
+      { "sku": "mega_pack",     "name": "灯塔礼包", "price_usd": 19.99, "glow_stones": 240, "note": "限时节日包" }
+    ],
+    "iap_trigger_rules": {
+      "min_failures_before_prompt": 3,
+      "no_popup_during_gameplay": true,
+      "no_forced_fullscreen_block": true,
+      "no_fomo_countdown": true,
+      "no_commercial_content_in_narrative": true
+    },
+    "arpu_targets": {
+      "d1": "$0.15", "d7": "$0.60", "d30": "$1.50", "d90": "$3.20",
+      "paying_user_d30": "$15.00", "iap_conversion_rate": "3%", "monthly_card_renewal": "60%"
+    },
+    "revenue_mix": { "subscription_monthly_card": "45%", "one_time_packs": "35%", "micro_spend": "20%" }
+  },
+  "audio": {
+    "identity": {
+      "genre": "acoustic + ambient + light electronic",
+      "mood": "healing, unhurried, quietly joyful",
+      "key_instruments": ["acoustic guitar", "koto (琴)", "soft piano", "ocean ambience", "wind chimes", "wooden geta on stone", "birdsong", "cicada", "gentle hand percussion"],
+      "forbidden_sounds": ["aggressive percussion", "distorted bass", "high-BPM electronic", "triumphant brass fanfares", "harsh buzzer tones"],
+      "aesthetic_references": ["Animal Crossing K.K. Slider acoustic warmth", "天天爱消除 satisfying short SFX", "Joe Hisaishi — space and breath", "Nujabes — understated groove"]
+    },
+    "chapter_bgm_count": 6,
+    "bgm_chapters": [
+      { "chapter": 1, "key": "bgm_chapter1_seaside",    "bpm": 62, "key_sig": "G major / E minor", "mood": "curious, slightly melancholic" },
+      { "chapter": 2, "key": "bgm_chapter2_town",       "bpm": 72, "key_sig": "D pentatonic",      "mood": "focused, meditative craft rhythm" },
+      { "chapter": 3, "key": "bgm_chapter3_flower",     "bpm": 58, "key_sig": "A major",           "mood": "wonder, expansive, ancient forest" },
+      { "chapter": 4, "key": "bgm_chapter4_forest",     "bpm": 52, "key_sig": "C major / A minor", "mood": "introspective, minimal, silence as composition" },
+      { "chapter": 5, "key": "bgm_chapter5_hotspring",  "bpm": 68, "key_sig": "F# minor",          "mood": "awe, slightly tense, cliff vertigo" },
+      { "chapter": 6, "key": "bgm_chapter6_lighthouse", "bpm": 64, "key_sig": "D major",           "mood": "emotional climax — every instrument earned" }
+    ],
+    "additional_scenes": [
+      { "scene": "main_menu",           "bpm": 60, "loop": true,  "mood": "gentle invitation, Studio Ghibli opening credits feel" },
+      { "scene": "level_complete_sting","bpm": 72, "loop": false, "duration_s": 5 },
+      { "scene": "restoration_ceremony","bpm": 60, "loop": false, "duration_s": 10, "variants_per_chapter": true },
+      { "scene": "lighthouse_finale",   "bpm": 64, "loop": false, "duration_s": 25, "one_time_play": true }
+    ],
+    "sfx_catalogue_count": 12,
+    "sfx_keys": [
+      "sfx_connect (tile path connection)",
+      "sfx_disappear (tile pair cleared)",
+      "sfx_combo1 (x2 — two ascending koto notes)",
+      "sfx_combo2 (x3 — three ascending koto+piano)",
+      "sfx_combo3 (x4+ — 6-note pentatonic cascade)",
+      "sfx_special_bomb (muffled pop + chime)",
+      "sfx_special_windmill (swoosh + clear bell)",
+      "sfx_special_light (shimmer + 4 mini-chimes)",
+      "sfx_special_wave (circular ocean whoosh)",
+      "sfx_level_complete (D major arpeggio, 1.2s)",
+      "sfx_area_restore (10s multi-layer swell)",
+      "sfx_lighthouse_on (25s finale — one-time play)"
+    ],
+    "ui_sounds_count": 12,
+    "adaptive_layers": ["base", "melody", "intensity"],
+    "adaptive_system": {
+      "base": "Always playing — ambient/environmental sounds per chapter area",
+      "melody": "Fades in after 10s active engagement, fades out on pause (3s)",
+      "intensity": "Activates on 3+ combo chains, fades after 3s without combo",
+      "crossfade_policy": "never_hard_cut — 2s chapter transitions, lighthouse finale from near-silence"
+    },
+    "voice_style": {
+      "full_voice_acting": false,
+      "murmur_style": "japanese_wordless_minimal",
+      "protagonist_voice": "none — text only, ambient swell during reflection",
+      "hinata_max_syllables": 2,
+      "hinata_vocalizations": ["律さん…", "うん", "ふふ"]
+    },
+    "total_audio_assets": 45
+  },
+  "art": {
+    "style": "animal-crossing-jp-island",
+    "style_description": "Rounded soft shapes, low-saturation warm tones, Japanese nature motifs. Pre-restoration = grey-white (0% saturation). Each repair stage raises saturation +1 step to full radiant color.",
+    "total_assets": 343,
+    "by_category": {
+      "tiles":        { "count": 24, "breakdown": "20 base tiles (T01-T20) + 4 special (Spine-animated)", "format": "png + spine" },
+      "characters":   { "count": 6,  "breakdown": "5 NPCs × 3 expressions + 5 Spine dialog bundles + 1 protagonist placeholder", "format": "spine + png" },
+      "backgrounds":  { "count": 14, "breakdown": "6 chapters × 2 versions (before/after) + 1 sunset variant + 1 lighthouse overview", "size": "1080×1920" },
+      "island_zones": { "count": 33, "breakdown": "1 base map + 1 Spine lighthouse beam + 6 zones × 5 repair states" },
+      "ui":           { "count": 30, "breakdown": "30 icons IC01-IC30 in PNG@2x + SVG source" },
+      "vfx":          { "count": 8,  "breakdown": "EF01-EF08 (Spine bundles + PNG sequences)", "format": "spine_and_png_sequences" }
+    },
+    "generation_batches": [
+      { "batch": 1, "milestone": "alpha", "count": 24,  "description": "Core tile set + backgrounds Ch1 + UI navigation + currency icons" },
+      { "batch": 2, "milestone": "alpha", "count": 62,  "description": "Special tiles + zone states Ch1 + NPC Ch1 + VFX core" },
+      { "batch": 3, "milestone": "beta",  "count": 164, "description": "Ch2-Ch4 tiles, backgrounds, zones, NPCs, VFX" },
+      { "batch": 4, "milestone": "gold",  "count": 93,  "description": "Ch5-Ch6 tiles, backgrounds, zones, NPCs, lighthouse VFX, UI items" }
+    ],
+    "ai_generation_status": "deferred — manifest ready, 343 prompts defined in ai-art-manifest.json",
+    "ai_generation_tools": "FLUX 2 Pro (tiles, characters, UI) + Imagen 4 (backgrounds, island zones)",
+    "ai_generation_note": "Requires FLUX 2 Pro / Imagen 4 API keys. Run ai-art-generation node with AI tools configured via /setup."
+  },
+  "economy": {
+    "currencies": ["沙滩币 beach_coin (soft)", "丹青石 glow_stone (hard)"],
+    "iap_philosophy": "fair — cosmetic/convenience only, no pay-to-win",
+    "no_energy_system": true,
+    "no_battle_pass": true,
+    "no_pvp_leaderboard": true,
+    "no_forced_popups": true,
+    "chapter_materials": [
+      { "id": "driftwood",      "name": "浮木",    "chapter": 1, "total_required": 120 },
+      { "id": "tropical_flower","name": "热带花",  "chapter": 2, "total_required": 160 },
+      { "id": "coral_fragment", "name": "珊瑚碎片","chapter": 3, "total_required": 200 },
+      { "id": "starfish",       "name": "海星",    "chapter": 4, "total_required": 240 },
+      { "id": "ancient_tile",   "name": "古陶片",  "chapter": 5, "total_required": 280 },
+      { "id": "moonlight_crystal","name": "月光水晶","chapter": 6,"total_required": 320 }
+    ]
+  },
+  "errc": {
+    "eliminate": ["体力/生命值系统", "倒计时关卡", "PvP竞技排行榜", "强制社交/公会义务"],
+    "reduce": ["人为难度墙", "时限活动密度", "侵入式弹窗购买提示"],
+    "raise": ["消除爽快感（连击/特效/音效）", "美术精致度（动森风格）", "叙事情感深度（情感线+记忆碎片）"],
+    "create": [
+      "渐进式岛屿视觉修复（关卡进度→视觉变化）",
+      "若有若无情感线（山田律 × 丸山ひなた）",
+      "灯台守记忆碎片系统（每章解锁渉的日记）",
+      "章节机制逐步解锁（教学节奏类天天爱消除）"
+    ],
+    "must_have_features": [
+      "F-001 步数制连连看核心玩法",
+      "F-002 渐进式岛屿视觉修复系统",
+      "F-003 连击+特效爽快感",
+      "F-004 无体力自由游玩",
+      "F-005 4种特殊块（炸弹/风车/灯光/海浪）",
+      "F-006 6章叙事+NPC系统+情感线",
+      "F-007 分章解锁新玩法机制"
+    ]
+  },
+  "implementation_nodes": [
+    {
+      "id": "setup-runtime-env",
+      "capability": "translate",
+      "status": "ready",
+      "blocked_by": ["game-design-finalize (now approved)"],
+      "unlocks": ["implement-puzzle-core", "implement-backend-api", "level-editor-tool"],
+      "exit_artifacts": [".allforai/bootstrap/runtime-env.json", "game-client/package.json", "backend/package.json", "tools/level-editor/package.json"]
+    },
+    {
+      "id": "implement-puzzle-core",
+      "capability": "translate",
+      "status": "ready",
+      "blocked_by": ["game-design-finalize (now approved)", "setup-runtime-env"],
+      "unlocks": ["implement-special-mechanics", "implement-game-session", "stitch-game-client"],
+      "exit_artifacts": ["TileGrid.ts", "TileMatcher.ts", "BoardGenerator.ts", "ComboTracker.ts"]
+    },
+    {
+      "id": "implement-special-mechanics",
+      "capability": "translate",
+      "status": "ready",
+      "blocked_by": ["implement-puzzle-core"],
+      "unlocks": ["stitch-game-client"],
+      "exit_artifacts": ["SpecialBlock.ts", "BoardEventManager.ts", "ObstacleManager.ts"]
+    },
+    {
+      "id": "implement-game-session",
+      "capability": "translate",
+      "status": "ready",
+      "blocked_by": ["implement-puzzle-core"],
+      "unlocks": ["stitch-game-client"],
+      "exit_artifacts": ["GameSession.ts", "LevelLoader.ts", "RewardCalculator.ts", "MaterialCollector.ts"]
+    },
+    {
+      "id": "implement-island-map",
+      "capability": "translate",
+      "status": "ready",
+      "blocked_by": ["game-design-finalize (now approved)"],
+      "unlocks": ["stitch-game-client"],
+      "exit_artifacts": ["IslandMapScene.ts", "ChapterNode.ts", "AreaRestorationEffect.ts", "ProgressionManager.ts"]
+    },
+    {
+      "id": "implement-ui-systems",
+      "capability": "translate",
+      "status": "ready",
+      "blocked_by": ["game-design-finalize (now approved)"],
+      "unlocks": ["stitch-game-client"],
+      "exit_artifacts": ["MainMenuScene.ts", "GameHUD.ts", "LevelCompletePopup.ts", "LeaderboardScene.ts", "SettingsPanel.ts"]
+    },
+    {
+      "id": "implement-backend-api",
+      "capability": "translate",
+      "status": "ready",
+      "blocked_by": ["game-design-finalize (now approved)", "setup-runtime-env"],
+      "unlocks": ["implement-shop-iap", "cross-module-stitch", "demo-forge"],
+      "exit_artifacts": ["server.ts", "routes/auth.ts", "routes/save.ts", "routes/leaderboard.ts", "routes/iap.ts", "prisma/schema.prisma"]
+    },
+    {
+      "id": "implement-shop-iap",
+      "capability": "translate",
+      "status": "ready",
+      "blocked_by": ["implement-backend-api"],
+      "unlocks": ["stitch-game-client"],
+      "exit_artifacts": ["ShopScene.ts", "CurrencyDisplay.ts", "IAPManager.ts", "PurchaseConfirmPopup.ts"]
+    },
+    {
+      "id": "implement-audio",
+      "capability": "translate",
+      "status": "ready",
+      "blocked_by": ["game-design-finalize (now approved)"],
+      "unlocks": ["stitch-game-client"],
+      "exit_artifacts": ["AudioManager.ts", "AudioConfig.ts"]
+    },
+    {
+      "id": "level-editor-tool",
+      "capability": "translate",
+      "status": "ready",
+      "blocked_by": ["game-design-finalize (now approved)", "setup-runtime-env"],
+      "unlocks": ["demo-forge"],
+      "exit_artifacts": ["tools/level-editor/src/App.tsx", "GridEditor.tsx", "LevelExporter.tsx"]
+    }
+  ],
+  "post_implementation_pipeline": [
+    { "id": "stitch-game-client",  "blocked_by": ["implement-puzzle-core","implement-special-mechanics","implement-game-session","implement-island-map","implement-ui-systems","implement-shop-iap","implement-audio"] },
+    { "id": "cross-module-stitch", "blocked_by": ["stitch-game-client","implement-backend-api"] },
+    { "id": "compile-verify",      "blocked_by": ["stitch-game-client","cross-module-stitch"] },
+    { "id": "demo-forge",          "blocked_by": ["compile-verify","level-editor-tool","implement-backend-api"] },
+    { "id": "e2e-test",            "blocked_by": ["compile-verify","demo-forge"] },
+    { "id": "concept-acceptance",  "blocked_by": ["e2e-test"] }
+  ],
+  "approval_summary": {
+    "total_design_nodes": 15,
+    "approved": 13,
+    "in_review": 0,
+    "pending": 2,
+    "revision_requested": 0,
+    "approved_nodes": [
+      "worldbuilding", "core-loop-design", "character-arc-design", "ftue-design",
+      "monetization-design", "retention-hook-design", "meta-game-design",
+      "level-design", "puzzle-design", "progression-curve-design",
+      "audio-design", "art-direction", "art-spec-design", "ai-art-generation"
+    ],
+    "pending_nodes": ["game-design-finalize (self — this document)", "art-assets-alpha (pending generation)"],
+    "note": "game-design-finalize enters in-review upon GDD production. All upstream design nodes approved."
+  },
+  "design_complete": true,
+  "implementation_ready": true
+}

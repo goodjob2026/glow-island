@@ -61,9 +61,6 @@ export class GameScene extends Component {
   @property({ type: LevelCompletePopup, tooltip: 'Level complete popup' })
   levelCompletePopup: LevelCompletePopup | null = null;
 
-  @property({ type: BoardEventManager, tooltip: 'BoardEventManager component' })
-  boardEventManager: BoardEventManager | null = null;
-
   /**
    * Container node that holds one child Node per tile cell.
    * Children must be in row-major order matching the TileGrid dimensions.
@@ -87,6 +84,7 @@ export class GameScene extends Component {
   private _materialCollector: MaterialCollector = new MaterialCollector();
   private _session: GameSession | null = null;
   private _obstacleManager: ObstacleManager | null = null;
+  private _boardEventManager: BoardEventManager | null = null;
 
   /** Current level's grid rows / cols (set after loading) */
   private _rows: number = 0;
@@ -147,17 +145,14 @@ export class GameScene extends Component {
         this._obstacleManager.loadObstacles(obstacleCells);
       }
 
-      // Wire board events
-      if (this.boardEventManager) {
-        this.boardEventManager.setGrid(this._tileGrid);
-        this.boardEventManager.setChapter(this.chapterId);
-        this.boardEventManager.initFromLevelConfig(config.board_events);
-
-        // Register board_rotate warning → show visual warning on HUD
-        this.boardEventManager.setBoardRotateWarningCallback(payload => {
-          this._onBoardRotateWarning(payload);
-        });
-      }
+      // Initialize board event manager programmatically
+      this._boardEventManager = new BoardEventManager();
+      this._boardEventManager.setGrid(this._tileGrid);
+      this._boardEventManager.setChapter(this.chapterId);
+      this._boardEventManager.initFromLevelConfig(config.board_events);
+      this._boardEventManager.setBoardRotateWarningCallback(payload => {
+        this._onBoardRotateWarning(payload);
+      });
 
       // Subscribe to TileGrid events
       this._tileGrid.on(TILE_GRID_EVENT.TILES_MATCHED, this._onTilesMatched, this);
@@ -193,7 +188,7 @@ export class GameScene extends Component {
 
   update(dt: number): void {
     this._obstacleManager?.updateWaterCurrent(dt);
-    this.boardEventManager?.update(dt);
+    this._boardEventManager?.update(dt);
   }
 
   // -------------------------------------------------------------------------
@@ -248,13 +243,13 @@ export class GameScene extends Component {
     this._session?.onMoveMade(this._comboTracker.getComboCount());
 
     // Notify board event manager of the move (triggers board_rotate warning if threshold met)
-    this.boardEventManager?.onMoveMade();
+    this._boardEventManager?.onMoveMade();
 
     // Emit matched event with path
     this._tileGrid.emitTilesMatched(path);
 
     // Run post-match board events (tile_fall, tile_slide, freeze_zone)
-    this.boardEventManager?.onMatchComplete(undefined, matchedPositions);
+    this._boardEventManager?.onMatchComplete(undefined, matchedPositions);
 
     // Tick spreading obstacles and check board-overrun game-over condition
     this._obstacleManager?.tickSpread();

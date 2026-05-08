@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glow Island — キャラクター弧線設計書 (Character Arc Design)</title>
+<style>
+  :root {
+    --bg: #0f0f1a;
+    --surface: #16162a;
+    --surface2: #1c1c32;
+    --border: #2a2a45;
+    --border-gold: #d4a01730;
+    --text: #e8d5b0;
+    --text-muted: #a89070;
+    --text-dim: #6a5a45;
+    --gold: #d4a017;
+    --gold-light: #f0c040;
+    --gold-dim: #8a6610;
+    --pink: #e8a0a0;
+    --teal: #70c0b0;
+    --lavender: #b0a0e0;
+    --sage: #90b890;
+    --coral: #d08060;
+    --blue-mist: #8090c0;
+    --absent-bg: #1a1a2a;
+    --full-color: #d4a017;
+    --brief-color: #70c0b0;
+    --indirect-color: #b0a0e0;
+    --absent-color: #3a3a55;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "ヒラギノ明朝 ProN", Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  /* ─── HEADER ─── */
+  .page-header {
+    background: linear-gradient(160deg, #0a0a18 0%, #141428 40%, #0f0f1a 100%);
+    border-bottom: 1px solid var(--border-gold);
+    padding: 3.5rem 3rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(ellipse, rgba(212,160,23,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(212,160,23,0.12);
+    color: var(--gold);
+    font-family: "Hiragino Sans", "Helvetica Neue", sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.3rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(212,160,23,0.3);
+    margin-bottom: 1.2rem;
+  }
+  .page-header h1 {
+    font-size: 2.4rem;
+    font-weight: 400;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+  }
+  .page-header .subtitle {
+    font-family: "Hiragino Sans", sans-serif;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+  }
+  .meta-row {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+  .meta-item strong { color: var(--text-muted); }
+
+  /* ─── LAYOUT ─── */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2.5rem 5rem;
+  }
+
+  /* ─── SECTION HEADINGS ─── */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 3.5rem 0 1.5rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--border-gold);
+  }
+  .section-num {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.65rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-heading h2 {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+  }
+  .section-heading .en {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-left: 0.3rem;
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    overflow-x: auto;
+  }
+  .timeline-table {
+    min-width: 900px;
+    width: 100%;
+  }
+  .tl-header {
+    display: grid;
+    grid-template-columns: 160px repeat(6, 1fr);
+    gap: 0;
+    margin-bottom: 0.5rem;
+  }
+  .tl-ch-label {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-align: center;
+    padding: 0.4rem 0.2rem;
+    border-bottom: 1px solid var(--border-gold);
+  }
+  .tl-ch-label .ch-name {
+    color: var(--text-muted);
+    font-size: 0.6rem;
+    display: block;
+    margin-top: 0.2rem;
+  }
+  .tl-row {
+    display: grid;
+    grid-template-columns: 160px repeat(6, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    min-height: 64px;
+    align-items: center;
+  }
+  .tl-row:last-child { border-bottom: none; }
+  .tl-char-label {
+    font-size: 0.85rem;
+    color: var(--text);
+    padding: 0.6rem 0.8rem 0.6rem 0;
+    border-right: 1px solid var(--border);
+  }
+  .tl-char-label .char-jp { font-size: 1rem; display: block; }
+  .tl-char-label .char-en {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.62rem;
+    color: var(--text-dim);
+  }
+  .tl-cell {
+    padding: 0.5rem 0.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 64px;
+  }
+  .tl-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .tl-dot.full    { background: var(--full-color); box-shadow: 0 0 8px rgba(212,160,23,0.5); }
+  .tl-dot.brief   { background: var(--brief-color); box-shadow: 0 0 6px rgba(112,192,176,0.4); }
+  .tl-dot.indirect { background: var(--indirect-color); box-shadow: 0 0 6px rgba(176,160,224,0.3); }
+  .tl-dot.absent  { background: var(--absent-color); }
+  .tl-line {
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    transform: translateY(-50%);
+  }
+  .tl-turn-label {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.55rem;
+    color: var(--gold);
+    text-align: center;
+    margin-top: 0.3rem;
+    line-height: 1.3;
+    max-width: 100px;
+  }
+  .tl-legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  .tl-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  /* ─── CHARACTER CARDS ─── */
+  .char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .char-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .char-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 10px 10px 0 0;
+  }
+  .char-card.protagonist::before { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+  .char-card.romantic::before    { background: linear-gradient(90deg, var(--pink), #f8c0c0); }
+  .char-card.absent::before      { background: linear-gradient(90deg, var(--lavender), #c8b8f0); }
+  .char-card.npc::before         { background: linear-gradient(90deg, var(--teal), #90d0c0); }
+
+  .char-name-jp {
+    font-size: 1.6rem;
+    color: var(--gold-light);
+    font-weight: 400;
+    margin-bottom: 0.15rem;
+  }
+  .char-name-en {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+  .char-tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  .char-tag {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.62rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid;
+  }
+  .char-tag.role   { color: var(--gold); border-color: var(--gold-dim); background: rgba(212,160,23,0.08); }
+  .char-tag.arc    { color: var(--teal); border-color: rgba(112,192,176,0.3); background: rgba(112,192,176,0.06); }
+  .char-tag.age    { color: var(--text-muted); border-color: var(--border); background: transparent; }
+
+  .char-field {
+    margin-bottom: 0.85rem;
+  }
+  .char-field-label {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+  .char-field-value {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.65;
+  }
+  .wound-text { color: var(--coral); }
+  .lie-text   { color: var(--pink); }
+  .truth-text { color: var(--sage); }
+
+  /* ─── CHAPTER BEATS ─── */
+  .beats-section {
+    margin-top: 2.5rem;
+  }
+  .beat-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .beat-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1.2rem;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .beat-ch-num {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    background: rgba(212,160,23,0.1);
+    border: 1px solid rgba(212,160,23,0.2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .beat-location {
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+  .beat-body {
+    padding: 1.2rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+  }
+  .beat-field { }
+  .beat-field-label {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .beat-field-value {
+    font-size: 0.84rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .beat-full { grid-column: 1 / -1; }
+  .beat-dialogue {
+    grid-column: 1 / -1;
+    background: rgba(0,0,0,0.25);
+    border-left: 2px solid var(--gold-dim);
+    padding: 0.8rem 1rem;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.8;
+  }
+  .beat-monologue {
+    grid-column: 1 / -1;
+    background: rgba(212,160,23,0.04);
+    border: 1px solid rgba(212,160,23,0.1);
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    font-size: 0.88rem;
+    color: var(--gold);
+    font-style: italic;
+    line-height: 1.8;
+  }
+
+  /* ─── RELATIONSHIP WEB SVG ─── */
+  .svg-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    overflow: hidden;
+  }
+  .svg-wrap svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ─── PRESENCE MATRIX ─── */
+  .matrix-wrap {
+    overflow-x: auto;
+  }
+  .matrix-table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+  }
+  .matrix-table th {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    padding: 0.6rem 0.8rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-gold);
+    border-right: 1px solid var(--border);
+  }
+  .matrix-table th:first-child {
+    text-align: left;
+    min-width: 160px;
+  }
+  .matrix-table td {
+    padding: 0.55rem 0.4rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  .matrix-table tr:last-child td { border-bottom: none; }
+  .matrix-table td:first-child {
+    text-align: left;
+    padding-left: 0.8rem;
+    font-size: 0.88rem;
+  }
+  .presence-pill {
+    display: inline-block;
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.6rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .presence-pill.full     { background: rgba(212,160,23,0.18); color: var(--gold); border: 1px solid rgba(212,160,23,0.3); }
+  .presence-pill.brief    { background: rgba(112,192,176,0.14); color: var(--teal); border: 1px solid rgba(112,192,176,0.25); }
+  .presence-pill.indirect { background: rgba(176,160,224,0.12); color: var(--lavender); border: 1px solid rgba(176,160,224,0.2); }
+  .presence-pill.absent   { background: rgba(58,58,85,0.3); color: var(--text-dim); border: 1px solid var(--absent-color); }
+
+  /* ─── JOURNAL ENTRIES ─── */
+  .journal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.2rem;
+  }
+  .journal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.3rem 1.5rem;
+    position: relative;
+  }
+  .journal-card::before {
+    content: attr(data-ch);
+    position: absolute;
+    top: -1px; right: 1rem;
+    background: var(--bg);
+    color: var(--gold-dim);
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--gold-dim);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+  }
+  .journal-chapter {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.65rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .journal-title {
+    font-size: 1.05rem;
+    color: var(--gold-light);
+    margin-bottom: 0.8rem;
+    font-weight: 400;
+  }
+  .journal-prose {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.9;
+    border-left: 2px solid var(--gold-dim);
+    padding-left: 0.9rem;
+  }
+  .journal-theme-tag {
+    display: inline-block;
+    margin-top: 0.7rem;
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  /* ─── HINATA MICRO-MOMENTS ─── */
+  .hinata-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.2rem;
+  }
+  .hinata-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid rgba(232,160,160,0.3);
+    border-radius: 8px;
+    padding: 1.2rem 1.4rem;
+  }
+  .hinata-ch {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.62rem;
+    color: var(--pink);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .hinata-presence {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    margin-bottom: 0.8rem;
+  }
+  .hinata-action {
+    font-size: 0.86rem;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+    line-height: 1.7;
+  }
+  .hinata-says {
+    font-size: 0.88rem;
+    color: var(--pink);
+    font-style: italic;
+    background: rgba(232,160,160,0.06);
+    border-left: 2px solid rgba(232,160,160,0.3);
+    padding: 0.5rem 0.8rem;
+    border-radius: 0 4px 4px 0;
+    line-height: 1.75;
+  }
+  .hinata-no-speech {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .hinata-reveals {
+    margin-top: 0.7rem;
+    font-size: 0.8rem;
+    color: var(--lavender);
+    line-height: 1.65;
+  }
+  .hinata-reveals::before {
+    content: "渉について: ";
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+  }
+
+  /* ─── NPC CARDS ─── */
+  .npc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+  }
+  .npc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--teal);
+    border-radius: 8px;
+    padding: 1.3rem;
+  }
+  .npc-name-jp { font-size: 1.3rem; color: var(--teal); font-weight: 400; }
+  .npc-name-en {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 0.8rem;
+  }
+  .npc-field { margin-bottom: 0.65rem; }
+  .npc-field-label {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.15rem;
+  }
+  .npc-field-value { font-size: 0.84rem; color: var(--text); line-height: 1.65; }
+  .npc-dialogue {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+    border-left: 2px solid rgba(112,192,176,0.3);
+    padding-left: 0.8rem;
+    line-height: 1.8;
+  }
+
+  /* ─── RITSU MONOLOGUE SECTION ─── */
+  .monologue-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .monologue-item {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  .mono-ch {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    background: rgba(212,160,23,0.1);
+    border: 1px solid rgba(212,160,23,0.2);
+    padding: 0.25rem 0.4rem;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 0.1rem;
+  }
+  .mono-text {
+    font-size: 0.92rem;
+    color: var(--text);
+    font-style: italic;
+    line-height: 1.85;
+    padding: 0.6rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    position: relative;
+  }
+  .mono-text::before {
+    content: '「';
+    color: var(--gold-dim);
+    font-size: 1.1rem;
+  }
+  .mono-text::after {
+    content: '」';
+    color: var(--gold-dim);
+    font-size: 1.1rem;
+  }
+
+  /* ─── WOUND/LIE/TRUTH TABLE ─── */
+  .arc-truth-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .arc-truth-table th {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border-gold);
+    text-align: left;
+  }
+  .arc-truth-table th:nth-child(1) { color: var(--coral); }
+  .arc-truth-table th:nth-child(2) { color: var(--pink); }
+  .arc-truth-table th:nth-child(3) { color: var(--sage); }
+  .arc-truth-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.86rem;
+    vertical-align: top;
+    line-height: 1.7;
+  }
+  .arc-truth-table td:nth-child(1) { color: var(--coral); }
+  .arc-truth-table td:nth-child(2) { color: var(--pink); }
+  .arc-truth-table td:nth-child(3) { color: var(--sage); }
+  .arc-truth-table td.char-col {
+    color: var(--text);
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  .arc-truth-table tr:last-child td { border-bottom: none; }
+
+  /* ─── FOOTER ─── */
+  .page-footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2.5rem;
+    text-align: center;
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── UTILITIES ─── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 2rem 0;
+  }
+  .note {
+    font-family: "Hiragino Sans", sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 0.5rem;
+  }
+  .callout {
+    background: rgba(212,160,23,0.06);
+    border: 1px solid rgba(212,160,23,0.15);
+    border-radius: 6px;
+    padding: 0.9rem 1.2rem;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .callout strong { color: var(--gold); }
+
+  @media (max-width: 768px) {
+    .beat-body { grid-template-columns: 1fr; }
+    .tl-header, .tl-row { grid-template-columns: 120px repeat(6, 1fr); }
+    .char-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ HEADER -->
+<header class="page-header">
+  <div class="badge">Glow Island &nbsp;·&nbsp; Narrative Design &nbsp;·&nbsp; v1.0</div>
+  <h1>キャラクター弧線設計書</h1>
+  <p class="subtitle">Character Arc Design Document &nbsp;/&nbsp; 輝島（Kagayaki-jima）</p>
+  <div class="meta-row">
+    <span class="meta-item"><strong>登場人物</strong>&nbsp; 7名</span>
+    <span class="meta-item"><strong>章数</strong>&nbsp; 全6章</span>
+    <span class="meta-item"><strong>弧線タイプ</strong>&nbsp; Wound → Lie → Truth</span>
+    <span class="meta-item"><strong>恋愛表現</strong>&nbsp; 暗示のみ（告白・キスなし）</span>
+    <span class="meta-item"><strong>更新日</strong>&nbsp; 2026-05-08</span>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════ § 1 TIMELINE -->
+<div class="section-heading">
+  <div class="section-num">01</div>
+  <h2>キャラクター弧線タイムライン <span class="en">Character Arc Timeline</span></h2>
+</div>
+
+<div class="callout">
+  横軸: 第1章〜第6章。縦軸: 各キャラクター。<strong>点の色</strong>はその章での存在感を示す。
+  <strong>金色（●）= 主要登場</strong>、<strong>青緑（●）= 短い登場</strong>、<strong>薄紫（●）= 間接的存在</strong>、<strong>暗色（●）= 不在</strong>。
+  ターニングポイントにはラベルを表示。
+</div>
+
+<div class="timeline-wrap">
+  <div class="timeline-table">
+    <!-- Header Row -->
+    <div class="tl-header">
+      <div style="border-right:1px solid var(--border);"></div>
+      <div class="tl-ch-label">Ch.1<span class="ch-name">港<br>Harbor</span></div>
+      <div class="tl-ch-label">Ch.2<span class="ch-name">陶芸工房<br>Pottery</span></div>
+      <div class="tl-ch-label">Ch.3<span class="ch-name">森と花野<br>Forest</span></div>
+      <div class="tl-ch-label">Ch.4<span class="ch-name">石畳の道<br>Stone Path</span></div>
+      <div class="tl-ch-label">Ch.5<span class="ch-name">崖の展望台<br>Cliff</span></div>
+      <div class="tl-ch-label">Ch.6<span class="ch-name">灯台<br>Lighthouse</span></div>
+    </div>
+
+    <!-- 山田律 -->
+    <div class="tl-row">
+      <div class="tl-char-label"><span class="char-jp">山田律</span><span class="char-en">Yamada Ritsu (protagonist)</span></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">網を結ぶ<br>Nets calm mind</div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">梅子の問い<br>Umeko's question</div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">スケッチ再開<br>Draws again</div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">未送の手紙<br>Unsent letter</div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">滞在を選ぶ<br>Chooses to stay</div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">灯台点灯<br>Lighthouse lights</div></div>
+    </div>
+
+    <!-- 丸山ひなた -->
+    <div class="tl-row">
+      <div class="tl-char-label"><span class="char-jp">丸山ひなた</span><span class="char-en">Maruyama Hinata</span></div>
+      <div class="tl-cell"><div class="tl-dot brief"></div><div class="tl-turn-label">視線交差<br>Brief glance</div></div>
+      <div class="tl-cell"><div class="tl-dot brief"></div><div class="tl-turn-label">短い一言<br>2 words</div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">花野を共に<br>Walk together</div></div>
+      <div class="tl-cell"><div class="tl-dot indirect"></div><div class="tl-turn-label">痕跡のみ<br>Only traces</div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">日記を読む<br>Reads journal</div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">無言同行<br>Silent walk</div></div>
+    </div>
+
+    <!-- 丸山渉 -->
+    <div class="tl-row">
+      <div class="tl-char-label"><span class="char-jp">丸山渉</span><span class="char-en">Maruyama Wataru (absent)</span></div>
+      <div class="tl-cell"><div class="tl-dot indirect"></div><div class="tl-turn-label">日記①<br>Harbor journal</div></div>
+      <div class="tl-cell"><div class="tl-dot indirect"></div><div class="tl-turn-label">日記②<br>Craft journal</div></div>
+      <div class="tl-cell"><div class="tl-dot indirect"></div><div class="tl-turn-label">日記③<br>Hinata memory</div></div>
+      <div class="tl-cell"><div class="tl-dot indirect"></div><div class="tl-turn-label">日記④<br>Solitary walk</div></div>
+      <div class="tl-cell"><div class="tl-dot indirect"></div><div class="tl-turn-label">日記⑤<br>Stars & smallness</div></div>
+      <div class="tl-cell"><div class="tl-dot indirect"></div><div class="tl-turn-label">日記⑥<br>The letter's truth</div></div>
+    </div>
+
+    <!-- 磯部健三 -->
+    <div class="tl-row">
+      <div class="tl-char-label"><span class="char-jp">磯部健三</span><span class="char-en">Isobe Kenzo (Ch.1 NPC)</span></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">網を教える<br>Teaches nets</div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+    </div>
+
+    <!-- 桐島梅子 -->
+    <div class="tl-row">
+      <div class="tl-char-label"><span class="char-jp">桐島梅子</span><span class="char-en">Kirishima Umeko (Ch.2)</span></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">問い投げ<br>Key question</div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+    </div>
+
+    <!-- 海野夏帆 -->
+    <div class="tl-row">
+      <div class="tl-char-label"><span class="char-jp">海野夏帆</span><span class="char-en">Umino Naho (Ch.3)</span></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">植物の名前<br>Names of plants</div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+    </div>
+
+    <!-- 丸山冬子 -->
+    <div class="tl-row">
+      <div class="tl-char-label"><span class="char-jp">丸山冬子</span><span class="char-en">Maruyama Fuyuko (Ch.6)</span></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot absent"></div></div>
+      <div class="tl-cell"><div class="tl-dot full"></div><div class="tl-turn-label">日記を渡す<br>Gives journal</div></div>
+    </div>
+
+  </div><!-- /timeline-table -->
+
+  <div class="tl-legend">
+    <div class="tl-legend-item"><div class="tl-dot full" style="width:10px;height:10px;border-radius:50%;display:inline-block;"></div> 主要登場 (Full presence)</div>
+    <div class="tl-legend-item"><div class="tl-dot brief" style="width:10px;height:10px;border-radius:50%;display:inline-block;background:var(--brief-color);"></div> 短い登場 (Brief)</div>
+    <div class="tl-legend-item"><div class="tl-dot indirect" style="width:10px;height:10px;border-radius:50%;display:inline-block;background:var(--indirect-color);"></div> 間接的存在 (Indirect)</div>
+    <div class="tl-legend-item"><div class="tl-dot absent" style="width:10px;height:10px;border-radius:50%;display:inline-block;background:var(--absent-color);"></div> 不在 (Absent)</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ § 2 CHARACTER SHEETS -->
+<div class="section-heading">
+  <div class="section-num">02</div>
+  <h2>キャラクターシート <span class="en">Character Sheets — Motivation / Wound / Lie / Truth</span></h2>
+</div>
+
+<!-- Wound / Lie / Truth Summary Table -->
+<div style="overflow-x:auto;margin-bottom:2rem;">
+  <table class="arc-truth-table">
+    <thead>
+      <tr>
+        <th style="color:var(--text-muted);">キャラクター</th>
+        <th>傷 (Wound)</th>
+        <th>嘘 (Lie)</th>
+        <th>真実 (Truth)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="char-col">山田律<br><span style="font-size:0.7rem;color:var(--text-dim);">Yamada Ritsu</span></td>
+        <td>5年間の燃え尽き。意味と美しさへの繋がりを失った。</td>
+        <td>「成功だけが重要。美しさは無駄だ。」</td>
+        <td>「手仕事には本質的価値がある。今この瞬間にいることで十分だ。」</td>
+      </tr>
+      <tr>
+        <td class="char-col">丸山ひなた<br><span style="font-size:0.7rem;color:var(--text-dim);">Maruyama Hinata</span></td>
+        <td>祖父の死と帰郷の間で引き裂かれた自分。罪悪感と喪失。</td>
+        <td>「祖父の記憶は他人と共有するものではない。」</td>
+        <td>「記憶は分かち合うことで、初めて生き続ける。」</td>
+      </tr>
+      <tr>
+        <td class="char-col">丸山渉 (不在)<br><span style="font-size:0.7rem;color:var(--text-dim);">Maruyama Wataru (absent)</span></td>
+        <td>島の衰退を止められなかった悲しみ。しかし静かに守り続けた。</td>
+        <td>（嘘なし——既に真実に到達した人物）</td>
+        <td>「美しいものは、ただそこにあることで人を救う。」</td>
+      </tr>
+      <tr>
+        <td class="char-col">磯部健三<br><span style="font-size:0.7rem;color:var(--text-dim);">Isobe Kenzo</span></td>
+        <td>親友の渉を失い、港に意味を感じられなくなった。</td>
+        <td>「渉がいない港に、自分がいる意味はない。」</td>
+        <td>「港は人を待っている。その人間が来たとき、また結べる。」</td>
+      </tr>
+      <tr>
+        <td class="char-col">桐島梅子<br><span style="font-size:0.7rem;color:var(--text-dim);">Kirishima Umeko</span></td>
+        <td>若い頃、評価されることを目的に作っていた自分を知っている。</td>
+        <td>（過去に克服済み——現在は他者を映す鏡として機能）</td>
+        <td>「作ることは、観客なしでも完結する。」</td>
+      </tr>
+      <tr>
+        <td class="char-col">海野夏帆<br><span style="font-size:0.7rem;color:var(--text-dim);">Umino Naho</span></td>
+        <td>渉の死後、この知識を誰に継げばいいか分からなかった。</td>
+        <td>「渉先生からもらったものを、次に渡せる人間はいない。」</td>
+        <td>「知識は受け渡され続けることで、生き続ける。」</td>
+      </tr>
+      <tr>
+        <td class="char-col">丸山冬子<br><span style="font-size:0.7rem;color:var(--text-dim);">Maruyama Fuyuko</span></td>
+        <td>夫の志を継ぐ人間が来ないかもしれないという恐れ。50年の待機。</td>
+        <td>「渉の最後の言葉を受け取れる人間は、来ないかもしれない。」</td>
+        <td>「律が来た。渉の手紙は届いた。」</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ─── 山田律 Full Sheet ─── -->
+<div class="char-card protagonist" style="margin-bottom:1.5rem;">
+  <div class="char-name-jp">山田律</div>
+  <div class="char-name-en">Yamada Ritsu / 29歳 / 東京 広告クリエイティブ・ディレクター</div>
+  <div class="char-tag-row">
+    <span class="char-tag role">protagonist</span>
+    <span class="char-tag arc">positive arc</span>
+    <span class="char-tag age">29歳</span>
+    <span class="char-tag age">男性</span>
+  </div>
+
+  <div class="char-field">
+    <div class="char-field-label">動機 (Motivation)</div>
+    <div class="char-field-value">5年間で燃え尽きた心の回復。渉の手紙が示した何かを見つけること。最初は義務感で来たが、やがて自分のために残ることを選ぶ。</div>
+  </div>
+  <div class="char-field">
+    <div class="char-field-label">傷 (Wound)</div>
+    <div class="char-field-value wound-text">5年間の燃え尽き症候群。意味と美しさへの繋がりを完全に失った。数字と成果だけを追い続け、自分が何のために働いているかを忘れた。手帳は持っているが、5年間一度も絵を描いていない。</div>
+  </div>
+  <div class="char-field">
+    <div class="char-field-label">信じている嘘 (Lie he believes)</div>
+    <div class="char-field-value lie-text">「成功こそが唯一重要なことだ。美しさは無駄なものだ。感情は仕事の邪魔になる。」</div>
+  </div>
+  <div class="char-field">
+    <div class="char-field-label">発見する真実 (Truth he discovers)</div>
+    <div class="char-field-value truth-text">「手仕事には本質的な価値がある。被観察者なしでも美しいものは存在する。今この瞬間にいることで十分だ。」</div>
+  </div>
+  <div class="char-field">
+    <div class="char-field-label">象徴的持ち物 (Signature object)</div>
+    <div class="char-field-value">擦り切れた革の手帳。5年前の最後のスケッチが挟まれたまま、閉じられている。</div>
+  </div>
+
+  <div class="beats-section">
+    <div style="font-family:'Hiragino Sans',sans-serif;font-size:0.68rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem;">章別ビート (Chapter Beats)</div>
+
+    <!-- Ch1 -->
+    <div class="beat-card">
+      <div class="beat-header">
+        <span class="beat-ch-num">Ch.1</span>
+        <span class="beat-location">港 / 磯辺の波止場（Harbor — Isobe Kenzo's pier）</span>
+      </div>
+      <div class="beat-body">
+        <div class="beat-field">
+          <div class="beat-field-label">入場時の感情状態</div>
+          <div class="beat-field-value">抵抗と強張り。島に来たことを後悔している。渉の手紙の意味が理解できない。すべてが非効率に見える。スマートフォンのメールを確認し続けている。</div>
+        </div>
+        <div class="beat-field">
+          <div class="beat-field-label">退場時の感情状態</div>
+          <div class="beat-field-value">わずかな緩み。まだ心を閉じているが、体が覚えた感覚が残っている。夜、手帳を取り出したが、開かなかった——開こうとしたことが、変化の始まり。</div>
+        </div>
+        <div class="beat-field beat-full">
+          <div class="beat-field-label">ターニングポイント (Turning Point)</div>
+          <div class="beat-field-value">磯部健三に網の結び方を教わる中で、手が動き始め、考えることをやめる瞬間がある。数時間、仕事のことを忘れた。「忘れた」という事実に、後から気づく。</div>
+        </div>
+        <div class="beat-dialogue">
+          「これは……仕事と関係ないですよね」<br>「関係ある必要がどこにある」<br>（しばらく沈黙）<br>「……そうですね」
+        </div>
+        <div class="beat-monologue">
+          手が勝手に動いていた。頭が静かになるのは、いつぶりだろう。
+        </div>
+      </div>
+    </div>
+
+    <!-- Ch2 -->
+    <div class="beat-card">
+      <div class="beat-header">
+        <span class="beat-ch-num">Ch.2</span>
+        <span class="beat-location">陶芸工房（Pottery Studio — Kirishima Umeko）</span>
+      </div>
+      <div class="beat-body">
+        <div class="beat-field">
+          <div class="beat-field-label">入場時の感情状態</div>
+          <div class="beat-field-value">緊張した完璧主義。土を触りながら「上手くやらなければ」という衝動に駆られる。失敗した壷を隠そうとする。</div>
+        </div>
+        <div class="beat-field">
+          <div class="beat-field-label">退場時の感情状態</div>
+          <div class="beat-field-value">完璧主義の鎧にひびが入る。「誰かに見せるため」ではない創作への、遠い記憶が蘇り始める。まだ混乱しているが、違う問いを持っている。</div>
+        </div>
+        <div class="beat-field beat-full">
+          <div class="beat-field-label">ターニングポイント</div>
+          <div class="beat-field-value">桐島梅子に「本当に書きたかった広告は一本でもあったか」と問われ、答えられない自分に気づく。壊れた壷を梅子が捨てずにおいているのを見て、観客のいない価値というものを初めて考える。</div>
+        </div>
+        <div class="beat-dialogue">
+          「本当に書きたかった広告が、一本でもありましたか」<br>「……思い出せません」<br>「それが答えですよ」
+        </div>
+        <div class="beat-monologue">
+          壊れた壷を誰も捨てていなかった。ここでは、壊れたものにも居場所がある。
+        </div>
+      </div>
+    </div>
+
+    <!-- Ch3 -->
+    <div class="beat-card">
+      <div class="beat-header">
+        <span class="beat-ch-num">Ch.3</span>
+        <span class="beat-location">森と花野（Forest and flower fields — Umino Naho）</span>
+      </div>
+      <div class="beat-body">
+        <div class="beat-field">
+          <div class="beat-field-label">入場時の感情状態</div>
+          <div class="beat-field-value">少しだけ開いた好奇心。まだ防衛的だが、島の景色に引き寄せられ始めている。昨夜、手帳を開いたが何も書けなかった。</div>
+        </div>
+        <div class="beat-field">
+          <div class="beat-field-label">退場時の感情状態</div>
+          <div class="beat-field-value">本物の驚きと柔らかな喜び。子どもの頃に感じた「美しい」という感覚が、胸の奥で灯り始める。手帳に3枚、スケッチがある。</div>
+        </div>
+        <div class="beat-field beat-full">
+          <div class="beat-field-label">ターニングポイント</div>
+          <div class="beat-field-value">海野夏帆に案内された花野で、突然スケッチしたくなる衝動を感じる。5年ぶりに手帳を取り出す。描く理由も、見せる相手もいない。それでも描く。描きながら、手が震えていることに気づく。</div>
+        </div>
+        <div class="beat-dialogue">
+          「名前、全部知ってるんですか」<br>「名前を知ると、ちゃんと見えるようになるから」<br>「……そういうものですか」<br>「渉さんが言っていました」
+        </div>
+        <div class="beat-monologue">
+          誰にも見せない絵を描いた。それなのに、手が震えていた。なぜだろう。
+        </div>
+      </div>
+    </div>
+
+    <!-- Ch4 -->
+    <div class="beat-card">
+      <div class="beat-header">
+        <span class="beat-ch-num">Ch.4</span>
+        <span class="beat-location">石畳の小道（Stone path — solo introspection）</span>
+      </div>
+      <div class="beat-body">
+        <div class="beat-field">
+          <div class="beat-field-label">入場時の感情状態</div>
+          <div class="beat-field-value">静けさの中の不安。誰もいない。何もしなくていい。その自由が怖い。東京から緊急メールが来ているが、開いていない。</div>
+        </div>
+        <div class="beat-field">
+          <div class="beat-field-label">退場時の感情状態</div>
+          <div class="beat-field-value">沈黙と和解しつつある。自分の内側に、まだ何かが残っていることに気づく。手紙は破らずにポケットに入れた。それが重要だった。</div>
+        </div>
+        <div class="beat-field beat-full">
+          <div class="beat-field-label">ターニングポイント</div>
+          <div class="beat-field-value">道の途中で座り込み、誰にも送らない手紙を書く。東京の自分へ、あるいは5年前の自分へ。書き終えて、破らずにポケットにしまう。石畳の隙間の小さな草を、長い時間見つめる。</div>
+        </div>
+        <div class="beat-dialogue">
+          （内心、手紙の書き出し）<br>「親愛なる律へ。君はずっと走っていた。でも何から逃げていたんだろう。」
+        </div>
+        <div class="beat-monologue">
+          石畳の隙間に、小さな草が生えていた。誰も植えていないのに、そこに生きていた。
+        </div>
+      </div>
+    </div>
+
+    <!-- Ch5 -->
+    <div class="beat-card">
+      <div class="beat-header">
+        <span class="beat-ch-num">Ch.5</span>
+        <span class="beat-location">崖の展望台（Cliff lookout — physical and internal resilience）</span>
+      </div>
+      <div class="beat-body">
+        <div class="beat-field">
+          <div class="beat-field-label">入場時の感情状態</div>
+          <div class="beat-field-value">身体的な緊張と、それに伴う内面の覚醒。崖を登ることへの不安が、内面の試練と重なる。登り切れるかどうかが、心の問いでもある。</div>
+        </div>
+        <div class="beat-field">
+          <div class="beat-field-label">退場時の感情状態</div>
+          <div class="beat-field-value">静かな決意。島にいることを能動的に選んだ、初めての瞬間。東京のメールへの返信を、意識的に「しない」と決めた。</div>
+        </div>
+        <div class="beat-field beat-full">
+          <div class="beat-field-label">ターニングポイント</div>
+          <div class="beat-field-value">崖の頂上に立ち、海を見渡す。ひなたが渉の日記の一節を声に出して読む。予定より長く滞在することを選ぶ。帰らなければいけない理由が、思い浮かばない——初めて、できなかったのではなく、しなかった。</div>
+        </div>
+        <div class="beat-dialogue">
+          「もう少し、ここにいます」<br>（誰に言うわけでもなく、ただ声に出した）
+        </div>
+        <div class="beat-monologue">
+          東京から緊急の連絡が来ていた。でも海を見ながら、返信しなかった。初めて、できなかったのではなく、しなかった。
+        </div>
+      </div>
+    </div>
+
+    <!-- Ch6 -->
+    <div class="beat-card">
+      <div class="beat-header">
+        <span class="beat-ch-num">Ch.6</span>
+        <span class="beat-location">灯台（Lighthouse — completion and revelation）</span>
+      </div>
+      <div class="beat-body">
+        <div class="beat-field">
+          <div class="beat-field-label">入場時の感情状態</div>
+          <div class="beat-field-value">穏やかな覚悟。修復を完了させることへの、静かな責任感。渉の手紙の意味を、もうすぐ理解できる気がしている。不安より期待の方が大きい。</div>
+        </div>
+        <div class="beat-field">
+          <div class="beat-field-label">退場時の感情状態</div>
+          <div class="beat-field-value">解放と受容。成功ではなく「在ること」に価値があると、初めて身体で理解する。泣いたかもしれない。でも、それでいい。</div>
+        </div>
+        <div class="beat-field beat-full">
+          <div class="beat-field-label">ターニングポイント</div>
+          <div class="beat-field-value">灯台の明かりが灯る。丸山冬子から渉の最後の日記を受け取り、「なぜ自分が選ばれたか」を知る——「美しいものに驚ける目を、まだ持っている人間に頼みたかった」。成功を証明するために来た男が、「在ること」の意味を受け取って帰る。</div>
+        </div>
+        <div class="beat-dialogue">
+          「なぜ、私を選んだんですか」<br>「渉さんの日記に書いてありました——『あの人はまだ、美しいものに驚ける』と」
+        </div>
+        <div class="beat-monologue">
+          灯台の光が海を照らした。渉さんは知っていたんだ。私が忘れたと思っていたものを、まだ持っていることを。
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /beats -->
+</div><!-- /律 card -->
+
+
+<!-- ─── 丸山ひなた Sheet ─── -->
+<div class="char-card romantic" style="margin-bottom:1.5rem;">
+  <div class="char-name-jp">丸山ひなた</div>
+  <div class="char-name-en">Maruyama Hinata / 24歳 / 大阪デザイン学校から帰郷</div>
+  <div class="char-tag-row">
+    <span class="char-tag role">romantic interest</span>
+    <span class="char-tag arc">parallel-revelation arc</span>
+    <span class="char-tag age">24歳</span>
+    <span class="char-tag age">女性</span>
+  </div>
+  <div class="char-field">
+    <div class="char-field-label">象徴的持ち物 (Signature object)</div>
+    <div class="char-field-value">祖父・渉の漁師の指輪をコードに通して首にかけている。触れるとき、祖父を思い出している。</div>
+  </div>
+  <div class="char-field">
+    <div class="char-field-label">恋愛設計ノート (Romance design note)</div>
+    <div class="char-field-value" style="color:var(--pink);">恋愛は暗示のみ。告白なし、キスなし。律への感情は行動の間合いと、目線と、沈黙で表現される。読者・プレイヤーが「感じる」ことを目的とし、「語られる」ことを避ける。</div>
+  </div>
+  <div class="char-field">
+    <div class="char-field-label">傷 (Wound)</div>
+    <div class="char-field-value wound-text">祖父が死んだとき、大阪にいた。最後に会ったのは2年前。島を愛しながら、島を離れることへの罪悪感と、帰ることへの恐れを同時に抱えている。</div>
+  </div>
+  <div class="char-field">
+    <div class="char-field-label">真実 (Truth)</div>
+    <div class="char-field-value truth-text">「祖父の記憶は、他人と分かち合うことで初めて生き続ける。」律と渉の日記を通じて、この真実に到達する。</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ § 3 RELATIONSHIP WEB -->
+<div class="section-heading">
+  <div class="section-num">03</div>
+  <h2>関係性グラフ <span class="en">Relationship Web (SVG)</span></h2>
+</div>
+
+<div class="svg-wrap">
+  <svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" style="font-family:'Hiragino Sans',sans-serif;">
+    <defs>
+      <marker id="arr-gold" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#d4a017" opacity="0.7"/>
+      </marker>
+      <marker id="arr-teal" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#70c0b0" opacity="0.7"/>
+      </marker>
+      <marker id="arr-pink" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#e8a0a0" opacity="0.7"/>
+      </marker>
+      <marker id="arr-lav" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#b0a0e0" opacity="0.7"/>
+      </marker>
+      <filter id="glow-gold">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- Background -->
+    <rect width="900" height="560" fill="#16162a" rx="8"/>
+    <text x="450" y="28" fill="#6a5a45" font-size="11" text-anchor="middle" letter-spacing="1">RELATIONSHIP WEB — 輝島 (Kagayaki-jima)</text>
+
+    <!-- Edges -->
+    <!-- Ritsu ↔ Hinata: implicit romance -->
+    <line x1="310" y1="200" x2="590" y2="200" stroke="#e8a0a0" stroke-width="2" stroke-dasharray="6,4" opacity="0.6" marker-end="url(#arr-pink)"/>
+    <text x="450" y="190" fill="#e8a0a0" font-size="9" text-anchor="middle" opacity="0.7">暗示の恋愛 / implicit romance</text>
+
+    <!-- Ritsu ↔ Wataru: mentor from beyond -->
+    <line x1="290" y1="215" x2="445" y2="370" stroke="#b0a0e0" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5" marker-end="url(#arr-lav)"/>
+    <text x="348" y="305" fill="#b0a0e0" font-size="9" text-anchor="middle" opacity="0.6">手紙→日記 / letter→journal</text>
+
+    <!-- Hinata ↔ Wataru: granddaughter -->
+    <line x1="610" y1="215" x2="462" y2="370" stroke="#b0a0e0" stroke-width="1.5" opacity="0.5" marker-end="url(#arr-lav)"/>
+    <text x="558" y="307" fill="#b0a0e0" font-size="9" text-anchor="middle" opacity="0.6">孫娘 / granddaughter</text>
+
+    <!-- Wataru ↔ Fuyuko: spouses -->
+    <line x1="460" y1="400" x2="460" y2="468" stroke="#d4a017" stroke-width="1.5" opacity="0.6" marker-end="url(#arr-gold)"/>
+    <text x="510" y="442" fill="#d4a017" font-size="9" opacity="0.6">50年の伴侶 / 50yr companions</text>
+
+    <!-- Ritsu ↔ Kenzo: craft mentor -->
+    <line x1="270" y1="215" x2="160" y2="320" stroke="#70c0b0" stroke-width="1.5" opacity="0.6" marker-end="url(#arr-teal)"/>
+    <text x="195" y="270" fill="#70c0b0" font-size="9" opacity="0.6" transform="rotate(-35,195,270)">網の師 / craft mentor</text>
+
+    <!-- Ritsu ↔ Umeko: challenger -->
+    <line x1="280" y1="230" x2="155" y2="195" stroke="#70c0b0" stroke-width="1.5" opacity="0.6" marker-end="url(#arr-teal)"/>
+    <text x="208" y="210" fill="#70c0b0" font-size="9" opacity="0.6">問い手 / challenger</text>
+
+    <!-- Ritsu ↔ Naho: guide-awakener -->
+    <line x1="280" y1="220" x2="160" y2="415" stroke="#70c0b0" stroke-width="1.5" opacity="0.6" marker-end="url(#arr-teal)"/>
+    <text x="188" y="340" fill="#70c0b0" font-size="9" opacity="0.6" transform="rotate(-65,188,340)">目覚め / awakener</text>
+
+    <!-- Ritsu ↔ Fuyuko: gatekeeper -->
+    <line x1="310" y1="230" x2="425" y2="470" stroke="#d4a017" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4" marker-end="url(#arr-gold)"/>
+
+    <!-- Wataru ↔ Kenzo: childhood friends -->
+    <line x1="430" y1="380" x2="165" y2="325" stroke="#6a5a45" stroke-width="1" stroke-dasharray="3,4" opacity="0.45"/>
+    <text x="295" y="345" fill="#6a5a45" font-size="8.5" opacity="0.6">幼馴染 / childhood friends</text>
+
+    <!-- Wataru ↔ Umeko: patron-artist -->
+    <line x1="438" y1="372" x2="152" y2="193" stroke="#6a5a45" stroke-width="1" stroke-dasharray="3,4" opacity="0.4"/>
+
+    <!-- Wataru ↔ Naho: teacher-student -->
+    <line x1="445" y1="392" x2="162" y2="418" stroke="#6a5a45" stroke-width="1" stroke-dasharray="3,4" opacity="0.4"/>
+
+    <!-- Hinata ↔ Fuyuko: granddaughter-grandmother -->
+    <line x1="610" y1="225" x2="500" y2="462" stroke="#d4a017" stroke-width="1.2" opacity="0.4" marker-end="url(#arr-gold)"/>
+    <text x="578" y="360" fill="#d4a017" font-size="8.5" opacity="0.5">孫娘 / granddaughter</text>
+
+    <!-- Node: 山田律 (Protagonist) -->
+    <circle cx="300" cy="210" r="38" fill="#1c1c32" stroke="#d4a017" stroke-width="2.5" filter="url(#glow-gold)"/>
+    <text x="300" y="206" fill="#f0c040" font-size="13" text-anchor="middle" font-weight="bold">山田律</text>
+    <text x="300" y="222" fill="#a89070" font-size="8.5" text-anchor="middle">Ritsu</text>
+    <text x="300" y="235" fill="#6a5a45" font-size="7.5" text-anchor="middle">protagonist</text>
+
+    <!-- Node: 丸山ひなた (Romantic) -->
+    <circle cx="610" cy="210" r="38" fill="#1c1c32" stroke="#e8a0a0" stroke-width="2" opacity="0.9"/>
+    <text x="610" y="206" fill="#f0c0c0" font-size="12" text-anchor="middle">丸山ひなた</text>
+    <text x="610" y="222" fill="#a89070" font-size="8.5" text-anchor="middle">Hinata</text>
+    <text x="610" y="235" fill="#6a5a45" font-size="7.5" text-anchor="middle">romantic interest</text>
+
+    <!-- Node: 丸山渉 (Absent) -->
+    <circle cx="458" cy="388" r="34" fill="#1c1c32" stroke="#b0a0e0" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="458" y="384" fill="#c8b8f0" font-size="12" text-anchor="middle">丸山渉</text>
+    <text x="458" y="400" fill="#a89070" font-size="8.5" text-anchor="middle">Wataru</text>
+    <text x="458" y="413" fill="#6a5a45" font-size="7.5" text-anchor="middle">absent catalyst</text>
+
+    <!-- Node: 丸山冬子 (Gatekeeper) -->
+    <circle cx="458" cy="498" r="28" fill="#1c1c32" stroke="#d4a017" stroke-width="1.5" opacity="0.7"/>
+    <text x="458" y="494" fill="#e8d5b0" font-size="11" text-anchor="middle">丸山冬子</text>
+    <text x="458" y="508" fill="#6a5a45" font-size="7.5" text-anchor="middle">gatekeeper</text>
+
+    <!-- Node: 磯部健三 -->
+    <circle cx="128" cy="320" r="26" fill="#1c1c32" stroke="#70c0b0" stroke-width="1.5" opacity="0.8"/>
+    <text x="128" y="315" fill="#90c8b8" font-size="10.5" text-anchor="middle">磯部健三</text>
+    <text x="128" y="328" fill="#6a5a45" font-size="7.5" text-anchor="middle">Ch.1 NPC</text>
+
+    <!-- Node: 桐島梅子 -->
+    <circle cx="115" cy="180" r="26" fill="#1c1c32" stroke="#70c0b0" stroke-width="1.5" opacity="0.8"/>
+    <text x="115" y="175" fill="#90c8b8" font-size="10.5" text-anchor="middle">桐島梅子</text>
+    <text x="115" y="188" fill="#6a5a45" font-size="7.5" text-anchor="middle">Ch.2 NPC</text>
+
+    <!-- Node: 海野夏帆 -->
+    <circle cx="120" cy="430" r="26" fill="#1c1c32" stroke="#70c0b0" stroke-width="1.5" opacity="0.8"/>
+    <text x="120" y="425" fill="#90c8b8" font-size="10.5" text-anchor="middle">海野夏帆</text>
+    <text x="120" y="438" fill="#6a5a45" font-size="7.5" text-anchor="middle">Ch.3 NPC</text>
+
+    <!-- Legend -->
+    <g transform="translate(620, 400)">
+      <text x="0" y="0" fill="#6a5a45" font-size="9" letter-spacing="0.5">凡例 (Legend)</text>
+      <line x1="0" y1="12" x2="24" y2="12" stroke="#e8a0a0" stroke-width="2" stroke-dasharray="6,4"/>
+      <text x="28" y="16" fill="#a89070" font-size="8.5">暗示の恋愛</text>
+      <line x1="0" y1="28" x2="24" y2="28" stroke="#b0a0e0" stroke-width="1.5" stroke-dasharray="4,4"/>
+      <text x="28" y="32" fill="#a89070" font-size="8.5">間接的繋がり</text>
+      <line x1="0" y1="44" x2="24" y2="44" stroke="#70c0b0" stroke-width="1.5"/>
+      <text x="28" y="48" fill="#a89070" font-size="8.5">直接の関係</text>
+      <line x1="0" y1="60" x2="24" y2="60" stroke="#6a5a45" stroke-width="1" stroke-dasharray="3,4"/>
+      <text x="28" y="64" fill="#a89070" font-size="8.5">渉を介した過去の繋がり</text>
+    </g>
+  </svg>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ § 4 PRESENCE MATRIX -->
+<div class="section-heading">
+  <div class="section-num">04</div>
+  <h2>章別存在感マトリクス <span class="en">Chapter Scene Presence Matrix</span></h2>
+</div>
+
+<div class="matrix-wrap">
+  <table class="matrix-table">
+    <thead>
+      <tr>
+        <th>キャラクター</th>
+        <th>Ch.1<br><span style="font-weight:400;color:var(--text-dim);">港</span></th>
+        <th>Ch.2<br><span style="font-weight:400;color:var(--text-dim);">陶芸工房</span></th>
+        <th>Ch.3<br><span style="font-weight:400;color:var(--text-dim);">森・花野</span></th>
+        <th>Ch.4<br><span style="font-weight:400;color:var(--text-dim);">石畳の道</span></th>
+        <th>Ch.5<br><span style="font-weight:400;color:var(--text-dim);">崖の展望台</span></th>
+        <th>Ch.6<br><span style="font-weight:400;color:var(--text-dim);">灯台</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>山田律 <span style="color:var(--text-dim);font-size:0.8rem;">Yamada Ritsu</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+      </tr>
+      <tr>
+        <td>丸山ひなた <span style="color:var(--text-dim);font-size:0.8rem;">Maruyama Hinata</span></td>
+        <td><span class="presence-pill brief">短い</span></td>
+        <td><span class="presence-pill brief">短い</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+        <td><span class="presence-pill indirect">痕跡</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+      </tr>
+      <tr>
+        <td>丸山渉 <span style="color:var(--text-dim);font-size:0.8rem;">Maruyama Wataru (absent)</span></td>
+        <td><span class="presence-pill indirect">日記①</span></td>
+        <td><span class="presence-pill indirect">日記②</span></td>
+        <td><span class="presence-pill indirect">日記③</span></td>
+        <td><span class="presence-pill indirect">日記④</span></td>
+        <td><span class="presence-pill indirect">日記⑤</span></td>
+        <td><span class="presence-pill indirect">日記⑥</span></td>
+      </tr>
+      <tr>
+        <td>磯部健三 <span style="color:var(--text-dim);font-size:0.8rem;">Isobe Kenzo</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+      </tr>
+      <tr>
+        <td>桐島梅子 <span style="color:var(--text-dim);font-size:0.8rem;">Kirishima Umeko</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+      </tr>
+      <tr>
+        <td>海野夏帆 <span style="color:var(--text-dim);font-size:0.8rem;">Umino Naho</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+      </tr>
+      <tr>
+        <td>丸山冬子 <span style="color:var(--text-dim);font-size:0.8rem;">Maruyama Fuyuko</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill absent">不在</span></td>
+        <td><span class="presence-pill full">主要</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ § 5 WATARU'S JOURNALS -->
+<div class="section-heading">
+  <div class="section-num">05</div>
+  <h2>丸山渉の日記 <span class="en">Maruyama Wataru's 6 Journal Entries</span></h2>
+</div>
+
+<div class="callout">
+  各章のリストア完了時にアンロックされる。渉は物語開始前に他界しているため、日記が唯一の「声」となる。
+  各エントリは100〜150字。<strong>意図的な間接性</strong>を持ち、律への直接的なアドバイスではなく、渉自身の思索として書かれている。
+</div>
+
+<div class="journal-grid">
+
+  <div class="journal-card" data-ch="第1章解禁">
+    <div class="journal-chapter">Chapter 1 Unlock / 第1章クリア後</div>
+    <div class="journal-title">港の朝について</div>
+    <div class="journal-prose">
+      夜明けの港は、いつも私だけのものだった。波が木の桟橋を叩く音、遠くで健三が網を干す気配。島が静かに目を覚ます、その最初の息吹を聞けるのは、早起きした者だけの特権だと思っていた。美しいものは、いつも少し早起きしないと見られない。
+    </div>
+    <div class="journal-theme-tag">theme: harbor_mornings &nbsp;|&nbsp; 渉の声 vol.1</div>
+  </div>
+
+  <div class="journal-card" data-ch="第2章解禁">
+    <div class="journal-chapter">Chapter 2 Unlock / 第2章クリア後</div>
+    <div class="journal-title">手仕事の辛抱について</div>
+    <div class="journal-prose">
+      梅子さんの窯を直したとき、彼女は三日間、私に何も言わなかった。四日目に、焼き上がった器を黙って差し出した。それで全部わかった。手仕事というのは、急かすことができない。時間をかけることが、それ自体の意味なのだから。誰かに見せるために作るのではない。
+    </div>
+    <div class="journal-theme-tag">theme: craft_patience &nbsp;|&nbsp; 渉の声 vol.2</div>
+  </div>
+
+  <div class="journal-card" data-ch="第3章解禁">
+    <div class="journal-chapter">Chapter 3 Unlock / 第3章クリア後</div>
+    <div class="journal-title">ひなたのことを思い出す</div>
+    <div class="journal-prose">
+      ひなたが三歳のとき、花野の中を走り回って転んだ。泥だらけで笑っていた。冬子がため息をついて、私が笑った。あの子は島のものだと、そのとき確信した。大阪へ行っても、きっと帰ってくる。美しいものは、生まれた場所を忘れない。
+    </div>
+    <div class="journal-theme-tag">theme: hinata_child_memory &nbsp;|&nbsp; 渉の声 vol.3</div>
+  </div>
+
+  <div class="journal-card" data-ch="第4章解禁">
+    <div class="journal-chapter">Chapter 4 Unlock / 第4章クリア後</div>
+    <div class="journal-title">一人で歩いた午後</div>
+    <div class="journal-prose">
+      島が静かになり始めた頃、私はよくこの石畳を一人で歩いた。若者が島を離れ、灯台の仕事も減っていた。寂しいかと問われれば、そうではない。静けさの中には、雑音が消えた後にしか聞こえない声がある。その声を聞くために、人は時々一人になる必要がある。
+    </div>
+    <div class="journal-theme-tag">theme: solitary_walk &nbsp;|&nbsp; 渉の声 vol.4</div>
+  </div>
+
+  <div class="journal-card" data-ch="第5章解禁">
+    <div class="journal-chapter">Chapter 5 Unlock / 第5章クリア後（ひなたが声に出して読む）</div>
+    <div class="journal-title">星と小ささについて</div>
+    <div class="journal-prose">
+      崖の上で星を数えることは、できない。でも数えようとしながら、自分がとても小さいことに気づく。不思議なことに、それは怖くない。むしろ軽くなる。背負っていたものが、宇宙の前では塵ほどの重さしかないと分かったとき、初めて深く息ができる気がした。
+    </div>
+    <div class="journal-theme-tag">theme: stars_smallness &nbsp;|&nbsp; 渉の声 vol.5 ★ ひなたが読み上げる</div>
+  </div>
+
+  <div class="journal-card" data-ch="第6章解禁">
+    <div class="journal-chapter">Chapter 6 Unlock / 冬子から直接手渡し</div>
+    <div class="journal-title">律に手紙を書いた理由</div>
+    <div class="journal-prose">
+      あの人に頼んだのは、理由がある。何年か前、彼の仕事を雑誌で見た。広告の中に、一枚だけ、本物の美しさが宿っている絵があった。きっと本人は、もうそれを忘れている。でも忘れた人間は、まだ持っている人間だ。輝島は、そういう人間に灯台を直してほしかった。
+    </div>
+    <div class="journal-theme-tag">theme: the_letter_reason &nbsp;|&nbsp; 渉の声 vol.6 ★ 物語の核心</div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ § 6 RITSU MONOLOGUES -->
+<div class="section-heading">
+  <div class="section-num">06</div>
+  <h2>律の内面独白 <span class="en">Ritsu's 6 Internal Monologue Lines (one per chapter turning point)</span></h2>
+</div>
+
+<div class="monologue-list">
+  <div class="monologue-item">
+    <div class="mono-ch">Ch.1</div>
+    <div class="mono-text">手が勝手に動いていた。頭が静かになるのは、いつぶりだろう。</div>
+  </div>
+  <div class="monologue-item">
+    <div class="mono-ch">Ch.2</div>
+    <div class="mono-text">壊れた壷を誰も捨てていなかった。ここでは、壊れたものにも居場所がある。</div>
+  </div>
+  <div class="monologue-item">
+    <div class="mono-ch">Ch.3</div>
+    <div class="mono-text">誰にも見せない絵を描いた。それなのに、手が震えていた。なぜだろう。</div>
+  </div>
+  <div class="monologue-item">
+    <div class="mono-ch">Ch.4</div>
+    <div class="mono-text">石畳の隙間に、小さな草が生えていた。誰も植えていないのに、そこに生きていた。</div>
+  </div>
+  <div class="monologue-item">
+    <div class="mono-ch">Ch.5</div>
+    <div class="mono-text">東京から緊急の連絡が来ていた。でも海を見ながら、返信しなかった。初めて、できなかったのではなく、しなかった。</div>
+  </div>
+  <div class="monologue-item">
+    <div class="mono-ch">Ch.6</div>
+    <div class="mono-text">灯台の光が海を照らした。渉さんは知っていたんだ。私が忘れたと思っていたものを、まだ持っていることを。</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ § 7 HINATA MICRO-MOMENTS -->
+<div class="section-heading">
+  <div class="section-num">07</div>
+  <h2>ひなたのマイクロ・モーメント <span class="en">Hinata's 6 Micro-Interactions (one per chapter)</span></h2>
+</div>
+
+<div class="callout">
+  ひなたの律への感情は、<strong>行動と沈黙</strong>によってのみ示される。各章に1つのマイクロ・インタラクション。存在感は段階的に増加する。
+</div>
+
+<div class="hinata-grid">
+
+  <div class="hinata-card">
+    <div class="hinata-ch">Ch.1 &nbsp;—&nbsp; 港 / Harbor</div>
+    <div class="hinata-presence">存在感: 短い登場 (brief) &nbsp;·&nbsp; 振り返らない</div>
+    <div class="hinata-action">
+      フェリーの甲板から島を見つめ、指輪のコードを握りしめている。波止場に降りるとき、荷物を持ちながら律の横を通り過ぎる。目が一瞬だけ合う。ひなたは振り返らずに歩き続ける。
+    </div>
+    <div class="hinata-no-speech">（台詞なし — 視線交差のみ）</div>
+  </div>
+
+  <div class="hinata-card">
+    <div class="hinata-ch">Ch.2 &nbsp;—&nbsp; 陶芸工房 / Pottery Studio</div>
+    <div class="hinata-presence">存在感: 短い登場 (brief) &nbsp;·&nbsp; 2〜3語のみ</div>
+    <div class="hinata-action">
+      陶芸工房の前を通りかかり、律が土をこねているのを入口から2秒ほど見る。梅子に短く挨拶してから立ち去る際、律の方を向いて小声で言う。
+    </div>
+    <div class="hinata-says">「……うまくいってますか」</div>
+    <div class="hinata-reveals">梅子に向けた言葉として「おじいちゃんも、ここで何か作っていたみたいで」と言い残して去る。</div>
+  </div>
+
+  <div class="hinata-card">
+    <div class="hinata-ch">Ch.3 &nbsp;—&nbsp; 花野 / Flower Fields</div>
+    <div class="hinata-presence">存在感: 主要登場 (full) &nbsp;·&nbsp; 最初に笑う</div>
+    <div class="hinata-action">
+      夏帆の案内の途中で合流する。律より少し先を歩きながら、振り返って植物の名前を言う。律がスケッチしているのを見て、小さく笑う——この章でひなたが初めて声を立てて笑う瞬間。
+    </div>
+    <div class="hinata-says">「それ、ヤマブキソウ。描けましたか」</div>
+    <div class="hinata-reveals">「祖父がよくここで絵を描いていたって、夏帆さんに聞いたんです。私は知らなかった」</div>
+  </div>
+
+  <div class="hinata-card">
+    <div class="hinata-ch">Ch.4 &nbsp;—&nbsp; 石畳の道 / Stone Path</div>
+    <div class="hinata-presence">存在感: 間接的 (indirect) &nbsp;·&nbsp; 痕跡のみ</div>
+    <div class="hinata-action">
+      ひなたはこの章に登場しない。しかしベンチに野花の束が置かれており、石に「また来る」という文字が刻まれている。石畳のそばの木に渉が昔つけた小さなマークがあり、ひなたがその下に小さな石を一つ置いていった。
+    </div>
+    <div class="hinata-no-speech">（不在——痕跡のみが残る）</div>
+  </div>
+
+  <div class="hinata-card">
+    <div class="hinata-ch">Ch.5 &nbsp;—&nbsp; 崖の展望台 / Cliff Lookout</div>
+    <div class="hinata-presence">存在感: 主要登場 (full) &nbsp;·&nbsp; 感情的核心</div>
+    <div class="hinata-action">
+      崖で律と釣りをする。釣り竿の持ち方を律の後ろから教える（物理的に最も近い場面）。しばらく沈黙が続いた後、ポケットから渉の日記を出して、第5エントリを声に出して読む。読み終えて、また沈黙。
+    </div>
+    <div class="hinata-says">「おじいちゃんが、あなたに手紙を書いた理由——少し分かる気がしてきた」</div>
+    <div class="hinata-reveals">渉の日記第5章「星と小ささについて」を声に出して読む。この日記はひなたも初めて律の前で声に出した。</div>
+  </div>
+
+  <div class="hinata-card">
+    <div class="hinata-ch">Ch.6 &nbsp;—&nbsp; 灯台 / Lighthouse</div>
+    <div class="hinata-presence">存在感: 主要登場 (full) &nbsp;·&nbsp; 無言の同行</div>
+    <div class="hinata-action">
+      灯台まで、律と二人で黙ったまま歩く。律の少し後ろを歩き、灯台の前で横に並ぶ。灯台の光が点いた瞬間、指輪のコードを胸に当てる。冬子が律に日記を渡す場面を、少し離れたところから見ている。
+    </div>
+    <div class="hinata-no-speech">（台詞なし — 全て行動と沈黙）</div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ § 8 NPC SHEETS -->
+<div class="section-heading">
+  <div class="section-num">08</div>
+  <h2>NPCキャラクターシート <span class="en">NPC Character Sheets</span></h2>
+</div>
+
+<div class="npc-grid">
+
+  <!-- 磯部健三 -->
+  <div class="npc-card">
+    <div class="npc-name-jp">磯部健三</div>
+    <div class="npc-name-en">Isobe Kenzo &nbsp;·&nbsp; ~70歳 &nbsp;·&nbsp; Ch.1 漁師</div>
+    <div class="npc-field">
+      <div class="npc-field-label">性格 (Personality)</div>
+      <div class="npc-field-value">無口で実直。言葉より行動で語る。感情を顔に出さないが、網を結ぶ手は優しい。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">渉との関係</div>
+      <div class="npc-field-value">幼馴染。子どもの頃から港で遊んだ。渉の死後、網を直す気力をなくしていた。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">律への役割</div>
+      <div class="npc-field-value">「手を動かすことの価値」を体で示す。説明しない。ただ実演する。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">章内の変化</div>
+      <div class="npc-field-value">律が網仕事を手伝うことで、健三も少しだけ手が動き始める。鏡のような関係。</div>
+    </div>
+    <div class="npc-dialogue">
+      「島は、昔はもっと賑やかだった」<br>「結び目は、急ぐと解ける。急がなくても、いつか解ける。だからゆっくり結ぶんだ」
+    </div>
+  </div>
+
+  <!-- 桐島梅子 -->
+  <div class="npc-card">
+    <div class="npc-name-jp">桐島梅子</div>
+    <div class="npc-name-en">Kirishima Umeko &nbsp;·&nbsp; ~55歳 &nbsp;·&nbsp; Ch.2 陶芸家</div>
+    <div class="npc-field">
+      <div class="npc-field-label">性格 (Personality)</div>
+      <div class="npc-field-value">静かで観察眼が鋭い。アドバイスを乞われるまで口を開かない。2度目に聞かれて初めて振り返る。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">渉との関係</div>
+      <div class="npc-field-value">20年前、渉が窯の修復を依頼した。渉は梅子の器を「島で一番正直なもの」と言っていた。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">律への役割</div>
+      <div class="npc-field-value">律の完璧主義に正面から向き合わせる。「誰かに見せるため」ではない創作の価値を問う。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">重要な行動ルール</div>
+      <div class="npc-field-value">初めてアドバイスを求められたとき、無視する。2度目に求められたときのみ、振り返って答える。</div>
+    </div>
+    <div class="npc-dialogue">
+      「本当に書きたかった広告が、一本でもありましたか」<br>「壊れた器を捨てないのはなぜか、聞きますか？　次に作るときの、地図になるからです」
+    </div>
+  </div>
+
+  <!-- 海野夏帆 -->
+  <div class="npc-card">
+    <div class="npc-name-jp">海野夏帆</div>
+    <div class="npc-name-en">Umino Naho &nbsp;·&nbsp; ~45歳 &nbsp;·&nbsp; Ch.3 自然ガイド</div>
+    <div class="npc-field">
+      <div class="npc-field-label">性格 (Personality)</div>
+      <div class="npc-field-value">エネルギッシュで博識。植物一つひとつに感情移入する。歩くのが早い。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">渉との関係</div>
+      <div class="npc-field-value">30年前、渉の元で学んだ若き博物学者。渉に「名前を知ることは、愛することの始まりだ」と教わった。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">律への役割</div>
+      <div class="npc-field-value">「名前を知ることで見え方が変わる」を体現する。律のスケッチ衝動の引き金を引く。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">渉の贈り物を継ぐ</div>
+      <div class="npc-field-value">渉から受け取った「名前の愛し方」を、律へと受け渡す。3代の連鎖。</div>
+    </div>
+    <div class="npc-dialogue">
+      「名前を知ると、ちゃんと見えるようになるから」<br>「渉さんも、ここをよく歩いていた。植物に話しかけながら」
+    </div>
+  </div>
+
+  <!-- 丸山冬子 -->
+  <div class="npc-card" style="border-top-color: var(--gold);">
+    <div class="npc-name-jp" style="color:var(--gold);">丸山冬子</div>
+    <div class="npc-name-en">Maruyama Fuyuko &nbsp;·&nbsp; ~70歳 &nbsp;·&nbsp; Ch.6 渉の妻・灯台の番人</div>
+    <div class="npc-field">
+      <div class="npc-field-label">性格 (Personality)</div>
+      <div class="npc-field-value">ほとんど話さない。行動で全てを語る。深い悲しみと深い平和が共存している。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">渉との関係</div>
+      <div class="npc-field-value">50年以上の伴侶。渉の全てを知っている。渉の最後の日記を、適切な人間が来るまで持ち続けていた。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">律への役割</div>
+      <div class="npc-field-value">物語の最終的な扉を開ける。言葉ではなく行動で完結させる。渉の最後の日記エントリを手渡す。</div>
+    </div>
+    <div class="npc-field">
+      <div class="npc-field-label">重要な行動ルール</div>
+      <div class="npc-field-value">灯台の修復が完了した瞬間に日記のページを差し出す。「渉が待っていました」の一言のみ。それ以上は語らない。</div>
+    </div>
+    <div class="npc-dialogue" style="border-left-color:rgba(212,160,23,0.3);">
+      「渉が——ずっと待っていました、あなたのような人を」<br>（これだけ。後は沈黙と、日記を差し出す手）
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ § 9 ARC DESIGN NOTES -->
+<div class="section-heading">
+  <div class="section-num">09</div>
+  <h2>弧線設計ノート <span class="en">Arc Design Notes & Thematic Threads</span></h2>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.2rem;">
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.3rem;">
+    <div style="font-family:'Hiragino Sans',sans-serif;font-size:0.68rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem;">恋愛設計原則 / Romance Design Rule</div>
+    <p style="font-size:0.87rem;line-height:1.8;color:var(--text);">ひなたと律の関係は「暗示のみ」の恋愛として設計される。告白なし、キスなし、「好きだ」という言葉なし。感情は間合い・行動・沈黙で表現される。第1章（視線一つ）から第6章（無言の同行）へと段階的に存在感が増加する。<strong style="color:var(--gold-light);">プレイヤーが「感じる」ことが目的。語られることを避ける。</strong></p>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.3rem;">
+    <div style="font-family:'Hiragino Sans',sans-serif;font-size:0.68rem;color:var(--lavender);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem;">不在キャラクターの設計 / Absent Character Design</div>
+    <p style="font-size:0.87rem;line-height:1.8;color:var(--text);">渉は物語に直接登場しない。しかし彼の「声」は6つの日記エントリを通じて存在する。NPCたちは全員、渉との過去の繋がりを持つ——彼らの言動の中に渉のエコーが宿る。<strong style="color:var(--lavender);">渉は不在であることによって、最も強い存在感を持つ。</strong></p>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.3rem;">
+    <div style="font-family:'Hiragino Sans',sans-serif;font-size:0.68rem;color:var(--teal);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem;">知識の連鎖 / Chain of Knowledge</div>
+    <p style="font-size:0.87rem;line-height:1.8;color:var(--text);">渉→夏帆→律、という知識の受け渡しの連鎖が第3章で明示される。渉が「名前を知ることは愛することの始まりだ」と夏帆に教え、夏帆が律に伝える。律がスケッチを再開することで、その連鎖が続く。<strong style="color:var(--teal);">美しさを見る目は、受け渡されることで生き続ける。</strong></p>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.3rem;">
+    <div style="font-family:'Hiragino Sans',sans-serif;font-size:0.68rem;color:var(--coral);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem;">身体と心の鏡 / Body as Mirror of Mind</div>
+    <p style="font-size:0.87rem;line-height:1.8;color:var(--text);">律の感情変化は常に「手の動き」で表現される。Ch1: 手が勝手に動く。Ch2: 壷を壊す。Ch3: 手が震えながら描く。Ch4: 手紙を書いて破らない。Ch5: 崖を自力で登る。Ch6: 修復が完成する。<strong style="color:var(--coral);">手の状態が、心の回復の指標。</strong></p>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.3rem;">
+    <div style="font-family:'Hiragino Sans',sans-serif;font-size:0.68rem;color:var(--sage);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem;">沈黙の美学 / Aesthetics of Silence</div>
+    <p style="font-size:0.87rem;line-height:1.8;color:var(--text);">冬子はほとんど話さない。ひなたの最も重要な場面（Ch6）も無言。渉の声は死後の日記のみ。この物語において、<strong style="color:var(--sage);">沈黙は言葉の欠如ではなく、最も誠実な言語である。</strong>日本的な「間（ま）」の美学をキャラクター設計の中核に置く。</p>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.3rem;">
+    <div style="font-family:'Hiragino Sans',sans-serif;font-size:0.68rem;color:var(--blue-mist);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem;">パズル×ナラティブの接点 / Puzzle ↔ Narrative Junction</div>
+    <p style="font-size:0.87rem;line-height:1.8;color:var(--text);">各章のリストア完了（パズルクリア）が、渉の日記エントリのアンロックに対応する。プレイヤーが「手を動かして島を直す」行為が、「律が手を動かして回復する」物語と重なる。<strong style="color:var(--blue-mist);">ゲームプレイとナラティブが同じ身体的行為を指す。</strong></p>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ FOOTER -->
+</div><!-- /container -->
+
+<footer class="page-footer">
+  Glow Island &nbsp;·&nbsp; キャラクター弧線設計書 Character Arc Design Document &nbsp;·&nbsp; Schema: character-arc-v1 &nbsp;·&nbsp; Generated: 2026-05-08 &nbsp;·&nbsp; Discipline: Narrative Design &nbsp;·&nbsp; Status: In Review
+</footer>
+
+</body>
+</html>

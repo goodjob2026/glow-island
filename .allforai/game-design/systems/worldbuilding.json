@@ -1,0 +1,169 @@
+{
+  "version": "2.0",
+  "generated_at": "2026-05-08T00:00:00+08:00",
+  "source_doc": ".allforai/game-design/worldbuilding-bible.md",
+  "setting": {
+    "island_name": "輝島",
+    "island_name_romaji": "Kagayaki-jima",
+    "island_name_meaning": "辉之岛",
+    "style": "Japanese island",
+    "era": "contemporary",
+    "location": "Southwest Japan seas, between Kyushu and Nansei Islands",
+    "climate": "warm and humid, four seasons, mild extremes",
+    "visual_baseline": "Animal Crossing soft pastels — rounded forms, low-saturation warm tones; pre-restoration grey-white, each repair raises saturation one step",
+    "audio_direction": "ocean waves, wooden geta footsteps, wind chimes, shamisen, cicada changes; dialogue uses Japanese mumble SFX, no full voice"
+  },
+  "tone": ["healing", "slow-burn romance", "memory", "restoration", "escape-and-landing", "tenderness-in-exhaustion", "japanese-island-aesthetic"],
+  "protagonist": {
+    "name_jp": "山田律",
+    "name_romaji": "Yamada Ritsu",
+    "age": 29,
+    "gender": "male",
+    "occupation": "ad creative director",
+    "backstory": "Five years of Tokyo advertising burnout; received a mysterious ink-brushed letter from lighthouse keeper Maruyama Wataru; took long leave and arrived by ferry",
+    "inner_theme": "Rediscovering what truly matters",
+    "narrative_vehicle": "In-game diary — short entries, precise copywriter's language, always circling around the self"
+  },
+  "romantic_interest": {
+    "name_jp": "丸山ひなた",
+    "name_romaji": "Maruyama Hinata",
+    "age": 24,
+    "gender": "female",
+    "identity": "Granddaughter of lighthouse keeper Maruyama Wataru and Maruyama Fuyuko",
+    "backstory": "Left island 3 years ago to study design in Osaka; returned by ferry the same day Ritsu arrived",
+    "appearance_notes": "Short black hair, wooden hairpin (grandfather's), light linen shirt, worn straw sandals, fisherman's ring on a cord at her chest",
+    "personality": "Outwardly bright, inwardly deep; knows the island like her own palm; light laugh, heavy gaze; communicates through action not words",
+    "chapter_arc": "Ch1 dockside passing → Ch2 occasional help, no words → Ch3 guide through flower fields → Ch4 absent but present (her words linger) → Ch5 fishing lesson + journal reading (core chapter) → Ch6 lighthouse lighting moment",
+    "signature_object": "渔夫戒 (fisherman's ring) — grandfather's, worn on a cord close to her heart; her grip on it is the emotional tell"
+  },
+  "npcs": [
+    {
+      "name_jp": "磯部健三",
+      "name_romaji": "Isobe Kenzo",
+      "age": "~70",
+      "role": "Fisherman — the last old resident who never left",
+      "chapter": 1,
+      "area": "harbor",
+      "personality_keywords": ["unhurried", "few words but warm", "eyes curve like a crescent moon when smiling", "tea kettle always nearby"],
+      "relation_to_ritsu": "Like a grandfather who never gives advice but is always present; first person Ritsu meets on the island"
+    },
+    {
+      "name_jp": "桐島梅子",
+      "name_romaji": "Kirishima Umeko",
+      "age": "~55",
+      "role": "Pottery artisan",
+      "chapter": 2,
+      "area": "town",
+      "personality_keywords": ["direct", "no wasted words", "skilled hands", "speech like a hammer — precise and weighty"],
+      "relation_to_ritsu": "Her question 'Was there ever one ad you truly wanted to write?' leaves Ritsu silent for a long time"
+    },
+    {
+      "name_jp": "海野夏帆",
+      "name_romaji": "Umino Naho",
+      "age": 32,
+      "role": "Nature guide — stayed by chance",
+      "chapter": 3,
+      "area": "flower_fields",
+      "personality_keywords": ["enthusiastic", "keen observer", "talks a lot but not annoying", "occasionally poetic"],
+      "relation_to_ritsu": "First person Ritsu has a real conversation with on the island"
+    },
+    {
+      "name_jp": "丸山冬子",
+      "name_romaji": "Maruyama Fuyuko",
+      "age": 65,
+      "role": "Lighthouse keeper's widow — true sender of the letter",
+      "chapter": 6,
+      "area": "lighthouse",
+      "personality_keywords": ["still", "restrained", "deeply loving", "has waited long but without urgency"],
+      "relation_to_ritsu": "Emotional anchor of Ritsu's entire journey; her final words: 'The island waited for you — and you've been waiting for yourself for a long time too'"
+    }
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "title_cn": "到来",
+      "arc_keyword": "逃离",
+      "area": "harbor",
+      "area_name": "海边码头",
+      "emotion": "escape / unfamiliarity",
+      "color_mood": "pale blue + cream, low saturation, bright",
+      "npc": "磯部健三",
+      "hinata_presence": "brief — dockside passing, mutual nod",
+      "signature_moment": "First deep breath in the sea wind; Hinata and Ritsu cross paths on the dock, each carrying luggage"
+    },
+    {
+      "id": 2,
+      "title_cn": "扎根",
+      "arc_keyword": "扎根",
+      "area": "town",
+      "area_name": "中央小镇",
+      "emotion": "warmth / belonging taking root",
+      "color_mood": "warm yellow + orange-brown, afternoon stone-paved street",
+      "npc": "桐島梅子",
+      "hinata_presence": "occasional — passes by, helps briefly, then leaves",
+      "signature_moment": "Fountain flows again; fallen leaf spirals once around the jet and drifts away"
+    },
+    {
+      "id": 3,
+      "title_cn": "感受",
+      "arc_keyword": "感受",
+      "area": "flower_fields",
+      "area_name": "花田山坡",
+      "emotion": "healing / emotional thaw",
+      "color_mood": "pink-purple + grass green, misty morning",
+      "npc": "海野夏帆",
+      "hinata_presence": "guide — walks every path with Ritsu, tells stories of grandfather's planted trees",
+      "signature_moment": "Flower fields bloom; Naho hands Ritsu a half-open bouquet without a word, only a smile"
+    },
+    {
+      "id": 4,
+      "title_cn": "栖息",
+      "arc_keyword": "栖息",
+      "area": "forest_camp",
+      "area_name": "森林露营地",
+      "emotion": "quiet / solitude",
+      "color_mood": "deep green + brown, dappled shade, evening cool",
+      "npc": null,
+      "hinata_presence": "absent — but her words 'The island won't rush you' echo",
+      "signature_moment": "Campfire first lit; Ritsu looks up at the starry sky, places his hat on his knee"
+    },
+    {
+      "id": 5,
+      "title_cn": "接受",
+      "arc_keyword": "接受",
+      "area": "hot_springs",
+      "area_name": "温泉山谷",
+      "emotion": "release / acceptance / reconciliation",
+      "color_mood": "pearl white + mist blue, mineral-scented air",
+      "npc": "丸山ひなた (core chapter)",
+      "hinata_presence": "core — teaches fishing; Ritsu reads Wataru's journal aloud; fisherman's ring gripped in her palm",
+      "signature_moment": "First catch; Hinata glances sideways with a slight smile: 'Not bad.' — Ritsu remembers those two words for a long time"
+    },
+    {
+      "id": 6,
+      "title_cn": "点亮",
+      "arc_keyword": "点亮",
+      "area": "lighthouse",
+      "area_name": "夜晚灯塔",
+      "emotion": "warmth-in-solitude / awakening",
+      "color_mood": "deep night blue + warm gold light, gold column on the sea",
+      "npc": "丸山冬子",
+      "hinata_presence": "climax — stands at lighthouse stairs, eyes closed, fisherman's ring in her palm, slow exhale",
+      "signature_moment": "Lighthouse beam sweeps the night sea for the first time, lighting all restored areas; Fuyuko whispers Wataru's name; Hinata and Ritsu stand in the same light, nothing said, everything said"
+    }
+  ],
+  "memory_fragment_system": {
+    "description": "Six lighthouse diary entries by Maruyama Wataru, unlocked one per chapter completion",
+    "format": "Handwritten log-style, written in different years; each resonates with Ritsu's current repair experience",
+    "hinata_connection": "Entries occasionally show young Hinata visiting — her summer arrivals, an afternoon she fell asleep on the lighthouse steps",
+    "purpose": "Constructs Wataru's complete life of vigil; explains why he wrote the letter: he believed the island was worth waiting for"
+  },
+  "environment_narrative_principles": [
+    "Color leads — saturation rises with each repair stage, visual awakening before dialogue",
+    "Small details carry big emotion — a blue yukata on the line, a stray cat at the dock, Umeko's kiln light on again",
+    "NPC body language over dialogue — Kenzo casts his repaired rod in silence; Fuyuko slowly removes her key ring and places it at the lighthouse base",
+    "Sound arrives before visuals — distant wind chimes in morning breeze signal restoration before the scene updates",
+    "Lighthouse as emotional anchor — every repair adds a little more light to the lighthouse window; the question 'When will it light up?' drives the whole arc"
+  ],
+  "lore_file": ".allforai/game-design/worldbuilding-bible.md"
+}

@@ -1,0 +1,576 @@
+{
+  "schema": "ftue-v1",
+  "generated_at": "2026-05-08T12:00:00Z",
+  "project": "glow-island",
+  "philosophy": "teach-through-level-design",
+  "no_popup_rule": true,
+  "summary": "FTUE spans ~6.5 minutes of non-skippable experience across 8 steps: 3 cutscene/intro screens followed by 3 tutorial levels (1-1 through 1-3) and 2 payoff/reward screens. All mechanics are taught exclusively through level design, visual affordance, and immediate feedback — zero popup overlays, zero forced-tap arrows.",
+
+  "opening_sequence": {
+    "duration_seconds": 40,
+    "skippable": false,
+    "tone": "warm and melancholic, quiet arrival, no fanfare",
+    "panels": [
+      {
+        "panel": 1,
+        "scene": "Ferry deck at dusk — 律 stands at the rail, a battered leather satchel at his feet, grey island silhouette rising from mist ahead. No NPCs. Sea smell implied by visual. Shot is from behind his shoulder.",
+        "text_jp": "五年、ずっと走り続けてきた。",
+        "text_translation": "Five years of running without stopping.",
+        "visual_note": "Desaturated palette — grey-blue sea, washed-out sky. 律's silhouette warm amber against cool background.",
+        "tone": "exhaustion-landing, quiet resignation"
+      },
+      {
+        "panel": 2,
+        "scene": "Ferry docking at 輝島 harbor. Wooden planks, salt-eaten rope bollards. A rusted sign reads '輝島'. Overgrown weeds push through the dock boards. One weathered fishing boat.",
+        "text_jp": "島は、予想よりずっと静かだった。",
+        "text_translation": "The island was much quieter than I had imagined.",
+        "visual_note": "Grey-white pre-restoration color scheme. Slight warm glow from the lighthouse in distant background (barely visible). Environmental storytelling — no signage, no welcome.",
+        "tone": "desolate but not threatening, strangely still"
+      },
+      {
+        "panel": 3,
+        "scene": "律 steps off the gangplank onto the dock boards. Close-up on his hands gripping the satchel strap. The island stretches out before him — overgrown harbor, dim shopfronts, a single crow on a bollard.",
+        "text_jp": "なにかが、ここで待っている気がした。",
+        "text_translation": "Something felt like it had been waiting here.",
+        "visual_note": "First person perspective from 律's chest-level — we see his hands and the ground ahead. The crow turns its head. A subtle shimmer effect hints at possibility.",
+        "tone": "anticipatory quietness, gentle mystery"
+      }
+    ],
+    "first_hinata_appearance": "step_2",
+    "transition": "Dissolve from dock panel into 律 standing on the dock, camera pulling back to reveal the harbor overview."
+  },
+
+  "first_hinata_encounter": {
+    "step": 2,
+    "duration_seconds": 10,
+    "skippable": false,
+    "scene": "Harbor dock. ひなた walks past 律 in the same direction — both just disembarked. She pauses briefly without looking at him fully and holds out a sealed envelope. It bears the name 丸山渉 on the wax seal.",
+    "dialogue": [
+      {
+        "speaker": "丸山ひなた",
+        "text_jp": "船で見かけました。渉のおじいちゃんからの手紙、たぶんあなた宛てだと思って。",
+        "text_translation": "I noticed you on the ferry. This letter from grandfather Wataru — I think it was meant for you.",
+        "tone": "matter-of-fact warmth, no eye contact held long, she keeps walking after handing it"
+      }
+    ],
+    "visual_note": "ひなた wears light linen shirt, wooden hairpin. The fisherman's ring cord visible at her collar. Her expression is open but not overly friendly — she is warm but has her own purpose here. She continues walking after one beat, leaving 律 holding the letter.",
+    "emotional_beat": "Not a welcoming — a coincidence made meaningful. ひなた doesn't linger. This makes her subsequent appearances matter more."
+  },
+
+  "island_overview": {
+    "step": 3,
+    "duration_seconds": 5,
+    "skippable": false,
+    "scene": "Wide establishing shot of the harbor area from a slight elevation — 律's viewpoint. The dock, the weathered warehouse, the gap where a building once stood. Everything is muted and overgrown. In the distance, a faint path leads upward.",
+    "text_jp": "手紙には、島を頼むと書いてあった。",
+    "text_translation": "The letter said: take care of the island.",
+    "visual_note": "A gentle wind stirs the overgrowth. The first puzzle tiles are visible as faintly glowing shapes embedded in the dock boards — not called out, just visible. This plants the idea that the island itself contains something to discover. Color saturation is at minimum (0%) — every successful puzzle will gradually add saturation back.",
+    "emotional_beat": "Motivation established without exposition. 律 has a reason. The island has a need. The glowing tiles provide a visual invitation, not a command."
+  },
+
+  "tutorial_levels": [
+    {
+      "level_id": "1-1",
+      "teaching_goal": "Tiles can be connected if a path between them has at most 2 turns (BFS ≤2). First connection is always a straight line — zero turns required.",
+      "grid_size": "4x4",
+      "tile_pair_count": 4,
+      "tile_types_used": ["T01", "T02"],
+      "step_limit": null,
+      "time_limit": null,
+      "special_blocks": [],
+      "obstacles": [],
+      "board_events": [],
+      "expected_duration_seconds": 75,
+      "verified_against_level_design_json": true,
+      "layout_description": "8 tiles (4 pairs) on a 4×4 grid. The first pair (T01) is placed in the same row with no tiles between them — straight-line connection. The second pair (T02) is placed in the same column. The remaining two pairs require one turn each. No dead-end paths. Board is sparse — 8 tiles in a 16-cell grid makes gaps visible.",
+      "grid_layout": [
+        ["T01", "   ", "T01", "   "],
+        ["   ", "T02", "   ", "   "],
+        ["   ", "T02", "   ", "T03"],
+        ["T04", "   ", "T03", "T04"]
+      ],
+      "first_affordance_trigger": "Player touches any tile — it begins to glow with soft teal light and pulses gently. No instruction text appears.",
+      "second_affordance_trigger": "Player touches the matching tile — a faint dotted path preview appears between them showing the valid connection route.",
+      "success_feedback": {
+        "visual": "Matched tiles dissolve into a brief particle burst (light petals/foam). A faint warmth animation radiates from the cleared area.",
+        "audio": "Soft wooden-block chime (two notes ascending). No fanfare.",
+        "board_state": "Remaining tiles shift very slightly — a gentle settle animation — to draw attention to what's left."
+      },
+      "fail_feedback": {
+        "visual": "Tiles flash briefly (a soft red-orange pulse, not harsh). No path preview appears between incompatible tiles.",
+        "audio": "Single muted low note — not punishing, just 'not yet'.",
+        "recovery": "Tiles return to normal state immediately. Player retains agency."
+      },
+      "completion_note": "Level clears silently. No star explosion or trumpet fanfare. A gentle fade and the dock boards beneath the puzzle tiles glow warm for a moment — as if the wood itself remembered something.",
+      "material_reward": {
+        "type": "shell_fragment",
+        "amount": 5
+      },
+      "coin_reward": 10,
+      "emotional_note": "最初の一歩。足元の木が、少しだけ明るくなった気がした。"
+    },
+    {
+      "level_id": "1-2",
+      "teaching_goal": "Not all pairs can connect via a straight line. Paths must route around obstacles. The player learns to read blocked space and find alternate routes. Ends with a 2-match combo triggering first combo feedback.",
+      "grid_size": "5x5",
+      "tile_pair_count": 6,
+      "tile_types_used": ["T01", "T02", "T03", "T04"],
+      "step_limit": null,
+      "time_limit": null,
+      "special_blocks": [],
+      "obstacles": [
+        {
+          "type": "wall_gap",
+          "description": "A section of broken dock boards — two adjacent empty cells that visually read as a gap/hole in the middle of the board, positioned to block the most obvious straight-line path between one specific pair. The gap is rendered as dark weathered wood with no tile beneath.",
+          "position": "row 2, columns 2-3 (0-indexed)",
+          "teaching_function": "Player's first attempt at the obvious path will be blocked. The visual gap explains why — no instruction needed. The alternate route (L-shape with 1 turn) is immediately visible once the straight path fails."
+        }
+      ],
+      "board_events": [],
+      "expected_duration_seconds": 90,
+      "verified_against_level_design_json": true,
+      "layout_description": "12 tiles (6 pairs) on a 5×5 grid. Obstacle placed to block one pair's straight-line path. The last two pairs in the level are placed adjacent to each other so that clearing the 5th pair leaves the 6th pair in the 'next clear window' — this is the combo setup. Combo window: 2 seconds between clears.",
+      "grid_layout": [
+        ["T01", "   ", "T02", "   ", "T01"],
+        ["   ", "T03", "XXX", "XXX", "T04"],
+        ["T02", "   ", "   ", "T03", "   "],
+        ["   ", "T04", "   ", "   ", "T05"],
+        ["T05", "   ", "T06", "   ", "T06"]
+      ],
+      "combo_trigger": {
+        "description": "Pairs T05 and T06 are placed so that clearing T05 leaves T06 as the only remaining pair, and both tiles of T06 are directly accessible. If player clears T05 and then quickly clears T06 within the 2-second combo window, the first combo feedback fires.",
+        "combo_level": 2,
+        "visual_feedback": "A warm cascade effect — tiles cleared in combo leave a slightly brighter particle trail. A subtle '×2' numeral floats up and fades. No popup, no pause — it flows naturally from the match."
+      },
+      "first_affordance_trigger": "Failed path attempt (straight-line blocked): tiles pulse red-orange briefly, then the gap cell glows slightly to draw the eye. No arrow, no text.",
+      "success_feedback": {
+        "visual": "Same as 1-1 plus combo multiplier visual for final pair if combo achieved.",
+        "audio": "Same ascending chime. Combo adds a second note layered on top — a brief harmonic.",
+        "board_state": "Post-clear the board has clear open space. The remaining pair glows slightly brighter than default — natural visual priority."
+      },
+      "completion_note": "Level clear. The harbor area on the map gets a slight color boost (barely perceptible — the first hint that these puzzles are doing something to the world).",
+      "material_reward": {
+        "type": "shell_fragment",
+        "amount": 3
+      },
+      "coin_reward": 10,
+      "emotional_note": "道は一本じゃない。それは島も、きっと同じだ。"
+    },
+    {
+      "level_id": "1-3",
+      "teaching_goal": "Completing levels restores the island. The connection between puzzle-solving and the world changes is made explicit through a cutscene. First material reward UI appears. ひなた appears briefly.",
+      "grid_size": "5x5",
+      "tile_pair_count": 7,
+      "tile_types_used": ["T01", "T02", "T03", "T04"],
+      "step_limit": null,
+      "time_limit": null,
+      "special_blocks": [],
+      "obstacles": [
+        {
+          "type": "wall_gap",
+          "description": "Two broken dock board sections — positioned in different areas of the board, teaching that obstacles aren't always in the same place.",
+          "positions": ["row 1 col 3", "row 3 col 1"],
+          "teaching_function": "Player now expects obstacles and plans routing around them. The two separated obstacles confirm that 1-2 wasn't a one-time thing."
+        }
+      ],
+      "board_events": [
+        {
+          "trigger": "level_complete",
+          "event": "harbor_restoration_cutscene",
+          "description": "Upon clearing all 7 pairs, the board dissolves upward into a restoration animation. The dock boards in the foreground straighten and turn warm wood-grain amber. Overgrown plants recede slightly. A warm light passes over the harbor from left to right.",
+          "duration_seconds": 4
+        }
+      ],
+      "expected_duration_seconds": 105,
+      "verified_against_level_design_json": true,
+      "layout_description": "14 tiles (7 pairs) on a 5×5 grid with 2 wall gaps. Pairs are distributed across all quadrants. No pair requires more than 2 turns to resolve. The board is solvable in multiple orders, giving the player a sense of agency even in a tutorial.",
+      "grid_layout": [
+        ["T01", "   ", "T02", "   ", "T01"],
+        ["   ", "T03", "   ", "XXX", "T04"],
+        ["T02", "   ", "T05", "   ", "T03"],
+        ["   ", "XXX", "   ", "T06", "   "],
+        ["T04", "T05", "   ", "T06", "T07"],
+        ["T07", "   ", "   ", "   ", "   "]
+      ],
+      "completion_sequence": {
+        "harbor_cutscene": {
+          "duration_seconds": 4,
+          "scene": "The dock brightens — planks glow warm amber. The weathered sign '輝島' becomes readable. Weeds recede from the dock edge.",
+          "emotional_note": "No narration. The visual change speaks alone."
+        },
+        "hinata_appearance": {
+          "duration_seconds": 3,
+          "scene": "ひなた passes the dock at a slight distance. She glances at the restored planks, then at 律. A half-smile. She continues walking.",
+          "dialogue": {
+            "speaker": "丸山ひなた",
+            "text_jp": "少し、変わりましたね。",
+            "text_translation": "It's changed a little, hasn't it.",
+            "tone": "quiet observation, no praise, no pressure — she simply notices"
+          }
+        },
+        "material_reward_ui": {
+          "duration_seconds": 3,
+          "description": "A gentle material collection animation: a piece of driftwood (浮木) rises from the restored dock boards and drifts upward to a small inventory slot in the UI corner. The material name appears in soft teal: '浮木'. A soft chime.",
+          "first_time_tooltip": "A brief ambient text line appears in small type at the bottom of the screen (not a popup): '集めた素材で、島を直せるかもしれない。' — 'These materials may help restore the island.' Fades after 3 seconds."
+        }
+      },
+      "material_reward": {
+        "type": "driftwood",
+        "display_name_jp": "浮木",
+        "amount": 1,
+        "first_time": true
+      },
+      "coin_reward": 14,
+      "emotional_note": "ここには、まだ何かが残っている。"
+    }
+  ],
+
+  "flow_steps": [
+    {
+      "step": 1,
+      "name": "opening_cutscene",
+      "name_display": "律の到着",
+      "goal": "Establish protagonist identity, island tone, emotional context. No gameplay yet.",
+      "screen": "cutscene_dock_arrival",
+      "skippable": false,
+      "duration_seconds": 15,
+      "interaction": "tap_to_advance_panels",
+      "panel_count": 3,
+      "blocking": true,
+      "transition_to_next": "dissolve"
+    },
+    {
+      "step": 2,
+      "name": "first_hinata_encounter",
+      "name_display": "ひなたとの出会い",
+      "goal": "Introduce romantic interest naturally — coincidence, not contrivance. Establish her as independent, purposeful.",
+      "screen": "cutscene_hinata_letter",
+      "skippable": false,
+      "duration_seconds": 10,
+      "interaction": "tap_to_advance",
+      "blocking": true,
+      "transition_to_next": "dissolve"
+    },
+    {
+      "step": 3,
+      "name": "island_overview",
+      "name_display": "港の風景",
+      "goal": "Show the desolate harbor. Establish visual baseline (grey) before restoration begins. Plant puzzle-tile visual cues without explaining them.",
+      "screen": "environment_harbor_overview",
+      "skippable": false,
+      "duration_seconds": 5,
+      "interaction": "ambient_then_auto_advance",
+      "blocking": true,
+      "transition_to_next": "zoom_into_dock_boards"
+    },
+    {
+      "step": 4,
+      "name": "level_1_1",
+      "name_display": "レベル 1-1",
+      "goal": "Teach: tiles connect if path has ≤2 turns. First connection is zero-turn (straight line). Player discovers this themselves.",
+      "screen": "puzzle_1_1",
+      "skippable": false,
+      "duration_seconds": 75,
+      "interaction": "puzzle_gameplay",
+      "blocking": true,
+      "transition_to_next": "gentle_level_clear_fade"
+    },
+    {
+      "step": 5,
+      "name": "level_1_2",
+      "name_display": "レベル 1-2",
+      "goal": "Teach: blocked paths require alternate routing. First combo triggered naturally at level end.",
+      "screen": "puzzle_1_2",
+      "skippable": false,
+      "duration_seconds": 90,
+      "interaction": "puzzle_gameplay",
+      "blocking": true,
+      "transition_to_next": "gentle_level_clear_fade"
+    },
+    {
+      "step": 6,
+      "name": "level_1_3",
+      "name_display": "レベル 1-3",
+      "goal": "Complete the teaching arc. Restoration payoff triggered. Second ひなた appearance.",
+      "screen": "puzzle_1_3",
+      "skippable": false,
+      "duration_seconds": 120,
+      "interaction": "puzzle_gameplay",
+      "blocking": true,
+      "transition_to_next": "restoration_animation"
+    },
+    {
+      "step": 7,
+      "name": "material_reward_screen",
+      "name_display": "素材を得る",
+      "goal": "Introduce material economy. Show that puzzles produce tangible island-restoration resources. First 浮木 reward.",
+      "screen": "reward_driftwood",
+      "skippable": false,
+      "duration_seconds": 10,
+      "interaction": "tap_to_collect_then_continue",
+      "blocking": true,
+      "transition_to_next": "slide_to_map"
+    },
+    {
+      "step": 8,
+      "name": "harbor_restored_animation",
+      "name_display": "港が少し、戻ってきた",
+      "goal": "Emotional payoff. Show the island map with one restored area visible. Unlock the map UI. Establish the meta-loop clearly.",
+      "screen": "island_map_restored_harbor",
+      "skippable": false,
+      "duration_seconds": 15,
+      "interaction": "ambient_reveal_then_continue",
+      "blocking": true,
+      "transition_to_next": "normal_gameplay_unlocked",
+      "unlock_events": [
+        "island_map_ui",
+        "level_select_ch1",
+        "material_inventory_ui"
+      ]
+    }
+  ],
+
+  "dropoff_risks": [
+    {
+      "step": 1,
+      "name": "opening_cutscene",
+      "expected_completion_pct": 97,
+      "red_flag_threshold": 82,
+      "risk": "Player exits before cutscene ends — may feel unclear what the game is",
+      "mitigation": "Cutscene limited to 15s with tap-to-advance. The puzzle tile shimmer in panel 3 provides visual intrigue. No tutorial text visible yet — curiosity drives forward. Font is warm, panels are brief."
+    },
+    {
+      "step": 2,
+      "name": "first_hinata_encounter",
+      "expected_completion_pct": 96,
+      "red_flag_threshold": 82,
+      "risk": "Player loses interest if dialogue feels slow or forced",
+      "mitigation": "ひなた's line is single, practical, warm. No lengthy introduction. She doesn't stop walking — action conveys personality. Total screen time 10s."
+    },
+    {
+      "step": 3,
+      "name": "island_overview",
+      "expected_completion_pct": 95,
+      "red_flag_threshold": 80,
+      "risk": "5-second non-interactive screen could feel like a loading screen",
+      "mitigation": "Subtle wind animation and ambient SFX keep the screen alive. The faint puzzle tile glow draws the eye forward. Auto-advances so player isn't waiting. Duration is just long enough to register the visual before the puzzle begins."
+    },
+    {
+      "step": 4,
+      "name": "level_1_1",
+      "expected_completion_pct": 92,
+      "red_flag_threshold": 75,
+      "risk": "Player fails to discover the mechanic without instruction text",
+      "mitigation": "4×4 sparse grid with first pair in straight line — the connection is visually obvious. Glow affordance on touch makes interactivity clear. If player taps a tile and doesn't connect within 8 seconds, the matched tile pulses slightly more urgently. No text still — visual suggestion only."
+    },
+    {
+      "step": 5,
+      "name": "level_1_2",
+      "expected_completion_pct": 87,
+      "red_flag_threshold": 70,
+      "risk": "Obstacle blocking obvious path may frustrate without explanation",
+      "mitigation": "The wall gap is visually unmistakable (broken board texture, dark gap cell). Failed path attempt makes the gap glow briefly — natural cause-effect. The 5×5 grid gives room for the alternate route to be visible. Combo payoff at end rewards forward momentum."
+    },
+    {
+      "step": 6,
+      "name": "level_1_3",
+      "expected_completion_pct": 83,
+      "red_flag_threshold": 65,
+      "risk": "7-pair puzzle may feel long before the payoff",
+      "mitigation": "Board has multiple valid solve orders — player feels in control. Two obstacles are separated so each feels like a discovered challenge not a wall. The mid-board density creates satisfying clearing rhythm. The post-completion restoration cutscene is the largest payoff so far — worth the effort."
+    },
+    {
+      "step": 7,
+      "name": "material_reward_screen",
+      "expected_completion_pct": 91,
+      "red_flag_threshold": 78,
+      "risk": "Reward UI feels arbitrary or confusing first time",
+      "mitigation": "The driftwood visually rises from the dock boards just restored — physical metaphor is clear. The ambient text '集めた素材で、島を直せるかもしれない。' is the only explanation needed. The UI animation is satisfying and brief."
+    },
+    {
+      "step": 8,
+      "name": "harbor_restored_animation",
+      "expected_completion_pct": 89,
+      "red_flag_threshold": 76,
+      "risk": "Map reveal could be underwhelming if visual change is too subtle",
+      "mitigation": "The harbor section of the map transitions from grey to warm color in a visible sweep. One restoration 'complete' marker glows. The surrounding grey map sections are visible — future potential is implied. The 15s duration gives the player time to absorb the change before gameplay opens."
+    }
+  ],
+
+  "d1_retention_setup": {
+    "restoration_areas_completed": 1,
+    "restoration_area_name": "harbor_dock",
+    "hinata_appearances": 2,
+    "hinata_appearance_details": [
+      {"step": 2, "context": "Hands 律 the letter from 渉 at the dock"},
+      {"step": 6, "context": "Passes the restored dock, notices the change, brief warm glance"}
+    ],
+    "material_rewards_received": 1,
+    "first_material": {
+      "type": "driftwood",
+      "display_name_jp": "浮木",
+      "source": "level_1_3_completion"
+    },
+    "island_map_unlocked": true,
+    "map_state_after_ftue": "harbor_area_restored_partial_warm_color",
+    "emotional_hooks_established": [
+      "律 has a purpose (restore the island per the letter)",
+      "ひなた is present and aware — not attached, not distant",
+      "The puzzle-restoration loop is understood without explanation",
+      "The island was beautiful once — and can be again"
+    ],
+    "next_session_pull": "The map shows 2 grey areas adjacent to the harbor — visible but not yet accessible. Player knows what to do next."
+  },
+
+  "teaching_affordances": [
+    {
+      "affordance": "tile_touch_glow",
+      "trigger": "Player taps any puzzle tile",
+      "visual_effect": "Tile emits soft teal glow, brightens by ~40%, pulses once at 0.5s period",
+      "audio_effect": "Soft resonant tap sound — like a wooden block or hollow bamboo, single note",
+      "teaching_function": "Confirms interactivity. Establishes that tiles are 'alive' and selectable."
+    },
+    {
+      "affordance": "path_preview_dotted",
+      "trigger": "Player taps a second tile of the same type as selected tile",
+      "visual_effect": "Dotted path line appears along the valid route (if route exists). Line uses warm ivory color, gentle glow. If no valid route, nothing appears.",
+      "audio_effect": "None — the visual is enough. Absence of audio for invalid is intentional (no punishment sound).",
+      "teaching_function": "Shows the player that a route exists before they commit. Builds spatial understanding of BFS ≤2 turns."
+    },
+    {
+      "affordance": "gap_glow_on_failed_path",
+      "trigger": "Player attempts to connect two tiles and the path is blocked by an obstacle",
+      "visual_effect": "The obstacle cell(s) briefly glow a muted amber-orange for 0.8 seconds. Not harsh — warm and communicative.",
+      "audio_effect": "Single muted low note (not a buzzer — more like a stone dropped into shallow water)",
+      "teaching_function": "Points attention to what's blocking the route without any text. The player's eye goes to the gap naturally."
+    },
+    {
+      "affordance": "tile_settle_animation",
+      "trigger": "Any pair is successfully cleared",
+      "visual_effect": "Remaining tiles shift subtly (2-3px settle movement). Any tile that now has a clear line-of-sight to its match glows slightly brighter than others.",
+      "audio_effect": "None separate — part of the match success sound",
+      "teaching_function": "Guides the player's eye to remaining matches without explicit indication. Board 'breathes' between moves."
+    },
+    {
+      "affordance": "combo_particle_trail",
+      "trigger": "Player clears a second pair within 2000ms of the first",
+      "visual_effect": "The cleared tiles leave a brighter particle trail than single clears. A soft '×2' numeral floats up in teal and fades over 1 second. The board border briefly brightens.",
+      "audio_effect": "Second ascending note added to the match chime — creating a brief harmonic. Not fanfare, just 'more'.",
+      "teaching_function": "Rewards speed without demanding it. Player discovers that rapid clearing has a different feel — intrinsically motivating."
+    },
+    {
+      "affordance": "restoration_world_pulse",
+      "trigger": "Level complete",
+      "visual_effect": "The background scene behind the puzzle board shifts slightly warmer — a single-frame color temperature change (+5% saturation). Barely perceptible on first level, accumulates over time.",
+      "audio_effect": "Ambient ocean wave sound rises briefly then settles — like the island exhaling.",
+      "teaching_function": "Links puzzle completion to world change. The connection is felt before it is shown in the level 1-3 restoration cutscene."
+    },
+    {
+      "affordance": "hinata_passive_presence",
+      "trigger": "Level 1-3 completion restoration cutscene",
+      "visual_effect": "ひなた in the background, mid-distance. She is not highlighted or zoomed in. Her presence is ambient until she turns to glance at 律.",
+      "audio_effect": "Wind chime note coincides with her glance — a single soft tone",
+      "teaching_function": "Emotional affordance — signals to the player that their actions are noticed by someone who matters."
+    },
+    {
+      "affordance": "material_rise_animation",
+      "trigger": "First material reward (driftwood/浮木) collected after level 1-3",
+      "visual_effect": "Material item rises from dock boards with a gentle float path into the inventory UI corner. Warm glow surrounds it during flight. Landing in UI slot triggers a small ripple effect.",
+      "audio_effect": "Soft wind-chime ascent (3 notes, rising) matching the float duration",
+      "teaching_function": "Makes the material economy feel tangible and pleasurable — not transactional. The wood rising from the dock it just helped restore is a closed visual metaphor."
+    },
+    {
+      "affordance": "idle_urgency_pulse",
+      "trigger": "Player has tapped a tile but made no second tap within 8 seconds",
+      "visual_effect": "The selected tile pulses slightly more urgently (period shortens from 0.5s to 0.3s). The matching pair tile brightens very slightly.",
+      "audio_effect": "None",
+      "teaching_function": "Gentle nudge toward the correct action. Not instructional, not punishing — just slightly more energetic invitation."
+    }
+  ],
+
+  "copy_spec": {
+    "tone_notes": "All tutorial copy is Japanese, written in the gentle 'healing game' register. No exclamation marks. No directive language ('tap here', 'do this'). Emotional and observational rather than instructional. The player is a thoughtful adult arriving somewhere new, not a student being taught.",
+    "panel_texts": [
+      {
+        "location": "opening_panel_1",
+        "text_jp": "五年、ずっと走り続けてきた。",
+        "character_count": 14,
+        "voice": "律 internal monologue"
+      },
+      {
+        "location": "opening_panel_2",
+        "text_jp": "島は、予想よりずっと静かだった。",
+        "character_count": 17,
+        "voice": "律 internal monologue"
+      },
+      {
+        "location": "opening_panel_3",
+        "text_jp": "なにかが、ここで待っている気がした。",
+        "character_count": 18,
+        "voice": "律 internal monologue"
+      },
+      {
+        "location": "hinata_encounter",
+        "text_jp": "船で見かけました。渉のおじいちゃんからの手紙、たぶんあなた宛てだと思って。",
+        "character_count": 37,
+        "voice": "ひなた dialogue"
+      },
+      {
+        "location": "island_overview",
+        "text_jp": "手紙には、島を頼むと書いてあった。",
+        "character_count": 18,
+        "voice": "律 internal monologue"
+      },
+      {
+        "location": "level_1_3_hinata_completion",
+        "text_jp": "少し、変わりましたね。",
+        "character_count": 10,
+        "voice": "ひなた dialogue"
+      },
+      {
+        "location": "material_reward_ambient",
+        "text_jp": "集めた素材で、島を直せるかもしれない。",
+        "character_count": 19,
+        "voice": "ambient game text (not attributed to character)"
+      }
+    ],
+    "prohibited_patterns": [
+      "「タップしてください」",
+      "「ここを押してください」",
+      "「チュートリアル」",
+      "「最初は…」",
+      "Exclamation marks in tutorial copy",
+      "Any text that presumes the player is confused"
+    ]
+  },
+
+  "scaffolding_progression": {
+    "description": "Complexity increases from 1-1 to 1-3 across four dimensions simultaneously, ensuring no single dimension overwhelms the player.",
+    "dimensions": [
+      {
+        "dimension": "grid_size",
+        "1_1": "4×4 (16 cells)",
+        "1_2": "5×5 (25 cells)",
+        "1_3": "5×5 (25 cells, same grid but denser fill)"
+      },
+      {
+        "dimension": "tile_pair_count",
+        "1_1": 4,
+        "1_2": 6,
+        "1_3": 7
+      },
+      {
+        "dimension": "obstacles",
+        "1_1": "none",
+        "1_2": "1 gap (single blocked straight-line path)",
+        "1_3": "2 gaps (separated, each blocking a different pair)"
+      },
+      {
+        "dimension": "routing_complexity",
+        "1_1": "First pair: 0 turns (straight line). Others: max 1 turn.",
+        "1_2": "Most pairs: 1 turn. One pair requires routing around obstacle. Combo introduced.",
+        "1_3": "All pairs require 1-2 turns. Two obstacle avoidances. Multiple valid board-clearing orders."
+      }
+    ]
+  }
+}

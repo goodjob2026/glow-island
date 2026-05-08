@@ -1,0 +1,235 @@
+{
+  "version": "2.0",
+  "product": "Glow Island",
+  "generated_at": "2026-05-08T00:00:00.000Z",
+  "source_refs": [
+    ".allforai/game-design/economy-model.json",
+    ".allforai/product-concept/concept-baseline.json"
+  ],
+  "currencies": {
+    "soft": "beach_coins",
+    "hard": "glow_stones"
+  },
+  "soft_currency": {
+    "id": "beach_coins",
+    "name": "沙滩币",
+    "initial_grant": 200,
+    "sources": ["level_clear", "daily_login", "daily_tasks", "event_levels", "zen_mode"],
+    "sinks": ["basic_boosters", "basic_decoration", "material_synthesis_speed"],
+    "daily_earn_active": 120,
+    "daily_spend_active": 80,
+    "cap": 9999
+  },
+  "hard_currency": {
+    "id": "glow_stones",
+    "name": "丹青石",
+    "initial_grant": 0,
+    "sources": ["iap_purchase", "monthly_card_daily", "milestone_achievement", "special_event"],
+    "sinks": ["continue_level", "skip_level", "premium_booster", "limited_decoration", "seasonal_tile_skin", "npc_interaction_props"],
+    "free_player_monthly_max": 63,
+    "monthly_card_monthly": 300
+  },
+  "iap_skus": [
+    {
+      "sku_id": "small_pack",
+      "name": "一抔沙",
+      "price_cny": 6,
+      "price_usd": 0.99,
+      "glow_stones": 6,
+      "bonus": null,
+      "purchase_limit": null,
+      "positioning": "低门槛入门包，应急续命"
+    },
+    {
+      "sku_id": "starter_pack",
+      "name": "新玩家礼包",
+      "price_cny": 18,
+      "price_usd": 2.99,
+      "glow_stones": 50,
+      "bonus": ["beach_coins_300", "lighthouse_figurine_decoration"],
+      "purchase_limit": 1,
+      "eligibility_window_days": 7,
+      "positioning": "新玩家首充转化锚，限购一次"
+    },
+    {
+      "sku_id": "medium_pack",
+      "name": "一把贝壳",
+      "price_cny": 25,
+      "price_usd": 3.99,
+      "glow_stones": 33,
+      "bonus": ["tile_skin_random_seasonal_x1"],
+      "purchase_limit": null,
+      "positioning": "主力单次购买包，IAP主推位"
+    },
+    {
+      "sku_id": "monthly_card",
+      "name": "月卡",
+      "price_cny": 30,
+      "price_usd": 4.99,
+      "glow_stones": 300,
+      "delivery": "10_per_day_x30",
+      "bonus": ["moonlight_tile_skin_x1", "moonlight_island_decoration_x1"],
+      "purchase_limit": null,
+      "is_subscription": true,
+      "renewal_reminder_days": 3,
+      "positioning": "订阅复购产品，ARPU锚点"
+    },
+    {
+      "sku_id": "large_pack",
+      "name": "一篮珊瑚",
+      "price_cny": 68,
+      "price_usd": 9.99,
+      "glow_stones": 100,
+      "bonus": ["limited_island_decoration_x1", "tile_skin_x2"],
+      "purchase_limit": null,
+      "positioning": "高价值单次大额消费包"
+    },
+    {
+      "sku_id": "mega_pack",
+      "name": "灯塔礼包",
+      "price_cny": 128,
+      "price_usd": 19.99,
+      "glow_stones": 240,
+      "bonus": ["limited_island_decoration_x2", "tile_skin_x3", "npc_interaction_prop_x1"],
+      "purchase_limit": null,
+      "positioning": "重度付费用户大礼包，节日限时"
+    }
+  ],
+  "chapter_materials": [
+    {
+      "material_id": "driftwood",
+      "name": "浮木",
+      "chapter": 1,
+      "chapter_name": "破旧码头",
+      "total_required": 120,
+      "drop_rates": {"1star": 1, "2star": 2, "3star": 3},
+      "avg_earn_per_level": 2.0,
+      "levels_to_complete": "50-65",
+      "synthesis": null,
+      "synthesis_cost_beach_coins": 0
+    },
+    {
+      "material_id": "tropical_flower",
+      "name": "热带花",
+      "chapter": 2,
+      "chapter_name": "废弃花园",
+      "total_required": 160,
+      "drop_rates": {"1star": 1, "2star": 2, "3star": 3},
+      "avg_earn_per_level": 2.0,
+      "levels_to_complete": "65-80",
+      "synthesis": {"input_material": "driftwood", "input_qty": 3, "output_qty": 1},
+      "synthesis_cost_beach_coins": 30
+    },
+    {
+      "material_id": "coral_fragment",
+      "name": "珊瑚碎片",
+      "chapter": 3,
+      "chapter_name": "沉船遗址",
+      "total_required": 200,
+      "drop_rates": {"1star": 1, "2star": 2, "3star": 3},
+      "avg_earn_per_level": 2.2,
+      "levels_to_complete": "75-90",
+      "synthesis": {"input_material": "tropical_flower", "input_qty": 3, "output_qty": 1},
+      "synthesis_cost_beach_coins": 50
+    },
+    {
+      "material_id": "starfish",
+      "name": "海星",
+      "chapter": 4,
+      "chapter_name": "神秘洞窟",
+      "total_required": 240,
+      "drop_rates": {"1star": 1, "2star": 2, "3star": 4},
+      "avg_earn_per_level": 2.5,
+      "levels_to_complete": "80-95",
+      "synthesis": {"input_material": "coral_fragment", "input_qty": 3, "output_qty": 1},
+      "synthesis_cost_beach_coins": 70
+    },
+    {
+      "material_id": "ancient_tile",
+      "name": "古陶片",
+      "chapter": 5,
+      "chapter_name": "遗忘神庙",
+      "total_required": 280,
+      "drop_rates": {"1star": 1, "2star": 3, "3star": 5},
+      "avg_earn_per_level": 3.0,
+      "levels_to_complete": "80-95",
+      "synthesis": {"input_material": "starfish", "input_qty": 3, "output_qty": 1},
+      "synthesis_cost_beach_coins": 100
+    },
+    {
+      "material_id": "moonlight_crystal",
+      "name": "月光水晶",
+      "chapter": 6,
+      "chapter_name": "岛屿之巅",
+      "total_required": 320,
+      "drop_rates": {"1star": 1, "2star": 3, "3star": 6},
+      "avg_earn_per_level": 3.5,
+      "levels_to_complete": "80-95",
+      "synthesis": {"input_material": "ancient_tile", "input_qty": 3, "output_qty": 1},
+      "synthesis_cost_beach_coins": 150
+    }
+  ],
+  "no_energy_system": true,
+  "no_forced_iap_popup": true,
+  "iap_trigger_rules": {
+    "min_failures_before_prompt": 3,
+    "forbidden": [
+      "popup_during_gameplay",
+      "forced_fullscreen_purchase_block",
+      "fomo_countdown_timers",
+      "commercial_content_in_narrative_scenes",
+      "prompt_on_less_than_3_consecutive_failures"
+    ],
+    "allowed": [
+      "player_opens_shop_voluntarily",
+      "inline_hint_on_failure_screen_after_3plus_failures",
+      "chapter_milestone_soft_recommendation",
+      "moonlight_card_expiry_reminder_3days_prior"
+    ]
+  },
+  "arpu_targets": {
+    "d1": "$0.15",
+    "d7": "$0.60",
+    "d30": "$1.50",
+    "d90": "$3.20",
+    "paying_user_d30": "$15.00",
+    "iap_conversion_rate": "3%",
+    "monthly_card_renewal_rate": "60%"
+  },
+  "revenue_mix": {
+    "subscription_monthly_card": "45%",
+    "one_time_packs": "35%",
+    "micro_spend_continue_booster": "20%"
+  },
+  "errc_commitments": {
+    "eliminate": [
+      "energy_life_system",
+      "countdown_levels",
+      "forced_purchase_popups",
+      "pvp_leaderboards",
+      "forced_social_guild_obligations",
+      "progress_paywalls"
+    ],
+    "reduce": [
+      "artificial_difficulty_walls",
+      "high_density_timed_events",
+      "intrusive_iap_prompts",
+      "repetitive_daily_obligations",
+      "fake_discount_pricing"
+    ],
+    "raise": [
+      "match_satisfying_combo_feedback",
+      "art_quality_animal_crossing_style",
+      "narrative_emotional_depth",
+      "iap_perceived_value",
+      "player_purchase_agency"
+    ],
+    "create": [
+      "progressive_island_visual_restoration",
+      "subtle_romance_storyline",
+      "lighthouse_keeper_memory_fragments",
+      "zen_mode_unlimited_casual_play",
+      "cross_chapter_synthesis_system"
+    ]
+  }
+}

@@ -1,0 +1,276 @@
+{
+  "version": "2.0",
+  "date": "2026-05-08",
+  "source": "puzzle-mechanics-spec v2.0",
+  "description": "Glow Island 谜题设计节点机器可读摘要",
+
+  "path_rules": {
+    "max_turns": 2,
+    "portal_turn_cost": 0,
+    "edge_traverse": true,
+    "min_match_count": 2,
+    "path_length_limit": null,
+    "same_type_required": true,
+    "blocked_by_occupied_cells": true,
+    "empty_cell_passable": true,
+    "algorithm": "BFS",
+    "bfs_state": "(x, y, last_direction, turns_used)",
+    "portal_bfs_hint": "遇到 portal_entry 格子，将 portal_exit 坐标以相同 (direction, turns_used) 入队，不增加转弯计数"
+  },
+
+  "tile_types_count": 20,
+  "tile_types": [
+    { "id": "tile_01", "code": "T01", "name": "珊瑚橙",   "color_hex": "#FF8C5A", "unlock_chapter": 1, "theme": "海边码头" },
+    { "id": "tile_02", "code": "T02", "name": "海浪蓝",   "color_hex": "#4DA6D4", "unlock_chapter": 1, "theme": "海边码头" },
+    { "id": "tile_03", "code": "T03", "name": "沙滩米",   "color_hex": "#E8D5A3", "unlock_chapter": 1, "theme": "海边码头" },
+    { "id": "tile_04", "code": "T04", "name": "海草绿",   "color_hex": "#7BC67A", "unlock_chapter": 1, "theme": "海边码头" },
+    { "id": "tile_05", "code": "T05", "name": "灯笼黄",   "color_hex": "#FFD166", "unlock_chapter": 2, "theme": "中央小镇" },
+    { "id": "tile_06", "code": "T06", "name": "石板灰",   "color_hex": "#A0A0A0", "unlock_chapter": 2, "theme": "中央小镇" },
+    { "id": "tile_07", "code": "T07", "name": "砖瓦红",   "color_hex": "#C0504D", "unlock_chapter": 2, "theme": "中央小镇" },
+    { "id": "tile_08", "code": "T08", "name": "暖木棕",   "color_hex": "#8B5E3C", "unlock_chapter": 2, "theme": "中央小镇" },
+    { "id": "tile_09", "code": "T09", "name": "薰衣草紫", "color_hex": "#B08DCA", "unlock_chapter": 3, "theme": "花田山坡" },
+    { "id": "tile_10", "code": "T10", "name": "粉樱",     "color_hex": "#F4A7B9", "unlock_chapter": 3, "theme": "花田山坡" },
+    { "id": "tile_11", "code": "T11", "name": "晨雾白",   "color_hex": "#EAF0F6", "unlock_chapter": 3, "theme": "花田山坡" },
+    { "id": "tile_12", "code": "T12", "name": "苔藓绿",   "color_hex": "#4E7C59", "unlock_chapter": 3, "theme": "花田山坡" },
+    { "id": "tile_13", "code": "T13", "name": "深林棕",   "color_hex": "#5C4033", "unlock_chapter": 4, "theme": "森林露营地" },
+    { "id": "tile_14", "code": "T14", "name": "营火橙",   "color_hex": "#E07832", "unlock_chapter": 4, "theme": "森林露营地" },
+    { "id": "tile_15", "code": "T15", "name": "星空靛",   "color_hex": "#3D4A8A", "unlock_chapter": 4, "theme": "森林露营地" },
+    { "id": "tile_16", "code": "T16", "name": "萤光绿",   "color_hex": "#A3E635", "unlock_chapter": 4, "theme": "森林露营地" },
+    { "id": "tile_17", "code": "T17", "name": "温泉白",   "color_hex": "#F0EAE2", "unlock_chapter": 5, "theme": "温泉山谷" },
+    { "id": "tile_18", "code": "T18", "name": "矿物蓝",   "color_hex": "#6EB5C0", "unlock_chapter": 5, "theme": "温泉山谷" },
+    { "id": "tile_19", "code": "T19", "name": "夜深蓝",   "color_hex": "#1A2A4A", "unlock_chapter": 6, "theme": "夜晚灯塔" },
+    { "id": "tile_20", "code": "T20", "name": "灯塔金",   "color_hex": "#FFB830", "unlock_chapter": 6, "theme": "夜晚灯塔" }
+  ],
+
+  "obstacles": [
+    {
+      "id": "ice_block",
+      "name": "冰封块",
+      "name_en": "Ice Block",
+      "unlock_chapter": 2,
+      "clear_method": "adjacent_match",
+      "clear_hits": "1~3 (等于层数)",
+      "blocks_path": false,
+      "blocks_selection": true,
+      "permanent": false,
+      "is_new_in_v2": false
+    },
+    {
+      "id": "weed",
+      "name": "杂草",
+      "name_en": "Weed",
+      "unlock_chapter": 2,
+      "clear_method": "adjacent_match",
+      "clear_hits": 1,
+      "spread_interval_s": 15,
+      "blocks_path": false,
+      "blocks_selection": false,
+      "permanent": false,
+      "is_new_in_v2": false
+    },
+    {
+      "id": "chain_lock",
+      "name": "锁链",
+      "name_en": "Chain Lock",
+      "unlock_chapter": 3,
+      "clear_method": "direct_match",
+      "clear_hits": "1~3 (由关卡JSON指定)",
+      "blocks_path": false,
+      "blocks_selection": false,
+      "permanent": false,
+      "tile_survives_until_final_match": true,
+      "is_new_in_v2": false
+    },
+    {
+      "id": "portal",
+      "name": "传送门",
+      "name_en": "Portal",
+      "unlock_chapter": 3,
+      "clear_method": "none",
+      "turn_cost": 0,
+      "blocks_path": false,
+      "permanent": true,
+      "pairs_per_level": "1+ (由关卡JSON指定)",
+      "is_new_in_v2": false
+    },
+    {
+      "id": "single_path_corridor",
+      "name": "单路径通道",
+      "name_en": "Single-Path Corridor",
+      "unlock_chapter": 4,
+      "clear_method": "none",
+      "blocks_path": true,
+      "bypass_allowed": false,
+      "permanent": true,
+      "is_new_in_v2": true
+    },
+    {
+      "id": "wooden_crate",
+      "name": "木箱",
+      "name_en": "Wooden Crate",
+      "unlock_chapter": 4,
+      "clear_method": "none",
+      "blocks_path": true,
+      "blocks_selection": true,
+      "permanent": true,
+      "is_new_in_v2": true
+    },
+    {
+      "id": "water_current",
+      "name": "水流",
+      "name_en": "Water Current",
+      "unlock_chapter": 5,
+      "clear_method": "none",
+      "direction_change_interval_s": 5,
+      "blocks_path": true,
+      "dynamic": true,
+      "permanent": true,
+      "is_new_in_v2": true
+    },
+    {
+      "id": "spreading_obstacle",
+      "name": "扩散障碍（藤蔓/苔藓）",
+      "name_en": "Spreading Obstacle (Vine/Moss)",
+      "unlock_chapter": 6,
+      "clear_method": "adjacent_match",
+      "clear_hits": 1,
+      "spread_interval": "每步1格（步数制）",
+      "spread_rule": "上下左右各1格",
+      "failure_condition": "占满所有有效图块格子",
+      "failure_warning_threshold": 0.80,
+      "blocks_path": false,
+      "blocks_selection": true,
+      "permanent": false,
+      "variants": ["vine", "moss"],
+      "is_new_in_v2": true
+    }
+  ],
+
+  "special_blocks": [
+    {
+      "id": "bomb",
+      "name": "炸弹",
+      "name_en": "Bomb",
+      "trigger": "3连击必定生成 / 关卡JSON预置",
+      "effect": "消除以炸弹块为中心的 3×3 范围内所有图块（含障碍物及覆盖层）",
+      "effect_range": { "shape": "square", "radius": 1, "size": "3x3" },
+      "animation_duration_s": 0.5,
+      "skippable": false,
+      "spawn_on_combo": 3
+    },
+    {
+      "id": "windmill",
+      "name": "风车",
+      "name_en": "Windmill",
+      "trigger": "4连击必定生成 / 关卡JSON预置",
+      "effect": "清除风车块所在整行+整列（十字清除，行消和列消同时触发）",
+      "effect_range": { "shape": "cross", "span": "full_row_and_column" },
+      "animation_duration_s": 0.4,
+      "skippable": false,
+      "spawn_on_combo": 4
+    },
+    {
+      "id": "lantern",
+      "name": "灯光",
+      "name_en": "Lantern",
+      "trigger": "仅关卡JSON预置（不可通过连击生成）",
+      "effect": "自动寻路连接距离最近的同类型图块并消除双方；无目标时持续脉冲等待",
+      "effect_range": { "shape": "auto", "target": "nearest_same_type", "max_search_radius": null },
+      "animation_duration_s": 0.3,
+      "skippable": false,
+      "spawn_on_combo": null
+    },
+    {
+      "id": "wave",
+      "name": "海浪",
+      "name_en": "Wave",
+      "trigger": "仅关卡JSON预置（不可通过连击生成）",
+      "effect": "重新随机排列棋盘上所有图块位置（保持各类型图块数量不变），最多3次自动重排",
+      "effect_range": { "shape": "full_board", "preserves_type_counts": true, "max_auto_retry": 3 },
+      "animation_duration_s": 0.8,
+      "skippable": false,
+      "spawn_on_combo": null
+    }
+  ],
+
+  "board_events": [
+    {
+      "id": "tile_fall",
+      "name": "方块下落",
+      "name_en": "Tile Fall (Gravity)",
+      "unlock_chapter": 5,
+      "trigger": "每次消除操作完成后立即触发",
+      "easing": "ease_in_bounce",
+      "duration_per_cell_s": 0.08,
+      "enabled_by_default": false
+    },
+    {
+      "id": "tile_slide",
+      "name": "方块滑落",
+      "name_en": "Tile Slide (Horizontal)",
+      "unlock_chapter": 5,
+      "trigger": "tile_fall 完成后，若图块落在 slide_surface 格子上",
+      "slide_direction": "specified_by_level_json",
+      "easing": "ease_out",
+      "duration_s": 0.12,
+      "enabled_by_default": false
+    },
+    {
+      "id": "board_rotate",
+      "name": "棋盘旋转",
+      "name_en": "Board Section Rotate",
+      "unlock_chapter": 5,
+      "trigger": "每 N 步操作后（N 由关卡JSON指定，典型值 3–5）",
+      "rotation_direction": "clockwise_90deg",
+      "easing": "ease_in_out",
+      "duration_s": 0.5,
+      "warning_flash_before_s": 1.0,
+      "enabled_by_default": false,
+      "restrictions": ["不可包含 portal 格子", "不可包含 single_path_corridor 格子"]
+    },
+    {
+      "id": "water_flow",
+      "name": "水流移动",
+      "name_en": "Water Flow",
+      "unlock_chapter": 5,
+      "trigger": "每 5 秒定时触发",
+      "trigger_interval_s": 5,
+      "wrap_around": true,
+      "duration_s": 0.3,
+      "enabled_by_default": false
+    },
+    {
+      "id": "vine_spread",
+      "name": "藤蔓扩散",
+      "name_en": "Vine Spread",
+      "unlock_chapter": 6,
+      "trigger": "每 10 秒定时触发",
+      "trigger_interval_s": 10,
+      "spread_radius_per_interval": 1,
+      "duration_s": 0.5,
+      "enabled_by_default": false
+    }
+  ],
+
+  "combo_window_ms": 2000,
+  "combo_thresholds": [
+    { "combo_count": 1, "multiplier": 1.0, "effects": [] },
+    { "combo_count": 2, "multiplier": 1.5, "effects": ["音效增强"] },
+    { "combo_count": 3, "multiplier": 2.0, "effects": ["音效增强", "特效升级", "全屏微震", "炸弹块生成"] },
+    { "combo_count": 4, "multiplier": 3.0, "effects": ["音效增强", "特效升级", "屏幕震动", "粒子爆发", "风车块生成"] }
+  ],
+  "combo_reset_conditions": [
+    "连续两次匹配间隔超过 2000ms",
+    "棋盘当前无任何可用匹配对"
+  ],
+
+  "gameplay_feel_reference": "天天爱消除 (Chinese Candy Crush)",
+  "gameplay_feel_principles": [
+    "每次成功匹配必须有清晰、爽快的视觉+音效反馈",
+    "连击链应产生渐进式增强的爆炸/粒子特效，3连击以上全屏震动",
+    "特殊块激活时动画不可跳过，持续时间控制在0.3~0.8s以保持节奏感",
+    "障碍物被清除时应有专属'解锁'音效+碎裂/解冻/断链粒子效果",
+    "重力下落使用弹性缓动(ease_in_bounce)，强化物理真实感",
+    "每章首次引入新机制时，通过引导关卡（无惩罚）让玩家自然学会"
+  ]
+}

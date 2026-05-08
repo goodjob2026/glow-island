@@ -1,0 +1,495 @@
+{
+  "schema": "character-arc-v1",
+  "generated_at": "2026-05-08T12:00:00Z",
+  "project": "glow-island",
+  "setting": "輝島 (Kagayaki-jima)",
+  "characters": [
+    {
+      "character_id": "yamada-ritsu",
+      "name_jp": "山田律",
+      "name_en": "Yamada Ritsu",
+      "age": 29,
+      "gender": "male",
+      "role": "protagonist",
+      "arc_type": "positive",
+      "occupation": "東京の広告クリエイティブ・ディレクター (Tokyo advertising creative director)",
+      "wound": "5年間の燃え尽き症候群。意味と美しさへの繋がりを失った。数字と成果だけを追い続け、自分が何のために働いているかを忘れた。",
+      "lie": "「成功こそが唯一重要なことだ。美しさは無駄なものだ。」",
+      "truth": "「手仕事には本質的な価値がある。今この瞬間にいることで十分だ。」",
+      "signature_object": "worn leather notebook (worn but still carried)",
+      "chapter_beats": [
+        {
+          "chapter": 1,
+          "location": "港／磯辺の波止場 (Harbor / Isobe's pier)",
+          "emotional_state_entry": "抵抗と強張り。島に来たことを後悔している。渉の手紙の意味が理解できない。すべてが非効率に見える。",
+          "turning_point": "磯部健三に網の結び方を教わる中で、手が動き始め、考えることをやめる瞬間がある。初めて数時間、仕事のことを忘れた。",
+          "emotional_state_exit": "わずかな緩み。まだ心を閉じているが、体が覚えた感覚が残っている。",
+          "key_dialogue": "「これは……仕事と関係ないですよね」「関係ある必要がどこにある」",
+          "internal_monologue": "手が勝手に動いていた。頭が静かになるのは、いつぶりだろう。"
+        },
+        {
+          "chapter": 2,
+          "location": "陶芸工房 (Pottery studio)",
+          "emotional_state_entry": "緊張した完璧主義。土を触りながら「上手くやらなければ」という衝動に駆られる。",
+          "turning_point": "桐島梅子に「本当に書きたかった広告は一本でもあったか」と問われ、答えられない自分に気づく。壊れた壷を眺めながら、観客のいない美しさというものを初めて考える。",
+          "emotional_state_exit": "完璧主義の鎧にひびが入る。何かを「誰かに見せるため」ではなく作ることへの、遠い記憶が蘇る。",
+          "key_dialogue": "「本当に書きたかった広告が、一本でもありましたか」「……思い出せません」「それが答えですよ」",
+          "internal_monologue": "壊れた壷を誰も捨てていなかった。ここでは、壊れたものにも居場所がある。"
+        },
+        {
+          "chapter": 3,
+          "location": "森と花野 (Forest and flower fields)",
+          "emotional_state_entry": "少しだけ開いた好奇心。まだ防衛的だが、島の景色に引き寄せられ始めている。",
+          "turning_point": "海野夏帆に案内された花野で、突然スケッチしたくなる衝動を感じる。5年ぶりに手帳を取り出す。描く理由も、見せる相手もいない。それでも描く。",
+          "emotional_state_exit": "本物の驚きと柔らかな喜び。子どもの頃に感じた「美しい」という感覚が、胸の奥で灯り始める。",
+          "key_dialogue": "「名前、全部知ってるんですか」「名前を知ると、ちゃんと見えるようになるから」",
+          "internal_monologue": "誰にも見せない絵を描いた。それなのに、手が震えていた。なぜだろう。"
+        },
+        {
+          "chapter": 4,
+          "location": "石畳の小道 (Stone path, solo)",
+          "emotional_state_entry": "静けさの中の不安。誰もいない。何もしなくていい。その自由が怖い。",
+          "turning_point": "道の途中で座り込み、誰にも送らない手紙を書く。東京の自分へ、あるいは5年前の自分へ。書き終えて、破らずにポケットにしまう。",
+          "emotional_state_exit": "沈黙と和解しつつある。自分の内側に、まだ何かが残っていることに気づく。",
+          "key_dialogue": "（内心）「親愛なる律へ。君はずっと走っていた。でも何から逃げていたんだろう。」",
+          "internal_monologue": "石畳の隙間に、小さな草が生えていた。誰も植えていないのに、そこに生きていた。"
+        },
+        {
+          "chapter": 5,
+          "location": "崖の展望台 (Cliff lookout)",
+          "emotional_state_entry": "身体的な緊張と、それに伴う内面の覚醒。崖を登ることへの不安が、内面の試練と重なる。",
+          "turning_point": "崖の頂上に立ち、海を見渡す。予定より長く滞在することを選ぶ。帰らなければいけない理由が、思い浮かばない。",
+          "emotional_state_exit": "静かな決意。島にいることを能動的に選んだ、初めての瞬間。",
+          "key_dialogue": "「もう少し、ここにいます」（誰に言うわけでもなく、ただ声に出した）",
+          "internal_monologue": "東京から緊急の連絡が来ていた。でも海を見ながら、返信しなかった。初めて、できなかったのではなく、しなかった。"
+        },
+        {
+          "chapter": 6,
+          "location": "灯台 (Lighthouse)",
+          "emotional_state_entry": "穏やかな覚悟。修復を完了させることへの、静かな責任感。渉の手紙の意味を、もうすぐ理解できる気がしている。",
+          "turning_point": "灯台の明かりが灯る。丸山冬子から渉の最後の日記を受け取り、なぜ自分が選ばれたかを知る。「美しいものを見る目を、まだ持っている人間に頼みたかった」という言葉に、崩れる。",
+          "emotional_state_exit": "解放と受容。成功ではなく「在ること」に価値があると、初めて身体で理解する。",
+          "key_dialogue": "「なぜ、私を選んだんですか」「渉さんの日記に書いてありました——『あの人はまだ、美しいものに驚ける』と」",
+          "internal_monologue": "灯台の光が海を照らした。渉さんは知っていたんだ。私が忘れたと思っていたものを、まだ持っていることを。"
+        }
+      ]
+    },
+    {
+      "character_id": "maruyama-hinata",
+      "name_jp": "丸山ひなた",
+      "name_en": "Maruyama Hinata",
+      "age": 24,
+      "gender": "female",
+      "role": "romantic_interest",
+      "arc_type": "parallel-revelation",
+      "occupation": "大阪のデザイン学校から帰郷 (Returned from Osaka design school)",
+      "wound": "祖父の死と帰郷の間で引き裂かれた自分。島を愛しながらも、島にいることへの罪悪感と未来への不安を抱えている。",
+      "lie": "「祖父の記憶は大切にしまっておくべきだ。他人と共有するものではない。」",
+      "truth": "「記憶は分かち合うことで、初めて生き続ける。」",
+      "signature_object": "祖父の形見の指輪をコードに通したもの (grandfather's fisherman ring on a cord)",
+      "romantic_thread_note": "恋愛は暗示のみ。告白なし、キスなし。律への感情は行動と間合いで表現される。",
+      "chapter_beats": [
+        {
+          "chapter": 1,
+          "emotional_state": "フェリーの中で同乗者（律）を一瞬だけ意識する。祖父が死んだ島へ帰ることへの、複雑な感情を抱えている。",
+          "shared_moment": "波止場で荷物を降ろすとき、律と一瞬目が合う。ひなたは振り返らずに歩いて行く。",
+          "reveals_about_wataru": null,
+          "what_she_does": "フェリーの甲板から島を見つめ、指輪のコードを握りしめる。波止場に降りて、律の横を通り過ぎる。振り返らない。",
+          "what_she_says": null,
+          "presence_note": "brief — 1回の視線交差のみ"
+        },
+        {
+          "chapter": 2,
+          "emotional_state": "祖父の工房の整理を始めている。律が陶芸工房にいることを偶然知り、通りかかる。",
+          "shared_moment": "工房で律が土をこねているのを見て、少し立ち止まる。梅子に挨拶してから去る際、律に一言だけ言う。",
+          "reveals_about_wataru": "「おじいちゃんも、ここで何か作っていたみたいで」（梅子に向けた言葉として）",
+          "what_she_does": "工房の入口で立ち止まり、律の手元を2秒ほど見てから、梅子に短く声をかけて去る。",
+          "what_she_says": "「……うまくいってますか」（律に向けて、小声で）",
+          "presence_note": "brief — 立ち寄り2分程度"
+        },
+        {
+          "chapter": 3,
+          "emotional_state": "花野は祖父と一緒に歩いた場所。ここに律がいることに、複雑な気持ちと小さな安堵を感じる。",
+          "shared_moment": "夏帆の案内で律が花野にいるのを見かけ、少し先を歩きながらガイド役を引き継ぐ瞬間がある。軽い笑いが漏れる。",
+          "reveals_about_wataru": "「祖父がよくここで絵を描いていたって、夏帆さんに聞いたんです。私は知らなかった」",
+          "what_she_does": "花野の中を少し先を歩き、振り返りながら植物の名前を言う。律がスケッチしているのを見て、小さく笑う。",
+          "what_she_says": "「それ、ヤマブキソウ。描けましたか」",
+          "presence_note": "full — 花野の場面を共に過ごす"
+        },
+        {
+          "chapter": 4,
+          "emotional_state": "石畳の道に、ひなたの痕跡が残っている。最近通ったことが分かる。",
+          "shared_moment": "律は一人でいる。しかしベンチに忘れられた花束と、石に書かれた文字（「また来る」）がひなたの存在を示す。",
+          "reveals_about_wataru": "石畳のそばの木に、渉が昔つけた小さなマークが残っている。ひなたが同じマークの下に、小さな石を置いていた。",
+          "what_she_does": "この章には登場しないが、痕跡を残している。ベンチに野花を一束置き、石に「また来る」と書いた。",
+          "what_she_says": null,
+          "presence_note": "indirect — 痕跡のみ"
+        },
+        {
+          "chapter": 5,
+          "emotional_state": "崖の展望台で律と会うことを、半ば意図していた。祖父の日記を持ってきている。",
+          "shared_moment": "釣りを教えながら、渉の日記の一節を声に出して読む。この章の感情的な核心。",
+          "reveals_about_wataru": "「『夜、星を見ていると、自分がとても小さいことが分かる。でもそれが、怖くない。むしろ軽くなる』——おじいちゃんの日記。この場所で書いたみたい」",
+          "what_she_does": "釣り竿の持ち方を律の後ろから教える。しばらく沈黙が続いた後、ポケットから日記を出して読む。読み終えて、また沈黙。",
+          "what_she_says": "「おじいちゃんが、あなたに手紙を書いた理由——少し分かる気がしてきた」",
+          "presence_note": "full — 感情的に最も重要な共有場面"
+        },
+        {
+          "chapter": 6,
+          "emotional_state": "祖父の仕事が完成する日。悲しみと誇りが混ざった、静かな気持ち。",
+          "shared_moment": "灯台まで、二人で黙ったまま歩く。言葉はない。",
+          "reveals_about_wataru": "（冬子から渡された最後の日記により、渉がひなたのことも律のことも、同じ愛情で思っていたことが分かる）",
+          "what_she_does": "律の少し後ろを歩き、灯台の前で横に並ぶ。灯台の光が点いた瞬間、指輪のコードを胸に当てる。",
+          "what_she_says": null,
+          "presence_note": "full — 無言の同行"
+        }
+      ]
+    },
+    {
+      "character_id": "maruyama-wataru",
+      "name_jp": "丸山渉",
+      "name_en": "Maruyama Wataru",
+      "age_at_death": "~72 (estimated)",
+      "gender": "male",
+      "role": "absent_catalyst",
+      "arc_type": "absent-revealed",
+      "occupation": "元灯台守・輝島の守り人 (Former lighthouse keeper, guardian of Kagayaki-jima)",
+      "wound": "島の衰退を止められなかった悲しみ。しかし孤独を恐れず、静かに守り続けた。",
+      "lie": "（渉には嘘はない。彼は既に真実に到達した人間として描かれる）",
+      "truth": "「美しいものは、ただそこにあることで人を救う。それを守ることが、自分の仕事だった。」",
+      "signature_object": "手書きの日記 (handwritten journal)",
+      "note": "物語開始前に死去。6つの日記エントリを通じてのみ登場する。",
+      "journal_entries": [
+        {
+          "chapter": 1,
+          "theme": "harbor_mornings",
+          "title": "港の朝について",
+          "prose": "夜明けの港は、いつも私だけのものだった。波が木の桟橋を叩く音、遠くで健三が網を干す気配。島が静かに目を覚ます、その最初の息吹を聞けるのは、早起きした者だけの特権だと思っていた。美しいものは、いつも少し早起きしないと見られない。",
+          "unlock_trigger": "chapter_1_restoration_complete",
+          "character_count": 110
+        },
+        {
+          "chapter": 2,
+          "theme": "craft_patience",
+          "title": "手仕事の辛抱について",
+          "prose": "梅子さんの窯を直したとき、彼女は三日間、私に何も言わなかった。四日目に、焼き上がった器を黙って差し出した。それで全部わかった。手仕事というのは、急かすことができない。時間をかけることが、それ自体の意味なのだから。誰かに見せるために作るのではない。",
+          "unlock_trigger": "chapter_2_restoration_complete",
+          "character_count": 112
+        },
+        {
+          "chapter": 3,
+          "theme": "hinata_child_memory",
+          "title": "ひなたのことを思い出す",
+          "prose": "ひなたが三歳のとき、花野の中を走り回って転んだ。泥だらけで笑っていた。冬子がため息をついて、私が笑った。あの子は島のものだと、そのとき確信した。大阪へ行っても、きっと帰ってくる。美しいものは、生まれた場所を忘れない。",
+          "unlock_trigger": "chapter_3_restoration_complete",
+          "character_count": 107
+        },
+        {
+          "chapter": 4,
+          "theme": "solitary_walk",
+          "title": "一人で歩いた午後",
+          "prose": "島が静かになり始めた頃、私はよくこの石畳を一人で歩いた。若者が島を離れ、灯台の仕事も減っていた。寂しいかと問われれば、そうではない。静けさの中には、雑音が消えた後にしか聞こえない声がある。その声を聞くために、人は時々一人になる必要がある。",
+          "unlock_trigger": "chapter_4_restoration_complete",
+          "character_count": 118
+        },
+        {
+          "chapter": 5,
+          "theme": "stars_smallness",
+          "title": "星と小ささについて",
+          "prose": "崖の上で星を数えることは、できない。でも数えようとしながら、自分がとても小さいことに気づく。不思議なことに、それは怖くない。むしろ軽くなる。背負っていたものが、宇宙の前では塵ほどの重さしかないと分かったとき、初めて深く息ができる気がした。",
+          "unlock_trigger": "chapter_5_restoration_complete",
+          "character_count": 113
+        },
+        {
+          "chapter": 6,
+          "theme": "the_letter_reason",
+          "title": "律に手紙を書いた理由",
+          "prose": "あの人に頼んだのは、理由がある。何年か前、彼の仕事を雑誌で見た。広告の中に、一枚だけ、本物の美しさが宿っている絵があった。きっと本人は、もうそれを忘れている。でも忘れた人間は、まだ持っている人間だ。輝島は、そういう人間に灯台を直してほしかった。",
+          "unlock_trigger": "chapter_6_restoration_complete",
+          "character_count": 120
+        }
+      ]
+    },
+    {
+      "character_id": "isobe-kenzo",
+      "name_jp": "磯部健三",
+      "name_en": "Isobe Kenzo",
+      "age": "~70",
+      "gender": "male",
+      "role": "npc_chapter1",
+      "arc_type": "supporting-mirror",
+      "occupation": "漁師 (Fisherman)",
+      "chapter_presence": [1],
+      "personality": "無口で実直。言葉より行動で語る。若い頃の渉との友情を、口には出さない。",
+      "relation_to_wataru": "幼馴染。渉と健三は子どもの頃から港で遊んだ。渉の死後、健三は網を直す気力をなくしていた。",
+      "function_in_story": "律に「手を動かすこと」の価値を教える。島の以前の賑わいを証言する。",
+      "key_action": "網の結び方を律に実演して見せる。説明はしない。ただ手を動かす。",
+      "key_dialogue": "「島は、昔はもっと賑やかだった」「結び目は、急ぐと解ける。急がなくても、いつか解ける。だからゆっくり結ぶんだ」",
+      "wound": "親友の渉を失い、港に意味を感じられなくなっていた。",
+      "arc_within_chapter": "律が網仕事を手伝うことで、健三も少しだけ手が動き始める。鏡のような関係。"
+    },
+    {
+      "character_id": "kirishima-umeko",
+      "name_jp": "桐島梅子",
+      "name_en": "Kirishima Umeko",
+      "age": "~55",
+      "gender": "female",
+      "role": "npc_chapter2",
+      "arc_type": "supporting-challenger",
+      "occupation": "陶芸家 (Potter)",
+      "chapter_presence": [2],
+      "personality": "静かで観察眼が鋭い。アドバイスを乞われるまで口を開かない。しかし一度話し始めると、核心を突く。",
+      "relation_to_wataru": "20年前、渉が彼女の窯の修復を依頼した。その時から友人。渉は梅子の器を「島で一番正直なもの」と言っていた。",
+      "function_in_story": "律の完璧主義に正面から向き合わせる。「誰かに見せるため」ではない創作の価値を問う。",
+      "key_action": "律が最初に「何かアドバイスはありますか」と聞いても無視する。2度目に同じ質問をしたとき、初めて振り返る。",
+      "key_dialogue": "「本当に書きたかった広告が、一本でもありましたか」「壊れた器を捨てないのはなぜか、聞きますか？　次に作るときの、地図になるからです」",
+      "wound": "若い頃、評価されることを目的に作っていた時期があった。それを乗り越えた経験を持つ。",
+      "arc_within_chapter": "律に問いを投げかけることで、自分自身の過去の嘘とも向き合う、静かな共鳴。"
+    },
+    {
+      "character_id": "umino-naho",
+      "name_jp": "海野夏帆",
+      "name_en": "Umino Naho",
+      "age": "~45",
+      "gender": "female",
+      "role": "npc_chapter3",
+      "arc_type": "supporting-guide",
+      "occupation": "自然ガイド・植物研究者 (Nature guide and plant researcher)",
+      "chapter_presence": [3],
+      "personality": "エネルギッシュで博識。植物一つひとつに感情移入する。渉の影響を強く受けた人物。",
+      "relation_to_wataru": "30年前、渉の元で学んだ若き博物学者。渉は夏帆に「名前を知ることは、愛することの始まりだ」と教えた。",
+      "function_in_story": "律に「名前を知ることで見え方が変わる」ことを示す。律のスケッチ衝動の引き金を引く。",
+      "key_action": "花野の全植物の名前を次々と言いながら歩く。律が追いつけないほど詳しい。それが律の好奇心を刺激する。",
+      "key_dialogue": "「名前を知ると、ちゃんと見えるようになるから」「渉さんも、ここをよく歩いていた。植物に話しかけながら」",
+      "wound": "渉の死後、誰にこの知識を伝えればいいか、迷っていた。",
+      "arc_within_chapter": "律に植物の名前を教えることで、渉から受け取った贈り物を次の人間へ渡す。"
+    },
+    {
+      "character_id": "maruyama-fuyuko",
+      "name_jp": "丸山冬子",
+      "name_en": "Maruyama Fuyuko",
+      "age": "~70",
+      "gender": "female",
+      "role": "npc_chapter6",
+      "arc_type": "supporting-gatekeeper",
+      "occupation": "渉の妻・灯台の番人 (Wataru's wife, guardian of the lighthouse)",
+      "chapter_presence": [6],
+      "personality": "ほとんど話さない。行動で全てを語る。深い悲しみと深い平和が共存している。",
+      "relation_to_wataru": "50年以上の伴侶。渉の全てを知っている。渉の最後の日記を、適切な人間に渡す時を待っていた。",
+      "function_in_story": "物語の最終的な扉を開ける。渉の最後の日記エントリを律に手渡す。言葉ではなく行動で完結させる。",
+      "key_action": "灯台の修復が完了した瞬間、何も言わずに日記の最後のページを律に差し出す。",
+      "key_dialogue": "「渉が——ずっと待っていました、あなたのような人を」（これだけ）",
+      "wound": "夫の志を継ぐ人間が来ないかもしれないという恐れ。",
+      "arc_within_chapter": "律に日記を渡すことで、50年分の待機が完結する。"
+    }
+  ],
+  "relationship_edges": [
+    {
+      "edge_id": "ritsu-hinata",
+      "source": "yamada-ritsu",
+      "target": "maruyama-hinata",
+      "relationship_type": "implicit_romance",
+      "tension_start": "strangers on the same ferry — parallel wounds, unaware",
+      "tension_end": "companions who understand each other without words — romantic potential, unnamed",
+      "presence_escalation": ["ch1_passing_glance", "ch2_brief_exchange", "ch3_shared_walk", "ch4_absence_felt", "ch5_emotional_core", "ch6_silent_companionship"]
+    },
+    {
+      "edge_id": "ritsu-wataru",
+      "source": "yamada-ritsu",
+      "target": "maruyama-wataru",
+      "relationship_type": "mentor_from_beyond",
+      "tension_start": "unknown letter from a stranger — confusion and resentment",
+      "tension_end": "deep gratitude for being seen by someone who never met him in person",
+      "medium": "6 journal entries, 1 letter"
+    },
+    {
+      "edge_id": "ritsu-kenzo",
+      "source": "yamada-ritsu",
+      "target": "isobe-kenzo",
+      "relationship_type": "mentor_craft",
+      "tension_start": "efficiency-minded city worker meets slow-handed fisherman",
+      "tension_end": "mutual, wordless understanding that hands remember what minds forget"
+    },
+    {
+      "edge_id": "ritsu-umeko",
+      "source": "yamada-ritsu",
+      "target": "kirishima-umeko",
+      "relationship_type": "challenger_student",
+      "tension_start": "律 wants validation; 梅子 refuses to give it until earned",
+      "tension_end": "律 asks the real question; 梅子 gives the real answer"
+    },
+    {
+      "edge_id": "ritsu-naho",
+      "source": "yamada-ritsu",
+      "target": "umino-naho",
+      "relationship_type": "guide_awakener",
+      "tension_start": "律 sees scenery; 夏帆 sees living things with names",
+      "tension_end": "律 starts drawing again — 夏帆 unlocked his dormant wonder"
+    },
+    {
+      "edge_id": "ritsu-fuyuko",
+      "source": "yamada-ritsu",
+      "target": "maruyama-fuyuko",
+      "relationship_type": "gatekeeper_pilgrim",
+      "tension_start": "律 must prove himself worthy of the final truth",
+      "tension_end": "冬子 confirms 律 is the right person, in silence"
+    },
+    {
+      "edge_id": "hinata-wataru",
+      "source": "maruyama-hinata",
+      "target": "maruyama-wataru",
+      "relationship_type": "granddaughter_absent_grandfather",
+      "tension_start": "grief, guilt at being away when he died",
+      "tension_end": "accepts his death and his love; carries his ring forward"
+    },
+    {
+      "edge_id": "hinata-fuyuko",
+      "source": "maruyama-hinata",
+      "target": "maruyama-fuyuko",
+      "relationship_type": "granddaughter_grandmother",
+      "tension_start": "complicated — both grieving, both protecting the other from grief",
+      "tension_end": "stand together at lighthouse without words, grief shared"
+    },
+    {
+      "edge_id": "wataru-kenzo",
+      "source": "maruyama-wataru",
+      "target": "isobe-kenzo",
+      "relationship_type": "childhood_friends",
+      "tension_start": "渉's death left 健三 without his oldest companion",
+      "tension_end": "revealed through 健三's behavior and the harbor journal entry"
+    },
+    {
+      "edge_id": "wataru-umeko",
+      "source": "maruyama-wataru",
+      "target": "kirishima-umeko",
+      "relationship_type": "patron_artist",
+      "tension_start": "渉 commissioned kiln restoration 20 years ago",
+      "tension_end": "梅子 still uses that kiln; every piece is a continuation"
+    },
+    {
+      "edge_id": "wataru-naho",
+      "source": "maruyama-wataru",
+      "target": "umino-naho",
+      "relationship_type": "teacher_student",
+      "tension_start": "渉 taught 夏帆 naturalism 30 years ago",
+      "tension_end": "夏帆 carries his teachings; now passes them to 律"
+    },
+    {
+      "edge_id": "wataru-fuyuko",
+      "source": "maruyama-wataru",
+      "target": "maruyama-fuyuko",
+      "relationship_type": "spouses_50_years",
+      "tension_start": "渉's death; 冬子 holds his final words",
+      "tension_end": "冬子 releases those words to 律 — completing 渉's final act"
+    }
+  ],
+  "memory_fragments": [
+    {
+      "chapter": 1,
+      "theme": "harbor_mornings",
+      "title": "港の朝について",
+      "unlock_trigger": "chapter_1_restoration_complete",
+      "prose_excerpt": "夜明けの港は、いつも私だけのものだった。波が木の桟橋を叩く音、遠くで健三が網を干す気配。島が静かに目を覚ます、その最初の息吹を聞けるのは、早起きした者だけの特権だと思っていた。美しいものは、いつも少し早起きしないと見られない。",
+      "narrative_function": "Introduces Wataru's voice and his love for the harbor; foreshadows Kenzo relationship"
+    },
+    {
+      "chapter": 2,
+      "theme": "craft_patience",
+      "title": "手仕事の辛抱について",
+      "unlock_trigger": "chapter_2_restoration_complete",
+      "prose_excerpt": "梅子さんの窯を直したとき、彼女は三日間、私に何も言わなかった。四日目に、焼き上がった器を黙って差し出した。それで全部わかった。手仕事というのは、急かすことができない。時間をかけることが、それ自体の意味なのだから。誰かに見せるために作るのではない。",
+      "narrative_function": "Indirect message to Ritsu about craft; echoes Umeko's theme"
+    },
+    {
+      "chapter": 3,
+      "theme": "hinata_child_memory",
+      "title": "ひなたのことを思い出す",
+      "unlock_trigger": "chapter_3_restoration_complete",
+      "prose_excerpt": "ひなたが三歳のとき、花野の中を走り回って転んだ。泥だらけで笑っていた。冬子がため息をついて、私が笑った。あの子は島のものだと、そのとき確信した。大阪へ行っても、きっと帰ってくる。美しいものは、生まれた場所を忘れない。",
+      "narrative_function": "Humanizes Wataru through family memory; connects to Hinata's presence in Ch3"
+    },
+    {
+      "chapter": 4,
+      "theme": "solitary_walk",
+      "title": "一人で歩いた午後",
+      "unlock_trigger": "chapter_4_restoration_complete",
+      "prose_excerpt": "島が静かになり始めた頃、私はよくこの石畳を一人で歩いた。若者が島を離れ、灯台の仕事も減っていた。寂しいかと問われれば、そうではない。静けさの中には、雑音が消えた後にしか聞こえない声がある。その声を聞くために、人は時々一人になる必要がある。",
+      "narrative_function": "Mirrors Ritsu's solitary chapter; validates sitting with silence"
+    },
+    {
+      "chapter": 5,
+      "theme": "stars_smallness",
+      "title": "星と小ささについて",
+      "unlock_trigger": "chapter_5_restoration_complete",
+      "prose_excerpt": "崖の上で星を数えることは、できない。でも数えようとしながら、自分がとても小さいことに気づく。不思議なことに、それは怖くない。むしろ軽くなる。背負っていたものが、宇宙の前では塵ほどの重さしかないと分かったとき、初めて深く息ができる気がした。",
+      "narrative_function": "Core emotional resonance; Hinata reads this aloud to Ritsu in Ch5"
+    },
+    {
+      "chapter": 6,
+      "theme": "the_letter_reason",
+      "title": "律に手紙を書いた理由",
+      "unlock_trigger": "chapter_6_restoration_complete",
+      "prose_excerpt": "あの人に頼んだのは、理由がある。何年か前、彼の仕事を雑誌で見た。広告の中に、一枚だけ、本物の美しさが宿っている絵があった。きっと本人は、もうそれを忘れている。でも忘れた人間は、まだ持っている人間だ。輝島は、そういう人間に灯台を直してほしかった。",
+      "narrative_function": "The truth revealed: why Wataru chose Ritsu — completes Ritsu's wound/truth arc"
+    }
+  ],
+  "scene_presence_matrix": {
+    "characters": ["yamada-ritsu", "maruyama-hinata", "maruyama-wataru", "isobe-kenzo", "kirishima-umeko", "umino-naho", "maruyama-fuyuko"],
+    "chapters": {
+      "ch1": {
+        "yamada-ritsu": "full",
+        "maruyama-hinata": "brief",
+        "maruyama-wataru": "indirect",
+        "isobe-kenzo": "full",
+        "kirishima-umeko": "absent",
+        "umino-naho": "absent",
+        "maruyama-fuyuko": "absent"
+      },
+      "ch2": {
+        "yamada-ritsu": "full",
+        "maruyama-hinata": "brief",
+        "maruyama-wataru": "indirect",
+        "isobe-kenzo": "absent",
+        "kirishima-umeko": "full",
+        "umino-naho": "absent",
+        "maruyama-fuyuko": "absent"
+      },
+      "ch3": {
+        "yamada-ritsu": "full",
+        "maruyama-hinata": "full",
+        "maruyama-wataru": "indirect",
+        "isobe-kenzo": "absent",
+        "kirishima-umeko": "absent",
+        "umino-naho": "full",
+        "maruyama-fuyuko": "absent"
+      },
+      "ch4": {
+        "yamada-ritsu": "full",
+        "maruyama-hinata": "indirect",
+        "maruyama-wataru": "indirect",
+        "isobe-kenzo": "absent",
+        "kirishima-umeko": "absent",
+        "umino-naho": "absent",
+        "maruyama-fuyuko": "absent"
+      },
+      "ch5": {
+        "yamada-ritsu": "full",
+        "maruyama-hinata": "full",
+        "maruyama-wataru": "indirect",
+        "isobe-kenzo": "absent",
+        "kirishima-umeko": "absent",
+        "umino-naho": "absent",
+        "maruyama-fuyuko": "absent"
+      },
+      "ch6": {
+        "yamada-ritsu": "full",
+        "maruyama-hinata": "full",
+        "maruyama-wataru": "indirect",
+        "isobe-kenzo": "absent",
+        "kirishima-umeko": "absent",
+        "umino-naho": "absent",
+        "maruyama-fuyuko": "full"
+      }
+    }
+  }
+}

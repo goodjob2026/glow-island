@@ -4,6 +4,7 @@
 import { TileCell, TileType, ObstacleType } from '../puzzle/TileGrid';
 import { BoardGenerator } from '../puzzle/BoardGenerator';
 import type { LevelConfig as BoardLevelConfig } from '../puzzle/BoardGenerator';
+import type { BoardEvent } from '../puzzle/BoardEventManager';
 
 // ------- Domain types -------------------------------------------------------
 
@@ -36,7 +37,7 @@ export interface LevelConfig {
   max_moves: number | null;
   obstacles: ObstacleConfig[];
   special_blocks: SpecialBlockConfig[];
-  board_events: string[];
+  board_events: BoardEvent[] | string[];
   material_reward: { type: string; amount: number };
   coin_reward: number;
 }

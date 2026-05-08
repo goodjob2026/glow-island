@@ -1,0 +1,2185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glow Island — FTUE Design Document</title>
+<style>
+  :root {
+    --bg: #0f0f1a;
+    --bg2: #151525;
+    --bg3: #1a1a2e;
+    --card: #1e1e32;
+    --card-border: #2a2a42;
+    --accent: #00bcd4;
+    --accent-dim: #0097a7;
+    --accent-glow: rgba(0,188,212,0.15);
+    --warm: #e8b86d;
+    --warm-dim: #c49a50;
+    --text: #e8d5b0;
+    --text-dim: #a89880;
+    --text-muted: #6a5e50;
+    --red-flag: #ff5252;
+    --red-flag-bg: rgba(255,82,82,0.1);
+    --green: #69f0ae;
+    --green-bg: rgba(105,240,174,0.1);
+    --amber: #ffab40;
+    --amber-bg: rgba(255,171,64,0.1);
+    --grid-tile: #2a2a50;
+    --grid-t01: #00bcd4;
+    --grid-t02: #ff7043;
+    --grid-t03: #9c27b0;
+    --grid-t04: #4caf50;
+    --grid-t05: #ffc107;
+    --grid-t06: #e91e63;
+    --grid-t07: #607d8b;
+    --grid-gap: #2d1b0e;
+    --grid-empty: #151525;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', sans-serif;
+    line-height: 1.7;
+    font-size: 14px;
+  }
+
+  /* ── HEADER ── */
+  .doc-header {
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a35 50%, #0f1a2a 100%);
+    border-bottom: 1px solid var(--card-border);
+    padding: 40px 48px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .doc-header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(0,188,212,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .doc-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 20%;
+    width: 400px; height: 200px;
+    background: radial-gradient(ellipse, rgba(232,184,109,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0.8;
+    margin-bottom: 8px;
+  }
+  .header-title {
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .header-title span { color: var(--accent); }
+  .header-subtitle {
+    font-size: 16px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .meta-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .meta-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .meta-badge.warn .dot { background: var(--amber); }
+  .meta-badge.ok .dot { background: var(--green); }
+
+  /* ── LAYOUT ── */
+  .page-body {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 32px;
+  }
+
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--card-border);
+  }
+
+  .h2 {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--warm);
+    margin-bottom: 12px;
+  }
+  .h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card.highlight {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(0,188,212,0.2), inset 0 0 20px rgba(0,188,212,0.03);
+  }
+  .card.warm {
+    border-color: rgba(232,184,109,0.3);
+    box-shadow: inset 0 0 20px rgba(232,184,109,0.03);
+  }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow-diagram {
+    overflow-x: auto;
+    padding: 8px 0 16px;
+  }
+  .flow-track {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    min-width: 900px;
+  }
+  .flow-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 32px;
+    right: -1px;
+    width: 2px;
+    height: 24px;
+    background: var(--card-border);
+    z-index: 1;
+  }
+  .flow-connector {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--card-border), var(--accent-dim));
+    margin-top: 31px;
+    flex-shrink: 0;
+  }
+  .flow-node {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    border: 2px solid var(--card-border);
+    background: var(--card);
+    margin-bottom: 12px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .flow-node.cutscene { border-color: var(--warm); color: var(--warm); background: rgba(232,184,109,0.08); }
+  .flow-node.puzzle { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+  .flow-node.reward { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+  .flow-step-body {
+    text-align: center;
+    padding: 0 4px;
+  }
+  .flow-step-num {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .flow-step-name {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .flow-step-name-jp {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .flow-step-dur {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    background: var(--bg3);
+    color: var(--text-muted);
+    border: 1px solid var(--card-border);
+    margin-bottom: 4px;
+  }
+  .flow-step-lock {
+    font-size: 10px;
+    color: var(--red-flag);
+    opacity: 0.7;
+  }
+
+  /* SWIM LANE */
+  .swim-lane-grid {
+    display: grid;
+    grid-template-columns: 120px repeat(8, 1fr);
+    gap: 0;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+  .sl-header {
+    background: var(--bg3);
+    border-right: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    padding: 10px 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .sl-cell {
+    border-right: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    padding: 8px 10px;
+    vertical-align: middle;
+  }
+  .sl-cell:last-child { border-right: none; }
+  .sl-row-label {
+    background: var(--bg3);
+    border-right: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    padding: 10px 12px;
+    color: var(--text-dim);
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+  }
+  .sl-row-label:last-child { border-bottom: none; }
+  .sl-filled {
+    background: var(--accent-glow);
+    border-radius: 4px;
+    padding: 4px 6px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--accent);
+  }
+  .sl-filled.warm {
+    background: rgba(232,184,109,0.1);
+    color: var(--warm);
+  }
+  .sl-filled.green {
+    background: var(--green-bg);
+    color: var(--green);
+  }
+
+  /* ── DROP-OFF TABLE ── */
+  .risk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .risk-table th {
+    text-align: left;
+    padding: 10px 16px;
+    background: var(--bg3);
+    color: var(--text-muted);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .risk-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--card-border);
+    vertical-align: top;
+  }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .risk-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .pct-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pct-track {
+    flex: 1;
+    height: 6px;
+    background: var(--bg3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .pct-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--accent);
+  }
+  .pct-fill.warning { background: var(--amber); }
+  .pct-fill.danger { background: var(--red-flag); }
+  .pct-num {
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 32px;
+    text-align: right;
+  }
+  .threshold-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    background: var(--red-flag-bg);
+    color: var(--red-flag);
+    border: 1px solid rgba(255,82,82,0.3);
+  }
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid;
+  }
+  .step-badge.cutscene { border-color: var(--warm); color: var(--warm); }
+  .step-badge.puzzle { border-color: var(--accent); color: var(--accent); }
+  .step-badge.reward { border-color: var(--green); color: var(--green); }
+
+  /* ── GRID VISUALIZER ── */
+  .grid-container {
+    display: inline-block;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg3);
+  }
+  .grid-row {
+    display: flex;
+  }
+  .grid-cell {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+    letter-spacing: 0;
+  }
+  .grid-cell.empty {
+    background: var(--grid-empty);
+    color: transparent;
+  }
+  .grid-cell.t01 { background: rgba(0,188,212,0.2); color: #00bcd4; border-color: rgba(0,188,212,0.4); }
+  .grid-cell.t02 { background: rgba(255,112,67,0.2); color: #ff7043; border-color: rgba(255,112,67,0.4); }
+  .grid-cell.t03 { background: rgba(156,39,176,0.2); color: #ce93d8; border-color: rgba(156,39,176,0.4); }
+  .grid-cell.t04 { background: rgba(76,175,80,0.2); color: #81c784; border-color: rgba(76,175,80,0.4); }
+  .grid-cell.t05 { background: rgba(255,193,7,0.2); color: #ffd54f; border-color: rgba(255,193,7,0.4); }
+  .grid-cell.t06 { background: rgba(233,30,99,0.2); color: #f48fb1; border-color: rgba(233,30,99,0.4); }
+  .grid-cell.t07 { background: rgba(96,125,139,0.2); color: #b0bec5; border-color: rgba(96,125,139,0.4); }
+  .grid-cell.gap {
+    background: var(--grid-gap);
+    border-color: rgba(80,40,10,0.6);
+  }
+  .grid-cell.gap::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 3px,
+      rgba(100,50,20,0.4) 3px,
+      rgba(100,50,20,0.4) 6px
+    );
+    border-radius: 2px;
+  }
+  .grid-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 0;
+    pointer-events: none;
+  }
+  .tile-label {
+    position: relative;
+    z-index: 1;
+    font-size: 9px;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .grid-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .legend-swatch {
+    width: 14px; height: 14px;
+    border-radius: 3px;
+    border: 1px solid;
+  }
+
+  /* ── LEVEL CARDS ── */
+  .level-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .level-id-badge {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .level-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .level-tag {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    border: 1px solid;
+  }
+  .level-tag.grid { border-color: var(--card-border); color: var(--text-dim); }
+  .level-tag.pairs { border-color: rgba(0,188,212,0.4); color: var(--accent); background: var(--accent-glow); }
+  .level-tag.no-limit { border-color: rgba(105,240,174,0.4); color: var(--green); background: var(--green-bg); }
+  .level-tag.time { border-color: rgba(255,171,64,0.4); color: var(--amber); background: var(--amber-bg); }
+
+  .teaching-goal-box {
+    background: var(--bg3);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 700px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  .feedback-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .feedback-box {
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 12px;
+  }
+  .feedback-box.success { background: var(--green-bg); border: 1px solid rgba(105,240,174,0.2); }
+  .feedback-box.fail { background: var(--amber-bg); border: 1px solid rgba(255,171,64,0.2); }
+  .feedback-box .fb-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .feedback-box.success .fb-title { color: var(--green); }
+  .feedback-box.fail .fb-title { color: var(--amber); }
+
+  /* ── AFFORDANCES ── */
+  .affordance-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 700px) {
+    .affordance-card { grid-template-columns: 1fr; }
+  }
+  .affordance-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--accent-glow);
+    border: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .affordance-name {
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .affordance-trigger {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .affordance-purpose {
+    font-size: 12px;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  /* ── COPY SPEC ── */
+  .copy-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: center;
+  }
+  @media (max-width: 600px) { .copy-card { grid-template-columns: 1fr; } }
+  .copy-location {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    min-width: 120px;
+  }
+  .copy-jp {
+    font-size: 16px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .copy-speaker {
+    font-size: 11px;
+    color: var(--accent);
+    text-align: right;
+    min-width: 80px;
+  }
+  .copy-translation {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 2px;
+  }
+  .copy-cutscene { border-left: 3px solid var(--warm); }
+  .copy-dialogue { border-left: 3px solid var(--accent); }
+  .copy-ambient { border-left: 3px solid var(--green); }
+
+  /* ── D1 CHECKLIST ── */
+  .checklist {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  @media (max-width: 600px) { .checklist { grid-template-columns: 1fr; } }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .check-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .check-icon.green { background: var(--green-bg); border: 1px solid rgba(105,240,174,0.4); color: var(--green); }
+  .check-icon.accent { background: var(--accent-glow); border: 1px solid var(--accent); color: var(--accent); }
+  .check-text-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .check-text-sub { font-size: 12px; color: var(--text-dim); }
+
+  /* ── SCAFFOLDING DIAGRAM ── */
+  .scaffold-grid {
+    display: grid;
+    grid-template-columns: 160px repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+  .scaffold-header {
+    background: var(--bg3);
+    padding: 10px 14px;
+    border-right: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .scaffold-cell {
+    padding: 12px 14px;
+    border-right: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    vertical-align: top;
+  }
+  .scaffold-cell:last-child { border-right: none; }
+  .scaffold-row:last-child .scaffold-cell { border-bottom: none; }
+  .scaffold-row:last-child .scaffold-header { border-bottom: none; }
+  .difficulty-pip {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 3px;
+    background: var(--card-border);
+  }
+  .difficulty-pip.filled { background: var(--accent); }
+
+  /* ── PHILOSOPHY BOX ── */
+  .philosophy-box {
+    background: linear-gradient(135deg, rgba(0,188,212,0.05) 0%, rgba(232,184,109,0.05) 100%);
+    border: 1px solid rgba(0,188,212,0.2);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .philosophy-box::before {
+    content: '✦';
+    position: absolute;
+    top: 20px; right: 28px;
+    font-size: 48px;
+    color: var(--accent);
+    opacity: 0.06;
+  }
+  .philosophy-quote {
+    font-size: 18px;
+    color: var(--text);
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .philosophy-quote em {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .philosophy-quote .jp {
+    font-size: 15px;
+    color: var(--text-dim);
+    display: block;
+    margin-top: 4px;
+  }
+  .no-popup-rule {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red-flag-bg);
+    border: 1px solid rgba(255,82,82,0.3);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--red-flag);
+    margin-top: 12px;
+  }
+
+  /* ── OPENING PANELS ── */
+  .panel-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 600px) { .panel-strip { grid-template-columns: 1fr; } }
+  .panel-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .panel-image {
+    height: 120px;
+    background: var(--bg3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    opacity: 0.5;
+    border-bottom: 1px solid var(--card-border);
+    position: relative;
+    overflow: hidden;
+  }
+  .panel-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(15,15,26,0.8) 100%);
+  }
+  .panel-image.p1 { background: linear-gradient(135deg, #1a2030 0%, #0f1520 100%); }
+  .panel-image.p2 { background: linear-gradient(135deg, #1a1820 0%, #12100f 100%); }
+  .panel-image.p3 { background: linear-gradient(135deg, #151520 0%, #0f1518 100%); }
+  .panel-number {
+    position: absolute;
+    top: 10px; left: 12px;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 1;
+  }
+  .panel-body {
+    padding: 14px 16px;
+  }
+  .panel-text-jp {
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.5;
+  }
+  .panel-translation {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  .panel-tone {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── UTILITIES ── */
+  p { color: var(--text-dim); font-size: 13px; line-height: 1.7; margin-bottom: 10px; }
+  ul, ol { padding-left: 20px; margin-bottom: 10px; }
+  li { color: var(--text-dim); font-size: 13px; line-height: 1.7; margin-bottom: 4px; }
+  strong { color: var(--text); }
+  code {
+    background: var(--bg3);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 12px;
+    color: var(--accent);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid var(--card-border);
+    margin: 32px 0;
+  }
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .tag {
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+  }
+  .note-block {
+    background: var(--amber-bg);
+    border: 1px solid rgba(255,171,64,0.25);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--amber);
+    margin-bottom: 12px;
+  }
+  .info-block {
+    background: var(--accent-glow);
+    border: 1px solid rgba(0,188,212,0.25);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  /* ── NARRATIVE ── */
+  .hinata-profile {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .hinata-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0,188,212,0.2) 0%, rgba(232,184,109,0.15) 100%);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .hinata-info { flex: 1; }
+  .hinata-name { font-size: 18px; color: var(--text); margin-bottom: 2px; }
+  .hinata-name-romaji { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+  .hinata-traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .trait-tag {
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    background: var(--bg3);
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+  }
+
+  /* ── EMOTIONAL ARC BAR ── */
+  .arc-bar {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    align-items: stretch;
+    height: 48px;
+  }
+  .arc-seg {
+    flex: 1;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 1.2;
+    padding: 2px 4px;
+    cursor: default;
+    position: relative;
+  }
+  .arc-seg.step1 { background: rgba(232,184,109,0.25); border: 1px solid rgba(232,184,109,0.3); }
+  .arc-seg.step2 { background: rgba(232,184,109,0.3); border: 1px solid rgba(232,184,109,0.4); }
+  .arc-seg.step3 { background: rgba(232,184,109,0.2); border: 1px solid rgba(232,184,109,0.25); }
+  .arc-seg.step4 { background: rgba(0,188,212,0.2); border: 1px solid rgba(0,188,212,0.3); }
+  .arc-seg.step5 { background: rgba(0,188,212,0.25); border: 1px solid rgba(0,188,212,0.35); }
+  .arc-seg.step6 { background: rgba(0,188,212,0.3); border: 1px solid rgba(0,188,212,0.45); }
+  .arc-seg.step7 { background: rgba(105,240,174,0.2); border: 1px solid rgba(105,240,174,0.35); }
+  .arc-seg.step8 { background: rgba(105,240,174,0.3); border: 1px solid rgba(105,240,174,0.5); }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    border-top: 1px solid var(--card-border);
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-info { font-size: 11px; color: var(--text-muted); }
+  .footer-brand { font-size: 13px; color: var(--accent); letter-spacing: 0.05em; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════ HEADER ══════════════════════════════════ -->
+<div class="doc-header">
+  <div class="header-eyebrow">UX Design Document · Glow Island · FTUE</div>
+  <div class="header-title">First-Time User Experience<br><span>輝島</span> — Kagayaki-jima</div>
+  <div class="header-subtitle">完全チュートリアル設計 · Full Tutorial Design Specification</div>
+  <div class="header-meta">
+    <div class="meta-badge ok"><span class="dot"></span>philosophy: teach-through-level-design</div>
+    <div class="meta-badge warn"><span class="dot"></span>no-popup rule: enforced</div>
+    <div class="meta-badge"><span class="dot"></span>total FTUE: ~6.5 min</div>
+    <div class="meta-badge"><span class="dot"></span>generated: 2026-05-08</div>
+    <div class="meta-badge ok"><span class="dot"></span>ch1 verified: level-design.json</div>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!-- ══════════════════ PHILOSOPHY ══════════════════ -->
+  <div class="philosophy-box">
+    <div class="philosophy-quote">
+      教えるのではなく、<em>気づかせる</em>。<br>
+      指示の言葉は一言も使わない。<br>
+      <span class="jp">Don't teach — let them discover. Not a single word of instruction.</span>
+    </div>
+    <p style="font-size:13px; color:var(--text-dim); margin:0 0 12px;">
+      The FTUE for Glow Island treats the player as a thoughtful adult arriving somewhere new. Mechanics are introduced entirely through spatial arrangement, visual affordance, and immediate sensory feedback. The island teaches itself.
+    </p>
+    <div class="no-popup-rule">⊘ NO popup overlays &nbsp;·&nbsp; NO forced-tap arrows &nbsp;·&nbsp; NO skip buttons on mandatory screens &nbsp;·&nbsp; NO instruction text</div>
+  </div>
+
+  <!-- ══════════════════ SECTION 1: FLOW DIAGRAM ══════════════════ -->
+  <div class="section">
+    <div class="section-title">01 · FTUE Flow — 8 Steps · ~6.5 Minutes</div>
+
+    <div class="card" style="padding: 24px 20px;">
+      <div class="arc-bar">
+        <div class="arc-seg step1">Panel 1–3<br>Arrival</div>
+        <div class="arc-seg step2">ひなた<br>Letter</div>
+        <div class="arc-seg step3">Harbor<br>Overview</div>
+        <div class="arc-seg step4">Level<br>1-1</div>
+        <div class="arc-seg step5">Level<br>1-2</div>
+        <div class="arc-seg step6">Level<br>1-3</div>
+        <div class="arc-seg step7">Material<br>Reward</div>
+        <div class="arc-seg step8">Harbor<br>Restored</div>
+      </div>
+      <div style="display:flex; gap:16px; font-size:11px; color:var(--text-muted); margin-top:4px;">
+        <span style="color:var(--warm);">■ Narrative/Cutscene</span>
+        <span style="color:var(--accent);">■ Puzzle Gameplay</span>
+        <span style="color:var(--green);">■ Payoff/Reward</span>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-track">
+
+        <!-- Step 1 -->
+        <div class="flow-step">
+          <div class="flow-node cutscene">1</div>
+          <div class="flow-step-body">
+            <div class="flow-step-num">Step 01</div>
+            <div class="flow-step-name">Opening Cutscene</div>
+            <div class="flow-step-name-jp">律の到着</div>
+            <div class="flow-step-dur">15s</div><br>
+            <div class="flow-step-lock">🔒 not skippable</div>
+          </div>
+        </div>
+
+        <div class="flow-connector"></div>
+
+        <!-- Step 2 -->
+        <div class="flow-step">
+          <div class="flow-node cutscene">2</div>
+          <div class="flow-step-body">
+            <div class="flow-step-num">Step 02</div>
+            <div class="flow-step-name">First ひなた Encounter</div>
+            <div class="flow-step-name-jp">ひなたとの出会い</div>
+            <div class="flow-step-dur">10s</div><br>
+            <div class="flow-step-lock">🔒 not skippable</div>
+          </div>
+        </div>
+
+        <div class="flow-connector"></div>
+
+        <!-- Step 3 -->
+        <div class="flow-step">
+          <div class="flow-node cutscene">3</div>
+          <div class="flow-step-body">
+            <div class="flow-step-num">Step 03</div>
+            <div class="flow-step-name">Island Overview</div>
+            <div class="flow-step-name-jp">港の風景</div>
+            <div class="flow-step-dur">5s</div><br>
+            <div class="flow-step-lock">🔒 not skippable</div>
+          </div>
+        </div>
+
+        <div class="flow-connector"></div>
+
+        <!-- Step 4 -->
+        <div class="flow-step">
+          <div class="flow-node puzzle">4</div>
+          <div class="flow-step-body">
+            <div class="flow-step-num">Step 04</div>
+            <div class="flow-step-name">Level 1-1</div>
+            <div class="flow-step-name-jp">基本接続を学ぶ</div>
+            <div class="flow-step-dur">~75s</div><br>
+            <div class="flow-step-lock">🔒 not skippable</div>
+          </div>
+        </div>
+
+        <div class="flow-connector"></div>
+
+        <!-- Step 5 -->
+        <div class="flow-step">
+          <div class="flow-node puzzle">5</div>
+          <div class="flow-step-body">
+            <div class="flow-step-num">Step 05</div>
+            <div class="flow-step-name">Level 1-2</div>
+            <div class="flow-step-name-jp">障害物を学ぶ</div>
+            <div class="flow-step-dur">~90s</div><br>
+            <div class="flow-step-lock">🔒 not skippable</div>
+          </div>
+        </div>
+
+        <div class="flow-connector"></div>
+
+        <!-- Step 6 -->
+        <div class="flow-step">
+          <div class="flow-node puzzle">6</div>
+          <div class="flow-step-body">
+            <div class="flow-step-num">Step 06</div>
+            <div class="flow-step-name">Level 1-3</div>
+            <div class="flow-step-name-jp">島が戻ってくる</div>
+            <div class="flow-step-dur">~120s</div><br>
+            <div class="flow-step-lock">🔒 not skippable</div>
+          </div>
+        </div>
+
+        <div class="flow-connector"></div>
+
+        <!-- Step 7 -->
+        <div class="flow-step">
+          <div class="flow-node reward">7</div>
+          <div class="flow-step-body">
+            <div class="flow-step-num">Step 07</div>
+            <div class="flow-step-name">Material Reward</div>
+            <div class="flow-step-name-jp">素材を得る</div>
+            <div class="flow-step-dur">10s</div><br>
+            <div class="flow-step-lock">🔒 not skippable</div>
+          </div>
+        </div>
+
+        <div class="flow-connector"></div>
+
+        <!-- Step 8 -->
+        <div class="flow-step">
+          <div class="flow-node reward">8</div>
+          <div class="flow-step-body">
+            <div class="flow-step-num">Step 08</div>
+            <div class="flow-step-name">Harbor Restored</div>
+            <div class="flow-step-name-jp">港が少し、戻ってきた</div>
+            <div class="flow-step-dur">15s</div><br>
+            <div class="flow-step-lock">🔒 not skippable</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Swim-lane breakdown -->
+    <div class="swim-lane-grid" style="margin-top:24px; font-size:11px;">
+      <div class="sl-header">Lane</div>
+      <div class="sl-header">S1</div><div class="sl-header">S2</div><div class="sl-header">S3</div>
+      <div class="sl-header">S4</div><div class="sl-header">S5</div><div class="sl-header">S6</div>
+      <div class="sl-header">S7</div><div class="sl-header">S8</div>
+
+      <div class="sl-row-label">Narrative</div>
+      <div class="sl-cell"><div class="sl-filled warm">Arrival 3 panels</div></div>
+      <div class="sl-cell"><div class="sl-filled warm">ひなた letter</div></div>
+      <div class="sl-cell"><div class="sl-filled warm">Harbor grey</div></div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell"><div class="sl-filled warm">Restoration cut</div></div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell"><div class="sl-filled warm">Map reveal</div></div>
+
+      <div class="sl-row-label">Gameplay</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell"><div class="sl-filled">4×4 · 4 pairs</div></div>
+      <div class="sl-cell"><div class="sl-filled">5×5 · 6 pairs · obstacle</div></div>
+      <div class="sl-cell"><div class="sl-filled">5×5 · 7 pairs · 2 obstacles</div></div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+
+      <div class="sl-row-label">ひなた</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell"><div class="sl-filled">1st appearance</div></div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell"><div class="sl-filled">2nd appearance</div></div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+
+      <div class="sl-row-label">Reward</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
+      <div class="sl-cell"><div class="sl-filled green">shell ×5</div></div>
+      <div class="sl-cell"><div class="sl-filled green">shell ×3</div></div>
+      <div class="sl-cell"><div class="sl-filled green">浮木 ×1 (first)</div></div>
+      <div class="sl-cell"><div class="sl-filled green">浮木 UI</div></div>
+      <div class="sl-cell"><div class="sl-filled green">Map unlock</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ SECTION 2: OPENING SEQUENCE ══════════════════ -->
+  <div class="section">
+    <div class="section-title">02 · Opening Sequence — 3 Cutscene Panels</div>
+
+    <div class="info-block">Duration: 15s · 3 panels · tap-to-advance · not skippable · tone: warm melancholy, quiet arrival</div>
+
+    <div class="panel-strip">
+      <div class="panel-card">
+        <div class="panel-image p1">
+          <div class="panel-number">Panel 01</div>
+          <span style="z-index:1; position:relative;">⛴</span>
+        </div>
+        <div class="panel-body">
+          <div class="panel-text-jp">五年、ずっと走り続けてきた。</div>
+          <div class="panel-translation">"Five years of running without stopping."</div>
+          <div class="panel-tone">律 internal · exhaustion-landing · grey-blue palette</div>
+        </div>
+      </div>
+      <div class="panel-card">
+        <div class="panel-image p2">
+          <div class="panel-number">Panel 02</div>
+          <span style="z-index:1; position:relative;">⚓</span>
+        </div>
+        <div class="panel-body">
+          <div class="panel-text-jp">島は、予想よりずっと静かだった。</div>
+          <div class="panel-translation">"The island was much quieter than I had imagined."</div>
+          <div class="panel-tone">律 internal · desolate dock · rusted sign '輝島'</div>
+        </div>
+      </div>
+      <div class="panel-card">
+        <div class="panel-image p3">
+          <div class="panel-number">Panel 03</div>
+          <span style="z-index:1; position:relative;">🪶</span>
+        </div>
+        <div class="panel-body">
+          <div class="panel-text-jp">なにかが、ここで待っている気がした。</div>
+          <div class="panel-translation">"Something felt like it had been waiting here."</div>
+          <div class="panel-tone">律 internal · puzzle shimmer hint · crow on bollard</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+      <div class="card">
+        <div class="h4">Character Introduced</div>
+        <div class="hinata-profile" style="padding:14px;">
+          <div class="hinata-avatar">律</div>
+          <div class="hinata-info">
+            <div class="hinata-name">山田律</div>
+            <div class="hinata-name-romaji">Yamada Ritsu · 29 · Ad Creative Director</div>
+            <div class="hinata-traits">
+              <span class="trait-tag">battered leather satchel</span>
+              <span class="trait-tag">5 years burnout</span>
+              <span class="trait-tag">silent observer</span>
+              <span class="trait-tag">copywriter's precision</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="h4">Visual Direction</div>
+        <ul>
+          <li>Color saturation: <strong>0%</strong> (minimum) — grey-white pre-restoration state</li>
+          <li>Lighting: dusk, warm amber against cool grey</li>
+          <li>Camera: panel 1 from behind 律's shoulder; panel 3 chest-level first-person</li>
+          <li>Ambient: ocean waves, distant gull, creaking wood</li>
+          <li>Puzzle tile shimmer: barely visible in panel 3 — curiosity plant, not explicit</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card warm">
+      <div class="h4">Step 2 — First ひなた Encounter (10s)</div>
+      <div class="hinata-profile" style="padding:14px; margin-bottom:14px;">
+        <div class="hinata-avatar" style="font-size:22px;">ひな</div>
+        <div class="hinata-info">
+          <div class="hinata-name">丸山ひなた</div>
+          <div class="hinata-name-romaji">Maruyama Hinata · 24 · Design student, returned from Osaka</div>
+          <div class="hinata-traits">
+            <span class="trait-tag">wooden hairpin (grandfather's)</span>
+            <span class="trait-tag">fisherman's ring on cord</span>
+            <span class="trait-tag">light linen shirt</span>
+            <span class="trait-tag">warm but not waiting</span>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--bg3); border-left: 3px solid var(--warm); padding:14px 18px; border-radius:0 8px 8px 0;">
+        <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">ひなた — dialogue</div>
+        <div style="font-size:17px; color:var(--text); margin-bottom:4px;">船で見かけました。渉のおじいちゃんからの手紙、たぶんあなた宛てだと思って。</div>
+        <div style="font-size:12px; color:var(--text-dim); font-style:italic;">"I noticed you on the ferry. This letter from grandfather Wataru — I think it was meant for you."</div>
+      </div>
+      <p style="margin-top:12px; font-size:12px;">
+        Tone: matter-of-fact warmth. ひなた does not stop to introduce herself. She hands the letter, makes eye contact for exactly one beat, then continues walking. She has her own purpose here. This independence makes her subsequent appearances meaningful.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════════ SECTION 3: LEVEL SPECS ══════════════════ -->
+  <div class="section">
+    <div class="section-title">03 · Tutorial Level Specifications — 1-1 through 1-3</div>
+
+    <!-- LEVEL 1-1 -->
+    <div class="card highlight" style="margin-bottom:24px;">
+      <div class="level-header">
+        <div>
+          <div class="level-id-badge">1-1</div>
+          <div style="font-size:13px; color:var(--text-dim); margin-top:2px;">Teaching: tiles connect if path has ≤ 2 turns</div>
+        </div>
+        <div class="level-meta-row" style="margin:0;">
+          <span class="level-tag grid">4 × 4 grid</span>
+          <span class="level-tag pairs">4 tile pairs</span>
+          <span class="level-tag no-limit">no step limit</span>
+          <span class="level-tag time">~75s expected</span>
+        </div>
+      </div>
+
+      <div class="teaching-goal-box">
+        The first connection the player makes is a straight line — zero turns. No instruction needed: two glowing same-type tiles in the same row are irresistible. Once they connect, the player has intuitively understood the mechanic and will try increasingly complex paths.
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="h4" style="margin-bottom:12px;">Grid Layout</div>
+          <div class="grid-container">
+            <!-- Row 0 -->
+            <div class="grid-row">
+              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
+              <div class="grid-cell empty"></div>
+            </div>
+            <!-- Row 1 -->
+            <div class="grid-row">
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell empty"></div>
+            </div>
+            <!-- Row 2 -->
+            <div class="grid-row">
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
+            </div>
+            <!-- Row 3 -->
+            <div class="grid-row">
+              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
+              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
+            </div>
+          </div>
+          <div class="grid-legend">
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(0,188,212,0.3);border-color:#00bcd4;"></div> T01</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,112,67,0.3);border-color:#ff7043;"></div> T02</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(156,39,176,0.3);border-color:#ce93d8;"></div> T03</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(76,175,80,0.3);border-color:#81c784;"></div> T04</div>
+          </div>
+          <div style="margin-top:10px; font-size:11px; color:var(--text-muted);">
+            T01 pair: straight line (row 0) — zero turns required<br>
+            T02 pair: same column (col 1) — zero turns required<br>
+            T03, T04: one turn each
+          </div>
+        </div>
+
+        <div>
+          <div class="h4" style="margin-bottom:12px;">Teaching Mechanics</div>
+          <ul style="margin-bottom:16px;">
+            <li>T01 pair in same row — visually identical and spatially aligned — the first tap is inevitable</li>
+            <li>T02 pair in same column teaches vertical connections</li>
+            <li>T03 and T04 require one turn each — player discovers BFS routing through natural play</li>
+            <li>16 cells, only 8 filled — generous empty space shows path possibilities</li>
+            <li>No obstacle, no noise, nothing to confuse</li>
+          </ul>
+
+          <div class="h4" style="margin-bottom:8px;">Affordances Active</div>
+          <div class="tag-row">
+            <span class="tag">tile_touch_glow</span>
+            <span class="tag">path_preview_dotted</span>
+            <span class="tag">tile_settle_animation</span>
+            <span class="tag">restoration_world_pulse</span>
+          </div>
+
+          <div class="feedback-row" style="margin-top:12px;">
+            <div class="feedback-box success">
+              <div class="fb-title">Success</div>
+              Tiles dissolve into light petal particles. Wooden-block chime (2 ascending notes). Remaining tiles settle gently.
+            </div>
+            <div class="feedback-box fail">
+              <div class="fb-title">Failed Path</div>
+              Soft red-orange pulse on tile. Single muted low note. Tiles return immediately. No penalty.
+            </div>
+          </div>
+
+          <div style="margin-top:16px; padding:10px 14px; background:var(--bg3); border-radius:6px; font-size:12px; color:var(--text-dim);">
+            <strong style="color:var(--warm);">Completion note:</strong> Level clears without fanfare. Dock boards beneath the grid glow warm amber briefly — the island exhaling.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVEL 1-2 -->
+    <div class="card" style="margin-bottom:24px; border-color:rgba(232,184,109,0.3);">
+      <div class="level-header">
+        <div>
+          <div class="level-id-badge" style="color:var(--warm);">1-2</div>
+          <div style="font-size:13px; color:var(--text-dim); margin-top:2px;">Teaching: blocked paths require alternate routing + first combo</div>
+        </div>
+        <div class="level-meta-row" style="margin:0;">
+          <span class="level-tag grid">5 × 5 grid</span>
+          <span class="level-tag pairs">6 tile pairs</span>
+          <span class="level-tag no-limit">no step limit</span>
+          <span class="level-tag time">~90s expected</span>
+          <span class="level-tag" style="border-color:rgba(255,82,82,0.4);color:var(--red-flag);background:var(--red-flag-bg);">1 obstacle</span>
+        </div>
+      </div>
+
+      <div class="teaching-goal-box" style="border-left-color:var(--warm);">
+        The wall gap blocks the most visually obvious path between one pair. The player's first attempt fails — the gap briefly glows to identify the blocker. The alternate L-shaped route is immediately visible. No text, no arrow: the blocked path is its own explanation.
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="h4" style="margin-bottom:12px;">Grid Layout</div>
+          <div class="grid-container">
+            <!-- Row 0 -->
+            <div class="grid-row">
+              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
+            </div>
+            <!-- Row 1 -->
+            <div class="grid-row">
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
+              <div class="grid-cell gap"></div>
+              <div class="grid-cell gap"></div>
+              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
+            </div>
+            <!-- Row 2 -->
+            <div class="grid-row">
+              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
+              <div class="grid-cell empty"></div>
+            </div>
+            <!-- Row 3 -->
+            <div class="grid-row">
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t05"><div class="tile-label">T05<br>⬟</div></div>
+            </div>
+            <!-- Row 4 -->
+            <div class="grid-row">
+              <div class="grid-cell t05"><div class="tile-label">T05<br>⬟</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t06"><div class="tile-label">T06<br>✦</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t06"><div class="tile-label">T06<br>✦</div></div>
+            </div>
+          </div>
+          <div class="grid-legend">
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(0,188,212,0.3);border-color:#00bcd4;"></div> T01</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,112,67,0.3);border-color:#ff7043;"></div> T02</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(156,39,176,0.3);border-color:#ce93d8;"></div> T03</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(76,175,80,0.3);border-color:#81c784;"></div> T04</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,193,7,0.3);border-color:#ffd54f;"></div> T05</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(233,30,99,0.3);border-color:#f48fb1;"></div> T06</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:var(--grid-gap);border-color:rgba(80,40,10,0.6);"></div> Gap (obstacle)</div>
+          </div>
+          <div style="margin-top:10px; font-size:11px; color:var(--text-muted);">
+            Wall gap at row 1, cols 2-3 blocks straight path from T01(0,0) to T01(0,4).<br>
+            T05-T06 placement enables combo if cleared consecutively.
+          </div>
+        </div>
+
+        <div>
+          <div class="h4" style="margin-bottom:12px;">Teaching Mechanics</div>
+          <ul style="margin-bottom:16px;">
+            <li>T01 pair: obvious path blocked by gap — player's first encounter with routing constraint</li>
+            <li>Gap glow affordance: obstacle cell briefly lights amber on failed connection — identifies the blocker without text</li>
+            <li>Alternate routes (going around the gap) require 1-2 turns — well within BFS ≤2 limit</li>
+            <li>T05 and T06 placed for natural combo: clearing T05 leaves T06 immediately accessible, combo window 2000ms</li>
+          </ul>
+
+          <div class="h4" style="margin-bottom:8px;">Combo Trigger — First Time</div>
+          <div style="background:var(--bg3); border:1px solid rgba(0,188,212,0.2); border-radius:8px; padding:12px;">
+            <p style="margin:0; font-size:12px;">
+              Clearing T05 immediately makes both T06 tiles the only remaining pair. If player clears T06 within 2 seconds: first combo fires. <strong style="color:var(--accent);">×2</strong> numeral floats up in teal and fades — no pause, no popup, flows from the match. A harmonic second note joins the chime.
+            </p>
+          </div>
+
+          <div class="h4" style="margin-bottom:8px; margin-top:14px;">Affordances Active</div>
+          <div class="tag-row">
+            <span class="tag">gap_glow_on_failed_path</span>
+            <span class="tag">combo_particle_trail</span>
+            <span class="tag">tile_settle_animation</span>
+            <span class="tag">path_preview_dotted</span>
+          </div>
+
+          <div style="margin-top:14px; font-size:12px; color:var(--text-dim);">
+            <strong style="color:var(--warm);">Emotional note (internal):</strong><br>
+            <span style="font-size:14px;">道は一本じゃない。それは島も、きっと同じだ。</span><br>
+            <em>"A path is never just one route. The island is probably the same."</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVEL 1-3 -->
+    <div class="card" style="border-color:rgba(105,240,174,0.3);">
+      <div class="level-header">
+        <div>
+          <div class="level-id-badge" style="color:var(--green);">1-3</div>
+          <div style="font-size:13px; color:var(--text-dim); margin-top:2px;">Teaching: completing levels restores the island — the payoff</div>
+        </div>
+        <div class="level-meta-row" style="margin:0;">
+          <span class="level-tag grid">5 × 5 grid</span>
+          <span class="level-tag pairs">7 tile pairs</span>
+          <span class="level-tag no-limit">no step limit</span>
+          <span class="level-tag time">~105s expected</span>
+          <span class="level-tag" style="border-color:rgba(255,82,82,0.4);color:var(--red-flag);background:var(--red-flag-bg);">2 obstacles</span>
+          <span class="level-tag" style="border-color:rgba(105,240,174,0.4);color:var(--green);background:var(--green-bg);">first 浮木 reward</span>
+        </div>
+      </div>
+
+      <div class="teaching-goal-box" style="border-left-color:var(--green);">
+        The largest payoff of the FTUE. 7 pairs, 2 separate wall gaps — the player is confident now. Clearing the board triggers a restoration animation, ひなた's second appearance, and the first material reward. The puzzle-to-world-restoration loop is made unmistakably visible.
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="h4" style="margin-bottom:12px;">Grid Layout</div>
+          <div class="grid-container">
+            <!-- Row 0 -->
+            <div class="grid-row">
+              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
+            </div>
+            <!-- Row 1 -->
+            <div class="grid-row">
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell gap"></div>
+              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
+            </div>
+            <!-- Row 2 -->
+            <div class="grid-row">
+              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t05"><div class="tile-label">T05<br>⬟</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
+            </div>
+            <!-- Row 3 -->
+            <div class="grid-row">
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell gap"></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t06"><div class="tile-label">T06<br>✦</div></div>
+              <div class="grid-cell empty"></div>
+            </div>
+            <!-- Row 4 -->
+            <div class="grid-row">
+              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
+              <div class="grid-cell t05"><div class="tile-label">T05<br>⬟</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell t06"><div class="tile-label">T06<br>✦</div></div>
+              <div class="grid-cell t07"><div class="tile-label">T07<br>★</div></div>
+            </div>
+            <!-- Row 5 -->
+            <div class="grid-row">
+              <div class="grid-cell t07"><div class="tile-label">T07<br>★</div></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell empty"></div>
+              <div class="grid-cell empty"></div>
+            </div>
+          </div>
+          <div class="grid-legend">
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(0,188,212,0.3);border-color:#00bcd4;"></div> T01-T04</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,193,7,0.3);border-color:#ffd54f;"></div> T05</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(233,30,99,0.3);border-color:#f48fb1;"></div> T06</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:rgba(96,125,139,0.3);border-color:#b0bec5;"></div> T07</div>
+            <div class="legend-item"><div class="legend-swatch" style="background:var(--grid-gap);border-color:rgba(80,40,10,0.6);"></div> Gap ×2</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="h4" style="margin-bottom:12px;">Completion Sequence</div>
+          <ol style="margin-bottom:16px;">
+            <li style="margin-bottom:6px;"><strong>Board clears</strong> — all 7 pairs resolved. Brief silence before the payoff begins.</li>
+            <li style="margin-bottom:6px;"><strong>Harbor restoration (4s)</strong> — dock planks straighten and warm. Sign '輝島' becomes readable. Overgrowth recedes. No narration.</li>
+            <li style="margin-bottom:6px;"><strong>ひなた appearance (3s)</strong> — she passes at mid-distance, glances at the restored dock, then at 律. A half-smile. Continues walking.</li>
+            <li style="margin-bottom:6px;"><strong>ひなた line:</strong> 「少し、変わりましたね。」— quiet observation, no praise. Wind chime note.</li>
+            <li><strong>浮木 reward (3s)</strong> — driftwood rises from dock boards and floats to inventory UI. Ambient text appears at screen bottom: 「集めた素材で、島を直せるかもしれない。」</li>
+          </ol>
+
+          <div class="h4" style="margin-bottom:8px;">Material Reward</div>
+          <div style="background:var(--green-bg); border:1px solid rgba(105,240,174,0.25); border-radius:8px; padding:12px; font-size:12px; margin-bottom:12px;">
+            <strong style="color:var(--green);">浮木 (Driftwood)</strong> — first material reward. Rises physically from the restored dock it helped create. The visual metaphor is closed: what you cleared became what is restored became what you carry forward.
+          </div>
+
+          <div class="h4" style="margin-bottom:8px;">Affordances Active</div>
+          <div class="tag-row">
+            <span class="tag">restoration_world_pulse</span>
+            <span class="tag">hinata_passive_presence</span>
+            <span class="tag">material_rise_animation</span>
+            <span class="tag">gap_glow_on_failed_path</span>
+          </div>
+
+          <div style="margin-top:14px; font-size:12px; color:var(--text-dim);">
+            <strong style="color:var(--green);">Emotional note (internal):</strong><br>
+            <span style="font-size:14px;">ここには、まだ何かが残っている。</span><br>
+            <em>"Something here still remains."</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ SECTION 4: DROP-OFF RISK TABLE ══════════════════ -->
+  <div class="section">
+    <div class="section-title">04 · Drop-Off Risk Analysis</div>
+
+    <div class="note-block">Red flag threshold indicates the minimum completion rate below which the step requires immediate design investigation. Expected rates are based on analogous healing/puzzle genre FTUE benchmarks.</div>
+
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="risk-table">
+        <thead>
+          <tr>
+            <th style="width:36px;">#</th>
+            <th>Step</th>
+            <th style="width:180px;">Expected Completion</th>
+            <th style="width:110px;">Red Flag ⚑</th>
+            <th>Risk</th>
+            <th>Mitigation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="step-badge cutscene">1</span></td>
+            <td><strong>Opening Cutscene</strong><br><span style="font-size:11px;color:var(--text-muted);">律の到着</span></td>
+            <td>
+              <div class="pct-bar">
+                <div class="pct-track"><div class="pct-fill" style="width:97%;"></div></div>
+                <div class="pct-num" style="color:var(--green);">97%</div>
+              </div>
+            </td>
+            <td><span class="threshold-badge">⚑ 82%</span></td>
+            <td style="font-size:12px;">Player exits before panels end — unclear what genre/game this is</td>
+            <td style="font-size:12px;">15s max, tap-to-advance. Puzzle shimmer in panel 3 creates visual curiosity hook before any gameplay.</td>
+          </tr>
+          <tr>
+            <td><span class="step-badge cutscene">2</span></td>
+            <td><strong>First ひなた Encounter</strong><br><span style="font-size:11px;color:var(--text-muted);">ひなたとの出会い</span></td>
+            <td>
+              <div class="pct-bar">
+                <div class="pct-track"><div class="pct-fill" style="width:96%;"></div></div>
+                <div class="pct-num" style="color:var(--green);">96%</div>
+              </div>
+            </td>
+            <td><span class="threshold-badge">⚑ 82%</span></td>
+            <td style="font-size:12px;">Dialogue feels slow or forced — player disengages before establishing character interest</td>
+            <td style="font-size:12px;">Single practical line. ひなた doesn't stop walking — action communicates personality efficiently. 10s total.</td>
+          </tr>
+          <tr>
+            <td><span class="step-badge cutscene">3</span></td>
+            <td><strong>Island Overview</strong><br><span style="font-size:11px;color:var(--text-muted);">港の風景</span></td>
+            <td>
+              <div class="pct-bar">
+                <div class="pct-track"><div class="pct-fill" style="width:95%;"></div></div>
+                <div class="pct-num" style="color:var(--green);">95%</div>
+              </div>
+            </td>
+            <td><span class="threshold-badge">⚑ 80%</span></td>
+            <td style="font-size:12px;">Non-interactive 5s screen reads as loading screen — player disengages</td>
+            <td style="font-size:12px;">Wind animation and ambient SFX keep the screen alive. Auto-advances — no waiting. Faint tile glow draws eye forward.</td>
+          </tr>
+          <tr>
+            <td><span class="step-badge puzzle">4</span></td>
+            <td><strong>Level 1-1</strong><br><span style="font-size:11px;color:var(--text-muted);">基本接続を学ぶ</span></td>
+            <td>
+              <div class="pct-bar">
+                <div class="pct-track"><div class="pct-fill warning" style="width:92%;"></div></div>
+                <div class="pct-num" style="color:var(--amber);">92%</div>
+              </div>
+            </td>
+            <td><span class="threshold-badge">⚑ 75%</span></td>
+            <td style="font-size:12px;">Player fails to discover mechanic without instruction text — taps tiles without understanding</td>
+            <td style="font-size:12px;">4×4 sparse grid, first pair in straight line — connection is visually inevitable. 8-second idle triggers subtle urgency pulse on tile. Still no text.</td>
+          </tr>
+          <tr>
+            <td><span class="step-badge puzzle">5</span></td>
+            <td><strong>Level 1-2</strong><br><span style="font-size:11px;color:var(--text-muted);">障害物を学ぶ</span></td>
+            <td>
+              <div class="pct-bar">
+                <div class="pct-track"><div class="pct-fill warning" style="width:87%;"></div></div>
+                <div class="pct-num" style="color:var(--amber);">87%</div>
+              </div>
+            </td>
+            <td><span class="threshold-badge">⚑ 70%</span></td>
+            <td style="font-size:12px;">Wall gap blocks expected path — player frustrated without seeing why</td>
+            <td style="font-size:12px;">Gap texture is visually unmistakable broken-board. Gap cell glows amber on failed attempt — cause-effect teaching. 5×5 grid gives room for alternate route.</td>
+          </tr>
+          <tr>
+            <td><span class="step-badge puzzle">6</span></td>
+            <td><strong>Level 1-3</strong><br><span style="font-size:11px;color:var(--text-muted);">島が戻ってくる</span></td>
+            <td>
+              <div class="pct-bar">
+                <div class="pct-track"><div class="pct-fill warning" style="width:83%;"></div></div>
+                <div class="pct-num" style="color:var(--amber);">83%</div>
+              </div>
+            </td>
+            <td><span class="threshold-badge">⚑ 65%</span></td>
+            <td style="font-size:12px;">7-pair puzzle feels long before payoff — player loses interest mid-level</td>
+            <td style="font-size:12px;">Multiple valid solve orders give sense of agency. Two separated obstacles feel like discoveries not walls. Post-completion restoration is largest payoff yet — worth the investment.</td>
+          </tr>
+          <tr>
+            <td><span class="step-badge reward">7</span></td>
+            <td><strong>Material Reward</strong><br><span style="font-size:11px;color:var(--text-muted);">素材を得る</span></td>
+            <td>
+              <div class="pct-bar">
+                <div class="pct-track"><div class="pct-fill" style="width:91%;"></div></div>
+                <div class="pct-num" style="color:var(--green);">91%</div>
+              </div>
+            </td>
+            <td><span class="threshold-badge">⚑ 78%</span></td>
+            <td style="font-size:12px;">Reward UI feels arbitrary or unfamiliar — player doesn't understand what 浮木 is for</td>
+            <td style="font-size:12px;">Material rises physically from the dock just restored — metaphor is self-explaining. Ambient text provides minimal context without instruction. Animation is satisfying.</td>
+          </tr>
+          <tr>
+            <td><span class="step-badge reward">8</span></td>
+            <td><strong>Harbor Restored</strong><br><span style="font-size:11px;color:var(--text-muted);">港が少し、戻ってきた</span></td>
+            <td>
+              <div class="pct-bar">
+                <div class="pct-track"><div class="pct-fill" style="width:89%;"></div></div>
+                <div class="pct-num" style="color:var(--green);">89%</div>
+              </div>
+            </td>
+            <td><span class="threshold-badge">⚑ 76%</span></td>
+            <td style="font-size:12px;">Map reveal underwhelming if visual change is too subtle — player doesn't feel the restoration</td>
+            <td style="font-size:12px;">Harbor section transitions from grey to warm color in a visible left-to-right sweep. Surrounding grey areas hint at future potential. 15s — enough time to absorb before gameplay opens.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════ SECTION 5: NO-POPUP TEACHING METHODOLOGY ══════════════════ -->
+  <div class="section">
+    <div class="section-title">05 · No-Popup Teaching Methodology</div>
+
+    <div class="two-col" style="margin-bottom:24px;">
+      <div>
+        <div class="h3">Visual Affordance Inventory</div>
+        <p>Every piece of information the player needs is communicated through visual or auditory affordances embedded in the game state itself. No popup windows. No arrows. No instruction text.</p>
+      </div>
+      <div class="card" style="margin:0;">
+        <div class="h4">Prohibited Patterns</div>
+        <ul>
+          <li>「タップしてください」</li>
+          <li>「ここを押してください」</li>
+          <li>Any text with the word チュートリアル</li>
+          <li>「最初は…」 opening constructions</li>
+          <li>Exclamation marks in tutorial copy</li>
+          <li>Text that presumes player confusion</li>
+          <li>Arrows pointing at UI elements</li>
+          <li>Grayed-out UI with forced tap targets</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="affordance-card">
+      <div class="affordance-icon">✦</div>
+      <div>
+        <div class="affordance-name">tile_touch_glow</div>
+        <div class="affordance-trigger">Trigger: player taps any puzzle tile</div>
+        <div class="affordance-purpose">Confirms interactivity. The tile is 'alive'. No instruction needed to understand the game has begun.</div>
+      </div>
+      <div>
+        <div class="h4" style="font-size:10px;">Effect</div>
+        <p style="font-size:12px; margin:0;">Soft teal glow, +40% brightness, 0.5s pulse. Wooden hollow-bamboo tap sound. Single note.</p>
+      </div>
+    </div>
+
+    <div class="affordance-card">
+      <div class="affordance-icon">···</div>
+      <div>
+        <div class="affordance-name">path_preview_dotted</div>
+        <div class="affordance-trigger">Trigger: second tile of matching type is tapped</div>
+        <div class="affordance-purpose">Shows the connection route before commitment. Teaches BFS ≤2-turn routing through spatial visualization, not explanation.</div>
+      </div>
+      <div>
+        <div class="h4" style="font-size:10px;">Effect</div>
+        <p style="font-size:12px; margin:0;">Warm ivory dotted path line along valid route. No audio — the visual is the message. Absence of line for invalid routes teaches by difference.</p>
+      </div>
+    </div>
+
+    <div class="affordance-card">
+      <div class="affordance-icon">⊙</div>
+      <div>
+        <div class="affordance-name">gap_glow_on_failed_path</div>
+        <div class="affordance-trigger">Trigger: player attempts connection through an obstacle</div>
+        <div class="affordance-purpose">Points attention to the blocker without text. The gap is its own explanation once highlighted.</div>
+      </div>
+      <div>
+        <div class="h4" style="font-size:10px;">Effect</div>
+        <p style="font-size:12px; margin:0;">Obstacle cell glows muted amber-orange for 0.8s. Stone-in-water audio (not a buzzer). Calm and diagnostic, not punishing.</p>
+      </div>
+    </div>
+
+    <div class="affordance-card">
+      <div class="affordance-icon">↓</div>
+      <div>
+        <div class="affordance-name">tile_settle_animation</div>
+        <div class="affordance-trigger">Trigger: any pair successfully cleared</div>
+        <div class="affordance-purpose">Guides eye to remaining matches through relative brightness. Board 'breathes' between moves — living rhythm.</div>
+      </div>
+      <div>
+        <div class="h4" style="font-size:10px;">Effect</div>
+        <p style="font-size:12px; margin:0;">All tiles shift 2-3px settle movement. Tiles with clear line-of-sight to their match brighten slightly relative to others.</p>
+      </div>
+    </div>
+
+    <div class="affordance-card">
+      <div class="affordance-icon">×2</div>
+      <div>
+        <div class="affordance-name">combo_particle_trail</div>
+        <div class="affordance-trigger">Trigger: second pair cleared within 2000ms of first</div>
+        <div class="affordance-purpose">Rewards speed intrinsically without demanding it. Player discovers that rapid clearing has different sensory quality.</div>
+      </div>
+      <div>
+        <div class="h4" style="font-size:10px;">Effect</div>
+        <p style="font-size:12px; margin:0;">Brighter particle trail on cleared tiles. Teal '×2' numeral floats up, fades over 1s. Board border briefly brightens. Harmonic second note added to chime.</p>
+      </div>
+    </div>
+
+    <div class="affordance-card">
+      <div class="affordance-icon">🌊</div>
+      <div>
+        <div class="affordance-name">restoration_world_pulse</div>
+        <div class="affordance-trigger">Trigger: any level complete</div>
+        <div class="affordance-purpose">Links puzzle completion to world change before the explicit restoration cutscene. The connection is felt first, then shown.</div>
+      </div>
+      <div>
+        <div class="h4" style="font-size:10px;">Effect</div>
+        <p style="font-size:12px; margin:0;">Background shifts +5% warmer saturation. Ambient wave sound rises then settles — island exhaling. Accumulates across levels.</p>
+      </div>
+    </div>
+
+    <div class="affordance-card">
+      <div class="affordance-icon">ひな</div>
+      <div>
+        <div class="affordance-name">hinata_passive_presence</div>
+        <div class="affordance-trigger">Trigger: Level 1-3 completion restoration cutscene</div>
+        <div class="affordance-purpose">Emotional affordance — signals that the player's actions are witnessed by someone who matters. Not reward, not acknowledgment — just presence.</div>
+      </div>
+      <div>
+        <div class="h4" style="font-size:10px;">Effect</div>
+        <p style="font-size:12px; margin:0;">ひなた in background, mid-distance, not highlighted. Single wind-chime note coincides with her glance at 律.</p>
+      </div>
+    </div>
+
+    <div class="affordance-card">
+      <div class="affordance-icon">浮</div>
+      <div>
+        <div class="affordance-name">material_rise_animation</div>
+        <div class="affordance-trigger">Trigger: first 浮木 material reward after Level 1-3</div>
+        <div class="affordance-purpose">Makes material economy tangible, not transactional. The wood rising from the dock it helped restore closes a visual metaphor loop.</div>
+      </div>
+      <div>
+        <div class="h4" style="font-size:10px;">Effect</div>
+        <p style="font-size:12px; margin:0;">Material floats from dock boards to inventory UI corner with warm glow. Wind-chime 3-note ascent. Ripple effect on landing.</p>
+      </div>
+    </div>
+
+    <div class="affordance-card">
+      <div class="affordance-icon">⟳</div>
+      <div>
+        <div class="affordance-name">idle_urgency_pulse</div>
+        <div class="affordance-trigger">Trigger: selected tile untouched for 8 seconds</div>
+        <div class="affordance-purpose">Gentle invitation to act — not instruction, not punishment. The tile becomes slightly more energetic without telling the player what to do.</div>
+      </div>
+      <div>
+        <div class="h4" style="font-size:10px;">Effect</div>
+        <p style="font-size:12px; margin:0;">Pulse period shortens from 0.5s to 0.3s. Matching pair tile brightens very slightly. No audio. Resets if player taps anything.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ SECTION 6: SCAFFOLDING PROGRESSION ══════════════════ -->
+  <div class="section">
+    <div class="section-title">06 · Scaffolding Progression — 1-1 → 1-2 → 1-3</div>
+
+    <p>Complexity increases simultaneously across four dimensions, ensuring no single dimension overwhelms. The player is always slightly ahead of the difficulty curve, never behind it.</p>
+
+    <div class="scaffold-grid" style="margin-top:16px;">
+      <div class="scaffold-header">Dimension</div>
+      <div class="scaffold-header">Level 1-1</div>
+      <div class="scaffold-header">Level 1-2</div>
+      <div class="scaffold-header">Level 1-3</div>
+
+      <div class="scaffold-row">
+        <div class="scaffold-header" style="font-size:12px; text-transform:none; letter-spacing:0; color:var(--text-dim);">Grid Size</div>
+        <div class="scaffold-cell">4 × 4 (16 cells)</div>
+        <div class="scaffold-cell">5 × 5 (25 cells)</div>
+        <div class="scaffold-cell">5 × 5 (25 cells, denser)</div>
+      </div>
+
+      <div class="scaffold-row">
+        <div class="scaffold-header" style="font-size:12px; text-transform:none; letter-spacing:0; color:var(--text-dim);">Tile Pairs</div>
+        <div class="scaffold-cell">
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip"></span>
+          <span class="difficulty-pip"></span>
+          <span class="difficulty-pip"></span>
+          <br>
+          <span style="font-size:11px;color:var(--text-dim);">4 pairs (8 tiles)</span>
+        </div>
+        <div class="scaffold-cell">
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip"></span>
+          <br>
+          <span style="font-size:11px;color:var(--text-dim);">6 pairs (12 tiles)</span>
+        </div>
+        <div class="scaffold-cell">
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <span class="difficulty-pip filled"></span>
+          <br>
+          <span style="font-size:11px;color:var(--text-dim);">7 pairs (14 tiles)</span>
+        </div>
+      </div>
+
+      <div class="scaffold-row">
+        <div class="scaffold-header" style="font-size:12px; text-transform:none; letter-spacing:0; color:var(--text-dim);">Obstacles</div>
+        <div class="scaffold-cell" style="color:var(--green); font-size:12px;">None — pure open space</div>
+        <div class="scaffold-cell" style="color:var(--amber); font-size:12px;">1 gap — single blocked path</div>
+        <div class="scaffold-cell" style="color:var(--red-flag); font-size:12px;">2 gaps — separated, each blocking a different pair</div>
+      </div>
+
+      <div class="scaffold-row">
+        <div class="scaffold-header" style="font-size:12px; text-transform:none; letter-spacing:0; color:var(--text-dim); border-bottom:none;">Routing Complexity</div>
+        <div class="scaffold-cell" style="border-bottom:none; font-size:12px;">First pair: 0 turns (straight line). Others: max 1 turn. Zero routing challenge.</div>
+        <div class="scaffold-cell" style="border-bottom:none; font-size:12px;">Most pairs: 1 turn. One pair: route around obstacle. Combo introduced at end.</div>
+        <div class="scaffold-cell" style="border-bottom:none; font-size:12px;">All pairs: 1-2 turns required. Two obstacle avoidances. Multiple valid clearing orders.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ SECTION 7: COPY SPEC ══════════════════ -->
+  <div class="section">
+    <div class="section-title">07 · Copy Specification — All Tutorial Text in Japanese</div>
+
+    <div class="info-block">
+      Tone: healing game register. Thoughtful adult arriving somewhere new — not a student being taught. No exclamation marks. No directive language. Emotional and observational.
+    </div>
+
+    <!-- Cutscene copy -->
+    <div class="h3" style="margin-bottom:12px;">Opening Cutscene (律 internal monologue)</div>
+
+    <div class="copy-card copy-cutscene">
+      <div class="copy-location">Panel 1<br>Arrival</div>
+      <div>
+        <div class="copy-jp">五年、ずっと走り続けてきた。</div>
+        <div class="copy-translation">"Five years of running without stopping."</div>
+      </div>
+      <div class="copy-speaker">律 / 内心</div>
+    </div>
+
+    <div class="copy-card copy-cutscene">
+      <div class="copy-location">Panel 2<br>Dock</div>
+      <div>
+        <div class="copy-jp">島は、予想よりずっと静かだった。</div>
+        <div class="copy-translation">"The island was much quieter than I had imagined."</div>
+      </div>
+      <div class="copy-speaker">律 / 内心</div>
+    </div>
+
+    <div class="copy-card copy-cutscene">
+      <div class="copy-location">Panel 3<br>First Steps</div>
+      <div>
+        <div class="copy-jp">なにかが、ここで待っている気がした。</div>
+        <div class="copy-translation">"Something felt like it had been waiting here."</div>
+      </div>
+      <div class="copy-speaker">律 / 内心</div>
+    </div>
+
+    <div class="h3" style="margin-top:24px; margin-bottom:12px;">ひなた Dialogue</div>
+
+    <div class="copy-card copy-dialogue">
+      <div class="copy-location">Step 2<br>ひなた encounter</div>
+      <div>
+        <div class="copy-jp">船で見かけました。渉のおじいちゃんからの手紙、たぶんあなた宛てだと思って。</div>
+        <div class="copy-translation">"I noticed you on the ferry. This letter from grandfather Wataru — I think it was meant for you."</div>
+      </div>
+      <div class="copy-speaker">丸山ひなた</div>
+    </div>
+
+    <div class="copy-card copy-dialogue">
+      <div class="copy-location">Step 6<br>1-3 payoff</div>
+      <div>
+        <div class="copy-jp">少し、変わりましたね。</div>
+        <div class="copy-translation">"It's changed a little, hasn't it."</div>
+      </div>
+      <div class="copy-speaker">丸山ひなた</div>
+    </div>
+
+    <div class="h3" style="margin-top:24px; margin-bottom:12px;">Ambient Text (not character-attributed)</div>
+
+    <div class="copy-card copy-ambient">
+      <div class="copy-location">Step 3<br>Island overview</div>
+      <div>
+        <div class="copy-jp">手紙には、島を頼むと書いてあった。</div>
+        <div class="copy-translation">"The letter said: take care of the island."</div>
+      </div>
+      <div class="copy-speaker">ambient</div>
+    </div>
+
+    <div class="copy-card copy-ambient">
+      <div class="copy-location">Step 7<br>Material reward</div>
+      <div>
+        <div class="copy-jp">集めた素材で、島を直せるかもしれない。</div>
+        <div class="copy-translation">"These materials may help restore the island."</div>
+      </div>
+      <div class="copy-speaker">ambient<br>(small type, bottom screen, 3s)</div>
+    </div>
+
+    <div class="h3" style="margin-top:24px; margin-bottom:12px;">Level Emotional Notes (internal diary register, not shown to player)</div>
+
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
+      <div class="card" style="padding:14px;">
+        <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Level 1-1</div>
+        <div style="font-size:15px; color:var(--text); margin-bottom:4px;">最初の一歩。足元の木が、少しだけ明るくなった気がした。</div>
+        <div style="font-size:11px; color:var(--text-dim); font-style:italic;">"First step. The wood underfoot felt slightly brighter."</div>
+      </div>
+      <div class="card" style="padding:14px;">
+        <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Level 1-2</div>
+        <div style="font-size:15px; color:var(--text); margin-bottom:4px;">道は一本じゃない。それは島も、きっと同じだ。</div>
+        <div style="font-size:11px; color:var(--text-dim); font-style:italic;">"A path is never just one route. The island is probably the same."</div>
+      </div>
+      <div class="card" style="padding:14px;">
+        <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Level 1-3</div>
+        <div style="font-size:15px; color:var(--text); margin-bottom:4px;">ここには、まだ何かが残っている。</div>
+        <div style="font-size:11px; color:var(--text-dim); font-style:italic;">"Something here still remains."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ SECTION 8: D1 RETENTION SETUP ══════════════════ -->
+  <div class="section">
+    <div class="section-title">08 · D1 Retention Setup — By End of FTUE</div>
+
+    <p style="margin-bottom:20px;">
+      The FTUE is complete when the player has experienced all four retention anchors. Each anchor is a functional hook that creates a reason to return the next day. Together they establish the full emotional contract of the game.
+    </p>
+
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-icon green">✓</div>
+        <div>
+          <div class="check-text-title">First Island Restoration</div>
+          <div class="check-text-sub">Harbor dock partially restored — visible color change on island map. Player has caused a physical change in the world. The loop is proven.</div>
+        </div>
+      </div>
+
+      <div class="check-item">
+        <div class="check-icon green">✓</div>
+        <div>
+          <div class="check-text-title">ひなた Seen Twice</div>
+          <div class="check-text-sub">Step 2 (letter hand-off) + Step 6 (post-restoration glance). Two brief encounters with appropriate distance — intrigue established, not resolved.</div>
+        </div>
+      </div>
+
+      <div class="check-item">
+        <div class="check-icon green">✓</div>
+        <div>
+          <div class="check-text-title">First Material Reward</div>
+          <div class="check-text-sub">浮木 (driftwood) collected. Material economy introduced without tutorial. The connection between puzzle → material → restoration is physically demonstrated.</div>
+        </div>
+      </div>
+
+      <div class="check-item">
+        <div class="check-icon accent">✓</div>
+        <div>
+          <div class="check-text-title">Island Map Unlocked</div>
+          <div class="check-text-sub">One restored area visible (harbor, warm amber). Adjacent grey areas hint at unexplored potential. Player sees the meta-loop's scale. The 'what do I do next session' question is answered visually.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card warm" style="margin-top:20px;">
+      <div class="h4">Next Session Pull</div>
+      <p style="margin:0; font-size:13px;">
+        The island map after FTUE shows 2 grey areas adjacent to the restored harbor — visible but inaccessible. The player knows: more puzzles = more restoration. ひなた has been seen but not known. The letter from 渉 has been received but not yet understood. All three hooks point forward without urgency.
+      </p>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <div class="h4">Emotional Hooks Established</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px;">
+        <div style="padding:10px 14px; background:var(--bg3); border-radius:8px; font-size:12px; border-left:3px solid var(--accent);">
+          <strong style="color:var(--text);">律 has a purpose</strong><br>
+          <span style="color:var(--text-dim);">Restore the island per the letter. Agency without pressure.</span>
+        </div>
+        <div style="padding:10px 14px; background:var(--bg3); border-radius:8px; font-size:12px; border-left:3px solid var(--warm);">
+          <strong style="color:var(--text);">ひなた is present but not waiting</strong><br>
+          <span style="color:var(--text-dim);">She noticed. She does not follow. The distance is compelling.</span>
+        </div>
+        <div style="padding:10px 14px; background:var(--bg3); border-radius:8px; font-size:12px; border-left:3px solid var(--green);">
+          <strong style="color:var(--text);">The loop is proven</strong><br>
+          <span style="color:var(--text-dim);">Puzzle → material → world change. Demonstrated without words.</span>
+        </div>
+        <div style="padding:10px 14px; background:var(--bg3); border-radius:8px; font-size:12px; border-left:3px solid var(--text-muted);">
+          <strong style="color:var(--text);">The island was beautiful once</strong><br>
+          <span style="color:var(--text-dim);">And can be again. The restored harbor is the proof.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════ APPENDIX: CHARACTER PROFILES ══════════════════ -->
+  <div class="section">
+    <div class="section-title">Appendix · Narrative Context</div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+      <div class="card">
+        <div class="h4" style="margin-bottom:12px;">Protagonist</div>
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <div style="width:56px;height:56px;border-radius:50%;background:rgba(232,184,109,0.1);border:2px solid var(--warm);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">律</div>
+          <div>
+            <div style="font-size:16px;color:var(--text);">山田律 (Yamada Ritsu)</div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">29 · Ad Creative Director · Tokyo burnout</div>
+            <div style="font-size:12px;color:var(--text-dim);">Five years of advertising exhaustion. Received a mysterious ink-brushed letter from lighthouse keeper Maruyama Wataru. Takes leave and arrives by ferry. Carries a battered leather satchel. Writes in a small diary — precise, circling, never directly about himself.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="h4" style="margin-bottom:12px;">Romantic Interest</div>
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <div style="width:56px;height:56px;border-radius:50%;background:rgba(0,188,212,0.1);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">ひな</div>
+          <div>
+            <div style="font-size:16px;color:var(--text);">丸山ひなた (Maruyama Hinata)</div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">24 · Design student · Returned from Osaka same day</div>
+            <div style="font-size:12px;color:var(--text-dim);">Granddaughter of lighthouse keeper. Left island 3 years ago to study design. Returned on the same ferry as 律 — coincidence or something more. Outwardly bright, inwardly deep. Communicates through action. The fisherman's ring on a cord at her chest is the emotional tell.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="h4" style="margin-bottom:12px;">Setting</div>
+        <div style="font-size:12px;color:var(--text-dim);">
+          <strong style="color:var(--text);">輝島 (Kagayaki-jima)</strong> — a small island between Kyushu and the Nansei chain, contemporary era. Once vibrant, now quiet and overgrown since the lighthouse keeper's passing. The island's visual saturation is at 0% at game start — each restoration raises it one step. The game's visual arc is the island coming back to color.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="h4" style="margin-bottom:12px;">The Letter</div>
+        <div style="font-size:12px;color:var(--text-dim);">
+          A letter from <strong style="color:var(--text);">丸山渉</strong> — the lighthouse keeper. Ink-brushed. Addressed to 律 specifically. Contains only the instruction: 「島を頼む」 — "Take care of the island." Why 律 was chosen, how 渉 knew him, what exactly taking care means: all unanswered in the FTUE. These are the questions that drive sessions 2 onward.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════ FOOTER ══════════════════════════════════ -->
+<div class="doc-footer">
+  <div class="footer-info">
+    FTUE Design Document · glow-island · Generated 2026-05-08<br>
+    Schema: ftue-v1 · node: ftue-design · gate_status: in-review
+  </div>
+  <div class="footer-brand">Glow Island · 輝島</div>
+</div>
+
+</body>
+</html>

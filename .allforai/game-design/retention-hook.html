@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glow Island — Retention Hook Design</title>
+<style>
+  :root {
+    --bg: #0f0f1a;
+    --bg2: #161624;
+    --bg3: #1e1e30;
+    --accent: #4caf50;
+    --accent2: #81c784;
+    --accent3: #2e7d32;
+    --text: #e8d5b0;
+    --text2: #b0a080;
+    --text3: #7a6e58;
+    --gold: #f5c842;
+    --pink: #e07fa0;
+    --blue: #7eb8d4;
+    --border: #2a2a3e;
+    --card: #1a1a28;
+    --glow: rgba(76,175,80,0.15);
+    --glow-strong: rgba(76,175,80,0.35);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  /* ===== TOP HERO ===== */
+  .hero {
+    background: linear-gradient(180deg, #0a0a16 0%, #0f1a0f 60%, #0f0f1a 100%);
+    padding: 48px 32px 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(76,175,80,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--accent3);
+    color: var(--accent2);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    border: 1px solid var(--accent);
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 24px;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .hero-meta-item strong { color: var(--accent); display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+  /* ===== LAYOUT ===== */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+  .section { margin: 40px 0; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    background: var(--accent3);
+    color: var(--accent2);
+    font-size: 11px;
+    font-weight: 700;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title { font-size: 18px; font-weight: 700; color: var(--text); }
+  .section-desc { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  /* ===== HOOK LOOP SVG ===== */
+  .hook-loop-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+  }
+  .hook-loop-wrapper svg { max-width: 100%; }
+  /* ===== ERRC TABLE ===== */
+  .errc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .errc-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .errc-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .errc-eliminate .errc-label { color: #ef5350; border-color: rgba(239,83,80,0.3); }
+  .errc-reduce .errc-label { color: #ff9800; border-color: rgba(255,152,0,0.3); }
+  .errc-raise .errc-label { color: var(--accent); border-color: rgba(76,175,80,0.3); }
+  .errc-create .errc-label { color: var(--blue); border-color: rgba(126,184,212,0.3); }
+  .errc-items { list-style: none; }
+  .errc-items li {
+    font-size: 12px;
+    color: var(--text2);
+    padding: 3px 0;
+    padding-left: 12px;
+    position: relative;
+  }
+  .errc-items li::before {
+    content: '·';
+    position: absolute; left: 0;
+    color: var(--text3);
+  }
+  /* ===== CALENDAR GRID ===== */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .cal-day {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+    position: relative;
+    cursor: default;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .cal-day:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--glow);
+  }
+  .cal-day-num {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .cal-day-item {
+    font-size: 10px;
+    color: var(--text2);
+    line-height: 1.3;
+  }
+  .cal-day-special {
+    position: absolute;
+    top: 5px; right: 5px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .cal-day.milestone { border-color: var(--gold); }
+  .cal-day.milestone .cal-day-num { color: var(--gold); }
+  .cal-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .cal-legend-item { display: flex; align-items: center; gap: 6px; }
+  .cal-legend-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  /* ===== STORY BEATS ===== */
+  .beats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .beat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    border-left: 3px solid var(--accent3);
+    transition: border-left-color 0.2s, box-shadow 0.2s;
+  }
+  .beat-card:hover {
+    border-left-color: var(--accent);
+    box-shadow: 0 0 14px var(--glow);
+  }
+  .beat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .beat-id {
+    background: var(--accent3);
+    color: var(--accent2);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .beat-chapter {
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .beat-trigger {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 6px;
+    padding: 6px 10px;
+    background: var(--bg3);
+    border-radius: 6px;
+    border-left: 2px solid var(--border);
+  }
+  .beat-trigger strong { color: var(--text2); display: block; font-size: 10px; margin-bottom: 2px; letter-spacing: 1px; text-transform: uppercase; }
+  .beat-content {
+    font-size: 12px;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .beat-emotion {
+    font-size: 11px;
+    color: var(--pink);
+    padding: 6px 10px;
+    background: rgba(224,127,160,0.07);
+    border-radius: 6px;
+    border-left: 2px solid var(--pink);
+  }
+  .beat-emotion strong { display: block; font-size: 10px; margin-bottom: 2px; letter-spacing: 1px; }
+  /* ===== MILESTONE CARDS ===== */
+  .milestone-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .milestone-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .milestone-day {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .m-d1 .milestone-day { color: var(--accent); }
+  .m-d7 .milestone-day { color: var(--gold); }
+  .m-d30 .milestone-day { color: var(--pink); }
+  .milestone-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 16px;
+  }
+  .milestone-hook {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .milestone-hook-ja {
+    font-size: 12px;
+    color: var(--text2);
+    font-style: italic;
+    margin-bottom: 14px;
+    padding: 8px;
+    background: var(--bg3);
+    border-radius: 6px;
+  }
+  .milestone-rows { text-align: left; }
+  .milestone-row {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .milestone-row:last-child { border-bottom: none; }
+  .milestone-row strong { color: var(--text2); font-size: 10px; display: block; text-transform: uppercase; letter-spacing: 1px; }
+  /* ===== PUSH NOTIFICATIONS ===== */
+  .notif-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .notif-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .notif-icon {
+    width: 36px; height: 36px;
+    background: var(--bg3);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .notif-trigger {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+  .notif-copy {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.5;
+  }
+  .notif-note {
+    font-size: 11px;
+    color: var(--text3);
+    font-style: italic;
+  }
+  .notif-rules {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .notif-rule {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 12px;
+    text-align: center;
+  }
+  .notif-rule .rule-val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .notif-rule .rule-label { color: var(--text2); font-size: 11px; }
+  /* ===== COMPETITOR TABLE ===== */
+  details summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  details summary:hover { background: var(--bg3); }
+  details summary::before {
+    content: '▸';
+    color: var(--accent);
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details[open] summary { border-radius: 10px 10px 0 0; border-bottom: 1px solid var(--border); }
+  .details-body {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+    overflow-x: auto;
+  }
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .comp-table th {
+    background: var(--bg3);
+    color: var(--text2);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .comp-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+    color: var(--text2);
+  }
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table .glow-row td { color: var(--text); background: rgba(76,175,80,0.05); }
+  .comp-table .glow-row td:first-child { color: var(--accent); font-weight: 700; }
+  .comp-table .our-badge {
+    background: var(--accent3);
+    color: var(--accent2);
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-left: 6px;
+  }
+  /* ===== RESTORATION STAGES ===== */
+  .stages-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .stage-pill {
+    flex: 1;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+  }
+  .stage-pill .stage-num {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .stage-1 .stage-num { color: #607d8b; }
+  .stage-2 .stage-num { color: #8bc34a; }
+  .stage-3 .stage-num { color: var(--accent); }
+  .stage-4 .stage-num { color: var(--gold); }
+  .stage-label { color: var(--text2); font-size: 11px; }
+  .stage-ja { color: var(--text3); font-size: 11px; margin-top: 2px; }
+  /* ===== CHAPTER PROGRESS ===== */
+  .chapter-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ch-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ch-badge {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--text2);
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: center;
+  }
+  .ch-bar-wrap {
+    flex: 1;
+    background: var(--bg3);
+    border-radius: 6px;
+    height: 28px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+  .ch-bar {
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 11px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+  .ch-fog {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 40%;
+    background: linear-gradient(to right, transparent, rgba(15,15,26,0.85));
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    font-size: 10px;
+    color: var(--text3);
+  }
+  .ch-teaser { font-size: 11px; color: var(--text3); font-style: italic; flex-basis: 220px; flex-shrink: 0; }
+  /* ===== MEMORY FRAGMENT ===== */
+  .fragment-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .fragment-cell {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--text3);
+    position: relative;
+  }
+  .fragment-cell.unlocked {
+    background: rgba(76,175,80,0.1);
+    border-color: var(--accent3);
+    color: var(--accent2);
+    font-weight: 700;
+  }
+  .fragment-cell.hint {
+    border-color: var(--gold);
+    background: rgba(245,200,66,0.06);
+    color: var(--gold);
+  }
+  /* ===== INFO BOXES ===== */
+  .info-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--text2);
+    margin: 16px 0;
+  }
+  .info-box.warn { border-left-color: #ef5350; }
+  .info-box.gold { border-left-color: var(--gold); }
+  .info-box strong { color: var(--text); }
+  /* ===== CONSTRAINT PILLS ===== */
+  .constraint-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .constraint-pill {
+    background: var(--bg3);
+    border: 1px solid;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 11px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .constraint-pill.ok { border-color: var(--accent3); color: var(--accent2); }
+  .constraint-pill.no { border-color: rgba(239,83,80,0.4); color: #ef9a9a; }
+  .constraint-pill .pill-icon { font-size: 12px; }
+  /* ===== FOOTER ===== */
+  .footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 24px 32px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .footer a { color: var(--text2); }
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .errc-grid { grid-template-columns: 1fr 1fr; }
+    .beats-grid { grid-template-columns: 1fr; }
+    .milestone-cards { grid-template-columns: 1fr; }
+    .notif-grid { grid-template-columns: 1fr; }
+    .notif-rules { grid-template-columns: repeat(2, 1fr); }
+    .stages-row { flex-wrap: wrap; }
+    .fragment-grid { grid-template-columns: repeat(6, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-badge">Retention Hook Design · Systems Design</div>
+  <h1>Glow Island — <span>Retention Hook</span></h1>
+  <div class="hero-sub">光辉岛 リテンション設計書 · v1.0 · 2026-05-08</div>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><strong>Project</strong>Glow Island</div>
+    <div class="hero-meta-item"><strong>Owner</strong>Systems Designer</div>
+    <div class="hero-meta-item"><strong>Gate</strong>in-review</div>
+    <div class="hero-meta-item"><strong>Energy System</strong>なし (No Stamina)</div>
+    <div class="hero-meta-item"><strong>Timers</strong>なし (No Countdown)</div>
+    <div class="hero-meta-item"><strong>Notifications</strong>Max 1/day</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== DESIGN CONSTRAINTS ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">0</div>
+      <div>
+        <div class="section-title">Design Constraints — HARD RULES</div>
+        <div class="section-desc">これらの制約は変更不可。すべてのシステムはこの枠内で設計される。</div>
+      </div>
+    </div>
+    <div class="constraint-row">
+      <span class="constraint-pill no"><span class="pill-icon">✗</span>スタミナゲートなし</span>
+      <span class="constraint-pill no"><span class="pill-icon">✗</span>カウントダウンタイマーなし</span>
+      <span class="constraint-pill no"><span class="pill-icon">✗</span>PvP/ランキングなし</span>
+      <span class="constraint-pill no"><span class="pill-icon">✗</span>強制ソーシャルなし</span>
+      <span class="constraint-pill ok"><span class="pill-icon">✓</span>通知オプトイン必須</span>
+      <span class="constraint-pill ok"><span class="pill-icon">✓</span>通知最大1回/日</span>
+      <span class="constraint-pill ok"><span class="pill-icon">✓</span>D30以降通知なし（不在3日以上を除く）</span>
+      <span class="constraint-pill ok"><span class="pill-icon">✓</span>ストリーク切れはウェルカムバックギフト（罰なし）</span>
+      <span class="constraint-pill ok"><span class="pill-icon">✓</span>内発的動機優先（ナラティブ + 視覚的進捗）</span>
+    </div>
+    <div class="errc-grid" style="margin-top:16px;">
+      <div class="errc-card errc-eliminate">
+        <div class="errc-label">Eliminate</div>
+        <ul class="errc-items">
+          <li>エネルギー/スタミナゲート</li>
+          <li>進行を妨げるカウントダウンタイマー</li>
+          <li>PvP・ランキング</li>
+          <li>強制ソーシャル義務</li>
+        </ul>
+      </div>
+      <div class="errc-card errc-reduce">
+        <div class="errc-label">Reduce</div>
+        <ul class="errc-items">
+          <li>難易度の壁（ハードウォール）</li>
+          <li>時間限定イベントの密度</li>
+          <li>押しつけがましい課金誘導ポップアップ</li>
+        </ul>
+      </div>
+      <div class="errc-card errc-raise">
+        <div class="errc-label">Raise</div>
+        <ul class="errc-items">
+          <li>コンボ演出の満足感</li>
+          <li>アート品質（Animal Crossing水準）</li>
+          <li>ナラティブの深度</li>
+        </ul>
+      </div>
+      <div class="errc-card errc-create">
+        <div class="errc-label">Create</div>
+        <ul class="errc-items">
+          <li>島の視覚的修復体験</li>
+          <li>山田律×丸山ひなた暗示的ロマンス</li>
+          <li>丸山渉の記憶断片システム</li>
+          <li>チャプター進行メカニクス</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HOOK LOOP DIAGRAM ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div>
+        <div class="section-title">Retention Hook Loop — 律の一日の循環</div>
+        <div class="section-desc">Trigger → Action → Reward → Investment の4ステップサイクル。外発的ではなく内発的に回る。</div>
+      </div>
+    </div>
+    <div class="hook-loop-wrapper">
+      <svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" style="max-width:700px;">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0,0 L0,8 L8,4 Z" fill="#4caf50" opacity="0.8"/>
+          </marker>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Center island -->
+        <ellipse cx="400" cy="210" rx="55" ry="38" fill="#1a2e1a" stroke="#4caf50" stroke-width="1.5" opacity="0.7"/>
+        <text x="400" y="205" text-anchor="middle" fill="#81c784" font-size="11" font-family="system-ui">光輝島</text>
+        <text x="400" y="220" text-anchor="middle" fill="#4caf50" font-size="10" font-family="system-ui">Glow Island</text>
+
+        <!-- Node: TRIGGER (top) -->
+        <rect x="290" y="30" width="220" height="70" rx="12" fill="#1e1e30" stroke="#4caf50" stroke-width="1.5" filter="url(#glow)"/>
+        <text x="400" y="58" text-anchor="middle" fill="#4caf50" font-size="14" font-weight="bold" font-family="system-ui">TRIGGER</text>
+        <text x="400" y="76" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">港に何かが打ち上げられた</text>
+        <text x="400" y="91" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">Morning curiosity · Narrative cliffhanger</text>
+
+        <!-- Node: ACTION (right) -->
+        <rect x="610" y="160" width="180" height="100" rx="12" fill="#1e1e30" stroke="#81c784" stroke-width="1.5"/>
+        <text x="700" y="188" text-anchor="middle" fill="#81c784" font-size="14" font-weight="bold" font-family="system-ui">ACTION</text>
+        <text x="700" y="206" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">パズルをプレイ</text>
+        <text x="700" y="222" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">Match-connect · Combo joy</text>
+        <text x="700" y="238" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">No timer · No energy gate</text>
+
+        <!-- Node: REWARD (bottom) -->
+        <rect x="285" y="320" width="230" height="75" rx="12" fill="#1e1e30" stroke="#f5c842" stroke-width="1.5"/>
+        <text x="400" y="348" text-anchor="middle" fill="#f5c842" font-size="14" font-weight="bold" font-family="system-ui">REWARD</text>
+        <text x="400" y="366" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">素材 · ひなたの断片 · 修復の光</text>
+        <text x="400" y="382" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">Narrative gift · Visual restoration</text>
+
+        <!-- Node: INVESTMENT (left) -->
+        <rect x="10" y="160" width="195" height="100" rx="12" fill="#1e1e30" stroke="#e07fa0" stroke-width="1.5"/>
+        <text x="107" y="188" text-anchor="middle" fill="#e07fa0" font-size="14" font-weight="bold" font-family="system-ui">INVESTMENT</text>
+        <text x="107" y="206" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">島に愛着が生まれる</text>
+        <text x="107" y="222" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">渉の記憶 · ひなたとの関係</text>
+        <text x="107" y="238" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">Identity: 律の島になる</text>
+
+        <!-- Arrows: TRIGGER → ACTION -->
+        <path d="M510,85 Q620,90 638,158" stroke="#4caf50" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+        <text x="595" y="118" fill="#4caf50" font-size="10" font-family="system-ui">Session start</text>
+
+        <!-- Arrows: ACTION → REWARD -->
+        <path d="M672,262 Q670,310 523,328" stroke="#81c784" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+        <text x="635" y="310" fill="#81c784" font-size="10" font-family="system-ui">Post-session</text>
+
+        <!-- Arrows: REWARD → INVESTMENT -->
+        <path d="M283,355 Q190,365 167,262" stroke="#f5c842" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+        <text x="175" y="330" fill="#f5c842" font-size="10" font-family="system-ui">Narrative depth</text>
+
+        <!-- Arrows: INVESTMENT → TRIGGER -->
+        <path d="M130,158 Q150,80 288,65" stroke="#e07fa0" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+        <text x="148" y="108" fill="#e07fa0" font-size="10" font-family="system-ui">Tomorrow's curiosity</text>
+
+        <!-- Center small loop labels -->
+        <text x="400" y="172" text-anchor="middle" fill="#4caf50" font-size="9" font-family="system-ui" opacity="0.7">内発的動機</text>
+        <text x="400" y="184" text-anchor="middle" fill="#4caf50" font-size="9" font-family="system-ui" opacity="0.7">Intrinsic Loop</text>
+      </svg>
+
+      <div style="margin-top:16px; font-size:12px; color:var(--text2); text-align:left; background:var(--bg3); border-radius:8px; padding:14px 16px; border:1px solid var(--border);">
+        <strong style="color:var(--text); display:block; margin-bottom:8px;">ループ設計思想</strong>
+        律のゲームは逃避地（escape）であり、義務（obligation）ではない。
+        トリガーは謎と好奇心から生まれ、アクションはコンボの快楽で満たされ、報酬は視覚とナラティブで届く。
+        投資は「島への愛着」という最も強い感情的紐帯として蓄積される。
+        エネルギーゲートなし・タイマーなし — このループは、いつでも、何周でも回せる。
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DAILY REWARD CALENDAR ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div>
+        <div class="section-title">Daily Visit Reward Calendar — 律が島で見つけるもの</div>
+        <div class="section-desc">毎朝、桟橋に何かが置いてある。それは贈り物ではなく、島が用意してくれたもの。</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">Week 1 — D1〜D7 / エスカレーション報酬フェーズ</div>
+      <div class="calendar-grid">
+        <div class="cal-day milestone">
+          <div class="cal-day-num">1</div>
+          <div class="cal-day-item">浮木×3</div>
+          <div class="cal-day-item" style="color:var(--pink); font-size:9px; margin-top:2px;">ひなたのメモ</div>
+          <div class="cal-day-special"></div>
+        </div>
+        <div class="cal-day">
+          <div class="cal-day-num">2</div>
+          <div class="cal-day-item">陶土×3</div>
+        </div>
+        <div class="cal-day">
+          <div class="cal-day-num">3</div>
+          <div class="cal-day-item">苔と種×3</div>
+          <div class="cal-day-item" style="color:var(--blue); font-size:9px; margin-top:2px;">記憶断片ヒント</div>
+        </div>
+        <div class="cal-day">
+          <div class="cal-day-num">4</div>
+          <div class="cal-day-item">石畳石×3</div>
+        </div>
+        <div class="cal-day">
+          <div class="cal-day-num">5</div>
+          <div class="cal-day-item">崖の石英×3</div>
+          <div class="cal-day-item" style="color:var(--gold); font-size:9px; margin-top:2px;">希少素材</div>
+        </div>
+        <div class="cal-day">
+          <div class="cal-day-num">6</div>
+          <div class="cal-day-item">レア素材×1</div>
+          <div class="cal-day-item" style="color:var(--gold); font-size:9px; margin-top:2px;">律の日記解放</div>
+        </div>
+        <div class="cal-day milestone">
+          <div class="cal-day-num">7</div>
+          <div class="cal-day-item">章素材×5</div>
+          <div class="cal-day-item" style="color:var(--pink); font-size:9px; margin-top:2px;">ひなたの瞬間</div>
+          <div class="cal-day-special"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">Week 2–4 — D8〜D30 / 維持報酬フェーズ</div>
+      <div class="calendar-grid">
+        <div class="cal-day"><div class="cal-day-num" style="font-size:12px;">D8–13</div><div class="cal-day-item">希少素材<br>ローテーション</div></div>
+        <div class="cal-day milestone"><div class="cal-day-num">14</div><div class="cal-day-item">記憶断片#2</div><div class="cal-day-special"></div></div>
+        <div class="cal-day"><div class="cal-day-num" style="font-size:12px;">D15–20</div><div class="cal-day-item">素材+<br>断片ヒント</div></div>
+        <div class="cal-day milestone"><div class="cal-day-num">21</div><div class="cal-day-item">律の日記#2</div><div class="cal-day-special"></div></div>
+        <div class="cal-day"><div class="cal-day-num" style="font-size:12px;">D22–27</div><div class="cal-day-item">希少素材<br>ローテーション</div></div>
+        <div class="cal-day milestone"><div class="cal-day-num">28</div><div class="cal-day-item">ひなたの手紙</div><div class="cal-day-special"></div></div>
+        <div class="cal-day milestone"><div class="cal-day-num">30</div><div class="cal-day-item">ひなた個人的な話<br>+ 灯台新視点</div><div class="cal-day-special"></div></div>
+      </div>
+    </div>
+
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">D30以降 — 季節サイクル / Seasonal Variation</div>
+      <div class="stages-row">
+        <div class="stage-pill stage-1">
+          <span class="stage-num">春</span>
+          <div class="stage-label">桜の花びら</div>
+          <div class="stage-ja">「今年も桜が咲きましたね」</div>
+        </div>
+        <div class="stage-pill stage-2">
+          <span class="stage-num">夏</span>
+          <div class="stage-label">夏蛍の光石</div>
+          <div class="stage-ja">「夕暮れに蛍が出ます」</div>
+        </div>
+        <div class="stage-pill stage-3">
+          <span class="stage-num">秋</span>
+          <div class="stage-label">紅葉の枝</div>
+          <div class="stage-ja">「葉っぱが落ちると…」</div>
+        </div>
+        <div class="stage-pill stage-4">
+          <span class="stage-num">冬</span>
+          <div class="stage-label">冬の霜草</div>
+          <div class="stage-ja">「冬の島は静かです」</div>
+        </div>
+      </div>
+      <div class="info-box gold">各季節に限定素材・限定ひなたセリフ・視覚エフェクトが付加される。季節は自然に移ろい、プレイヤーはリアルタイムで島の表情の変化を体験する。</div>
+    </div>
+
+    <div class="cal-legend" style="margin-top:12px;">
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--gold);"></div>マイルストーン日</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--pink);"></div>ひなたイベント</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--blue);"></div>記憶断片</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--accent);"></div>通常素材報酬</div>
+    </div>
+  </div>
+
+  <!-- ===== CHAPTER RESTORATION ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div>
+        <div class="section-title">Chapter Restoration — 内発的フックとしての島の修復</div>
+        <div class="section-desc">各章は4段階で「荒廃→輝き」へ。次の章の霧越し予告が常にある。灯台はCh1から地平線に見える。</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">修復の4ステージ</div>
+      <div class="stages-row">
+        <div class="stage-pill stage-1">
+          <span class="stage-num">1</span>
+          <div class="stage-label">荒廃</div>
+          <div class="stage-ja">Desolate</div>
+        </div>
+        <div class="stage-pill stage-2">
+          <span class="stage-num">2</span>
+          <div class="stage-label">兆し</div>
+          <div class="stage-ja">Stirring</div>
+        </div>
+        <div class="stage-pill stage-3">
+          <span class="stage-num">3</span>
+          <div class="stage-label">萌芽</div>
+          <div class="stage-ja">Blooming</div>
+        </div>
+        <div class="stage-pill stage-4">
+          <span class="stage-num">4</span>
+          <div class="stage-label">輝き</div>
+          <div class="stage-ja">Radiant</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter-timeline">
+      <div class="ch-row">
+        <div class="ch-badge">Ch1 港</div>
+        <div class="ch-bar-wrap">
+          <div class="ch-bar" style="width:85%; background:linear-gradient(to right,#2e7d32,#4caf50);">
+            <span style="color:#fff; font-size:10px;">海边码头 — 浮木・桟橋修復</span>
+          </div>
+          <div class="ch-fog">完了済み</div>
+        </div>
+        <div class="ch-teaser">→ 霧の向こうに窯の煙</div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-badge">Ch2 陶芸</div>
+        <div class="ch-bar-wrap">
+          <div class="ch-bar" style="width:70%; background:linear-gradient(to right,#558b2f,#8bc34a);">
+            <span style="color:#fff; font-size:10px;">陶芸工房 — 轆轤・窯修復</span>
+          </div>
+          <div class="ch-fog">先が見える</div>
+        </div>
+        <div class="ch-teaser">→ 石畳の先に緑の影</div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-badge">Ch3 森</div>
+        <div class="ch-bar-wrap">
+          <div class="ch-bar" style="width:55%; background:linear-gradient(to right,#388e3c,#66bb6a);">
+            <span style="color:#fff; font-size:10px;">森の小径 — 苔・木道修復</span>
+          </div>
+          <div class="ch-fog">霧が薄い</div>
+        </div>
+        <div class="ch-teaser">→ 木々の間、灰色の石</div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-badge">Ch4 石畳</div>
+        <div class="ch-bar-wrap">
+          <div class="ch-bar" style="width:40%; background:linear-gradient(to right,#455a64,#78909c);">
+            <span style="color:#fff; font-size:10px;">石畳の道 — 石板修復</span>
+          </div>
+          <div class="ch-fog">霧の中</div>
+        </div>
+        <div class="ch-teaser">→ 崖の縁、その向こう海</div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-badge">Ch5 崖</div>
+        <div class="ch-bar-wrap">
+          <div class="ch-bar" style="width:25%; background:linear-gradient(to right,#4e342e,#795548);">
+            <span style="color:#fff; font-size:10px;">断崖の見晴らし台</span>
+          </div>
+          <div class="ch-fog">まだ遠い</div>
+        </div>
+        <div class="ch-teaser">→ 霧が晴れ、灯台の輪郭</div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-badge" style="color:var(--gold); border-color:var(--gold);">Ch6 灯台</div>
+        <div class="ch-bar-wrap" style="border-color:rgba(245,200,66,0.3);">
+          <div class="ch-bar" style="width:15%; background:linear-gradient(to right,#f57f17,#f5c842);">
+            <span style="color:#fff; font-size:10px;">灯台</span>
+          </div>
+          <div class="ch-fog" style="color:var(--gold);">最終目標</div>
+        </div>
+        <div class="ch-teaser" style="color:var(--gold);">灯台の光が島を照らす</div>
+      </div>
+    </div>
+
+    <div class="info-box gold" style="margin-top:16px;">
+      <strong>灯台メタゴール：</strong>Ch1の桟橋から、常に地平線上に灯台のシルエットが薄く見える。
+      章を進むごとに解像度が上がり、光が強くなる。Ch6完了まで到達不可能だが、常に視界に入ることで
+      プレイヤーの潜在的な目標として機能する。言葉で説明する必要はない — 見えているだけで十分。
+    </div>
+  </div>
+
+  <!-- ===== HINATA STORY BEATS ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div>
+        <div class="section-title">ひなたストーリービート — 12の micro-event</div>
+        <div class="section-desc">セッション後に届く。ゲームプレイを中断しない。告白も宣言もない — ただ「存在する」関係性。</div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-bottom:20px;">
+      すべてのビートは<strong>ポスト・セッション</strong>で届く。プレイ中の中断はゼロ。
+      ひなたの行動は常に「言葉より先に来る」。告白に向かうのではなく、「そこにいる」ことへの確信が積み重なる。
+    </div>
+
+    <div class="beats-grid">
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch1-a</span>
+          <span class="beat-chapter">Chapter 1 · 海边码头</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>港の桟橋が完全に修復された後（Ch1全修復達成）</div>
+        <div class="beat-content">「玄関に、見慣れない釣り竿が立てかけてあった。竿は古いが、丁寧に手入れされている。誰が置いたのか、わかっていた。」</div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>温かな驚きと、見守られている感覚。言葉ではなく行動で示すひなたの初めての存在感。</div>
+      </div>
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch1-b</span>
+          <span class="beat-chapter">Chapter 1 · 海边码头</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>Level 1-10 クリア（Ch1の10番目のレベル通過）</div>
+        <div class="beat-content">「朝、窓から光が差し込んだ。昨日まで割れていたガラスが、きれいに嵌め直されていた。道具箱の端に、木くずが一つ残っていた。」</div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>静かな存在感。ひなたは説明せず見返りを求めない。律の生活空間が回復していく中に彼女の姿がある。</div>
+      </div>
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch2-a</span>
+          <span class="beat-chapter">Chapter 2 · 陶芸工房</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>Ch2 最初の陶芸工房レベルクリア</div>
+        <div class="beat-content">「ポストに、麻布に包まれた小さな欠片。ひびが入っていて、器としては使えない。でも、土の色が美しかった。裏に、小さな文字で名前だけが書いてあった。」</div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>ひなたが自分のものを律に分け与えた初めての瞬間。「完全でないもの」を贈ることで、飾らない関係性が芽生え始める。</div>
+      </div>
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch2-b</span>
+          <span class="beat-chapter">Chapter 2 · 陶芸工房</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>Ch2 前半修復完了（50%マイルストーン）</div>
+        <div class="beat-content">「『こう、持って』と言うかわりに、ひなたはただ律の手を動かした。轆轤が回る音だけが、工房に満ちていた。」</div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>身体的接触による親密さの初めての萌芽。言葉よりも手の動きで語る。プレイヤーは理屈でなく感覚で距離の縮まりを感じる。</div>
+      </div>
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch3-a</span>
+          <span class="beat-chapter">Chapter 3 · 森の小径</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>Ch3 エリア（森）に初めて入る</div>
+        <div class="beat-content">「薄暗くなりかけた森の入口に、ひなたがいた。何を待っているのかは聞かなかった。律も、ただそこに立っていた。日が完全に沈むまで。」</div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>言葉のない共存。孤独ではないが距離はある。「一人でいたい」気持ちと「ここにいる」存在が静かに交差する。</div>
+      </div>
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch3-b</span>
+          <span class="beat-chapter">Chapter 3 · 森の小径</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>Ch3 修復マイルストーン達成（森の最終ステージ）</div>
+        <div class="beat-content">「鉛筆で丁寧に描かれた森の絵。木の根、苔、光の入り方。それから、遠くにいる人の後ろ姿。律だとわかった。」</div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>自分が他者の目に映っていることへの静かな驚き。孤独感からの最初の小さな離脱。誰かに「見られていた」感覚。</div>
+      </div>
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch4-a</span>
+          <span class="beat-chapter">Chapter 4 · 石畳の道</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>Ch4 石畳エリアに初めて到達</div>
+        <div class="beat-content">「石畳の上に、二種類の足跡があった。一つは自分のもの。もう一つは、途中で右に折れている。どこへ続いているのか、道は藪の中に消えていた。」</div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>ひなたの「見えない部分」への好奇心。彼女が律の知らない場所を持っていることを示す。謎と距離感の維持。</div>
+      </div>
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch4-b</span>
+          <span class="beat-chapter">Chapter 4 · 石畳の道</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>Ch4 前半完了（石畳50%修復）</div>
+        <div class="beat-content">「封筒を開けると、手描きの地図だった。島の北側、点線の先に灯台の小さなシルエット。差出人の名前は、どこにもなかった。」</div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>ひなたへの疑念と親密さの両立。名前を書かない理由をプレイヤーが自分なりに解釈する。灯台への伏線を感情的に強化。</div>
+      </div>
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch5-a</span>
+          <span class="beat-chapter">Chapter 5 · 断崖の見晴らし台</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>Ch5 最初の崖レベルクリア</div>
+        <div class="beat-content">「『竿は、海に任せるんです』とひなたが言った。三匹目が釣れたとき、彼女は黙って律の桶に魚を一匹入れた。」</div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>ひなたの優しさは憐れみでなく共有の精神。笑わないことで律の尊厳を守る。「できなくてもいい」空間としての島の体現。</div>
+      </div>
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch5-b</span>
+          <span class="beat-chapter">Chapter 5 · 断崖の見晴らし台</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>Ch5 修復50%達成</div>
+        <div class="beat-content">「『十月、嵐の後。島に誰も来なくなって、三年が経つ。それでも灯台は消していない。光は、待っているものだと思うから。——渉』」<br><small style="color:var(--text3);">ひなたが読み上げる丸山渉の日誌より</small></div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>渉の記憶断片システムと感情的に繋がる転換点。祖父の孤独と灯台を守る理由が輪郭を持つ。律は渉と自分の孤独が重なることを感じる。</div>
+      </div>
+
+      <div class="beat-card">
+        <div class="beat-header">
+          <span class="beat-id">Ch6-a</span>
+          <span class="beat-chapter">Chapter 6 · 灯台</span>
+        </div>
+        <div class="beat-trigger"><strong>Trigger</strong>Ch6 最初のレベルクリア</div>
+        <div class="beat-content">「灯台の石の壁に、ひなたの手のひらが触れていた。冬の朝の光の中で、彼女は上を見上げていた。何かを待っているような、何かを確かめているような。」</div>
+        <div class="beat-emotion"><strong>Emotional Goal</strong>ひなたにとって灯台が単なる建物でないことを体感させる。律も観察者として、初めて彼女の孤独の片鱗に触れる。</div>
+      </div>
+
+      <div class="beat-card" style="border-left-color: var(--gold);">
+        <div class="beat-header">
+          <span class="beat-id" style="background:rgba(245,200,66,0.2); color:var(--gold); border:1px solid var(--gold);">Ch6-b</span>
+          <span class="beat-chapter">Chapter 6 · 灯台 — Final</span>
+        </div>
+        <div class="beat-trigger" style="border-left-color:var(--gold);"><strong>Trigger</strong>灯台の修復完了（Ch6全修復達成・エンディング直前）</div>
+        <div class="beat-content" style="font-style:normal; color:var(--text);">「階段を上る音が、石に響いた。頂上に出ると、风が強かった。ひなたは海を見ていた。律も、海を見た。灯台の光が、円を描いて沖へ伸びていた。」<br><br><em style="color:var(--text2); font-style:italic;">セリフなし。二人の足音だけが螺旋階段に響く。</em></div>
+        <div class="beat-emotion" style="border-left-color:var(--gold); background:rgba(245,200,66,0.07);"><strong>Emotional Goal</strong>言葉を超えた完結。告白でも別れでもなく、「そこにいる」という確かさ。島の治癒と律の治癒が重なるオープンエンド。</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== D1/D7/D30 HOOK MATRIX ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div>
+        <div class="section-title">D1 / D7 / D30 Hook Matrix — 3つの決定的な日</div>
+        <div class="section-desc">最初の日・最初の週・最初の月。それぞれに固有のフックと感情的な山場がある。</div>
+      </div>
+    </div>
+
+    <div class="milestone-cards">
+      <div class="milestone-card m-d1">
+        <div class="milestone-day">D1</div>
+        <div class="milestone-label">First Day Hook</div>
+        <div class="milestone-hook">What happened to the harbor overnight?</div>
+        <div class="milestone-hook-ja">「一晩で、港が少し変わっていた。なぜだろう。」</div>
+        <div class="milestone-rows">
+          <div class="milestone-row">
+            <strong>Hook</strong>
+            港に何かが打ち上げられている — オープンループが翌日を引き寄せる
+          </div>
+          <div class="milestone-row">
+            <strong>Visual</strong>
+            修復アニメーション — 桟橋板が一枚ずつ光りながら元の位置に戻る（3秒、スキップ可）
+          </div>
+          <div class="milestone-row">
+            <strong>Reward</strong>
+            桟橋のギフトボックス：浮木×3 + ひなたのウェルカムメモ
+          </div>
+          <div class="milestone-row">
+            <strong>Session Goal</strong>
+            初回で最初の修復を「完成」させる満足感を必ず提供する
+          </div>
+        </div>
+      </div>
+
+      <div class="milestone-card m-d7">
+        <div class="milestone-day">D7</div>
+        <div class="milestone-label">First Week Hook</div>
+        <div class="milestone-hook">律が夢を見る — 島の記憶とひなたの声のかけら</div>
+        <div class="milestone-hook-ja">「律の夢の中に、島の音がした。ひなたの声だったかもしれない。」</div>
+        <div class="milestone-rows">
+          <div class="milestone-row">
+            <strong>Hook</strong>
+            水彩タッチの夢シーケンス — ひなたのシルエットと海の音。モノクロームで余白がある。
+          </div>
+          <div class="milestone-row">
+            <strong>Mechanical</strong>
+            Ch2エリアが霧越しに初めて見える。陶芸工房の輪郭が浮かぶ。
+          </div>
+          <div class="milestone-row">
+            <strong>Social</strong>
+            任意加入ソフトリーダーボード（復元材料総量）。ランキング競争なし。仲間の島の進捗確認のみ。
+          </div>
+          <div class="milestone-row">
+            <strong>Emotional</strong>
+            1週間の達成感と新章への好奇心が重なる。夢が律の内的変化を初めて示す。
+          </div>
+        </div>
+      </div>
+
+      <div class="milestone-card m-d30">
+        <div class="milestone-day">D30</div>
+        <div class="milestone-label">First Month Hook</div>
+        <div class="milestone-hook">記憶断片システムが本格稼働 — 渉の日誌が語り始める</div>
+        <div class="milestone-hook-ja">「断片が集まり始めると、渉という人の輪郭が見えてきた。」</div>
+        <div class="milestone-rows">
+          <div class="milestone-row">
+            <strong>Hook</strong>
+            記憶断片24枚のうち10枚以上が揃い始める。渉の声が文字で蘇る。
+          </div>
+          <div class="milestone-row">
+            <strong>Emotional</strong>
+            「祖父は、光は待つものだと言っていました。誰かが帰ってくるのを、光は知っているって。」 — ひなたが初めて個人的な話をする。
+          </div>
+          <div class="milestone-row">
+            <strong>Mechanical</strong>
+            島Ch3まで全景 + 崖の上からの灯台俯瞰視点が初めて解放される
+          </div>
+          <div class="milestone-row">
+            <strong>Visual</strong>
+            晴れた夜の島パノラマ — Ch1〜Ch3の修復結果がすべて光の中に見える全景ショット
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MEMORY FRAGMENT SYSTEM ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div>
+        <div class="section-title">丸山渉の記憶断片システム</div>
+        <div class="section-desc">24枚の断片。収集を強制しない — 島にいれば、自然と集まる。</div>
+      </div>
+    </div>
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px;">
+      <div style="font-size:12px; color:var(--text2); margin-bottom:12px;">断片の可視化 — 24枚 / 日誌コレクション</div>
+      <div class="fragment-grid">
+        <div class="fragment-cell unlocked">1</div>
+        <div class="fragment-cell unlocked">2</div>
+        <div class="fragment-cell hint">3</div>
+        <div class="fragment-cell unlocked">4</div>
+        <div class="fragment-cell">5</div>
+        <div class="fragment-cell hint">6</div>
+        <div class="fragment-cell">7</div>
+        <div class="fragment-cell">8</div>
+        <div class="fragment-cell">9</div>
+        <div class="fragment-cell">10</div>
+        <div class="fragment-cell">11</div>
+        <div class="fragment-cell">12</div>
+        <div class="fragment-cell">13</div>
+        <div class="fragment-cell">14</div>
+        <div class="fragment-cell">15</div>
+        <div class="fragment-cell">16</div>
+        <div class="fragment-cell">17</div>
+        <div class="fragment-cell">18</div>
+        <div class="fragment-cell">19</div>
+        <div class="fragment-cell">20</div>
+        <div class="fragment-cell">21</div>
+        <div class="fragment-cell">22</div>
+        <div class="fragment-cell">23</div>
+        <div class="fragment-cell">24</div>
+      </div>
+      <div class="cal-legend">
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--accent);"></div>解放済み</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--gold);"></div>ヒントあり（解放待ち）</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--bg3); border:1px solid var(--border);"></div>未発見</div>
+      </div>
+      <div class="info-box" style="margin-top:14px;">
+        <strong>収集方針：</strong>断片はデイリー報酬・ひなたビート・章修復マイルストーン・季節限定から自然に届く。
+        「あと○個」といったプレッシャー表示は一切しない。
+        全24枚を集めると、エピローグシーン「ひなたが渉のことを語る」が解放される。
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PUSH NOTIFICATIONS ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div>
+        <div class="section-title">Push Notification Strategy — 島の声</div>
+        <div class="section-desc">オプトイン必須。最大1回/日。義務感なし、罪悪感なし。島が生きているかのような声で届く。</div>
+      </div>
+    </div>
+
+    <div class="notif-rules" style="margin-bottom:20px;">
+      <div class="notif-rule">
+        <span class="rule-val">1</span>
+        <span class="rule-label">最大通知回数 / 日</span>
+      </div>
+      <div class="notif-rule">
+        <span class="rule-val">D30</span>
+        <span class="rule-label">自動停止日<br>(不在3日以上を除く)</span>
+      </div>
+      <div class="notif-rule">
+        <span class="rule-val">1 tap</span>
+        <span class="rule-label">オプトアウトの手数</span>
+      </div>
+      <div class="notif-rule">
+        <span class="rule-val">D3</span>
+        <span class="rule-label">オプトイン提案タイミング</span>
+      </div>
+      <div class="notif-rule">
+        <span class="rule-val">3日</span>
+        <span class="rule-label">不在後の再アクティブ通知閾値</span>
+      </div>
+      <div class="notif-rule">
+        <span class="rule-val">ゼロ</span>
+        <span class="rule-label">オプトアウト時のペナルティ</span>
+      </div>
+    </div>
+
+    <div class="notif-grid">
+      <div class="notif-card">
+        <div class="notif-icon">🌊</div>
+        <div>
+          <div class="notif-trigger">Morning Regular — 09:00</div>
+          <div class="notif-copy">律さん、今日の潮目は穏やかです。<br>島が待っています。</div>
+          <div class="notif-note">穏やかな招待。プレッシャーゼロ。</div>
+        </div>
+      </div>
+      <div class="notif-card">
+        <div class="notif-icon">🌿</div>
+        <div>
+          <div class="notif-trigger">2-Day Absence — 11:00</div>
+          <div class="notif-copy">律さん、海辺に何か<br>落ちていますよ。</div>
+          <div class="notif-note">謎かけ式。何が落ちているか気になる。義務感なし。</div>
+        </div>
+      </div>
+      <div class="notif-card">
+        <div class="notif-icon">🏮</div>
+        <div>
+          <div class="notif-trigger">7-Day Absence — Welcome Back</div>
+          <div class="notif-copy">おかえりなさい。<br>島も、喜んでいます。</div>
+          <div class="notif-note">ウェルカムバック。罰なし、ただ温かさだけ。</div>
+        </div>
+      </div>
+      <div class="notif-card">
+        <div class="notif-icon">✨</div>
+        <div>
+          <div class="notif-trigger">Chapter Milestone — Next Morning</div>
+          <div class="notif-copy">昨日の修復が、島を<br>少し変えたみたいです。</div>
+          <div class="notif-note">昨日の達成を今日の楽しみに変える。</div>
+        </div>
+      </div>
+      <div class="notif-card">
+        <div class="notif-icon">🌸</div>
+        <div>
+          <div class="notif-trigger">Season Change — Morning</div>
+          <div class="notif-copy">律さん、島に<br>新しい季節が来ました。</div>
+          <div class="notif-note">季節の変わり目。好奇心を呼ぶ。</div>
+        </div>
+      </div>
+      <div class="notif-card">
+        <div class="notif-icon">🔦</div>
+        <div>
+          <div class="notif-trigger">Hinata Story Beat Ready</div>
+          <div class="notif-copy">ひなたさんが、島のどこかに<br>何かを置いていったようです。</div>
+          <div class="notif-note">ひなたビートの予告。過度な演出なし。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box warn" style="margin-top:12px;">
+      <strong>Do Not Send：</strong>
+      当日すでにプレイ済み / オプトアウト済み / D30以降かつ不在3日未満 / 現地時間23:00〜08:00の間。
+      いずれかに該当する場合、通知は完全にスキップされる。
+    </div>
+
+    <div class="info-box" style="margin-top:8px;">
+      <strong>オプトイン提案コピー（D3セッション後）：</strong>
+      「島から、ときどき便りが届きます。受け取りますか？」
+      — 受け取る / 今はいい（どちらを選んでも罰なし・再提案あり）
+    </div>
+  </div>
+
+  <!-- ===== SOFT STREAK ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div>
+        <div class="section-title">Soft Streak System — ウェルカムバックの設計</div>
+        <div class="section-desc">連続ログインを祝うが、途切れても罰しない。帰ってきた日が、いつも良い日になるように。</div>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">不在 1〜3日</div>
+        <div style="font-size:13px; color:var(--text); margin-bottom:6px;">通常デイリー + ボーナス素材</div>
+        <div style="font-size:12px; color:var(--text2); font-style:italic;">「少し雨が続いていましたよ。」</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">不在 4〜7日</div>
+        <div style="font-size:13px; color:var(--text); margin-bottom:6px;">レア素材 + 記憶断片ヒント</div>
+        <div style="font-size:12px; color:var(--text2); font-style:italic;">「島は変わらず、ここにいます。」</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">不在 8日以上</div>
+        <div style="font-size:13px; color:var(--text); margin-bottom:6px;">章素材セット + ひなたのウェルカムバックメモ</div>
+        <div style="font-size:12px; color:var(--text2); font-style:italic;">「おかえりなさい。島も、喜んでいます。」</div>
+      </div>
+    </div>
+    <div class="info-box" style="margin-top:14px;">
+      ストリークカウンターはリセットされるが、ペナルティは一切ない。
+      むしろ不在が長いほど、帰ってきたときの贈り物が温かくなる。
+      <strong>義務でなく、帰りたい場所として設計する。</strong>
+    </div>
+  </div>
+
+  <!-- ===== COMPETITOR ANALYSIS ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <div>
+        <div class="section-title">Competitor Analysis</div>
+        <div class="section-desc">Gardenscapes · Township · Fishdom vs Glow Island</div>
+      </div>
+    </div>
+    <details>
+      <summary>競合分析テーブルを表示 (折りたたみ)</summary>
+      <div class="details-body">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>ゲーム</th>
+              <th>デイリーギフト</th>
+              <th>エネルギー補充</th>
+              <th>ストーリーイベント頻度</th>
+              <th>プッシュ通知頻度</th>
+              <th>感情トーン</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Gardenscapes</strong></td>
+              <td>スター・パワーアップ（機能的）</td>
+              <td>ライフ制（5回制限、リフィル待機または課金）</td>
+              <td>レベルクリアごとに進行（高頻度だが浅い）</td>
+              <td>複数回/日（エネルギー補充通知含む）</td>
+              <td>明るく賑やかだが、エネルギー不足時のフラストレーション誘発あり</td>
+            </tr>
+            <tr>
+              <td><strong>Township</strong></td>
+              <td>硬貨・素材（生産系に必要）</td>
+              <td>生産時間待機（建物ごとのタイマー）</td>
+              <td>イベント期間限定中心（常設ストーリーは薄い）</td>
+              <td>生産完了通知が複数回/日</td>
+              <td>コミュニティ達成感中心、個人的感情曲線は弱い</td>
+            </tr>
+            <tr>
+              <td><strong>Fishdom</strong></td>
+              <td>コイン・水族館デコアイテム</td>
+              <td>ライフ制（Gardenscapesと同類）</td>
+              <td>フィッシュキャラのダイアログあり、ストーリー性は低い</td>
+              <td>ライフ補充・セール通知が頻繁</td>
+              <td>可愛らしいが浅い。感情的投資は水族館ビジュアルに依存</td>
+            </tr>
+            <tr class="glow-row">
+              <td><strong>Glow Island</strong> <span class="our-badge">OUR GAME</span></td>
+              <td>島の素材（ナラティブ文脈付き）<br>律が島で「見つける」体験</td>
+              <td>エネルギー制なし<br>いつでもプレイ可能</td>
+              <td>セッション後に届く12のひなたビート<br>中断ゼロ</td>
+              <td>最大1回/日、D30以降は不在3日以上のみ<br>オプトイン必須</td>
+              <td>静かで深い。治癒感・関係性の温かさ・渉の記憶による物語の厚み</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="info-box" style="margin-top:16px;">
+          <strong>差別化の核心：</strong>
+          競合3タイトルはいずれも「戻らせる」ために外発的プレッシャー（エネルギー切れ・タイマー・頻繁な通知）を使う。
+          Glow Islandは「帰りたくなる」場所を作ることで、義務感なきリテンションを実現する。
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===== SUMMARY PRINCIPLES ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div>
+        <div class="section-title">Design Principles Summary — 設計思想の核</div>
+        <div class="section-desc">このドキュメントに込められた意思決定の原則</div>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+      <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid var(--accent); border-radius:10px; padding:16px;">
+        <div style="font-size:13px; font-weight:700; color:var(--accent); margin-bottom:8px;">義務でなく、帰りたい場所</div>
+        <div style="font-size:12px; color:var(--text2);">律のゲームは逃避地（escape）。押し付けでなく、選んで戻る場所として設計する。</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid var(--pink); border-radius:10px; padding:16px;">
+        <div style="font-size:13px; font-weight:700; color:var(--pink); margin-bottom:8px;">言葉より、存在が語る</div>
+        <div style="font-size:12px; color:var(--text2);">ひなたは説明しない。釣り竿を置き、窓を直し、スケッチを残す。行動が感情を運ぶ。</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid var(--gold); border-radius:10px; padding:16px;">
+        <div style="font-size:13px; font-weight:700; color:var(--gold); margin-bottom:8px;">修復が自分になる</div>
+        <div style="font-size:12px; color:var(--text2);">島の変化は律の変化。視覚的修復が最も強い内発的報酬であり、言葉による説明を必要としない。</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid var(--blue); border-radius:10px; padding:16px;">
+        <div style="font-size:13px; font-weight:700; color:var(--blue); margin-bottom:8px;">渉の記憶は積み重なる</div>
+        <div style="font-size:12px; color:var(--text2);">24枚の断片は強制されない。ただ、集まっていく。物語の深さがゲームを引き留める。</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid var(--accent2); border-radius:10px; padding:16px;">
+        <div style="font-size:13px; font-weight:700; color:var(--accent2); margin-bottom:8px;">通知は便りであって要求ではない</div>
+        <div style="font-size:12px; color:var(--text2);">島からの声は穏やかで、短く、余白がある。罪悪感を誘発するコピーは一切使わない。</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid #9c27b0; border-radius:10px; padding:16px;">
+        <div style="font-size:13px; font-weight:700; color:#ce93d8; margin-bottom:8px;">灯台はいつもそこにある</div>
+        <div style="font-size:12px; color:var(--text2);">Ch1から見える灯台は、島の治癒と律の治癒の両方の象徴。目標を言葉で説明する必要はない。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  <div style="margin-bottom:6px;">Glow Island — Retention Hook Design Document · v1.0</div>
+  <div>Generated 2026-05-08 · Systems Designer · Gate: <span style="color:var(--accent);">in-review</span> · Unlocks: meta-game-design</div>
+  <div style="margin-top:8px; color:var(--text3);">「島は変わらず、ここにいます。」</div>
+</div>
+
+</body>
+</html>

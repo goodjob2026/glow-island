@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glow Island — 輝島の光 | GDD Production Dashboard</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-main:    #0f0f1a;
+    --bg-card:    #1a1a2e;
+    --bg-mid:     #12122a;
+    --border:     #333355;
+    --approved:   #4caf50;
+    --in-review:  #ff9800;
+    --pending:    #607d8b;
+    --ready:      #00bcd4;
+    --gold:       #d4a017;
+    --text:       #e8d5b0;
+    --text-dim:   #8888aa;
+    --text-bright:#ffffff;
+    --radius:     8px;
+    --radius-lg:  12px;
+  }
+
+  body {
+    background: var(--bg-main);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f1a2a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 32px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .title-block { display: flex; align-items: center; gap: 16px; }
+  .lighthouse-icon {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--gold), #f0c040);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(212,160,23,0.4);
+  }
+  .game-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 0.5px;
+  }
+  .game-subtitle {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  /* ── COMPLETION RING ── */
+  .gauge-block { display: flex; align-items: center; gap: 14px; }
+  .gauge-ring { position: relative; width: 72px; height: 72px; flex-shrink: 0; }
+  .gauge-ring svg { transform: rotate(-90deg); }
+  .gauge-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+  .gauge-fill {
+    fill: none;
+    stroke: var(--approved);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 188.5;
+    stroke-dashoffset: 24.5; /* 188.5 * (1 - 0.87) = 24.5 */
+    transition: stroke-dashoffset 1s ease;
+    filter: drop-shadow(0 0 6px rgba(76,175,80,0.6));
+  }
+  .gauge-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--approved);
+  }
+  .gauge-info { line-height: 1.3; }
+  .gauge-pct { font-size: 20px; font-weight: 700; color: var(--approved); }
+  .gauge-label { font-size: 11px; color: var(--text-dim); }
+
+  /* ── METRICS STRIP ── */
+  .metrics-strip {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .metric-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ready);
+    line-height: 1;
+  }
+  .metric-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .metric-divider {
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+  }
+
+  /* ── STATUS BADGES (above fold) ── */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .badge.approved  { background: rgba(76,175,80,0.15); border: 1px solid rgba(76,175,80,0.5); color: var(--approved); }
+  .badge.approved .badge-dot { background: var(--approved); box-shadow: 0 0 4px rgba(76,175,80,0.8); }
+  .badge.pending   { background: rgba(96,125,139,0.15); border: 1px solid rgba(96,125,139,0.5); color: var(--pending); }
+  .badge.pending .badge-dot  { background: var(--pending); }
+  .badge.in-review { background: rgba(255,152,0,0.15); border: 1px solid rgba(255,152,0,0.5); color: var(--in-review); }
+  .badge.in-review .badge-dot { background: var(--in-review); }
+
+  /* ── TABS ── */
+  .tabs-nav {
+    display: flex;
+    gap: 0;
+    padding: 0 32px;
+    background: var(--bg-mid);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 180px;
+    z-index: 99;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(212,160,23,0.06); }
+
+  /* ── CONTENT ── */
+  .tab-content { display: none; padding: 28px 32px 60px; }
+  .tab-content.active { display: block; }
+
+  /* ── SECTION HEADINGS ── */
+  .section-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
+  }
+  .section-heading span { color: var(--gold); }
+
+  /* ── CARDS ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .card-grid-3 {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { border-color: #555577; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--text-bright); }
+  .card-owner { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+  .card-meta { font-size: 11px; color: var(--text-dim); margin-top: 8px; line-height: 1.6; }
+  .card-meta strong { color: var(--text); }
+  .card-timestamp { font-size: 10px; color: var(--text-dim); margin-top: 8px; opacity: 0.7; }
+  .card-unlocks { margin-top: 8px; }
+  .card-unlocks-label { font-size: 10px; color: var(--text-dim); margin-bottom: 4px; }
+  .unlock-chain { display: flex; flex-wrap: wrap; gap: 4px; }
+  .unlock-item {
+    font-size: 10px;
+    padding: 2px 7px;
+    background: rgba(0,188,212,0.1);
+    border: 1px solid rgba(0,188,212,0.3);
+    border-radius: 4px;
+    color: var(--ready);
+  }
+
+  /* gate status badge in cards */
+  .status-pill {
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+  .status-pill.approved  { background: rgba(76,175,80,0.2);  color: var(--approved);  border: 1px solid rgba(76,175,80,0.4); }
+  .status-pill.pending   { background: rgba(96,125,139,0.2); color: var(--pending);   border: 1px solid rgba(96,125,139,0.4); }
+  .status-pill.in-review { background: rgba(255,152,0,0.2);  color: var(--in-review); border: 1px solid rgba(255,152,0,0.4); }
+
+  /* ── SUMMARY ROW ── */
+  .summary-row {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 18px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .summary-row .count-badge {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .count-badge.green  { background: rgba(76,175,80,0.2);  color: var(--approved);  }
+  .count-badge.yellow { background: rgba(255,152,0,0.2);  color: var(--in-review); }
+  .count-badge.grey   { background: rgba(96,125,139,0.2); color: var(--pending);   }
+
+  /* ── ART TAB ── */
+  .art-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+  .art-table th, .art-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .art-table th {
+    background: rgba(255,255,255,0.04);
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .art-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .art-table td:first-child { color: var(--text-bright); font-weight: 600; }
+  .art-table .count-cell { color: var(--ready); font-weight: 700; font-size: 14px; }
+  .art-table .status-cell {
+    padding: 3px 9px;
+    border-radius: 10px;
+    background: rgba(96,125,139,0.15);
+    color: var(--pending);
+    border: 1px solid rgba(96,125,139,0.3);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+
+  /* TILE GRID */
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .tile-cell {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+    transition: transform 0.1s, box-shadow 0.2s;
+    cursor: default;
+  }
+  .tile-cell:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.4); }
+  .tile-swatch {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    margin: 0 auto 6px;
+    border: 2px solid rgba(255,255,255,0.12);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .tile-code { font-size: 10px; color: var(--text-dim); font-family: monospace; }
+  .tile-name { font-size: 11px; color: var(--text); margin-top: 2px; }
+  .tile-chapter { font-size: 9px; color: var(--text-dim); margin-top: 1px; }
+
+  /* AI Readiness */
+  .ai-readiness {
+    background: var(--bg-card);
+    border: 1px solid rgba(0,188,212,0.3);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .ai-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+  .ai-readiness h4 { font-size: 14px; color: var(--ready); margin-bottom: 6px; }
+  .ai-readiness p  { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+  .ai-stats { display: flex; gap: 20px; margin-top: 10px; flex-wrap: wrap; }
+  .ai-stat { text-align: center; }
+  .ai-stat-val { font-size: 20px; font-weight: 700; color: var(--ready); line-height: 1; }
+  .ai-stat-lbl { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+
+  /* ── ENGINEERING TAB ── */
+  .impl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .impl-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(0,188,212,0.3);
+    border-radius: var(--radius);
+    padding: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .impl-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--ready);
+  }
+  .impl-card:hover { border-color: var(--ready); box-shadow: 0 4px 20px rgba(0,188,212,0.15); }
+  .impl-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .impl-number {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(0,188,212,0.15);
+    border: 1px solid rgba(0,188,212,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--ready);
+    flex-shrink: 0;
+  }
+  .impl-card-title { font-size: 13px; font-weight: 700; color: var(--text-bright); }
+  .impl-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(0,188,212,0.15);
+    color: var(--ready);
+    border: 1px solid rgba(0,188,212,0.4);
+    margin-bottom: 8px;
+  }
+  .impl-status-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--ready);
+    box-shadow: 0 0 5px rgba(0,188,212,0.8);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .impl-artifacts { margin-top: 8px; }
+  .impl-artifact {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: 'Courier New', monospace;
+    padding: 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .impl-artifact::before { content: '→'; color: var(--border); }
+  .impl-blocked { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
+  .impl-blocked-tag {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 4px;
+    background: rgba(76,175,80,0.1);
+    border: 1px solid rgba(76,175,80,0.3);
+    color: var(--approved);
+    font-size: 10px;
+    margin-top: 3px;
+  }
+
+  /* Pipeline */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  .pipeline-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 110px;
+    padding: 10px 6px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .pipeline-node-icon { font-size: 20px; }
+  .pipeline-node-name { font-size: 11px; color: var(--text); font-weight: 600; text-align: center; }
+  .pipeline-node-status { font-size: 9px; color: var(--text-dim); text-transform: uppercase; }
+  .pipeline-arrow {
+    color: var(--border);
+    font-size: 16px;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* ── AUDIO TAB ── */
+  .audio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+  @media (max-width: 768px) { .audio-grid { grid-template-columns: 1fr; } }
+  .audio-list { list-style: none; }
+  .audio-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 12px;
+    color: var(--text);
+  }
+  .audio-list li:last-child { border-bottom: none; }
+  .audio-note { font-size: 10px; color: var(--text-dim); margin-left: auto; text-align: right; max-width: 180px; }
+  .audio-icon { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+  .audio-check { color: var(--approved); font-size: 12px; flex-shrink: 0; }
+  .audio-key { font-family: monospace; font-size: 10px; color: var(--ready); }
+
+  /* Adaptive layers viz */
+  .adaptive-viz {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .adaptive-layer {
+    margin-bottom: 16px;
+  }
+  .adaptive-layer:last-child { margin-bottom: 0; }
+  .layer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .layer-name { font-size: 13px; font-weight: 700; color: var(--text-bright); }
+  .layer-trigger { font-size: 11px; color: var(--text-dim); }
+  .layer-bar { height: 8px; border-radius: 4px; position: relative; }
+  .layer-bar-base { background: linear-gradient(to right, #1a3a6a, var(--ready)); width: 100%; }
+  .layer-bar-melody { background: linear-gradient(to right, #2a4a2a, var(--approved)); width: 80%; }
+  .layer-bar-intensity { background: linear-gradient(to right, #3a2a0a, var(--gold)); width: 55%; }
+  .layer-description { font-size: 11px; color: var(--text-dim); margin-top: 5px; }
+
+  /* BGM track list */
+  .bgm-tracks { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .bgm-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    transition: border-color 0.2s;
+  }
+  .bgm-card:hover { border-color: var(--gold); }
+  .bgm-ch-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--gold);
+    background: rgba(212,160,23,0.12);
+    border: 1px solid rgba(212,160,23,0.3);
+  }
+  .bgm-title { font-size: 13px; font-weight: 700; color: var(--text-bright); margin-bottom: 4px; }
+  .bgm-meta { font-size: 11px; color: var(--text-dim); line-height: 1.6; }
+  .bgm-bpm { color: var(--ready); font-weight: 700; }
+
+  /* SFX checklist */
+  .sfx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; margin-bottom: 28px; }
+  .sfx-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+  }
+  .sfx-check { color: var(--approved); font-size: 14px; flex-shrink: 0; }
+  .sfx-name { color: var(--text); font-weight: 600; }
+  .sfx-desc { color: var(--text-dim); font-size: 11px; margin-top: 1px; }
+
+  /* ── MISC ── */
+  .info-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+  .info-box strong { color: var(--text-bright); }
+  .info-box .highlight { color: var(--gold); font-weight: 700; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  .chapter-arc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+  @media (max-width: 700px) { .chapter-arc-grid { grid-template-columns: 1fr; } }
+  .chapter-arc-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .ch-number {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+  .ch-title { font-size: 16px; font-weight: 700; color: var(--gold); }
+  .ch-keyword { font-size: 12px; color: var(--text); margin-top: 2px; }
+  .ch-area { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+  .ch-npc { font-size: 11px; color: var(--in-review); margin-top: 2px; }
+
+  .footer-stamp {
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    color: var(--text-dim);
+    border-top: 1px solid var(--border);
+    opacity: 0.7;
+    margin-top: 40px;
+  }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .tag {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tag-elim  { background: rgba(244,67,54,0.12); color: #ef5350; border: 1px solid rgba(244,67,54,0.3); }
+  .tag-reduce{ background: rgba(255,152,0,0.12); color: #ff9800; border: 1px solid rgba(255,152,0,0.3); }
+  .tag-raise { background: rgba(76,175,80,0.12); color: #66bb6a; border: 1px solid rgba(76,175,80,0.3); }
+  .tag-create{ background: rgba(0,188,212,0.12); color: #00bcd4; border: 1px solid rgba(0,188,212,0.3); }
+
+  .progress-bar-wrap { background: rgba(0,0,0,0.3); border-radius: 4px; height: 6px; overflow: hidden; margin-top: 6px; }
+  .progress-bar-fill { height: 100%; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ HEADER ═══ -->
+<header class="header">
+  <div class="header-top">
+    <div class="title-block">
+      <div class="lighthouse-icon">🗼</div>
+      <div>
+        <div class="game-title">Glow Island — 輝島の光</div>
+        <div class="game-subtitle">Game Design Document · Production Dashboard · v1.0.0 · 2026-05-08</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="gauge-block">
+        <div class="gauge-ring">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle class="gauge-bg" cx="36" cy="36" r="30"/>
+            <circle class="gauge-fill" cx="36" cy="36" r="30"/>
+          </svg>
+          <div class="gauge-text">87%</div>
+        </div>
+        <div class="gauge-info">
+          <div class="gauge-pct">13/15</div>
+          <div class="gauge-label">Design Nodes</div>
+          <div class="gauge-label">Approved</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metrics-strip">
+    <div class="metric"><div class="metric-value">136</div><div class="metric-label">Levels</div></div>
+    <div class="metric-divider"></div>
+    <div class="metric"><div class="metric-value">6</div><div class="metric-label">Chapters</div></div>
+    <div class="metric-divider"></div>
+    <div class="metric"><div class="metric-value">343</div><div class="metric-label">Assets Planned</div></div>
+    <div class="metric-divider"></div>
+    <div class="metric"><div class="metric-value">15</div><div class="metric-label">Design Docs</div></div>
+    <div class="metric-divider"></div>
+    <div class="metric"><div class="metric-value">20</div><div class="metric-label">Tile Types</div></div>
+    <div class="metric-divider"></div>
+    <div class="metric"><div class="metric-value">18.5h</div><div class="metric-label">Median Playtime</div></div>
+    <div class="metric-divider"></div>
+    <div class="metric"><div class="metric-value">iOS + WebGL</div><div class="metric-label">Platforms</div></div>
+    <div class="metric-divider"></div>
+    <div class="metric"><div class="metric-value">10</div><div class="metric-label">Impl Nodes Ready</div></div>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge approved"><span class="badge-dot"></span>worldbuilding</span>
+    <span class="badge approved"><span class="badge-dot"></span>core-loop-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>character-arc-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>ftue-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>monetization-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>retention-hook-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>meta-game-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>level-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>puzzle-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>progression-curve-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>audio-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>art-direction</span>
+    <span class="badge approved"><span class="badge-dot"></span>art-spec-design</span>
+    <span class="badge approved"><span class="badge-dot"></span>ai-art-generation</span>
+    <span class="badge in-review"><span class="badge-dot"></span>game-design-finalize ← in-review</span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════ TABS NAV ═══ -->
+<nav class="tabs-nav">
+  <button class="tab-btn active" onclick="switchTab('design', this)">🎮 Design</button>
+  <button class="tab-btn" onclick="switchTab('art', this)">🎨 Art</button>
+  <button class="tab-btn" onclick="switchTab('engineering', this)">⚙️ Engineering</button>
+  <button class="tab-btn" onclick="switchTab('audio', this)">🎵 Audio</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ TAB 1: DESIGN ═══ -->
+<div id="tab-design" class="tab-content active">
+
+  <div class="section-heading">Game Concept <span>Core Identity</span></div>
+  <div class="info-box">
+    <strong>Mission:</strong> 治愈系连连看手游 — 广告人山田律逃离东京，在日式小岛輝島修复废弃家园，与灯台守孙女丸山ひなた共同点亮灯塔。<br>
+    <strong>Engine:</strong> Cocos Creator 3.x &nbsp;|&nbsp; <strong>Backend:</strong> Fastify + Prisma + PostgreSQL &nbsp;|&nbsp; <strong>Platforms:</strong> iOS + WebGL<br>
+    <strong>Gameplay Feel:</strong> 天天爱消除-style satisfying combos × 動物の森-style healing aesthetic × slow-burn romance × lighthouse keeper's memory fragments
+  </div>
+
+  <div class="section-heading">Chapter Story Arc <span>6 Chapters × Emotional Journey</span></div>
+  <div class="chapter-arc-grid">
+    <div class="chapter-arc-card">
+      <div class="ch-number">Chapter 1</div>
+      <div class="ch-title">到来</div>
+      <div class="ch-keyword">Arc: 逃离 / Escape</div>
+      <div class="ch-area">Area: 漁港 (Harbor)</div>
+      <div class="ch-npc">NPC: 磯部健三 (Fisherman)</div>
+    </div>
+    <div class="chapter-arc-card">
+      <div class="ch-number">Chapter 2</div>
+      <div class="ch-title">扎根</div>
+      <div class="ch-keyword">Arc: 扎根 / Taking Root</div>
+      <div class="ch-area">Area: 陶芸工房 (Pottery Studio)</div>
+      <div class="ch-npc">NPC: 桐島梅子 (Potter)</div>
+    </div>
+    <div class="chapter-arc-card">
+      <div class="ch-number">Chapter 3</div>
+      <div class="ch-title">感受</div>
+      <div class="ch-keyword">Arc: 感受 / Feeling</div>
+      <div class="ch-area">Area: 海辺の森 (Coastal Forest)</div>
+      <div class="ch-npc">NPC: 海野夏帆 (Nature Guide)</div>
+    </div>
+    <div class="chapter-arc-card">
+      <div class="ch-number">Chapter 4</div>
+      <div class="ch-title">栖息</div>
+      <div class="ch-keyword">Arc: 栖息 / Resting</div>
+      <div class="ch-area">Area: 石畳の小道 (Stone Path)</div>
+      <div class="ch-npc">NPC: <em style="color:var(--text-dim)">Solo — ひなた leaves traces</em></div>
+    </div>
+    <div class="chapter-arc-card">
+      <div class="ch-number">Chapter 5</div>
+      <div class="ch-title">接受</div>
+      <div class="ch-keyword">Arc: 接受 / Acceptance</div>
+      <div class="ch-area">Area: 崖の展望台 (Cliff Lookout)</div>
+      <div class="ch-npc">NPC: ひなた (Core Emotional Chapter)</div>
+    </div>
+    <div class="chapter-arc-card">
+      <div class="ch-number">Chapter 6</div>
+      <div class="ch-title">点亮</div>
+      <div class="ch-keyword">Arc: 点亮 / Illumination</div>
+      <div class="ch-area">Area: 輝く灯台 (Lighthouse)</div>
+      <div class="ch-npc">NPC: 丸山冬子 (Fuyuko)</div>
+    </div>
+  </div>
+
+  <div class="section-heading">Design Node Status Grid <span>15 Nodes Total</span></div>
+  <div class="card-grid">
+
+    <!-- worldbuilding -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">worldbuilding</div><div class="card-owner">narrative-designer</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Setting:</strong> 輝島 Kagayaki-jima, Japanese island, contemporary<br>
+        <strong>Tone:</strong> healing, slow-burn romance, memory, restoration
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">core-loop-design</span><span class="unlock-item">character-arc-design</span><span class="unlock-item">art-direction</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:00:00Z</div>
+    </div>
+
+    <!-- core-loop-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">core-loop-design</div><div class="card-owner">lead-designer</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Type:</strong> BFS ≤2 turns match-connect puzzle<br>
+        <strong>Combo:</strong> 2000ms window, ×1.0/1.5/2.0/3.0 multipliers<br>
+        <strong>No timer • No energy</strong>
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">ftue-design</span><span class="unlock-item">monetization-design</span><span class="unlock-item">level-design</span><span class="unlock-item">audio-design</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:00:00Z</div>
+    </div>
+
+    <!-- character-arc-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">character-arc-design</div><div class="card-owner">narrative-designer</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Ritsu:</strong> positive arc — burnout → restoration of wonder<br>
+        <strong>ひなた:</strong> parallel-revelation — grief → memory shared<br>
+        <strong>渉:</strong> absent-revealed — 6 journal entries
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">game-design-finalize</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:30:00Z</div>
+    </div>
+
+    <!-- ftue-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">ftue-design</div><div class="card-owner">ux-designer</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Philosophy:</strong> teach-through-level-design, zero popups<br>
+        <strong>Duration:</strong> ~6.5 min across 8 steps<br>
+        <strong>Tutorial:</strong> levels 1-1, 1-2, 1-3
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">game-design-finalize</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:30:00Z</div>
+    </div>
+
+    <!-- monetization-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">monetization-design</div><div class="card-owner">monetization-designer</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Currencies:</strong> 沙滩币 (soft) + 丹青石 (hard)<br>
+        <strong>IAP Tiers:</strong> $0.99 → $19.99 · monthly card $4.99<br>
+        <strong>No P2W · No forced popups · No energy gate</strong>
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">retention-hook-design</span><span class="unlock-item">progression-curve-design</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:00:00Z</div>
+    </div>
+
+    <!-- retention-hook-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">retention-hook-design</div><div class="card-owner">systems-designer</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>D1 Hook:</strong> Harbor changed overnight — what happened?<br>
+        <strong>D7 Hook:</strong> Dream sequence + Ch2 preview<br>
+        <strong>D30 Hook:</strong> Memory fragment system fully engaged<br>
+        <strong>ひなた Beats:</strong> 12 total across all chapters
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">meta-game-design</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:30:00Z</div>
+    </div>
+
+    <!-- meta-game-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">meta-game-design</div><div class="card-owner">systems-designer</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Island Map:</strong> 6 areas, 4 visual states each<br>
+        <strong>Materials:</strong> 6 types, no decay/expiry<br>
+        <strong>Memory Room:</strong> 6 Wataru journal entries<br>
+        <strong>No battle pass · No seasonal FOMO · Finite arc</strong>
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">game-design-finalize</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:30:00Z</div>
+    </div>
+
+    <!-- level-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">level-design</div><div class="card-owner">level-designer</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Total:</strong> 136 levels / 6 chapters<br>
+        <strong>Grid:</strong> 4×4 → 10×10<br>
+        <strong>Pacing:</strong> 3:1 standard:breather ratio<br>
+        <strong>Playtime:</strong> 12–28h (fast/median/casual)
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">puzzle-design</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:00:00Z</div>
+    </div>
+
+    <!-- puzzle-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">puzzle-design</div><div class="card-owner">level-designer</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Algorithm:</strong> BFS state (x,y,dir,turns), max 2 turns<br>
+        <strong>Tiles:</strong> 20 types (T01–T20)<br>
+        <strong>Obstacles:</strong> 8 types across chapters<br>
+        <strong>Special Blocks:</strong> bomb / windmill / lantern / wave
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">game-design-finalize</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:00:00Z</div>
+    </div>
+
+    <!-- progression-curve-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">progression-curve-design</div><div class="card-owner">numeric-designer</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Curve:</strong> 6-segment sawtooth ascent with 15% chapter resets<br>
+        <strong>Difficulty:</strong> 1.0 (tutorial) → 10.0 (ch6 final)<br>
+        <strong>Material surplus:</strong> +7%–18% all chapters<br>
+        <strong>Total coins:</strong> 14,463 across 136 levels
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">game-design-finalize</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:00:00Z</div>
+    </div>
+
+    <!-- audio-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">audio-design</div><div class="card-owner">audio-director</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Genre:</strong> acoustic + ambient + light electronic<br>
+        <strong>BGMs:</strong> 6 chapters + 4 scene stings<br>
+        <strong>SFX:</strong> 12 gameplay + 12 UI sounds<br>
+        <strong>Adaptive:</strong> 3-layer base/melody/intensity
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">game-design-finalize</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:30:00Z</div>
+    </div>
+
+    <!-- art-direction -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">art-direction</div><div class="card-owner">art-director</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Style:</strong> Animal Crossing-inspired, JP island<br>
+        <strong>Colors:</strong> rounded forms, low-saturation warm pastels<br>
+        <strong>Restoration:</strong> grey-white → full radiant color progression
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">art-spec-design</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:00:00Z</div>
+    </div>
+
+    <!-- art-spec-design -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">art-spec-design</div><div class="card-owner">concept-artist</div></div>
+        <span class="status-pill approved">Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Total Assets:</strong> 343<br>
+        <strong>Categories:</strong> tiles / characters / backgrounds / island zones / UI / VFX<br>
+        <strong>Formats:</strong> PNG@2x, Spine bundles, SVG
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">ai-art-generation</span></div>
+      </div>
+      <div class="card-timestamp">Approved 2026-05-08T12:00:00Z</div>
+    </div>
+
+    <!-- ai-art-generation -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">ai-art-generation</div><div class="card-owner">auto (deferred)</div></div>
+        <span class="status-pill approved">Auto-Approved</span>
+      </div>
+      <div class="card-meta">
+        <strong>Status:</strong> Manifest ready — 343 prompts defined<br>
+        <strong>Tools:</strong> FLUX 2 Pro (tiles/characters/UI) + Imagen 4 (BGs/zones)<br>
+        <strong>Generation:</strong> Deferred — requires /setup to configure AI tools
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks →</div>
+        <div class="unlock-chain"><span class="unlock-item">game-design-finalize</span></div>
+      </div>
+      <div class="card-timestamp">Auto-approved 2026-05-08T12:30:00Z</div>
+    </div>
+
+    <!-- game-design-finalize -->
+    <div class="card" style="border-color: rgba(255,152,0,0.4); background: rgba(255,152,0,0.04);">
+      <div class="card-header">
+        <div><div class="card-title">game-design-finalize</div><div class="card-owner">lead-designer → producer review</div></div>
+        <span class="status-pill in-review">In Review</span>
+      </div>
+      <div class="card-meta">
+        <strong>This Document:</strong> GDD aggregation complete<br>
+        <strong>Dashboard:</strong> gdd-dashboard.html produced<br>
+        <strong>Blocks:</strong> All 10 implementation nodes (now unblocked)<br>
+        <strong>Awaiting:</strong> Producer sign-off
+      </div>
+      <div class="card-unlocks"><div class="card-unlocks-label">Unlocks (10 impl nodes) →</div>
+        <div class="unlock-chain"><span class="unlock-item">setup-runtime-env</span><span class="unlock-item">implement-puzzle-core</span><span class="unlock-item">+8 more</span></div>
+      </div>
+      <div class="card-timestamp">Entered in-review 2026-05-08T12:35:00Z</div>
+    </div>
+
+  </div>
+
+  <div class="summary-row">
+    <span class="count-badge green">13 approved</span>
+    <span class="count-badge yellow">1 in-review</span>
+    <span class="count-badge grey">1 pending (game-design-finalize → awaits producer sign-off; ai-art-generation auto-approved, actual generation deferred)</span>
+    <span style="margin-left: auto; color: var(--approved); font-weight: 700;">Design Phase: COMPLETE ✓</span>
+  </div>
+
+  <div style="margin-top: 28px;"></div>
+  <div class="section-heading">ERRC Framework <span>Blue Ocean Strategy</span></div>
+  <div class="card-grid" style="grid-template-columns: repeat(4, 1fr);">
+    <div class="card">
+      <div class="card-title" style="color: #ef5350; margin-bottom: 8px;">❌ Eliminate</div>
+      <div style="font-size: 12px; line-height: 1.8; color: var(--text-dim);">体力/生命值系统<br>倒计时关卡<br>PvP竞技排行榜<br>强制社交/公会义务</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color: var(--in-review); margin-bottom: 8px;">↓ Reduce</div>
+      <div style="font-size: 12px; line-height: 1.8; color: var(--text-dim);">人为难度墙<br>时限活动密度<br>侵入式弹窗购买提示</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color: var(--approved); margin-bottom: 8px;">↑ Raise</div>
+      <div style="font-size: 12px; line-height: 1.8; color: var(--text-dim);">消除爽快感 (连击/特效)<br>美术精致度 (动森风格)<br>叙事情感深度</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color: var(--ready); margin-bottom: 8px;">✨ Create</div>
+      <div style="font-size: 12px; line-height: 1.8; color: var(--text-dim);">渐进式岛屿视觉修复<br>若有若无情感线 (律×ひなた)<br>灯台守记忆碎片系统<br>章节机制逐步解锁</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ TAB 2: ART ═══ -->
+<div id="tab-art" class="tab-content">
+
+  <div class="section-heading">Art Asset Overview <span>343 Total Planned Assets</span></div>
+  <table class="art-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Total Planned</th>
+        <th>Alpha</th>
+        <th>Beta</th>
+        <th>Gold</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tiles (base + special)</td>
+        <td class="count-cell">24</td>
+        <td>24</td>
+        <td>—</td>
+        <td>—</td>
+        <td><span class="status-cell">Spec Complete</span></td>
+      </tr>
+      <tr>
+        <td>Characters (NPCs)</td>
+        <td class="count-cell">6</td>
+        <td>1</td>
+        <td>5</td>
+        <td>—</td>
+        <td><span class="status-cell">Spec Complete</span></td>
+      </tr>
+      <tr>
+        <td>Backgrounds</td>
+        <td class="count-cell">14</td>
+        <td>3</td>
+        <td>7</td>
+        <td>4</td>
+        <td><span class="status-cell">Spec Complete</span></td>
+      </tr>
+      <tr>
+        <td>Island Zones (map states)</td>
+        <td class="count-cell">33</td>
+        <td>7</td>
+        <td>15</td>
+        <td>11</td>
+        <td><span class="status-cell">Spec Complete</span></td>
+      </tr>
+      <tr>
+        <td>UI Icons</td>
+        <td class="count-cell">30</td>
+        <td>20</td>
+        <td>—</td>
+        <td>10</td>
+        <td><span class="status-cell">Spec Complete</span></td>
+      </tr>
+      <tr>
+        <td>VFX (Spine + PNG seq)</td>
+        <td class="count-cell">8</td>
+        <td>2</td>
+        <td>3</td>
+        <td>3</td>
+        <td><span class="status-cell">Spec Complete</span></td>
+      </tr>
+      <tr style="background: rgba(212,160,23,0.06);">
+        <td><strong>TOTAL</strong></td>
+        <td class="count-cell" style="font-size: 18px;"><strong>343</strong></td>
+        <td><strong>57</strong></td>
+        <td><strong>30</strong></td>
+        <td><strong>28</strong></td>
+        <td><strong style="color: var(--gold);">All Prompts Ready</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-heading">Tile Library <span>T01–T20 · 5×4 Grid</span></div>
+  <div class="tile-grid">
+    <!-- T01 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#FF8C5A;"></div>
+      <div class="tile-code">T01</div>
+      <div class="tile-name">珊瑚橙</div>
+      <div class="tile-chapter">Ch.1</div>
+    </div>
+    <!-- T02 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#4DA6D4;"></div>
+      <div class="tile-code">T02</div>
+      <div class="tile-name">海浪蓝</div>
+      <div class="tile-chapter">Ch.1</div>
+    </div>
+    <!-- T03 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#E8D5A3;"></div>
+      <div class="tile-code">T03</div>
+      <div class="tile-name">沙滩米</div>
+      <div class="tile-chapter">Ch.1</div>
+    </div>
+    <!-- T04 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#7BC67A;"></div>
+      <div class="tile-code">T04</div>
+      <div class="tile-name">海草绿</div>
+      <div class="tile-chapter">Ch.1</div>
+    </div>
+    <!-- T05 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#FFD166;"></div>
+      <div class="tile-code">T05</div>
+      <div class="tile-name">灯笼黄</div>
+      <div class="tile-chapter">Ch.2</div>
+    </div>
+    <!-- T06 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#A0A0A0;"></div>
+      <div class="tile-code">T06</div>
+      <div class="tile-name">石板灰</div>
+      <div class="tile-chapter">Ch.2</div>
+    </div>
+    <!-- T07 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#C0504D;"></div>
+      <div class="tile-code">T07</div>
+      <div class="tile-name">砖瓦红</div>
+      <div class="tile-chapter">Ch.2</div>
+    </div>
+    <!-- T08 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#8B5E3C;"></div>
+      <div class="tile-code">T08</div>
+      <div class="tile-name">暖木棕</div>
+      <div class="tile-chapter">Ch.2</div>
+    </div>
+    <!-- T09 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#B08DCA;"></div>
+      <div class="tile-code">T09</div>
+      <div class="tile-name">薰衣草紫</div>
+      <div class="tile-chapter">Ch.3</div>
+    </div>
+    <!-- T10 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#F4A7B9;"></div>
+      <div class="tile-code">T10</div>
+      <div class="tile-name">粉樱</div>
+      <div class="tile-chapter">Ch.3</div>
+    </div>
+    <!-- T11 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#EAF0F6; border: 1px solid #555;"></div>
+      <div class="tile-code">T11</div>
+      <div class="tile-name">晨雾白</div>
+      <div class="tile-chapter">Ch.3</div>
+    </div>
+    <!-- T12 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#4E7C59;"></div>
+      <div class="tile-code">T12</div>
+      <div class="tile-name">苔藓绿</div>
+      <div class="tile-chapter">Ch.3</div>
+    </div>
+    <!-- T13 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#5C4033;"></div>
+      <div class="tile-code">T13</div>
+      <div class="tile-name">深林棕</div>
+      <div class="tile-chapter">Ch.4</div>
+    </div>
+    <!-- T14 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#E07832;"></div>
+      <div class="tile-code">T14</div>
+      <div class="tile-name">营火橙</div>
+      <div class="tile-chapter">Ch.4</div>
+    </div>
+    <!-- T15 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#3D4A8A;"></div>
+      <div class="tile-code">T15</div>
+      <div class="tile-name">星空靛</div>
+      <div class="tile-chapter">Ch.4</div>
+    </div>
+    <!-- T16 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#A3E635;"></div>
+      <div class="tile-code">T16</div>
+      <div class="tile-name">萤光绿</div>
+      <div class="tile-chapter">Ch.4</div>
+    </div>
+    <!-- T17 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#F0EAE2; border: 1px solid #555;"></div>
+      <div class="tile-code">T17</div>
+      <div class="tile-name">温泉白</div>
+      <div class="tile-chapter">Ch.5</div>
+    </div>
+    <!-- T18 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#6EB5C0;"></div>
+      <div class="tile-code">T18</div>
+      <div class="tile-name">矿物蓝</div>
+      <div class="tile-chapter">Ch.5</div>
+    </div>
+    <!-- T19 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#1A2A4A;"></div>
+      <div class="tile-code">T19</div>
+      <div class="tile-name">夜深蓝</div>
+      <div class="tile-chapter">Ch.6</div>
+    </div>
+    <!-- T20 -->
+    <div class="tile-cell">
+      <div class="tile-swatch" style="background:#FFB830; box-shadow: 0 0 8px rgba(255,184,48,0.5);"></div>
+      <div class="tile-code">T20</div>
+      <div class="tile-name">灯塔金</div>
+      <div class="tile-chapter">Ch.6</div>
+    </div>
+  </div>
+
+  <div class="section-heading">Special Tiles <span>Spine-Animated · 4 Types</span></div>
+  <div class="card-grid" style="grid-template-columns: repeat(4, 1fr);">
+    <div class="card" style="border-color: rgba(255,152,0,0.3);">
+      <div class="tile-swatch" style="background: radial-gradient(circle, #ff6b6b, #c8402a); margin: 0 auto 8px; width:40px; height:40px; border-radius:50%;"></div>
+      <div class="card-title" style="text-align:center;">河豚块 T-Bomb</div>
+      <div class="card-meta" style="text-align:center;">Trigger: 3-combo<br><strong>Effect:</strong> 3×3 area clear<br>Spine: pufferfish_idle</div>
+    </div>
+    <div class="card" style="border-color: rgba(255,152,0,0.3);">
+      <div class="tile-swatch" style="background: radial-gradient(circle, #4a9eff, #1a5090); margin: 0 auto 8px; width:40px; height:40px; border-radius:50%;"></div>
+      <div class="card-title" style="text-align:center;">金枪鱼块 T-Lightning</div>
+      <div class="card-meta" style="text-align:center;">Trigger: 4-combo<br><strong>Effect:</strong> Row + Column clear<br>Spine: tuna_idle</div>
+    </div>
+    <div class="card" style="border-color: rgba(255,152,0,0.3);">
+      <div class="tile-swatch" style="background: linear-gradient(135deg, #ff6b6b, #ffd700, #00ff87, #4a9eff); margin: 0 auto 8px; width:40px; height:40px; border-radius:50%;"></div>
+      <div class="card-title" style="text-align:center;">彩虹鱼块 T-Rainbow</div>
+      <div class="card-meta" style="text-align:center;">Trigger: preset only<br><strong>Effect:</strong> Auto-connect nearest<br>Spine: rainbow_fish_idle</div>
+    </div>
+    <div class="card" style="border-color: rgba(255,152,0,0.3);">
+      <div class="tile-swatch" style="background: radial-gradient(circle, #ffe680, #d4a017); margin: 0 auto 8px; width:40px; height:40px; border-radius:50%; box-shadow: 0 0 10px rgba(212,160,23,0.6);"></div>
+      <div class="card-title" style="text-align:center;">萤火提灯块 T-Glow</div>
+      <div class="card-meta" style="text-align:center;">Trigger: preset only<br><strong>Effect:</strong> Board reshuffle<br>Spine: firefly_lantern_idle</div>
+    </div>
+  </div>
+
+  <div class="section-heading">AI Generation Readiness <span></span></div>
+  <div class="ai-readiness">
+    <div class="ai-icon">🤖</div>
+    <div>
+      <h4>343 Prompts Defined · Generation Deferred</h4>
+      <p>The ai-art-manifest.json is fully generated with individual prompts for all 343 planned assets. Tiles use <strong>FLUX 2 Pro</strong> with Animal Crossing style prompts (128×128, white background, rounded shapes, pastel JP island theme). Backgrounds use <strong>Imagen 4</strong> (1080×1920 portrait, healing atmosphere, soft pastels). Generation is deferred pending AI API key configuration via <strong>/setup</strong>.</p>
+      <div class="ai-stats">
+        <div class="ai-stat"><div class="ai-stat-val">343</div><div class="ai-stat-lbl">Prompts Defined</div></div>
+        <div class="ai-stat"><div class="ai-stat-val">4</div><div class="ai-stat-lbl">Generation Batches</div></div>
+        <div class="ai-stat"><div class="ai-stat-val">0</div><div class="ai-stat-lbl">Assets Generated</div></div>
+        <div class="ai-stat"><div class="ai-stat-val">FLUX 2 + Imagen 4</div><div class="ai-stat-lbl">AI Tools Required</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>Generation Priority:</strong>
+    <strong class="highlight">Batch 1</strong> (Alpha) — Core tile set T01–T04 + 4 special tiles + Ch1 backgrounds + UI navigation icons = 24 assets<br>
+    <strong class="highlight">Batch 2</strong> (Alpha) — Zone states Ch1 + NPC Ch1 + VFX core + remaining alpha tiles = 62 assets<br>
+    <strong class="highlight">Batch 3</strong> (Beta) — Ch2–Ch4 tiles, backgrounds, zones, NPCs, VFX = 164 assets<br>
+    <strong class="highlight">Batch 4</strong> (Gold) — Ch5–Ch6 tiles, backgrounds, zones, lighthouse VFX, UI items = 93 assets
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ TAB 3: ENGINEERING ═══ -->
+<div id="tab-engineering" class="tab-content">
+
+  <div class="section-heading">Implementation Status <span>All 10 Nodes — READY TO RUN</span></div>
+  <div class="info-box" style="border-color: rgba(0,188,212,0.3); background: rgba(0,188,212,0.04);">
+    <strong style="color: var(--ready);">game-design-finalize entered in-review</strong> — all 10 implementation nodes are now unblocked. Each node below was previously blocked by <em>game-design-finalize</em>; with GDD produced and finalize in-review, engineering can begin immediately.
+  </div>
+
+  <div class="impl-grid">
+
+    <div class="impl-card">
+      <div class="impl-card-header">
+        <div class="impl-number">1</div>
+        <div class="impl-card-title">setup-runtime-env</div>
+      </div>
+      <div class="impl-status-badge"><div class="impl-status-dot"></div>READY TO RUN</div>
+      <div class="impl-blocked">Blocker: <span class="impl-blocked-tag">game-design-finalize ✓ approved</span></div>
+      <div class="impl-artifacts">
+        <div class="impl-artifact">runtime-env.json</div>
+        <div class="impl-artifact">game-client/package.json</div>
+        <div class="impl-artifact">backend/package.json</div>
+        <div class="impl-artifact">tools/level-editor/package.json</div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-card-header">
+        <div class="impl-number">2</div>
+        <div class="impl-card-title">implement-puzzle-core</div>
+      </div>
+      <div class="impl-status-badge"><div class="impl-status-dot"></div>READY TO RUN</div>
+      <div class="impl-blocked">Blockers: <span class="impl-blocked-tag">game-design-finalize ✓</span> <span class="impl-blocked-tag">setup-runtime-env</span></div>
+      <div class="impl-artifacts">
+        <div class="impl-artifact">TileGrid.ts</div>
+        <div class="impl-artifact">TileMatcher.ts (BFS)</div>
+        <div class="impl-artifact">BoardGenerator.ts</div>
+        <div class="impl-artifact">ComboTracker.ts</div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-card-header">
+        <div class="impl-number">3</div>
+        <div class="impl-card-title">implement-special-mechanics</div>
+      </div>
+      <div class="impl-status-badge"><div class="impl-status-dot"></div>READY TO RUN</div>
+      <div class="impl-blocked">Blockers: <span class="impl-blocked-tag">implement-puzzle-core</span></div>
+      <div class="impl-artifacts">
+        <div class="impl-artifact">SpecialBlock.ts</div>
+        <div class="impl-artifact">BoardEventManager.ts</div>
+        <div class="impl-artifact">ObstacleManager.ts</div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-card-header">
+        <div class="impl-number">4</div>
+        <div class="impl-card-title">implement-game-session</div>
+      </div>
+      <div class="impl-status-badge"><div class="impl-status-dot"></div>READY TO RUN</div>
+      <div class="impl-blocked">Blockers: <span class="impl-blocked-tag">implement-puzzle-core</span></div>
+      <div class="impl-artifacts">
+        <div class="impl-artifact">GameSession.ts</div>
+        <div class="impl-artifact">LevelLoader.ts</div>
+        <div class="impl-artifact">RewardCalculator.ts</div>
+        <div class="impl-artifact">MaterialCollector.ts</div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-card-header">
+        <div class="impl-number">5</div>
+        <div class="impl-card-title">implement-island-map</div>
+      </div>
+      <div class="impl-status-badge"><div class="impl-status-dot"></div>READY TO RUN</div>
+      <div class="impl-blocked">Blocker: <span class="impl-blocked-tag">game-design-finalize ✓ approved</span></div>
+      <div class="impl-artifacts">
+        <div class="impl-artifact">IslandMapScene.ts</div>
+        <div class="impl-artifact">ChapterNode.ts</div>
+        <div class="impl-artifact">AreaRestorationEffect.ts</div>
+        <div class="impl-artifact">ProgressionManager.ts</div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-card-header">
+        <div class="impl-number">6</div>
+        <div class="impl-card-title">implement-ui-systems</div>
+      </div>
+      <div class="impl-status-badge"><div class="impl-status-dot"></div>READY TO RUN</div>
+      <div class="impl-blocked">Blocker: <span class="impl-blocked-tag">game-design-finalize ✓ approved</span></div>
+      <div class="impl-artifacts">
+        <div class="impl-artifact">MainMenuScene.ts</div>
+        <div class="impl-artifact">GameHUD.ts</div>
+        <div class="impl-artifact">LevelCompletePopup.ts</div>
+        <div class="impl-artifact">LeaderboardScene.ts</div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-card-header">
+        <div class="impl-number">7</div>
+        <div class="impl-card-title">implement-backend-api</div>
+      </div>
+      <div class="impl-status-badge"><div class="impl-status-dot"></div>READY TO RUN</div>
+      <div class="impl-blocked">Blockers: <span class="impl-blocked-tag">game-design-finalize ✓</span> <span class="impl-blocked-tag">setup-runtime-env</span></div>
+      <div class="impl-artifacts">
+        <div class="impl-artifact">backend/src/server.ts</div>
+        <div class="impl-artifact">routes/auth.ts + save.ts</div>
+        <div class="impl-artifact">routes/leaderboard.ts + iap.ts</div>
+        <div class="impl-artifact">prisma/schema.prisma</div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-card-header">
+        <div class="impl-number">8</div>
+        <div class="impl-card-title">implement-shop-iap</div>
+      </div>
+      <div class="impl-status-badge"><div class="impl-status-dot"></div>READY TO RUN</div>
+      <div class="impl-blocked">Blockers: <span class="impl-blocked-tag">implement-backend-api</span></div>
+      <div class="impl-artifacts">
+        <div class="impl-artifact">ShopScene.ts</div>
+        <div class="impl-artifact">CurrencyDisplay.ts</div>
+        <div class="impl-artifact">IAPManager.ts</div>
+        <div class="impl-artifact">PurchaseConfirmPopup.ts</div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-card-header">
+        <div class="impl-number">9</div>
+        <div class="impl-card-title">implement-audio</div>
+      </div>
+      <div class="impl-status-badge"><div class="impl-status-dot"></div>READY TO RUN</div>
+      <div class="impl-blocked">Blocker: <span class="impl-blocked-tag">game-design-finalize ✓ approved</span></div>
+      <div class="impl-artifacts">
+        <div class="impl-artifact">AudioManager.ts</div>
+        <div class="impl-artifact">AudioConfig.ts (BGMKey + SFXKey enums)</div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-card-header">
+        <div class="impl-number">10</div>
+        <div class="impl-card-title">level-editor-tool</div>
+      </div>
+      <div class="impl-status-badge"><div class="impl-status-dot"></div>READY TO RUN</div>
+      <div class="impl-blocked">Blockers: <span class="impl-blocked-tag">game-design-finalize ✓</span> <span class="impl-blocked-tag">setup-runtime-env</span></div>
+      <div class="impl-artifacts">
+        <div class="impl-artifact">tools/level-editor/src/App.tsx</div>
+        <div class="impl-artifact">GridEditor.tsx</div>
+        <div class="impl-artifact">LevelExporter.tsx</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-heading">Post-Implementation Pipeline <span>Stitch → Verify → Ship</span></div>
+  <div class="pipeline">
+    <div class="pipeline-node">
+      <div class="pipeline-node-icon">🧩</div>
+      <div class="pipeline-node-name">stitch-game-client</div>
+      <div class="pipeline-node-status">pending impl nodes</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-node">
+      <div class="pipeline-node-icon">🔗</div>
+      <div class="pipeline-node-name">cross-module-stitch</div>
+      <div class="pipeline-node-status">pending stitch + backend</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-node">
+      <div class="pipeline-node-icon">🛠️</div>
+      <div class="pipeline-node-name">compile-verify</div>
+      <div class="pipeline-node-status">pending stitch</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-node">
+      <div class="pipeline-node-icon">⚗️</div>
+      <div class="pipeline-node-name">demo-forge</div>
+      <div class="pipeline-node-status">pending compile</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-node">
+      <div class="pipeline-node-icon">🧪</div>
+      <div class="pipeline-node-name">e2e-test</div>
+      <div class="pipeline-node-status">pending demo</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-node">
+      <div class="pipeline-node-icon">✅</div>
+      <div class="pipeline-node-name">concept-acceptance</div>
+      <div class="pipeline-node-status">pending e2e</div>
+    </div>
+  </div>
+
+  <div class="section-heading">Technology Stack <span></span></div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title" style="margin-bottom: 10px; color: var(--ready);">Game Client</div>
+      <div style="font-size: 12px; line-height: 2; color: var(--text-dim);">
+        <strong style="color: var(--text);">Engine:</strong> Cocos Creator 3.x<br>
+        <strong style="color: var(--text);">Language:</strong> TypeScript<br>
+        <strong style="color: var(--text);">Platforms:</strong> iOS + WebGL<br>
+        <strong style="color: var(--text);">Animation:</strong> Spine 2D (NPCs, special tiles, VFX)<br>
+        <strong style="color: var(--text);">Physics:</strong> Custom BFS path-finding (no engine physics)<br>
+        <strong style="color: var(--text);">Audio:</strong> Cocos AudioManager + AdaptiveBGMManager (beta)
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom: 10px; color: var(--ready);">Backend</div>
+      <div style="font-size: 12px; line-height: 2; color: var(--text-dim);">
+        <strong style="color: var(--text);">Server:</strong> Fastify (Node.js)<br>
+        <strong style="color: var(--text);">ORM:</strong> Prisma<br>
+        <strong style="color: var(--text);">Database:</strong> PostgreSQL<br>
+        <strong style="color: var(--text);">APIs:</strong> auth, cloud save, leaderboard, IAP verification<br>
+        <strong style="color: var(--text);">IAP Validation:</strong> Apple App Store + WebGL fallback<br>
+        <strong style="color: var(--text);">Tools:</strong> Level Editor (React + Vite)
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ TAB 4: AUDIO ═══ -->
+<div id="tab-audio" class="tab-content">
+
+  <div class="section-heading">Audio Identity <span>Healing · Acoustic · Japanese Island</span></div>
+  <div class="info-box" style="border-color: rgba(212,160,23,0.3);">
+    <strong>Genre:</strong> Acoustic + Ambient + Light Electronic &nbsp;|&nbsp;
+    <strong>Mood:</strong> healing, unhurried, quietly joyful<br>
+    <strong>Key Instruments:</strong> Acoustic guitar, koto (琴), soft piano, ocean ambience, wind chimes, birdsong, cicada, gentle hand percussion<br>
+    <strong>Forbidden:</strong> aggressive percussion, distorted bass, high-BPM electronic, triumphant brass, harsh buzzers, EDM drops<br>
+    <strong>References:</strong> Animal Crossing K.K. Slider acoustic warmth · 天天爱消除 SFX escalation · Joe Hisaishi breath in melodies · Nujabes understated groove
+  </div>
+
+  <div class="section-heading">BGM Coverage <span>10 Tracks Total</span></div>
+  <div class="bgm-tracks">
+    <div class="bgm-card">
+      <div class="bgm-ch-badge">MAIN MENU</div>
+      <div class="bgm-title">bgm_menu</div>
+      <div class="bgm-meta"><span class="bgm-bpm">60 BPM</span> · Loop · Acoustic guitar + ocean<br>Studio Ghibli opening credits feel</div>
+    </div>
+    <div class="bgm-card">
+      <div class="bgm-ch-badge">CHAPTER 1 — 漁港</div>
+      <div class="bgm-title">bgm_chapter1_seaside</div>
+      <div class="bgm-meta"><span class="bgm-bpm">62 BPM</span> · G major / E minor · Loop<br>Curious, slightly melancholic · burnout → discovery</div>
+    </div>
+    <div class="bgm-card">
+      <div class="bgm-ch-badge">CHAPTER 2 — 陶芸工房</div>
+      <div class="bgm-title">bgm_chapter2_town</div>
+      <div class="bgm-meta"><span class="bgm-bpm">72 BPM</span> · D pentatonic · Loop<br>Focused, meditative craft rhythm · discovery → healing</div>
+    </div>
+    <div class="bgm-card">
+      <div class="bgm-ch-badge">CHAPTER 3 — 海辺の森</div>
+      <div class="bgm-title">bgm_chapter3_flower</div>
+      <div class="bgm-meta"><span class="bgm-bpm">58 BPM</span> · A major · Loop (4-5 min)<br>Wonder, expansive, ancient forest light</div>
+    </div>
+    <div class="bgm-card">
+      <div class="bgm-ch-badge">CHAPTER 4 — 石畳の小道</div>
+      <div class="bgm-title">bgm_chapter4_forest</div>
+      <div class="bgm-meta"><span class="bgm-bpm">52 BPM</span> · C major / A minor · Loop<br>Most minimal — silence as composition element</div>
+    </div>
+    <div class="bgm-card">
+      <div class="bgm-ch-badge">CHAPTER 5 — 崖の展望台</div>
+      <div class="bgm-title">bgm_chapter5_hotspring</div>
+      <div class="bgm-meta"><span class="bgm-bpm">68 BPM</span> · F# minor · Loop (hour variant)<br>Awe + vertigo · long-exposure photograph quality</div>
+    </div>
+    <div class="bgm-card">
+      <div class="bgm-ch-badge">CHAPTER 6 — 輝く灯台</div>
+      <div class="bgm-title">bgm_chapter6_lighthouse</div>
+      <div class="bgm-meta"><span class="bgm-bpm">64 BPM</span> · D major · Non-looping<br>Every instrument earned · emotional climax</div>
+    </div>
+    <div class="bgm-card">
+      <div class="bgm-ch-badge">STING — Level Complete</div>
+      <div class="bgm-title">sting_level_complete</div>
+      <div class="bgm-meta"><span class="bgm-bpm">72 BPM</span> · D major · 5s one-shot<br>Warm accomplishment · D major arpeggio</div>
+    </div>
+    <div class="bgm-card">
+      <div class="bgm-ch-badge">STING — Restoration Ceremony</div>
+      <div class="bgm-title">sting_restoration_chN</div>
+      <div class="bgm-meta"><span class="bgm-bpm">60 BPM</span> · G major · 10s one-shot × 6<br>Progressive layering per chapter — Ch1 solo guitar → Ch6 full ensemble</div>
+    </div>
+    <div class="bgm-card" style="border-color: rgba(212,160,23,0.5); background: rgba(212,160,23,0.05);">
+      <div class="bgm-ch-badge" style="color: var(--text-bright); background: rgba(212,160,23,0.2); border-color: var(--gold);">FINALE — One-Time</div>
+      <div class="bgm-title" style="color: var(--gold);">lighthouse_finale</div>
+      <div class="bgm-meta"><span class="bgm-bpm">64 BPM</span> · D major · 25s ONE-TIME PLAY<br>物の哀れ in sound · full ensemble · tears welcome</div>
+    </div>
+  </div>
+
+  <div class="section-heading">Gameplay SFX Catalogue <span>12 Keys · All Alpha Priority</span></div>
+  <div class="sfx-grid">
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_connect</div>
+        <div class="sfx-desc">Tile connection · D major pentatonic · 80ms attack, 600ms decay</div>
+      </div>
+      <div class="audio-key">TILE_CONNECT</div>
+    </div>
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_disappear</div>
+        <div class="sfx-desc">Tile clear sparkle · crystalline shimmer 200–4000Hz</div>
+      </div>
+      <div class="audio-key">TILE_DISAPPEAR</div>
+    </div>
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_combo1</div>
+        <div class="sfx-desc">×2 combo · Two koto notes, perfect fifth D→A</div>
+      </div>
+      <div class="audio-key">COMBO_LV1</div>
+    </div>
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_combo2</div>
+        <div class="sfx-desc">×3 combo · Three notes D→F#→A, koto+piano</div>
+      </div>
+      <div class="audio-key">COMBO_LV2</div>
+    </div>
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_combo3</div>
+        <div class="sfx-desc">×4+ cascade · 6-note pentatonic run, guitar+koto+chime</div>
+      </div>
+      <div class="audio-key">COMBO_LV3</div>
+    </div>
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_special_bomb</div>
+        <div class="sfx-desc">Muffled pop + upward chime · organic, not explosive</div>
+      </div>
+      <div class="audio-key">SPECIAL_BOMB</div>
+    </div>
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_special_windmill</div>
+        <div class="sfx-desc">Swoosh + clear bell A4 · gentle horizontal sweep</div>
+      </div>
+      <div class="audio-key">SPECIAL_WINDMILL</div>
+    </div>
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_special_light</div>
+        <div class="sfx-desc">Shimmer + 4 mini-chimes in sequence · sparkle chain</div>
+      </div>
+      <div class="audio-key">SPECIAL_LIGHT</div>
+    </div>
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_special_wave</div>
+        <div class="sfx-desc">Circular ocean whoosh L→R→center · oceanic reshuffle</div>
+      </div>
+      <div class="audio-key">SPECIAL_WAVE</div>
+    </div>
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_level_complete</div>
+        <div class="sfx-desc">D major arpeggio 1.2s · guitar+piano · warm not loud</div>
+      </div>
+      <div class="audio-key">LEVEL_COMPLETE</div>
+    </div>
+    <div class="sfx-item">
+      <div class="sfx-check">✓</div>
+      <div>
+        <div class="sfx-name">sfx_area_restore</div>
+        <div class="sfx-desc">10s multi-layer swell · koto → piano → guitar → nature</div>
+      </div>
+      <div class="audio-key">AREA_RESTORE</div>
+    </div>
+    <div class="sfx-item" style="border-color: rgba(212,160,23,0.4); background: rgba(212,160,23,0.04);">
+      <div class="sfx-check" style="color: var(--gold);">★</div>
+      <div>
+        <div class="sfx-name" style="color: var(--gold);">sfx_lighthouse_on</div>
+        <div class="sfx-desc">25s finale swell · solo piano → full ensemble → distant bell → ocean · ONE-TIME</div>
+      </div>
+      <div class="audio-key">LIGHTHOUSE_ON</div>
+    </div>
+  </div>
+
+  <div class="section-heading">UI Sound Catalogue <span>12 Micro-sounds · All Alpha</span></div>
+  <div class="card-grid card-grid-3">
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_button_tap</div><div class="card-meta">Soft wooden click ~400Hz · 60ms · warm tactile</div></div>
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_menu_open</div><div class="card-meta">Paper slide whoosh · 200ms · unfolding map feel</div></div>
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_menu_close</div><div class="card-meta">Gentle reverse whoosh · 180ms · folding away</div></div>
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_shop_item_select</div><div class="card-meta">Coin shimmer · 300ms metallic ring · value signal</div></div>
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_dialogue_advance</div><div class="card-meta">Soft tick · 30ms · ±2 semitones to avoid robot feel</div></div>
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_error_cannot_do</div><div class="card-meta">Hollow wood tap ~180Hz · NOT a buzzer or alarm</div></div>
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_notification_badge</div><div class="card-meta">Single C5 chime · 400ms decay · no urgency</div></div>
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_island_map_open</div><div class="card-meta">600ms ambient swell · ocean breath · stepping outside</div></div>
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_chapter_unlock</div><div class="card-meta">Rising shimmer + soft chime · wonder not excitement</div></div>
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_material_collect</div><div class="card-meta">Water-drop plop · 120ms · pebble into calm water</div></div>
+    <div class="card"><div class="card-title" style="font-size:12px;">ui_daily_reward_open</div><div class="card-meta">800ms warm pad swell · morning light quality</div></div>
+    <div class="card" style="border-color: rgba(255,152,0,0.3);"><div class="card-title" style="font-size:12px; color: var(--in-review);">ui_hinata_moment</div><div class="card-meta">Single piano note E4/A4 · 800ms sustain · intimate presence</div></div>
+  </div>
+
+  <div class="section-heading">Adaptive 3-Layer System <span>Real-Time Engagement Response</span></div>
+  <div class="adaptive-viz">
+    <div class="adaptive-layer">
+      <div class="layer-header">
+        <div class="layer-name">Layer 1: BASE</div>
+        <div class="layer-trigger">Always playing</div>
+      </div>
+      <div class="layer-bar layer-bar-base"></div>
+      <div class="layer-description">Ambient/environmental sounds specific to each chapter area — ocean waves (Ch1), pottery wheel hum (Ch2), wind+birdsong (Ch3), silence+room tone (Ch4), cliff wind+pads (Ch5), full ocean (Ch6). Never silent even in low-resource mode.</div>
+    </div>
+    <div class="adaptive-layer">
+      <div class="layer-header">
+        <div class="layer-name">Layer 2: MELODY</div>
+        <div class="layer-trigger">Fade in after 10s active engagement · fade out on pause (5s)</div>
+      </div>
+      <div class="layer-bar layer-bar-melody"></div>
+      <div class="layer-description">Primary musical melody — acoustic guitar (Ch1), koto patterns (Ch2), piano (Ch3), solo instrument (Ch4), koto intermittent (Ch5), dynamic swell (Ch6). Rewards continued engagement. Volume target: 80% of full.</div>
+    </div>
+    <div class="adaptive-layer">
+      <div class="layer-header">
+        <div class="layer-name">Layer 3: INTENSITY</div>
+        <div class="layer-trigger">3+ consecutive combos → fade in (0.5s) · fade out 3s after last combo</div>
+      </div>
+      <div class="layer-bar layer-bar-intensity"></div>
+      <div class="layer-description">Subtle additional texture activated by combo chains — soft percussion (Ch1), hand percussion (Ch2), guitar harmonics (Ch3), second instrument (Ch4), piano swell (Ch5), full ensemble join (Ch6). Should feel like the music "notices" the combo, not react frantically. Volume target: 60% of full.</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>Chapter transition policy:</strong> 2-second crossfade, never hard-cut. <strong>Lighthouse finale exception:</strong> always fades in from near-silence — no previous music overlap. <br>
+    <strong>Voice style:</strong> No full voice acting. Japanese wordless minimal murmur. ひなた max 2 syllables (律さん… / うん / ふふ). Protagonist Ritsu: text-only, ambient swells during reflection. <strong>丸山渉:</strong> no voice ever — ambient music IS his voice.
+  </div>
+
+</div>
+
+<div class="footer-stamp">
+  Glow Island GDD Production Dashboard · game-design-finalize v1.0.0 · Generated 2026-05-08T12:35:00Z<br>
+  Design complete · 13/15 nodes approved · 10 implementation nodes ready to run
+</div>
+
+<script>
+function switchTab(tabId, btnEl) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  btnEl.classList.add('active');
+}
+</script>
+</body>
+</html>

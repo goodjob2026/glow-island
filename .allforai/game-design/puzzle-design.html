@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 谜题设计（Puzzle Design）</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d26;
+      --border: #2a2d3a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --accent2: #86efac;
+      --heading: #f8fafc;
+      --code-bg: #12141c;
+      --tag-bg: #1e3a5f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 0 1rem 4rem;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      margin: 0 -1rem 2.5rem;
+      text-align: center;
+    }
+    .page-header .project-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125,211,252,0.25);
+      margin-bottom: 0.9rem;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--heading);
+      text-shadow: 0 0 40px rgba(125,211,252,0.2);
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--heading);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+    h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
+    h3 { font-size: 1.1rem; color: var(--accent2); }
+    h4 { font-size: 1rem; color: var(--muted); }
+    p { margin: 0.6rem 0 0.9rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { color: var(--heading); font-weight: 600; }
+    em { color: var(--accent2); font-style: normal; }
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border-radius: 0 6px 6px 0;
+      margin: 1rem 0;
+      color: var(--muted);
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.87em;
+      background: var(--code-bg);
+      color: var(--accent2);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.4rem;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    ul, ol {
+      padding-left: 1.6rem;
+      margin: 0.5rem 0 1rem;
+    }
+    li { margin: 0.3rem 0; }
+    li > ul, li > ol { margin: 0.2rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    tr:hover td { background: rgba(125,211,252,0.04); }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Diagram / loop box */
+    .diagram-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem 1.8rem;
+      margin: 1.2rem 0 1.6rem;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 0.88rem;
+    }
+    .loop-node {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 0.35rem 0.9rem;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+    .loop-connector { color: var(--accent); font-size: 1.1rem; font-weight: bold; }
+
+    /* BFS state machine diagram */
+    .bfs-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin: 0.4rem 0;
+    }
+
+    /* Tile grid */
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.6rem;
+      margin: 1.1rem 0;
+    }
+    .tile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .tile-swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .tile-info { flex: 1; min-width: 0; }
+    .tile-id { font-size: 0.7rem; color: var(--muted); font-family: monospace; }
+    .tile-name { font-size: 0.85rem; color: var(--heading); font-weight: 600; }
+    .tile-ch { font-size: 0.7rem; color: var(--accent2); }
+
+    /* Obstacle cards */
+    .obstacle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .obstacle-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+    }
+    .obstacle-card.new-obstacle {
+      border-color: rgba(253,224,71,0.4);
+      background: rgba(253,224,71,0.03);
+    }
+    .obstacle-card .obs-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .obs-badge {
+      font-size: 0.68rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .obs-badge-existing { background: rgba(125,211,252,0.12); color: #7dd3fc; border: 1px solid rgba(125,211,252,0.3); }
+    .obs-badge-new      { background: rgba(253,224,71,0.12); color: #fde047; border: 1px solid rgba(253,224,71,0.3); }
+    .obs-card-title { font-size: 1rem; font-weight: 700; color: var(--heading); }
+    .obs-meta { font-size: 0.78rem; color: var(--muted); margin: 0.25rem 0 0.55rem; }
+    .obs-section-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-top: 0.6rem;
+      margin-bottom: 0.2rem;
+    }
+    .obs-body { font-size: 0.85rem; color: var(--text); line-height: 1.6; }
+
+    /* Special block cards */
+    .special-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .special-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+    }
+    .special-card .sc-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.15rem;
+    }
+    .special-card .sc-id {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: monospace;
+      margin-bottom: 0.55rem;
+    }
+    .sc-row { display: flex; gap: 0.5rem; margin: 0.35rem 0; flex-wrap: wrap; }
+    .sc-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-top: 0.6rem;
+      margin-bottom: 0.1rem;
+    }
+    .sc-body { font-size: 0.85rem; color: var(--text); line-height: 1.55; }
+
+    /* Combo timeline diagram */
+    .combo-timeline {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem 2rem;
+      margin: 1.2rem 0 1.6rem;
+    }
+    .timeline-track {
+      position: relative;
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      margin: 1.8rem 0 2.2rem;
+    }
+    .timeline-segment {
+      position: absolute;
+      height: 100%;
+      border-radius: 3px;
+    }
+    .timeline-tick {
+      position: absolute;
+      top: -22px;
+      transform: translateX(-50%);
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: monospace;
+      white-space: nowrap;
+    }
+    .timeline-label {
+      position: absolute;
+      bottom: -22px;
+      transform: translateX(-50%);
+      font-size: 0.7rem;
+      color: var(--accent2);
+      font-family: monospace;
+      white-space: nowrap;
+    }
+    .combo-cards-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .combo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      text-align: center;
+    }
+    .combo-card .tier { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+    .combo-card .mult { font-size: 1.1rem; color: var(--accent2); font-weight: 600; }
+    .combo-card .label { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+    .combo-card .effects { font-size: 0.75rem; color: var(--text); margin-top: 0.4rem; line-height: 1.4; }
+    .combo-card.tier-4 { border-color: var(--accent); background: rgba(125,211,252,0.07); }
+
+    /* Board event cards */
+    .event-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin: 1rem 0;
+    }
+    .event-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.3rem;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1rem;
+    }
+    .event-card .ev-title { font-size: 0.95rem; font-weight: 700; color: var(--heading); }
+    .event-card .ev-id { font-size: 0.75rem; color: var(--muted); font-family: monospace; margin-top: 0.15rem; }
+    .event-card .ev-ch { font-size: 0.75rem; color: var(--accent2); margin-top: 0.25rem; }
+    .event-card .ev-body { font-size: 0.87rem; color: var(--text); line-height: 1.6; }
+
+    /* Principle list */
+    .principle-list {
+      list-style: none;
+      padding: 0;
+    }
+    .principle-list li {
+      background: var(--surface);
+      border-left: 3px solid var(--accent2);
+      border-radius: 0 6px 6px 0;
+      padding: 0.55rem 1rem;
+      margin: 0.5rem 0;
+      font-size: 0.92rem;
+    }
+    .principle-list li strong { color: var(--accent2); }
+
+    /* Badges */
+    .badge-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 0.75rem 0 1.2rem;
+    }
+    .badge {
+      display: inline-block;
+      border-radius: 6px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .badge-green  { background: rgba(134,239,172,0.12); color: #86efac; border: 1px solid rgba(134,239,172,0.3); }
+    .badge-blue   { background: rgba(125,211,252,0.12); color: #7dd3fc; border: 1px solid rgba(125,211,252,0.3); }
+    .badge-yellow { background: rgba(253,224,71,0.12);  color: #fde047; border: 1px solid rgba(253,224,71,0.3);  }
+    .badge-red    { background: rgba(252,165,165,0.12); color: #fca5a5; border: 1px solid rgba(252,165,165,0.3); }
+    .badge-purple { background: rgba(192,132,252,0.12); color: #c084fc; border: 1px solid rgba(192,132,252,0.3); }
+
+    /* Section number badge */
+    .section-num {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      border-radius: 50%;
+      width: 1.6rem;
+      height: 1.6rem;
+      line-height: 1.6rem;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+    /* TOC */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.4rem;
+      margin: 1.2rem 0 1.8rem;
+      font-size: 0.88rem;
+    }
+    .toc ol { margin: 0.4rem 0 0; padding-left: 1.4rem; }
+    .toc li { margin: 0.28rem 0; }
+    .toc a { color: var(--muted); }
+    .toc a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="project-tag">Glow Island · 谜题设计</div>
+    <h1>Puzzle Design — 谜题设计规格文档</h1>
+  </div>
+  <div class="container">
+
+    <blockquote>
+      <p>版本：2.0 &nbsp;|&nbsp; 日期：2026-05-08 &nbsp;|&nbsp; 状态：权威节点 &nbsp;|&nbsp; 来源：puzzle-mechanics-spec v2.0</p>
+    </blockquote>
+
+    <div class="toc">
+      <strong style="color:var(--heading);">目录</strong>
+      <ol>
+        <li><a href="#path-algorithm">路径算法 — BFS ≤2转弯规则，传送门0转弯穿越</a></li>
+        <li><a href="#tile-types">20种图块 — T01–T20，日式主题名称，章节可用性</a></li>
+        <li><a href="#obstacles">8种障碍系统 — 机制、消除规则、视觉提示</a></li>
+        <li><a href="#special-blocks">特殊块详解 — 4种触发时机/效果/连锁</a></li>
+        <li><a href="#combo-system">连击系统 — 2000ms窗口时序图</a></li>
+        <li><a href="#board-events">棋盘事件 — tile_fall / tile_slide / board_rotate 机制</a></li>
+        <li><a href="#feel-principles">天天爱消除爽快感设计原则</a></li>
+      </ol>
+    </div>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="path-algorithm">1. 路径算法 — BFS ≤2转弯规则，传送门0转弯穿越</h2>
+
+    <p>两图块可连接的条件：类型相同，且存在至少一条路径满足以下四项约束：</p>
+
+    <div class="badge-row">
+      <span class="badge badge-blue">转弯次数 ≤ 2</span>
+      <span class="badge badge-green">路径不穿过已占用图块</span>
+      <span class="badge badge-green">空格可穿越</span>
+      <span class="badge badge-yellow">可沿棋盘外边缘延伸</span>
+      <span class="badge badge-purple">传送门零代价折叠</span>
+    </div>
+
+    <h3>BFS 状态机</h3>
+    <p>每个搜索状态由四元组 <code>(x, y, last_direction, turns_used)</code> 描述。</p>
+
+    <div class="diagram-box">
+      <div style="color:var(--muted);font-size:0.82rem;line-height:2.0;">
+        <div><span style="color:var(--accent);">初始状态</span>：将起始图块坐标以 <code>(x₀, y₀, NONE, 0)</code> 入队</div>
+        <div style="padding-left:1.5rem;">↓ 扩展四个方向 (UP / DOWN / LEFT / RIGHT)</div>
+        <div style="padding-left:1.5rem;">↓ 方向未改变 → <code>turns_used</code> 不变</div>
+        <div style="padding-left:1.5rem;">↓ 方向改变 → <code>turns_used += 1</code></div>
+        <div style="padding-left:1.5rem;">↓ <code>turns_used &gt; 2</code> → 剪枝，不入队</div>
+        <div style="padding-left:1.5rem;">↓ 遇到 <strong style="color:var(--accent);">portal_entry</strong> → 以相同 <code>(direction, turns_used)</code> 将 <code>portal_exit</code> 坐标入队，<strong>不增加转弯计数</strong></div>
+        <div style="padding-left:1.5rem;">↓ 到达目标图块坐标 → 路径有效，连接成功</div>
+        <div style="padding-left:1.5rem;color:var(--accent2);">↓ 队列耗尽未到达目标 → 不可连接</div>
+      </div>
+    </div>
+
+    <h3>转弯计数可视示例</h3>
+    <table>
+      <thead>
+        <tr><th>路径形状</th><th>转弯次数</th><th>是否有效</th><th>说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>直线</td><td>0</td><td style="color:#86efac;">有效</td><td>同行或同列直接相连</td></tr>
+        <tr><td>L形</td><td>1</td><td style="color:#86efac;">有效</td><td>一次拐弯</td></tr>
+        <tr><td>Z/S形 / U形</td><td>2</td><td style="color:#86efac;">有效</td><td>两次拐弯，最常见路径</td></tr>
+        <tr><td>三折路径</td><td>3</td><td style="color:#fca5a5;">无效</td><td>超出上限，BFS剪枝</td></tr>
+        <tr><td>传送门直线穿越</td><td>0</td><td style="color:#86efac;">有效</td><td>门间折叠不计转弯</td></tr>
+        <tr><td>传送门 + 1次拐弯</td><td>1</td><td style="color:#86efac;">有效</td><td>传送门等于免费折叠点</td></tr>
+      </tbody>
+    </table>
+
+    <h3>传送门穿越规则</h3>
+    <div class="diagram-box">
+      <div style="font-size:0.85rem;color:var(--text);line-height:1.9;">
+        <div><span style="color:var(--accent);">传送门对</span>：棋盘上成对出现（同色标记），每组2个，关卡可有多组。</div>
+        <div>路径进入 <code>portal_entry</code> 格子时，BFS 将 <code>portal_exit</code> 坐标以<strong>相同方向和相同 turns_used</strong> 直接入队。</div>
+        <div style="color:var(--muted);font-size:0.82rem;margin-top:0.6rem;">
+          实现提示：BFS 遍历前先构建 portal_map: coord → paired_coord；遇到 portal 格子时查表替换，无需额外分支处理。
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="tile-types">2. 20种图块 — T01–T20，日式主题名称，章节可用性</h2>
+
+    <p>图块按章节分组解锁，每章4种主力类型，配合章节地区和日式自然主题命名。</p>
+
+    <div class="tile-grid">
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#FF8C5A;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T01</div>
+          <div class="tile-name">珊瑚橙</div>
+          <div class="tile-ch">Ch1 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#4DA6D4;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T02</div>
+          <div class="tile-name">海浪蓝</div>
+          <div class="tile-ch">Ch1 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#E8D5A3;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T03</div>
+          <div class="tile-name">沙滩米</div>
+          <div class="tile-ch">Ch1 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#7BC67A;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T04</div>
+          <div class="tile-name">海草绿</div>
+          <div class="tile-ch">Ch1 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#FFD166;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T05</div>
+          <div class="tile-name">灯笼黄</div>
+          <div class="tile-ch">Ch2 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#A0A0A0;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T06</div>
+          <div class="tile-name">石板灰</div>
+          <div class="tile-ch">Ch2 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#C0504D;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T07</div>
+          <div class="tile-name">砖瓦红</div>
+          <div class="tile-ch">Ch2 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#8B5E3C;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T08</div>
+          <div class="tile-name">暖木棕</div>
+          <div class="tile-ch">Ch2 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#B08DCA;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T09</div>
+          <div class="tile-name">薰衣草紫</div>
+          <div class="tile-ch">Ch3 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#F4A7B9;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T10</div>
+          <div class="tile-name">粉樱</div>
+          <div class="tile-ch">Ch3 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#EAF0F6; border-color:rgba(255,255,255,0.3);"></div>
+        <div class="tile-info">
+          <div class="tile-id">T11</div>
+          <div class="tile-name">晨雾白</div>
+          <div class="tile-ch">Ch3 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#4E7C59;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T12</div>
+          <div class="tile-name">苔藓绿</div>
+          <div class="tile-ch">Ch3 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#5C4033;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T13</div>
+          <div class="tile-name">深林棕</div>
+          <div class="tile-ch">Ch4 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#E07832;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T14</div>
+          <div class="tile-name">营火橙</div>
+          <div class="tile-ch">Ch4 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#3D4A8A;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T15</div>
+          <div class="tile-name">星空靛</div>
+          <div class="tile-ch">Ch4 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#A3E635;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T16</div>
+          <div class="tile-name">萤光绿</div>
+          <div class="tile-ch">Ch4 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#F0EAE2; border-color:rgba(255,255,255,0.3);"></div>
+        <div class="tile-info">
+          <div class="tile-id">T17</div>
+          <div class="tile-name">温泉白</div>
+          <div class="tile-ch">Ch5 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#6EB5C0;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T18</div>
+          <div class="tile-name">矿物蓝</div>
+          <div class="tile-ch">Ch5 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#1A2A4A;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T19</div>
+          <div class="tile-name">夜深蓝</div>
+          <div class="tile-ch">Ch6 解锁</div>
+        </div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:#FFB830;"></div>
+        <div class="tile-info">
+          <div class="tile-id">T20</div>
+          <div class="tile-name">灯塔金</div>
+          <div class="tile-ch">Ch6 解锁</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>完整图块表（含章节可用性）</h3>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>名称</th><th>色值</th><th>解锁章节</th><th>章节主题</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>tile_01</code></td><td>珊瑚橙</td><td><code>#FF8C5A</code></td><td>Ch1</td><td>海边码头</td></tr>
+        <tr><td><code>tile_02</code></td><td>海浪蓝</td><td><code>#4DA6D4</code></td><td>Ch1</td><td>海边码头</td></tr>
+        <tr><td><code>tile_03</code></td><td>沙滩米</td><td><code>#E8D5A3</code></td><td>Ch1</td><td>海边码头</td></tr>
+        <tr><td><code>tile_04</code></td><td>海草绿</td><td><code>#7BC67A</code></td><td>Ch1</td><td>海边码头</td></tr>
+        <tr><td><code>tile_05</code></td><td>灯笼黄</td><td><code>#FFD166</code></td><td>Ch2</td><td>中央小镇</td></tr>
+        <tr><td><code>tile_06</code></td><td>石板灰</td><td><code>#A0A0A0</code></td><td>Ch2</td><td>中央小镇</td></tr>
+        <tr><td><code>tile_07</code></td><td>砖瓦红</td><td><code>#C0504D</code></td><td>Ch2</td><td>中央小镇</td></tr>
+        <tr><td><code>tile_08</code></td><td>暖木棕</td><td><code>#8B5E3C</code></td><td>Ch2</td><td>中央小镇</td></tr>
+        <tr><td><code>tile_09</code></td><td>薰衣草紫</td><td><code>#B08DCA</code></td><td>Ch3</td><td>花田山坡</td></tr>
+        <tr><td><code>tile_10</code></td><td>粉樱</td><td><code>#F4A7B9</code></td><td>Ch3</td><td>花田山坡</td></tr>
+        <tr><td><code>tile_11</code></td><td>晨雾白</td><td><code>#EAF0F6</code></td><td>Ch3</td><td>花田山坡</td></tr>
+        <tr><td><code>tile_12</code></td><td>苔藓绿</td><td><code>#4E7C59</code></td><td>Ch3</td><td>花田山坡</td></tr>
+        <tr><td><code>tile_13</code></td><td>深林棕</td><td><code>#5C4033</code></td><td>Ch4</td><td>森林露营地</td></tr>
+        <tr><td><code>tile_14</code></td><td>营火橙</td><td><code>#E07832</code></td><td>Ch4</td><td>森林露营地</td></tr>
+        <tr><td><code>tile_15</code></td><td>星空靛</td><td><code>#3D4A8A</code></td><td>Ch4</td><td>森林露营地</td></tr>
+        <tr><td><code>tile_16</code></td><td>萤光绿</td><td><code>#A3E635</code></td><td>Ch4</td><td>森林露营地</td></tr>
+        <tr><td><code>tile_17</code></td><td>温泉白</td><td><code>#F0EAE2</code></td><td>Ch5</td><td>温泉山谷</td></tr>
+        <tr><td><code>tile_18</code></td><td>矿物蓝</td><td><code>#6EB5C0</code></td><td>Ch5</td><td>温泉山谷</td></tr>
+        <tr><td><code>tile_19</code></td><td>夜深蓝</td><td><code>#1A2A4A</code></td><td>Ch6</td><td>夜晚灯塔</td></tr>
+        <tr><td><code>tile_20</code></td><td>灯塔金</td><td><code>#FFB830</code></td><td>Ch6</td><td>夜晚灯塔</td></tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="obstacles">3. 8种障碍系统 — 机制、消除规则、视觉提示</h2>
+
+    <blockquote>
+      <p>共8种障碍按章节逐步引入。<span class="badge badge-blue" style="font-size:0.72rem;vertical-align:middle;">现有3种</span>&nbsp;<span class="badge badge-yellow" style="font-size:0.72rem;vertical-align:middle;">v2新增5种</span></p>
+    </blockquote>
+
+    <!-- ROW 1: ice_block + weed (existing Ch2) -->
+    <div class="obstacle-grid">
+      <div class="obstacle-card">
+        <div class="obs-header">
+          <span class="obs-badge obs-badge-existing">Ch2 解锁</span>
+          <span class="obs-card-title">冰封块（Ice Block）</span>
+        </div>
+        <div class="obs-meta"><code>ice_block</code> · 1–3 层</div>
+        <div class="obs-section-label">机制</div>
+        <div class="obs-body">图块被冰层封印，无法被玩家选中或参与连接。支持 1–3 层叠加，每次相邻格子的消除操作击碎一层。前 N-1 次消除图块本身不消除，第 N 次消除后冰层完全破碎，图块正常消除。</div>
+        <div class="obs-section-label">消除规则</div>
+        <div class="obs-body"><strong>相邻消除</strong>（adjacent_match），每次相邻格子成功匹配消耗一层冰；总击中次数 = 层数。路径可绕过冰封块，但无法穿越已占用的冰封图块本体。</div>
+        <div class="obs-section-label">视觉提示</div>
+        <div class="obs-body">Layer 3: 厚重冰柱 + 白色反光；Layer 2: 龟裂纹路；Layer 1: 薄冰残片。最后一层破碎时：冰晶炸裂 + 水滴粒子飞溅，配合"咔嚓"碎冰音效。</div>
+      </div>
+
+      <div class="obstacle-card">
+        <div class="obs-header">
+          <span class="obs-badge obs-badge-existing">Ch2 解锁</span>
+          <span class="obs-card-title">杂草（Weed）</span>
+        </div>
+        <div class="obs-meta"><code>weed</code> · 动态扩散</div>
+        <div class="obs-section-label">机制</div>
+        <div class="obs-body">杂草占据格子，覆盖的格子无法放置图块（消除后格子恢复可用）。每 <strong>15秒</strong>向相邻1格扩散，不阻挡路径。</div>
+        <div class="obs-section-label">消除规则</div>
+        <div class="obs-body"><strong>相邻消除</strong>1次即可清除单格杂草。</div>
+        <div class="obs-section-label">视觉提示</div>
+        <div class="obs-body">绿色草丛覆盖格子。消除时叶片飞散动画。</div>
+      </div>
+    </div>
+
+    <!-- ROW 2: chain_lock + portal (existing Ch3) -->
+    <div class="obstacle-grid">
+      <div class="obstacle-card">
+        <div class="obs-header">
+          <span class="obs-badge obs-badge-existing">Ch3 解锁</span>
+          <span class="obs-card-title">锁链（Chain Lock）</span>
+        </div>
+        <div class="obs-meta"><code>chain_lock</code> · 1–3 环</div>
+        <div class="obs-section-label">机制</div>
+        <div class="obs-body">图块被锁链捆绑，必须将该图块本身匹配 N 次（每次直接参与连接算一次）才能解除锁链。前 N-1 次匹配图块不消除，仅减少锁链环数；第 N 次匹配后锁链脱落，图块正常消除。</div>
+        <div class="obs-section-label">消除规则</div>
+        <div class="obs-body"><strong>直接匹配</strong>（direct_match），图块本身必须参与 N 次成功匹配，相邻消除不计数。图块在锁链解除前可被选中。</div>
+        <div class="obs-section-label">视觉提示</div>
+        <div class="obs-body">金属锁链缠绕图块外框，每次匹配一个链环断裂 + 金属叮当音效。最后一环断裂时锁链飞散 + 图块发光消除。</div>
+      </div>
+
+      <div class="obstacle-card">
+        <div class="obs-header">
+          <span class="obs-badge obs-badge-existing">Ch3 解锁</span>
+          <span class="obs-card-title">传送门（Portal）</span>
+        </div>
+        <div class="obs-meta"><code>portal</code> · 路径工具，成对出现</div>
+        <div class="obs-section-label">机制</div>
+        <div class="obs-body">棋盘上成对出现的传送门格子（同色配对）。连线路径进入传送门入口，从配对出口继续延伸，传送过程 <strong>不消耗转弯次数</strong>（turn_cost = 0）。传送门格子本身不放置普通图块，仅作路径通道。</div>
+        <div class="obs-section-label">消除规则</div>
+        <div class="obs-body">传送门不可消除，属于永久地形元素，由关卡JSON定义。每关可有多对传送门（不同颜色区分配对）。</div>
+        <div class="obs-section-label">视觉提示</div>
+        <div class="obs-body">两个旋转发光圆环（同色），入口有吸入粒子旋涡。路径穿越时：粒子从入口吸入、从出口喷出，配合传送"嗖"声音效。</div>
+      </div>
+    </div>
+
+    <!-- NEW obstacles header -->
+    <h3 style="margin-top:1.6rem;">v2.0 新增5种障碍</h3>
+
+    <!-- ROW 3: single_path_corridor + wooden_crate (Ch4 new) -->
+    <div class="obstacle-grid">
+      <div class="obstacle-card new-obstacle">
+        <div class="obs-header">
+          <span class="obs-badge obs-badge-new">v2新增 · Ch4 解锁</span>
+          <span class="obs-card-title">单路径通道（Single-Path Corridor）</span>
+        </div>
+        <div class="obs-meta"><code>single_path_corridor</code> · 路径约束</div>
+        <div class="obs-section-label">机制</div>
+        <div class="obs-body">棋盘特定区域被设定为单路径通道，该区域内只有一条有效路径可通过。所有经过该区域的连线必须通过强制通道，<strong>不可绕行</strong>。通道格子本身不增加转弯计数，但进出通道的方向变换照常计入转弯。通道区域两侧格子被标记为不可穿越，迫使路径沿通道方向行进。</div>
+        <div class="obs-section-label">消除规则</div>
+        <div class="obs-body">不可消除，属于永久路径约束地形，由关卡JSON中的 corridor 坐标列表及强制通行方向字段定义。</div>
+        <div class="obs-section-label">视觉提示</div>
+        <div class="obs-body">通道格子有发光箭头指示方向，边界有虚线围栏。路径经过时通道格子依次点亮，配合轻微引导提示音。</div>
+      </div>
+
+      <div class="obstacle-card new-obstacle">
+        <div class="obs-header">
+          <span class="obs-badge obs-badge-new">v2新增 · Ch4 解锁</span>
+          <span class="obs-card-title">木箱（Wooden Crate）</span>
+        </div>
+        <div class="obs-meta"><code>wooden_crate</code> · 永久地形障碍</div>
+        <div class="obs-section-label">机制</div>
+        <div class="obs-body">永久性地形障碍，<strong>无法消除</strong>。路径不可穿越木箱格子，图块不可放置于木箱格子上。用于关卡设计师强制规划路径走向，创造高难度谜题空间。与单路径通道组合可设计极高难度关卡。</div>
+        <div class="obs-section-label">消除规则</div>
+        <div class="obs-body">永久障碍，clear_method = none。不响应任何消除操作。</div>
+        <div class="obs-section-label">视觉提示</div>
+        <div class="obs-body">实木纹理箱体，边缘有金属扣。不可交互时显示禁止图标，鼠标悬停有抖动拒绝动画。</div>
+      </div>
+    </div>
+
+    <!-- ROW 4: water_current (Ch5 new) + spreading_obstacle (Ch6 new) -->
+    <div class="obstacle-grid">
+      <div class="obstacle-card new-obstacle">
+        <div class="obs-header">
+          <span class="obs-badge obs-badge-new">v2新增 · Ch5 解锁</span>
+          <span class="obs-card-title">水流（Water Current）</span>
+        </div>
+        <div class="obs-meta"><code>water_current</code> · 动态路径障碍</div>
+        <div class="obs-section-label">机制</div>
+        <div class="obs-body">无法消除的<strong>动态障碍</strong>。每5秒改变流向，影响该格路径可达性。流向改变时实时更新路径计算——流向可能开放或封闭特定路径，要求玩家把握时机。</div>
+        <div class="obs-section-label">消除规则</div>
+        <div class="obs-body">不可消除，属于永久动态地形。BFS需在每次流向变化后重新计算当前可达性。</div>
+        <div class="obs-section-label">视觉提示</div>
+        <div class="obs-body">流动水波纹理格子，箭头图标指示当前流向。方向切换时有旋转动画，并伴随流水声音效变化。</div>
+      </div>
+
+      <div class="obstacle-card new-obstacle">
+        <div class="obs-header">
+          <span class="obs-badge obs-badge-new">v2新增 · Ch6 解锁</span>
+          <span class="obs-card-title">扩散障碍（Spreading Obstacle）</span>
+        </div>
+        <div class="obs-meta"><code>spreading_obstacle</code> · 藤蔓 / 苔藓</div>
+        <div class="obs-section-label">机制</div>
+        <div class="obs-body">藤蔓或苔藓从初始格子向外扩散，被覆盖的图块无法被选中参与连接。每回合向上下左右各1格扩散（若未被占用）。若扩散填满整个棋盘则<strong>关卡失败</strong>。占据80%可用格子时触发视觉警告。扩散被 wooden_crate、portal、single_path_corridor 边界阻挡。</div>
+        <div class="obs-section-label">消除规则</div>
+        <div class="obs-body"><strong>相邻消除</strong> 1次即可清除单格覆盖。初始格子由关卡JSON指定（通常2–4个），扩散间隔 = 每步1格（步数制关卡）。</div>
+        <div class="obs-section-label">视觉提示</div>
+        <div class="obs-body">从初始格子向外蔓延的绿色藤蔓纹理（vine）或暗绿苔藓（moss）。每次扩散触发时有嫩芽破土动画；相邻消除清除时藤蔓枯萎收缩 + 叶片飞散；接近满盘时整体颜色变深红警告。</div>
+      </div>
+    </div>
+
+    <!-- Summary table -->
+    <h3>8种障碍汇总表</h3>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>名称</th><th>消除方式</th><th>阻挡路径</th><th>阻挡选中</th><th>可消除</th><th>解锁章节</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>ice_block</code></td><td>冰封块</td><td>相邻消除（1–3次）</td><td>否</td><td>是</td><td>是</td><td>Ch2</td></tr>
+        <tr><td><code>weed</code></td><td>杂草</td><td>相邻消除（1次）</td><td>否</td><td>否（占位）</td><td>是</td><td>Ch2</td></tr>
+        <tr><td><code>chain_lock</code></td><td>锁链</td><td>直接匹配（1–3次）</td><td>否</td><td>否</td><td>是</td><td>Ch3</td></tr>
+        <tr><td><code>portal</code></td><td>传送门</td><td>不可消除</td><td>否（零代价折叠）</td><td>N/A</td><td>否（永久）</td><td>Ch3</td></tr>
+        <tr><td><code>single_path_corridor</code></td><td>单路径通道</td><td>不可消除</td><td>约束路径</td><td>N/A</td><td>否（永久）</td><td>Ch4</td></tr>
+        <tr><td><code>wooden_crate</code></td><td>木箱</td><td>不可消除</td><td>是</td><td>是</td><td>否（永久）</td><td>Ch4</td></tr>
+        <tr><td><code>water_current</code></td><td>水流</td><td>不可消除</td><td>是（动态）</td><td>是</td><td>否（永久动态）</td><td>Ch5</td></tr>
+        <tr><td><code>spreading_obstacle</code></td><td>扩散障碍</td><td>相邻消除（1次/格）</td><td>否</td><td>是</td><td>是（逐格）</td><td>Ch6</td></tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="special-blocks">4. 特殊块详解 — 4种触发时机/效果/连锁</h2>
+
+    <blockquote>
+      <p>所有特殊块激活动画<strong>不可跳过</strong>（0.3–0.8s），以保持节奏感。特殊块激活可与障碍清除形成连锁反应。</p>
+    </blockquote>
+
+    <div class="special-grid">
+      <div class="special-card">
+        <div class="sc-title">炸弹（Bomb）</div>
+        <div class="sc-id">id: bomb · 动画 0.5s</div>
+        <div class="sc-label">触发时机</div>
+        <div class="sc-body"><strong>3连击</strong>时系统必定自动生成1个，或由关卡JSON预置于棋盘（默认5%空格随机概率）。</div>
+        <div class="sc-label">效果</div>
+        <div class="sc-body">消除以炸弹块为中心的 <strong>3×3 范围</strong>内所有图块（含障碍物及覆盖层）。范围内的冰封块、锁链、扩散障碍均被一并清除。</div>
+        <div class="sc-label">连锁规则</div>
+        <div class="sc-body">若3×3范围内有其他特殊块，被消除的特殊块<strong>不会二次激活</strong>（防止无限连锁）。被清除的障碍物正常计分。</div>
+        <div class="sc-label">视觉提示</div>
+        <div class="sc-body">橙色闪光球体。激活时：爆炸粒子 + 冲击波环向外扩散，3×3范围内图块逐格飞散。低频"砰"爆炸音效。</div>
+      </div>
+
+      <div class="special-card">
+        <div class="sc-title">风车（Windmill）</div>
+        <div class="sc-id">id: windmill · 动画 0.4s</div>
+        <div class="sc-label">触发时机</div>
+        <div class="sc-body"><strong>4连击</strong>时系统必定自动生成1个，或由关卡JSON预置（默认3%空格概率）。</div>
+        <div class="sc-label">效果</div>
+        <div class="sc-body">同时清除风车块所在<strong>整行（横）</strong>及<strong>整列（竖）</strong>的所有图块，形成十字清除（行消和列消同步触发）。</div>
+        <div class="sc-label">连锁规则</div>
+        <div class="sc-body">十字范围内遇到冰封块/锁链均可清除。若十字范围内有炸弹块，炸弹块被清除但<strong>不触发</strong>炸弹爆炸。</div>
+        <div class="sc-label">视觉提示</div>
+        <div class="sc-body">旋转风车纹理。激活时：横竖双光柱同时扫过整行整列，图块向两侧飞散。高频"唰唰"扫除音效。</div>
+      </div>
+
+      <div class="special-card">
+        <div class="sc-title">灯光（Lantern）</div>
+        <div class="sc-id">id: lantern · 动画 0.3s</div>
+        <div class="sc-label">触发时机</div>
+        <div class="sc-body"><strong>仅关卡JSON预置</strong>（不可通过连击生成）。棋盘上存在时自动激活。若无同类型图块可达，灯光块持续脉冲等待。</div>
+        <div class="sc-label">效果</div>
+        <div class="sc-body"><strong>自动寻路</strong>并连接距离最近的同类型图块，无需玩家手动操作。连接成功后双方同时消除。搜索范围无上限，使用全棋盘BFS。</div>
+        <div class="sc-label">连锁规则</div>
+        <div class="sc-body">自动连线不受障碍物影响（直接点对点光线连接，跳过障碍）。消除后若新出现的最近同类型图块仍满足条件，灯光块不会再次激活（单次触发）。</div>
+        <div class="sc-label">视觉提示</div>
+        <div class="sc-body">橙色光晕持续脉冲。激活时：发光连线高速飞向目标，目标图块同时发光响应，双方爆发光点消除。</div>
+      </div>
+
+      <div class="special-card">
+        <div class="sc-title">海浪（Wave）</div>
+        <div class="sc-id">id: wave · 动画 0.8s</div>
+        <div class="sc-label">触发时机</div>
+        <div class="sc-body"><strong>仅关卡JSON预置</strong>（不可通过连击生成），通常每关最多1个。玩家主动匹配海浪块时激活。</div>
+        <div class="sc-label">效果</div>
+        <div class="sc-body"><strong>重新随机排列</strong>棋盘上所有图块位置，保持各类型图块数量不变。重排后若仍无可用匹配对则自动再次重排，<strong>最多3次</strong>。</div>
+        <div class="sc-label">连锁规则</div>
+        <div class="sc-body">重排不改变障碍物位置（木箱、传送门等固定地形保持原位）。重排后立即重新计算全盘可达性。重排期间不可进行任何操作。</div>
+        <div class="sc-label">视觉提示</div>
+        <div class="sc-body">蓝色水波纹从中心扩散至边缘。激活时：全棋盘图块漩涡式上扬后重新落下，配合"哗"海浪音效，持续0.8s。</div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="combo-system">5. 连击系统 — 2000ms窗口时序图</h2>
+
+    <blockquote>
+      <p>连续匹配之间间隔 <code>&lt; 2000ms</code> 视为同一连击链。参考手感：<strong>天天爱消除</strong>——渐进增强的爆炸/粒子特效，3连击以上全屏震动。</p>
+    </blockquote>
+
+    <h3>2000ms 窗口时序图</h3>
+    <div class="combo-timeline">
+      <div style="font-size:0.82rem;color:var(--muted);margin-bottom:0.8rem;">每次成功匹配后开启 2000ms 计时窗口，在窗口内完成下一次匹配则连击计数 +1，否则重置为 0。</div>
+
+      <!-- Timeline bar -->
+      <div style="position:relative;margin:2.4rem 0 2.8rem;">
+        <div style="position:relative;height:8px;background:var(--border);border-radius:4px;">
+          <div style="position:absolute;left:0;width:20%;height:100%;background:linear-gradient(90deg,#86efac,#7dd3fc);border-radius:4px 0 0 4px;"></div>
+          <div style="position:absolute;left:20%;width:20%;height:100%;background:linear-gradient(90deg,#7dd3fc,#60a5fa);"></div>
+          <div style="position:absolute;left:40%;width:20%;height:100%;background:linear-gradient(90deg,#60a5fa,#a78bfa);"></div>
+          <div style="position:absolute;left:60%;width:20%;height:100%;background:linear-gradient(90deg,#a78bfa,#f472b6);"></div>
+          <div style="position:absolute;left:80%;width:20%;height:100%;background:var(--border);border-radius:0 4px 4px 0;"></div>
+
+          <!-- Tick marks (top) -->
+          <div style="position:absolute;left:0;top:-20px;font-size:0.7rem;color:var(--accent2);font-family:monospace;">0ms</div>
+          <div style="position:absolute;left:20%;transform:translateX(-50%);top:-20px;font-size:0.7rem;color:var(--muted);font-family:monospace;">Match①</div>
+          <div style="position:absolute;left:40%;transform:translateX(-50%);top:-20px;font-size:0.7rem;color:var(--muted);font-family:monospace;">Match②</div>
+          <div style="position:absolute;left:60%;transform:translateX(-50%);top:-20px;font-size:0.7rem;color:var(--muted);font-family:monospace;">Match③</div>
+          <div style="position:absolute;left:80%;transform:translateX(-50%);top:-20px;font-size:0.7rem;color:var(--muted);font-family:monospace;">Match④</div>
+          <div style="position:absolute;right:0;top:-20px;font-size:0.7rem;color:var(--accent);font-family:monospace;transform:translateX(50%);">+2000ms</div>
+
+          <!-- Labels (bottom) -->
+          <div style="position:absolute;left:20%;transform:translateX(-50%);bottom:-20px;font-size:0.7rem;color:#86efac;font-family:monospace;">×1.0 Combo1</div>
+          <div style="position:absolute;left:40%;transform:translateX(-50%);bottom:-20px;font-size:0.7rem;color:#7dd3fc;font-family:monospace;">×1.5 Combo2</div>
+          <div style="position:absolute;left:60%;transform:translateX(-50%);bottom:-20px;font-size:0.7rem;color:#a78bfa;font-family:monospace;">×2.0 Combo3</div>
+          <div style="position:absolute;left:80%;transform:translateX(-50%);bottom:-20px;font-size:0.7rem;color:#f472b6;font-family:monospace;">×3.0 Combo4</div>
+          <div style="position:absolute;right:0;bottom:-20px;font-size:0.7rem;color:var(--muted);font-family:monospace;transform:translateX(50%);">RESET</div>
+        </div>
+      </div>
+
+      <div style="font-size:0.8rem;color:var(--muted);line-height:1.8;margin-top:1.2rem;">
+        <div>窗口说明：每次成功匹配后重新开始2000ms计时 &nbsp;|&nbsp; 窗口内未完成下次匹配 → Combo重置为0</div>
+        <div>重置条件：① 连续两次匹配间隔 &gt; 2000ms &nbsp;② 棋盘当前无任何可用匹配对</div>
+      </div>
+    </div>
+
+    <h3>连击档位详情</h3>
+    <div class="combo-cards-row">
+      <div class="combo-card">
+        <div class="tier">×1</div>
+        <div class="mult">×1.0</div>
+        <div class="label">Combo 1</div>
+        <div class="effects">基础消除<br>清脆单音<br>基础粒子</div>
+      </div>
+      <div class="combo-card">
+        <div class="tier">×2</div>
+        <div class="mult">×1.5</div>
+        <div class="label">Combo 2</div>
+        <div class="effects">音效增强<br>粒子提升</div>
+      </div>
+      <div class="combo-card">
+        <div class="tier">×3</div>
+        <div class="mult">×2.0</div>
+        <div class="label">Combo 3</div>
+        <div class="effects">音效增强<br>特效升级<br>全屏微震<br><strong style="color:#86efac;">炸弹块生成</strong></div>
+      </div>
+      <div class="combo-card tier-4">
+        <div class="tier">×4</div>
+        <div class="mult">×3.0</div>
+        <div class="label">Combo 4+</div>
+        <div class="effects">音效增强<br>特效升级<br>屏幕震动<br>粒子爆发<br><strong style="color:#7dd3fc;">风车块生成</strong></div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>连击数</th><th>分数乘数</th><th>窗口</th><th>特殊块生成</th><th>视觉/音效表现</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>×1.0</td><td rowspan="4" style="vertical-align:middle;text-align:center;color:var(--accent);">2000 ms</td><td>—</td><td>清脆单音，基础粒子</td></tr>
+        <tr><td>2</td><td>×1.5</td><td>—</td><td>音效增强，粒子提升</td></tr>
+        <tr><td>3</td><td>×2.0</td><td>炸弹块（Bomb）必定生成</td><td>特效升级，全屏微震</td></tr>
+        <tr><td>4+</td><td>×3.0</td><td>风车块（Windmill）必定生成</td><td>屏幕震动 + 粒子爆发</td></tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="board-events">6. 棋盘事件 — tile_fall / tile_slide / board_rotate 机制</h2>
+
+    <blockquote>
+      <p>棋盘事件均在第5章解锁，默认关闭，由关卡JSON中的 <code>board_event</code> 字段按需启用。</p>
+    </blockquote>
+
+    <div class="event-list">
+      <div class="event-card">
+        <div>
+          <div class="ev-title">方块下落（Tile Fall）</div>
+          <div class="ev-id"><code>tile_fall</code></div>
+          <div class="ev-ch">Ch5 解锁 · 重力系统核心</div>
+        </div>
+        <div class="ev-body">
+          <strong>触发</strong>：每次消除操作完成后立即触发，优先级最高。<br>
+          <strong>机制</strong>：消除图块后，被消除格上方的图块因重力向下滑落填充空位；若顶部有补充池则从顶部补入新图块。<br>
+          <strong>缓动</strong>：<code>ease_in_bounce</code>，每格下落耗时 0.08s，强化物理真实感。<br>
+          <strong>连锁</strong>：下落到位后若形成新的可消除对，系统提示（不自动消除，等待玩家操作）。<br>
+          <strong>约束</strong>：需在 6×6 以上棋盘使用；与 tile_slide 配合使用效果最佳。
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div>
+          <div class="ev-title">方块滑落（Tile Slide）</div>
+          <div class="ev-id"><code>tile_slide</code></div>
+          <div class="ev-ch">Ch5 解锁 · 需配合 tile_fall</div>
+        </div>
+        <div class="ev-body">
+          <strong>触发</strong>：tile_fall 完成后，若图块落在标记为"滑面"的格子上则触发水平滑动。<br>
+          <strong>机制</strong>：特定标记为 <code>slide_surface</code> 的格子上，图块在下落后额外向指定水平方向滑动1格，形成斜向堆积效果。<br>
+          <strong>缓动</strong>：水平滑动使用 <code>ease_out</code>，持续 0.12s。<br>
+          <strong>配置</strong>：由关卡JSON标记 <code>slide_surface</code> 格子及滑动方向（left / right）。<br>
+          <strong>设计用途</strong>：可创造图块聚集特定区域的战术设计，配合连击策略。
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div>
+          <div class="ev-title">棋盘旋转（Board Rotate）</div>
+          <div class="ev-id"><code>board_rotate</code></div>
+          <div class="ev-ch">Ch5 解锁 · 仅挑战关使用</div>
+        </div>
+        <div class="ev-body">
+          <strong>触发</strong>：每 N 步操作后触发（N 由关卡JSON指定，典型值 3–5 步）。<br>
+          <strong>机制</strong>：棋盘特定矩形子区域（由关卡JSON定义）每 N 步后顺时针旋转 90°，改变图块位置布局，要求玩家<strong>预判旋转后状态</strong>。<br>
+          <strong>预警</strong>：旋转前 1 秒在旋转区域边框闪烁警告，给玩家预判时间。<br>
+          <strong>缓动</strong>：<code>ease_in_out</code>，旋转动画 0.5s。<br>
+          <strong>约束</strong>：旋转区域不可包含 portal 或 single_path_corridor 格子；旋转完成后重新计算全盘可达性。仅用于章节后半段高难度挑战关。
+        </div>
+      </div>
+    </div>
+
+    <h3>棋盘事件配置说明</h3>
+    <table>
+      <thead>
+        <tr><th>事件ID</th><th>解锁章节</th><th>触发时机</th><th>缓动函数</th><th>动画时长</th><th>默认启用</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>tile_fall</code></td><td>Ch5</td><td>每次消除后立即</td><td>ease_in_bounce</td><td>0.08s/格</td><td>否</td></tr>
+        <tr><td><code>tile_slide</code></td><td>Ch5</td><td>tile_fall 完成后</td><td>ease_out</td><td>0.12s</td><td>否</td></tr>
+        <tr><td><code>board_rotate</code></td><td>Ch5</td><td>每 N 步操作后</td><td>ease_in_out</td><td>0.5s + 预警1s</td><td>否</td></tr>
+        <tr><td><code>water_flow</code></td><td>Ch5</td><td>每 5 秒定时</td><td>slide</td><td>0.3s</td><td>否</td></tr>
+        <tr><td><code>vine_spread</code></td><td>Ch6</td><td>每 10 秒定时</td><td>vine_grow</td><td>0.5s</td><td>否</td></tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <h2 id="feel-principles">7. 天天爱消除爽快感设计原则</h2>
+
+    <blockquote>
+      <p>参考手感：<strong>天天爱消除（Chinese Candy Crush）</strong>。每次成功匹配必须有清晰、爽快的视觉+音效反馈，连击链产生渐进增强的爆炸/粒子特效，3连击以上全屏震动。</p>
+    </blockquote>
+
+    <ul class="principle-list">
+      <li><strong>即时清晰反馈</strong>：每次成功匹配必须有清晰、爽快的视觉+音效反馈——消除瞬间粒子飞散、连击计数跳动、专属音效播放，响应延迟不超过 16ms。</li>
+      <li><strong>渐进增强连击</strong>：连击链应产生渐进式增强的爆炸/粒子特效；3连击以上全屏微震，4连击以上全屏震动 + 粒子爆发，让玩家的节奏感和成就感同步上升。</li>
+      <li><strong>不可跳过的精彩时刻</strong>：特殊块激活时动画不可跳过，持续时间控制在 0.3–0.8s，以保持节奏感——短到不打断流程，长到足以令人印象深刻。</li>
+      <li><strong>障碍解锁专属特效</strong>：障碍物被清除时应有专属"解锁"音效 + 碎裂/解冻/断链粒子效果，让"攻克障碍"成为独立的爽快时刻。</li>
+      <li><strong>弹性重力下落</strong>：重力下落使用 <code>ease_in_bounce</code> 缓动，强化物理真实感，让棋盘有"重量"和"活力"。</li>
+      <li><strong>新机制引导零压力</strong>：每章首次引入新机制时，通过引导关卡（无步数惩罚）让玩家自然学会——机制介绍用视觉引导而非文字墙，确保玩家第一次接触时产生"原来如此"而非困惑的情绪。</li>
+    </ul>
+
+    <h3>反馈强度分级</h3>
+    <table>
+      <thead>
+        <tr><th>等级</th><th>触发条件</th><th>视觉</th><th>音效</th><th>物理反馈</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>基础消除</td><td>普通匹配</td><td>粒子飞散（小）</td><td>清脆单音</td><td>无震动</td></tr>
+        <tr><td>连击 ×2</td><td>2连击</td><td>粒子增强</td><td>音效增强</td><td>无震动</td></tr>
+        <tr><td>连击 ×3</td><td>3连击 + 炸弹生成</td><td>特效升级 + 炸弹爆炸</td><td>双重音效</td><td>全屏微震</td></tr>
+        <tr><td>连击 ×4+</td><td>4+连击 + 风车生成</td><td>粒子爆发 + 光柱扫场</td><td>最强音效组合</td><td>全屏震动</td></tr>
+        <tr><td>障碍清除</td><td>冰封/锁链/扩散消除</td><td>专属碎裂/断链/枯萎特效</td><td>专属"解锁"音效</td><td>轻微震动</td></tr>
+        <tr><td>特殊块激活</td><td>炸弹/风车/灯光/海浪</td><td>专属动画（不可跳过）</td><td>专属音效</td><td>对应震动</td></tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <div class="footer">Glow Island · Puzzle Design v2.0 · 輝島 · 2026-05-08</div>
+  </div>
+</body>
+</html>
