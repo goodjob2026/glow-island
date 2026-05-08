@@ -27,22 +27,20 @@ Read `.allforai/bootstrap/workflow.json` at every iteration. Trust it over conve
      - Can run multiple nodes in parallel if their exit_artifacts don't overlap
      - Can skip a node if its goal is already satisfied
      - Can re-run a failed node after fixing the issue
+     - **Game-design nodes with `human_gate: true`:** do NOT advance to the next node based on exit_artifact existence alone. Also check `.allforai/game-design/approval-records.json`:
+       - `gate_status == "pending"` AND all exit_artifacts exist → auto-set `gate_status` to `"in-review"` and notify the `discipline_owner` that the output is ready for review. Do NOT advance yet.
+       - `gate_status == "in-review"` → wait for `discipline_owner` to approve or request revision. Do NOT advance.
+       - `gate_status == "approved"` → this node is done; advance to unlocked nodes.
+       - `gate_status == "revision-requested"` → re-run the node passing `revision_notes` as instruction; after re-execution completes, reset `gate_status` to `"in-review"`.
   5. Read the node-spec: .allforai/bootstrap/node-specs/<node-id>.md
-  6. Dispatch subagent with node-spec as prompt
+  6. Dispatch subagent with node-spec as prompt. Per §D of cross-phase-protocols.md: execution-phase subagents are FORBIDDEN from using AskUserQuestion or any user interaction — all decisions must already be written to .allforai/ files from the Discussion Phase (bootstrap). If a subagent reports UPSTREAM_DEFECT (missing decision information), pause execution and return to Discussion Phase to supplement decisions, then resume.
   7. On success: record transition (status=completed, artifacts_created)
   8. On failure: record transition (status=failed, error=<one line>),
-     then read .allforai/bootstrap/protocols/diagnosis.md and diagnose
+     then read .allforai/bootstrap/protocols/diagnosis.md and diagnose.
+     After diagnosis + repair: append to workflow.json `corrections_applied[]`:
+     `{"node": "<id>", "what_was_wrong": "<root_cause>", "fix_applied": "<action>", "timestamp": "<ISO>"}`
   9. Back to 1
 ```
-
-## Parallel Execution Opportunities
-
-These nodes can run in parallel (no shared exit_artifacts):
-- `market-research` || `worldbuilding` (both feed game-design-concept, independent)
-- `original-art` || `animation-design` (after art-concept; art can be done while animations are designed)
-- `implement-puzzle-core` || `implement-island-map` || `implement-backend-api` || `implement-audio`
-- `implement-special-mechanics` || `implement-game-session` || `implement-ui-systems`
-- `implement-shop-iap` (after implement-backend-api) || `vfx-design` (can start after core-mechanics-design)
 
 ## Recording Transitions
 
@@ -68,7 +66,10 @@ On first iteration if transition_log is non-empty:
 
 ## Safety (warnings, not blockers)
 
-- Same node fails 3 times → warn user, ask if they want to continue
+- Same node fails 3 times → **before warning**, check `workflow.json.diagnosis_history` for that node:
+  - If any entry has `"out_of_scope": true` → mark workflow halted, output TODO list, do NOT retry or ask user
+  - If 2+ entries share the same `root_cause.node` → convergence cap reached, mark UNRESOLVED, output TODO list, halt
+  - Otherwise → warn user, ask if they want to continue
 - 5 iterations with no new artifacts → output current state + TODO list
 - Single node running > 10 minutes → warn but don't kill
 
@@ -81,5 +82,25 @@ On first iteration if transition_log is non-empty:
 
 ## Post-Completion
 
-1. Read `.allforai/bootstrap/protocols/learning-protocol.md` — extract experience
-2. Read `.allforai/bootstrap/protocols/feedback-protocol.md` — propose feedback
+**Run regardless of success or early stop:**
+
+1. **Mark concept drift resolved (if applicable):**
+   If `.allforai/product-concept/concept-drift.json` exists AND `resolved = false`
+   AND all nodes completed successfully: set `"resolved": true` and write back.
+   If /run stopped early or failed: leave `resolved = false` (drift still pending for next /bootstrap).
+
+2. **Learning extraction:**
+   Read `.allforai/bootstrap/protocols/learning-protocol.md`.
+   Check `workflow.json.corrections_applied[]` and `diagnosis_history[]`:
+   - If both empty: no learning to extract, skip.
+   - For each entry in `corrections_applied[]`:
+     * Extract: node, what_was_wrong (root_cause), fix_applied
+     * Classify per learning-protocol.md type (mapping-gap / discovery-blind-spot / convergence / safety / other)
+     * Write to `.allforai/bootstrap/learned/<category>.md` per learning-protocol.md File Naming Convention
+   - For each entry in `diagnosis_history[]`:
+     * Extract root_cause pattern and gaps_found domains
+     * If the gap was not caught by the expected capability node → classify as "blind-spot"
+     * Write to `.allforai/bootstrap/learned/blind-spots.md` (append, do not overwrite)
+
+3. **Feedback proposal:**
+   Read `.allforai/bootstrap/protocols/feedback-protocol.md` — propose feedback

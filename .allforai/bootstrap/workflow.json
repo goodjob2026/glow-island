@@ -2,242 +2,303 @@
   "schema_version": "2.0",
   "project": "glow-island",
   "goal": "从零构建治愈系连连看手游（Cocos Creator + Fastify后端，iOS+WebGL双平台，云存档+排行榜+IAP）",
-  "planned_at": "2026-05-07T04:00:00Z",
+  "planned_at": "2026-05-08T00:00:00Z",
   "nodes": [
     {
-      "id": "market-research",
-      "capability": "product-concept",
-      "goal": "调研休闲消除类同类游戏（Gardenscapes、Township、Fishdom、Candy Crush Saga），生成竞品分析（定位/玩法/商业化/评价）和ERRC定位矩阵，确定Glow Island的差异化空间",
-      "exit_artifacts": [
-        ".allforai/product-concept/competitor-analysis.json",
-        ".allforai/product-concept/errc-matrix.json"
-      ],
-      "knowledge_refs": ["knowledge/capabilities/product-concept.md", "knowledge/domains/gaming.md"],
-      "consumers": ["innovation-exploration", "game-design-concept"]
-    },
-    {
-      "id": "innovation-exploration",
-      "capability": "product-concept",
-      "goal": "基于竞品分析，识别Glow Island的3-5个核心差异化卖点（无倒计时焦虑、视觉美感作为奖励替代数值奖励、治愈叙事而非P2W竞技），形成创新点文档",
-      "exit_artifacts": [".allforai/product-concept/innovation-opportunities.json"],
-      "knowledge_refs": ["knowledge/capabilities/product-concept.md", "knowledge/domains/gaming.md"],
-      "consumers": ["game-design-concept"]
-    },
-    {
       "id": "worldbuilding",
-      "capability": "product-concept",
-      "goal": "设计Glow Island世界观：岛屿失去生机的背景故事、6个章节区域的情绪弧线（悠闲→温暖→治愈→安静→放松→孤独中的温暖）、关键NPC/角色设定（灯塔守护者/渔夫/花农/温泉老人）、每个区域恢复时出现的场景细节叙事",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "narrative-designer",
+      "discipline_reviewers": ["lead-designer"],
+      "blocked_by": [],
+      "unlocks": ["core-loop-design", "character-arc-design", "art-direction"],
       "exit_artifacts": [
-        ".allforai/game-design/worldbuilding-bible.md",
-        ".allforai/game-design/chapter-emotional-arcs.json"
-      ],
-      "knowledge_refs": ["knowledge/domains/gaming.md"],
-      "consumers": ["game-design-concept", "art-concept", "level-design", "original-art"]
+        ".allforai/game-design/worldbuilding.html",
+        ".allforai/game-design/systems/worldbuilding.json"
+      ]
     },
     {
-      "id": "game-design-concept",
-      "capability": "product-concept",
-      "goal": "综合竞品+创新+世界观生成完整GDD：玩家原型画像、核心循环与元循环摘要、6章节章节卡片、双货币经济概述、IAP策略总纲、成功指标（次留/月留/ARPU目标）",
+      "id": "core-loop-design",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "lead-designer",
+      "discipline_reviewers": ["systems-designer"],
+      "blocked_by": ["worldbuilding"],
+      "unlocks": ["ftue-design", "monetization-design", "level-design", "audio-design"],
       "exit_artifacts": [
-        ".allforai/product-concept/product-concept.json",
-        ".allforai/game-design/game-design-document.md",
-        ".allforai/game-design/player-archetypes.json",
-        ".allforai/game-design/monetization-design.json"
-      ],
-      "knowledge_refs": ["knowledge/capabilities/product-concept.md", "knowledge/domains/gaming.md", "knowledge/cross-phase-protocols.md"],
-      "consumers": ["core-mechanics-design", "level-design", "economy-design", "art-concept", "concept-acceptance"]
+        ".allforai/game-design/core-loop.html",
+        ".allforai/game-design/systems/core-mechanics.json"
+      ]
     },
     {
-      "id": "core-mechanics-design",
-      "capability": "product-concept",
-      "goal": "设计连连看引擎详细机制规格：网格尺寸策略（6×6到10×10随关卡变化）、路径算法规则（≤2次转弯+空格穿越）、连击触发阈值与倍率表、4种特殊块触发条件和效果数值、5种动态棋盘事件机制、障碍类型和消除规则",
-      "exit_artifacts": [".allforai/game-design/puzzle-mechanics-spec.json"],
-      "knowledge_refs": ["knowledge/domains/gaming.md"],
-      "consumers": ["prototype-design", "implement-puzzle-core", "implement-special-mechanics", "level-design", "level-editor-tool", "vfx-design"]
+      "id": "character-arc-design",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "narrative-designer",
+      "discipline_reviewers": ["lead-designer"],
+      "blocked_by": ["worldbuilding"],
+      "unlocks": ["game-design-finalize"],
+      "exit_artifacts": [
+        ".allforai/game-design/character-arc.html",
+        ".allforai/game-design/systems/character-arc.json"
+      ]
     },
     {
-      "id": "prototype-design",
-      "capability": "translate",
-      "goal": "构建最小可玩原型（Cocos Creator独立Scene，使用占位色块）：8×8网格、基础连接匹配≤2转弯、消除动画、连击计数。目标：验证核心手感是否爽快治愈。产出原型测试报告（手感/节奏/视觉反馈/调整建议）",
+      "id": "ftue-design",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "ux-designer",
+      "discipline_reviewers": ["lead-designer"],
+      "blocked_by": ["core-loop-design"],
+      "unlocks": ["game-design-finalize"],
       "exit_artifacts": [
-        "game-client/assets/scenes/Prototype.scene",
-        "game-client/assets/scripts/prototype/PrototypeBoard.ts",
-        ".allforai/game-design/prototype-test-report.md"
-      ],
-      "knowledge_refs": ["knowledge/domains/gaming.md"],
-      "consumers": ["implement-puzzle-core"]
+        ".allforai/game-design/ftue.html",
+        ".allforai/game-design/systems/ftue.json"
+      ]
     },
     {
-      "id": "art-concept",
-      "capability": "product-concept",
-      "goal": "设计美术概念方向：整体色调（柔和马卡龙+夜晚暖光）、图块视觉风格（扁平+轻手绘质感）、6章节视觉主题色板、UI风格指南（字体/按钮/弹窗）、原画创作说明书（每类美术资产的规格要求：尺寸/格式/命名规范/帧数要求）",
+      "id": "monetization-design",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "monetization-designer",
+      "discipline_reviewers": ["lead-designer", "numeric-designer"],
+      "blocked_by": ["core-loop-design"],
+      "unlocks": ["retention-hook-design", "progression-curve-design"],
       "exit_artifacts": [
-        ".allforai/game-design/art-direction.md",
-        ".allforai/game-design/art-tokens.json",
-        ".allforai/game-design/art-asset-spec.md"
-      ],
-      "knowledge_refs": ["knowledge/domains/gaming.md"],
-      "consumers": ["original-art", "animation-design", "vfx-design", "implement-ui-systems", "implement-island-map"]
+        ".allforai/game-design/monetization.html",
+        ".allforai/game-design/systems/monetization-design.json"
+      ]
     },
     {
-      "id": "original-art",
-      "capability": "translate",
-      "goal": "生成所有游戏原画资产规格和占位图：20种图块占位精灵（按章节色系着色的色块）、6章节背景图占位、NPC角色头像占位、岛屿地图区域占位图、UI图标集；建立Cocos Creator资产目录结构（resources/sprites/，按章节分组）；生成正式原画委托说明书",
+      "id": "retention-hook-design",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "systems-designer",
+      "discipline_reviewers": ["lead-designer"],
+      "blocked_by": ["monetization-design"],
+      "unlocks": ["meta-game-design"],
       "exit_artifacts": [
-        "game-client/assets/resources/sprites/tiles/tile-placeholder-spec.json",
-        "game-client/assets/resources/sprites/ui/ui-asset-manifest.json",
-        ".allforai/game-design/original-art-commission-brief.md"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["animation-design", "implement-ui-systems", "implement-island-map", "implement-puzzle-core"]
+        ".allforai/game-design/retention-hook.html",
+        ".allforai/game-design/systems/retention-hook.json"
+      ]
     },
     {
-      "id": "animation-design",
-      "capability": "translate",
-      "goal": "设计并创建所有Cocos Creator动画剪辑（.anim）：图块连接高亮序列（0.15s）、图块消除渐出（0.3s+弹跳）、连击数字弹出（combo×1/2/3/4+档位）、关卡完成庆祝序列、岛屿区域恢复分步动画（4阶段序列）、NPC出现动画",
+      "id": "meta-game-design",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "systems-designer",
+      "discipline_reviewers": ["lead-designer"],
+      "blocked_by": ["retention-hook-design"],
+      "unlocks": ["game-design-finalize"],
       "exit_artifacts": [
-        "game-client/assets/animations/tile-connect.anim",
-        "game-client/assets/animations/tile-disappear.anim",
-        "game-client/assets/animations/combo-popup.anim",
-        "game-client/assets/animations/area-restore-sequence.anim",
-        ".allforai/game-design/animation-spec.json"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["implement-puzzle-core", "implement-island-map", "stitch-game-client"]
-    },
-    {
-      "id": "vfx-design",
-      "capability": "translate",
-      "goal": "创建所有Cocos Creator粒子特效配置：连接路径光轨效果（line trail）、图块消除星光爆发（burst）、Combo升级光圈扩散（shockwave）、炸弹爆炸效果、灯光特殊块光芒射线、区域恢复时的萤火虫/花瓣/光粒子、灯塔最终亮起全屏光效",
-      "exit_artifacts": [
-        "game-client/assets/effects/vfx-tile-connect.effect",
-        "game-client/assets/effects/vfx-combo-burst.effect",
-        "game-client/assets/effects/vfx-area-restore.effect",
-        "game-client/assets/effects/vfx-lighthouse-final.effect",
-        ".allforai/game-design/vfx-spec.json"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["implement-special-mechanics", "implement-island-map", "stitch-game-client"]
+        ".allforai/game-design/meta-game.html",
+        ".allforai/game-design/systems/meta-game.json"
+      ]
     },
     {
       "id": "level-design",
-      "capability": "product-concept",
-      "goal": "设计6章节完整关卡表（每章20-25关，共~135关）：每关目标类型/网格尺寸/图块类型集合/动态事件配置/障碍布局/材料奖励；输出可被关卡编辑器直接导入的JSON格式；包含教学关卡（1-1到1-3）的详细设计",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "level-designer",
+      "discipline_reviewers": ["lead-designer"],
+      "blocked_by": ["core-loop-design"],
+      "unlocks": ["puzzle-design"],
       "exit_artifacts": [
-        ".allforai/game-design/level-design.json",
-        ".allforai/game-design/progression-curve.json"
-      ],
-      "knowledge_refs": ["knowledge/domains/gaming.md"],
-      "consumers": ["level-editor-tool", "implement-game-session", "demo-forge"]
+        ".allforai/game-design/level-design.html",
+        ".allforai/game-design/systems/level-design.json"
+      ]
     },
     {
-      "id": "level-editor-tool",
-      "capability": "translate",
-      "goal": "构建关卡编辑器工具（tools/level-editor/，React+TypeScript独立Web应用）：可视化网格编辑（拖放图块/障碍/特殊块）、动态事件配置面板、关卡目标设置、实时预览、导出/导入level-design.json格式、批量关卡列表管理",
+      "id": "puzzle-design",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "level-designer",
+      "discipline_reviewers": ["lead-designer"],
+      "blocked_by": ["level-design"],
+      "unlocks": ["game-design-finalize"],
       "exit_artifacts": [
-        "tools/level-editor/src/App.tsx",
-        "tools/level-editor/src/components/GridEditor.tsx",
-        "tools/level-editor/src/components/LevelExporter.tsx",
-        "tools/level-editor/package.json"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["level-design", "demo-forge"]
+        ".allforai/game-design/puzzle-design.html",
+        ".allforai/game-design/systems/puzzle-design.json"
+      ]
     },
     {
-      "id": "economy-design",
-      "capability": "product-concept",
-      "goal": "设计双货币体系（沙滩币Sink-Source循环、丹青石IAP产品目录）、6章节材料类型映射、修复区域资源消耗曲线、IAP产品SKU（小/中/大/超大包+月卡）、后端PostgreSQL Schema",
+      "id": "progression-curve-design",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "numeric-designer",
+      "discipline_reviewers": ["lead-designer"],
+      "blocked_by": ["monetization-design"],
+      "unlocks": ["game-design-finalize"],
       "exit_artifacts": [
-        ".allforai/game-design/economy-model.json",
-        ".allforai/game-design/backend-schema.json",
-        ".allforai/game-design/api-spec.json"
+        ".allforai/game-design/progression-curve.html",
+        ".allforai/game-design/systems/progression-curve.json"
+      ]
+    },
+    {
+      "id": "audio-design",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "audio-director",
+      "discipline_reviewers": ["lead-designer"],
+      "blocked_by": ["core-loop-design"],
+      "unlocks": ["game-design-finalize"],
+      "exit_artifacts": [
+        ".allforai/game-design/audio-design.html",
+        ".allforai/game-design/systems/audio-design.json"
+      ]
+    },
+    {
+      "id": "art-direction",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "art-director",
+      "discipline_reviewers": ["lead-designer"],
+      "blocked_by": ["worldbuilding"],
+      "unlocks": ["art-spec-design"],
+      "exit_artifacts": [
+        ".allforai/game-design/art-direction-v2.html"
+      ]
+    },
+    {
+      "id": "art-spec-design",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "concept-artist",
+      "discipline_reviewers": ["art-director"],
+      "blocked_by": ["art-direction"],
+      "unlocks": ["ai-art-generation"],
+      "exit_artifacts": [
+        ".allforai/game-design/art-spec.html",
+        ".allforai/game-design/systems/art-asset-inventory.json"
+      ]
+    },
+    {
+      "id": "ai-art-generation",
+      "capability": "game-design",
+      "human_gate": false,
+      "blocked_by": ["art-spec-design"],
+      "unlocks": ["game-design-finalize"],
+      "exit_artifacts": [
+        ".allforai/game-design/systems/ai-art-manifest.json"
+      ]
+    },
+    {
+      "id": "game-design-finalize",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "lead-designer",
+      "discipline_reviewers": ["producer"],
+      "blocked_by": [
+        "ftue-design",
+        "meta-game-design",
+        "puzzle-design",
+        "progression-curve-design",
+        "audio-design",
+        "character-arc-design",
+        "ai-art-generation"
       ],
-      "knowledge_refs": ["knowledge/domains/gaming.md"],
-      "consumers": ["implement-backend-api", "implement-shop-iap", "demo-forge"]
+      "unlocks": [
+        "setup-runtime-env",
+        "implement-puzzle-core",
+        "implement-special-mechanics",
+        "implement-game-session",
+        "implement-island-map",
+        "implement-ui-systems",
+        "implement-backend-api",
+        "implement-shop-iap",
+        "implement-audio",
+        "level-editor-tool"
+      ],
+      "exit_artifacts": [
+        ".allforai/game-design/gdd-dashboard.html",
+        ".allforai/game-design/game-design-doc.json"
+      ]
     },
     {
       "id": "setup-runtime-env",
-      "capability": "product-concept",
-      "goal": "初始化所有运行时环境：Cocos Creator 3.x项目（game-client/）、Fastify后端（backend/）、关卡编辑器（tools/level-editor/）、本地PostgreSQL、iOS开发证书/App Store Connect/支付沙箱配置，写入backend/.env",
+      "capability": "translate",
+      "human_gate": false,
+      "blocked_by": ["game-design-finalize"],
+      "unlocks": ["implement-puzzle-core", "implement-backend-api", "level-editor-tool"],
       "exit_artifacts": [
         ".allforai/bootstrap/runtime-env.json",
         "game-client/package.json",
         "backend/package.json",
         "backend/.env",
         "tools/level-editor/package.json"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["implement-puzzle-core", "implement-backend-api", "level-editor-tool"]
+      ]
     },
     {
       "id": "implement-puzzle-core",
       "capability": "translate",
-      "goal": "基于核心机制规格+原型经验+动画剪辑实现完整连连看引擎：TileGrid（二维数组+状态管理）、TileType枚举（20种）、TileMatcher（BFS≤2转弯）、BoardGenerator（关卡JSON加载+随机两用）、ComboTracker（倍率+时间窗口）；集成tile-connect.anim和tile-disappear.anim",
+      "human_gate": false,
+      "blocked_by": ["game-design-finalize", "setup-runtime-env"],
+      "unlocks": ["implement-special-mechanics", "implement-game-session", "stitch-game-client"],
       "exit_artifacts": [
         "game-client/assets/scripts/puzzle/TileGrid.ts",
         "game-client/assets/scripts/puzzle/TileMatcher.ts",
         "game-client/assets/scripts/puzzle/BoardGenerator.ts",
         "game-client/assets/scripts/puzzle/ComboTracker.ts"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["implement-special-mechanics", "implement-game-session", "stitch-game-client"]
+      ]
     },
     {
       "id": "implement-special-mechanics",
       "capability": "translate",
-      "goal": "实现特殊块系统（SpecialBlockType+ISpecialBlockBehavior：炸弹/风车/灯光/海浪）、BoardEventManager（动态事件序列：图块滑落/水流/冰冻/藤蔓）、ObstacleManager；集成vfx-tile-connect.effect和vfx-combo-burst.effect粒子系统",
+      "human_gate": false,
+      "blocked_by": ["implement-puzzle-core"],
+      "unlocks": ["stitch-game-client"],
       "exit_artifacts": [
         "game-client/assets/scripts/puzzle/SpecialBlock.ts",
         "game-client/assets/scripts/puzzle/BoardEventManager.ts",
         "game-client/assets/scripts/puzzle/ObstacleManager.ts"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["stitch-game-client"]
-    },
-    {
-      "id": "implement-island-map",
-      "capability": "translate",
-      "goal": "实现岛屿地图场景（按art-tokens.json色板）：IslandMapScene（6章节区域节点）、ChapterNode（4状态机+解锁动画）、AreaRestorationEffect（集成area-restore-sequence.anim和vfx-area-restore.effect的4阶段序列）、ProgressionManager（本地+云存档同步）",
-      "exit_artifacts": [
-        "game-client/assets/scripts/meta/IslandMapScene.ts",
-        "game-client/assets/scripts/meta/ChapterNode.ts",
-        "game-client/assets/scripts/meta/AreaRestorationEffect.ts",
-        "game-client/assets/scripts/meta/ProgressionManager.ts"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["stitch-game-client"]
+      ]
     },
     {
       "id": "implement-game-session",
       "capability": "translate",
-      "goal": "实现局内状态机（GameSession：loading→playing→paused→complete→failed）、LevelLoader（从level-design.json加载+动态事件序列）、RewardCalculator（基础沙滩币+连击奖励+材料掉落）、MaterialCollector（背包管理，满时触发修复引导）",
+      "human_gate": false,
+      "blocked_by": ["implement-puzzle-core"],
+      "unlocks": ["stitch-game-client"],
       "exit_artifacts": [
         "game-client/assets/scripts/game/GameSession.ts",
         "game-client/assets/scripts/game/LevelLoader.ts",
         "game-client/assets/scripts/game/RewardCalculator.ts",
         "game-client/assets/scripts/game/MaterialCollector.ts"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["stitch-game-client"]
+      ]
+    },
+    {
+      "id": "implement-island-map",
+      "capability": "translate",
+      "human_gate": false,
+      "blocked_by": ["game-design-finalize"],
+      "unlocks": ["stitch-game-client"],
+      "exit_artifacts": [
+        "game-client/assets/scripts/meta/IslandMapScene.ts",
+        "game-client/assets/scripts/meta/ChapterNode.ts",
+        "game-client/assets/scripts/meta/AreaRestorationEffect.ts",
+        "game-client/assets/scripts/meta/ProgressionManager.ts"
+      ]
     },
     {
       "id": "implement-ui-systems",
       "capability": "translate",
-      "goal": "按art-direction.md实现UI系统：MainMenuScene、GameHUD（连击倍率动画+combo-popup.anim）、LevelCompletePopup（星级动画+材料奖励）、LeaderboardScene（Top50+自己排名）、SettingsPanel（音量+云存档状态）",
+      "human_gate": false,
+      "blocked_by": ["game-design-finalize"],
+      "unlocks": ["stitch-game-client"],
       "exit_artifacts": [
         "game-client/assets/scripts/ui/MainMenuScene.ts",
         "game-client/assets/scripts/ui/GameHUD.ts",
         "game-client/assets/scripts/ui/LevelCompletePopup.ts",
         "game-client/assets/scripts/ui/LeaderboardScene.ts",
         "game-client/assets/scripts/ui/SettingsPanel.ts"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["stitch-game-client"]
+      ]
     },
     {
       "id": "implement-backend-api",
       "capability": "translate",
-      "goal": "实现Fastify后端：匿名JWT认证（/auth/anonymous）、云存档（GET/PUT /save）、排行榜（GET /leaderboard, POST /leaderboard/submit）、IAP收据验证（/iap/verify，支持Apple StoreKit+沙箱）；完整Prisma Schema",
+      "human_gate": false,
+      "blocked_by": ["game-design-finalize", "setup-runtime-env"],
+      "unlocks": ["implement-shop-iap", "cross-module-stitch", "demo-forge"],
       "exit_artifacts": [
         "backend/src/server.ts",
         "backend/src/routes/auth.ts",
@@ -245,215 +306,39 @@
         "backend/src/routes/leaderboard.ts",
         "backend/src/routes/iap.ts",
         "backend/prisma/schema.prisma"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["implement-shop-iap", "cross-module-stitch", "demo-forge"]
+      ]
     },
     {
       "id": "implement-shop-iap",
       "capability": "translate",
-      "goal": "实现商店和内购：ShopScene（按economy-model.json渲染IAP产品目录）、CurrencyDisplay（沙滩币/丹青石实时余额）、IAPManager（Cocos IAP插件：iOS走StoreKit，WebGL降级为沙箱模拟）、PurchaseConfirmPopup",
+      "human_gate": false,
+      "blocked_by": ["implement-backend-api"],
+      "unlocks": ["stitch-game-client"],
       "exit_artifacts": [
         "game-client/assets/scripts/shop/ShopScene.ts",
         "game-client/assets/scripts/shop/CurrencyDisplay.ts",
         "game-client/assets/scripts/shop/IAPManager.ts",
         "game-client/assets/scripts/shop/PurchaseConfirmPopup.ts"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["stitch-game-client"]
+      ]
     },
     {
       "id": "implement-audio",
       "capability": "translate",
-      "goal": "实现音频系统：AudioManager单例（BGM淡入淡出+SFX播放+音量持久化）、章节BGM映射（6章节不同情绪风格）、SFX枚举（连接成功/消除/combo×3档/特殊块×4种/关卡完成/区域恢复专属音效）",
+      "human_gate": false,
+      "blocked_by": ["game-design-finalize"],
+      "unlocks": ["stitch-game-client"],
       "exit_artifacts": [
         "game-client/assets/scripts/audio/AudioManager.ts",
         "game-client/assets/scripts/audio/AudioConfig.ts"
-      ],
-      "knowledge_refs": [],
-      "consumers": ["stitch-game-client"]
+      ]
     },
     {
-      "id": "stitch-game-client",
+      "id": "level-editor-tool",
       "capability": "translate",
-      "goal": "串联所有game-client模块：puzzle→GameSession事件流→材料奖励→ProgressionManager→岛屿恢复触发；HUD↔GameSession双向绑定；Shop↔IAPManager↔后端API；全场景跳转（MainMenu→关卡选择→GameScene→IslandMap→Shop）；动画/特效/音效的触发点全部绑定；TileType枚举覆盖矩阵检查",
-      "exit_artifacts": [".allforai/bootstrap/stitch-game-client-report.json"],
-      "knowledge_refs": ["knowledge/cross-phase-protocols.md"],
-      "consumers": ["cross-module-stitch", "compile-verify"]
-    },
-    {
-      "id": "cross-module-stitch",
-      "capability": "translate",
-      "goal": "验证客户端↔后端API合约完全匹配：/auth JWT字段+存储方式、/save存档JSON双向一致、/leaderboard分页和响应格式、/iap/verify收据字段；修复所有不匹配，更新api-spec.json",
-      "exit_artifacts": [".allforai/bootstrap/cross-module-stitch-report.json"],
-      "knowledge_refs": [],
-      "consumers": ["compile-verify"]
-    },
-    {
-      "id": "compile-verify",
-      "capability": "compile-verify",
-      "goal": "编译验证三模块：后端tsc 0错误+npm test通过；Cocos Creator构建web-mobile 0错误；关卡编辑器npm run build通过；输出三模块构建摘要",
-      "exit_artifacts": [".allforai/bootstrap/compile-result.json"],
-      "knowledge_refs": ["knowledge/capabilities/compile-verify.md"],
-      "consumers": ["demo-forge", "e2e-test"]
-    },
-    {
-      "id": "demo-forge",
-      "capability": "demo-forge",
-      "goal": "启动后端，通过API创建3个测试账户（新玩家/中期/后期）、模拟关卡进度和材料收集、排行榜写入15条条目；验证关卡编辑器可导出合法JSON",
-      "exit_artifacts": [".allforai/bootstrap/demo-data-report.json"],
-      "knowledge_refs": ["knowledge/capabilities/demo-forge.md"],
-      "consumers": ["e2e-test"]
-    },
-    {
-      "id": "e2e-test",
-      "capability": "product-verify",
-      "goal": "Playwright E2E测试WebGL构建：启动游戏→完成教学第1关（连接+触发combo+消除动画播放）→查看岛屿地图（码头区域部分恢复）→进入商店（确认丹青石商品显示+IAP按钮）→验证云存档API调用成功；截图存档",
-      "exit_artifacts": [".allforai/bootstrap/e2e-report.json"],
-      "knowledge_refs": [],
-      "consumers": ["concept-acceptance"]
-    },
-    {
-      "id": "concept-acceptance",
-      "capability": "concept-acceptance",
-      "goal": "对照GDD验收：6章节关卡数据≥120关、4种特殊块均实现可触发、岛屿恢复动画完整、云存档读写正常、排行榜有数据、关卡编辑器可用、原画/动画/特效资产目录结构存在；生成验收报告和concept-baseline.json",
+      "human_gate": false,
+      "blocked_by": ["game-design-finalize", "setup-runtime-env"],
+      "unlocks": ["demo-forge"],
       "exit_artifacts": [
-        ".allforai/product-concept/concept-baseline.json",
-        ".allforai/product-concept/acceptance-report.json"
-      ],
-      "knowledge_refs": ["knowledge/capabilities/concept-acceptance.md", "knowledge/cross-phase-protocols.md"],
-      "consumers": []
-    }
-  ],
-  "transition_log": [
-    {
-      "node": "market-research",
-      "status": "completed",
-      "started_at": "2026-05-07T04:10:00Z",
-      "completed_at": "2026-05-07T04:25:00Z",
-      "artifacts_created": [
-        ".allforai/product-concept/competitor-analysis.json",
-        ".allforai/product-concept/errc-matrix.json"
-      ]
-    },
-    {
-      "node": "worldbuilding",
-      "status": "completed",
-      "started_at": "2026-05-07T04:10:00Z",
-      "completed_at": "2026-05-07T04:28:00Z",
-      "artifacts_created": [
-        ".allforai/game-design/worldbuilding-bible.md",
-        ".allforai/game-design/chapter-emotional-arcs.json"
-      ]
-    },
-    {
-      "node": "innovation-exploration",
-      "status": "completed",
-      "started_at": "2026-05-07T05:00:00Z",
-      "completed_at": "2026-05-07T05:05:00Z",
-      "artifacts_created": [
-        ".allforai/product-concept/innovation-opportunities.json"
-      ]
-    },
-    {
-      "node": "setup-runtime-env",
-      "status": "completed",
-      "started_at": "2026-05-07T05:05:00Z",
-      "completed_at": "2026-05-07T05:07:00Z",
-      "artifacts_created": [
-        ".allforai/bootstrap/runtime-env.json",
-        "game-client/package.json",
-        "backend/package.json",
-        "backend/.env",
-        "tools/level-editor/package.json"
-      ]
-    },
-    {
-      "node": "game-design-concept",
-      "status": "completed",
-      "started_at": "2026-05-07T05:05:00Z",
-      "completed_at": "2026-05-07T05:10:00Z",
-      "artifacts_created": [
-        ".allforai/product-concept/product-concept.json",
-        ".allforai/game-design/game-design-document.md",
-        ".allforai/game-design/player-archetypes.json",
-        ".allforai/game-design/monetization-design.json"
-      ]
-    },
-    {
-      "node": "core-mechanics-design",
-      "status": "completed",
-      "started_at": "2026-05-07T05:10:00Z",
-      "completed_at": "2026-05-07T05:12:00Z",
-      "artifacts_created": [
-        ".allforai/game-design/puzzle-mechanics-spec.json"
-      ]
-    },
-    {
-      "node": "economy-design",
-      "status": "completed",
-      "started_at": "2026-05-07T05:10:00Z",
-      "completed_at": "2026-05-07T05:15:00Z",
-      "artifacts_created": [
-        ".allforai/game-design/economy-model.json",
-        ".allforai/game-design/backend-schema.json",
-        ".allforai/game-design/api-spec.json"
-      ]
-    },
-    {
-      "node": "art-concept",
-      "status": "completed",
-      "started_at": "2026-05-07T05:10:00Z",
-      "completed_at": "2026-05-07T05:17:00Z",
-      "artifacts_created": [
-        ".allforai/game-design/art-direction.md",
-        ".allforai/game-design/art-tokens.json",
-        ".allforai/game-design/art-asset-spec.md"
-      ]
-    },
-    {
-      "node": "prototype-design",
-      "status": "completed",
-      "started_at": "2026-05-07T05:17:00Z",
-      "completed_at": "2026-05-07T05:20:00Z",
-      "artifacts_created": [
-        "game-client/assets/scenes/Prototype.scene",
-        "game-client/assets/scripts/prototype/PrototypeBoard.ts",
-        ".allforai/game-design/prototype-test-report.md"
-      ]
-    },
-    {
-      "node": "animation-design",
-      "status": "completed",
-      "started_at": "2026-05-07T05:17:00Z",
-      "completed_at": "2026-05-07T05:20:00Z",
-      "artifacts_created": [
-        "game-client/assets/animations/tile-connect.anim",
-        "game-client/assets/animations/tile-disappear.anim",
-        "game-client/assets/animations/combo-popup.anim",
-        "game-client/assets/animations/area-restore-sequence.anim",
-        ".allforai/game-design/animation-spec.json"
-      ]
-    },
-    {
-      "node": "vfx-design",
-      "status": "completed",
-      "started_at": "2026-05-07T05:17:00Z",
-      "completed_at": "2026-05-07T05:21:00Z",
-      "artifacts_created": [
-        "game-client/assets/effects/vfx-tile-connect.effect",
-        "game-client/assets/effects/vfx-combo-burst.effect",
-        "game-client/assets/effects/vfx-area-restore.effect",
-        "game-client/assets/effects/vfx-lighthouse-final.effect",
-        ".allforai/game-design/vfx-spec.json"
-      ]
-    },
-    {
-      "node": "level-editor-tool",
-      "status": "completed",
-      "started_at": "2026-05-07T05:17:00Z",
-      "completed_at": "2026-05-07T05:23:00Z",
-      "artifacts_created": [
         "tools/level-editor/src/App.tsx",
         "tools/level-editor/src/components/GridEditor.tsx",
         "tools/level-editor/src/components/LevelExporter.tsx",
@@ -461,176 +346,74 @@
       ]
     },
     {
-      "node": "original-art",
-      "status": "completed",
-      "started_at": "2026-05-07T05:17:00Z",
-      "completed_at": "2026-05-07T05:25:00Z",
-      "artifacts_created": [
-        "game-client/assets/resources/sprites/tiles/tile-placeholder-spec.json",
-        "game-client/assets/resources/sprites/ui/ui-asset-manifest.json",
-        ".allforai/game-design/original-art-commission-brief.md"
-      ]
-    },
-    {
-      "node": "level-design",
-      "status": "completed",
-      "started_at": "2026-05-07T05:17:00Z",
-      "completed_at": "2026-05-07T05:38:00Z",
-      "artifacts_created": [
-        ".allforai/game-design/level-design.json",
-        ".allforai/game-design/progression-curve.json"
-      ]
-    },
-    {
-      "node": "implement-puzzle-core",
-      "status": "completed",
-      "started_at": "2026-05-07T05:38:00Z",
-      "completed_at": "2026-05-07T05:40:00Z",
-      "artifacts_created": [
-        "game-client/assets/scripts/puzzle/TileGrid.ts",
-        "game-client/assets/scripts/puzzle/TileMatcher.ts",
-        "game-client/assets/scripts/puzzle/BoardGenerator.ts",
-        "game-client/assets/scripts/puzzle/ComboTracker.ts"
-      ]
-    },
-    {
-      "node": "implement-audio",
-      "status": "completed",
-      "started_at": "2026-05-07T05:38:00Z",
-      "completed_at": "2026-05-07T05:40:00Z",
-      "artifacts_created": [
-        "game-client/assets/scripts/audio/AudioManager.ts",
-        "game-client/assets/scripts/audio/AudioConfig.ts"
-      ]
-    },
-    {
-      "node": "implement-island-map",
-      "status": "completed",
-      "started_at": "2026-05-07T05:38:00Z",
-      "completed_at": "2026-05-07T05:42:00Z",
-      "artifacts_created": [
-        "game-client/assets/scripts/meta/IslandMapScene.ts",
-        "game-client/assets/scripts/meta/ChapterNode.ts",
-        "game-client/assets/scripts/meta/AreaRestorationEffect.ts",
-        "game-client/assets/scripts/meta/ProgressionManager.ts"
-      ]
-    },
-    {
-      "node": "implement-special-mechanics",
-      "status": "completed",
-      "started_at": "2026-05-07T05:38:00Z",
-      "completed_at": "2026-05-07T05:43:00Z",
-      "artifacts_created": [
-        "game-client/assets/scripts/puzzle/SpecialBlock.ts",
-        "game-client/assets/scripts/puzzle/BoardEventManager.ts",
-        "game-client/assets/scripts/puzzle/ObstacleManager.ts"
-      ]
-    },
-    {
-      "node": "implement-game-session",
-      "status": "completed",
-      "started_at": "2026-05-07T05:38:00Z",
-      "completed_at": "2026-05-07T05:44:00Z",
-      "artifacts_created": [
-        "game-client/assets/scripts/game/GameSession.ts",
-        "game-client/assets/scripts/game/LevelLoader.ts",
-        "game-client/assets/scripts/game/RewardCalculator.ts",
-        "game-client/assets/scripts/game/MaterialCollector.ts"
-      ]
-    },
-    {
-      "node": "implement-backend-api",
-      "status": "completed",
-      "started_at": "2026-05-07T05:38:00Z",
-      "completed_at": "2026-05-07T05:46:00Z",
-      "artifacts_created": [
-        "backend/src/server.ts",
-        "backend/src/routes/auth.ts",
-        "backend/src/routes/save.ts",
-        "backend/src/routes/leaderboard.ts",
-        "backend/src/routes/iap.ts",
-        "backend/prisma/schema.prisma"
-      ]
-    },
-    {
-      "node": "implement-ui-systems",
-      "status": "completed",
-      "started_at": "2026-05-07T05:38:00Z",
-      "completed_at": "2026-05-07T05:47:00Z",
-      "artifacts_created": [
-        "game-client/assets/scripts/ui/MainMenuScene.ts",
-        "game-client/assets/scripts/ui/GameHUD.ts",
-        "game-client/assets/scripts/ui/LevelCompletePopup.ts",
-        "game-client/assets/scripts/ui/LeaderboardScene.ts",
-        "game-client/assets/scripts/ui/SettingsPanel.ts"
-      ]
-    },
-    {
-      "node": "implement-shop-iap",
-      "status": "completed",
-      "started_at": "2026-05-07T05:47:00Z",
-      "completed_at": "2026-05-07T05:50:00Z",
-      "artifacts_created": [
-        "game-client/assets/scripts/shop/ShopScene.ts",
-        "game-client/assets/scripts/shop/CurrencyDisplay.ts",
-        "game-client/assets/scripts/shop/IAPManager.ts",
-        "game-client/assets/scripts/shop/PurchaseConfirmPopup.ts"
-      ]
-    },
-    {
-      "node": "stitch-game-client",
-      "status": "completed",
-      "started_at": "2026-05-07T05:50:00Z",
-      "completed_at": "2026-05-07T05:55:00Z",
-      "artifacts_created": [
+      "id": "stitch-game-client",
+      "capability": "translate",
+      "human_gate": false,
+      "blocked_by": [
+        "implement-puzzle-core",
+        "implement-special-mechanics",
+        "implement-game-session",
+        "implement-island-map",
+        "implement-ui-systems",
+        "implement-shop-iap",
+        "implement-audio"
+      ],
+      "unlocks": ["cross-module-stitch", "compile-verify"],
+      "exit_artifacts": [
         ".allforai/bootstrap/stitch-game-client-report.json"
       ]
     },
     {
-      "node": "cross-module-stitch",
-      "status": "completed",
-      "started_at": "2026-05-07T05:55:00Z",
-      "completed_at": "2026-05-07T05:58:00Z",
-      "artifacts_created": [
+      "id": "cross-module-stitch",
+      "capability": "translate",
+      "human_gate": false,
+      "blocked_by": ["stitch-game-client", "implement-backend-api"],
+      "unlocks": ["compile-verify"],
+      "exit_artifacts": [
         ".allforai/bootstrap/cross-module-stitch-report.json"
       ]
     },
     {
-      "node": "compile-verify",
-      "status": "completed",
-      "started_at": "2026-05-07T05:58:00Z",
-      "completed_at": "2026-05-07T06:00:00Z",
-      "artifacts_created": [
+      "id": "compile-verify",
+      "capability": "compile-verify",
+      "human_gate": false,
+      "blocked_by": ["stitch-game-client", "cross-module-stitch"],
+      "unlocks": ["demo-forge", "e2e-test"],
+      "exit_artifacts": [
         ".allforai/bootstrap/compile-result.json"
       ]
     },
     {
-      "node": "demo-forge",
-      "status": "completed",
-      "started_at": "2026-05-07T06:00:00Z",
-      "completed_at": "2026-05-07T06:04:00Z",
-      "artifacts_created": [
+      "id": "demo-forge",
+      "capability": "demo-forge",
+      "human_gate": false,
+      "blocked_by": ["compile-verify", "level-editor-tool", "implement-backend-api"],
+      "unlocks": ["e2e-test"],
+      "exit_artifacts": [
         ".allforai/bootstrap/demo-data-report.json"
       ]
     },
     {
-      "node": "e2e-test",
-      "status": "completed",
-      "started_at": "2026-05-07T06:04:00Z",
-      "completed_at": "2026-05-07T06:06:00Z",
-      "artifacts_created": [
+      "id": "e2e-test",
+      "capability": "product-verify",
+      "human_gate": false,
+      "blocked_by": ["compile-verify", "demo-forge"],
+      "unlocks": ["concept-acceptance"],
+      "exit_artifacts": [
         ".allforai/bootstrap/e2e-report.json"
       ]
     },
     {
-      "node": "concept-acceptance",
-      "status": "completed",
-      "started_at": "2026-05-07T06:06:00Z",
-      "completed_at": "2026-05-07T06:09:00Z",
-      "artifacts_created": [
+      "id": "concept-acceptance",
+      "capability": "concept-acceptance",
+      "human_gate": false,
+      "blocked_by": ["e2e-test"],
+      "unlocks": [],
+      "exit_artifacts": [
         ".allforai/product-concept/concept-baseline.json",
         ".allforai/product-concept/acceptance-report.json"
       ]
     }
-  ]
+  ],
+  "transition_log": []
 }
