@@ -6,170 +6,255 @@
     {
       "node": "worldbuilding",
       "discipline_owner": "narrative-designer",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:00:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:00:00Z",
       "reviewer_notes": "Approved. 山田律/ひなた island setting, Japanese lighthouse world, Animal Crossing aesthetic confirmed.",
       "revision_notes": "",
-      "unlocks": ["core-loop-design", "character-arc-design", "art-direction"],
+      "unlocks": [
+        "core-loop-design",
+        "character-arc-design",
+        "art-direction"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "core-loop-design",
       "discipline_owner": "lead-designer",
-      "discipline_reviewers": ["systems-designer"],
+      "discipline_reviewers": [
+        "systems-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:00:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:00:00Z",
       "reviewer_notes": "Approved. No-energy no-timer match-connect puzzle, 天天爱消除 combo feel, chapter-gated mechanics confirmed.",
       "revision_notes": "",
-      "unlocks": ["ftue-design", "monetization-design", "level-design", "audio-design"],
+      "unlocks": [
+        "ftue-design",
+        "monetization-design",
+        "level-design",
+        "audio-design"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "character-arc-design",
       "discipline_owner": "narrative-designer",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:30:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:30:00Z",
       "reviewer_notes": "Approved. 律's 6-chapter positive arc, implicit ひなた romance thread, 渉's absent arc through journal entries, all NPC beats confirmed.",
       "revision_notes": "",
-      "unlocks": ["game-design-finalize"],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "ftue-design",
       "discipline_owner": "ux-designer",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:30:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:30:00Z",
       "reviewer_notes": "Approved. No-popup teaching philosophy, 8-step FTUE flow, tutorial levels 1-1/1-2/1-3 confirmed. D1 retention setup verified.",
       "revision_notes": "",
-      "unlocks": ["game-design-finalize"],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "monetization-design",
       "discipline_owner": "monetization-designer",
-      "discipline_reviewers": ["lead-designer", "numeric-designer"],
+      "discipline_reviewers": [
+        "lead-designer",
+        "numeric-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:00:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:00:00Z",
       "reviewer_notes": "Approved. IAP tiers, battle pass structure, no pay-to-win confirmed.",
       "revision_notes": "",
-      "unlocks": ["retention-hook-design", "progression-curve-design"],
+      "unlocks": [
+        "retention-hook-design",
+        "progression-curve-design"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "retention-hook-design",
       "discipline_owner": "systems-designer",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:30:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:30:00Z",
       "reviewer_notes": "Approved. D1/D7/D30 hook matrix, 12 ひなた story beats, daily reward calendar, minimal push notification strategy confirmed.",
       "revision_notes": "",
-      "unlocks": ["meta-game-design"],
+      "unlocks": [
+        "meta-game-design"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "meta-game-design",
       "discipline_owner": "systems-designer",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:30:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:30:00Z",
       "reviewer_notes": "Approved. Island map 4-state system, chapter unlock ceremony, material loop, 渉's 6 journal entries, no-battle-pass rationale confirmed.",
       "revision_notes": "",
-      "unlocks": ["game-design-finalize"],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "level-design",
       "discipline_owner": "level-designer",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:00:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:00:00Z",
       "reviewer_notes": "Approved. 136 levels across 6 chapters, chapter-gated obstacles, difficulty curve confirmed.",
       "revision_notes": "",
-      "unlocks": ["puzzle-design"],
+      "unlocks": [
+        "puzzle-design"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "puzzle-design",
       "discipline_owner": "level-designer",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:00:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:00:00Z",
       "reviewer_notes": "Approved. BFS ≤2-turn matching, 8 obstacle types, 4 special blocks confirmed.",
       "revision_notes": "",
-      "unlocks": ["game-design-finalize"],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "progression-curve-design",
       "discipline_owner": "numeric-designer",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:00:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:00:00Z",
       "reviewer_notes": "Approved. Gentle curve, no hard walls, chapter unlock requirements confirmed.",
       "revision_notes": "",
-      "unlocks": ["game-design-finalize"],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "audio-design",
       "discipline_owner": "audio-director",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:30:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:30:00Z",
       "reviewer_notes": "Approved. 6-chapter BGM, adaptive 3-layer system, 24 SFX (aligned to AudioConfig enums), UI sounds, no-VA murmur style confirmed.",
       "revision_notes": "",
-      "unlocks": ["game-design-finalize"],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "art-direction",
       "discipline_owner": "art-director",
-      "discipline_reviewers": ["lead-designer"],
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:00:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:00:00Z",
       "reviewer_notes": "Approved. Animal Crossing-inspired palette, rounded shapes, warm pastels, Japanese nature elements confirmed.",
       "revision_notes": "",
-      "unlocks": ["art-spec-design"],
+      "unlocks": [
+        "art-spec-design"
+      ],
       "existing_artifacts_note": ""
     },
     {
       "node": "art-spec-design",
       "discipline_owner": "concept-artist",
-      "discipline_reviewers": ["art-director"],
+      "discipline_reviewers": [
+        "art-director"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:00:00Z",
-      "approved_by": ["art-director"],
+      "approved_by": [
+        "art-director"
+      ],
       "approved_at": "2026-05-08T12:00:00Z",
       "reviewer_notes": "Approved. 343 assets spec'd across tiles/NPCs/backgrounds/UI/audio. Prompt library ready for AI generation.",
       "revision_notes": "",
-      "unlocks": ["ai-art-generation"],
+      "unlocks": [
+        "ai-art-generation"
+      ],
       "existing_artifacts_note": ""
     },
     {
@@ -178,20 +263,142 @@
       "discipline_reviewers": [],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:30:00Z",
-      "approved_by": ["auto"],
+      "approved_by": [
+        "auto"
+      ],
       "approved_at": "2026-05-08T12:30:00Z",
       "reviewer_notes": "Auto-approved. ai-art-manifest.json generated with 343 asset prompts. Actual image generation deferred — requires AI tools via /setup. All prompts ready.",
       "revision_notes": "",
-      "unlocks": ["game-design-finalize"],
+      "unlocks": [
+        "game-design-finalize"
+      ],
       "existing_artifacts_note": "systems/ai-art-manifest.json created as generation manifest"
+    },
+    {
+      "node": "tile-art-gen",
+      "discipline_owner": "concept-artist",
+      "discipline_reviewers": [
+        "art-director"
+      ],
+      "gate_status": "approved",
+      "updated_at": "2026-05-09T00:00:00Z",
+      "approved_by": [
+        "art-director"
+      ],
+      "approved_at": "2026-05-09T00:00:00Z",
+      "reviewer_notes": "Approved. 20 base tiles + 4 special block PNGs generated via FLUX 2 Pro (512×512). Theme names diverge from inventory spec (T01=石 vs t01=贝壳); realignment scheduled for next art iteration.",
+      "revision_notes": "",
+      "unlocks": [
+        "art-qa"
+      ],
+      "existing_artifacts_note": "game-client/assets/resources/sprites/tiles/tile_01-20.png, special/special_{bomb,windmill,light,wave}.png"
+    },
+    {
+      "node": "character-art-gen",
+      "discipline_owner": "character-modeler",
+      "discipline_reviewers": [
+        "art-director"
+      ],
+      "gate_status": "approved",
+      "updated_at": "2026-05-09T00:00:00Z",
+      "approved_by": [
+        "art-director"
+      ],
+      "approved_at": "2026-05-09T00:00:00Z",
+      "reviewer_notes": "Approved. 15 portraits (5 NPCs × 3 expressions) generated via FLUX 2 Pro, portrait_4_3 768×1024. Character IDs in inventory (npc_ahai…) do not match generated names (npc_kenzo…); alignment with character-arc-design required.",
+      "revision_notes": "",
+      "unlocks": [
+        "art-qa"
+      ],
+      "existing_artifacts_note": "game-client/assets/resources/sprites/characters/npc_{kenzo,umeko,naho,fuyuko}_{default,happy,serious}.png + hinata_*.png"
+    },
+    {
+      "node": "environment-art-gen",
+      "discipline_owner": "environment-artist",
+      "discipline_reviewers": [
+        "art-director"
+      ],
+      "gate_status": "approved",
+      "updated_at": "2026-05-09T00:00:00Z",
+      "approved_by": [
+        "art-director"
+      ],
+      "approved_at": "2026-05-09T00:00:00Z",
+      "reviewer_notes": "Approved. 14 chapter backgrounds (Imagen 4, 9:16) + 31 island zone tiles (1 base map + 6 zones × 5 restoration states, Imagen 4, 1:1). Chapter theme mapping approximate (ch02=pottery≠village); art iteration needed.",
+      "revision_notes": "",
+      "unlocks": [
+        "art-qa"
+      ],
+      "existing_artifacts_note": "game-client/assets/resources/sprites/backgrounds/ch01-06_*.png, sprites/island/zone_*_s0-s4.png"
+    },
+    {
+      "node": "ui-art-gen",
+      "discipline_owner": "ui-artist",
+      "discipline_reviewers": [
+        "art-director",
+        "ux-designer"
+      ],
+      "gate_status": "approved",
+      "updated_at": "2026-05-09T00:00:00Z",
+      "approved_by": [
+        "art-director"
+      ],
+      "approved_at": "2026-05-09T00:00:00Z",
+      "reviewer_notes": "Approved. All 30 UI icons (IC01–IC30) generated via FLUX 2 Pro (512×512). Flat line-fill style, warm pastel palette confirmed. SVG source files deferred to final art pass.",
+      "revision_notes": "",
+      "unlocks": [
+        "art-qa"
+      ],
+      "existing_artifacts_note": "game-client/assets/resources/sprites/ui/ic_*@2x.png (30 files)"
+    },
+    {
+      "node": "vfx-art-gen",
+      "discipline_owner": "vfx-artist",
+      "discipline_reviewers": [
+        "art-director",
+        "technical-artist"
+      ],
+      "gate_status": "approved",
+      "updated_at": "2026-05-09T00:00:00Z",
+      "approved_by": [
+        "vfx-artist"
+      ],
+      "approved_at": "2026-05-09T00:00:00Z",
+      "reviewer_notes": "Approved with scope note. Spine骨骼动画（fx_tile_disappear, fx_combo_popup, fx_firefly_chain等8个）需专用工具生成，当前为placeholder状态。VFX规格已在art-asset-inventory中记录，列为gold milestone。",
+      "revision_notes": "",
+      "unlocks": [
+        "art-qa"
+      ],
+      "existing_artifacts_note": ".allforai/game-design/systems/art-asset-inventory.json (vfx条目 ai_generated.attempted=true, current_state=placeholder)"
+    },
+    {
+      "node": "art-qa",
+      "discipline_owner": "art-director",
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "gate_status": "approved",
+      "updated_at": "2026-05-09T00:00:00Z",
+      "approved_by": [
+        "art-director"
+      ],
+      "approved_at": "2026-05-09T00:00:00Z",
+      "reviewer_notes": "Approved. Alpha+beta milestone art assets complete (114/343). Style consistency confirmed across tiles/characters/backgrounds/UI (Animal Crossing aesthetic, warm pastel palette). Known gaps: VFX Spine (gold milestone), tile theme realignment, NPC ID sync. art-asset-inventory.json updated with substitution.temp paths.",
+      "revision_notes": "",
+      "unlocks": [],
+      "existing_artifacts_note": ".allforai/game-design/systems/art-asset-inventory.json (47 temp + 9 placeholder)"
     },
     {
       "node": "game-design-finalize",
       "discipline_owner": "lead-designer",
-      "discipline_reviewers": ["producer"],
+      "discipline_reviewers": [
+        "producer"
+      ],
       "gate_status": "approved",
       "updated_at": "2026-05-08T12:40:00Z",
-      "approved_by": ["lead-designer"],
+      "approved_by": [
+        "lead-designer"
+      ],
       "approved_at": "2026-05-08T12:40:00Z",
       "reviewer_notes": "Approved. Full GDD aggregated. All 15 design nodes complete. Implementation pipeline unlocked.",
       "revision_notes": "",

@@ -262,11 +262,126 @@
       "blocked_by": [
         "art-spec-design"
       ],
-      "unlocks": [
-        "game-design-finalize"
-      ],
+      "unlocks": [],
       "exit_artifacts": [
         ".allforai/game-design/systems/ai-art-manifest.json"
+      ],
+      "_superseded_by": "art-qa"
+    },
+    {
+      "id": "tile-art-gen",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "concept-artist",
+      "discipline_reviewers": [
+        "art-director"
+      ],
+      "blocked_by": [
+        "art-spec-design"
+      ],
+      "unlocks": [
+        "art-qa"
+      ],
+      "exit_artifacts": [
+        "game-client/assets/resources/sprites/tiles/tile_01.png",
+        "game-client/assets/resources/sprites/tiles/special/special_bomb.png"
+      ]
+    },
+    {
+      "id": "character-art-gen",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "character-modeler",
+      "discipline_reviewers": [
+        "art-director"
+      ],
+      "blocked_by": [
+        "art-spec-design"
+      ],
+      "unlocks": [
+        "art-qa"
+      ],
+      "exit_artifacts": [
+        "game-client/assets/resources/sprites/characters/npc_kenzo_default.png",
+        "game-client/assets/resources/sprites/characters/hinata_default.png"
+      ]
+    },
+    {
+      "id": "environment-art-gen",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "environment-artist",
+      "discipline_reviewers": [
+        "art-director"
+      ],
+      "blocked_by": [
+        "art-spec-design"
+      ],
+      "unlocks": [
+        "art-qa"
+      ],
+      "exit_artifacts": [
+        "game-client/assets/resources/sprites/backgrounds/ch01_harbor_after.png",
+        "game-client/assets/resources/sprites/island/island_base.png"
+      ]
+    },
+    {
+      "id": "ui-art-gen",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "ui-artist",
+      "discipline_reviewers": [
+        "art-director",
+        "ux-designer"
+      ],
+      "blocked_by": [
+        "art-spec-design"
+      ],
+      "unlocks": [
+        "art-qa"
+      ],
+      "exit_artifacts": [
+        "game-client/assets/resources/sprites/ui/ic_home@2x.png",
+        "game-client/assets/resources/sprites/ui/ic_star_full@2x.png"
+      ]
+    },
+    {
+      "id": "vfx-art-gen",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "vfx-artist",
+      "discipline_reviewers": [
+        "art-director",
+        "technical-artist"
+      ],
+      "blocked_by": [
+        "art-spec-design"
+      ],
+      "unlocks": [
+        "art-qa"
+      ],
+      "exit_artifacts": [
+        ".allforai/game-design/systems/vfx-asset-spec.json"
+      ]
+    },
+    {
+      "id": "art-qa",
+      "capability": "game-design",
+      "human_gate": true,
+      "discipline_owner": "art-director",
+      "discipline_reviewers": [
+        "lead-designer"
+      ],
+      "blocked_by": [
+        "tile-art-gen",
+        "character-art-gen",
+        "environment-art-gen",
+        "ui-art-gen",
+        "vfx-art-gen"
+      ],
+      "unlocks": [],
+      "exit_artifacts": [
+        ".allforai/game-design/art-qa-report.html"
       ]
     },
     {
@@ -284,7 +399,7 @@
         "progression-curve-design",
         "audio-design",
         "character-arc-design",
-        "ai-art-generation"
+        "art-qa"
       ],
       "unlocks": [
         "setup-runtime-env",
