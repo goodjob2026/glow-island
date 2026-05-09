@@ -40,7 +40,11 @@
       "count": 30,
       "format": "png",
       "format_secondary": "svg",
-      "sizes_px": [24, 32, 48],
+      "sizes_px": [
+        24,
+        32,
+        48
+      ],
       "note": "Each icon delivered as PNG @2x + SVG vector source"
     },
     "vfx": {
@@ -65,7 +69,20 @@
         "t01_shell_highlighted@2x.png",
         "t01_shell_disappear_01@2x.png … t01_shell_disappear_12@2x.png"
       ],
-      "milestone_gate": "batch_1"
+      "milestone_gate": "batch_1",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_01.png",
+        "note": "生成文件为 tile_01（石主题），待按 t01_shell 贝壳规格重新生成"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t01_shell_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_01.png",
+        "final": null
+      }
     },
     {
       "id": "t02_plank",
@@ -80,7 +97,20 @@
         "t02_plank_highlighted@2x.png",
         "t02_plank_disappear_01-12@2x.png"
       ],
-      "milestone_gate": "batch_1"
+      "milestone_gate": "batch_1",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_02.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t02_plank_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_02.png",
+        "final": null
+      }
     },
     {
       "id": "t03_wave",
@@ -95,7 +125,20 @@
         "t03_wave_highlighted@2x.png",
         "t03_wave_disappear_01-12@2x.png"
       ],
-      "milestone_gate": "batch_1"
+      "milestone_gate": "batch_1",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_03.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t03_wave_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_03.png",
+        "final": null
+      }
     },
     {
       "id": "t04_knot",
@@ -110,7 +153,20 @@
         "t04_knot_highlighted@2x.png",
         "t04_knot_disappear_01-12@2x.png"
       ],
-      "milestone_gate": "batch_1"
+      "milestone_gate": "batch_1",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_04.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t04_knot_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_04.png",
+        "final": null
+      }
     },
     {
       "id": "t05_bamboo",
@@ -120,7 +176,20 @@
       "theme": "竹茎横截",
       "primary_color": "#7DBE77",
       "path": "assets/sprites/tiles/t05_bamboo_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_05.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t05_bamboo_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_05.png",
+        "final": null
+      }
     },
     {
       "id": "t06_lantern_stone",
@@ -130,7 +199,20 @@
       "theme": "日式石灯笼",
       "primary_color": "#8AA880",
       "path": "assets/sprites/tiles/t06_lantern_stone_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_06.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t06_lantern_stone_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_06.png",
+        "final": null
+      }
     },
     {
       "id": "t07_leaf_bamboo",
@@ -140,7 +222,20 @@
       "theme": "竹叶簇",
       "primary_color": "#5A9A60",
       "path": "assets/sprites/tiles/t07_leaf_bamboo_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_07.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t07_leaf_bamboo_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_07.png",
+        "final": null
+      }
     },
     {
       "id": "t08_lantern_paper",
@@ -150,7 +245,20 @@
       "theme": "方形纸灯笼",
       "primary_color": "#EE8C55",
       "path": "assets/sprites/tiles/t08_lantern_paper_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_08.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t08_lantern_paper_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_08.png",
+        "final": null
+      }
     },
     {
       "id": "t09_sakura",
@@ -160,7 +268,20 @@
       "theme": "五瓣樱花正视",
       "primary_color": "#F0C4C4",
       "path": "assets/sprites/tiles/t09_sakura_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_09.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t09_sakura_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_09.png",
+        "final": null
+      }
     },
     {
       "id": "t10_broadleaf",
@@ -170,7 +291,20 @@
       "theme": "芭蕉/宽叶植物",
       "primary_color": "#7DBE77",
       "path": "assets/sprites/tiles/t10_broadleaf_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_10.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t10_broadleaf_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_10.png",
+        "final": null
+      }
     },
     {
       "id": "t11_butterfly",
@@ -180,7 +314,20 @@
       "theme": "简化蝴蝶",
       "primary_color": "#F0C060",
       "path": "assets/sprites/tiles/t11_butterfly_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_11.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t11_butterfly_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_11.png",
+        "final": null
+      }
     },
     {
       "id": "t12_sprout",
@@ -190,7 +337,20 @@
       "theme": "破土嫩芽",
       "primary_color": "#A8D888",
       "path": "assets/sprites/tiles/t12_sprout_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_12.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t12_sprout_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_12.png",
+        "final": null
+      }
     },
     {
       "id": "t13_pinecone",
@@ -200,7 +360,20 @@
       "theme": "松果侧视",
       "primary_color": "#8B6241",
       "path": "assets/sprites/tiles/t13_pinecone_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_13.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t13_pinecone_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_13.png",
+        "final": null
+      }
     },
     {
       "id": "t14_mossy_stone",
@@ -210,7 +383,20 @@
       "theme": "圆形石头上长苔藓",
       "primary_color": "#6B9E5E",
       "path": "assets/sprites/tiles/t14_mossy_stone_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_14.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t14_mossy_stone_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_14.png",
+        "final": null
+      }
     },
     {
       "id": "t15_torii",
@@ -220,7 +406,20 @@
       "theme": "简化鸟居正视",
       "primary_color": "#C8402A",
       "path": "assets/sprites/tiles/t15_torii_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_15.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t15_torii_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_15.png",
+        "final": null
+      }
     },
     {
       "id": "t16_shimenawa",
@@ -230,7 +429,20 @@
       "theme": "稻草绳+纸垂",
       "primary_color": "#E2C48A",
       "path": "assets/sprites/tiles/t16_shimenawa_normal@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_16.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t16_shimenawa_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_16.png",
+        "final": null
+      }
     },
     {
       "id": "t17_fish",
@@ -240,7 +452,20 @@
       "theme": "圆润小鱼侧视",
       "primary_color": "#5BBFB5",
       "path": "assets/sprites/tiles/t17_fish_normal@2x.png",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_17.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t17_fish_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_17.png",
+        "final": null
+      }
     },
     {
       "id": "t18_fishnet",
@@ -250,7 +475,20 @@
       "theme": "渔网纹",
       "primary_color": "#B89060",
       "path": "assets/sprites/tiles/t18_fishnet_normal@2x.png",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_18.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t18_fishnet_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_18.png",
+        "final": null
+      }
     },
     {
       "id": "t19_starlight",
@@ -260,7 +498,20 @@
       "theme": "四芒星/星光",
       "primary_color": "#F5C842",
       "path": "assets/sprites/tiles/t19_starlight_normal@2x.png",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_19.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t19_starlight_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_19.png",
+        "final": null
+      }
     },
     {
       "id": "t20_nightwave",
@@ -270,7 +521,20 @@
       "theme": "深夜海浪",
       "primary_color": "#2A4060",
       "path": "assets/sprites/tiles/t20_nightwave_normal@2x.png",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/tile_20.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/t20_nightwave_normal@2x.png",
+        "temp": "game-client/assets/resources/sprites/tiles/tile_20.png",
+        "final": null
+      }
     },
     {
       "id": "t_special_pufferfish",
@@ -286,7 +550,20 @@
         "pufferfish_idle.png",
         "pufferfish_activate.skel"
       ],
-      "milestone_gate": "batch_2"
+      "milestone_gate": "batch_2",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/special/special_bomb.png",
+        "note": "PNG 占位；最终需替换为 pufferfish Spine 骨骼动画"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/special/pufferfish_idle.skel",
+        "temp": "game-client/assets/resources/sprites/tiles/special/special_bomb.png",
+        "final": null
+      }
     },
     {
       "id": "t_special_tuna",
@@ -302,7 +579,20 @@
         "tuna_idle.png",
         "tuna_activate.skel"
       ],
-      "milestone_gate": "batch_2"
+      "milestone_gate": "batch_2",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/special/special_windmill.png",
+        "note": "PNG 占位；最终需替换为 tuna Spine 骨骼动画"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/special/tuna_idle.skel",
+        "temp": "game-client/assets/resources/sprites/tiles/special/special_windmill.png",
+        "final": null
+      }
     },
     {
       "id": "t_special_rainbow_fish",
@@ -318,7 +608,20 @@
         "rainbow_fish_idle.png",
         "rainbow_fish_activate.skel"
       ],
-      "milestone_gate": "batch_2"
+      "milestone_gate": "batch_2",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/special/special_light.png",
+        "note": "PNG 占位；最终需替换为 rainbow_fish Spine 骨骼动画"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/special/rainbow_fish_idle.skel",
+        "temp": "game-client/assets/resources/sprites/tiles/special/special_light.png",
+        "final": null
+      }
     },
     {
       "id": "t_special_firefly_lantern",
@@ -334,7 +637,20 @@
         "firefly_lantern_idle.png",
         "firefly_lantern_activate.skel"
       ],
-      "milestone_gate": "batch_2"
+      "milestone_gate": "batch_2",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/tiles/special/special_wave.png",
+        "note": "PNG 占位；最终需替换为 firefly_lantern Spine 骨骼动画"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/tiles/special/firefly_lantern_idle.skel",
+        "temp": "game-client/assets/resources/sprites/tiles/special/special_wave.png",
+        "final": null
+      }
     },
     {
       "id": "npc_ahai",
@@ -344,8 +660,16 @@
       "representative_color": "#4A6D9A",
       "skin_color": "#9A6840",
       "blush": false,
-      "spine_animations": ["idle", "talk", "react"],
-      "expressions": ["default", "happy", "thinking"],
+      "spine_animations": [
+        "idle",
+        "talk",
+        "react"
+      ],
+      "expressions": [
+        "default",
+        "happy",
+        "thinking"
+      ],
       "path": "assets/sprites/characters/npc_ahai_default@2x.png",
       "files": [
         "npc_ahai_default@2x.png",
@@ -354,7 +678,20 @@
         "npc_ahai_dialog.skel",
         "npc_ahai_dialog.atlas"
       ],
-      "milestone_gate": "batch_2"
+      "milestone_gate": "batch_2",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/characters/npc_kenzo_default.png",
+        "note": "生成文件为 npc_kenzo（磯部健三），ID 待与叙事设计对齐"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/characters/npc_ahai_default@2x.png",
+        "temp": "game-client/assets/resources/sprites/characters/npc_kenzo_default.png",
+        "final": null
+      }
     },
     {
       "id": "npc_ahua",
@@ -365,8 +702,16 @@
       "skin_color": "#F5D4B0",
       "blush": "#E898A0",
       "blush_size_px_2x": 16,
-      "spine_animations": ["idle", "talk", "react"],
-      "expressions": ["default", "happy", "focused"],
+      "spine_animations": [
+        "idle",
+        "talk",
+        "react"
+      ],
+      "expressions": [
+        "default",
+        "happy",
+        "focused"
+      ],
       "path": "assets/sprites/characters/npc_ahua_default@2x.png",
       "files": [
         "npc_ahua_default@2x.png",
@@ -375,7 +720,20 @@
         "npc_ahua_dialog.skel",
         "npc_ahua_dialog.atlas"
       ],
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/characters/npc_umeko_default.png",
+        "note": "生成文件为 npc_umeko（桐島梅子）"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/characters/npc_ahua_default@2x.png",
+        "temp": "game-client/assets/resources/sprites/characters/npc_umeko_default.png",
+        "final": null
+      }
     },
     {
       "id": "npc_alin",
@@ -385,8 +743,16 @@
       "representative_color": "#3D6645",
       "skin_color": "#E8B882",
       "blush": false,
-      "spine_animations": ["idle", "talk", "react"],
-      "expressions": ["default", "uplook", "tea"],
+      "spine_animations": [
+        "idle",
+        "talk",
+        "react"
+      ],
+      "expressions": [
+        "default",
+        "uplook",
+        "tea"
+      ],
       "special_note": "uplook表情仅用于标志性时刻，帽沿翻折露脸",
       "path": "assets/sprites/characters/npc_alin_default@2x.png",
       "files": [
@@ -396,7 +762,20 @@
         "npc_alin_dialog.skel",
         "npc_alin_dialog.atlas"
       ],
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/characters/npc_naho_default.png",
+        "note": "生成文件为 npc_naho（海野夏帆）"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/characters/npc_alin_default@2x.png",
+        "temp": "game-client/assets/resources/sprites/characters/npc_naho_default.png",
+        "final": null
+      }
     },
     {
       "id": "npc_afu",
@@ -407,8 +786,16 @@
       "skin_color": "#E8B882",
       "blush": "#D06840",
       "blush_size_px_2x": 18,
-      "spine_animations": ["idle", "talk", "react"],
-      "expressions": ["default", "satisfied", "enjoying"],
+      "spine_animations": [
+        "idle",
+        "talk",
+        "react"
+      ],
+      "expressions": [
+        "default",
+        "satisfied",
+        "enjoying"
+      ],
       "path": "assets/sprites/characters/npc_afu_default@2x.png",
       "files": [
         "npc_afu_default@2x.png",
@@ -417,7 +804,20 @@
         "npc_afu_dialog.skel",
         "npc_afu_dialog.atlas"
       ],
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/characters/npc_fuyuko_default.png",
+        "note": "生成文件为 npc_fuyuko（丸山冬子）"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/characters/npc_afu_default@2x.png",
+        "temp": "game-client/assets/resources/sprites/characters/npc_fuyuko_default.png",
+        "final": null
+      }
     },
     {
       "id": "npc_aming",
@@ -427,8 +827,16 @@
       "representative_color": "#2A3650",
       "skin_color": "#E8B882",
       "blush": false,
-      "spine_animations": ["idle", "talk", "react"],
-      "expressions": ["default", "holding", "back"],
+      "spine_animations": [
+        "idle",
+        "talk",
+        "react"
+      ],
+      "expressions": [
+        "default",
+        "holding",
+        "back"
+      ],
       "special_note": "back表情（背面）用于标志性时刻灯塔亮起瞬间",
       "path": "assets/sprites/characters/npc_aming_default@2x.png",
       "files": [
@@ -438,7 +846,20 @@
         "npc_aming_dialog.skel",
         "npc_aming_dialog.atlas"
       ],
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/characters/hinata_default.png",
+        "note": "生成文件为 hinata（丸山ひなた）；inventory 角色 ID 待与叙事设计对齐"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/characters/npc_aming_default@2x.png",
+        "temp": "game-client/assets/resources/sprites/characters/hinata_default.png",
+        "final": null
+      }
     },
     {
       "id": "bg_ch01_harbor",
@@ -452,7 +873,20 @@
         "bg_ch01_harbor_after@2x.png",
         "bg_ch01_harbor_after_sunset@2x.png"
       ],
-      "milestone_gate": "batch_1"
+      "milestone_gate": "batch_1",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/backgrounds/ch01_harbor_after.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/backgrounds/bg_ch01_harbor_after@2x.png",
+        "temp": "game-client/assets/resources/sprites/backgrounds/ch01_harbor_after.png",
+        "final": null
+      }
     },
     {
       "id": "bg_ch02_village",
@@ -465,7 +899,20 @@
         "bg_ch02_village_before@2x.png",
         "bg_ch02_village_after@2x.png"
       ],
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/backgrounds/ch02_pottery_after.png",
+        "note": "生成文件为 ch02_pottery（陶器工房主题），inventory chapter 主题待对齐"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/backgrounds/bg_ch02_village_after@2x.png",
+        "temp": "game-client/assets/resources/sprites/backgrounds/ch02_pottery_after.png",
+        "final": null
+      }
     },
     {
       "id": "bg_ch03_sakura",
@@ -478,7 +925,20 @@
         "bg_ch03_sakura_before@2x.png",
         "bg_ch03_sakura_after@2x.png"
       ],
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/backgrounds/ch03_forest_after.png",
+        "note": "生成文件为 ch03_forest（森林主题）"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/backgrounds/bg_ch03_sakura_after@2x.png",
+        "temp": "game-client/assets/resources/sprites/backgrounds/ch03_forest_after.png",
+        "final": null
+      }
     },
     {
       "id": "bg_ch04_shrine",
@@ -491,7 +951,20 @@
         "bg_ch04_shrine_before@2x.png",
         "bg_ch04_shrine_after@2x.png"
       ],
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/backgrounds/ch04_path_after.png",
+        "note": "生成文件为 ch04_path（石畳道主题）"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/backgrounds/bg_ch04_shrine_after@2x.png",
+        "temp": "game-client/assets/resources/sprites/backgrounds/ch04_path_after.png",
+        "final": null
+      }
     },
     {
       "id": "bg_ch05_port",
@@ -504,7 +977,20 @@
         "bg_ch05_port_before@2x.png",
         "bg_ch05_port_after@2x.png"
       ],
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/backgrounds/ch05_cliff_after.png",
+        "note": "生成文件为 ch05_cliff（崖主题）"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/backgrounds/bg_ch05_port_after@2x.png",
+        "temp": "game-client/assets/resources/sprites/backgrounds/ch05_cliff_after.png",
+        "final": null
+      }
     },
     {
       "id": "bg_ch06_lighthouse",
@@ -518,7 +1004,20 @@
         "bg_ch06_lighthouse_after@2x.png",
         "bg_ch06_lighthouse_overview@2x.png"
       ],
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/backgrounds/ch06_lighthouse_after.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/backgrounds/bg_ch06_lighthouse_after@2x.png",
+        "temp": "game-client/assets/resources/sprites/backgrounds/ch06_lighthouse_after.png",
+        "final": null
+      }
     },
     {
       "id": "island_base_map",
@@ -527,7 +1026,20 @@
       "chapter": "all",
       "size": "1080x1920",
       "path": "assets/sprites/island/island_base_map@2x.png",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/island/island_base.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/island/island_base_map@2x.png",
+        "temp": "game-client/assets/resources/sprites/island/island_base.png",
+        "final": null
+      }
     },
     {
       "id": "island_lighthouse_beam",
@@ -536,111 +1048,352 @@
       "chapter": 6,
       "format": "spine",
       "path": "assets/sprites/island/island_lighthouse_beam.skel",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "placeholder",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": false,
+        "path": null,
+        "note": "Spine 骨骼动画，需专用工具生成"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/island/island_lighthouse_beam.skel",
+        "temp": null,
+        "final": null
+      }
     },
     {
       "id": "zone_ch01_harbor",
       "name": "海边码头区域",
       "category": "island_zone",
       "chapter": 1,
-      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "states": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
       "path": "assets/sprites/island/zone_ch01_harbor_s0@2x.png",
-      "milestone_gate": "batch_2"
+      "milestone_gate": "batch_2",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/island/zone_harbor_s0.png",
+        "note": "s0-s4 共 5 个状态已生成：zone_harbor_s0-s4.png"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/island/zone_ch01_harbor_s0@2x.png",
+        "temp": "game-client/assets/resources/sprites/island/zone_harbor_s0.png",
+        "final": null
+      }
     },
     {
       "id": "zone_ch02_village",
       "name": "竹林村落区域",
       "category": "island_zone",
       "chapter": 2,
-      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "states": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
       "path": "assets/sprites/island/zone_ch02_village_s0@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/island/zone_pottery_s0.png",
+        "note": "s0-s4 共 5 个状态已生成：zone_pottery_s0-s4.png"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/island/zone_ch02_village_s0@2x.png",
+        "temp": "game-client/assets/resources/sprites/island/zone_pottery_s0.png",
+        "final": null
+      }
     },
     {
       "id": "zone_ch03_sakura",
       "name": "樱花坡田区域",
       "category": "island_zone",
       "chapter": 3,
-      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "states": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
       "path": "assets/sprites/island/zone_ch03_sakura_s0@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/island/zone_forest_s0.png",
+        "note": "s0-s4 共 5 个状态已生成：zone_forest_s0-s4.png"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/island/zone_ch03_sakura_s0@2x.png",
+        "temp": "game-client/assets/resources/sprites/island/zone_forest_s0.png",
+        "final": null
+      }
     },
     {
       "id": "zone_ch04_shrine",
       "name": "松林神社区域",
       "category": "island_zone",
       "chapter": 4,
-      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "states": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
       "path": "assets/sprites/island/zone_ch04_shrine_s0@2x.png",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/island/zone_path_s0.png",
+        "note": "s0-s4 共 5 个状态已生成：zone_path_s0-s4.png"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/island/zone_ch04_shrine_s0@2x.png",
+        "temp": "game-client/assets/resources/sprites/island/zone_path_s0.png",
+        "final": null
+      }
     },
     {
       "id": "zone_ch05_port",
       "name": "渔村港口区域",
       "category": "island_zone",
       "chapter": 5,
-      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "states": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
       "path": "assets/sprites/island/zone_ch05_port_s0@2x.png",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/island/zone_cliff_s0.png",
+        "note": "s0-s4 共 5 个状态已生成：zone_cliff_s0-s4.png"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/island/zone_ch05_port_s0@2x.png",
+        "temp": "game-client/assets/resources/sprites/island/zone_cliff_s0.png",
+        "final": null
+      }
     },
     {
       "id": "zone_ch06_lighthouse",
       "name": "夜晚灯塔区域",
       "category": "island_zone",
       "chapter": 6,
-      "states": ["s0", "s1", "s2", "s3", "s4"],
+      "states": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
       "path": "assets/sprites/island/zone_ch06_lighthouse_s0@2x.png",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/island/zone_lighthouse_s0.png",
+        "note": "s0-s4 共 5 个状态已生成：zone_lighthouse_s0-s4.png"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/island/zone_ch06_lighthouse_s0@2x.png",
+        "temp": "game-client/assets/resources/sprites/island/zone_lighthouse_s0.png",
+        "final": null
+      }
     },
     {
       "id": "ui_navigation",
       "name": "导航与界面图标组",
       "category": "ui",
-      "icons": ["IC01_home", "IC02_settings", "IC03_back_arrow", "IC04_close_x", "IC05_menu", "IC06_info", "IC07_check", "IC08_map"],
+      "icons": [
+        "IC01_home",
+        "IC02_settings",
+        "IC03_back_arrow",
+        "IC04_close_x",
+        "IC05_menu",
+        "IC06_info",
+        "IC07_check",
+        "IC08_map"
+      ],
       "count": 8,
-      "sizes_px": [24, 32],
+      "sizes_px": [
+        24,
+        32
+      ],
       "path": "assets/sprites/ui/",
-      "milestone_gate": "batch_1"
+      "milestone_gate": "batch_1",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/ui/ic_home@2x.png",
+        "note": "30 个 UI 图标已生成于 sprites/ui/ic_*@2x.png"
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/ui/",
+        "temp": "game-client/assets/resources/sprites/ui/ic_home@2x.png",
+        "final": null
+      }
     },
     {
       "id": "ui_items",
       "name": "游戏道具图标组",
       "category": "ui",
-      "icons": ["IC09_hint", "IC10_shuffle", "IC11_add_steps", "IC12_bomb_item", "IC13_lightning_item", "IC14_rainbow_item"],
+      "icons": [
+        "IC09_hint",
+        "IC10_shuffle",
+        "IC11_add_steps",
+        "IC12_bomb_item",
+        "IC13_lightning_item",
+        "IC14_rainbow_item"
+      ],
       "count": 6,
-      "sizes_px": [48],
+      "sizes_px": [
+        48
+      ],
       "path": "assets/sprites/ui/",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/ui/ic_hint@2x.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/ui/",
+        "temp": "game-client/assets/resources/sprites/ui/ic_hint@2x.png",
+        "final": null
+      }
     },
     {
       "id": "ui_currency",
       "name": "货币与资源图标组",
       "category": "ui",
-      "icons": ["IC15_beach_coin", "IC16_glowstone", "IC17_material_wood", "IC18_material_rope", "IC19_material_seed", "IC20_material_generic"],
+      "icons": [
+        "IC15_beach_coin",
+        "IC16_glowstone",
+        "IC17_material_wood",
+        "IC18_material_rope",
+        "IC19_material_seed",
+        "IC20_material_generic"
+      ],
       "count": 6,
-      "sizes_px": [24, 32],
+      "sizes_px": [
+        24,
+        32
+      ],
       "path": "assets/sprites/ui/",
-      "milestone_gate": "batch_1"
+      "milestone_gate": "batch_1",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/ui/ic_currency_beach_coin@2x.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/ui/",
+        "temp": "game-client/assets/resources/sprites/ui/ic_currency_beach_coin@2x.png",
+        "final": null
+      }
     },
     {
       "id": "ui_progress",
       "name": "进度与状态图标组",
       "category": "ui",
-      "icons": ["IC21_star_empty", "IC22_star_full", "IC23_star_half", "IC24_lock", "IC25_progress_bar_cap", "IC26_glow_energy"],
+      "icons": [
+        "IC21_star_empty",
+        "IC22_star_full",
+        "IC23_star_half",
+        "IC24_lock",
+        "IC25_progress_bar_cap",
+        "IC26_glow_energy"
+      ],
       "count": 6,
-      "sizes_px": [24, 32],
+      "sizes_px": [
+        24,
+        32
+      ],
       "path": "assets/sprites/ui/",
-      "milestone_gate": "batch_1"
+      "milestone_gate": "batch_1",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/ui/ic_star_full@2x.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/ui/",
+        "temp": "game-client/assets/resources/sprites/ui/ic_star_full@2x.png",
+        "final": null
+      }
     },
     {
       "id": "ui_social",
       "name": "社交与分享图标组",
       "category": "ui",
-      "icons": ["IC27_share", "IC28_milestone_flag", "IC29_sound_on", "IC30_sound_off"],
+      "icons": [
+        "IC27_share",
+        "IC28_milestone_flag",
+        "IC29_sound_on",
+        "IC30_sound_off"
+      ],
       "count": 4,
-      "sizes_px": [24, 32],
+      "sizes_px": [
+        24,
+        32
+      ],
       "path": "assets/sprites/ui/",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "temp",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": true,
+        "path": "game-client/assets/resources/sprites/ui/ic_share@2x.png",
+        "note": ""
+      },
+      "substitution": {
+        "placeholder": "assets/sprites/ui/",
+        "temp": "game-client/assets/resources/sprites/ui/ic_share@2x.png",
+        "final": null
+      }
     },
     {
       "id": "fx_tile_disappear",
@@ -651,10 +1404,30 @@
       "frames": 12,
       "fps": 30,
       "duration_s": 0.4,
-      "color_variants": ["teal", "pink", "gold", "green", "red", "navy"],
+      "color_variants": [
+        "teal",
+        "pink",
+        "gold",
+        "green",
+        "red",
+        "navy"
+      ],
       "format": "png_sequence",
       "path": "assets/effects/frames/fx_tile_disappear_teal_f01@2x.png",
-      "milestone_gate": "batch_1"
+      "milestone_gate": "batch_1",
+      "current_state": "placeholder",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": false,
+        "path": null,
+        "note": "Spine 骨骼动画，需专用工具生成"
+      },
+      "substitution": {
+        "placeholder": "assets/effects/frames/fx_tile_disappear_teal_f01@2x.png",
+        "temp": null,
+        "final": null
+      }
     },
     {
       "id": "fx_combo_popup",
@@ -664,7 +1437,20 @@
       "canvas": "220x110",
       "format": "spine",
       "path": "assets/effects/spine/fx_combo_popup.skel",
-      "milestone_gate": "batch_2"
+      "milestone_gate": "batch_2",
+      "current_state": "placeholder",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": false,
+        "path": null,
+        "note": "Spine 骨骼动画，需专用工具生成"
+      },
+      "substitution": {
+        "placeholder": "assets/effects/spine/fx_combo_popup.skel",
+        "temp": null,
+        "final": null
+      }
     },
     {
       "id": "fx_firefly_chain",
@@ -674,7 +1460,20 @@
       "canvas": "1080x1920_fullscreen_overlay",
       "format": "spine",
       "path": "assets/effects/spine/fx_firefly_chain.skel",
-      "milestone_gate": "batch_2"
+      "milestone_gate": "batch_2",
+      "current_state": "placeholder",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": false,
+        "path": null,
+        "note": "Spine 骨骼动画，需专用工具生成"
+      },
+      "substitution": {
+        "placeholder": "assets/effects/spine/fx_firefly_chain.skel",
+        "temp": null,
+        "final": null
+      }
     },
     {
       "id": "fx_area_restore",
@@ -684,7 +1483,20 @@
       "canvas": "400x400",
       "format": "spine",
       "path": "assets/effects/spine/fx_area_restore.skel",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "placeholder",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": false,
+        "path": null,
+        "note": "Spine 骨骼动画，需专用工具生成"
+      },
+      "substitution": {
+        "placeholder": "assets/effects/spine/fx_area_restore.skel",
+        "temp": null,
+        "final": null
+      }
     },
     {
       "id": "fx_pufferfish_pop",
@@ -695,7 +1507,20 @@
       "duration_s": 0.8,
       "format": "spine",
       "path": "assets/effects/spine/fx_pufferfish_pop.skel",
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "placeholder",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": false,
+        "path": null,
+        "note": "Spine 骨骼动画，需专用工具生成"
+      },
+      "substitution": {
+        "placeholder": "assets/effects/spine/fx_pufferfish_pop.skel",
+        "temp": null,
+        "final": null
+      }
     },
     {
       "id": "fx_tuna_dash",
@@ -711,7 +1536,20 @@
         "fx_tuna_dash_row.skel",
         "fx_tuna_dash_col.skel"
       ],
-      "milestone_gate": "batch_3"
+      "milestone_gate": "batch_3",
+      "current_state": "placeholder",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": false,
+        "path": null,
+        "note": "Spine 骨骼动画，需专用工具生成"
+      },
+      "substitution": {
+        "placeholder": "assets/effects/spine/fx_tuna_dash_row.skel",
+        "temp": null,
+        "final": null
+      }
     },
     {
       "id": "fx_rainbow_burst",
@@ -722,7 +1560,20 @@
       "duration_s": 0.8,
       "format": "spine",
       "path": "assets/effects/spine/fx_rainbow_burst.skel",
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "placeholder",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": false,
+        "path": null,
+        "note": "Spine 骨骼动画，需专用工具生成"
+      },
+      "substitution": {
+        "placeholder": "assets/effects/spine/fx_rainbow_burst.skel",
+        "temp": null,
+        "final": null
+      }
     },
     {
       "id": "fx_lighthouse_beam",
@@ -738,7 +1589,29 @@
         "fx_lighthouse_beam_row.skel",
         "fx_lighthouse_beam_island.skel"
       ],
-      "milestone_gate": "batch_4"
+      "milestone_gate": "batch_4",
+      "current_state": "placeholder",
+      "ai_generatable": true,
+      "ai_generated": {
+        "attempted": true,
+        "success": false,
+        "path": null,
+        "note": "Spine 骨骼动画，需专用工具生成"
+      },
+      "substitution": {
+        "placeholder": "assets/effects/spine/fx_lighthouse_beam_row.skel",
+        "temp": null,
+        "final": null
+      }
+    }
+  ],
+  "generation_runs": [
+    {
+      "run_at": "2026-05-09",
+      "tool": "flux-2-pro + imagen-4",
+      "assets_generated": 47,
+      "total_assets": 56,
+      "note": "Session-driven generation; 114 files committed in d22a3b8 + 018bd34"
     }
   ]
 }
