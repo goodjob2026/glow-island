@@ -13,6 +13,12 @@ exit_artifacts:
 # Task: 图块美术生成（Tile Art Generation）
 
 ## Context Pull
+- 读取 `.allforai/game-design/art-pipeline-config.json`（若存在且 status=final）：
+  - `tileset.type`：`grid`→正交生图，`isometric`→等距斜视生图，缺失默认 `grid`
+  - `tileset.tile_size`：覆盖默认 128px（如 64、32）
+  - `style`：若为 `pixel`，激活像素化后处理管道（AI 生高清 → PIL NEAREST 降采样 → pngquant）
+  - `pixel.tile_resolution`：像素风 tile 目标分辨率（如 `32x32`）
+  - `pixel.palette_size`：调色板颜色数（如 32），传给 pngquant
 - 读取 `.allforai/game-design/systems/art-asset-inventory.json` — category=tile + tile_special 条目
 - 读取 `.allforai/game-design/art-style-guide.json`（若存在）或 `art-direction-v2.html` 提取 style_prompt_prefix
 - 读取 `art-tokens.json` 获取章节配色

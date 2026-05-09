@@ -13,6 +13,13 @@ exit_artifacts:
 # Task: 角色美术生成（Character Art Generation）
 
 ## Context Pull
+- 读取 `.allforai/game-design/art-pipeline-config.json`（若存在且 status=final）：
+  - `character.rig`：
+    - `frame_sequence` → 生成每个角色的多帧序列参考图（含关键帧标注）
+    - `spine_lite` 或 `spine_full` → 生成骨骼分层参考图（头部/躯干/四肢分层，含 bone 标注）
+    - 缺失 → 默认 `frame_sequence`
+  - `character.expressions`：`true` 则生成 default/happy/serious 3 种表情，`false` 仅 default
+  - `character.bone_limit`：骨骼数限制，写入资产规格说明
 - 读取 `.allforai/game-design/systems/art-asset-inventory.json` — category=character 条目
 - 读取 `.allforai/game-design/systems/character-arc.json` — 角色外貌描述、性格关键词
 - 读取 `art-direction-v2.html` — 角色设计规范（比例、眼睛大小、轮廓风格）

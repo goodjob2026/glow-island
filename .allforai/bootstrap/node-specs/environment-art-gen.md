@@ -13,6 +13,11 @@ exit_artifacts:
 # Task: 场景美术生成（Environment Art Generation）
 
 ## Context Pull
+- 读取 `.allforai/game-design/art-pipeline-config.json`（若存在且 status=final）：
+  - `environment.parallax_layers`：视差层数（1=单层无视差，2-3=主流手游，5+=精细多层）
+    - ≥2 层时：生成图时构图须预留前景/中景/背景分层空间（避免满构图）
+    - 1 层时：正常满构图生图
+  - 缺失 → 默认 2 层
 - 读取 `art-asset-inventory.json` — category=background + island_zone 条目
 - 读取 `systems/meta-game.json` — 岛屿区域描述、修复前/后情感弧线
 - 读取 `art-direction-v2.html` — 章节环境美术方案

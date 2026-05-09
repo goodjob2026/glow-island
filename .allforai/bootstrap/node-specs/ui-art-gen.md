@@ -13,6 +13,13 @@ exit_artifacts:
 # Task: UI 美术生成（UI Art Generation）
 
 ## Context Pull
+- 读取 `.allforai/game-design/art-pipeline-config.json`（若存在且 status=final）：
+  - `style`：
+    - `pixel` → 简单几何图标优先程序化 SVG + 像素化后处理；复杂图标 AI 生图后降采样
+    - `vector` → 全部优先 SVG 直接生成，仅质感类图标调用 AI 生图
+    - 其他（cartoon/realistic/hand_drawn）→ 沿用现有 flux→generate_image 工具优先级
+  - `toolchain.aseprite_available`：`true` 时像素图标后处理可用 Aseprite CLI，否则用 Python PIL
+  - 缺失 → 使用现有工具优先级
 - 读取 `sprites/ui/ui-asset-manifest.json` — 30 个图标完整规格
 - 读取 `art-direction-v2.html` — UI 视觉语言（圆角、描边、颜色规范）
 - 读取 `art-tokens.json` — 颜色系统，验证图标颜色符合 token

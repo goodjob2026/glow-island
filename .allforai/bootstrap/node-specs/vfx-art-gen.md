@@ -12,6 +12,14 @@ exit_artifacts:
 # Task: 特效美术规格生成（VFX Art Generation）
 
 ## Context Pull
+- 读取 `.allforai/game-design/art-pipeline-config.json`（若存在且 status=final）：
+  - `vfx.approach`：
+    - `sprite_sheet`（帧序列）→ 本节点重点产出 PNG 帧规格 + 样本帧，Spine 规格为次要
+    - `spine_fx` → 本节点重点产出 Spine FX 骨骼规格（与角色同骨骼系统），PNG 帧为参考
+    - `shader`（引擎粒子）→ 本节点产出参数文档（粒子数/颜色/时长），无需 PNG 资产
+    - 缺失 → 默认 `sprite_sheet`
+  - `vfx.spine_fx`：`true` 时在规格书中标注 Spine FX 兼容格式要求
+  - 缺失 → 使用现有 Spine+PNG 混合方案
 - 读取 `art-asset-inventory.json` — category=vfx 条目（8 个 Spine 动画）
 - 读取 `art-direction-v2.html` — 动画风格参数（动森弹跳曲线）
 - 读取 `systems/audio-design.json` — SFX 与 VFX 配合时序
