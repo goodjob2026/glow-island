@@ -314,6 +314,7 @@ export class BoardEventManager {
     this._tickWaterFlow(dt, g);
     this._tickVineSpread(dt, g);
     this._tickBoardRotateWarning(dt, g);
+    this._tickTacticalBuffs(dt);
   }
 
   // -------------------------------------------------------------------------
@@ -629,6 +630,150 @@ export class BoardEventManager {
     return this.boardRotateWarningActive;
   }
 
+  // -------------------------------------------------------------------------
+  // Tactical-tile buff handlers (pierce, swap, cascade)
+  // -------------------------------------------------------------------------
+
+  /**
+   * Activates Pierce Mode for `duration` seconds.
+   * Sets a board-level pierceMode flag and fires `onPierceModeChanged` on
+   * entry and exit so the path-finder can adjust routing rules.
+   *
+   * @param duration        Buff duration in seconds (spec: 8s).
+   * @param onPierceModeChanged  Optional callback fired with true on start, false on end.
+   */
+  handlePierceBuff(
+    duration: number,
+    onPierceModeChanged?: (active: boolean) => void,
+  ): void {
+    this._pierceMode = true;
+    onPierceModeChanged?.(true);
+
+    let elapsed = 0;
+    const tick = (dt: number): void => {
+      elapsed += dt;
+      if (elapsed >= duration) {
+        this._pierceMode = false;
+        onPierceModeChanged?.(false);
+        this._pierceTickFn = null;
+      }
+    };
+    this._pierceTickFn = tick;
+  }
+
+  /** Returns whether Pierce Mode is currently active. */
+  isPierceMode(): boolean {
+    return this._pierceMode;
+  }
+
+  /**
+   * Opens a Selection Mode window for the Swap tactical tile.
+   * Player has `timeoutSec` seconds to select two cells; `onSelect` is called
+   * with both chosen positions and performs the swap.  `onTimeout` is called
+   * if the window expires without a selection (swap tiles remain on board).
+   *
+   * The game scene must call `resolveSwapSelection(a, b)` or
+   * `cancelSwapSelection()` based on player input.
+   *
+   * @param timeoutSec  Selection window in seconds (spec: 10s).
+   * @param onSelect    Invoked with the two chosen Points when player confirms.
+   * @param onTimeout   Invoked when the timer expires without a selection.
+   */
+  handleSwapSelection(
+    timeoutSec: number,
+    onSelect: (a: Point, b: Point) => void,
+    onTimeout: () => void,
+  ): void {
+    this._swapOnSelect  = onSelect;
+    this._swapOnTimeout = onTimeout;
+    this._swapTimeoutSec = timeoutSec;
+    this._swapElapsed   = 0;
+    this._swapActive    = true;
+  }
+
+  /** Called by the game scene when the player has chosen two swap cells. */
+  resolveSwapSelection(a: Point, b: Point): void {
+    if (!this._swapActive) return;
+    this._swapActive = false;
+    this._swapOnSelect?.(a, b);
+    this._swapOnSelect  = null;
+    this._swapOnTimeout = null;
+  }
+
+  /** Called by the game scene to cancel an active swap selection window. */
+  cancelSwapSelection(): void {
+    if (!this._swapActive) return;
+    this._swapActive = false;
+    this._swapOnSelect  = null;
+    this._swapOnTimeout = null;
+  }
+
+  /** Returns whether a swap selection window is currently open. */
+  isSwapSelectionActive(): boolean {
+    return this._swapActive;
+  }
+
+  /**
+   * Executes a cascade chain: auto-matches up to `maxChains` valid pairs with
+   * `delayMs` between each step, stopping early when `findNextPair` returns null.
+   *
+   * In a Cocos environment the caller should pass a `scheduleOnce`-based
+   * implementation; the default falls back to `setTimeout`.
+   *
+   * @param maxChains    Maximum number of auto-matches (spec: 5).
+   * @param delayMs      Delay between matches in milliseconds (spec: 300).
+   * @param findNextPair Returns the next [Point, Point] pair or null if none.
+   * @param autoMatch    Performs the match for the given pair.
+   */
+  handleCascadeChain(
+    maxChains: number,
+    delayMs: number,
+    findNextPair: () => [Point, Point] | null,
+    autoMatch: (pair: [Point, Point]) => void,
+  ): void {
+    const step = (remaining: number): void => {
+      if (remaining <= 0) return;
+      const pair = findNextPair();
+      if (!pair) return;
+      autoMatch(pair);
+      setTimeout(() => step(remaining - 1), delayMs);
+    };
+    step(maxChains);
+  }
+
+  // -------------------------------------------------------------------------
+  // Private state for tactical-tile buffs
+  // -------------------------------------------------------------------------
+
+  private _pierceMode    = false;
+  private _pierceTickFn: ((dt: number) => void) | null = null;
+
+  private _swapActive     = false;
+  private _swapTimeoutSec = 0;
+  private _swapElapsed    = 0;
+  private _swapOnSelect:  ((a: Point, b: Point) => void) | null = null;
+  private _swapOnTimeout: (() => void) | null = null;
+
+  // -------------------------------------------------------------------------
+  // Internal update integration for pierce / swap timers
+  // -------------------------------------------------------------------------
+
+  /** @internal — call from update() to tick pierce + swap timers. */
+  private _tickTacticalBuffs(dt: number): void {
+    this._pierceTickFn?.(dt);
+
+    if (this._swapActive) {
+      this._swapElapsed += dt;
+      if (this._swapElapsed >= this._swapTimeoutSec) {
+        this._swapActive = false;
+        const cb = this._swapOnTimeout;
+        this._swapOnSelect  = null;
+        this._swapOnTimeout = null;
+        cb?.();
+      }
+    }
+  }
+
   /** Resets all event state (e.g. on level restart). */
   reset(): void {
     this.events = [];
@@ -640,5 +785,11 @@ export class BoardEventManager {
     this.boardRotateWarningActive = false;
     this.boardRotateWarningTimer = 0;
     this.pendingRotateEvent = null;
+    this._pierceMode    = false;
+    this._pierceTickFn  = null;
+    this._swapActive    = false;
+    this._swapElapsed   = 0;
+    this._swapOnSelect  = null;
+    this._swapOnTimeout = null;
   }
 }

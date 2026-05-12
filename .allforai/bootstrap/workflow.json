@@ -615,7 +615,7 @@
       "hard_blocked_by": [
         "implement-puzzle-core"
       ],
-      "status": "needs-rerun",
+      "status": "completed",
       "needs_rerun_reason": "special_tiles design changed: 4→5 tactical tiles + 3 coin-spendable assists"
     },
     {
@@ -727,7 +727,7 @@
       "hard_blocked_by": [
         "implement-backend-api"
       ],
-      "status": "needs-rerun",
+      "status": "completed",
       "needs_rerun_reason": "monetization changed: dual-currency → single-currency (沙滩币 only)"
     },
     {
@@ -974,6 +974,28 @@
         ".allforai/game-design/design/core-loop-closure-qa-report.json",
         ".allforai/game-design/design/contract-wiring-qa-report.json",
         ".allforai/game-design/design/game-design-final-closure-qa-report.json"
+      ]
+    },
+    {
+      "node": "implement-special-mechanics",
+      "status": "completed",
+      "started_at": "2026-05-12T22:10:52Z",
+      "completed_at": "2026-05-12T22:10:52Z",
+      "artifacts_created": [
+        "game-client/assets/scripts/puzzle/SpecialBlock.ts",
+        "game-client/assets/scripts/puzzle/BoardEventManager.ts"
+      ]
+    },
+    {
+      "node": "implement-shop-iap",
+      "status": "completed",
+      "started_at": "2026-05-12T22:10:52Z",
+      "completed_at": "2026-05-12T22:10:52Z",
+      "artifacts_created": [
+        "game-client/assets/scripts/shop/ShopScene.ts",
+        "game-client/assets/scripts/shop/CurrencyDisplay.ts",
+        "game-client/assets/scripts/shop/IAPManager.ts",
+        "game-client/assets/scripts/shop/PurchaseConfirmPopup.ts"
       ]
     }
   ],

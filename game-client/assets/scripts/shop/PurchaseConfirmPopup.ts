@@ -1,5 +1,7 @@
 // PurchaseConfirmPopup.ts — Modal popup for purchase confirmation.
-// Shows product details, handles the purchase flow, and displays result toasts.
+// Single-currency: shows beach_coins amount, no hard currency.
+// Success toast: "购买成功，X枚沙滩币已到账"
+// Failure toast: "购买失败，请重试（ERROR_CODE）"
 
 import { Component, _decorator, Label, Button, Node, tween, UIOpacity } from 'cc'
 import { IAPManager, IAPSku } from './IAPManager'
@@ -7,7 +9,6 @@ import { CurrencyDisplay } from './CurrencyDisplay'
 
 const { ccclass, property } = _decorator
 
-// Duration the success / failure toast is visible
 const TOAST_VISIBLE_SECONDS = 2.5
 
 @ccclass('PurchaseConfirmPopup')
@@ -19,8 +20,9 @@ export class PurchaseConfirmPopup extends Component {
   @property(Label)
   productNameLabel: Label | null = null
 
+  /** Shows the beach_coins amount granted by this purchase */
   @property(Label)
-  glowstoneAmountLabel: Label | null = null
+  coinsAmountLabel: Label | null = null
 
   @property(Label)
   priceLabel: Label | null = null
@@ -31,11 +33,10 @@ export class PurchaseConfirmPopup extends Component {
   @property(Button)
   cancelBtn: Button | null = null
 
-  /** Spinner / loading indicator node — toggled during async purchase */
+  /** Spinner / loading indicator — toggled during async purchase */
   @property(Node)
   loadingNode: Node | null = null
 
-  /** Optional toast label node (shown briefly after result) */
   @property(Node)
   toastNode: Node | null = null
 
@@ -43,8 +44,8 @@ export class PurchaseConfirmPopup extends Component {
   toastLabel: Label | null = null
 
   /**
-   * Optional reference to a CurrencyDisplay in the scene so it can be
-   * refreshed immediately after a successful purchase.
+   * Optional reference to CurrencyDisplay so it refreshes immediately
+   * after a successful purchase.
    */
   @property(CurrencyDisplay)
   currencyDisplay: CurrencyDisplay | null = null
@@ -61,14 +62,11 @@ export class PurchaseConfirmPopup extends Component {
   // -------------------------------------------------------------------------
 
   onLoad(): void {
-    // Popup starts hidden
     this.node.active = false
 
-    // Wire buttons
     this.confirmBtn?.node.on(Button.EventType.CLICK, this._onConfirm, this)
     this.cancelBtn?.node.on(Button.EventType.CLICK, this._onCancel, this)
 
-    // Hide loading and toast states initially
     if (this.loadingNode) this.loadingNode.active = false
     if (this.toastNode) this.toastNode.active = false
   }
@@ -87,26 +85,29 @@ export class PurchaseConfirmPopup extends Component {
     this._currentSku = sku
     this._purchasing = false
 
-    // Populate labels
     if (this.productNameLabel) {
       this.productNameLabel.string = sku.name
     }
-    if (this.glowstoneAmountLabel) {
-      this.glowstoneAmountLabel.string = `${sku.glowstone_total} 丹青石`
+
+    if (this.coinsAmountLabel) {
+      if (sku.sku_id === 'monthly_card') {
+        // Monthly card grants ongoing benefit, not a lump sum
+        this.coinsAmountLabel.string = '每日沙漏奖励×2（30沙滩币/次）'
+      } else {
+        this.coinsAmountLabel.string = `${sku.beach_coins} 枚沙滩币`
+      }
     }
+
     if (this.priceLabel) {
-      // Show CNY with USD fallback
       this.priceLabel.string = `¥${sku.price_cny}  ($${sku.price_usd.toFixed(2)})`
     }
 
-    // Reset interactive state
     this._setLoading(false)
     if (this.toastNode) this.toastNode.active = false
 
     this.node.active = true
   }
 
-  /** Programmatically hide the popup (e.g., called by parent scene). */
   hide(): void {
     this.node.active = false
     this._currentSku = null
@@ -130,16 +131,14 @@ export class PurchaseConfirmPopup extends Component {
     this._purchasing = false
 
     if (result.success) {
-      // Refresh the currency bar immediately
       this.currencyDisplay?.refresh()
 
-      const msg = `购买成功，${result.glowstonesGranted}丹青石已到账`
-      this._showToast(msg, true)
+      const coinsText = sku.sku_id === 'monthly_card'
+        ? '月卡已激活，每日沙漏奖励翻倍'
+        : `购买成功，${result.beachCoins}枚沙滩币已到账`
+      this._showToast(coinsText, true)
 
-      // Close popup after the toast is read
-      this.scheduleOnce(() => {
-        this.hide()
-      }, TOAST_VISIBLE_SECONDS)
+      this.scheduleOnce(() => { this.hide() }, TOAST_VISIBLE_SECONDS)
     } else {
       const code = result.error ?? 'UNKNOWN'
       this._showToast(`购买失败，请重试（${code}）`, false)
@@ -168,7 +167,6 @@ export class PurchaseConfirmPopup extends Component {
 
     const toastNode = this.toastNode
     if (!toastNode) {
-      // Fallback to console if no toast node is wired up
       if (success) {
         console.log(`[PurchaseConfirmPopup] ${message}`)
       } else {
@@ -179,7 +177,6 @@ export class PurchaseConfirmPopup extends Component {
 
     toastNode.active = true
 
-    // Fade in → hold → fade out
     const opacity = toastNode.getComponent(UIOpacity) ?? toastNode.addComponent(UIOpacity)
     opacity.opacity = 0
 
@@ -187,18 +184,12 @@ export class PurchaseConfirmPopup extends Component {
       .to(0.2, { opacity: 255 })
       .delay(TOAST_VISIBLE_SECONDS - 0.4)
       .to(0.2, { opacity: 0 })
-      .call(() => {
-        toastNode.active = false
-      })
+      .call(() => { toastNode.active = false })
       .start()
   }
 
-  /** Pick the right platform product ID from the SKU */
   private _resolvePlatformProductId(sku: IAPSku): string {
-    // Cocos sys.isNative covers iOS; for web/TapTap fall through to taptap id
     try {
-      // Dynamic import check — sys may be available at runtime
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { sys } = require('cc') as { sys: { isNative: boolean } }
       if (sys.isNative) return sku.platform_product_ids.ios_appstore
     } catch {
