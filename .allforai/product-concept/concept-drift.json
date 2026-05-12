@@ -3,7 +3,7 @@
   "project": "glow-island",
   "source": "product-concept",
   "detected_at": "2026-05-12T00:00:00Z",
-  "resolved": false,
+  "resolved": true,
   "changes": [
     {
       "type": "feature_modified",
@@ -76,5 +76,7 @@
       ],
       "severity": "low"
     }
-  ]
+  ],
+  "resolved_at": "2026-05-12T21:36:19.784606+00:00",
+  "resolved_note": "All original drift changes addressed by approved game-design nodes. New design decisions (seasons, hourglass, custom backend) integrated via node revision cycle. Specialized skills generated: glow-island-tile-readability-qa, glow-island-board-solver-qa, glow-island-seasonal-art-generation."
 }

@@ -1,0 +1,275 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "node": "ui-art-gen",
+  "status": "spec_complete",
+  "language_policy": "HTML输出语言: zh-CN；游戏内专有名词保留日文；JSON字段名保持英文snake_case",
+
+  "scope": {
+    "canonical_registry_ui_count": 10,
+    "canonical_registry_other_count": 20,
+    "total_assets_in_scope": 30,
+    "source_strategy_all": "llm_image_generation（ai_generated）"
+  },
+
+  "style_foundation": {
+    "paradigm": "flat_plus_soft_shadow_wood_sign_ui",
+    "dimension": "2d",
+    "style_keywords": ["hand-drawn-watercolor", "soft-rounded-organic", "warm-pastel-palette", "healing-japanese-island"],
+    "engine": "cocos-creator",
+    "platform": "web-mobile",
+    "base_resolution": "720x1280",
+    "safe_area": { "top_px": 44, "bottom_px": 34 },
+    "atlas": "ui_elements_atlas",
+    "atlas_max_px": 2048,
+    "format": "png",
+    "font_primary": "思源圆体",
+    "font_fallback": ["SF Pro Rounded", "Nunito"],
+    "font_scale": "2x"
+  },
+
+  "ui_palette": {
+    "background_sand": "#F7EDD8",
+    "dialog_wood": "#E8D8B4",
+    "border_brown": "#8B6030",
+    "text_dark": "#3A2810",
+    "button_primary_top": "#F0997A",
+    "button_primary_bottom": "#E8866A",
+    "button_disabled_fill": "#C8B8A0",
+    "coin_gold": "#F5C842",
+    "progress_fill": "#7DBE77",
+    "step_warning": "#EE8C55",
+    "step_critical": "#C85A40",
+    "combo_bubble_bg": "#C85A40",
+    "combo_text": "#F5C842",
+    "hard_currency_start": "#5BBFB5",
+    "hard_currency_end": "#3A9E94"
+  },
+
+  "ui_assets": [
+    {
+      "asset_id": "ui_hud_bar",
+      "name": "HUD底栏",
+      "file_prefix": "ui_hud_bar",
+      "size_px": { "width": 720, "height": 80 },
+      "format": "png",
+      "animation_method": "ui_tween",
+      "atlas": "ui_elements_atlas",
+      "current_state": "spec_ready",
+      "states": ["normal", "low", "critical", "empty"],
+      "spec_summary": "Island sand fill #F7EDD8，木质边框 #8B6030，软阴影。左：沙滩币图标+数字；中：步数计数器（critical 状态变为 #C85A40 快速脉动）；右：3个辅助按钮（重排/预判/续关，各 80×80px，珊瑚渐变，24px 圆角）。HUD 固定在棋盘下方，高度 80px。",
+      "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_hud_bar"
+    },
+    {
+      "asset_id": "ui_card_level",
+      "name": "关卡卡片",
+      "file_prefix": "ui_card_level",
+      "size_px": { "width": 320, "height": 180 },
+      "format": "png",
+      "animation_method": "ui_tween",
+      "atlas": "ui_elements_atlas",
+      "current_state": "spec_ready",
+      "states": ["default", "selected", "locked", "disabled", "new", "upgradable"],
+      "spec_summary": "320×180px 关卡卡片。Island sand 底色，木质边框，16px 圆角，软阴影。显示：关卡编号（粗体深棕），3颗星（空/满），章节缩略图（若有）。locked 态：灰底+锁图标；new 态：金色边框+NEW 徽章；selected 态：珊瑚边框+放大阴影。",
+      "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_card_level"
+    },
+    {
+      "asset_id": "ui_btn_shuffle",
+      "name": "重排按钮",
+      "file_prefix": "ui_btn_shuffle",
+      "size_px": { "width": 80, "height": 80 },
+      "format": "png",
+      "animation_method": "ui_tween",
+      "atlas": "ui_elements_atlas",
+      "current_state": "spec_ready",
+      "states": ["normal", "pressed", "disabled", "locked"],
+      "cost": "30 沙滩币",
+      "spec_summary": "80×80px 圆角（24px）按钮。normal：珊瑚渐变 #F0997A→#E8866A，重排旋转箭头图标（白），'重排' 标签（11sp 白），木质描边，软阴影。pressed：加深色+Y轴+2px 位移，缩放 0.97。disabled（余额<30）：沙色 #C8B8A0，图标灰，opacity 0.6。locked：disabled + 锁叠加。",
+      "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_btn_shuffle_states"
+    },
+    {
+      "asset_id": "ui_btn_hint",
+      "name": "预判按钮",
+      "file_prefix": "ui_btn_hint",
+      "size_px": { "width": 80, "height": 80 },
+      "format": "png",
+      "animation_method": "ui_tween",
+      "atlas": "ui_elements_atlas",
+      "current_state": "spec_ready",
+      "states": ["normal", "pressed", "disabled", "locked"],
+      "cost": "30 沙滩币",
+      "spec_summary": "80×80px 圆角（24px）按钮。same palette 同重排按钮，图标改为放大镜/眼睛（预判路径高亮），'预判' 标签（11sp 白）。状态机与重排按钮相同。",
+      "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_btn_hint_states"
+    },
+    {
+      "asset_id": "ui_btn_continue",
+      "name": "续关按钮",
+      "file_prefix": "ui_btn_continue",
+      "size_px": { "width": 80, "height": 80 },
+      "format": "png",
+      "animation_method": "ui_tween",
+      "atlas": "ui_elements_atlas",
+      "current_state": "spec_ready",
+      "states": ["normal", "pressed", "disabled", "highlighted", "locked"],
+      "cost": "30 沙滩币 + 5步",
+      "spec_summary": "80×80px 圆角（24px）按钮。normal：沙色调（opacity 0.7，常驻低亮度）。highlighted（步数归零时激活）：完整珊瑚渐变+金色边框 #F5C842+金色脉动光晕。disabled（余额<30）：灰色 opacity 0.5。locked（禅境关）：dim opacity 0.3+锁图标。",
+      "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_btn_continue_states"
+    },
+    {
+      "asset_id": "ui_panel_shop",
+      "name": "商店面板",
+      "file_prefix": "ui_panel_shop",
+      "size_px": { "width": 480, "height": 640 },
+      "format": "png",
+      "animation_method": "ui_tween",
+      "atlas": "ui_elements_atlas",
+      "current_state": "spec_ready",
+      "states": ["entering", "open", "confirming", "closing", "blocked"],
+      "spec_summary": "480×640px 弹窗面板（居中显示于深海蓝遮罩 50% 之上）。木质暖沙底色 #E8D8B4，木质边框 3px #8B6030，20px 圆角，大软阴影。顶部：标题'商店'+关闭按钮。内容区：道具行列表（重排/预判/续关）。每行：图标+名称+说明+沙滩币价格（金色硬币图标+数字）。进入动画：scale_0.7→1.05→1.0 spring 0.4s。",
+      "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_screen_shop"
+    },
+    {
+      "asset_id": "ui_panel_npc_dialogue",
+      "name": "NPC对话框",
+      "file_prefix": "ui_panel_npc_dialogue",
+      "size_px": { "width": 720, "height": 200 },
+      "format": "png",
+      "animation_method": "ui_tween",
+      "atlas": "ui_elements_atlas",
+      "current_state": "spec_ready",
+      "states": ["entering", "open", "confirming", "closing", "blocked"],
+      "spec_summary": "720×200px 底部对话框。木质暖沙底色 #E8D8B4，顶部边框 2px #8B6030。NPC名称（16sp #8B6030）+对话文本（15sp #3A2810，行高 1.6，最大宽度 640px，超出滚动）。右下角点击继续提示（小图标，漂木金 #C4955A）。进入：从底部上滑 40px+渐显 0.3s。退出：下滑 0.25s。",
+      "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_screen_dialogue"
+    },
+    {
+      "asset_id": "ui_coin_icon",
+      "name": "沙滩币图标",
+      "file_prefix": "ui_coin_icon",
+      "size_px": { "width": 64, "height": 64 },
+      "format": "png",
+      "animation_method": "static",
+      "atlas": "ui_elements_atlas",
+      "current_state": "spec_ready",
+      "spec_summary": "64×64px 圆形沙滩币图标。金黄色 #F5C842 填充，漂木金内嵌贝壳/波纹纹样，有机手绘轮廓（暖棕色非纯黑），软投影。透明背景。唯一货币符号，HUD 和商店均引用此图标。",
+      "prompt_ref": ".allforai/game-design/art/icons/icon-spec.json#ui_coin_icon"
+    },
+    {
+      "asset_id": "ui_star_icon",
+      "name": "星星图标",
+      "file_prefix": "ui_star_icon",
+      "size_px": { "width": 64, "height": 64 },
+      "format": "png",
+      "animation_method": "static",
+      "atlas": "ui_elements_atlas",
+      "current_state": "spec_ready",
+      "variants": ["empty", "filled", "half"],
+      "spec_summary": "64×64px 五角星图标，三态：[空心：沙灰 #C4B090 填充，棕色描边] [满星：金黄 #F5C842，琥珀描边，软光晕] [半星：左金右灰]。有机圆端角，手绘水彩风格。透明背景。",
+      "prompt_ref": ".allforai/game-design/art/icons/icon-spec.json#ui_star_icon"
+    },
+    {
+      "asset_id": "ui_lighthouse_progress",
+      "name": "灯塔进度条",
+      "file_prefix": "ui_lighthouse_progress",
+      "size_px": { "width": 120, "height": 480 },
+      "format": "png",
+      "animation_method": "ui_tween",
+      "atlas": "ui_elements_atlas",
+      "current_state": "spec_ready",
+      "states": ["normal", "low", "gain", "critical", "full", "loss", "empty"],
+      "variants": ["empty", "quarter", "half", "three_quarters", "full"],
+      "spec_summary": "120×480px 竖向灯塔进度条。圆角轨道（8px），木质边框，顶部灯塔小图标（chapter 进度满后发光）。填充色：空=沙灰 #C8B8A0，低=竹绿 #7DBE77（25-100%），满=金黄 #F5C842+光晕。进度变化：smooth expand + 金色闪光 0.3s。章节修复完成：灯塔图标发光脉动。位于棋盘右侧 60px 侧栏。",
+      "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_lighthouse_progress"
+    }
+  ],
+
+  "other_assets": {
+    "note": "canonical_registry.other[] 包含 18 张章节背景（bg_*）和 2 个道具（prop_*）。背景由 environment-art-gen 节点负责生成，此处仅记录规格约束以供 ui-art-gen HUD 层级对接使用。",
+    "backgrounds": {
+      "count": 18,
+      "size_px": { "width": 1920, "height": 1080 },
+      "format": "jpg",
+      "saturation_stages": ["s0_before", "s1_progress", "s4_restored"],
+      "chapters": [
+        { "chapter": 1, "scene": "海边码头", "primary_hue": "#5BBFB5", "brightness": "dim" },
+        { "chapter": 2, "scene": "中央小镇", "primary_hue": "#7DBE77", "brightness": "warm" },
+        { "chapter": 3, "scene": "花田山坡", "primary_hue": "#F0C4C4", "brightness": "warm" },
+        { "chapter": 4, "scene": "森林露营地", "primary_hue": "#4A7D55", "brightness": "dim" },
+        { "chapter": 5, "scene": "温泉山谷", "primary_hue": "#C4955A", "brightness": "warm" },
+        { "chapter": 6, "scene": "夜晚灯塔", "primary_hue": "#1E2E50", "brightness": "dim" }
+      ],
+      "ui_interface": "背景最大不透明度装饰叠加 15%，不干扰棋盘可读性",
+      "owner_node": "environment-art-gen",
+      "current_state_for_ui": "spec_acknowledged"
+    },
+    "props": [
+      {
+        "asset_id": "prop_notebook",
+        "name": "ひなた手账",
+        "file_prefix": "prop_notebook",
+        "size_px": { "width": 180, "height": 240 },
+        "format": "png",
+        "current_state": "spec_ready",
+        "spec_summary": "180×240px 手账道具。两态：closed（封面可见，手绘风格本子，暖棕色/奶油白配色，封面有日文手写字）/ open（翻开状，内页有ひなた的手写笔记和小插图）。手绘水彩质感，有机轮廓，非纯黑描边。透明背景。",
+        "owner_node": "environment-art-gen"
+      },
+      {
+        "asset_id": "prop_lighthouse_lamp",
+        "name": "灯塔灯",
+        "file_prefix": "prop_lighthouse_lamp",
+        "size_px": { "width": 256, "height": 256 },
+        "format": "png",
+        "animation_method": "frame_animation",
+        "current_state": "spec_ready",
+        "spec_summary": "256×256px 灯塔灯 8 帧动画。旋转金色光束（#F5C842），暖白色光晕（#F5F0E8），手绘玻璃灯罩有机形态。8帧循环，每帧对应光束旋转角度递进 45°。透明背景。",
+        "owner_node": "environment-art-gen"
+      }
+    ]
+  },
+
+  "atlas_plan": {
+    "ui_elements_atlas": {
+      "path": ".allforai/game-design/art/atlases/ui_elements_atlas.json",
+      "max_size_px": 2048,
+      "format": "png",
+      "assets": [
+        "ui_hud_bar", "ui_card_level",
+        "ui_btn_shuffle", "ui_btn_hint", "ui_btn_continue",
+        "ui_panel_shop", "ui_panel_npc_dialogue",
+        "ui_coin_icon", "ui_star_icon", "ui_lighthouse_progress"
+      ],
+      "note": "所有 UI 资产打包至单一 ui_elements_atlas，2x 设计尺寸，1x 回退；章节背景单独分章节 atlas（environment-art-gen 负责）"
+    }
+  },
+
+  "motion_design_refs": {
+    "source": ".allforai/game-design/art-pipeline-config.json#motion_design",
+    "dialog_appear_s": 0.4,
+    "dialog_appear_style": "scale_0.7→1.05→1.0_spring",
+    "dialog_dismiss_s": 0.25,
+    "ui_card_slide_s": 0.3,
+    "hud_toggle_fade_s": 0.2,
+    "currency_pulse_hz": 0.8
+  },
+
+  "review_checklist": {
+    "ui_component_states": "UI 组件状态完整（normal/pressed/disabled/locked）— 已在 component-state-spec.json 定义",
+    "hud_hierarchy": "HUD 信息层级清晰，不遮挡关键棋盘区域（HUD 底栏 y=1100–1180，灯塔侧栏 x=660–720，棋盘 y=100–1100/x=0–660）— 已在 screen-layout-spec.json 定义",
+    "resolution_adaptation": "屏幕布局规格与 Cocos Creator 分辨率适配（9:16基准720×1280+安全区）— 已在 screen-layout-spec.json 定义",
+    "icon_atlas": "图标与整体美术方向一致（watercolor/pastel/organic），Atlas 打包至 ui_elements_atlas — 已在 atlas_plan 定义",
+    "readability_qa": "UI mockup 通过可读性QA — 待图片生成后在 art-qa 节点执行"
+  },
+
+  "sub_skill_outputs": {
+    "ui_registry": ".allforai/game-design/ui/ui-registry.json",
+    "hud_information_design": ".allforai/game-design/ui/hud-information-design.json",
+    "component_state_spec": ".allforai/game-design/ui/component-state-spec.json",
+    "screen_layout_spec": ".allforai/game-design/ui/screen-layout-spec.json",
+    "visual_style_tokens": ".allforai/game-design/art/visual-style-tokens.json",
+    "ui_style_tokens": ".allforai/game-design/ui/ui-style-tokens.json",
+    "ui_mockup_spec": ".allforai/game-design/ui/ui-mockup-spec.json",
+    "ui_mockup_manifest": ".allforai/game-design/ui/ui-mockup-manifest.json",
+    "icon_spec": ".allforai/game-design/art/icons/icon-spec.json",
+    "icon_manifest": ".allforai/game-design/art/icons/icon-manifest.json"
+  }
+}

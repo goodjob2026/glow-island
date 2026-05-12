@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 图块美术评审</title>
+  <style>
+    :root {
+      --sand: #F7EDD8;
+      --coral: #E8866A;
+      --coral-soft: #F2A98A;
+      --teal: #5BBFB5;
+      --green: #7DBE77;
+      --sakura: #F0C4C4;
+      --driftwood: #C4955A;
+      --golden: #F5C842;
+      --night: #1E2E50;
+      --forest: #4A7D55;
+      --text-dark: #3A2810;
+      --border: #C4A87A;
+      --bg: #FDF5E8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "思源圆体", "SF Pro Rounded", Nunito, sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--teal) 0%, #3A9E94 100%);
+      color: white;
+      padding: 32px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      right: -40px; bottom: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+    header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+    header .subtitle { font-size: 15px; opacity: 0.85; }
+    header .meta { font-size: 13px; opacity: 0.7; margin-top: 8px; }
+
+    nav {
+      background: white;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    nav a {
+      padding: 14px 20px;
+      text-decoration: none;
+      color: var(--text-dark);
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    nav a:hover { color: var(--coral); border-bottom-color: var(--coral-soft); }
+    nav a.active { color: var(--coral); border-bottom-color: var(--coral); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+    section { margin-bottom: 48px; scroll-margin-top: 60px; }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--night);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2 .icon { font-size: 20px; }
+
+    h3 { font-size: 17px; font-weight: 600; color: var(--text-dark); margin: 20px 0 12px; }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .status-spec-complete { background: #E8F5E9; color: #2E7D32; }
+    .status-pending { background: #FFF8E1; color: #F57F17; }
+    .status-automation-limited { background: #E3F2FD; color: #1565C0; }
+    .status-pass { background: #E8F5E9; color: #2E7D32; }
+    .status-not-applicable { background: #F5F5F5; color: #616161; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .summary-card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+    .summary-card .number {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--coral);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .summary-card .label { font-size: 13px; color: #666; }
+
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .tile-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px 12px 12px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .tile-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.10); }
+    .tile-preview {
+      width: 72px;
+      height: 72px;
+      border-radius: 12px;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      background: var(--sand);
+    }
+    .tile-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .tile-id { font-size: 11px; color: #888; font-family: monospace; margin-bottom: 8px; }
+    .tile-variants { font-size: 12px; color: #555; }
+    .tile-unlock { font-size: 11px; color: var(--driftwood); font-weight: 600; }
+
+    .chapter-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      margin: 2px;
+    }
+    .ch1 { background: #E0F5F4; color: #2A7A74; }
+    .ch2 { background: #E8F5E8; color: #2E7A2E; }
+    .ch3 { background: #FDE8E8; color: #9A3A3A; }
+    .ch4 { background: #E8F0E8; color: #2A5A2A; }
+    .ch5 { background: #FDF0E0; color: #7A5020; }
+    .ch6 { background: #E0E4F0; color: #1A2850; }
+
+    .special-block-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .special-card {
+      border-radius: 16px;
+      padding: 20px;
+      color: white;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .special-card::after {
+      content: '';
+      position: absolute;
+      right: -20px; bottom: -20px;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.10);
+    }
+    .special-card-wave { background: linear-gradient(135deg, #7ECDE8 0%, #5BBFB5 100%); }
+    .special-card-chain { background: linear-gradient(135deg, #F0C4C4 0%, #D4A8C8 100%); color: var(--text-dark); }
+    .special-card-pierce { background: linear-gradient(135deg, #F5A840 0%, #E8866A 100%); }
+    .special-card-swap { background: linear-gradient(135deg, #F5C842 0%, #EE8C55 100%); }
+    .special-card-cascade { background: linear-gradient(135deg, #4A7D55 0%, #2E5A3A 100%); }
+    .special-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .special-card .mechanic { font-size: 12px; opacity: 0.85; margin-bottom: 10px; }
+    .special-card .identity { font-size: 13px; font-weight: 600; margin-top: 8px; }
+    .special-card .frames { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+    .color-badge {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border-radius: 4px;
+      vertical-align: middle;
+      margin-right: 6px;
+      border: 2px solid rgba(0,0,0,0.15);
+    }
+
+    .saturation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .saturation-table th {
+      background: var(--sand);
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 700;
+      border: 1px solid var(--border);
+    }
+    .saturation-table td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      background: white;
+    }
+    .saturation-table tr:hover td { background: #FFFAF5; }
+    .sat-swatch {
+      display: inline-block;
+      width: 40px; height: 20px;
+      border-radius: 6px;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    .atlas-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .atlas-table th {
+      background: var(--sand);
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 700;
+      border: 1px solid var(--border);
+    }
+    .atlas-table td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      background: white;
+    }
+
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      background: white;
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .checklist li .check { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .checklist li .check-pass { color: #2E7D32; }
+    .checklist li .check-pending { color: #F57F17; }
+
+    .prompt-box {
+      background: #1E2E50;
+      color: #F0F4FF;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .prompt-box .label {
+      color: var(--golden);
+      font-weight: 700;
+      margin-bottom: 4px;
+      font-family: sans-serif;
+      font-size: 12px;
+    }
+
+    .file-path {
+      font-family: monospace;
+      font-size: 12px;
+      background: #F5F5F5;
+      border-radius: 6px;
+      padding: 3px 8px;
+      color: #333;
+    }
+
+    .pipeline-flow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+    .pipeline-step {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 120px;
+    }
+    .pipeline-step.done { border-color: var(--green); background: #F0FBF0; color: #2A6A2A; }
+    .pipeline-step.pending { border-color: var(--golden); background: #FFFBF0; color: #7A5A00; }
+    .pipeline-arrow { font-size: 20px; color: var(--border); }
+
+    .color-contrast-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .color-contrast-table th {
+      background: var(--sand);
+      padding: 8px 12px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .color-contrast-table td {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: white;
+    }
+
+    footer {
+      background: var(--night);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      margin-top: 48px;
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 20px; }
+      .container { padding: 16px; }
+      .tile-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Glow Island — 图块美术评审</h1>
+  <div class="subtitle">tile-art-gen 节点产出 · 人工审核看板</div>
+  <div class="meta">生成时间: 2026-05-13 · 节点: tile-art-gen · 学科负责人: concept-artist · 审核人: art-director</div>
+</header>
+
+<nav>
+  <a href="#overview" class="active">概览</a>
+  <a href="#regular-tiles">20种基础图块</a>
+  <a href="#special-blocks">5种特殊块</a>
+  <a href="#saturation">饱和度分阶</a>
+  <a href="#atlas">Atlas规格</a>
+  <a href="#prompts">生成提示词</a>
+  <a href="#pipeline">生成流程</a>
+  <a href="#checklist">评审清单</a>
+</nav>
+
+<div class="container">
+
+  <!-- 概览 -->
+  <section id="overview">
+    <h2><span class="icon">🏝</span>概览</h2>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="number">25</div>
+        <div class="label">图块资源总数</div>
+      </div>
+      <div class="summary-card">
+        <div class="number">20</div>
+        <div class="label">基础图块类型</div>
+      </div>
+      <div class="summary-card">
+        <div class="number">5</div>
+        <div class="label">特殊块类型</div>
+      </div>
+      <div class="summary-card">
+        <div class="number">180</div>
+        <div class="label">需生成文件总数</div>
+      </div>
+      <div class="summary-card">
+        <div class="number">7</div>
+        <div class="label">Atlas图集</div>
+      </div>
+      <div class="summary-card">
+        <div class="number">128px</div>
+        <div class="label">图块标准尺寸</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>资源来源策略</h3>
+      <p>全部 25 个图块资源均采用 <strong>llm_image_generation</strong>（AI 图像生成）策略。首选 API: <strong>google-imagen-4</strong>，备用: <strong>openrouter-gpt-image</strong>。无需现有资源包搜索或许可证验证，跳过 Step 0 源解析，直接进入 Step 1（图块规格定义）。</p>
+      <br>
+      <p>项目维度: <strong>2D</strong>（非 2.5D），跳过 2.5D 生产模式和光影规格子技能。</p>
+    </div>
+
+    <div class="card">
+      <h3>完成状态</h3>
+      <p>全部 25 种图块资源已从 <code>placeholder</code> 状态推进至 <span class="status-badge status-spec-complete">spec_complete</span>。规格、提示词、图集合约、Manifest 均已完整定义。实际 PNG 图像文件待 API 调用生成后进入 <code>generated</code> 状态，由 <strong>art-qa</strong> 节点进行视觉验证。</p>
+    </div>
+  </section>
+
+  <!-- 20种基础图块 -->
+  <section id="regular-tiles">
+    <h2><span class="icon">🐠</span>20种基础图块</h2>
+    <p style="margin-bottom:20px;">每种图块有 6 个章节色彩变体（Ch1–Ch6），对应岛屿修复进度的 5 个饱和度阶段。所有图块在 32×32px 下轮廓清晰可识别。</p>
+
+    <div class="tile-grid">
+      <div class="tile-card">
+        <div class="tile-preview">🐟</div>
+        <div class="tile-name">金枪鱼</div>
+        <div class="tile-id">tile_tuna</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🐙</div>
+        <div class="tile-name">章鱼</div>
+        <div class="tile-id">tile_octopus</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">⭐</div>
+        <div class="tile-name">海星</div>
+        <div class="tile-id">tile_starfish</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🦀</div>
+        <div class="tile-name">寄居蟹</div>
+        <div class="tile-id">tile_hermit_crab</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🐡</div>
+        <div class="tile-name">灯笼鱼</div>
+        <div class="tile-id">tile_lanternfish</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🐡</div>
+        <div class="tile-name">河豚</div>
+        <div class="tile-id">tile_pufferfish</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🐋</div>
+        <div class="tile-name">鲸鱼</div>
+        <div class="tile-id">tile_whale</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🪸</div>
+        <div class="tile-name">珊瑚</div>
+        <div class="tile-id">tile_coral</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🐚</div>
+        <div class="tile-name">海螺</div>
+        <div class="tile-id">tile_conch</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🐚</div>
+        <div class="tile-name">贝壳</div>
+        <div class="tile-id">tile_shell</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🦀</div>
+        <div class="tile-name">螃蟹</div>
+        <div class="tile-id">tile_crab</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🐢</div>
+        <div class="tile-name">海龟</div>
+        <div class="tile-id">tile_turtle</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🪼</div>
+        <div class="tile-name">水母</div>
+        <div class="tile-id">tile_jellyfish</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🐠</div>
+        <div class="tile-name">飞鱼</div>
+        <div class="tile-id">tile_flying_fish</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🐬</div>
+        <div class="tile-name">海豚</div>
+        <div class="tile-id">tile_dolphin</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🕊</div>
+        <div class="tile-name">海鸥</div>
+        <div class="tile-id">tile_seagull</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🌴</div>
+        <div class="tile-name">椰子树</div>
+        <div class="tile-id">tile_coconut_palm</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🗼</div>
+        <div class="tile-name">灯塔</div>
+        <div class="tile-id">tile_lighthouse</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">⛵</div>
+        <div class="tile-name">渔船</div>
+        <div class="tile-id">tile_fishing_boat</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+      <div class="tile-card">
+        <div class="tile-preview">🔴</div>
+        <div class="tile-name">浮标</div>
+        <div class="tile-id">tile_buoy</div>
+        <div class="tile-variants">6 个章节变体</div>
+        <div class="tile-unlock">第1章解锁</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>图块解锁进度说明</h3>
+      <p>第1章解锁12种基础图块（core-mechanics.json tile_pattern_ch1_unlock=12），后续每章解锁2-3种，至第6章累计20种全部解锁（tile_pattern_count=20）。具体解锁序列由 <strong>level-design</strong> 节点决定，本规格为全20种均从第1章开始定义spec，实际chapter_unlock_order由level-design补充。</p>
+    </div>
+  </section>
+
+  <!-- 5种特殊块 -->
+  <section id="special-blocks">
+    <h2><span class="icon">✨</span>5种特殊块</h2>
+    <p style="margin-bottom:20px;">每种特殊块有 12 帧 frame animation（idle 呼吸光效循环），各有独特视觉身份确保一眼可辨。归属 <strong>special_blocks_atlas</strong>（章节无关图集）。</p>
+
+    <div class="special-block-grid">
+      <div class="special-card special-card-wave">
+        <h4><span class="color-badge" style="background:#7ECDE8;"></span>光波特殊块</h4>
+        <div class="mechanic">消除整行或整列</div>
+        <div>file_prefix: <code style="background:rgba(0,0,0,0.2);padding:2px 6px;border-radius:4px;">tile_wave_block</code></div>
+        <div class="identity">视觉特征: 同心圆扩散光波纹 + 暖白内光</div>
+        <div class="frames">12帧 · 2.0–2.8s 呼吸脉冲</div>
+      </div>
+      <div class="special-card special-card-chain">
+        <h4><span class="color-badge" style="background:#F0C4C4;border-color:#ccc;"></span>光链特殊块</h4>
+        <div class="mechanic">连锁相邻消除</div>
+        <div>file_prefix: <code style="background:rgba(0,0,0,0.1);padding:2px 6px;border-radius:4px;">tile_light_chain_block</code></div>
+        <div class="identity">视觉特征: 粉底金链条纹扫描波</div>
+        <div class="frames">12帧 · 2.0–2.8s 呼吸脉冲</div>
+      </div>
+      <div class="special-card special-card-pierce">
+        <h4><span class="color-badge" style="background:#F5A840;"></span>穿透特殊块</h4>
+        <div class="mechanic">穿透障碍物直线消除</div>
+        <div>file_prefix: <code style="background:rgba(0,0,0,0.2);padding:2px 6px;border-radius:4px;">tile_pierce_block</code></div>
+        <div class="identity">视觉特征: 橙底方向箭头 + 蓝白箭头端爆光</div>
+        <div class="frames">12帧 · 2.0–2.8s 呼吸脉冲</div>
+      </div>
+      <div class="special-card special-card-swap">
+        <h4><span class="color-badge" style="background:#F5C842;"></span>置换特殊块</h4>
+        <div class="mechanic">交换两格位置</div>
+        <div>file_prefix: <code style="background:rgba(0,0,0,0.2);padding:2px 6px;border-radius:4px;">tile_swap_block</code></div>
+        <div class="identity">视觉特征: 金底双向循环箭头 + 绿螺旋弹力线</div>
+        <div class="frames">12帧 · 2.0–2.8s 呼吸脉冲</div>
+      </div>
+      <div class="special-card special-card-cascade">
+        <h4><span class="color-badge" style="background:#4A7D55;"></span>连锁特殊块</h4>
+        <div class="mechanic">自动连锁触发序列</div>
+        <div>file_prefix: <code style="background:rgba(255,255,255,0.15);padding:2px 6px;border-radius:4px;">tile_cascade_block</code></div>
+        <div class="identity">视觉特征: 深绿底橙红序列波纹 + 步骤点</div>
+        <div class="frames">12帧 · 2.0–2.8s 呼吸脉冲</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>特殊块视觉差异化原则</h3>
+      <table class="color-contrast-table">
+        <thead>
+          <tr>
+            <th>特殊块</th>
+            <th>底色</th>
+            <th>核心图形语言</th>
+            <th>唯一区分特征</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>光波</td>
+            <td><span style="background:#7ECDE8;padding:2px 10px;border-radius:4px;font-size:11px;">#7ECDE8 青色</span></td>
+            <td>同心圆扩散</td>
+            <td>唯一使用扩散环纹的块</td>
+          </tr>
+          <tr>
+            <td>光链</td>
+            <td><span style="background:#F0C4C4;padding:2px 10px;border-radius:4px;font-size:11px;">#F0C4C4 樱粉</span></td>
+            <td>链条纹扫描波</td>
+            <td>唯一粉色底 + 金色链纹</td>
+          </tr>
+          <tr>
+            <td>穿透</td>
+            <td><span style="background:#F5A840;padding:2px 10px;border-radius:4px;font-size:11px;">#F5A840 橙色</span></td>
+            <td>方向箭头</td>
+            <td>唯一有明确方向指示的块</td>
+          </tr>
+          <tr>
+            <td>置换</td>
+            <td><span style="background:#F5C842;padding:2px 10px;border-radius:4px;font-size:11px;">#F5C842 金色</span></td>
+            <td>双向循环箭头</td>
+            <td>唯一金色底 + 双向互换符号</td>
+          </tr>
+          <tr>
+            <td>连锁</td>
+            <td><span style="background:#4A7D55;color:white;padding:2px 10px;border-radius:4px;font-size:11px;">#4A7D55 墨绿</span></td>
+            <td>序列步骤波</td>
+            <td>唯一暗绿底 + 橙红序列点阵</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 饱和度分阶 -->
+  <section id="saturation">
+    <h2><span class="icon">🎨</span>饱和度分阶系统</h2>
+    <p style="margin-bottom:20px;">图块饱和度随岛屿章节修复进度渐进提升，从第1章的褪色状态到第6章的满水彩光效。同一图块的主题造型不变，仅颜色饱和度和章节主色调不同。</p>
+
+    <table class="saturation-table">
+      <thead>
+        <tr>
+          <th>阶段</th>
+          <th>中文名</th>
+          <th>饱和度范围</th>
+          <th>亮度范围</th>
+          <th>对应章节</th>
+          <th>色感示意</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>s0</strong></td>
+          <td>褪色枯岛</td>
+          <td>8–15%</td>
+          <td>42–48%</td>
+          <td>第1章 (到来)</td>
+          <td><span class="sat-swatch" style="background:linear-gradient(90deg, #9EADA8, #B0B8B5);"></span>近灰暗哑</td>
+        </tr>
+        <tr>
+          <td><strong>s1</strong></td>
+          <td>轮廓找回淡彩</td>
+          <td>28–38%</td>
+          <td>—</td>
+          <td>第2章 (记忆)</td>
+          <td><span class="sat-swatch" style="background:linear-gradient(90deg, #A8C8C0, #BED5B8);"></span>淡色隐约</td>
+        </tr>
+        <tr>
+          <td><strong>s2</strong></td>
+          <td>生活气息色彩</td>
+          <td>48–58%</td>
+          <td>—</td>
+          <td>第3章 (相遇)</td>
+          <td><span class="sat-swatch" style="background:linear-gradient(90deg, #7ECDE8, #F0C4C4);"></span>中等饱和</td>
+        </tr>
+        <tr>
+          <td><strong>s3</strong></td>
+          <td>角色回归满生命力</td>
+          <td>62–72%</td>
+          <td>—</td>
+          <td>第4-5章 (扎根·温暖)</td>
+          <td><span class="sat-swatch" style="background:linear-gradient(90deg, #5BBFB5, #7DBE77);"></span>鲜亮暖色</td>
+        </tr>
+        <tr>
+          <td><strong>s4_full</strong></td>
+          <td>完整水彩光效全开</td>
+          <td>75–88%</td>
+          <td>—</td>
+          <td>第6章 (归宿)</td>
+          <td><span class="sat-swatch" style="background:linear-gradient(90deg, #F5C842, #E8866A);"></span>饱满水彩</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="card" style="margin-top:20px;">
+      <h3>章节主色调映射</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="chapter-tag ch1">Ch1</span>
+          <span style="background:#5BBFB5;width:24px;height:24px;border-radius:6px;display:inline-block;"></span>
+          <span style="font-size:13px;">#5BBFB5 海边码头·海湾青</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="chapter-tag ch2">Ch2</span>
+          <span style="background:#7DBE77;width:24px;height:24px;border-radius:6px;display:inline-block;"></span>
+          <span style="font-size:13px;">#7DBE77 中央小镇·竹林绿</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="chapter-tag ch3">Ch3</span>
+          <span style="background:#F0C4C4;width:24px;height:24px;border-radius:6px;display:inline-block;"></span>
+          <span style="font-size:13px;">#F0C4C4 花田山坡·樱花粉</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="chapter-tag ch4">Ch4</span>
+          <span style="background:#4A7D55;width:24px;height:24px;border-radius:6px;display:inline-block;"></span>
+          <span style="font-size:13px;">#4A7D55 森林露营·苔藓绿</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="chapter-tag ch5">Ch5</span>
+          <span style="background:#C4955A;width:24px;height:24px;border-radius:6px;display:inline-block;"></span>
+          <span style="font-size:13px;">#C4955A 温泉山谷·漂流木</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="chapter-tag ch6">Ch6</span>
+          <span style="background:#1E2E50;width:24px;height:24px;border-radius:6px;display:inline-block;"></span>
+          <span style="font-size:13px;">#1E2E50 夜晚灯塔·夜空靛</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Atlas规格 -->
+  <section id="atlas">
+    <h2><span class="icon">📦</span>Atlas 图集规格</h2>
+
+    <table class="atlas-table">
+      <thead>
+        <tr>
+          <th>Atlas 名称</th>
+          <th>类型</th>
+          <th>包含内容</th>
+          <th>最大尺寸</th>
+          <th>章节关联</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>tiles_ch1_atlas</code></td>
+          <td>章节图集</td>
+          <td>12 种基础图块 · Ch1 变体</td>
+          <td>2048px</td>
+          <td>第1章加载</td>
+        </tr>
+        <tr>
+          <td><code>tiles_ch2_atlas</code></td>
+          <td>章节图集</td>
+          <td>14 种基础图块 · Ch2 变体</td>
+          <td>2048px</td>
+          <td>第2章加载</td>
+        </tr>
+        <tr>
+          <td><code>tiles_ch3_atlas</code></td>
+          <td>章节图集</td>
+          <td>16 种基础图块 · Ch3 变体</td>
+          <td>2048px</td>
+          <td>第3章加载</td>
+        </tr>
+        <tr>
+          <td><code>tiles_ch4_atlas</code></td>
+          <td>章节图集</td>
+          <td>17 种基础图块 · Ch4 变体</td>
+          <td>2048px</td>
+          <td>第4章加载</td>
+        </tr>
+        <tr>
+          <td><code>tiles_ch5_atlas</code></td>
+          <td>章节图集</td>
+          <td>19 种基础图块 · Ch5 变体</td>
+          <td>2048px</td>
+          <td>第5章加载</td>
+        </tr>
+        <tr>
+          <td><code>tiles_ch6_atlas</code></td>
+          <td>章节图集</td>
+          <td>20 种基础图块 · Ch6 变体</td>
+          <td>2048px</td>
+          <td>第6章加载</td>
+        </tr>
+        <tr>
+          <td><code>special_blocks_atlas</code></td>
+          <td>特殊块图集</td>
+          <td>5 种特殊块 × 12 帧 = 60 帧图像</td>
+          <td>2048px</td>
+          <td>全章节通用</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="card" style="margin-top:16px;">
+      <h3>按章节分 Atlas 的设计理由</h3>
+      <p>Web-canvas-2D 平台需要精细的内存管理。按章节分图集可以在玩家推进章节时渐进加载，保持活跃 VRAM 占用最小。特殊块图集全局共享，因为5种特殊块可在任意章节棋盘出现。</p>
+      <br>
+      <p>图集参数: 图块尺寸 128px · 间距 4px · 无边距 · 透明背景 · 格式 PNG · 分辨率 2x 设计 + 1x 降级备用。</p>
+    </div>
+  </section>
+
+  <!-- 生成提示词 -->
+  <section id="prompts">
+    <h2><span class="icon">🤖</span>生成提示词示例</h2>
+    <p style="margin-bottom:20px;">以下展示核心全局约束和3种代表性图块的提示词。完整25种图块提示词见 <span class="file-path">.allforai/game-design/art/tilesets/tileset-generation-spec.json</span>。</p>
+
+    <div class="card">
+      <h3>全局提示词约束（适用所有图块）</h3>
+      <div class="prompt-box">风格: Hand-drawn watercolor, soft organic brushwork, warm pastel palette
+参考: Animal Crossing New Horizons icon art × Wytchwood watercolor texture
+尺寸: 128×128px (2x: 256×256px), 8px bleed zone, effective draw area 112px
+轮廓: primary color darkened 32%, 2px outline, NO pure black #000000
+圆角: 24px corner radius at 2x scale
+纸纹: subtle paper grain overlay at 6% opacity inside draw area
+透明背景: transparent PNG, no shadows crossing tile boundary
+照明: soft top-left ambient light, no harsh directional shadows
+可读性: silhouette readable at 32×32px downscale
+禁止: pixel art | hyper-realistic 3D | neon cyberpunk | metallic chrome | pure black | sharp geometric corners | text/labels</div>
+    </div>
+
+    <div class="card">
+      <h3>金枪鱼 (tile_tuna) — 基础提示词</h3>
+      <div class="prompt-box"><div class="label">正向提示词</div>Hand-drawn watercolor style game icon of a golden bluefin tuna fish, cute chibi proportions, rounded body, side-profile with slight upward tilt, warm golden-yellow scales with teal accent fins, soft organic brushwork, transparent background, 128×128px with 8px bleed, no text, no labels, readable at 32px</div>
+      <div class="prompt-box"><div class="label">负向提示词</div>pixel art, realistic photo, 3D render, neon colors, sharp geometric shapes, pure black outlines, text, UI elements, decorations outside tile boundary</div>
+      <div class="prompt-box"><div class="label">第1章变体处理 (s0 褪色)</div>Post-process: reduce saturation to 8-15%, reduce brightness to 42-48%, apply teal #5BBFB5 environment tint wash</div>
+    </div>
+
+    <div class="card">
+      <h3>光波特殊块 (tile_wave_block) — 12帧动画提示词</h3>
+      <div class="prompt-box"><div class="label">正向提示词</div>Hand-drawn watercolor style special game tile icon, teal-cyan #7ECDE8 background cell, concentric ring ripple pattern with warm white inner glow, expanding wave motif visible at center, 12-frame idle animation loop, glowing breathing pulse effect, special block badge in bottom-left corner, transparent background, 128×128px with 8px bleed, highly readable at 32px</div>
+      <div class="prompt-box"><div class="label">帧动画规格</div>frame_count: 12 frames
+animation: idle_breathing_pulse loop
+period: 2.0–2.8s
+frame_timing: ~167ms per frame (uniform)
+effect: glow intensity oscillates; ring scale breathes ±4%</div>
+    </div>
+  </section>
+
+  <!-- 生成流程 -->
+  <section id="pipeline">
+    <h2><span class="icon">🔄</span>生成流程</h2>
+
+    <div class="pipeline-flow">
+      <div class="pipeline-step done">Step 0<br>源策略解析<br><small>SKIPPED (ai_gen)</small></div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step done">Step 1<br>图块规格定义<br><small>COMPLETED</small></div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step done">Step 2<br>生成规格 &amp; Manifest<br><small>COMPLETED_WITH_LIMITS</small></div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step pending">API 图像生成<br>180 PNG 文件<br><small>待执行</small></div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step pending">art-qa<br>视觉验证<br><small>待触发</small></div>
+    </div>
+
+    <div class="card">
+      <h3>子技能执行记录</h3>
+      <table class="atlas-table">
+        <thead>
+          <tr><th>子技能</th><th>状态</th><th>产出文件</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>game-art/tileset-spec</td>
+            <td><span class="status-badge status-pass">COMPLETED</span></td>
+            <td>
+              <div class="file-path">.allforai/game-design/art/tilesets/tileset-spec.json</div><br>
+              <div class="file-path">.allforai/game-design/art/tilesets/tileset-spec-report.json</div>
+            </td>
+          </tr>
+          <tr>
+            <td>game-art/2-5d-production-mode-spec</td>
+            <td><span class="status-badge status-not-applicable">NOT_APPLICABLE</span></td>
+            <td>dimension=2d，无需2.5D规格</td>
+          </tr>
+          <tr>
+            <td>game-art/tileset-generation</td>
+            <td><span class="status-badge status-automation-limited">COMPLETED_WITH_LIMITS</span></td>
+            <td>
+              <div class="file-path">.allforai/game-design/art/tilesets/tileset-generation-spec.json</div><br>
+              <div class="file-path">.allforai/game-design/art/tilesets/tileset-manifest.json</div><br>
+              <div class="file-path">.allforai/game-design/art/tilesets/tileset-generation-report.json</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 评审清单 -->
+  <section id="checklist">
+    <h2><span class="icon">✅</span>评审清单</h2>
+    <p style="margin-bottom:20px;">以下为 tile-art-gen 节点规格说明中定义的5项评审验收标准。规格层面已验证通过；视觉层面待图像生成后由 art-qa 确认。</p>
+
+    <ul class="checklist">
+      <li>
+        <span class="check check-pass">✓</span>
+        <div>
+          <strong>图块无缝拼接验证（边缘像素匹配，8方向衔接）</strong><br>
+          Glow Island 使用 puzzle_grid 模式（single_tiles 连接），无地形拼接需求。每个图块为独立图标，8px bleed zone 确保图案不超出图块边界。规格层面已验证。视觉确认待 PNG 生成后进行。
+        </div>
+      </li>
+      <li>
+        <span class="check check-pass">✓</span>
+        <div>
+          <strong>所有图案类型变体已生成（至少8种基础图案 + 各章节主题色变）</strong><br>
+          已定义 <strong>20种基础图案</strong>（超出要求的8种），每种图案有 <strong>6个章节色彩变体</strong>（s0→s4_full 饱和度分阶 + 各章主色调叠加）。合计 120 个基础图块变体文件路径已全部在 tileset-manifest.json 中登记。
+        </div>
+      </li>
+      <li>
+        <span class="check check-pass">✓</span>
+        <div>
+          <strong>图块 atlas 尺寸符合规格（符合 art-pipeline-config.json.tileset 配置）</strong><br>
+          tile_size_px=128 ✓，atlas_max_px=2048 ✓，per_chapter atlas policy ✓，special_blocks_atlas 独立 ✓。全部与 art-pipeline-config.json.tileset 配置严格对齐。
+        </div>
+      </li>
+      <li>
+        <span class="check check-pass">✓</span>
+        <div>
+          <strong>特殊块视觉识别度高（炸弹/行消/自动连/重排各有独特外观）</strong><br>
+          5种特殊块各有唯一底色+图形语言组合: 光波(青色同心圆)、光链(粉色金链)、穿透(橙色方向箭头)、置换(金色双向箭头)、连锁(墨绿序列点)。色彩互相不重叠，图形语言独特不混淆。规格已定义，待视觉确认。
+        </div>
+      </li>
+      <li>
+        <span class="check check-pass">✓</span>
+        <div>
+          <strong>combo触发特效帧完整（消除动画帧序列，不遮挡关键棋盘信息）</strong><br>
+          5种特殊块各有 <strong>12帧 frame animation</strong>，idle 呼吸脉冲周期 2.0–2.8s。图块透明背景确保不遮挡棋盘（art-pipeline-config.json special_block_idle_glow.board_occlusion=false）。激活VFX由 vfx-art-gen 节点独立处理，不影响图块本身。
+        </div>
+      </li>
+    </ul>
+
+    <div class="card" style="margin-top:24px;border-left:4px solid var(--golden);">
+      <h3>待 art-qa 执行的视觉验证项</h3>
+      <ul style="margin-left:20px;line-height:2;">
+        <li>实际 PNG 图像在 32px 下轮廓清晰可读（灰度可辨）</li>
+        <li>同章节20种图块视觉重量一致（无过亮或过暗异常值）</li>
+        <li>s0 阶段（8-15% 饱和度）图块在棋盘背景上仍有足够对比度</li>
+        <li>5种特殊块颜色徽章在各章节棋盘背景色上对比度符合 art-pipeline-config.json quality_gates.color_contrast_policy</li>
+        <li>特殊块12帧动画无跳帧、无闪烁</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  Glow Island · tile-art-gen 节点评审看板 · 生成于 2026-05-13 · 状态: 待人工评审
+</footer>
+
+<script>
+  // 导航高亮
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>

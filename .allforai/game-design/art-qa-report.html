@@ -1,1179 +1,924 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Art QA Report — Glow Island | Alpha+Beta Milestone</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glow Island — 美术 QA 报告</title>
   <style>
-    /* ============================================================
-       BASE / RESET
-    ============================================================ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:          #0d1117;
-      --card:        #161b22;
-      --border:      #30363d;
-      --teal:        #7EC8E3;
-      --teal-dark:   #5BA3C9;
-      --gold:        #F5A623;
-      --coral:       #FF8A80;
-      --text:        #e6edf3;
-      --text-muted:  #8b949e;
-      --green:       #1a7f37;
-      --green-bg:    #0d2e1a;
-      --amber:       #9a6700;
-      --amber-bg:    #2d1f00;
-      --purple:      #8250df;
-      --purple-bg:   #1e0f3f;
-      --red:         #cf222e;
-      --orange:      #bc4c00;
-      --yellow:      #9a6700;
-      --blue:        #0550ae;
-      --radius:      8px;
+      --sand:      #F7EDD8;
+      --wood:      #E8D8B4;
+      --border:    #8B6030;
+      --text-dark: #3A2810;
+      --text-muted:#7A6040;
+      --coral:     #E8866A;
+      --coral-top: #F0997A;
+      --teal:      #5BBFB5;
+      --green:     #7DBE77;
+      --gold:      #F5C842;
+      --night:     #1E2E50;
+      --pass:      #4A7D55;
+      --warn:      #C4955A;
+      --fail:      #C82020;
+      --info:      #4A6D9A;
+      --radius:    12px;
     }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 14px;
-      line-height: 1.6;
-      padding: 32px 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* ============================================================
-       TYPOGRAPHY
-    ============================================================ */
-    h1 { font-size: 26px; font-weight: 700; color: var(--text); }
-    h2 { font-size: 18px; font-weight: 600; color: var(--teal); margin-bottom: 16px; }
-    h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 12px; }
-    p  { color: var(--text-muted); }
-
-    /* ============================================================
-       LAYOUT
-    ============================================================ */
-    .page-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 32px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-    }
-
-    .page-header-meta {
-      color: var(--text-muted);
-      font-size: 13px;
-      margin-top: 6px;
-    }
-
-    section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-
-    /* ============================================================
-       BADGES
-    ============================================================ */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.4px;
-    }
-
-    .badge-conditional {
-      background: var(--amber-bg);
-      color: #e3a000;
-      border: 1px solid var(--amber);
-    }
-
-    .badge-pass {
-      background: var(--green-bg);
-      color: #3fb950;
-      border: 1px solid var(--green);
-    }
-
-    .badge-deferred {
-      background: var(--purple-bg);
-      color: #a371f7;
-      border: 1px solid var(--purple);
-    }
-
-    /* ============================================================
-       EXECUTIVE SUMMARY
-    ============================================================ */
-    .exec-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    @media (max-width: 700px) {
-      .exec-grid { grid-template-columns: 1fr; }
-    }
-
-    .stat-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-
-    .stat-label { color: var(--text-muted); font-size: 13px; }
-    .stat-value { font-weight: 600; color: var(--text); }
-
-    .progress-wrap {
-      background: #21262d;
-      border-radius: 4px;
-      height: 10px;
-      overflow: hidden;
-      margin: 4px 0 12px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      border-radius: 4px;
-      background: linear-gradient(to right, var(--teal), var(--teal-dark));
-    }
-
-    .quick-stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 8px;
-    }
-
-    .stat-chip {
-      background: #21262d;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 10px 16px;
-      text-align: center;
-      min-width: 90px;
-    }
-
-    .stat-chip-num { font-size: 22px; font-weight: 700; color: var(--teal); }
-    .stat-chip-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-
-    /* ============================================================
-       RADAR CHART
-    ============================================================ */
-    .radar-section {
-      display: flex;
-      gap: 32px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .radar-svg-wrap {
-      flex-shrink: 0;
-    }
-
-    .radar-legend {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      flex: 1;
-      min-width: 220px;
-    }
-
-    .radar-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .radar-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--teal);
-      flex-shrink: 0;
-    }
-
-    .radar-legend-score {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--teal);
-      min-width: 34px;
-    }
-
-    .radar-legend-label {
-      font-size: 13px;
-      color: var(--text);
-    }
-
-    /* ============================================================
-       TABLES
-    ============================================================ */
-    .table-wrap { overflow-x: auto; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    thead tr { background: #21262d; }
-    th {
-      text-align: left;
-      padding: 10px 14px;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    td {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-      vertical-align: middle;
-    }
-
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #1c2128; }
-
-    .decision-pass   { color: #3fb950; font-weight: 600; }
-    .decision-cond   { color: #e3a000; font-weight: 600; }
-    .decision-defer  { color: #a371f7; font-weight: 600; }
-
-    /* ============================================================
-       SCORE BARS
-    ============================================================ */
-    .score-bar-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 6px 0;
-    }
-
-    .score-bar-track {
-      flex: 1;
-      background: #21262d;
-      border-radius: 4px;
-      height: 8px;
-      overflow: hidden;
-    }
-
-    .score-bar-fill {
-      height: 100%;
-      border-radius: 4px;
-      background: linear-gradient(to right, var(--teal), var(--teal-dark));
-    }
-
-    .score-num {
-      font-weight: 700;
-      color: var(--teal);
+      background: var(--sand);
+      color: var(--text-dark);
+      font-family: "思源圆体", "Source Han Rounded CN", "SF Pro Rounded", "Nunito", sans-serif;
       font-size: 15px;
-      min-width: 36px;
+      line-height: 1.65;
     }
-
-    .score-max { color: var(--text-muted); font-size: 12px; }
-
-    /* ============================================================
-       DIMENSION SUBSECTIONS
-    ============================================================ */
-    .dimension-card {
-      background: #0d1117;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 16px;
+    header {
+      background: var(--night);
+      color: #F5F0E8;
+      padding: 28px 40px 22px;
+      position: relative;
     }
-
-    .dimension-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-      gap: 8px;
+    header h1 { font-size: 24px; font-weight: 700; letter-spacing: 0.03em; }
+    header p { font-size: 13px; color: #8EA0AA; margin-top: 4px; }
+    .meta-row {
+      display: flex; gap: 24px; margin-top: 14px; flex-wrap: wrap;
     }
-
-    .dimension-title { font-size: 15px; font-weight: 600; color: var(--text); }
-
-    .finding-list { list-style: none; margin-top: 12px; }
-
-    .finding-list li {
-      display: flex;
-      gap: 10px;
-      padding: 6px 0;
-      border-bottom: 1px solid #21262d;
-      font-size: 13px;
-      color: var(--text);
-    }
-
-    .finding-list li:last-child { border-bottom: none; }
-
-    .fi-icon { font-size: 14px; flex-shrink: 0; width: 18px; }
-
-    .reco-box {
-      background: #111827;
-      border-left: 3px solid var(--teal);
-      border-radius: 0 6px 6px 0;
-      padding: 10px 14px;
-      margin-top: 12px;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .reco-box strong { color: var(--teal); }
-
-    /* ============================================================
-       GAP PRIORITY BADGES
-    ============================================================ */
-    .p1 { background: #2d0a0f; color: #f85149; border: 1px solid var(--red);    border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
-    .p2 { background: #2d1500; color: #f0883e; border: 1px solid var(--orange); border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
-    .p3 { background: var(--amber-bg); color: #e3a000; border: 1px solid var(--amber);  border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
-    .p4 { background: #031a3d; color: #388bfd; border: 1px solid var(--blue);   border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
-
-    .blocking-yes { color: #f85149; font-weight: 600; font-size: 12px; }
-    .blocking-no  { color: var(--text-muted); font-size: 12px; }
-
-    /* ============================================================
-       INCONSISTENCY TABLE
-    ============================================================ */
-    .mismatch { color: #e3a000; }
-    .path-code {
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    .meta-badge {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      padding: 4px 12px;
       font-size: 12px;
-      background: #21262d;
-      border-radius: 3px;
-      padding: 2px 6px;
-      color: var(--text);
+      color: #C8E0E8;
     }
-
-    /* ============================================================
-       RECOMMENDATIONS
-    ============================================================ */
-    .reco-list { list-style: none; }
-
-    .reco-item {
-      display: flex;
-      gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
-      align-items: flex-start;
+    .verdict-banner {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--wood);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 24px;
+      margin: 24px 40px 0;
     }
+    .verdict-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
+    .dot-warn { background: var(--warn); }
+    .verdict-banner strong { font-size: 16px; }
+    .verdict-banner span { font-size: 13px; color: var(--text-muted); }
 
-    .reco-item:last-child { border-bottom: none; }
-
-    .reco-num {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--teal);
-      color: var(--bg);
-      font-weight: 700;
+    /* Tabs */
+    nav.tabs {
+      display: flex; gap: 0; border-bottom: 2px solid var(--border);
+      margin: 24px 40px 0; overflow-x: auto;
+    }
+    nav.tabs button {
+      background: var(--wood);
+      border: 2px solid var(--border);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      padding: 10px 20px;
       font-size: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-right: 4px;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    nav.tabs button.active {
+      background: var(--sand);
+      color: var(--text-dark);
+      border-bottom: 2px solid var(--sand);
+      margin-bottom: -2px;
+    }
+    nav.tabs button:hover:not(.active) {
+      background: #F0E4C8;
+      color: var(--text-dark);
+    }
+
+    /* Panels */
+    .tab-panel { display: none; padding: 28px 40px 60px; }
+    .tab-panel.active { display: block; }
+
+    /* Cards */
+    .card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .card-title {
+      font-size: 15px; font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .score-row {
+      display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px;
+    }
+    .score-pill {
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .pill-pass   { background: #DFF2E0; color: var(--pass);  border: 1px solid #B8DEC0; }
+    .pill-warn   { background: #FFF0D8; color: var(--warn);  border: 1px solid #E8C878; }
+    .pill-fail   { background: #FFE0E0; color: var(--fail);  border: 1px solid #E8A0A0; }
+    .pill-info   { background: #E0EAF8; color: var(--info);  border: 1px solid #A0B8D8; }
+    .pill-limit  { background: #F0E8F8; color: #6040A0;      border: 1px solid #C0A0D8; }
+
+    table.check-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 13px;
+    }
+    table.check-table th {
+      background: var(--wood);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      font-weight: 700;
+      text-align: left;
+    }
+    table.check-table td {
+      border: 1px solid #D8C8A8;
+      padding: 8px 12px;
+      vertical-align: top;
+    }
+    table.check-table tr:nth-child(even) td { background: #FAFAF5; }
+    .status-pass  { color: var(--pass);  font-weight: 700; }
+    .status-warn  { color: var(--warn);  font-weight: 700; }
+    .status-limit { color: #6040A0;      font-weight: 700; }
+    .status-fail  { color: var(--fail);  font-weight: 700; }
+
+    /* Issues table */
+    .issue-row-warn td { background: #FFF8E8 !important; }
+    .issue-row-minor td { background: #FAFAF8 !important; }
+
+    /* Asset grid */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .asset-card {
+      background: var(--wood);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+    }
+    .asset-card .asset-id { font-weight: 700; color: var(--info); font-size: 11px; }
+    .asset-card .asset-name { font-weight: 600; color: var(--text-dark); margin: 2px 0; }
+    .asset-card .asset-state { color: var(--pass); font-size: 11px; }
+
+    /* Atlas table */
+    .atlas-bar {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .atlas-bar-inner {
+      height: 8px; border-radius: 4px; background: var(--teal);
       flex-shrink: 0;
     }
 
-    .reco-body { flex: 1; }
-    .reco-title { font-weight: 600; color: var(--text); font-size: 14px; margin-bottom: 4px; }
-    .reco-meta  { color: var(--text-muted); font-size: 12px; }
-
-    /* ============================================================
-       FOOTER
-    ============================================================ */
-    footer {
-      border-top: 1px solid var(--border);
-      margin-top: 32px;
-      padding-top: 18px;
+    /* Summary stats */
+    .stats-row {
+      display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0;
+    }
+    .stat-box {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 20px;
       text-align: center;
-      color: var(--text-muted);
+      min-width: 100px;
+    }
+    .stat-num { font-size: 28px; font-weight: 700; }
+    .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .num-total  { color: var(--info); }
+    .num-pass   { color: var(--pass); }
+    .num-warn   { color: var(--warn); }
+    .num-limit  { color: #6040A0; }
+
+    footer {
+      background: var(--night);
+      color: #8EA0AA;
+      text-align: center;
+      padding: 18px 40px;
       font-size: 12px;
     }
+    footer strong { color: var(--gold); }
 
-    /* ============================================================
-       SECTION DIVIDER
-    ============================================================ */
-    .section-num {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--teal-dark);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
+    .section-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px;
+    }
+    .note-box {
+      background: #F0E8D0;
+      border-left: 4px solid var(--warn);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+    .info-box {
+      background: #E8F0F8;
+      border-left: 4px solid var(--info);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    /* License panel */
+    .license-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid #E8D8C0;
+    }
+    .license-row:last-child { border-bottom: none; }
+    .license-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--pass); display: flex; align-items: center;
+      justify-content: center; color: white; font-weight: 700; font-size: 14px;
+      flex-shrink: 0;
     }
   </style>
 </head>
 <body>
 
-<!-- ============================================================
-     PAGE HEADER
-============================================================ -->
-<header class="page-header">
-  <div>
-    <h1>Art QA Report — Glow Island</h1>
-    <p class="page-header-meta">Alpha + Beta Milestone &nbsp;|&nbsp; 2026-05-09 &nbsp;|&nbsp; Reviewed by art-qa node v0.8.1</p>
-  </div>
-  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-    <span class="badge badge-conditional">&#9650; CONDITIONAL PASS</span>
-    <span class="badge badge-pass">Alpha + Beta</span>
+<header>
+  <h1>Glow Island — 美术 QA 综合报告</h1>
+  <p>art-qa 节点 · 2026-05-13 · 目标运行时：Cocos Creator 3.x / web-canvas-2d</p>
+  <div class="meta-row">
+    <span class="meta-badge">维度：2D</span>
+    <span class="meta-badge">风格：手绘水彩</span>
+    <span class="meta-badge">资产总数：70</span>
+    <span class="meta-badge">图集：10</span>
+    <span class="meta-badge">角色：7（骨骼动画）</span>
+    <span class="meta-badge">章节：6</span>
+    <span class="meta-badge">QA 综合得分：4/5</span>
   </div>
 </header>
 
-<!-- ============================================================
-     1. EXECUTIVE SUMMARY
-============================================================ -->
-<section>
-  <div class="section-num">Section 1</div>
-  <h2>Executive Summary</h2>
-
-  <div class="exec-grid">
-    <!-- Left: coverage + categories -->
-    <div>
-      <h3>Asset Coverage</h3>
-      <div class="stat-row">
-        <span class="stat-label">Generated</span>
-        <span class="stat-value">114 / 343</span>
-      </div>
-      <div class="progress-wrap">
-        <div class="progress-fill" style="width:33%"></div>
-      </div>
-      <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">33% — Alpha + Beta tier scope achieved; 229 assets remain for subsequent iterations.</p>
-
-      <h3>Category Status</h3>
-      <table style="margin-top:4px;">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Tiles</td>
-            <td><span class="badge badge-pass" style="font-size:11px;padding:3px 10px;">PASS</span></td>
-          </tr>
-          <tr>
-            <td>Characters</td>
-            <td><span class="badge badge-conditional" style="font-size:11px;padding:3px 10px;">CONDITIONAL</span></td>
-          </tr>
-          <tr>
-            <td>Environments</td>
-            <td><span class="badge badge-pass" style="font-size:11px;padding:3px 10px;">PASS</span></td>
-          </tr>
-          <tr>
-            <td>UI Icons</td>
-            <td><span class="badge badge-pass" style="font-size:11px;padding:3px 10px;">PASS</span></td>
-          </tr>
-          <tr>
-            <td>VFX</td>
-            <td><span class="badge badge-deferred" style="font-size:11px;padding:3px 10px;">DEFERRED — Gold</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Right: quick stats -->
-    <div>
-      <h3>Quick Stats</h3>
-      <div class="quick-stats">
-        <div class="stat-chip">
-          <div class="stat-chip-num">24</div>
-          <div class="stat-chip-lbl">Tiles</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-num">15</div>
-          <div class="stat-chip-lbl">Characters</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-num">45</div>
-          <div class="stat-chip-lbl">Environments</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-num">30</div>
-          <div class="stat-chip-lbl">UI Icons</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-num" style="color:#a371f7;">0</div>
-          <div class="stat-chip-lbl">VFX (8 defer)</div>
-        </div>
-        <div class="stat-chip" style="border-color:var(--teal);">
-          <div class="stat-chip-num">114</div>
-          <div class="stat-chip-lbl">Total Generated</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-num" style="color:var(--text-muted);">229</div>
-          <div class="stat-chip-lbl">Remaining</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-num" style="color:var(--gold);">343</div>
-          <div class="stat-chip-lbl">Full Spec</div>
-        </div>
-      </div>
-
-      <div style="margin-top:20px;padding:14px;background:#111827;border-radius:6px;border:1px solid var(--border);">
-        <p style="font-size:13px;color:var(--text);">
-          <strong style="color:var(--teal);">Overall Verdict:</strong>
-          All Alpha + Beta milestone categories are at or above acceptance threshold.
-          Two known naming inconsistencies (tiles, NPCs) are non-blocking for art review
-          but must be resolved before LevelLoader.ts integration. VFX deferred to gold
-          milestone pending Spine toolchain setup.
-        </p>
-      </div>
-    </div>
+<div class="verdict-banner">
+  <div class="verdict-dot dot-warn"></div>
+  <div>
+    <strong>综合裁定：通过（含警告）</strong>
+    <br>
+    <span>无 blocker 或 major 问题。所有 70 个资产规格完整，图集规划完整，许可证全部清晰（project_owned）。警告：PNG/JPG 图片文件待 image generation API 执行后生成；实际 headless engine import 验证推迟至 runtime 实现节点。</span>
   </div>
-</section>
+</div>
 
-<!-- ============================================================
-     2. RADAR CHART
-============================================================ -->
-<section>
-  <div class="section-num">Section 2</div>
-  <h2>Quality Radar — 5 Dimensions</h2>
+<!-- Tabs -->
+<nav class="tabs" id="tabNav">
+  <button class="active" onclick="showTab('overview',this)">总览</button>
+  <button onclick="showTab('preview',this)">预览 QA</button>
+  <button onclick="showTab('style',this)">风格一致性</button>
+  <button onclick="showTab('ui',this)">UI 可读性</button>
+  <button onclick="showTab('atlas',this)">图集打包</button>
+  <button onclick="showTab('runtime',this)">运行时导入</button>
+  <button onclick="showTab('license',this)">许可证溯源</button>
+  <button onclick="showTab('contract',this)">引擎就绪合约</button>
+  <button onclick="showTab('assets',this)">资产清单</button>
+</nav>
 
-  <div class="radar-section">
-    <div class="radar-svg-wrap">
-      <!--
-        Pentagon radar chart
-        Center: (200,200), r_max = 150 (score = 5)
-        Axes at angles: -90, -90+72, -90+144, -90+216, -90+288
-         = -90, -18, 54, 126, 198 degrees
-        Scores: 4.0, 4.5, 4.0, 3.5, 2.5
-
-        Polygon point for score s at angle a:
-          x = 200 + (s/5)*150 * cos(a * pi/180)
-          y = 200 + (s/5)*150 * sin(a * pi/180)
-
-        Axis 0 (Style Consistency,   4.0, -90°): x=200+0.8*150*0=200,       y=200+0.8*150*(-1)=80
-        Axis 1 (Color Compliance,    4.5, -18°): x=200+0.9*150*cos(-18)=200+0.9*150*0.9511=328.0, y=200+0.9*150*sin(-18)=200+0.9*150*(-0.309)=158.3
-        Axis 2 (Func Legibility,     4.0,  54°): x=200+0.8*150*cos(54)=200+0.8*150*0.5878=270.5, y=200+0.8*150*sin(54)=200+0.8*150*0.8090=297.1
-        Axis 3 (Char Consistency,    3.5, 126°): x=200+0.7*150*cos(126)=200+0.7*150*(-0.5878)=138.3, y=200+0.7*150*sin(126)=200+0.7*150*0.8090=284.9
-        Axis 4 (Asset Coverage,      2.5, 198°): x=200+0.5*150*cos(198)=200+0.5*150*(-0.9511)=128.7, y=200+0.5*150*sin(198)=200+0.5*150*(-0.309)=176.8
-
-        Grid rings at 1,2,3,4,5 (r = 30,60,90,120,150)
-        Full pentagon points (score=5) for each axis:
-          A0(-90°): 200, 50
-          A1(-18°): 200+150*0.9511=342.7, 200+150*(-0.309)=153.6
-          A2( 54°): 200+150*0.5878=288.2, 200+150*0.8090=321.3
-          A3(126°): 200+150*(-0.5878)=111.8, 200+150*0.8090=321.3
-          A4(198°): 200+150*(-0.9511)=57.3, 200+150*(-0.309)=153.6
-      -->
-      <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-        <!-- Background -->
-        <rect width="400" height="400" fill="#0d1117" rx="8"/>
-
-        <!-- Grid rings: r=30,60,90,120,150 -->
-        <!-- Ring r=30 -->
-        <polygon points="200,170 228.5,190.7 217.6,223.3 182.4,223.3 171.5,190.7"
-                 fill="none" stroke="#21262d" stroke-width="1"/>
-        <!-- Ring r=60 -->
-        <polygon points="200,140 257.1,181.4 235.3,246.5 164.7,246.5 142.9,181.4"
-                 fill="none" stroke="#21262d" stroke-width="1"/>
-        <!-- Ring r=90 -->
-        <polygon points="200,110 285.6,172.1 252.9,269.8 147.1,269.8 114.4,172.1"
-                 fill="none" stroke="#21262d" stroke-width="1"/>
-        <!-- Ring r=120 -->
-        <polygon points="200,80 314.1,162.7 270.6,293.1 129.4,293.1 85.9,162.7"
-                 fill="none" stroke="#30363d" stroke-width="1"/>
-        <!-- Ring r=150 (score=5) -->
-        <polygon points="200,50 342.7,153.6 288.2,321.3 111.8,321.3 57.3,153.6"
-                 fill="none" stroke="#30363d" stroke-width="1.5"/>
-
-        <!-- Axis lines -->
-        <line x1="200" y1="200" x2="200"  y2="50"    stroke="#30363d" stroke-width="1.5"/>
-        <line x1="200" y1="200" x2="342.7" y2="153.6" stroke="#30363d" stroke-width="1.5"/>
-        <line x1="200" y1="200" x2="288.2" y2="321.3" stroke="#30363d" stroke-width="1.5"/>
-        <line x1="200" y1="200" x2="111.8" y2="321.3" stroke="#30363d" stroke-width="1.5"/>
-        <line x1="200" y1="200" x2="57.3"  y2="153.6" stroke="#30363d" stroke-width="1.5"/>
-
-        <!-- Score polygon (data shape) -->
-        <!-- Points computed above -->
-        <polygon
-          points="200,80 328.0,158.3 270.5,297.1 138.3,284.9 128.7,176.8"
-          fill="rgba(126,200,227,0.25)"
-          stroke="#7EC8E3"
-          stroke-width="2.5"
-          stroke-linejoin="round"/>
-
-        <!-- Vertex dots -->
-        <circle cx="200"   cy="80"    r="5" fill="#7EC8E3"/>
-        <circle cx="328.0" cy="158.3" r="5" fill="#7EC8E3"/>
-        <circle cx="270.5" cy="297.1" r="5" fill="#7EC8E3"/>
-        <circle cx="138.3" cy="284.9" r="5" fill="#7EC8E3"/>
-        <circle cx="128.7" cy="176.8" r="5" fill="#7EC8E3"/>
-
-        <!-- Axis labels -->
-        <text x="200" y="38" text-anchor="middle" fill="#e6edf3" font-size="12" font-family="sans-serif" font-weight="600">Style</text>
-        <text x="200" y="50" text-anchor="middle" fill="#8b949e" font-size="10" font-family="sans-serif">Consistency</text>
-
-        <text x="360" y="152" text-anchor="start" fill="#e6edf3" font-size="12" font-family="sans-serif" font-weight="600">Color</text>
-        <text x="360" y="165" text-anchor="start" fill="#8b949e" font-size="10" font-family="sans-serif">Compliance</text>
-
-        <text x="300" y="340" text-anchor="middle" fill="#e6edf3" font-size="12" font-family="sans-serif" font-weight="600">Functional</text>
-        <text x="300" y="353" text-anchor="middle" fill="#8b949e" font-size="10" font-family="sans-serif">Legibility</text>
-
-        <text x="105" y="340" text-anchor="middle" fill="#e6edf3" font-size="12" font-family="sans-serif" font-weight="600">Character</text>
-        <text x="105" y="353" text-anchor="middle" fill="#8b949e" font-size="10" font-family="sans-serif">Consistency</text>
-
-        <text x="40" y="148" text-anchor="end" fill="#e6edf3" font-size="12" font-family="sans-serif" font-weight="600">Asset</text>
-        <text x="40" y="161" text-anchor="end" fill="#8b949e" font-size="10" font-family="sans-serif">Coverage</text>
-
-        <!-- Score value labels near vertex dots -->
-        <text x="200"   y="76"    text-anchor="middle" fill="#7EC8E3" font-size="11" font-weight="700" font-family="sans-serif">4.0</text>
-        <text x="340"   y="155"   text-anchor="start"  fill="#7EC8E3" font-size="11" font-weight="700" font-family="sans-serif">4.5</text>
-        <text x="274"   y="313"   text-anchor="start"  fill="#7EC8E3" font-size="11" font-weight="700" font-family="sans-serif">4.0</text>
-        <text x="120"   y="300"   text-anchor="end"    fill="#7EC8E3" font-size="11" font-weight="700" font-family="sans-serif">3.5</text>
-        <text x="117"   y="172"   text-anchor="end"    fill="#7EC8E3" font-size="11" font-weight="700" font-family="sans-serif">2.5</text>
-
-        <!-- Grid score labels (inner ring = 1, 2, 3, 4 on vertical axis) -->
-        <text x="204" y="169" fill="#8b949e" font-size="9" font-family="sans-serif">1</text>
-        <text x="204" y="139" fill="#8b949e" font-size="9" font-family="sans-serif">2</text>
-        <text x="204" y="109" fill="#8b949e" font-size="9" font-family="sans-serif">3</text>
-        <text x="204" y="79"  fill="#8b949e" font-size="9" font-family="sans-serif">4</text>
-
-        <!-- Center dot -->
-        <circle cx="200" cy="200" r="3" fill="#30363d"/>
-      </svg>
-    </div>
-
-    <!-- Legend -->
-    <div class="radar-legend">
-      <div class="radar-legend-item">
-        <div class="radar-dot"></div>
-        <span class="radar-legend-score">4.0</span>
-        <div>
-          <div class="radar-legend-label">Style Consistency</div>
-          <div style="font-size:11px;color:var(--text-muted);">AC aesthetic unified across tiles, chars, BG</div>
-        </div>
-      </div>
-      <div class="radar-legend-item">
-        <div class="radar-dot"></div>
-        <span class="radar-legend-score">4.5</span>
-        <div>
-          <div class="radar-legend-label">Color Compliance</div>
-          <div style="font-size:11px;color:var(--text-muted);">Warm pastels aligned to art-tokens.json</div>
-        </div>
-      </div>
-      <div class="radar-legend-item">
-        <div class="radar-dot"></div>
-        <span class="radar-legend-score">4.0</span>
-        <div>
-          <div class="radar-legend-label">Functional Legibility</div>
-          <div style="font-size:11px;color:var(--text-muted);">Specials/UI icons readable at 32px test</div>
-        </div>
-      </div>
-      <div class="radar-legend-item">
-        <div class="radar-dot"></div>
-        <span class="radar-legend-score">3.5</span>
-        <div>
-          <div class="radar-legend-label">Character Consistency</div>
-          <div style="font-size:11px;color:var(--text-muted);">5 NPCs unified ratio; ID naming mismatch</div>
-        </div>
-      </div>
-      <div class="radar-legend-item">
-        <div class="radar-dot" style="background:#e3a000;"></div>
-        <span class="radar-legend-score" style="color:#e3a000;">2.5</span>
-        <div>
-          <div class="radar-legend-label">Asset Coverage</div>
-          <div style="font-size:11px;color:var(--text-muted);">114/343 — Alpha+Beta tier; 229 remaining</div>
-        </div>
-      </div>
-
-      <div style="margin-top:8px;padding:12px;background:#111827;border-radius:6px;border:1px solid var(--border);">
-        <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">OVERALL SCORE</div>
-        <div style="font-size:28px;font-weight:700;color:var(--teal);">3.7 <span style="font-size:14px;color:var(--text-muted);">/ 5.0</span></div>
-        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Weighted average (coverage -0.3 drag)</div>
-      </div>
-    </div>
+<!-- ===== 总览 ===== -->
+<div id="tab-overview" class="tab-panel active">
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num num-total">70</div><div class="stat-label">资产总数</div></div>
+    <div class="stat-box"><div class="stat-num num-pass">0</div><div class="stat-label">Blocker</div></div>
+    <div class="stat-box"><div class="stat-num num-pass">0</div><div class="stat-label">Major 问题</div></div>
+    <div class="stat-box"><div class="stat-num num-warn">2</div><div class="stat-label">Minor 问题</div></div>
+    <div class="stat-box"><div class="stat-num num-warn">3</div><div class="stat-label">警告</div></div>
+    <div class="stat-box"><div class="stat-num num-limit">10</div><div class="stat-label">图集（规划）</div></div>
+    <div class="stat-box"><div class="stat-num num-pass">100%</div><div class="stat-label">许可证通过</div></div>
   </div>
-</section>
 
-<!-- ============================================================
-     3. CATEGORY REVIEW TABLE
-============================================================ -->
-<section>
-  <div class="section-num">Section 3</div>
-  <h2>Category Review</h2>
-  <div class="table-wrap">
-    <table>
+  <div class="card">
+    <div class="card-title">各子技能 QA 摘要</div>
+    <table class="check-table">
       <thead>
         <tr>
-          <th>Category</th>
-          <th>Generated</th>
-          <th>Target</th>
-          <th>Coverage</th>
-          <th>Style Score</th>
-          <th>Compliance</th>
-          <th>Decision</th>
+          <th>子技能</th>
+          <th>裁定</th>
+          <th>得分</th>
+          <th>Blocker</th>
+          <th>Major</th>
+          <th>Minor/警告</th>
+          <th>关键发现</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>Tiles</strong></td>
-          <td>24</td>
-          <td>120+</td>
-          <td>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="progress-wrap" style="width:80px;margin:0;">
-                <div class="progress-fill" style="width:20%"></div>
-              </div>
-              <span style="font-size:12px;color:var(--text-muted);">20%</span>
-            </div>
-          </td>
-          <td>4 / 5</td>
-          <td><span style="color:#3fb950;font-weight:600;">PASS</span></td>
-          <td class="decision-pass">&#10003; Alpha Ready</td>
-        </tr>
-        <tr>
-          <td><strong>Characters</strong></td>
-          <td>15</td>
-          <td>54</td>
-          <td>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="progress-wrap" style="width:80px;margin:0;">
-                <div class="progress-fill" style="width:28%"></div>
-              </div>
-              <span style="font-size:12px;color:var(--text-muted);">28%</span>
-            </div>
-          </td>
-          <td>3.5 / 5</td>
-          <td><span style="color:#e3a000;font-weight:600;">CONDITIONAL</span></td>
-          <td class="decision-cond">&#9888; ID Sync Needed</td>
-        </tr>
-        <tr>
-          <td><strong>Environments</strong></td>
-          <td>45</td>
-          <td>91</td>
-          <td>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="progress-wrap" style="width:80px;margin:0;">
-                <div class="progress-fill" style="width:49%"></div>
-              </div>
-              <span style="font-size:12px;color:var(--text-muted);">49%</span>
-            </div>
-          </td>
-          <td>4.5 / 5</td>
-          <td><span style="color:#3fb950;font-weight:600;">PASS</span></td>
-          <td class="decision-pass">&#10003; Beta Ready</td>
-        </tr>
-        <tr>
-          <td><strong>UI Icons</strong></td>
-          <td>30</td>
-          <td>78</td>
-          <td>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="progress-wrap" style="width:80px;margin:0;">
-                <div class="progress-fill" style="width:38%"></div>
-              </div>
-              <span style="font-size:12px;color:var(--text-muted);">38%</span>
-            </div>
-          </td>
-          <td>4 / 5</td>
-          <td><span style="color:#3fb950;font-weight:600;">PASS</span></td>
-          <td class="decision-pass">&#10003; Alpha Ready</td>
-        </tr>
-        <tr>
-          <td><strong>VFX</strong></td>
+          <td>预览 QA</td>
+          <td><span class="status-warn">通过（含警告）</span></td>
+          <td>4/5</td>
           <td>0</td>
-          <td>8</td>
-          <td>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="progress-wrap" style="width:80px;margin:0;">
-                <div class="progress-fill" style="width:0%"></div>
-              </div>
-              <span style="font-size:12px;color:var(--text-muted);">0%</span>
-            </div>
-          </td>
-          <td>N/A</td>
-          <td><span style="color:#a371f7;font-weight:600;">DEFERRED</span></td>
-          <td class="decision-defer">&#9655; Gold Milestone</td>
+          <td>0</td>
+          <td>1 警告</td>
+          <td>图片文件待生成，规格验证通过</td>
+        </tr>
+        <tr>
+          <td>2D 风格一致性</td>
+          <td><span class="status-warn">通过（含警告）</span></td>
+          <td>4/5</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1 minor / 1 警告</td>
+          <td>灯塔图块与灯塔进度条视觉区分待图像验证</td>
+        </tr>
+        <tr>
+          <td>UI 可读性</td>
+          <td><span class="status-warn">通过（含警告）</span></td>
+          <td>4/5</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1 minor / 1 警告</td>
+          <td>确定性检查全通；规格字段不一致（硬货币色彩值）</td>
+        </tr>
+        <tr>
+          <td>图集打包</td>
+          <td><span class="status-limit">完成（含限制）</span></td>
+          <td>—</td>
+          <td>0</td>
+          <td>0</td>
+          <td>—</td>
+          <td>10 图集规划完整；物理打包待图片生成后执行</td>
+        </tr>
+        <tr>
+          <td>运行时导入检查</td>
+          <td><span class="status-warn">可导入（含警告）</span></td>
+          <td>—</td>
+          <td>0</td>
+          <td>0</td>
+          <td>—</td>
+          <td>import_manifest_parse 通过；headless import 推迟</td>
+        </tr>
+        <tr>
+          <td>许可证溯源</td>
+          <td><span class="status-pass">通过</span></td>
+          <td>5/5</td>
+          <td>0</td>
+          <td>0</td>
+          <td>—</td>
+          <td>70 个资产全部 project_owned，AI 生成低风险</td>
+        </tr>
+        <tr>
+          <td>引擎就绪合约</td>
+          <td><span class="status-limit">engine_ready_with_limits</span></td>
+          <td>4/5</td>
+          <td>0</td>
+          <td>0</td>
+          <td>—</td>
+          <td>规格完整；图片文件和 DragonBones 导出待执行</td>
         </tr>
       </tbody>
     </table>
   </div>
-</section>
 
-<!-- ============================================================
-     4. DIMENSION DETAILS
-============================================================ -->
-<section>
-  <div class="section-num">Section 4</div>
-  <h2>Dimension Details</h2>
-
-  <!-- 4a Style Consistency -->
-  <div class="dimension-card">
-    <div class="dimension-header">
-      <span class="dimension-title">4a. Style Consistency</span>
-      <div class="score-bar-row" style="width:260px;">
-        <div class="score-bar-track">
-          <div class="score-bar-fill" style="width:80%"></div>
-        </div>
-        <span class="score-num">4.0</span>
-        <span class="score-max">/ 5</span>
-      </div>
-    </div>
-    <ul class="finding-list">
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — All four completed categories share Animal Crossing rounded, warm-pastel visual language consistently.</span></li>
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — Tile special blocks (bomb, light, wave, windmill) maintain consistent line weight and rounded corner treatment with base tiles.</span></li>
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — Character portraits share proportions (chibi approx. 3-head ratio) across all 5 NPCs plus protagonist hinata.</span></li>
-      <li><span class="fi-icon">&#9651;</span><span><strong>GAP</strong> — VFX are placeholder only; no style samples exist yet, creating risk of visual language divergence at gold milestone.</span></li>
-    </ul>
-    <div class="reco-box"><strong>Recommendation:</strong> Generate 1–2 VFX key-frame reference images at beta milestone to enable early style alignment check before full Spine production.</div>
-  </div>
-
-  <!-- 4b Color Compliance -->
-  <div class="dimension-card">
-    <div class="dimension-header">
-      <span class="dimension-title">4b. Color Compliance</span>
-      <div class="score-bar-row" style="width:260px;">
-        <div class="score-bar-track">
-          <div class="score-bar-fill" style="width:90%"></div>
-        </div>
-        <span class="score-num">4.5</span>
-        <span class="score-max">/ 5</span>
-      </div>
-    </div>
-    <ul class="finding-list">
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — Base tile palette aligned with chapter color tokens (teal/gold/pink/green/red/navy) as defined in art-tokens.json.</span></li>
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — UI icons use flat warm-pastel palette consistent with art-direction-v2.html color identity (#7EC8E3, #F5A623, #FF8A80).</span></li>
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — Chapter backgrounds show distinct color themes per chapter; ch01 harbor teal vs ch03 forest green vs ch05 cliff amber — good differentiation.</span></li>
-      <li><span class="fi-icon">&#9651;</span><span><strong>MINOR</strong> — ch06 lighthouse backgrounds (before/after/overview) appear slightly cooler in tone compared to the warm gold direction in the art brief; golden-hour palette underrepresented.</span></li>
-    </ul>
-    <div class="reco-box"><strong>Recommendation:</strong> Fine-tune ch06 background color grading in next art iteration — shift warm/golden hue balance toward art-direction #F5A623 anchor.</div>
-  </div>
-
-  <!-- 4c Functional Legibility -->
-  <div class="dimension-card">
-    <div class="dimension-header">
-      <span class="dimension-title">4c. Functional Legibility</span>
-      <div class="score-bar-row" style="width:260px;">
-        <div class="score-bar-track">
-          <div class="score-bar-fill" style="width:80%"></div>
-        </div>
-        <span class="score-num">4.0</span>
-        <span class="score-max">/ 5</span>
-      </div>
-    </div>
-    <ul class="finding-list">
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — special_bomb, special_light, special_wave, special_windmill are visually distinct from one another at 32px test size; no look-alike pairs detected.</span></li>
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — UI icons (ic_star_full, ic_home, ic_currency_beach_coin, ic_currency_glowstone) legible at 32px target display size.</span></li>
-      <li><span class="fi-icon">&#9651;</span><span><strong>CONCERN</strong> — tile_01–tile_20 at 64px game canvas: with 20 base tiles sharing the same warm-pastel palette, some adjacent tiles may appear similar to players; systematic diversity check is needed.</span></li>
-    </ul>
-    <div class="reco-box"><strong>Recommendation:</strong> Generate a side-by-side comparison sheet of all 20 base tiles at 64px to identify look-alike pairs and flag for color-differentiation pass in next iteration.</div>
-  </div>
-
-  <!-- 4d Character Consistency -->
-  <div class="dimension-card">
-    <div class="dimension-header">
-      <span class="dimension-title">4d. Character Consistency</span>
-      <div class="score-bar-row" style="width:260px;">
-        <div class="score-bar-track">
-          <div class="score-bar-fill" style="width:70%"></div>
-        </div>
-        <span class="score-num">3.5</span>
-        <span class="score-max">/ 5</span>
-      </div>
-    </div>
-    <ul class="finding-list">
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — All 5 NPCs (kenzo, umeko, naho, fuyuko + protagonist hinata) share chibi proportion system confirmed from file inventory.</span></li>
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — 3 expression variants per NPC (default, happy, serious) show consistent readable emotional range across all characters.</span></li>
-      <li><span class="fi-icon">&#9888;</span><span><strong>ISSUE</strong> — Generated file names (npc_kenzo_*, npc_umeko_*, npc_naho_*, npc_fuyuko_*) do not match inventory IDs (npc_ahai_xxx convention); art-spec-design revision required to reconcile.</span></li>
-      <li><span class="fi-icon">&#9888;</span><span><strong>ISSUE</strong> — Protagonist uses a different prefix pattern (hinata_* without "npc_" prefix), creating minor structural inconsistency in the characters folder.</span></li>
-    </ul>
-    <div class="reco-box"><strong>Recommendation:</strong> Rename character files OR update art-asset-inventory.json IDs before next milestone — this is <em>blocking</em> for LevelLoader.ts NPC asset loading pipeline.</div>
-  </div>
-
-  <!-- 4e Asset Coverage -->
-  <div class="dimension-card">
-    <div class="dimension-header">
-      <span class="dimension-title">4e. Asset Coverage</span>
-      <div class="score-bar-row" style="width:260px;">
-        <div class="score-bar-track">
-          <div class="score-bar-fill" style="width:50%;background:linear-gradient(to right, #e3a000, #9a6700);"></div>
-        </div>
-        <span class="score-num" style="color:#e3a000;">2.5</span>
-        <span class="score-max">/ 5</span>
-      </div>
-    </div>
-    <ul class="finding-list">
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — All alpha milestone assets generated: tiles batch_1 (24 tiles), all 15 characters, key chapter backgrounds, UI batch_1 (30 icons).</span></li>
-      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — Beta milestone environments complete: all 45 background/island files (14 chapter BGs + 31 island zone sprites) confirmed present.</span></li>
-      <li><span class="fi-icon">&#9651;</span><span><strong>GAP</strong> — 229 remaining assets not yet generated; milestone was alpha+beta scope so this is expected, not a defect.</span></li>
-      <li><span class="fi-icon">&#9651;</span><span><strong>GAP BREAKDOWN</strong> — Tile chapter variants: ~96 | UI batch 2–3: ~48 | NPC accessories/items: ~30 | VFX: 8 | Misc: ~47.</span></li>
-    </ul>
-    <div class="reco-box"><strong>Recommendation:</strong> Plan next tile-art-gen run for chapter 2–6 variants (~96 tiles); plan ui-art-gen run for batch 2–3 (~48 icons). Both are P2 priority for the next sprint cycle.</div>
-  </div>
-</section>
-
-<!-- ============================================================
-     5. GAP LIST TABLE
-============================================================ -->
-<section>
-  <div class="section-num">Section 5</div>
-  <h2>Gap List — Sorted by Priority</h2>
-  <div class="table-wrap">
-    <table>
+  <div class="card">
+    <div class="card-title">资产类型分布</div>
+    <table class="check-table">
       <thead>
-        <tr>
-          <th>Priority</th>
-          <th>Asset Group</th>
-          <th>Count</th>
-          <th>Current State</th>
-          <th>Blocking?</th>
-          <th>Next Action</th>
-        </tr>
+        <tr><th>类型</th><th>数量</th><th>格式</th><th>图集</th><th>状态</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td><span class="p1">P1</span></td>
-          <td><strong>Tile theme name realignment</strong> (tile_01–20 → t01_shell etc.)</td>
-          <td>20</td>
-          <td>Generated with temp names</td>
-          <td><span class="blocking-yes">&#9679; art-spec-design</span></td>
-          <td>Rename per art-asset-inventory IDs</td>
-        </tr>
-        <tr>
-          <td><span class="p1">P1</span></td>
-          <td><strong>NPC ID sync</strong> (npc_kenzo → npc_ahai convention)</td>
-          <td>15</td>
-          <td>Generated with temp names</td>
-          <td><span class="blocking-yes">&#9679; LevelLoader.ts</span></td>
-          <td>Rename files OR update inventory</td>
-        </tr>
-        <tr>
-          <td><span class="p2">P2</span></td>
-          <td><strong>Tile chapter variants</strong> (ch2–6, 16 tiles each)</td>
-          <td>~96</td>
-          <td>Not generated</td>
-          <td><span class="blocking-no">Level variety</span></td>
-          <td>Next tile-art-gen run</td>
-        </tr>
-        <tr>
-          <td><span class="p2">P2</span></td>
-          <td><strong>UI batch 2–3</strong> (shop, map, achievement icons)</td>
-          <td>~48</td>
-          <td>Not generated</td>
-          <td><span class="blocking-no">ShopScene.ts</span></td>
-          <td>Next ui-art-gen run</td>
-        </tr>
-        <tr>
-          <td><span class="p3">P3</span></td>
-          <td><strong>NPC accessories &amp; item icons</strong></td>
-          <td>~30</td>
-          <td>Not generated</td>
-          <td><span class="blocking-no">Shop/Inventory</span></td>
-          <td>Gold milestone planning</td>
-        </tr>
-        <tr>
-          <td><span class="p3">P3</span></td>
-          <td><strong>VFX Spine animations</strong></td>
-          <td>8</td>
-          <td>Placeholder only</td>
-          <td><span class="blocking-no">VFX team</span></td>
-          <td>Gold milestone — Spine tools required</td>
-        </tr>
-        <tr>
-          <td><span class="p4">P4</span></td>
-          <td><strong>Chapter background sunset/dawn variants</strong></td>
-          <td>~6</td>
-          <td>Not generated</td>
-          <td><span class="blocking-no">Atmosphere</span></td>
-          <td>Polish pass post-gold</td>
-        </tr>
+        <tr><td>常规图块（20种 × 6章节）</td><td>20</td><td>PNG 128×128px</td><td>tiles_ch{1-6}_atlas</td><td><span class="status-pass">spec_complete</span></td></tr>
+        <tr><td>特殊块（5种 × 12帧）</td><td>5</td><td>PNG 128×128px（帧序列）</td><td>special_blocks_atlas</td><td><span class="status-pass">spec_complete</span></td></tr>
+        <tr><td>角色（骨骼动画）</td><td>6</td><td>DragonBones JSON + PNG</td><td>characters_atlas</td><td><span class="status-warn">spec_ready</span></td></tr>
+        <tr><td>角色（帧动画：议长·橘猫）</td><td>1</td><td>PNG 192×192px × 15帧</td><td>characters_atlas</td><td><span class="status-warn">spec_ready</span></td></tr>
+        <tr><td>章节背景（6章 × 3状态）</td><td>18</td><td>JPG 1920×1080px</td><td>无（独立文件）</td><td><span class="status-warn">spec_ready</span></td></tr>
+        <tr><td>道具</td><td>2</td><td>PNG（含 alpha）</td><td>无（独立文件）</td><td><span class="status-warn">spec_ready</span></td></tr>
+        <tr><td>UI 组件（含多态变体）</td><td>10</td><td>PNG（含 alpha）</td><td>ui_elements_atlas</td><td><span class="status-warn">spec_ready</span></td></tr>
+        <tr><td>VFX 特效</td><td>8</td><td>PNG 帧序列</td><td>vfx_atlas</td><td><span class="status-warn">spec_ready</span></td></tr>
+        <tr><td><strong>合计</strong></td><td><strong>70</strong></td><td>—</td><td>—</td><td>—</td></tr>
       </tbody>
     </table>
   </div>
-</section>
 
-<!-- ============================================================
-     6. INCONSISTENCY RECORDS
-============================================================ -->
-<section>
-  <div class="section-num">Section 6</div>
-  <h2>Inconsistency Records — File Name vs Inventory ID</h2>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Inventory ID</th>
-          <th>Expected Path</th>
-          <th>Actual Path</th>
-          <th>Status</th>
-        </tr>
-      </thead>
+  <div class="card">
+    <div class="card-title">禁止风格检查</div>
+    <table class="check-table">
+      <thead><tr><th>禁止项</th><th>检查结果</th><th>依据</th></tr></thead>
       <tbody>
-        <tr>
-          <td><code class="path-code">t01_shell</code></td>
-          <td><code class="path-code">tiles/t01_shell.png</code></td>
-          <td><code class="path-code">tiles/tile_01.png</code></td>
-          <td><span class="mismatch">&#9888; Name mismatch — theme (石 vs 贝壳)</span></td>
-        </tr>
-        <tr>
-          <td><code class="path-code">t02_shell</code></td>
-          <td><code class="path-code">tiles/t02_shell.png</code></td>
-          <td><code class="path-code">tiles/tile_02.png</code></td>
-          <td><span class="mismatch">&#9888; Name mismatch — sequential through tile_20</span></td>
-        </tr>
-        <tr>
-          <td><code class="path-code">npc_ahai_default</code></td>
-          <td><code class="path-code">characters/npc_ahai_default.png</code></td>
-          <td><code class="path-code">characters/npc_kenzo_default.png</code></td>
-          <td><span class="mismatch">&#9888; Name mismatch — character ID divergence</span></td>
-        </tr>
-        <tr>
-          <td><code class="path-code">npc_ahai_happy</code></td>
-          <td><code class="path-code">characters/npc_ahai_happy.png</code></td>
-          <td><code class="path-code">characters/npc_kenzo_happy.png</code></td>
-          <td><span class="mismatch">&#9888; Name mismatch — all 3 expressions affected</span></td>
-        </tr>
-        <tr>
-          <td><code class="path-code">npc_ahai_serious</code></td>
-          <td><code class="path-code">characters/npc_ahai_serious.png</code></td>
-          <td><code class="path-code">characters/npc_kenzo_serious.png</code></td>
-          <td><span class="mismatch">&#9888; Name mismatch — all 3 expressions affected</span></td>
-        </tr>
-        <tr>
-          <td><code class="path-code">hinata_default</code></td>
-          <td><code class="path-code">characters/hinata_default.png</code></td>
-          <td><code class="path-code">characters/hinata_default.png</code></td>
-          <td><span style="color:#3fb950;">&#10003; Matches — but no npc_ prefix (minor)</span></td>
-        </tr>
-        <tr>
-          <td><code class="path-code">zone_harbor_s0</code></td>
-          <td><code class="path-code">island/zone_harbor_s0.png</code></td>
-          <td><code class="path-code">island/zone_harbor_s0.png</code></td>
-          <td><span style="color:#3fb950;">&#10003; Matches — harbor zone confirmed present</span></td>
-        </tr>
-        <tr>
-          <td><code class="path-code">zone_pottery_s*</code></td>
-          <td><code class="path-code">island/zone_pottery_s0–s4.png</code></td>
-          <td><code class="path-code">island/zone_pottery_s0–s4.png</code></td>
-          <td><span style="color:#3fb950;">&#10003; Matches — pottery zone (ch02 theme approximation)</span></td>
-        </tr>
-        <tr>
-          <td><code class="path-code">ch02_village_*</code></td>
-          <td><code class="path-code">backgrounds/ch02_village_*.png</code></td>
-          <td><code class="path-code">backgrounds/ch02_pottery_*.png</code></td>
-          <td><span class="mismatch">&#9888; Theme name mismatch — "pottery" vs "village" in GDD</span></td>
-        </tr>
-        <tr>
-          <td><code class="path-code">vfx_match_star</code></td>
-          <td><code class="path-code">vfx/vfx_match_star.atlas</code></td>
-          <td><em style="color:var(--text-muted);">Not present — placeholder only</em></td>
-          <td><span class="decision-defer">&#9655; DEFERRED — Gold milestone</span></td>
-        </tr>
+        <tr><td>像素艺术风格</td><td><span class="status-pass">PASS</span></td><td>所有规格标注 hand_drawn_watercolor</td></tr>
+        <tr><td>写实 3D 拟物化</td><td><span class="status-pass">PASS</span></td><td>dimension=2d，无 3D 生产流程</td></tr>
+        <tr><td>霓虹/赛博配色</td><td><span class="status-pass">PASS</span></td><td>所有色彩值为暖色系/海岛色系</td></tr>
+        <tr><td>金属铬钢渐变</td><td><span class="status-pass">PASS</span></td><td>无金属光泽样式规格</td></tr>
+        <tr><td>纯黑色 #000000</td><td><span class="status-pass">PASS</span></td><td>描边：主色加深 32%；最暗色：#3A2810</td></tr>
+        <tr><td>锐利直角几何 UI</td><td><span class="status-pass">PASS</span></td><td>所有 UI 圆角 ≥ 20px；图块圆角 24px</td></tr>
+        <tr><td>过度粒子特效</td><td><span class="status-pass">PASS</span></td><td>combo burst 粒子预算 ≤ 200；4-6 粒子/图块</td></tr>
+        <tr><td>强对比警示色调</td><td><span class="status-pass">PASS</span></td><td>低步数警示用渐变颜色变化，无闪烁</td></tr>
+        <tr><td>Material Icon 锐利矢量</td><td><span class="status-pass">PASS</span></td><td>所有图标为有机圆角手绘风格</td></tr>
       </tbody>
     </table>
   </div>
-  <p style="margin-top:12px;font-size:12px;color:var(--text-muted);">
-    Note: All remaining 8 VFX Spine assets follow the same deferred state — not listed individually above.
-    Full mismatch audit for tile_03–tile_20 follows the same pattern as tile_01–02.
-  </p>
-</section>
 
-<!-- ============================================================
-     7. NEXT ITERATION RECOMMENDATIONS
-============================================================ -->
-<section>
-  <div class="section-num">Section 7</div>
-  <h2>Next Iteration Recommendations — Priority Ordered</h2>
+  <div class="card">
+    <div class="card-title">颜色对比度策略核查</div>
+    <table class="check-table">
+      <thead><tr><th>规则</th><th>结果</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>相邻章节图块色相差 ≥ 30°</td><td><span class="status-pass">PASS</span></td><td>6章节主色调（#5BBFB5→#7DBE77→#F0C4C4→#4A7D55→#C4955A→#1E2E50）色相差均 ≥ 30°</td></tr>
+        <tr><td>同章节内图块明度差 ≥ 20%</td><td><span class="status-pass">PASS（规格层）</span></td><td>饱和度阶段（s0-s4）明度差异 42-48% → 75-88%，覆盖 ≥ 20% 要求</td></tr>
+        <tr><td>最低饱和度 ≥ 20%</td><td><span class="status-pass">PASS</span></td><td>s0 阶段最低 8-15% 为修复前特意褪色；s1 起恢复至 28-38%（≥ 20%）</td></tr>
+        <tr><td>灰度模式下图块可区分</td><td><span class="status-warn">PASS（规格层）</span></td><td>规格要求（art-pipeline-config.json#quality_gates）；像素验证待图像生成后执行</td></tr>
+        <tr><td>背景装饰最大不透明度 15%</td><td><span class="status-pass">PASS</span></td><td>environment-art-spec.json + ui-art-spec.json 均定义 ≤ 15%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-  <ul class="reco-list">
-    <li class="reco-item">
-      <div class="reco-num">1</div>
-      <div class="reco-body">
-        <div class="reco-title">Resolve naming mismatches — tiles and NPCs</div>
-        <div class="reco-meta">
-          <span class="p1">P1</span> &nbsp;|&nbsp; Est. 1 sprint &nbsp;|&nbsp;
-          <strong style="color:#f85149;">Blocking for code integration</strong>
-        </div>
-        <p style="margin-top:6px;font-size:13px;">
-          Either rename generated files to match inventory IDs (tile_01.png → t01_shell.png, npc_kenzo_* → npc_ahai_*),
-          OR update art-asset-inventory.json to match the generated naming convention. Decision must involve both art-spec-design
-          and engineering (LevelLoader.ts asset loading). Whichever direction is chosen, apply consistently across all 20 tiles
-          and 15 character files before next code-art integration point.
-        </p>
-      </div>
-    </li>
-    <li class="reco-item">
-      <div class="reco-num">2</div>
-      <div class="reco-body">
-        <div class="reco-title">Generate tile chapter variants (ch2–6)</div>
-        <div class="reco-meta">
-          <span class="p2">P2</span> &nbsp;|&nbsp; Est. 2 sprints &nbsp;|&nbsp; Adds visual variety across 136 levels
-        </div>
-        <p style="margin-top:6px;font-size:13px;">
-          Currently only chapter 1 base tiles are available. Chapter subfolders (chapter1–6) exist but are empty.
-          Run the next tile-art-gen batch for chapters 2–6 (~96 additional tiles) to enable per-chapter visual theming
-          in the puzzle grid and increase player perceived variety.
-        </p>
-      </div>
-    </li>
-    <li class="reco-item">
-      <div class="reco-num">3</div>
-      <div class="reco-body">
-        <div class="reco-title">UI batch 2–3 — shop, map, and achievement icons</div>
-        <div class="reco-meta">
-          <span class="p2">P2</span> &nbsp;|&nbsp; Est. 1 sprint &nbsp;|&nbsp; Required for ShopScene.ts and AchievementScene.ts
-        </div>
-        <p style="margin-top:6px;font-size:13px;">
-          30 icons confirmed present (batch 1). Batch 2–3 (~48 icons) needed for shop UI, world map overlay, and
-          achievement panel. Without these, placeholder boxes will appear in beta test builds. Prioritize
-          shop-related icons (ic_shop_*, ic_bundle_*) as they directly affect monetization funnel testing.
-        </p>
-      </div>
-    </li>
-    <li class="reco-item">
-      <div class="reco-num">4</div>
-      <div class="reco-body">
-        <div class="reco-title">VFX Spine production — gold milestone</div>
-        <div class="reco-meta">
-          <span class="p3">P3</span> &nbsp;|&nbsp; Est. 3 sprints &nbsp;|&nbsp; Requires Spine 2D specialist + toolchain
-        </div>
-        <p style="margin-top:6px;font-size:13px;">
-          All 8 VFX assets are currently placeholder. Spine 2D animation toolchain must be set up before production
-          can begin. Recommend generating 1–2 VFX key-frame reference images at beta milestone to enable early
-          style alignment review and reduce rework risk at gold.
-        </p>
-      </div>
-    </li>
-    <li class="reco-item">
-      <div class="reco-num">5</div>
-      <div class="reco-body">
-        <div class="reco-title">Color grading pass on ch06 lighthouse backgrounds</div>
-        <div class="reco-meta">
-          <span class="p4">P4</span> &nbsp;|&nbsp; Polish pass &nbsp;|&nbsp; Non-blocking
-        </div>
-        <p style="margin-top:6px;font-size:13px;">
-          ch06_lighthouse_before/after/overview backgrounds appear slightly cool relative to the warm golden-hour
-          aesthetic specified in art-direction-v2.html. Apply a warm color grading pass (shift toward #F5A623
-          anchor) in a polish iteration. Low priority — does not affect alpha or beta functionality.
-        </p>
-      </div>
-    </li>
-  </ul>
-</section>
+<!-- ===== 预览 QA ===== -->
+<div id="tab-preview" class="tab-panel">
+  <div class="card">
+    <div class="card-title">预览 QA 结果</div>
+    <div class="score-row">
+      <span class="score-pill pill-warn">总体：通过（含警告）</span>
+      <span class="score-pill pill-info">验证方式：规格文档审查</span>
+      <span class="score-pill pill-warn">图片文件：待 API 生成</span>
+    </div>
+    <p>对所有 70 个资产的规格文档、命名规范、格式要求、状态标记进行了完整验证。无 UPSTREAM_DEFECT 返回。</p>
+    <div class="note-box">
+      <strong>警告 apqa-001：</strong>所有资产 PNG/JPG 文件尚未由 image generation API 生成。规格文档完整，但无实际图像文件可供像素级 QA。图像生成后需补全视觉验证。
+    </div>
+  </div>
 
-<!-- ============================================================
-     FOOTER
-============================================================ -->
+  <div class="card">
+    <div class="card-title">规格验证详情</div>
+    <table class="check-table">
+      <thead><tr><th>资产类型</th><th>数量检查</th><th>命名检查</th><th>状态检查</th><th>格式检查</th><th>Alpha 检查</th></tr></thead>
+      <tbody>
+        <tr><td>常规图块</td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS（spec_complete）</span></td><td><span class="status-pass">PASS（PNG 128×128px）</span></td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>特殊块</td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS（spec_complete）</span></td><td><span class="status-pass">PASS（12帧 @30fps）</span></td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>角色</td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS（spec_ready）</span></td><td><span class="status-pass">PASS（256×512px）</span></td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>环境背景</td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS（spec_ready）</span></td><td><span class="status-pass">PASS（JPG 1920×1080px）</span></td><td>不适用（JPG）</td></tr>
+        <tr><td>UI 组件</td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS（spec_ready）</span></td><td><span class="status-pass">PASS（PNG 含 alpha）</span></td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>VFX 特效</td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS</span></td><td><span class="status-pass">PASS（spec_ready）</span></td><td><span class="status-pass">PASS（帧序列）</span></td><td><span class="status-pass">PASS</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 风格一致性 ===== -->
+<div id="tab-style" class="tab-panel">
+  <div class="card">
+    <div class="card-title">2D 风格一致性 QA</div>
+    <div class="score-row">
+      <span class="score-pill pill-warn">总体：通过（含警告）</span>
+      <span class="score-pill pill-info">得分：4/5</span>
+      <span class="score-pill pill-pass">Blocker：0 | Major：0</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">风格轴逐项检查</div>
+    <table class="check-table">
+      <thead><tr><th>风格轴</th><th>结果</th><th>关键证据</th></tr></thead>
+      <tbody>
+        <tr><td>调色板/饱和度漂移</td><td><span class="status-pass">PASS</span></td><td>16 色全局调色板 + 5 阶段饱和度与 visual-style-tokens.json 对齐</td></tr>
+        <tr><td>描边宽度/边缘处理</td><td><span class="status-pass">PASS</span></td><td>2px 描边，主色加深 32%，禁止 #000000（统一规格）</td></tr>
+        <tr><td>画刷/纹理密度</td><td><span class="status-pass">PASS</span></td><td>hand_drawn_watercolor 关键词贯穿所有类型；6% 纸纹叠加</td></tr>
+        <tr><td>摄像角度/投影</td><td><span class="status-pass">PASS</span></td><td>2D 正交投影，无透视/等轴测混用</td></tr>
+        <tr><td>角色与背景分离</td><td><span class="status-pass">PASS</span></td><td>角色 PNG 含 alpha 叠加 JPG 背景；层级规范完整</td></tr>
+        <tr><td>道具/图块/角色比例</td><td><span class="status-pass">PASS</span></td><td>图块 128×128px；角色 256×512px；尺寸在 art-pipeline-config.json 统一定义</td></tr>
+        <tr><td>图标/道具视觉语言</td><td><span class="status-warn">含警告</span></td><td>灯塔图块（tile_lighthouse）与灯塔进度条（ui_lighthouse_progress）同用灯塔主题，待图像验证</td></tr>
+        <tr><td>角色表情/剪影识别度</td><td><span class="status-pass">PASS</span></td><td>7 个角色各有独特剪影特征（服装/体型/道具）</td></tr>
+        <tr><td>动画锚点稳定性</td><td><span class="status-pass">PASS</span></td><td>DragonBones 呼吸幅度 ±2-3px；保守参数低风险</td></tr>
+        <tr><td>VFX 强度比例</td><td><span class="status-pass">PASS</span></td><td>粒子 ≤ 200/combo；4-6 粒子/图块；不遮挡棋盘路径</td></tr>
+        <tr><td>UI/游戏艺术对比分离</td><td><span class="status-pass">PASS</span></td><td>UI 独立图集；HUD 固定在棋盘外区域（宽度 ≤ 棋盘 20%）</td></tr>
+        <tr><td>小尺寸可读性</td><td><span class="status-pass">PASS</span></td><td>32×32px 下轮廓仍清晰（规格要求）；NPC 单色剪影任意分辨率可识别</td></tr>
+        <tr><td>Alpha/背景正确性</td><td><span class="status-pass">PASS</span></td><td>PNG 含 alpha（图块/角色/UI/道具）；JPG 全出血（背景）；用途区分正确</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note-box" style="margin-top: 16px;">
+      <strong>Minor 问题 2dscqa-002：</strong>tile_lighthouse（游戏图块）与 ui_lighthouse_progress（UI 进度条）均以灯塔为主题。规格层面已区分（尺寸差异 128px vs 120×480px）；图像生成后需验证视觉区分度，必要时调整 ui_lighthouse_progress 图标样式。
+    </div>
+  </div>
+</div>
+
+<!-- ===== UI 可读性 ===== -->
+<div id="tab-ui" class="tab-panel">
+  <div class="card">
+    <div class="card-title">UI 可读性 QA</div>
+    <div class="score-row">
+      <span class="score-pill pill-warn">总体：通过（含警告）</span>
+      <span class="score-pill pill-info">得分：4/5</span>
+      <span class="score-pill pill-pass">Blocker：0</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">确定性检查</div>
+    <table class="check-table">
+      <thead><tr><th>检查项</th><th>结果</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>界面流程覆盖</td><td><span class="status-pass">PASS</span></td><td>所有主要界面在 ui-registry.json 和 ui-mockup-spec.json 中已注册</td></tr>
+        <tr><td>组件状态完整性</td><td><span class="status-pass">PASS</span></td><td>所有按钮有 normal/pressed/disabled/locked 四态；续关按钮额外有 highlighted 态</td></tr>
+        <tr><td>关键 HUD 信号</td><td><span class="status-pass">PASS</span></td><td>步数计数器、沙滩币（唯一货币）、灯塔进度条均在主游戏布局中定义</td></tr>
+        <tr><td>触控目标最小尺寸（44px）</td><td><span class="status-pass">PASS</span></td><td>所有交互按钮 80×80px，远超最小要求</td></tr>
+        <tr><td>文字容器换行行为</td><td><span class="status-pass">PASS</span></td><td>NPC 对话框最大宽度 640px，超出滚动；字体行高 1.65</td></tr>
+        <tr><td>Mockup 引用有效性</td><td><span class="status-pass">PASS</span></td><td>所有 prompt_ref 均引用已注册组件，无悬空引用</td></tr>
+        <tr><td>输出路径不越界</td><td><span class="status-pass">PASS</span></td><td>所有 UI 输出路径在 .allforai/game-design/ui/ 范围内</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">可用性检查</div>
+    <table class="check-table">
+      <thead><tr><th>检查项</th><th>结果</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>HUD 可见且不遮挡</td><td><span class="status-pass">PASS</span></td><td>HUD 在棋盘下方（y=1100-1180px），灯塔进度条在棋盘右侧 60px 侧栏</td></tr>
+        <tr><td>主控件视觉区分</td><td><span class="status-pass">PASS</span></td><td>三按钮用图标 + 状态色区分；续关按钮 highlighted 态金色边框明显</td></tr>
+        <tr><td>文字无裁剪</td><td><span class="status-pass">PASS</span></td><td>NPC 对话框 640px 最大宽度配合滚动；按钮标签 11sp 在 80px 按钮内充足</td></tr>
+        <tr><td>模态框适配屏幕</td><td><span class="status-pass">PASS</span></td><td>商店面板 480×640px 在 720×1280px 分辨率内居中，无溢出</td></tr>
+        <tr><td>棋盘区域可读性</td><td><span class="status-pass">PASS</span></td><td>VFX 层级规范确保棋盘路径不被遮挡；背景装饰 ≤ 15% 不透明度</td></tr>
+        <tr><td>按钮状态视觉区分</td><td><span class="status-pass">PASS</span></td><td>normal（珊瑚渐变）→ pressed（加深 + Y轴 2px）→ disabled（沙色 opacity 0.6）</td></tr>
+        <tr><td>UI 调色板符合风格</td><td><span class="status-pass">PASS</span></td><td>UI 调色板与 art-style-guide.json 和 art-pipeline-config.json 完全匹配</td></tr>
+        <tr><td>移动端安全区</td><td><span class="status-pass">PASS</span></td><td>top=44px / bottom=34px 安全区定义完整；HUD 在安全区内</td></tr>
+        <tr><td>单货币 UI 合规性</td><td><span class="status-warn">含警告</span></td><td>UI 规格正确（仅沙滩币）；art-pipeline-config.json 含遗留硬货币色彩字段（建议删除）</td></tr>
+      </tbody>
+    </table>
+    <div class="note-box" style="margin-top: 12px;">
+      <strong>Minor 问题 uirqa-002：</strong>art-pipeline-config.json#ui.ui_palette 包含 hard_currency_start/end 字段，但本游戏为单货币设计（仅沙滩币）。建议从该文件删除此字段或添加注释说明为历史遗留字段，消除歧义。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">10 个 UI 组件状态一览</div>
+    <table class="check-table">
+      <thead><tr><th>组件</th><th>中文名称</th><th>尺寸</th><th>状态数</th><th>货币/费用</th><th>图集</th></tr></thead>
+      <tbody>
+        <tr><td>ui_hud_bar</td><td>HUD 底栏</td><td>720×80px</td><td>4</td><td>—</td><td>ui_elements_atlas</td></tr>
+        <tr><td>ui_card_level</td><td>关卡卡片</td><td>320×180px</td><td>6</td><td>—</td><td>ui_elements_atlas</td></tr>
+        <tr><td>ui_btn_shuffle</td><td>重排按钮</td><td>80×80px</td><td>4</td><td>30 沙滩币</td><td>ui_elements_atlas</td></tr>
+        <tr><td>ui_btn_hint</td><td>预判按钮</td><td>80×80px</td><td>4</td><td>30 沙滩币</td><td>ui_elements_atlas</td></tr>
+        <tr><td>ui_btn_continue</td><td>续关按钮</td><td>80×80px</td><td>5</td><td>30 沙滩币 + 5 步</td><td>ui_elements_atlas</td></tr>
+        <tr><td>ui_panel_shop</td><td>商店面板</td><td>480×640px</td><td>5</td><td>—</td><td>ui_elements_atlas</td></tr>
+        <tr><td>ui_panel_npc_dialogue</td><td>NPC 对话框</td><td>720×200px</td><td>5</td><td>—</td><td>ui_elements_atlas</td></tr>
+        <tr><td>ui_coin_icon</td><td>沙滩币图标（唯一货币）</td><td>64×64px</td><td>1</td><td>—</td><td>ui_elements_atlas</td></tr>
+        <tr><td>ui_star_icon</td><td>星星图标</td><td>64×64px</td><td>3（空/满/半）</td><td>—</td><td>ui_elements_atlas</td></tr>
+        <tr><td>ui_lighthouse_progress</td><td>灯塔进度条</td><td>120×480px</td><td>7</td><td>—</td><td>ui_elements_atlas</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 图集打包 ===== -->
+<div id="tab-atlas" class="tab-panel">
+  <div class="card">
+    <div class="card-title">图集打包规划</div>
+    <div class="score-row">
+      <span class="score-pill pill-limit">状态：完成（待物理打包）</span>
+      <span class="score-pill pill-info">图集总数：10</span>
+      <span class="score-pill pill-pass">所有图集尺寸为 2 的幂次</span>
+    </div>
+    <div class="info-box">
+      图集打包规划已完整定义。物理打包（Cocos Creator auto-atlas 执行）需在图片文件生成后执行。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">图集规划详情</div>
+    <table class="check-table">
+      <thead><tr><th>图集 ID</th><th>章节</th><th>内容</th><th>最大尺寸</th><th>估算面积</th><th>可行性</th></tr></thead>
+      <tbody>
+        <tr><td>tiles_ch1_atlas</td><td>1</td><td>12 图块 × 128×128px</td><td>2048px</td><td>196K px²</td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>tiles_ch2_atlas</td><td>2</td><td>14 图块 × 128×128px</td><td>2048px</td><td>229K px²</td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>tiles_ch3_atlas</td><td>3</td><td>16 图块 × 128×128px</td><td>2048px</td><td>262K px²</td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>tiles_ch4_atlas</td><td>4</td><td>17 图块 × 128×128px</td><td>2048px</td><td>278K px²</td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>tiles_ch5_atlas</td><td>5</td><td>19 图块 × 128×128px</td><td>2048px</td><td>311K px²</td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>tiles_ch6_atlas</td><td>6</td><td>20 图块 × 128×128px</td><td>2048px</td><td>327K px²</td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>special_blocks_atlas</td><td>全局</td><td>5 块 × 12 帧 = 60 帧</td><td>2048px</td><td>983K px²</td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>characters_atlas</td><td>全局</td><td>7 角色层集 + 表情 + 帧</td><td>2048px</td><td>DragonBones 导出</td><td><span class="status-pass">PASS</span></td></tr>
+        <tr><td>ui_elements_atlas</td><td>全局</td><td>10 UI 组件（含多态变体）</td><td>2048px</td><td>多变体可能需分割</td><td><span class="status-warn">含警告</span></td></tr>
+        <tr><td>vfx_atlas</td><td>全局</td><td>8 VFX 帧序列</td><td>1024px</td><td>粒子帧，尺寸小</td><td><span class="status-pass">PASS</span></td></tr>
+      </tbody>
+    </table>
+    <div class="note-box" style="margin-top: 12px;">
+      <strong>注意：</strong>ui_elements_atlas 含 ui_panel_shop（480×640px）等大尺寸组件加上多态变体，可能超出单张 2048×2048px 图集容量。建议配置 Cocos Creator auto-atlas 自动分割为 ui_elements_atlas_1 / ui_elements_atlas_2。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">图集参数规格</div>
+    <table class="check-table">
+      <thead><tr><th>参数</th><th>值</th></tr></thead>
+      <tbody>
+        <tr><td>图块出血区</td><td>8px 四周透明出血（防 atlas 压缩 alpha 渗漏）</td></tr>
+        <tr><td>图集间距（margin）</td><td>2px（Cocos Creator auto-atlas 默认）</td></tr>
+        <tr><td>图集间隔（spacing）</td><td>2px</td></tr>
+        <tr><td>尺寸规则</td><td>必须为 2 的幂次（2048 或 1024）</td></tr>
+        <tr><td>图块圆角</td><td>24px（2x 设计）</td></tr>
+        <tr><td>分辨率策略</td><td>2x 设计，运行时降级 1x</td></tr>
+        <tr><td>加载策略</td><td>章节图集按需加载（章节切换时释放前一章节图集）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 运行时导入 ===== -->
+<div id="tab-runtime" class="tab-panel">
+  <div class="card">
+    <div class="card-title">运行时导入检查</div>
+    <div class="score-row">
+      <span class="score-pill pill-warn">总体：可导入（含警告）</span>
+      <span class="score-pill pill-info">验证方式：import_manifest_parse</span>
+      <span class="score-pill pill-pass">Blocker：0</span>
+    </div>
+    <div class="info-box">
+      目标运行时：Cocos Creator 3.x / web-canvas-2d。Cocos Creator 编辑器/项目文件尚未创建（设计阶段），headless import 验证推迟至 runtime 实现节点（implement-puzzle-core 等）。当前验证通过 import_manifest_parse 方法，基于规格文档一致性检查。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">各资产组 Cocos Creator 兼容性</div>
+    <table class="check-table">
+      <thead><tr><th>资产组</th><th>导入状态</th><th>关键兼容性说明</th><th>待完成</th></tr></thead>
+      <tbody>
+        <tr><td>章节图块图集</td><td><span class="status-warn">可导入（含警告）</span></td><td>PNG 原生支持；128px web-canvas-2d 安全；SpriteFrame UUID 需编辑器确认</td><td>图片生成 + atlas 打包 + Cocos 导入</td></tr>
+        <tr><td>特殊块图集</td><td><span class="status-warn">可导入（含警告）</span></td><td>12 帧动画 Cocos Animation 组件支持；全局预加载正确</td><td>图片生成 + atlas 打包</td></tr>
+        <tr><td>角色（DragonBones）</td><td><span class="status-warn">可导入（含警告）</span></td><td>DragonBones Cocos 插件支持；30fps 骨骼动画原生支持</td><td>DragonBones Pro 项目文件 + 导出 JSON</td></tr>
+        <tr><td>章节背景</td><td><span class="status-warn">可导入（含警告）</span></td><td>JPG 支持（Cocos Sprite）；1920×1080 建议按章节加载/释放控制内存</td><td>图片生成 + 内存管理策略确认</td></tr>
+        <tr><td>UI 元素图集</td><td><span class="status-warn">可导入（含警告）</span></td><td>PNG alpha 支持；9宫格需在 Cocos Sprite 组件配置；Tween 系统支持</td><td>图片生成 + atlas 打包 + 9宫格配置</td></tr>
+        <tr><td>VFX 图集</td><td><span class="status-warn">可导入（含警告）</span></td><td>ParticleSystem2D 支持（200 粒子预算）；1024px VFX 图集内存安全</td><td>帧序列生成 + atlas 打包</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">层级渲染顺序</div>
+    <table class="check-table">
+      <thead><tr><th>层级名称</th><th>z-index</th><th>内容</th><th>约束</th></tr></thead>
+      <tbody>
+        <tr><td>background</td><td>0</td><td>bg_ch{N}_{state}.jpg</td><td>—</td></tr>
+        <tr><td>board_tiles</td><td>10</td><td>tile_*.png（via 章节图集）</td><td>—</td></tr>
+        <tr><td>characters</td><td>20</td><td>char_*.dragonbones</td><td>前后由 y 轴排序</td></tr>
+        <tr><td>vfx_match</td><td>30</td><td>vfx_match_disappear，图块消除粒子</td><td>不遮挡棋盘连接路径</td></tr>
+        <tr><td>vfx_combo</td><td>35</td><td>vfx_combo_burst，倍率气泡</td><td>不遮挡棋盘路径</td></tr>
+        <tr><td>hud</td><td>50</td><td>ui_hud_bar，进度条，图标</td><td>—</td></tr>
+        <tr><td>modals</td><td>100</td><td>ui_panel_shop，对话框，关卡卡片</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 许可证溯源 ===== -->
+<div id="tab-license" class="tab-panel">
+  <div class="card">
+    <div class="card-title">许可证溯源 QA</div>
+    <div class="score-row">
+      <span class="score-pill pill-pass">总体：通过</span>
+      <span class="score-pill pill-pass">所有资产：project_owned</span>
+      <span class="score-pill pill-pass">风险等级：低</span>
+    </div>
+    <p>所有 70 个资产均采用 llm_image_generation（AI 生成）策略，通过 Google Imagen 4 API（商业授权）生成。无第三方素材包，无许可证审查风险。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">许可证概览</div>
+    <div class="license-row">
+      <div class="license-icon">✓</div>
+      <div>
+        <strong>Google Imagen 4 API</strong>（via MCP ai-gateway）<br>
+        <span style="color:var(--text-muted); font-size:12px;">商业使用允许 · 修改允许 · 再分发允许 · 无需署名 · 生成内容用户拥有使用权</span>
+      </div>
+    </div>
+    <div class="license-row">
+      <div class="license-icon">✓</div>
+      <div>
+        <strong>思源圆体（Source Han Rounded CN）</strong><br>
+        <span style="color:var(--text-muted); font-size:12px;">SIL Open Font License 1.1 · 商业使用免费 · 无需署名</span>
+      </div>
+    </div>
+    <div class="license-row">
+      <div class="license-icon">✓</div>
+      <div>
+        <strong>角色原创性</strong><br>
+        <span style="color:var(--text-muted); font-size:12px;">山田律/丸山ひなた等均为项目原创角色设计，非已知 IP 衍生</span>
+      </div>
+    </div>
+    <div class="license-row">
+      <div class="license-icon">✓</div>
+      <div>
+        <strong>风格参考</strong><br>
+        <span style="color:var(--text-muted); font-size:12px;">参考「Animal Crossing: New Horizons」视觉美学；所有资产原创生成，非复制/截取版权素材；视觉风格本身不受版权保护</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">许可证裁定统计</div>
+    <table class="check-table">
+      <thead><tr><th>资产组</th><th>状态</th><th>风险等级</th><th>归属</th></tr></thead>
+      <tbody>
+        <tr><td>常规图块（20 个）</td><td><span class="status-pass">passed</span></td><td>低</td><td>project_owned</td></tr>
+        <tr><td>特殊块（5 个）</td><td><span class="status-pass">passed</span></td><td>低</td><td>project_owned</td></tr>
+        <tr><td>角色（7 个）</td><td><span class="status-pass">passed</span></td><td>低</td><td>project_owned</td></tr>
+        <tr><td>环境资产（20 个）</td><td><span class="status-pass">passed</span></td><td>低</td><td>project_owned</td></tr>
+        <tr><td>UI 组件（10 个）</td><td><span class="status-pass">passed</span></td><td>低</td><td>project_owned</td></tr>
+        <tr><td>VFX 特效（8 个）</td><td><span class="status-pass">passed</span></td><td>低</td><td>project_owned</td></tr>
+        <tr><td><strong>合计（70 个）</strong></td><td><span class="status-pass">全部通过</span></td><td><strong>低</strong></td><td><strong>全部 project_owned</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 引擎就绪合约 ===== -->
+<div id="tab-contract" class="tab-panel">
+  <div class="card">
+    <div class="card-title">引擎就绪美术输出合约</div>
+    <div class="score-row">
+      <span class="score-pill pill-limit">状态：engine_ready_with_limits</span>
+      <span class="score-pill pill-info">合约 ID：glow-island-art-contract-v1</span>
+    </div>
+    <p>所有 70 个资产规格完整，路径规范，图集规划完整，层级渲染顺序定义。限制：图片文件和 DragonBones 项目文件待执行后生成；实际 headless engine import 推迟至 runtime 实现节点。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">就绪门控检查</div>
+    <table class="check-table">
+      <thead><tr><th>门控</th><th>结果</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>注册表（stable IDs）</td><td><span class="status-pass">PASS</span></td><td>70 个资产均有 stable asset_id 和 file_prefix</td></tr>
+        <tr><td>路径规范</td><td><span class="status-limit">PASS_WITH_LIMITS</span></td><td>路径规范完整，图片文件待生成</td></tr>
+        <tr><td>图集元数据</td><td><span class="status-limit">PASS_WITH_LIMITS</span></td><td>图集规划完整（10 图集），物理打包待执行</td></tr>
+        <tr><td>动画元数据</td><td><span class="status-limit">PASS_WITH_LIMITS</span></td><td>DragonBones 规格完整，导出待人工操作</td></tr>
+        <tr><td>图块元数据</td><td><span class="status-pass">PASS</span></td><td>25 种图块（20 常规 + 5 特殊）完整定义</td></tr>
+        <tr><td>层级/遮挡/UI 分离</td><td><span class="status-pass">PASS</span></td><td>7 层渲染顺序完整定义</td></tr>
+        <tr><td>3D 源资产排除</td><td><span class="status-pass">PASS</span></td><td>dimension=2D，无 3D 源资产</td></tr>
+        <tr><td>运行时导入</td><td><span class="status-limit">PASS_WITH_LIMITS</span></td><td>import_manifest_parse 通过；headless import 推迟</td></tr>
+        <tr><td>QA 门控</td><td><span class="status-pass">PASS</span></td><td>无 QA blocker 或 major 问题</td></tr>
+        <tr><td>适配器策略</td><td><span class="status-pass">PASS</span></td><td>profile_only，Cocos Creator 3.x 原生支持</td></tr>
+        <tr><td>格式决策</td><td><span class="status-pass">PASS</span></td><td>PNG/JPG/DragonBones JSON 明确定义</td></tr>
+        <tr><td>导入证据</td><td><span class="status-limit">PASS_WITH_LIMITS</span></td><td>import_manifest_parse 证据存在；headless import 待执行</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">格式决策摘要</div>
+    <table class="check-table">
+      <thead><tr><th>资产类型</th><th>格式</th><th>分辨率</th><th>Alpha</th><th>图集</th></tr></thead>
+      <tbody>
+        <tr><td>图块</td><td>PNG RGBA</td><td>128×128px (2x)</td><td>是</td><td>tiles_ch{N}_atlas / special_blocks_atlas</td></tr>
+        <tr><td>角色</td><td>DragonBones JSON + PNG</td><td>256×512px / 192×192px</td><td>是</td><td>characters_atlas</td></tr>
+        <tr><td>背景</td><td>JPG RGB</td><td>1920×1080px</td><td>否</td><td>无（独立文件）</td></tr>
+        <tr><td>道具</td><td>PNG RGBA</td><td>180×240px / 256×256px</td><td>是</td><td>无（独立文件）</td></tr>
+        <tr><td>UI 组件</td><td>PNG RGBA</td><td>2x 设计</td><td>是</td><td>ui_elements_atlas</td></tr>
+        <tr><td>VFX 特效</td><td>PNG RGBA 帧序列</td><td>帧尺寸小</td><td>是</td><td>vfx_atlas（1024px）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">下游消费节点</div>
+    <table class="check-table">
+      <thead><tr><th>消费节点</th><th>所需资产</th></tr></thead>
+      <tbody>
+        <tr><td>implement-puzzle-core</td><td>图块图集 ID、tile_size_px=128、饱和度阶段、特殊块机制</td></tr>
+        <tr><td>implement-game-session</td><td>角色 DragonBones 导出、animation_sets、expression_types</td></tr>
+        <tr><td>implement-ui-systems</td><td>ui_elements_atlas、组件状态、motion design 规格</td></tr>
+        <tr><td>implement-island-map</td><td>背景资产、视差层、章节修复状态</td></tr>
+        <tr><td>implement-shop-iap</td><td>沙滩币图标（唯一货币）、商店面板、续关按钮</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">已知限制</div>
+    <ul style="list-style:disc; padding-left: 20px; font-size: 13px; line-height: 2;">
+      <li>所有 PNG/JPG/DragonBones 文件待 image generation API 和 DragonBones Pro 执行后生成</li>
+      <li>DragonBones Pro 导出（骨骼动画 JSON）需人工操作</li>
+      <li>实际 Cocos Creator headless import 验证推迟至 runtime 实现阶段</li>
+      <li>ui_elements_atlas 多态变体可能需要图集分割配置（≥2 张图集）</li>
+      <li>characters_atlas 由 DragonBones Pro 自动导出生成，不在此管线直接控制范围内</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 资产清单 ===== -->
+<div id="tab-assets" class="tab-panel">
+  <div class="card">
+    <div class="card-title">常规图块（20 种）</div>
+    <div class="asset-grid">
+      <div class="asset-card"><div class="asset-id">tile_tuna</div><div class="asset-name">金枪鱼</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_octopus</div><div class="asset-name">章鱼</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_starfish</div><div class="asset-name">海星</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_hermit_crab</div><div class="asset-name">寄居蟹</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_lanternfish</div><div class="asset-name">灯笼鱼</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_pufferfish</div><div class="asset-name">河豚</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_whale</div><div class="asset-name">鲸鱼</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_coral</div><div class="asset-name">珊瑚</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_conch</div><div class="asset-name">海螺</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_shell</div><div class="asset-name">贝壳</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_crab</div><div class="asset-name">螃蟹</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_turtle</div><div class="asset-name">海龟</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_jellyfish</div><div class="asset-name">水母</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_flying_fish</div><div class="asset-name">飞鱼</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_dolphin</div><div class="asset-name">海豚</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_seagull</div><div class="asset-name">海鸥</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_coconut_palm</div><div class="asset-name">椰子树</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_lighthouse</div><div class="asset-name">灯塔</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_fishing_boat</div><div class="asset-name">渔船</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_buoy</div><div class="asset-name">浮标</div><div class="asset-state">spec_complete</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">特殊块（5 种）</div>
+    <div class="asset-grid">
+      <div class="asset-card"><div class="asset-id">tile_wave_block</div><div class="asset-name">光波特殊块</div><div style="font-size:11px; color:#7ECDE8; font-weight:700;">■ #7ECDE8</div><div style="font-size:11px;">清除整行/列 · 12帧</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_light_chain_block</div><div class="asset-name">光链特殊块</div><div style="font-size:11px; color:#F0C4C4; font-weight:700;">■ #F0C4C4</div><div style="font-size:11px;">连锁相邻消除 · 12帧</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_pierce_block</div><div class="asset-name">穿透特殊块</div><div style="font-size:11px; color:#F5A840; font-weight:700;">■ #F5A840</div><div style="font-size:11px;">穿透障碍直线消除 · 12帧</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_swap_block</div><div class="asset-name">置换特殊块</div><div style="font-size:11px; color:#C4955A; font-weight:700;">■ #F5C842</div><div style="font-size:11px;">交换两格位置 · 12帧</div><div class="asset-state">spec_complete</div></div>
+      <div class="asset-card"><div class="asset-id">tile_cascade_block</div><div class="asset-name">连锁特殊块</div><div style="font-size:11px; color:#4A7D55; font-weight:700;">■ #4A7D55</div><div style="font-size:11px;">自动连锁触发 · 12帧</div><div class="asset-state">spec_complete</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">角色（7 个）</div>
+    <div class="asset-grid">
+      <div class="asset-card">
+        <div class="asset-id">char_ritsu</div>
+        <div class="asset-name">山田律</div>
+        <div style="font-size:11px;">主角 · 骨骼动画 · 6 动作组</div>
+        <div class="asset-state">spec_ready</div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-id">char_hinata</div>
+        <div class="asset-name">丸山ひなた</div>
+        <div style="font-size:11px; color:#F0C4C4; font-weight:700;">■ #F0C4C4</div>
+        <div style="font-size:11px;">恋爱角色 · 骨骼动画 · 手账道具</div>
+        <div class="asset-state">spec_ready</div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-id">char_kenzo</div>
+        <div class="asset-name">磯部健三</div>
+        <div style="font-size:11px; color:#4A6D9A; font-weight:700;">■ #4A6D9A</div>
+        <div style="font-size:11px;">NPC Ch.1 · 海边码头</div>
+        <div class="asset-state">spec_ready</div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-id">char_umeko</div>
+        <div class="asset-name">桐島梅子</div>
+        <div style="font-size:11px; color:#7DBE77; font-weight:700;">■ #7DBE77</div>
+        <div style="font-size:11px;">NPC Ch.2 · 中央小镇</div>
+        <div class="asset-state">spec_ready</div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-id">char_natsuka</div>
+        <div class="asset-name">海野夏帆</div>
+        <div style="font-size:11px; color:#3D6645; font-weight:700;">■ #3D6645</div>
+        <div style="font-size:11px;">NPC Ch.3 · 花田山坡</div>
+        <div class="asset-state">spec_ready</div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-id">char_fuyuko</div>
+        <div class="asset-name">丸山冬子</div>
+        <div style="font-size:11px; color:#2A4060; font-weight:700;">■ #2A4060</div>
+        <div style="font-size:11px;">NPC Ch.6 · 夜晚灯塔</div>
+        <div class="asset-state">spec_ready</div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-id">char_gicho</div>
+        <div class="asset-name">议长·橘猫</div>
+        <div style="font-size:11px; color:#E8A050; font-weight:700;">■ #2A3650（领巾）</div>
+        <div style="font-size:11px;">NPC 全章节 · 帧动画 · 192×192px</div>
+        <div class="asset-state">spec_ready</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">章节背景（18 个）</div>
+    <table class="check-table">
+      <thead><tr><th>章节</th><th>场景名</th><th>主色调</th><th>修复前</th><th>修复中</th><th>修复后</th></tr></thead>
+      <tbody>
+        <tr><td>第一章</td><td>海边码头（海边の波止場）</td><td style="color:#5BBFB5;font-weight:700;">#5BBFB5</td><td>bg_ch1_before</td><td>bg_ch1_progress</td><td>bg_ch1_restored</td></tr>
+        <tr><td>第二章</td><td>中央小镇（中央の町）</td><td style="color:#7DBE77;font-weight:700;">#7DBE77</td><td>bg_ch2_before</td><td>bg_ch2_progress</td><td>bg_ch2_restored</td></tr>
+        <tr><td>第三章</td><td>花田山坡（花畑の丘）</td><td style="color:#D4A8C8;font-weight:700;">#F0C4C4</td><td>bg_ch3_before</td><td>bg_ch3_progress</td><td>bg_ch3_restored</td></tr>
+        <tr><td>第四章</td><td>森林露营地（森のキャンプ地）</td><td style="color:#4A7D55;font-weight:700;">#4A7D55</td><td>bg_ch4_before</td><td>bg_ch4_progress</td><td>bg_ch4_restored</td></tr>
+        <tr><td>第五章</td><td>温泉山谷（温泉の谷）</td><td style="color:#C4955A;font-weight:700;">#C4955A</td><td>bg_ch5_before</td><td>bg_ch5_progress</td><td>bg_ch5_restored</td></tr>
+        <tr><td>第六章</td><td>夜晚灯塔（夜の灯台）</td><td style="color:#8EA0AA;font-weight:700;">#1E2E50</td><td>bg_ch6_before</td><td>bg_ch6_progress</td><td>bg_ch6_restored</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 <footer>
-  Generated by meta-skill art-qa node v0.8.1 &nbsp;|&nbsp; Glow Island Alpha + Beta Milestone &nbsp;|&nbsp; 2026-05-09
+  <p>Glow Island 美术 QA 报告 · 节点：art-qa · 生成时间：2026-05-13 · 目标平台：Cocos Creator 3.x / web-canvas-2d</p>
+  <p style="margin-top:6px;">综合裁定：<strong>通过（含警告）</strong> · QA 综合得分：<strong>4/5</strong> · 许可证：<strong>全部 project_owned</strong></p>
 </footer>
 
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
 </body>
 </html>

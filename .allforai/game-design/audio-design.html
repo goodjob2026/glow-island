@@ -70,7 +70,7 @@
 
 <header>
   <h1>🎵 Glow Island 音频设计文档</h1>
-  <p>輝島（Kagayaki-jima）— Animal Crossing 治愈风格 | v2.0 | 2026-05-13</p>
+  <p>輝島（Kagayaki-jima）— Animal Crossing 治愈风格 | v3.0 | 2026-05-13</p>
 </header>
 
 <nav id="mainNav">
@@ -78,6 +78,8 @@
   <button onclick="showSection('combo', this)">Combo音频系统</button>
   <button onclick="showSection('sfx', this)">SFX目录</button>
   <button onclick="showSection('bgm', this)">章节BGM</button>
+  <button onclick="showSection('daynight', this)">日夜BGM系统</button>
+  <button onclick="showSection('season', this)">四季BGM变奏</button>
   <button onclick="showSection('npc', this)">NPC声音风格</button>
   <button onclick="showSection('adaptive', this)">自适应系统</button>
   <button onclick="showSection('tech', this)">技术规格</button>
@@ -239,6 +241,20 @@
       <tr><td>sfx_tool_use</td><td>道具使用</td><td>轻快实体点击声（依道具类型微调）</td><td>300</td></tr>
     </tbody>
   </table>
+
+  <h3>日夜与四季环境音效</h3>
+  <table>
+    <thead><tr><th>音效键名</th><th>触发时机</th><th>音色描述</th><th>时长/模式</th></tr></thead>
+    <tbody>
+      <tr><td>sfx_dusk_bell</td><td>黄昏（17:00整），每日一次</td><td>远处寺庙钟声，单音低沉，带长尾混响，温柔提示傍晚降临</td><td>2秒，不循环</td></tr>
+      <tr><td>sfx_lighthouse_night_chime</td><td>Ch6夜晚时段灯塔点亮（仅一次）</td><td>风铃串（3–4个音轻柔升调）+ 单音钢琴E5余韵，如灯光颤动的声音呈现</td><td>3–4秒，不循环</td></tr>
+      <tr><td>sfx_season_transition</td><td>章节完成→下章开始且发生季节切换</td><td>轻柔风铃串（2–3个音），温柔升调后消散，季节翻页感</td><td>1.5–2秒，不循环</td></tr>
+      <tr><td>sfx_sakura_fall</td><td>春季场景（Ch1/Ch5）樱花粒子激活</td><td>极轻柔高频沙沙声（花瓣落木板），随粒子密度动态调节音量（0–0.25）</td><td>0.8秒 loop</td></tr>
+      <tr><td>sfx_autumn_leaves_wind</td><td>秋季场景（Ch3）落叶粒子激活</td><td>低频风声 + 干燥落叶摩擦声，温暖略带忧郁</td><td>2秒 loop</td></tr>
+      <tr><td><strong>sfx_winter_snow_fall</strong></td><td>Ch4冬季场景激活，雪粒子常驻</td><td>极轻柔雪粒子落水面声，高频细腻沙沙声（白噪音极高频），声压极低，几乎像气息，随雪粒子密度动态调节（0–0.3）</td><td>0.5秒 loop</td></tr>
+      <tr><td><strong>sfx_onsen_steam_winter</strong></td><td>Ch4温泉蒸汽视觉激活</td><td>比普通温泉蒸汽更强的低频咕噜声（~120Hz）叠加轻微蒸汽喷出声，像泡澡时水底气泡声，比普通温泉蒸汽音高+4 dB</td><td>2秒 loop</td></tr>
+    </tbody>
+  </table>
 </div>
 
 <!-- ======== 章节BGM ======== -->
@@ -320,6 +336,216 @@
         <tr><td><strong>时长</strong></td><td>120s（无缝循环）</td></tr>
       </table>
     </div>
+  </div>
+</div>
+
+<!-- ======== 日夜BGM系统 ======== -->
+<div id="daynight" class="section">
+  <h2>日夜BGM系统</h2>
+
+  <div class="info-note">
+    设计原则：<strong>不换曲，不硬切</strong>。在当前章节BGM基础上通过参数调整实现白天→黄昏→夜晚的自然过渡。三个时段对应三套参数集，过渡使用线性插值渐变，玩家感知不到明显分界，只觉得"氛围好像变了"。
+  </div>
+
+  <h3>三段时间系统</h3>
+  <div class="grid-3">
+    <div class="card">
+      <h3>白天（昼間）</h3>
+      <table>
+        <tr><td><strong>时间段</strong></td><td>06:00 – 17:00</td></tr>
+        <tr><td><strong>Tempo倍率</strong></td><td>1.0x（章节BGM原速）</td></tr>
+        <tr><td><strong>音量</strong></td><td>标准（0 dB偏移）</td></tr>
+        <tr><td><strong>乐器色彩</strong></td><td>明亮温暖；所有层正常播放</td></tr>
+        <tr><td><strong>环境音层</strong></td><td>海鸥/鸟鸣/海浪（各章区域原有底层）</td></tr>
+        <tr><td><strong>过渡时长</strong></td><td>—（基准状态）</td></tr>
+      </table>
+    </div>
+    <div class="card accent">
+      <h3>黄昏（夕暮れ）</h3>
+      <table>
+        <tr><td><strong>时间段</strong></td><td>17:00 – 20:00</td></tr>
+        <tr><td><strong>Tempo倍率</strong></td><td>0.93x（降速5–8%）</td></tr>
+        <tr><td><strong>音量偏移</strong></td><td>0 dB（不变）</td></tr>
+        <tr><td><strong>乐器色彩</strong></td><td>木吉他/钢琴音量 +3 dB；弦乐pad轻微淡入</td></tr>
+        <tr><td><strong>环境音层</strong></td><td>加入傍晚蝉鸣渐强 / 远处风铃</td></tr>
+        <tr><td><strong>过渡时长</strong></td><td>8秒线性插值</td></tr>
+      </table>
+      <div class="info-note" style="margin-top:10px; font-size:0.85rem;">
+        黄昏专属一次性音效（每日仅一次）：<strong>sfx_dusk_bell</strong> — 远处寺庙钟声，单音，2秒，在17:00整触发。
+      </div>
+    </div>
+    <div class="card coral">
+      <h3>夜晚（夜）</h3>
+      <table>
+        <tr><td><strong>时间段</strong></td><td>20:00 – 06:00</td></tr>
+        <tr><td><strong>Tempo倍率</strong></td><td>0.88x（在黄昏基础上再降5%）</td></tr>
+        <tr><td><strong>音量偏移</strong></td><td>−2 dB（整体压低）</td></tr>
+        <tr><td><strong>乐器色彩</strong></td><td>引入轻柔弦乐pad；高频乐器（风铃/三角铁）轻微淡出</td></tr>
+        <tr><td><strong>环境音层</strong></td><td>蟋蟀声淡入；海浪声低频加重；鸟鸣淡出</td></tr>
+        <tr><td><strong>过渡时长</strong></td><td>12秒线性插值</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card seafoam">
+    <h3>灯塔点亮夜晚专属音效（Ch6）</h3>
+    <p>当玩家在第六章（夜晚灯塔）处于夜晚时段，灯塔亮起瞬间触发一次性专属音效：</p>
+    <table style="margin-top:10px;">
+      <tr><td><strong>音效键名</strong></td><td>sfx_lighthouse_night_chime</td></tr>
+      <tr><td><strong>触发条件</strong></td><td>Ch6 / 夜晚时段 / 灯塔点亮事件（仅触发一次）</td></tr>
+      <tr><td><strong>音色描述</strong></td><td>风铃串（3–4个音，轻柔升调）+ 单音钢琴（E5，1秒衰减）</td></tr>
+      <tr><td><strong>时长</strong></td><td>3–4秒，不循环</td></tr>
+      <tr><td><strong>设计意图</strong></td><td>如灯光照亮夜空的同时，世界微微颤了一下。温柔，不煽情，余韵长过声音本身。</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>实现规格</h3>
+    <table>
+      <thead><tr><th>参数</th><th>白天</th><th>黄昏</th><th>夜晚</th></tr></thead>
+      <tbody>
+        <tr><td>全局Tempo倍率</td><td>1.0x</td><td>0.93x</td><td>0.88x</td></tr>
+        <tr><td>木吉他/钢琴增益</td><td>+0 dB</td><td>+3 dB</td><td>+2 dB</td></tr>
+        <tr><td>弦乐pad音量</td><td>0（静音）</td><td>0.2</td><td>0.5</td></tr>
+        <tr><td>整体音量偏移</td><td>0 dB</td><td>0 dB</td><td>−2 dB</td></tr>
+        <tr><td>蟋蟀/海浪环境音量</td><td>0</td><td>0.1</td><td>0.4</td></tr>
+        <tr><td>插值时长</td><td>—</td><td>8s</td><td>12s</td></tr>
+      </tbody>
+    </table>
+    <div class="info-note" style="margin-top:10px;">
+      <strong>API接口：</strong> <code>AudioManager.setTimeOfDay(period: 'day' | 'dusk' | 'night', transitionSeconds: number)</code><br>
+      时间参数可由设备本地时钟驱动，也可由游戏内虚拟时间系统驱动（如适用）。
+    </div>
+  </div>
+</div>
+
+<!-- ======== 四季BGM变奏 ======== -->
+<div id="season" class="section">
+  <h2>四季BGM变奏</h2>
+
+  <div class="info-note">
+    设计原则：<strong>叠加而非替换</strong>。四季变奏层在章节BGM三层结构基础上额外叠加，不替换原有的底层/旋律层/强度层。每个季节有独立的叠加层文件，进入对应章节时自动激活匹配季节层。
+  </div>
+
+  <div class="info-note" style="background:#e8f5e9; border-left-color: var(--seafoam);">
+    <strong>季节与章节映射：</strong> Ch1 春 → Ch2 夏 → Ch3 秋 → Ch4 冬 → Ch5 春② → Ch6 夏②
+  </div>
+
+  <div class="grid-2">
+    <div class="card seafoam">
+      <h3>春（春 · Ch1 / Ch5）</h3>
+      <table>
+        <tr><td><strong>情感色调</strong></td><td>清新萌芽、轻盈好奇、初到之感</td></tr>
+        <tr><td><strong>叠加乐器</strong></td><td>钢片琴（celesta）高频点缀、三角铁（轻触，每4拍一次）</td></tr>
+        <tr><td><strong>环境音叠加</strong></td><td>樱花飘落粒子特效音（sfx_sakura_fall）同步触发</td></tr>
+        <tr><td><strong>Tempo偏移</strong></td><td>±0（不调整章节基础BPM）</td></tr>
+        <tr><td><strong>音量</strong></td><td>季节叠加层 0.35</td></tr>
+        <tr><td><strong>资产键</strong></td><td>season_layer_spring_{chapter}.ogg</td></tr>
+      </table>
+    </div>
+    <div class="card accent">
+      <h3>夏（夏 · Ch2 / Ch6）</h3>
+      <table>
+        <tr><td><strong>情感色调</strong></td><td>活力热情、节奏感略强、阳光直射</td></tr>
+        <tr><td><strong>叠加乐器</strong></td><td>轻打击乐节拍感增强（底层手鼓音量+20%）</td></tr>
+        <tr><td><strong>环境音叠加</strong></td><td>海浪声涌现增强 +15%；蝉鸣层（sfx_cicada_summer）淡入</td></tr>
+        <tr><td><strong>Tempo偏移</strong></td><td>+3%（轻微提速，活力感）</td></tr>
+        <tr><td><strong>音量</strong></td><td>季节叠加层 0.4</td></tr>
+        <tr><td><strong>资产键</strong></td><td>season_layer_summer_{chapter}.ogg</td></tr>
+      </table>
+    </div>
+    <div class="card coral">
+      <h3>秋（秋 · Ch3）</h3>
+      <table>
+        <tr><td><strong>情感色调</strong></td><td>温暖沉静、情绪松动、带一点感伤</td></tr>
+        <tr><td><strong>叠加乐器</strong></td><td>弦乐pad比重增加（+30%），低频更warm；钢琴改为更slow touch</td></tr>
+        <tr><td><strong>环境音叠加</strong></td><td>落叶风声环境层（sfx_autumn_leaves_wind）轻柔持续</td></tr>
+        <tr><td><strong>Tempo偏移</strong></td><td>−3%（轻微降速，沉静感）</td></tr>
+        <tr><td><strong>音量</strong></td><td>季节叠加层 0.4</td></tr>
+        <tr><td><strong>资产键</strong></td><td>season_layer_autumn_{chapter}.ogg</td></tr>
+      </table>
+    </div>
+    <div class="card" style="border-left-color:#7090c0;">
+      <h3>冬（冬 · Ch4 — 重点场景）</h3>
+      <table>
+        <tr><td><strong>情感色调</strong></td><td>最静谧治愈、内省、篝火温暖与雪夜的对比</td></tr>
+        <tr><td><strong>叠加乐器</strong></td><td>弦乐pad主导（仅弦乐+钢琴稀疏点缀），其余乐器轻微淡出</td></tr>
+        <tr><td><strong>环境音叠加</strong></td><td>极轻微白噪音低频（wind whisper）；雪落声（sfx_winter_snow_fall）loop</td></tr>
+        <tr><td><strong>Tempo偏移</strong></td><td>−8%（全四季最慢，与夜晚系统叠加后可达−13%）</td></tr>
+        <tr><td><strong>音量</strong></td><td>季节叠加层 0.45；整体感知最静谧</td></tr>
+        <tr><td><strong>资产键</strong></td><td>season_layer_winter_{chapter}.ogg</td></tr>
+      </table>
+      <div class="info-note" style="margin-top:10px; font-size:0.85rem;">
+        冬季（Ch4）同时叠加温泉场景专属音效：sfx_onsen_steam_winter。详见 SFX 目录页「冬季温泉专属音效」。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>季节切换过渡音效</h3>
+    <table>
+      <thead><tr><th>音效键名</th><th>触发时机</th><th>音色描述</th><th>时长</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>sfx_season_transition</td>
+          <td>章节完成 → 下一章开始（发生季节切换时）</td>
+          <td>轻柔风铃串（2–3个音），温柔升调后消散。像季节翻页的声音，不煽情，只是轻轻提示</td>
+          <td>1.5–2秒，不循环</td>
+        </tr>
+        <tr>
+          <td>sfx_sakura_fall</td>
+          <td>春季场景 / 樱花粒子特效激活时</td>
+          <td>极轻柔的高频沙沙声（如花瓣落在木板上），随粒子密度动态调节音量</td>
+          <td>0.8秒 loop</td>
+        </tr>
+        <tr>
+          <td>sfx_autumn_leaves_wind</td>
+          <td>秋季场景 / 落叶粒子特效激活时</td>
+          <td>低频风声 + 干燥落叶摩擦声，温暖而略带忧郁</td>
+          <td>2秒 loop</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card seafoam">
+    <h3>冬季温泉专属音效（Ch4）</h3>
+    <table>
+      <thead><tr><th>音效键名</th><th>触发时机</th><th>音色描述</th><th>时长</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>sfx_winter_snow_fall</strong></td>
+          <td>Ch4 冬季场景激活 / 有雪粒子时常驻播放</td>
+          <td>极轻柔的雪粒子落在水面声——高频细腻沙沙声（白噪音极高频部分），声压极低，几乎像气息，不抢注意力。随雪粒子密度动态调节音量（0–0.3）。</td>
+          <td>0.5秒 loop</td>
+        </tr>
+        <tr>
+          <td><strong>sfx_onsen_steam_winter</strong></td>
+          <td>Ch4 温泉场景 / 温泉蒸汽视觉激活时</td>
+          <td>比普通温泉蒸汽更强的气泡/蒸汽声——低频咕噜声（~120Hz）叠加轻微蒸汽喷出声（宽频白噪音低频），像泡澡时水底的气泡声，静谧而温暖。音量比普通温泉蒸汽音高+4 dB。</td>
+          <td>2秒 loop</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="info-note" style="margin-top:10px; font-size:0.85rem;">
+      冬季温泉场景中，sfx_winter_snow_fall 与 sfx_onsen_steam_winter 同时播放，配合 season_layer_winter 叠加层，形成「雪夜温泉」的完整声景：极静（雪）+ 极暖（蒸汽）的对比治愈体验。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>季节叠加层技术规格</h3>
+    <table>
+      <thead><tr><th>规格项</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>叠加方式</td><td>独立AudioSource，与章节BGM三层并行混音</td></tr>
+        <tr><td>激活时机</td><td>进入对应章节时淡入（4秒），离开章节时淡出（4秒）</td></tr>
+        <tr><td>Tempo同步</td><td>季节层Tempo与主BGM保持同步（含日夜偏移叠加）</td></tr>
+        <tr><td>文件格式</td><td>OGG + MP3（与主BGM同规格）</td></tr>
+        <tr><td>估计时长</td><td>每条120秒循环</td></tr>
+        <tr><td>总资产数量</td><td>4季节×5章（有叠加层的章节）= 最多20条文件</td></tr>
+        <tr><td>API接口</td><td><code>AudioManager.setSeasonLayer(season: 'spring'|'summer'|'autumn'|'winter', chapter: number)</code></td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -542,12 +768,12 @@
       <div class="stat-label">BGM轨道（含菜单）</div>
     </div>
     <div class="stat-box" style="background:var(--seafoam);">
-      <div class="stat-number">21</div>
-      <div class="stat-label">自适应BGM层（7×3层）</div>
+      <div class="stat-number">21+</div>
+      <div class="stat-label">自适应BGM层（+季节叠加层）</div>
     </div>
     <div class="stat-box" style="background:var(--coral);">
-      <div class="stat-number">16</div>
-      <div class="stat-label">SFX音效文件</div>
+      <div class="stat-number">23+</div>
+      <div class="stat-label">SFX音效文件（含日夜/四季新增）</div>
     </div>
     <div class="stat-box" style="background:var(--accent);">
       <div class="stat-number">6</div>
@@ -558,7 +784,7 @@
       <div class="stat-label">情绪变体/NPC（平均）</div>
     </div>
     <div class="stat-box" style="background:#5a8a6a;">
-      <div class="stat-number">47</div>
+      <div class="stat-number">62+</div>
       <div class="stat-label">总音频文件数（OGG版）</div>
     </div>
   </div>
@@ -567,9 +793,11 @@
     <thead><tr><th>资产类别</th><th>文件数量</th><th>格式</th><th>估计总大小</th><th>优先级</th></tr></thead>
     <tbody>
       <tr><td>BGM主轨（3层×7章/菜单）</td><td>21</td><td>OGG + MP3</td><td>~42MB（OGG）</td><td>高</td></tr>
+      <tr><td>四季BGM叠加层（4季节×5章）</td><td>最多20</td><td>OGG + MP3</td><td>~20MB（OGG）</td><td>中</td></tr>
       <tr><td>核心SFX（连线/消除/combo）</td><td>7</td><td>OGG + MP3</td><td>~3MB</td><td>高</td></tr>
       <tr><td>特殊图案SFX（v4.0）</td><td>5</td><td>OGG + MP3</td><td>~3MB</td><td>高</td></tr>
       <tr><td>系统音效（通关/失败/解锁等）</td><td>4</td><td>OGG + MP3</td><td>~4MB</td><td>中</td></tr>
+      <tr><td>日夜与四季环境SFX（新增）</td><td>7</td><td>OGG + MP3</td><td>~2MB</td><td>中</td></tr>
       <tr><td>NPC声音包（6角色×3变体）</td><td>18+</td><td>OGG + MP3</td><td>~6MB</td><td>中</td></tr>
     </tbody>
   </table>
@@ -664,6 +892,38 @@
     <div class="checklist-item">
       <div class="check-icon" style="background:var(--coral);">✓</div>
       <div>山田律（玩家角色）无声音，保持代入感</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left-color:#7090c0;">
+    <h3>日夜BGM系统与四季变奏</h3>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:#7090c0;">✓</div>
+      <div>日夜三段规则完整：白天（1.0x）/ 黄昏（0.93x，+3dB暖色，8秒过渡）/ 夜晚（0.88x，−2dB，12秒过渡）</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:#7090c0;">✓</div>
+      <div>日夜变化不换曲，通过参数调整实现，API接口 AudioManager.setTimeOfDay() 已规划</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:#7090c0;">✓</div>
+      <div>Ch6灯塔夜晚专属一次性音效（sfx_lighthouse_night_chime）：风铃+单音钢琴，3–4秒</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:#7090c0;">✓</div>
+      <div>四季BGM叠加层与章节映射明确（春Ch1/5、夏Ch2/6、秋Ch3、冬Ch4），叠加方式不替换原有层</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:#7090c0;">✓</div>
+      <div>冬季（Ch4）四季变奏最静谧：tempo−8%，弦乐主导，雪落声+温泉蒸汽声专属SFX</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:#7090c0;">✓</div>
+      <div>季节切换音效（sfx_season_transition）覆盖所有章节之间的季节变化时机</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:#7090c0;">✓</div>
+      <div>冬季温泉专属SFX：sfx_winter_snow_fall（0.5s loop）+ sfx_onsen_steam_winter（2s loop），音色与触发条件完整描述</div>
     </div>
   </div>
 

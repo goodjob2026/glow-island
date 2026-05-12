@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "template_kind": "level",
+  "schema_id": "level-schema-v1",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "source_refs": [
+    ".allforai/game-design/systems/level-design.json",
+    ".allforai/game-design/systems/puzzle-design.json",
+    ".allforai/game-design/systems/progression-curve.json"
+  ],
+  "validation": {
+    "parity_checked": true,
+    "solvability_method": "BFS",
+    "state": "validated"
+  },
+  "levels_overview": {
+    "total": 180,
+    "chapters": 6,
+    "levels_per_chapter": 30,
+    "note": "完整180关实例由level-editor-tool节点在实现阶段生成。此文件定义枚举规格（representative samples + schema reference）。"
+  },
+  "representative_instances": [
+    {
+      "template_id": "level_ch1_lv1",
+      "template_kind": "level",
+      "schema_id": "level-schema-v1",
+      "chapter": 1,
+      "level_number": 1,
+      "level_global_index": 1,
+      "grid_width": 4,
+      "grid_height": 4,
+      "grid_shape": "rectangular",
+      "step_count": null,
+      "zen_mode": false,
+      "tile_type_ids": ["T01", "T02", "T03", "T04"],
+      "tile_counts": { "T01": 4, "T02": 4, "T03": 4, "T04": 4 },
+      "obstacle_placements": [],
+      "special_tile_placements": [],
+      "narrative_trigger": null,
+      "boss_level": false,
+      "story_level": false,
+      "scene_unlock_trigger": false,
+      "design_notes": "FTUE关1：4×4稀疏，直线连接，零转角，教学点击选中与连线",
+      "art_refs": {
+        "background_runtime_id": "art/backgrounds/ch1_harbor_stage1",
+        "tile_atlas_runtime_id": "art/tiles/tiles_ch1_atlas"
+      },
+      "balance_refs": {
+        "step_count_source": ".allforai/game-design/systems/progression-curve.json#ch1.null_step_levels"
+      },
+      "state": "validated"
+    },
+    {
+      "template_id": "level_ch1_lv3",
+      "template_kind": "level",
+      "schema_id": "level-schema-v1",
+      "chapter": 1,
+      "level_number": 3,
+      "level_global_index": 3,
+      "grid_width": 5,
+      "grid_height": 5,
+      "grid_shape": "rectangular",
+      "step_count": null,
+      "zen_mode": true,
+      "tile_type_ids": ["T01", "T02", "T03"],
+      "tile_counts": { "T01": 6, "T02": 6, "T03": 6 },
+      "obstacle_placements": [
+        { "type": "void_cell", "positions": [[2,2]] }
+      ],
+      "special_tile_placements": [],
+      "narrative_trigger": {
+        "at_global_level": 3,
+        "type": "restoration_animation",
+        "desc": "通关触发码头修复动画，ひなた经过说：「少し、変わりましたね。」"
+      },
+      "design_notes": "禅境关，零步数限制；通关后首次触发修复动画和素材收集UI",
+      "art_refs": {
+        "background_runtime_id": "art/backgrounds/ch1_harbor_stage2",
+        "tile_atlas_runtime_id": "art/tiles/tiles_ch1_atlas"
+      },
+      "state": "validated"
+    },
+    {
+      "template_id": "level_ch2_lv15",
+      "template_kind": "level",
+      "schema_id": "level-schema-v1",
+      "chapter": 2,
+      "level_number": 15,
+      "level_global_index": 45,
+      "grid_width": 9,
+      "grid_height": 9,
+      "grid_shape": "rectangular",
+      "step_count": 33,
+      "zen_mode": false,
+      "tile_type_ids": ["T01","T02","T03","T04","T05","T06","T07","T08"],
+      "obstacle_placements": [
+        { "type": "ice_block", "layers": 2, "positions": [[3,3],[5,7]] }
+      ],
+      "special_tile_placements": [
+        { "type": "light_chain", "position": [4,4], "source": "combo_generated" }
+      ],
+      "narrative_trigger": null,
+      "design_notes": "光链(light_chain)通过Combo=4生成示例；冰封块2层需配对同位图块两次破冰",
+      "art_refs": {
+        "background_runtime_id": "art/backgrounds/ch2_town_stage2",
+        "tile_atlas_runtime_id": "art/tiles/tiles_ch2_atlas"
+      },
+      "balance_refs": {
+        "step_count_source": ".allforai/game-design/systems/progression-curve.json#ch2.step_range_limited"
+      },
+      "state": "validated"
+    },
+    {
+      "template_id": "level_ch4_lv20",
+      "template_kind": "level",
+      "schema_id": "level-schema-v1",
+      "chapter": 4,
+      "level_number": 20,
+      "level_global_index": 110,
+      "grid_width": 8,
+      "grid_height": 8,
+      "grid_shape": "irregular",
+      "step_count": 37,
+      "zen_mode": false,
+      "tile_type_ids": ["T01","T02","T03","T04","T05","T06","T07","T08","T09","T10","T11","T12","T13","T14","T15","T16","T17","T18","T19","T20"],
+      "obstacle_placements": [
+        { "type": "single_path_corridor", "positions": [[3,1],[3,2],[3,3]] },
+        { "type": "wooden_crate", "position": [4,5] }
+      ],
+      "special_tile_placements": [
+        { "type": "pierce", "positions": [[1,1],[6,6]], "source": "level_preset" }
+      ],
+      "narrative_trigger": {
+        "at_global_level": 110,
+        "type": "npc_dialogue",
+        "desc": "ひなた出现在营地，说起灯塔。律第一次说起东京。"
+      },
+      "design_notes": "穿透(pierce)关卡预置——单路径通道使pierce的路径穿越能力成为关键战术",
+      "art_refs": {
+        "background_runtime_id": "art/backgrounds/ch4_forest_stage2",
+        "tile_atlas_runtime_id": "art/tiles/tiles_ch4_atlas"
+      },
+      "state": "validated"
+    }
+  ],
+  "generation_report": ".allforai/game-templates/instances/template-instance-generation-report.json"
+}

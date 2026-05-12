@@ -1,1591 +1,728 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glow Island — 元游戏层设计文档 v2.0</title>
-  <style>
-    :root {
-      --bg: #0f0e0c;
-      --bg2: #141210;
-      --surface: #1a1815;
-      --surface2: #211f1b;
-      --surface3: #282420;
-      --border: #2e2a24;
-      --border-soft: #252118;
-      --text: #e8dcc8;
-      --text-secondary: #b8a88a;
-      --muted: #6e6050;
-      --accent: #c8943a;
-      --accent-dim: rgba(200,148,58,0.12);
-      --accent-border: rgba(200,148,58,0.28);
-      --accent2: #6aaa7a;
-      --accent2-dim: rgba(106,170,122,0.10);
-      --accent2-border: rgba(106,170,122,0.25);
-      --accent3: #7a9ec8;
-      --accent3-dim: rgba(122,158,200,0.10);
-      --accent3-border: rgba(122,158,200,0.25);
-      --amber: #d4aa48;
-      --amber-dim: rgba(212,170,72,0.10);
-      --amber-border: rgba(212,170,72,0.28);
-      --warm: #c8743a;
-      --warm-dim: rgba(200,116,58,0.10);
-      --warm-border: rgba(200,116,58,0.25);
-      --mystery: #9a7acc;
-      --mystery-dim: rgba(154,122,204,0.10);
-      --mystery-border: rgba(154,122,204,0.28);
-      --gold: #e8b840;
-      --heading: #f0e0c0;
-      --tag-bg: rgba(200,148,58,0.15);
-      --lighthouse: #e8c050;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.82;
-      padding: 0 1rem 6rem;
-    }
-
-    /* ── Header ── */
-    .page-header {
-      background: linear-gradient(160deg, #0a0a08 0%, #1a140a 40%, #231a08 70%, #0f0d0a 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 4rem 2rem 3.5rem;
-      margin: 0 -1rem 3.5rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .page-header::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(200,148,58,0.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .page-header::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent2), var(--accent), var(--amber), var(--mystery), transparent);
-      opacity: 0.55;
-    }
-    .page-header .label {
-      display: inline-block;
-      background: var(--accent2-dim);
-      color: var(--accent2);
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      padding: 0.25rem 1rem;
-      border-radius: 999px;
-      border: 1px solid var(--accent2-border);
-      margin-bottom: 1.2rem;
-      font-weight: 600;
-    }
-    .page-header h1 {
-      font-size: 2.3rem;
-      font-weight: 700;
-      color: var(--heading);
-      letter-spacing: -0.01em;
-      margin-bottom: 0.6rem;
-      text-shadow: 0 2px 32px rgba(200,148,58,0.3);
-    }
-    .page-header .subtitle {
-      font-size: 1rem;
-      color: var(--text-secondary);
-      font-weight: 400;
-      margin-bottom: 0.5rem;
-    }
-    .page-header .meta {
-      font-size: 0.76rem;
-      color: var(--muted);
-    }
-    .version-badge {
-      display: inline-block;
-      background: var(--accent-dim);
-      color: var(--accent);
-      border: 1px solid var(--accent-border);
-      border-radius: 4px;
-      padding: 0.18rem 0.55rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      margin-left: 0.5rem;
-      vertical-align: middle;
-    }
-
-    /* ── Navigation tabs ── */
-    .nav-tabs {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(15,14,12,0.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 1rem;
-      margin: 0 -1rem 3rem;
-      overflow-x: auto;
-      display: flex;
-      gap: 0;
-    }
-    .nav-tabs a {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.85rem 1.2rem;
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      white-space: nowrap;
-      transition: color 0.18s, border-color 0.18s;
-      font-weight: 500;
-    }
-    .nav-tabs a:hover {
-      color: var(--text);
-      border-bottom-color: var(--border);
-    }
-    .nav-tabs a.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
-
-    /* ── Layout ── */
-    .container {
-      max-width: 940px;
-      margin: 0 auto;
-    }
-
-    /* ── Section headers ── */
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      margin: 3.5rem 0 1.8rem;
-      padding-bottom: 0.8rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .section-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 2.2rem;
-      height: 2.2rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      flex-shrink: 0;
-    }
-    .icon-amber { background: var(--amber-dim); border: 1px solid var(--amber-border); }
-    .icon-green { background: var(--accent2-dim); border: 1px solid var(--accent2-border); }
-    .icon-blue { background: var(--accent3-dim); border: 1px solid var(--accent3-border); }
-    .icon-warm { background: var(--warm-dim); border: 1px solid var(--warm-border); }
-    .icon-mystery { background: var(--mystery-dim); border: 1px solid var(--mystery-border); }
-    .icon-gold { background: var(--accent-dim); border: 1px solid var(--accent-border); }
-
-    .section-header h2 {
-      font-size: 1.45rem;
-      font-weight: 700;
-      color: var(--heading);
-      letter-spacing: -0.01em;
-    }
-    .section-header .section-sub {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 0.1rem;
-    }
-
-    h3 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--accent);
-      margin: 2rem 0 0.8rem;
-    }
-    h4 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin: 1.4rem 0 0.55rem;
-    }
-    p { margin: 0.6rem 0 0.9rem; color: var(--text-secondary); line-height: 1.8; }
-    strong { color: var(--text); font-weight: 600; }
-    em { color: var(--accent2); font-style: normal; }
-
-    /* ── Philosophy card ── */
-    .philosophy-card {
-      background: linear-gradient(135deg, var(--surface2) 0%, var(--surface3) 100%);
-      border: 1px solid var(--accent-border);
-      border-radius: 12px;
-      padding: 1.8rem 2rem;
-      margin: 0 0 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .philosophy-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent2), var(--accent), var(--amber));
-      opacity: 0.5;
-    }
-    .philosophy-card p {
-      color: var(--text);
-      font-size: 1.05rem;
-      line-height: 1.9;
-      margin: 0;
-    }
-
-    /* ── Summary grid ── */
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin: 0 0 2rem;
-    }
-    .summary-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.2rem 1.3rem;
-      text-align: center;
-    }
-    .summary-card .value {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 0.3rem;
-    }
-    .summary-card .label {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    /* ── System cards ── */
-    .system-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem 1.6rem;
-      margin-bottom: 1.2rem;
-      transition: border-color 0.2s;
-    }
-    .system-card:hover { border-color: var(--accent-border); }
-    .system-card-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.9rem;
-      margin-bottom: 1rem;
-    }
-    .system-card-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.18rem 0.55rem;
-      border-radius: 4px;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      flex-shrink: 0;
-      margin-top: 0.15rem;
-    }
-    .badge-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
-    .badge-green { background: var(--accent2-dim); color: var(--accent2); border: 1px solid var(--accent2-border); }
-    .badge-blue { background: var(--accent3-dim); color: var(--accent3); border: 1px solid var(--accent3-border); }
-    .badge-warm { background: var(--warm-dim); color: var(--warm); border: 1px solid var(--warm-border); }
-    .badge-mystery { background: var(--mystery-dim); color: var(--mystery); border: 1px solid var(--mystery-border); }
-    .badge-gold { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
-    .badge-draft { background: rgba(110,96,80,0.15); color: var(--muted); border: 1px solid rgba(110,96,80,0.3); }
-
-    .system-card-title { font-size: 1.1rem; font-weight: 700; color: var(--heading); margin-bottom: 0.2rem; }
-    .system-card-id { font-size: 0.72rem; color: var(--muted); font-family: 'SF Mono', 'Cascadia Code', monospace; }
-
-    .field-row {
-      display: grid;
-      grid-template-columns: 130px 1fr;
-      gap: 0.3rem 1rem;
-      margin-bottom: 0.4rem;
-      align-items: baseline;
-    }
-    .field-label {
-      font-size: 0.73rem;
-      color: var(--muted);
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding-top: 0.1rem;
-    }
-    .field-value { font-size: 0.88rem; color: var(--text-secondary); }
-    .field-value.highlight { color: var(--text); }
-
-    /* ── Chapter progression ── */
-    .chapter-grid {
-      display: grid;
-      gap: 1.2rem;
-      margin: 1.5rem 0;
-    }
-    .chapter-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .chapter-card-header {
-      background: var(--surface2);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 1.4rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-    .chapter-number {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      background: var(--accent-dim);
-      border: 1px solid var(--accent-border);
-      border-radius: 50%;
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--accent);
-      flex-shrink: 0;
-    }
-    .chapter-title {
-      flex: 1;
-    }
-    .chapter-name { font-size: 1rem; font-weight: 700; color: var(--heading); }
-    .chapter-area { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
-    .chapter-levels {
-      font-size: 0.75rem;
-      color: var(--accent2);
-      background: var(--accent2-dim);
-      border: 1px solid var(--accent2-border);
-      padding: 0.2rem 0.55rem;
-      border-radius: 4px;
-      font-weight: 600;
-    }
-    .chapter-card-body { padding: 1.2rem 1.4rem; }
-
-    /* ── Visual stages timeline ── */
-    .stage-timeline {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.6rem;
-      margin: 0.8rem 0 1.2rem;
-    }
-    .stage-item {
-      background: var(--surface2);
-      border: 1px solid var(--border-soft);
-      border-radius: 8px;
-      padding: 0.7rem 0.8rem;
-      position: relative;
-    }
-    .stage-item.climax {
-      border-color: var(--accent-border);
-      background: linear-gradient(135deg, var(--surface2), var(--accent-dim));
-    }
-    .stage-trigger {
-      font-size: 0.65rem;
-      color: var(--accent);
-      font-weight: 700;
-      margin-bottom: 0.3rem;
-      font-family: 'SF Mono', 'Cascadia Code', monospace;
-    }
-    .stage-name {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.35rem;
-    }
-    .stage-desc {
-      font-size: 0.75rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-    .stage-arrow {
-      position: absolute;
-      right: -0.4rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--border);
-      font-size: 0.7rem;
-      z-index: 1;
-    }
-
-    /* ── Narrative trigger table ── */
-    .trigger-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.83rem;
-      margin: 0.8rem 0 1.4rem;
-    }
-    .trigger-table th {
-      background: var(--surface2);
-      color: var(--muted);
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      padding: 0.6rem 0.9rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    .trigger-table td {
-      padding: 0.65rem 0.9rem;
-      border-bottom: 1px solid var(--border-soft);
-      color: var(--text-secondary);
-      vertical-align: top;
-    }
-    .trigger-table tr:last-child td { border-bottom: none; }
-    .trigger-table tr:hover td { background: var(--surface2); }
-    .trigger-type {
-      display: inline-block;
-      padding: 0.12rem 0.45rem;
-      border-radius: 3px;
-      font-size: 0.65rem;
-      font-weight: 700;
-    }
-    .type-npc { background: var(--accent2-dim); color: var(--accent2); }
-    .type-hinata { background: var(--mystery-dim); color: var(--mystery); }
-    .type-mystery { background: var(--warm-dim); color: var(--warm); }
-    .type-climax { background: var(--accent-dim); color: var(--accent); }
-    .type-memory { background: var(--amber-dim); color: var(--amber); }
-    .type-note { background: var(--accent3-dim); color: var(--accent3); }
-    .lv-badge {
-      font-family: 'SF Mono', 'Cascadia Code', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    /* ── NPC idle lines ── */
-    .idle-lines {
-      background: var(--surface2);
-      border: 1px solid var(--border-soft);
-      border-radius: 8px;
-      padding: 0.9rem 1.1rem;
-      margin: 0.5rem 0;
-    }
-    .idle-line {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border-soft);
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      line-height: 1.65;
-    }
-    .idle-line:last-child { border-bottom: none; padding-bottom: 0; }
-
-    /* ── Lighthouse stages ── */
-    .lighthouse-track {
-      display: flex;
-      gap: 0.5rem;
-      margin: 1rem 0;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-    }
-    .lh-stage {
-      flex: 1;
-      min-width: 130px;
-      background: var(--surface2);
-      border: 1px solid var(--border-soft);
-      border-radius: 8px;
-      padding: 0.8rem 0.9rem;
-      text-align: center;
-    }
-    .lh-stage.active-glow { border-color: var(--amber-border); background: var(--amber-dim); }
-    .lh-ch { font-size: 0.65rem; color: var(--muted); margin-bottom: 0.35rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
-    .lh-icon { font-size: 1.5rem; margin-bottom: 0.35rem; }
-    .lh-label { font-size: 0.73rem; color: var(--text-secondary); line-height: 1.4; }
-
-    /* ── Friend schema table ── */
-    .schema-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.83rem;
-      margin: 0.8rem 0;
-    }
-    .schema-table th {
-      background: var(--surface2);
-      color: var(--muted);
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      padding: 0.6rem 0.9rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    .schema-table td {
-      padding: 0.6rem 0.9rem;
-      border-bottom: 1px solid var(--border-soft);
-      vertical-align: top;
-    }
-    .schema-table tr:last-child td { border-bottom: none; }
-    .field-name { font-family: 'SF Mono', 'Cascadia Code', monospace; color: var(--accent); font-size: 0.8rem; }
-    .field-type { color: var(--accent3); font-family: 'SF Mono', 'Cascadia Code', monospace; font-size: 0.78rem; }
-    .field-desc { color: var(--text-secondary); font-size: 0.82rem; }
-
-    /* ── Season cards ── */
-    .season-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.9rem;
-      margin: 1rem 0;
-    }
-    .season-card {
-      background: var(--surface2);
-      border: 1px solid var(--border-soft);
-      border-radius: 9px;
-      padding: 1rem 1.1rem;
-    }
-    .season-name { font-size: 0.9rem; font-weight: 700; color: var(--heading); margin-bottom: 0.4rem; }
-    .season-detail { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.2rem; }
-
-    /* ── Exclusion table ── */
-    .exclusion-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-      margin: 1rem 0;
-    }
-    .exclusion-table th {
-      background: var(--surface2);
-      color: var(--muted);
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      padding: 0.6rem 0.9rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    .exclusion-table td {
-      padding: 0.65rem 0.9rem;
-      border-bottom: 1px solid var(--border-soft);
-      vertical-align: top;
-    }
-    .exclusion-table tr:last-child td { border-bottom: none; }
-    .excl-name { color: var(--warm); font-weight: 600; }
-    .excl-reason { color: var(--text-secondary); }
-
-    /* ── Callout boxes ── */
-    .callout {
-      border-radius: 8px;
-      padding: 0.9rem 1.2rem;
-      margin: 1rem 0;
-      display: flex;
-      gap: 0.8rem;
-      align-items: flex-start;
-    }
-    .callout-note { background: var(--accent3-dim); border: 1px solid var(--accent3-border); }
-    .callout-warning { background: var(--warm-dim); border: 1px solid var(--warm-border); }
-    .callout-highlight { background: var(--accent-dim); border: 1px solid var(--accent-border); }
-    .callout-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
-    .callout-text { font-size: 0.86rem; color: var(--text-secondary); line-height: 1.65; }
-    .callout-text strong { color: var(--text); }
-
-    /* ── Phase roadmap ── */
-    .roadmap {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin: 1rem 0;
-    }
-    .roadmap-phase {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.2rem 1.3rem;
-    }
-    .roadmap-phase-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-    .roadmap-phase h4 { margin-top: 0; margin-bottom: 0.5rem; }
-    .roadmap-phase p { margin: 0; font-size: 0.84rem; }
-
-    /* ── Tags ── */
-    .tag-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0; }
-    .tag {
-      display: inline-block;
-      padding: 0.15rem 0.55rem;
-      border-radius: 4px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      background: var(--surface2);
-      color: var(--muted);
-      border: 1px solid var(--border);
-    }
-    .tag-accent { background: var(--accent-dim); color: var(--accent); border-color: var(--accent-border); }
-    .tag-green { background: var(--accent2-dim); color: var(--accent2); border-color: var(--accent2-border); }
-    .tag-blue { background: var(--accent3-dim); color: var(--accent3); border-color: var(--accent3-border); }
-
-    /* ── Divider ── */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 2.5rem 0;
-    }
-
-    /* ── Review checklist ── */
-    .checklist {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.2rem 1.4rem;
-      margin: 1rem 0;
-    }
-    .check-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.7rem;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border-soft);
-      font-size: 0.86rem;
-      color: var(--text-secondary);
-    }
-    .check-item:last-child { border-bottom: none; }
-    .check-box {
-      width: 1.1rem;
-      height: 1.1rem;
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      flex-shrink: 0;
-      margin-top: 0.15rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 680px) {
-      .stage-timeline { grid-template-columns: repeat(2, 1fr); }
-      .season-grid { grid-template-columns: 1fr; }
-      .roadmap { grid-template-columns: 1fr; }
-      .summary-grid { grid-template-columns: repeat(2, 1fr); }
-      .field-row { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 480px) {
-      .page-header h1 { font-size: 1.7rem; }
-      .stage-timeline { grid-template-columns: 1fr 1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glow Island — 元游戏设计文档 v3.0</title>
+<style>
+  :root {
+    --bg: #fdf8f2;
+    --surface: #ffffff;
+    --border: #e8ddd0;
+    --accent: #c8a97e;
+    --accent-dark: #9a7a56;
+    --text-primary: #3d2e1e;
+    --text-secondary: #7a6a58;
+    --text-muted: #a89a88;
+    --tag-blue: #ddeeff;
+    --tag-blue-text: #3366aa;
+    --tag-green: #ddf0e4;
+    --tag-green-text: #2a7a4a;
+    --tag-amber: #fff3d4;
+    --tag-amber-text: #996600;
+    --lighthouse-gold: #f5c842;
+    --tab-active-bg: #c8a97e;
+    --tab-active-text: #ffffff;
+    --tab-inactive-bg: #f5efe8;
+    --tab-inactive-text: #7a6a58;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  .header {
+    background: linear-gradient(135deg, #2c1f12 0%, #5a3e28 50%, #3d2e1e 100%);
+    color: white;
+    padding: 40px 48px 32px;
+    border-bottom: 3px solid var(--lighthouse-gold);
+  }
+  .header h1 { font-size: 26px; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .header .subtitle { font-size: 14px; color: #c8a97e; letter-spacing: 0.08em; }
+  .header .version-badge {
+    display: inline-block;
+    background: rgba(245,200,66,0.2);
+    border: 1px solid var(--lighthouse-gold);
+    color: var(--lighthouse-gold);
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-top: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  .revision-banner {
+    background: #fff9e6;
+    border: 1px solid #f0c040;
+    border-left: 4px solid #f0c040;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 20px 48px 0;
+    font-size: 13px;
+    color: #7a5800;
+  }
+  .revision-banner strong { color: #5a3e00; }
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    padding: 20px 48px 0;
+    background: var(--bg);
+    flex-wrap: wrap;
+    border-bottom: 2px solid var(--border);
+  }
+  .tab-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px 6px 0 0;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--tab-inactive-bg);
+    color: var(--tab-inactive-text);
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+    margin-bottom: -2px;
+  }
+  .tab-btn.active { background: var(--tab-active-bg); color: var(--tab-active-text); border-bottom: 2px solid var(--tab-active-bg); }
+  .tab-btn:hover:not(.active) { background: #e8ddd0; color: var(--text-primary); }
+  .tab-content { display: none; padding: 32px 48px 48px; }
+  .tab-content.active { display: block; }
+  .section { margin-bottom: 36px; }
+  .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-bottom: 18px; }
+  .subsection-title { font-size: 14px; font-weight: 700; color: var(--accent-dark); margin-bottom: 10px; margin-top: 20px; text-transform: uppercase; letter-spacing: 0.06em; }
+  p { color: var(--text-secondary); margin-bottom: 10px; }
+  p.philosophy { font-size: 15px; color: var(--text-primary); line-height: 1.9; background: #fdf3e8; border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 0 6px 6px 0; margin-bottom: 0; font-style: italic; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  .card.highlight { border-color: var(--accent); border-left: 4px solid var(--accent); }
+  .card h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--text-primary); }
+  .card p { font-size: 13px; margin-bottom: 0; }
+  .chapter-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  .chapter-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .chapter-num { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: white; font-weight: 800; font-size: 17px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .chapter-info h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .chapter-info .meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .stage-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+  .stage-table th { background: #f5efe8; padding: 8px 10px; text-align: left; font-weight: 700; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
+  .stage-table td { padding: 8px 10px; border-bottom: 1px solid #f0e8dc; vertical-align: top; color: var(--text-secondary); }
+  .stage-table tr:last-child td { border-bottom: none; }
+  .stage-table .stage-name { font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+  .stage-table .climax-row td { background: #fff8e8; }
+  .narrative-list { margin-top: 12px; }
+  .narrative-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f5ede0; font-size: 13px; }
+  .narrative-item:last-child { border-bottom: none; }
+  .narrative-lv { font-weight: 700; color: var(--accent-dark); min-width: 48px; font-size: 12px; padding-top: 1px; }
+  .narrative-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; margin-right: 6px; vertical-align: middle; }
+  .tag-npc { background: var(--tag-blue); color: var(--tag-blue-text); }
+  .tag-hinata { background: #ffe8f0; color: #aa3366; }
+  .tag-mystery { background: #f0e8ff; color: #6633aa; }
+  .tag-climax { background: var(--tag-amber); color: var(--tag-amber-text); }
+  .unlock-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .unlock-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .unlock-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .unlock-card .type-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-bottom: 8px; }
+  .stone-list { list-style: none; padding: 0; }
+  .stone-list li { padding: 6px 10px; background: #f0e8ff; border-radius: 4px; margin-bottom: 6px; font-size: 13px; color: #6633aa; font-weight: 600; }
+  .login-option-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; position: relative; }
+  .login-card.primary { border-color: var(--accent); }
+  .login-card.primary::before { content: "跨平台主键"; position: absolute; top: -10px; left: 16px; background: var(--accent); color: white; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 999px; letter-spacing: 0.06em; }
+  .login-card .platform-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+  .login-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .login-card p { font-size: 12px; color: var(--text-secondary); }
+  .login-card .platform-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-bottom: 8px; }
+  .ios-tag { background: #e8f0ff; color: #3355cc; }
+  .android-tag { background: #e8f8e8; color: #2a7a2a; }
+  .all-tag { background: var(--tag-amber); color: var(--tag-amber-text); }
+  .backend-option { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; }
+  .backend-option.recommended { border-color: #4a9e6a; background: #f8fdf9; }
+  .backend-option h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-primary); }
+  .backend-option h4 .rec-badge { display: inline-block; background: #4a9e6a; color: white; font-size: 10px; padding: 1px 8px; border-radius: 999px; margin-left: 8px; vertical-align: middle; }
+  .spec-row { display: flex; gap: 6px; font-size: 12px; margin-bottom: 4px; }
+  .spec-label { font-weight: 700; color: var(--text-muted); min-width: 52px; }
+  .spec-val { color: var(--text-secondary); }
+  .pro-con { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .pro { background: #edfbf0; padding: 6px 10px; border-radius: 4px; font-size: 12px; color: #2a6a3a; }
+  .con { background: #fff3f3; padding: 6px 10px; border-radius: 4px; font-size: 12px; color: #aa3030; }
+  .pro::before { content: "✓ "; font-weight: 700; }
+  .con::before { content: "△ "; font-weight: 700; }
+  .api-list { list-style: none; padding: 0; }
+  .api-list li { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 12px; padding: 6px 10px; border-bottom: 1px solid #f0e8dc; color: var(--text-secondary); display: flex; gap: 10px; align-items: center; }
+  .api-list li:last-child { border-bottom: none; }
+  .api-method { font-weight: 700; min-width: 38px; color: var(--accent-dark); }
+  .api-path { color: var(--text-primary); }
+  .api-desc { color: var(--text-muted); font-family: inherit; font-size: 11px; }
+  .api-phase2 { opacity: 0.6; font-style: italic; }
+  .schema-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .schema-card { background: #fafaf8; border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .schema-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); font-family: 'SF Mono', monospace; }
+  .field-row { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; border-bottom: 1px solid #f0e8dc; gap: 8px; }
+  .field-row:last-child { border-bottom: none; }
+  .field-name { font-weight: 600; color: var(--text-primary); font-family: 'SF Mono', monospace; flex-shrink: 0; }
+  .field-type { color: var(--text-muted); font-family: 'SF Mono', monospace; flex: 1; text-align: center; }
+  .field-note { color: #4a9e6a; font-size: 11px; flex-shrink: 0; }
+  .flow-steps { margin-top: 4px; }
+  .flow-step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+  .flow-step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: white; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .flow-step-content { flex: 1; padding-top: 4px; font-size: 13px; color: var(--text-secondary); }
+  .exclusion-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .exclusion-item { background: #fff8f8; border: 1px solid #f0d0d0; border-radius: 8px; padding: 14px 16px; display: flex; gap: 10px; align-items: flex-start; }
+  .exclusion-icon { color: #cc4444; font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .exclusion-text h5 { font-size: 13px; font-weight: 700; color: #aa2020; margin-bottom: 4px; }
+  .exclusion-text p { font-size: 12px; color: #8a6060; margin: 0; }
+  .info-box { background: #eff8ff; border: 1px solid #b0d8f0; border-left: 4px solid #4090cc; border-radius: 4px; padding: 12px 16px; font-size: 13px; color: #2a5a8a; margin-bottom: 20px; }
+  .warn-box { background: #fffbec; border: 1px solid #f0d060; border-left: 4px solid #d0a000; border-radius: 4px; padding: 12px 16px; font-size: 13px; color: #7a5a00; margin-bottom: 16px; }
+  .phase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .phase-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .phase-card.p1 { border-top: 3px solid var(--accent); }
+  .phase-card.p2 { border-top: 3px solid #4a9e6a; }
+  .phase-card ul { padding-left: 18px; font-size: 13px; color: var(--text-secondary); }
+  .phase-card ul li { margin-bottom: 4px; }
+  @media (max-width: 680px) {
+    .header { padding: 24px 20px 20px; }
+    .tab-nav { padding: 12px 20px 0; }
+    .tab-content { padding: 24px 20px 32px; }
+    .revision-banner { margin: 12px 20px 0; }
+    .pro-con { grid-template-columns: 1fr; }
+    .phase-grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 
-<!-- ───────────────── 页面标题 ───────────────── -->
-<header class="page-header">
-  <div class="label">Glow Island · 元游戏设计</div>
-  <h1>元游戏层设计文档 <span class="version-badge">v2.0</span></h1>
-  <p class="subtitle">岛屿地图视觉进度 · 叙事解锁 · 灯塔元目标 · 好友进度（第二期预留）</p>
-  <p class="meta">生成日期：2026-05-13 &nbsp;|&nbsp; 语言：zh-CN &nbsp;|&nbsp; 状态：草稿</p>
-</header>
+<div class="header">
+  <h1>輝島（Kagayaki-jima）— 元游戏设计文档</h1>
+  <div class="subtitle">Glow Island · Meta-Game Design · Systems Designer</div>
+  <div class="version-badge">v3.0 · 2026-05-13</div>
+</div>
 
-<!-- ───────────────── 导航 ───────────────── -->
-<nav class="nav-tabs">
-  <a href="#philosophy" class="active">设计理念</a>
-  <a href="#systems">系统总览</a>
-  <a href="#island-map">岛屿地图进度</a>
-  <a href="#chapters">章节视觉阶段</a>
-  <a href="#narrative">叙事解锁</a>
-  <a href="#daily-reward">每日礼物</a>
-  <a href="#lighthouse">灯塔锚点</a>
-  <a href="#friends">好友系统</a>
-  <a href="#exclusions">排除项</a>
-  <a href="#checklist">评审清单</a>
+<div class="revision-banner">
+  <strong>v3.0 修订说明：</strong>账号与后端系统全面更新。移除 Game Center / Google Play Games 所有引用；改为自建轻量后端；登录方案：Apple ID（iOS）/ Google（Android）/ 邮箱+密码（跨平台），邮箱为主键；不上架中国区。
+</div>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('tab-island', this)">岛屿地图进度</button>
+  <button class="tab-btn" onclick="showTab('tab-chapters', this)">章节视觉变化</button>
+  <button class="tab-btn" onclick="showTab('tab-narrative', this)">叙事解锁</button>
+  <button class="tab-btn" onclick="showTab('tab-account', this)">账号与后端系统</button>
 </nav>
 
-<div class="container">
+<!-- TAB 1: 岛屿地图进度 -->
+<div id="tab-island" class="tab-content active">
+  <div class="section">
+    <div class="section-title">元游戏哲学</div>
+    <p class="philosophy">元游戏层即岛屿地图本身。没有独立技能树或元进度系统；玩家的进度感来自岛屿视觉的逐步修复——废墟变为有色彩、有光、有声音的生活之地。这不是一个让人变好的系统，而是一个不催人的系统。</p>
+  </div>
 
-  <!-- ───────────────── 核心理念 ───────────────── -->
-  <section id="philosophy">
-    <div class="section-header">
-      <div class="section-icon icon-amber">🏝️</div>
-      <div>
-        <h2>元游戏设计理念</h2>
-        <div class="section-sub">元游戏设计理念</div>
+  <div class="section">
+    <div class="section-title">核心系统：岛屿视觉进度</div>
+    <div class="card-grid">
+      <div class="card highlight">
+        <h4>视觉修复规则</h4>
+        <p>修复前灰白色调，每次修复后饱和度上升一阶。每 5–10 关触发一次岛屿小视觉变化（N 值由 progression-curve-design 确定）；每章 30 关完成后触发一次大变化。</p>
+      </div>
+      <div class="card">
+        <h4>会话桥接</h4>
+        <p>每次通关后返回岛屿地图，有概率触发小视觉变化（建筑细节、新物件、光效微调）。玩家每次打开地图，都能直观感受上次离开时的进度状态。</p>
+      </div>
+      <div class="card">
+        <h4>永久进度</h4>
+        <p>视觉状态永久保留，单向推进，永不重置。D30+ 进入季节循环（春夏秋冬），叠加季节视觉特效，但不重置任何修复状态。</p>
+      </div>
+      <div class="card">
+        <h4>灯塔锚点</h4>
+        <p>从 Ch1 起地平线上始终可见灯塔轮廓——近而不可达，光而未点。随修复进度，灯塔愈发清晰、光愈发温暖，六章贯穿的远景视觉驱动力。</p>
       </div>
     </div>
+  </div>
 
-    <div class="philosophy-card">
-      <p>元游戏层即岛屿地图本身。没有独立技能树或元进度系统；玩家的进度感来自岛屿视觉的逐步修复——废墟变为有色彩、有光、有声音的生活之地。这不是一个让人变好的系统，而是一个<strong>不催人的系统</strong>。</p>
-    </div>
-
-    <div class="summary-grid">
-      <div class="summary-card">
-        <div class="value">6</div>
-        <div class="label">章节 × 区域</div>
-      </div>
-      <div class="summary-card">
-        <div class="value">180</div>
-        <div class="label">总关卡数</div>
-      </div>
-      <div class="summary-card">
-        <div class="value">24</div>
-        <div class="label">视觉阶段节点</div>
-      </div>
-      <div class="summary-card">
-        <div class="value">24</div>
-        <div class="label">渉日记碎片</div>
-      </div>
-      <div class="summary-card">
-        <div class="value">12</div>
-        <div class="label">ひなた情感节点</div>
-      </div>
-      <div class="summary-card">
-        <div class="value">5–10</div>
-        <div class="label">关/次小视觉变化</div>
-      </div>
-    </div>
-
-    <div class="callout callout-highlight">
-      <div class="callout-icon">💡</div>
-      <div class="callout-text"><strong>设计原则：</strong>岛屿不是一个让人变好的地方，它只是一个不催你的地方。元游戏的所有反馈机制都服务于这一核心——奖励是视觉与叙事，而非资源与数值压力。</div>
-    </div>
-  </section>
-
-  <!-- ───────────────── 系统总览 ───────────────── -->
-  <section id="systems">
-    <div class="section-header">
-      <div class="section-icon icon-green">📋</div>
-      <div>
-        <h2>元游戏系统总览</h2>
-        <div class="section-sub">元游戏系统总览</div>
-      </div>
-    </div>
-
-    <div class="system-card">
-      <div class="system-card-header">
-        <div class="system-card-badge badge-amber">核心系统</div>
-        <div>
-          <div class="system-card-title">岛屿地图视觉进度系统</div>
-          <div class="system-card-id">island_map_progression</div>
-        </div>
-        <div class="system-card-badge badge-draft">草稿</div>
-      </div>
-      <div class="field-row"><div class="field-label">玩家动机</div><div class="field-value">目睹荒废的輝島逐步恢复生机，色彩饱和度随修复进度上升</div></div>
-      <div class="field-row"><div class="field-label">回话桥接</div><div class="field-value">每次通关后岛屿地图可能触发小视觉变化；章末必有一次大变化</div></div>
-      <div class="field-row"><div class="field-label">长期目标</div><div class="field-value highlight">点亮灯塔，让輝島重新出现在地图上</div></div>
-      <div class="field-row"><div class="field-label">小变化触发</div><div class="field-value">每 5–10 关一次（N值由 progression-curve-design 确定）</div></div>
-      <div class="field-row"><div class="field-label">大变化触发</div><div class="field-value">每章（30关）完成</div></div>
-      <div class="field-row"><div class="field-label">饱和度规则</div><div class="field-value">修复前灰白色调；每次修复后饱和度上升一阶；Ch6点灯后最高饱和度</div></div>
-      <div class="field-row"><div class="field-label">重置规则</div><div class="field-value">无重置，视觉状态永久保留，单向推进</div></div>
-    </div>
-
-    <div class="system-card">
-      <div class="system-card-header">
-        <div class="system-card-badge badge-green">叙事系统</div>
-        <div>
-          <div class="system-card-title">叙事解锁系统</div>
-          <div class="system-card-id">narrative_unlock_system</div>
-        </div>
-        <div class="system-card-badge badge-draft">草稿</div>
-      </div>
-      <div class="field-row"><div class="field-label">玩家动机</div><div class="field-value">解锁剧情、NPC对话和日记碎片是核心回归动力——好奇心驱动</div></div>
-      <div class="field-row"><div class="field-label">节奏规则</div><div class="field-value highlight">每章30关内分布 3–5 个剧情触发点，章末必有情感高潮+视觉大变化</div></div>
-      <div class="field-row"><div class="field-label">长期目标</div><div class="field-value">集齐渉的24块日记碎片，解锁终章故事</div></div>
-      <div class="field-row"><div class="field-label">NPC idle台词</div><div class="field-value">关卡间隙随机触发，非阻断式，轻量文字气泡，温暖但不打断节奏</div></div>
-    </div>
-
-    <div class="system-card">
-      <div class="system-card-header">
-        <div class="system-card-badge badge-blue">留存系统</div>
-        <div>
-          <div class="system-card-title">每日签到·岛屿礼物系统</div>
-          <div class="system-card-id">daily_reward_system</div>
-        </div>
-        <div class="system-card-badge badge-draft">草稿</div>
-      </div>
-      <div class="field-row"><div class="field-label">玩家动机</div><div class="field-value">每天回来看码头礼物箱，感受到岛屿的声音</div></div>
-      <div class="field-row"><div class="field-label">节奏</div><div class="field-value">D1–D7精确叙事；D8–D30随机池+里程碑；D30+季节循环</div></div>
-      <div class="field-row"><div class="field-label">断签处理</div><div class="field-value highlight">软欢迎回来，不惩罚，缺席越久回来礼物越厚重</div></div>
-      <div class="field-row"><div class="field-label">推送通知</div><div class="field-value">完全可选，第3天温和询问，D30后静默（除非缺席3天以上）</div></div>
-    </div>
-
-    <div class="system-card">
-      <div class="system-card-header">
-        <div class="system-card-badge badge-warm">远景锚点</div>
-        <div>
-          <div class="system-card-title">灯塔元目标</div>
-          <div class="system-card-id">lighthouse_meta_goal</div>
-        </div>
-        <div class="system-card-badge badge-draft">草稿</div>
-      </div>
-      <div class="field-row"><div class="field-label">玩家动机</div><div class="field-value">从Ch1地平线隐约可见，随进度越来越清晰，光越来越强</div></div>
-      <div class="field-row"><div class="field-label">视觉规则</div><div class="field-value">6章6个可见度阶段，从浓雾轮廓到完全点亮的光柱</div></div>
-      <div class="field-row"><div class="field-label">结局状态</div><div class="field-value highlight">Ch6完成后永久保持 lighthouse_glow_always_on</div></div>
-    </div>
-
-    <div class="system-card">
-      <div class="system-card-header">
-        <div class="system-card-badge badge-mystery">第二期</div>
-        <div>
-          <div class="system-card-title">好友进度展示</div>
-          <div class="system-card-id">friend_progress_system</div>
-        </div>
-        <div class="system-card-badge badge-draft">草稿</div>
-      </div>
-      <div class="field-row"><div class="field-label">玩家动机</div><div class="field-value">轻社交，无竞技压力：看朋友打到哪章</div></div>
-      <div class="field-row"><div class="field-label">第一期</div><div class="field-value highlight">仅设计数据结构，UI不实现</div></div>
-      <div class="field-row"><div class="field-label">第二期</div><div class="field-value">岛屿地图叠加好友进度气泡，接入 Game Center / Google Play</div></div>
-      <div class="field-row"><div class="field-label">设计约束</div><div class="field-value">无PvP · 无排行榜 · 无强制社交 · 完全可选</div></div>
-    </div>
-  </section>
-
-  <!-- ───────────────── 岛屿地图进度 ───────────────── -->
-  <section id="island-map">
-    <div class="section-header">
-      <div class="section-icon icon-amber">🗺️</div>
-      <div>
-        <h2>岛屿地图视觉进度</h2>
-        <div class="section-sub">岛屿视觉进度系统</div>
-      </div>
-    </div>
-
-    <div class="callout callout-note">
-      <div class="callout-icon">📐</div>
-      <div class="callout-text"><strong>核心公式：</strong>每次成功通关 → 积累进度 → 达到触发阈值 → 岛屿视觉更新 → 玩家感受到「这个地方因为我而不同了」→ 想打下一关。资源系统（沙滩币/续关）是辅助，不是驱动力。</div>
-    </div>
-
-    <h3>视觉变化触发机制</h3>
-    <div class="field-row"><div class="field-label">小变化周期</div><div class="field-value highlight">每 5–10 关触发一次（N 由 progression-curve-design 节点确定）</div></div>
-    <div class="field-row"><div class="field-label">大变化触发</div><div class="field-value highlight">每章（30关）完成时，触发一次明显的岛屿大变化</div></div>
-    <div class="field-row"><div class="field-label">饱和度曲线</div><div class="field-value">修复前灰白色调（饱和度最低）→ 每章修复后饱和度上升一阶 → Ch6点灯后达到最高饱和度（动物森友会风格柔和粉彩）</div></div>
-    <div class="field-row"><div class="field-label">声音设计</div><div class="field-value">晨风里的远处风铃声预示修复，早于场景视觉更新；每章环境音层次随修复增加</div></div>
-
-    <h3>6章·区域路径</h3>
-    <div style="overflow-x:auto;margin:1rem 0">
-    <table class="trigger-table" style="min-width:560px">
+  <div class="section">
+    <div class="section-title">灯塔可见度阶段</div>
+    <table class="stage-table">
       <thead>
-        <tr>
-          <th>章节</th>
-          <th>区域名称</th>
-          <th>日文区域名</th>
-          <th>关卡范围</th>
-          <th>主NPC</th>
-          <th>机制解锁</th>
-        </tr>
+        <tr><th>章节</th><th>灯塔状态</th><th>视觉描述</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td><span class="lv-badge">Ch1</span></td>
-          <td><strong>海边码头</strong></td>
-          <td>漁港</td>
-          <td><span class="lv-badge">1–30</span></td>
-          <td>磯部健三</td>
-          <td>基础连连看 · 连击系统</td>
-        </tr>
-        <tr>
-          <td><span class="lv-badge">Ch2</span></td>
-          <td><strong>渔村中央小镇</strong></td>
-          <td>漁村</td>
-          <td><span class="lv-badge">31–60</span></td>
-          <td>桐島梅子</td>
-          <td>冰封块（1层）</td>
-        </tr>
-        <tr>
-          <td><span class="lv-badge">Ch3</span></td>
-          <td><strong>花田山坡</strong></td>
-          <td>花畑の丘</td>
-          <td><span class="lv-badge">61–90</span></td>
-          <td>海野夏帆</td>
-          <td>锁链 · 传送门 · 异形棋盘</td>
-        </tr>
-        <tr>
-          <td><span class="lv-badge">Ch4</span></td>
-          <td><strong>森林露营地</strong></td>
-          <td>森のキャンプ地</td>
-          <td><span class="lv-badge">91–120</span></td>
-          <td>（独处）</td>
-          <td>单路径通道</td>
-        </tr>
-        <tr>
-          <td><span class="lv-badge">Ch5</span></td>
-          <td><strong>温泉山谷</strong></td>
-          <td>温泉の谷</td>
-          <td><span class="lv-badge">121–150</span></td>
-          <td>丸山ひなた（核心章）</td>
-          <td>重力下落 · 方块滑落 · 局部旋转</td>
-        </tr>
-        <tr>
-          <td><span class="lv-badge">Ch6</span></td>
-          <td><strong>夜晚灯塔</strong></td>
-          <td>夜の灯台</td>
-          <td><span class="lv-badge">151–180</span></td>
-          <td>丸山冬子</td>
-          <td>扩散障碍（藤蔓/苔藓）· 全机制综合</td>
-        </tr>
+        <tr><td>第一章</td><td>浓雾轮廓</td><td>浓雾中仅见轮廓，灯完全熄灭</td></tr>
+        <tr><td>第二章</td><td>薄雾渐显</td><td>薄雾中形状渐显，仍无光</td></tr>
+        <tr><td>第三章</td><td>轮廓清晰·隐约暖光</td><td>轮廓清晰，灯室有隐约暖光透出</td></tr>
+        <tr><td>第四章</td><td>灯塔清晰·光晕可见</td><td>灯塔清晰，光晕可见，灯尚未点亮</td></tr>
+        <tr><td>第五章</td><td>完整·暖光充盈</td><td>灯塔完整，暖光充盈灯室，准备就绪感</td></tr>
+        <tr class="climax-row"><td>第六章</td><td>灯亮·光柱扫海</td><td>灯亮，光柱扫过夜海，岛重新出现在地图上</td></tr>
       </tbody>
     </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">季节系统（D30+）</div>
+    <div class="card-grid">
+      <div class="card"><h4>春霞の島</h4><p>限定材料：桜の花びら。视觉特效：樱花飘落粒子叠加层。ひなた台词：今年も桜が咲きましたね、律さん。</p></div>
+      <div class="card"><h4>熱波の島</h4><p>限定材料：夏蛍の光石。视觉特效：夕暮萤火虫发光效果。ひなた：夕暮れに蛍が出ます。</p></div>
+      <div class="card"><h4>紅葉の島</h4><p>限定材料：紅葉の枝。视觉特效：秋叶随风飘散。ひなた：葉っぱが落ちると、島が少し、寂しそうに見えますね。</p></div>
+      <div class="card"><h4>冬凪の島</h4><p>限定材料：冬の霜草。视觉特效：晨雾冰霜覆盖。ひなた：冬の島は静かです。でも、その静かさが好きだと、祖父はよく言っていました。</p></div>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- ───────────────── 章节视觉阶段 ───────────────── -->
-  <section id="chapters">
-    <div class="section-header">
-      <div class="section-icon icon-gold">🎨</div>
-      <div>
-        <h2>章节视觉阶段详情</h2>
-        <div class="section-sub">章节视觉阶段（6章 × 4阶段）</div>
-      </div>
-    </div>
+<!-- TAB 2: 章节视觉变化 -->
+<div id="tab-chapters" class="tab-content">
+  <div class="info-box">每章分为 4 个视觉阶段（荒废 → 兆头 → 萌芽 → 章末大变化），每章30关，触发关卡节点精确标注。章末大变化为计划内内容，同时触发情感高潮叙事。</div>
 
-    <div class="callout callout-note">
-      <div class="callout-icon">📝</div>
-      <div class="callout-text"><strong>阶段命名：</strong>每章统一分为 4 个视觉阶段——<strong>荒废</strong>（初始）→ <strong>兆头</strong>（早期修复）→ <strong>萌芽</strong>（中期修复）→ <strong>章末大变化</strong>（情感高潮）。</div>
-    </div>
-
-    <div class="chapter-grid">
-
-      <!-- Ch1 -->
-      <div class="chapter-card">
-        <div class="chapter-card-header">
-          <div class="chapter-number">1</div>
-          <div class="chapter-title">
-            <div class="chapter-name">到来 — 海边码头</div>
-            <div class="chapter-area">漁港 &nbsp;·&nbsp; 主NPC：磯部健三 &nbsp;·&nbsp; 情感主轴：陌生感 · 第一次真正呼吸</div>
-          </div>
-          <div class="chapter-levels">Lv 1–30</div>
-        </div>
-        <div class="chapter-card-body">
-          <div class="stage-timeline">
-            <div class="stage-item">
-              <div class="stage-trigger">Lv 1</div>
-              <div class="stage-name">荒废</div>
-              <div class="stage-desc">码头木板腐朽，灯笼熄灭，渔船搁浅，灰白色调</div>
-            </div>
-            <div class="stage-item">
-              <div class="stage-trigger">Lv 8</div>
-              <div class="stage-name">兆头</div>
-              <div class="stage-desc">码头栈板修缮，轮子不再卡，健三鱼竿重新架起，第一抹暖色</div>
-            </div>
-            <div class="stage-item">
-              <div class="stage-trigger">Lv 18</div>
-              <div class="stage-name">萌芽</div>
-              <div class="stage-desc">灯笼点亮，码头有了颜色；告示板「请随便走走」，无署名</div>
-            </div>
-            <div class="stage-item climax">
-              <div class="stage-trigger">Lv 30 🔔</div>
-              <div class="stage-name">章末大变化</div>
-              <div class="stage-desc">渔船归位，远处灯塔轮廓首次隐约可见。律日记：「海风里有一种不急的味道。」</div>
-            </div>
-          </div>
-
-          <h4>叙事触发点</h4>
-          <table class="trigger-table">
-            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
-            <tbody>
-              <tr><td class="lv-badge">Lv 1</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>健三放下热茶：「坐吧，铃声一会儿会停的。」铃声没停，但律坐下来了。</td></tr>
-              <tr><td class="lv-badge">Lv 5</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>客房破裂的窗户被悄悄换上新玻璃，只留下一片木屑。</td></tr>
-              <tr><td class="lv-badge">Lv 10</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>门口出现一根精心保养的旧钓竿，无留言，只有沙上浅浅的脚印。</td></tr>
-              <tr><td class="lv-badge">Lv 20</td><td><span class="trigger-type type-mystery">谜题石刻</span></td><td>码头风化石刻：「りつ」。律以为是游客随手刻的，继续走了。</td></tr>
-              <tr><td class="lv-badge">Lv 30</td><td><span class="trigger-type type-climax">章末高潮</span></td><td>律日记：「海风里有一种不急的味道。我不知道那是什么。但我想待久一点。」岛屿视觉大变化。</td></tr>
-            </tbody>
-          </table>
-
-          <h4>NPC 氛围台词（随机非阻断）</h4>
-          <div class="idle-lines">
-            <div class="idle-line">律在码头反复调整行李箱的摆放角度，健三路过看了一眼，说：「能走就行。」然后继续去收网。</div>
-            <div class="idle-line">健三把一件海上漂来的东西放在码头木箱上，贴上手写标签：「来处不明，应是需要找到它的人的东西。」</div>
-            <div class="idle-line">议长在码头坐了一会儿，然后向左走了。健三在档案里记下：「山田律，通过，用时12秒。」</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ch2 -->
-      <div class="chapter-card">
-        <div class="chapter-card-header">
-          <div class="chapter-number">2</div>
-          <div class="chapter-title">
-            <div class="chapter-name">扎根 — 渔村中央小镇</div>
-            <div class="chapter-area">漁村 &nbsp;·&nbsp; 主NPC：桐島梅子 &nbsp;·&nbsp; 情感主轴：归属感初现 · 某件搁着的事突然不需要搁了</div>
-          </div>
-          <div class="chapter-levels">Lv 31–60</div>
-        </div>
-        <div class="chapter-card-body">
-          <div class="stage-timeline">
-            <div class="stage-item"><div class="stage-trigger">Lv 31</div><div class="stage-name">荒废</div><div class="stage-desc">石板路泥泞，喷泉干涸，店铺门牌褪色，梅子工作室的门卡住</div></div>
-            <div class="stage-item"><div class="stage-trigger">Lv 38</div><div class="stage-name">兆头</div><div class="stage-desc">石板路清扫，工作室的门能打开了；店铺门牌修缮，老式字迹</div></div>
-            <div class="stage-item"><div class="stage-trigger">Lv 50</div><div class="stage-name">萌芽</div><div class="stage-desc">喷泉第一次出水时水柱歪了一下然后直了；座椅修缮，健三来坐说「挺好的」</div></div>
-            <div class="stage-item climax"><div class="stage-trigger">Lv 60 🔔</div><div class="stage-name">章末大变化</div><div class="stage-desc">一片落叶绕着水柱旋了一圈飘走了。律日记：「某件一直搁着的事突然不需要搁了。」</div></div>
-          </div>
-
-          <h4>叙事触发点</h4>
-          <table class="trigger-table">
-            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
-            <tbody>
-              <tr><td class="lv-badge">Lv 33</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>梅子工作室，律的脸碗在最显眼处：「做着做着就做了这个。」</td></tr>
-              <tr><td class="lv-badge">Lv 40</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>邮箱里出现麻布包裹的陶器碎片，署名只有一个名字。</td></tr>
-              <tr><td class="lv-badge">Lv 50</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>陶艺体验：ひなた不说话，只把律的手挪到正确位置。轆轤转动声充满工房。</td></tr>
-              <tr><td class="lv-badge">Lv 55</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>梅子把律随手捏的泥块烧好了——歪歪的。「不平的东西，有时候比较稳。」</td></tr>
-              <tr><td class="lv-badge">Lv 60</td><td><span class="trigger-type type-climax">章末高潮</span></td><td>律日记：「不是高兴，是像某件一直搁着的事突然不需要搁了。我没有改这个说法。」</td></tr>
-            </tbody>
-          </table>
-
-          <h4>NPC 氛围台词</h4>
-          <div class="idle-lines">
-            <div class="idle-line">梅子把律随手捏的小泥块烧好了——歪歪的，一边厚一边薄。她把它放到律的碗旁边，只说：「不平的东西，有时候比较稳。」</div>
-            <div class="idle-line">健三在小镇中央座椅上坐了很久，什么都没说，只是看着喷泉。然后站起来，说「挺好的」，走了。</div>
-            <div class="idle-line">议长在梅子工作室门口坐了一会儿，梅子给它端了碗水，什么都没说。</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ch3 -->
-      <div class="chapter-card">
-        <div class="chapter-card-header">
-          <div class="chapter-number">3</div>
-          <div class="chapter-title">
-            <div class="chapter-name">感受 — 花田山坡</div>
-            <div class="chapter-area">花畑の丘 &nbsp;·&nbsp; 主NPC：海野夏帆 &nbsp;·&nbsp; 情感主轴：情绪解冻 · 五年来第一次闻到有气味的下午</div>
-          </div>
-          <div class="chapter-levels">Lv 61–90</div>
-        </div>
-        <div class="chapter-card-body">
-          <div class="stage-timeline">
-            <div class="stage-item"><div class="stage-trigger">Lv 61</div><div class="stage-name">荒废</div><div class="stage-desc">花田杂草，瞭望台破损，野花圃荒乱，山坡石阶崩塌，绿灰色调</div></div>
-            <div class="stage-item"><div class="stage-trigger">Lv 68</div><div class="stage-name">兆头</div><div class="stage-desc">小径清理，夏帆说路好走多了；异形棋盘开始出现</div></div>
-            <div class="stage-item"><div class="stage-trigger">Lv 78</div><div class="stage-name">萌芽</div><div class="stage-desc">瞭望台修复，可以看见灯塔了（灯还是灭的）；夏帆告诉每株花「谢谢配合」</div></div>
-            <div class="stage-item climax"><div class="stage-trigger">Lv 90 🔔</div><div class="stage-name">章末大变化</div><div class="stage-desc">夏帆递来半开的花束，律眼睛酸了。日记：「在东京五年，我没有闻过任何有气味的下午。」</div></div>
-          </div>
-
-          <h4>叙事触发点</h4>
-          <table class="trigger-table">
-            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
-            <tbody>
-              <tr><td class="lv-badge">Lv 63</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>黄昏，律在森林入口发现ひなた一人坐在石头上。两人都没说话，一起等到日完全落下。</td></tr>
-              <tr><td class="lv-badge">Lv 70</td><td><span class="trigger-type type-mystery">谜题石刻</span></td><td>花田山坡第二块石刻：「二〇二六」——字体风化与码头那块完全一致。夏帆「无意中」提到渉「好像知道你会来」。</td></tr>
-              <tr><td class="lv-badge">Lv 75</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>夏帆带律走花田：「半开的花，已经是花了。」</td></tr>
-              <tr><td class="lv-badge">Lv 80</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>修复后的森林中发现ひなた留下的素描：森林全景，律的背影被小心描在角落里。</td></tr>
-              <tr><td class="lv-badge">Lv 90</td><td><span class="trigger-type type-climax">章末高潮</span></td><td>夏帆递花，律眼睛酸了，那道情绪的玻璃裂开了一条缝——不大，但是有了。</td></tr>
-            </tbody>
-          </table>
-
-          <h4>NPC 氛围台词</h4>
-          <div class="idle-lines">
-            <div class="idle-line">夏帆：「那棵松树，你经过的时候它在颤抖，是因为今天风很大。」停了一下，低头，小声说：「是我想告诉你的，不是树。」</div>
-            <div class="idle-line">夏帆带律走花田，律问是不是该等花开完？夏帆说：「半开的花，已经是花了。」</div>
-            <div class="idle-line">议长在花田路上坐着，夏帆在旁边做了一会儿记录，什么都没说。</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ch4 -->
-      <div class="chapter-card">
-        <div class="chapter-card-header">
-          <div class="chapter-number">4</div>
-          <div class="chapter-title">
-            <div class="chapter-name">栖息 — 森林露营地</div>
-            <div class="chapter-area">森のキャンプ地 &nbsp;·&nbsp; 主NPC：无（独处章节）&nbsp;·&nbsp; 情感主轴：安静 · 第一次不赶时间</div>
-          </div>
-          <div class="chapter-levels">Lv 91–120</div>
-        </div>
-        <div class="chapter-card-body">
-          <div class="stage-timeline">
-            <div class="stage-item"><div class="stage-trigger">Lv 91</div><div class="stage-name">荒废</div><div class="stage-desc">营地帐篷架生锈，篝火台积灰，山路木牌腐朽，阴暗色调</div></div>
-            <div class="stage-item"><div class="stage-trigger">Lv 98</div><div class="stage-name">兆头</div><div class="stage-desc">帐篷架修复，律自己住进去了；篝火台清理，当晚就生了火</div></div>
-            <div class="stage-item"><div class="stage-trigger">Lv 108</div><div class="stage-name">萌芽</div><div class="stage-desc">小径木牌修缮（路名全是花的名字）；岔路口出现ひなた留下的符号木板</div></div>
-            <div class="stage-item climax"><div class="stage-trigger">Lv 120 🔔</div><div class="stage-name">章末大变化</div><div class="stage-desc">营地瞭望点修复，同时可见灯塔和冬子家的灯。律仰头看星空。日记：「星星很多，我不知道我还记不记得怎么浪费时间。」</div></div>
-          </div>
-
-          <h4>叙事触发点</h4>
-          <table class="trigger-table">
-            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
-            <tbody>
-              <tr><td class="lv-badge">Lv 93</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>石板路上有两种脚印，其中一种在岔路口折向律不知道的方向，消失在藤蔓里。</td></tr>
-              <tr><td class="lv-badge">Lv 100</td><td><span class="trigger-type type-note">内心日记</span></td><td>律把两块石刻位置画在日记里，想找规律，找不到。把纸合上，没再想。</td></tr>
-              <tr><td class="lv-badge">Lv 108</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>客房桌上出现无署名的信：手绘岛屿地图，点线指向灯塔，余白：「いつか、見えるようになります。」</td></tr>
-              <tr><td class="lv-badge">Lv 115</td><td><span class="trigger-type type-npc">NPC氛围</span></td><td>议长在营地边上绕了一圈，向左走了。冬子的厨房飘来饭香，律没有去找原因。</td></tr>
-              <tr><td class="lv-badge">Lv 120</td><td><span class="trigger-type type-climax">章末高潮</span></td><td>篝火夜晚，第一次不赶时间，脑子安静下来——那种安静是许久不在的一种清醒。</td></tr>
-            </tbody>
-          </table>
-
-          <h4>NPC 氛围台词</h4>
-          <div class="idle-lines">
-            <div class="idle-line">律独行的夜里在营地写日记，画面闪一行字：「我不知道什么叫够了。也不知道从什么时候起，开始觉得这样也行。」</div>
-            <div class="idle-line">议长在营地边上绕了一圈，走的时候向左走。</div>
-            <div class="idle-line">营地山路上有ひなた留下的符号木板——律看不懂，但跟着符号走，绕开了一段很陡的坡路。</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ch5 -->
-      <div class="chapter-card">
-        <div class="chapter-card-header">
-          <div class="chapter-number">5</div>
-          <div class="chapter-title">
-            <div class="chapter-name">接受 — 温泉山谷</div>
-            <div class="chapter-area">温泉の谷 &nbsp;·&nbsp; 主NPC：丸山ひなた（核心章）&nbsp;·&nbsp; 情感主轴：放下 · 和解 · 第一次被「还行」说得心里暖</div>
-          </div>
-          <div class="chapter-levels">Lv 121–150</div>
-        </div>
-        <div class="chapter-card-body">
-          <div class="stage-timeline">
-            <div class="stage-item"><div class="stage-trigger">Lv 121</div><div class="stage-name">荒废</div><div class="stage-desc">温泉石道堵塞，热气散不出，木亭朽败，牌坊倒塌</div></div>
-            <div class="stage-item"><div class="stage-trigger">Lv 128</div><div class="stage-name">兆头</div><div class="stage-desc">石道修复，热气顺着石缝漫出；ひなた说「渉以前在这里教我钓鱼的」</div></div>
-            <div class="stage-item"><div class="stage-trigger">Lv 138</div><div class="stage-name">萌芽</div><div class="stage-desc">护栏修复，健三来看说「挺结实的，好」；牌坊修复，门牌是冬子用渉的字体描的</div></div>
-            <div class="stage-item climax"><div class="stage-trigger">Lv 150 🔔</div><div class="stage-name">章末大变化</div><div class="stage-desc">律第一次钓到鱼，ひなた说「还行」。灯塔轮廓清晰，温暖的光从灯室向外渗出。</div></div>
-          </div>
-
-          <h4>叙事触发点</h4>
-          <table class="trigger-table">
-            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
-            <tbody>
-              <tr><td class="lv-badge">Lv 123</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>钓鱼课：ひなた钓3条，律一条没有。她默默把一条放进律的桶。</td></tr>
-              <tr><td class="lv-badge">Lv 130</td><td><span class="trigger-type type-mystery">谜题石刻</span></td><td>第三块石刻：「灯を見る人」。律第一次将三块联系在一起：「りつ、二〇二六、灯を見る人」。ひなた：「他从来没有跟我说过这件事。」两人都沉默了。</td></tr>
-              <tr><td class="lv-badge">Lv 138</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>ひなた在木亭朗读渉的日记：「それでも灯台は消していない。光は、待っているものだと思うから。」</td></tr>
-              <tr><td class="lv-badge">Lv 145</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>ひなた把渉的第三册日记给律看：「他从来没有跟我说过这件事。」渔夫戒攥在她掌心，两人沉默很久。</td></tr>
-              <tr><td class="lv-badge">Lv 150</td><td><span class="trigger-type type-climax">章末高潮</span></td><td>「还行」两个字。前面那句「有些事不是为了证明你会」，让这两个字的重量完全不同了。</td></tr>
-            </tbody>
-          </table>
-
-          <h4>NPC 氛围台词</h4>
-          <div class="idle-lines">
-            <div class="idle-line">健三来看了看护栏，说「挺结实的，好」，然后去看了一眼温泉，点了点头，走了。</div>
-            <div class="idle-line">ひなた把渉的第三册日记给律看：「他从来没有跟我说过这件事。」渔夫戒攥在她掌心，两人沉默了很久。</div>
-            <div class="idle-line">议长在山谷入口坐了一会儿，然后跟着热气走进了温泉区。</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ch6 -->
-      <div class="chapter-card">
-        <div class="chapter-card-header">
-          <div class="chapter-number" style="background:var(--amber-dim);border-color:var(--amber-border);color:var(--amber)">6</div>
-          <div class="chapter-title">
-            <div class="chapter-name">点亮 — 夜晚灯塔</div>
-            <div class="chapter-area">夜の灯台 &nbsp;·&nbsp; 主NPC：丸山冬子 &nbsp;·&nbsp; 情感主轴：孤独中的温暖 · 光出现了</div>
-          </div>
-          <div class="chapter-levels" style="color:var(--amber);border-color:var(--amber-border);background:var(--amber-dim)">Lv 151–180</div>
-        </div>
-        <div class="chapter-card-body">
-          <div class="stage-timeline">
-            <div class="stage-item"><div class="stage-trigger">Lv 151</div><div class="stage-name">荒废</div><div class="stage-desc">灯塔外壁发黑，灯室积灰，杂草覆盖，整个岛上最沉默的地方</div></div>
-            <div class="stage-item"><div class="stage-trigger">Lv 158</div><div class="stage-name">兆头</div><div class="stage-desc">外壁修缮，老白重新出来；ひなた一个人清洁灯室，积了很多年的灰</div></div>
-            <div class="stage-item"><div class="stage-trigger">Lv 168</div><div class="stage-name">萌芽</div><div class="stage-desc">灯具修复，健三找来零件；冬子每晚在灯塔旁说话，议长陪着</div></div>
-            <div class="stage-item climax"><div class="stage-trigger">Lv 180 ✨</div><div class="stage-name">章末大变化·点灯</div><div class="stage-desc">律递出点火装置，ひなた握住，停了一下，点亮了。冬子：「渉さん、見えてますよ。」岛重新出现在地图上。</div></div>
-          </div>
-
-          <h4>叙事触发点</h4>
-          <table class="trigger-table">
-            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
-            <tbody>
-              <tr><td class="lv-badge">Lv 153</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>律第一次到达灯塔底部，看见ひなた单手抚着石壁、仰头看上方。她没注意到律，然后转身离开了。</td></tr>
-              <tr><td class="lv-badge">Lv 160</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>冬子从储物间拿出ひなた小时候的雨衣：「放在这里好多年了，她准备好了，我就还给她。」</td></tr>
-              <tr><td class="lv-badge">Lv 168</td><td><span class="trigger-type type-memory">日记碎片</span></td><td>渉「不寄出的信」最后一段：「灯台の光は、来るべき人を呼ぶのではない。来ようとしている人に、ここに灯りがあることを、知らせるだけだ。」</td></tr>
-              <tr><td class="lv-badge">Lv 175</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>健三在档案里写最后一条记录，把笔放下，站着看了很久灯塔。那是第七本记录册的最后一页。</td></tr>
-              <tr><td class="lv-badge">Lv 180</td><td><span class="trigger-type type-climax">章末高潮·结局</span></td><td>点灯仪式。什么都没说，什么都说了。灯亮后第二天：一切照常。这才是最深的治愈——世界已经在替你留着那个位置了。</td></tr>
-            </tbody>
-          </table>
-
-          <h4>NPC 氛围台词</h4>
-          <div class="idle-lines">
-            <div class="idle-line">冬子在灯塔旁坐着，说了些什么，议长在旁边听着。律路过时每次都能听到「律今天很努力」。</div>
-            <div class="idle-line">健三站在码头，看着灯塔的方向，站了两分钟，说「那先走了」，走了。</div>
-            <div class="idle-line">点灯后第二天，健三已经在倒茶，说「坐吧」，什么都没提。梅子工作室的碗还在最显眼处，律的那只没有被撤走。</div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- end chapter-grid -->
-  </section>
-
-  <!-- ───────────────── 叙事解锁系统 ───────────────── -->
-  <section id="narrative">
-    <div class="section-header">
-      <div class="section-icon icon-green">📖</div>
-      <div>
-        <h2>叙事解锁系统</h2>
-        <div class="section-sub">叙事解锁系统</div>
+  <div class="chapter-card">
+    <div class="chapter-header">
+      <div class="chapter-num">1</div>
+      <div class="chapter-info">
+        <h3>到来 — 海边码头（漁港）</h3>
+        <div class="meta">关卡 1–30 · NPC：磯部健三 · 情绪：陌生感 · 第一次真正呼吸</div>
       </div>
     </div>
-
-    <div class="callout callout-highlight">
-      <div class="callout-icon">🎯</div>
-      <div class="callout-text"><strong>设计原则：</strong>剧情内容本身即奖励，无额外资源掉落。玩家因好奇心驱动回归，而非资源激励。所有叙事触发均为关卡通关驱动，非时间/登录驱动。</div>
-    </div>
-
-    <h3>解锁类型</h3>
-    <table class="trigger-table">
-      <thead>
-        <tr>
-          <th>解锁类型</th>
-          <th>触发机制</th>
-          <th>呈现方式</th>
-          <th>数量</th>
-        </tr>
-      </thead>
+    <table class="stage-table">
+      <thead><tr><th>阶段</th><th>触发关卡</th><th>名称</th><th>视觉描述</th></tr></thead>
       <tbody>
-        <tr>
-          <td><span class="trigger-type type-npc">NPC对话片段</span></td>
-          <td>通关特定关卡</td>
-          <td>关卡结算后文字气泡</td>
-          <td>每章 3–5 个</td>
-        </tr>
-        <tr>
-          <td><span class="trigger-type type-memory">渉日记碎片</span></td>
-          <td>关卡里程碑或每日礼物</td>
-          <td>日记本书页界面</td>
-          <td>共 24 块</td>
-        </tr>
-        <tr>
-          <td><span class="trigger-type type-hinata">ひなた情感节点</span></td>
-          <td>章节修复里程碑</td>
-          <td>过场动画或环境变化发现</td>
-          <td>共 12 个节点</td>
-        </tr>
-        <tr>
-          <td><span class="trigger-type type-climax">岛屿视觉修复</span></td>
-          <td>每 N 关 / 章末</td>
-          <td>岛屿地图视觉更新</td>
-          <td>24 个视觉节点</td>
-        </tr>
-        <tr>
-          <td><span class="trigger-type type-mystery">谜题石刻</span></td>
-          <td>Ch1/Ch3/Ch5 特定关卡</td>
-          <td>地图探索发现</td>
-          <td>3 块石刻</td>
-        </tr>
+        <tr><td>1</td><td>关卡 1</td><td class="stage-name">荒废</td><td>码头木板腐朽，灯笼熄灭，渔船搁浅在泥沙中，整体灰白色调，饱和度极低。</td></tr>
+        <tr><td>2</td><td>关卡 8</td><td class="stage-name">兆头</td><td>码头栈板修缮完成，轮子不再卡住；健三的鱼竿重新架上去了，出现第一抹暖色。</td></tr>
+        <tr><td>3</td><td>关卡 18</td><td class="stage-name">萌芽</td><td>灯笼点亮，码头第一次有了颜色；告示板修复，手写便条「欢迎来到輝島，请随便走走」，无署名。</td></tr>
+        <tr class="climax-row"><td>4</td><td>关卡 30</td><td class="stage-name">章末大变化</td><td>渔船归位，码头完整修复，暖色灯光映在海面上。第一次能从码头隐约看见远处灯塔的轮廓，灯还是灭的。律第一次深吸一口气——不是因为要做什么，只是因为想。</td></tr>
       </tbody>
     </table>
+    <div class="subsection-title" style="margin-top:14px;">叙事触发节点</div>
+    <div class="narrative-list">
+      <div class="narrative-item"><span class="narrative-lv">Lv.1</span><span><span class="narrative-tag tag-npc">NPC对话</span>健三把热茶放在律旁边，说「坐吧，铃声一会儿会停的」。铃声没有停。但律坐下来了。</span></div>
+      <div class="narrative-item"><span class="narrative-lv">Lv.5</span><span><span class="narrative-tag tag-hinata">ひなた</span>客房割裂的窗户被悄悄换上新玻璃，只留下一片木屑。</span></div>
+      <div class="narrative-item"><span class="narrative-lv">Lv.10</span><span><span class="narrative-tag tag-hinata">ひなた</span>门口出现一根精心保养的旧钓竿，没有留言，只有沙上的浅浅脚印。</span></div>
+      <div class="narrative-item"><span class="narrative-lv">Lv.20</span><span><span class="narrative-tag tag-mystery">谜石刻</span>码头附近出现风化石刻「りつ」。律觉得是游客随手刻的，继续走了。</span></div>
+      <div class="narrative-item"><span class="narrative-lv">Lv.30</span><span><span class="narrative-tag tag-climax">情感高潮</span>律在日记里写下「海风里有一种不急的味道，我想待久一点」。岛屿视觉大变化。</span></div>
+    </div>
+  </div>
 
-    <h3>三块谜题石刻</h3>
-    <div class="system-card">
-      <table class="trigger-table">
-        <thead><tr><th>位置</th><th>内容</th><th>发现关卡</th><th>律的反应</th></tr></thead>
-        <tbody>
-          <tr>
-            <td>Ch1 码头附近</td>
-            <td style="font-size:1rem;font-weight:700;color:var(--mystery)">「りつ」</td>
-            <td class="lv-badge">Lv 20</td>
-            <td>以为是游客随手刻的，继续走了</td>
-          </tr>
-          <tr>
-            <td>Ch3 花田山坡</td>
-            <td style="font-size:1rem;font-weight:700;color:var(--mystery)">「二〇二六」</td>
-            <td class="lv-badge">Lv 70</td>
-            <td>意识到字体风化与第一块完全相同——这已不是游客所为</td>
-          </tr>
-          <tr>
-            <td>Ch5 灯台基石</td>
-            <td style="font-size:1rem;font-weight:700;color:var(--mystery)">「灯を見る人」</td>
-            <td class="lv-badge">Lv 130</td>
-            <td>第一次将三块联系在一起，无法确认是命运还是巧合</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="callout callout-warning" style="margin-top:0.8rem;margin-bottom:0">
-        <div class="callout-icon">🌀</div>
-        <div class="callout-text"><strong>解谜原则：</strong>游戏永远不确认这是命运安排还是巧合。答案属于玩家自己。渉日记最后一段：「灯台の光は、来るべき人を呼ぶのではない。来ようとしている人に、ここに灯りがあることを、知らせるだけだ。」</div>
+  <div class="chapter-card">
+    <div class="chapter-header">
+      <div class="chapter-num">2</div>
+      <div class="chapter-info">
+        <h3>扎根 — 渔村中央小镇（漁村）</h3>
+        <div class="meta">关卡 31–60 · NPC：桐島梅子 · 情绪：归属感初现</div>
       </div>
     </div>
-
-    <h3>NPC 闲置台词系统</h3>
-    <div class="field-row"><div class="field-label">触发方式</div><div class="field-value">关卡间隙随机触发（非剧情推进，纯氛围）</div></div>
-    <div class="field-row"><div class="field-label">是否阻断</div><div class="field-value highlight">否——轻量文字气泡，温暖但不打断游戏节奏</div></div>
-    <div class="field-row"><div class="field-label">消除方式</div><div class="field-value">自动消失或点击跳过</div></div>
-  </section>
-
-  <!-- ───────────────── 每日礼物 ───────────────── -->
-  <section id="daily-reward">
-    <div class="section-header">
-      <div class="section-icon icon-blue">🎁</div>
-      <div>
-        <h2>每日签到·岛屿礼物系统</h2>
-        <div class="section-sub">每日登录 / 岛屿礼物系统</div>
-      </div>
-    </div>
-
-    <h3>礼物节奏设计</h3>
-    <table class="trigger-table">
-      <thead><tr><th>阶段</th><th>天数范围</th><th>设计模式</th><th>关键里程碑</th></tr></thead>
+    <table class="stage-table">
+      <thead><tr><th>阶段</th><th>触发关卡</th><th>名称</th><th>视觉描述</th></tr></thead>
       <tbody>
-        <tr><td><strong>精确叙事期</strong></td><td class="lv-badge">D1–D7</td><td>每天一个岛屿物件+叙事风味文字，精确设计</td><td>D3日记碎片提示 · D6律第一篇日记 · D7 ひなた码头礼物</td></tr>
-        <tr><td><strong>维持期</strong></td><td class="lv-badge">D8–D30</td><td>随机池（材料偏稀有）+里程碑特殊事件</td><td>D14渉碎片 · D21律日记第2篇 · D28 ひなた特别信件</td></tr>
-        <tr><td><strong>季节循环</strong></td><td class="lv-badge">D30+</td><td>春夏秋冬各30天，限定材料+ひなた季节台词+视觉特效</td><td>每季节独特视觉叠加效果</td></tr>
+        <tr><td>1</td><td>关卡 31</td><td class="stage-name">荒废</td><td>石板路泥泞，喷泉干涸，店铺门牌褪色，梅子工作室的门卡住无法完全打开。</td></tr>
+        <tr><td>2</td><td>关卡 38</td><td class="stage-name">兆头</td><td>石板路清扫，梅子工作室的门可以打开了；店铺门牌开始修缮，字迹老式，没有换成新的。</td></tr>
+        <tr><td>3</td><td>关卡 50</td><td class="stage-name">萌芽</td><td>喷泉修复，第一次出水时水柱歪了一下，然后直了；小镇中央座椅修缮完成，健三第一个来坐，说「挺好的」。</td></tr>
+        <tr class="climax-row"><td>4</td><td>关卡 60</td><td class="stage-name">章末大变化</td><td>一片落叶绕着水柱旋了一圈，飘走了。律在喷泉边站了好一会儿，什么事也没做——那种安静不是空白，是某件一直搁着的事突然不需要搁了。灯塔在远处更清晰了一点。</td></tr>
       </tbody>
     </table>
+  </div>
 
-    <h3>四季礼物循环（D30+）</h3>
-    <div class="season-grid">
-      <div class="season-card">
-        <div class="season-name">🌸 春霞の島</div>
-        <div class="season-detail"><strong>限定材料：</strong>桜の花びら</div>
-        <div class="season-detail"><strong>视觉特效：</strong>樱花瓣飘落叠加层</div>
-        <div class="season-detail" style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">ひなた台词：「今年も桜が咲きましたね、律さん。去年は誰も見ていなかった桜です。」</div>
-      </div>
-      <div class="season-card">
-        <div class="season-name">☀️ 熱波の島</div>
-        <div class="season-detail"><strong>限定材料：</strong>夏蛍の光石</div>
-        <div class="season-detail"><strong>视觉特效：</strong>黄昏萤火虫发光</div>
-        <div class="season-detail" style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">ひなた台词：「夕暮れに蛍が出ます。崖の上から見るといいですよ。」</div>
-      </div>
-      <div class="season-card">
-        <div class="season-name">🍁 紅葉の島</div>
-        <div class="season-detail"><strong>限定材料：</strong>紅葉の枝</div>
-        <div class="season-detail"><strong>视觉特效：</strong>秋叶随风散落</div>
-        <div class="season-detail" style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">ひなた台词：「葉っぱが落ちると、島が少し、寂しそうに見えますね。」</div>
-      </div>
-      <div class="season-card">
-        <div class="season-name">❄️ 冬凪の島</div>
-        <div class="season-detail"><strong>限定材料：</strong>冬の霜草</div>
-        <div class="season-detail"><strong>视觉特效：</strong>晨雾霜晨效果</div>
-        <div class="season-detail" style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">ひなた台词：「冬の島は静かです。でも、その静かさが好きだと、祖父はよく言っていました。」</div>
+  <div class="chapter-card">
+    <div class="chapter-header">
+      <div class="chapter-num">3</div>
+      <div class="chapter-info">
+        <h3>感受 — 花田山坡（花畑の丘）</h3>
+        <div class="meta">关卡 61–90 · NPC：海野夏帆 · 情绪：情绪解冻 · 第一次被看见</div>
       </div>
     </div>
-
-    <h3>断签回归机制（软欢迎回来）</h3>
-    <table class="trigger-table">
-      <thead><tr><th>缺席时长</th><th>回归礼物</th><th>基调</th></tr></thead>
+    <table class="stage-table">
+      <thead><tr><th>阶段</th><th>触发关卡</th><th>名称</th><th>视觉描述</th></tr></thead>
       <tbody>
-        <tr><td>1–3天</td><td>标准礼物 + 额外材料</td><td>「おかえり、島はずっとここにいます。」</td></tr>
-        <tr><td>4–7天</td><td>稀有材料 + 日记碎片提示</td><td>温和迎接，无罪恶感</td></tr>
-        <tr><td>8天以上</td><td>章节素材包 + ひなた欢迎回来手记</td><td>岛屿以更厚重的礼物说「我们等你」</td></tr>
+        <tr><td>1</td><td>关卡 61</td><td class="stage-name">荒废</td><td>花田小径杂草丛生，瞭望台破损，野花圃荒乱，山坡石阶崩塌，整体绿灰色调，生机微弱。</td></tr>
+        <tr><td>2</td><td>关卡 68</td><td class="stage-name">兆头</td><td>花田小径清理完成，夏帆说路好走多了；异形棋盘开始出现（海湾/岛屿轮廓），环境与玩法同步变化。</td></tr>
+        <tr><td>3</td><td>关卡 78</td><td class="stage-name">萌芽</td><td>瞭望台修复，可以看见灯塔了，虽然灯还是灭的；夏帆认真地告诉每株花「工程结束了，谢谢配合」。</td></tr>
+        <tr class="climax-row"><td>4</td><td>关卡 90</td><td class="stage-name">章末大变化</td><td>山坡石阶全部修缮完成；夏帆递来半开的花束，律闻了一下，眼睛酸了。「在东京五年，我没有闻过任何有气味的下午。」灯塔轮廓更清晰，有隐约暖色光晕。</td></tr>
       </tbody>
     </table>
+  </div>
 
-    <div class="callout callout-note">
-      <div class="callout-icon">🔔</div>
-      <div class="callout-text"><strong>推送通知设计原则：</strong>完全可选，第3天游戏后温和询问。最多每天1条，D30后静默（除非缺席3天以上）。措辞语气：岛屿视角，穏やかで、急かさない，不制造义务感。</div>
-    </div>
-  </section>
-
-  <!-- ───────────────── 灯塔锚点 ───────────────── -->
-  <section id="lighthouse">
-    <div class="section-header">
-      <div class="section-icon icon-warm">🏮</div>
-      <div>
-        <h2>灯塔元目标·远景锚点</h2>
-        <div class="section-sub">灯塔终极目标 — 视觉锚点</div>
+  <div class="chapter-card">
+    <div class="chapter-header">
+      <div class="chapter-num">4</div>
+      <div class="chapter-info">
+        <h3>栖息 — 森林露营地（森のキャンプ地）</h3>
+        <div class="meta">关卡 91–120 · 独处章节 · 情绪：安静 · 独处 · 第一次不赶时间</div>
       </div>
     </div>
-
-    <div class="philosophy-card">
-      <p>从Ch1开始，地平线上就隐约可见灯塔的轮廓——近而不可达，光而未点。随着修复进度，灯塔越来越清晰，光越来越强，形成六章贯穿的视觉驱动力。灯塔不只是目标，它是<strong>情感锚点</strong>——每次修复，灯塔窗里的光多一点点。</p>
-    </div>
-
-    <h3>灯塔可见度·六阶段</h3>
-    <div class="lighthouse-track">
-      <div class="lh-stage">
-        <div class="lh-ch">第1章</div>
-        <div class="lh-icon">🌫️</div>
-        <div class="lh-label">浓雾中仅见轮廓，灯完全熄灭</div>
-      </div>
-      <div class="lh-stage">
-        <div class="lh-ch">第2章</div>
-        <div class="lh-icon">🌁</div>
-        <div class="lh-label">薄雾中形状渐显，仍无光</div>
-      </div>
-      <div class="lh-stage">
-        <div class="lh-ch">第3章</div>
-        <div class="lh-icon">🏚️</div>
-        <div class="lh-label">轮廓清晰，灯室有隐约暖光透出</div>
-      </div>
-      <div class="lh-stage">
-        <div class="lh-ch">第4章</div>
-        <div class="lh-icon">🏠</div>
-        <div class="lh-label">灯塔清晰，光晕可见，灯尚未点亮</div>
-      </div>
-      <div class="lh-stage">
-        <div class="lh-ch">第5章</div>
-        <div class="lh-icon">🗼</div>
-        <div class="lh-label">灯塔完整，暖光充盈灯室，准备就绪感</div>
-      </div>
-      <div class="lh-stage active-glow">
-        <div class="lh-ch">第6章</div>
-        <div class="lh-icon">💡</div>
-        <div class="lh-label">灯亮，光柱扫过夜海，岛重新出现在地图上</div>
-      </div>
-    </div>
-
-    <h3>声音设计原则</h3>
-    <div class="callout callout-note">
-      <div class="callout-icon">🎵</div>
-      <div class="callout-text"><strong>声音先于视觉：</strong>晨风里的远处风铃声预示修复，早于场景更新。每章环境音层次随修复进度叠加——海浪声、木屐踏地声、风铃声、三味线、蝉声随时节变化。</div>
-    </div>
-
-    <h3>章节衔接预告</h3>
-    <table class="trigger-table">
-      <thead><tr><th>章节衔接</th><th>霧中预告描述</th></tr></thead>
+    <table class="stage-table">
+      <thead><tr><th>阶段</th><th>触发关卡</th><th>名称</th><th>视觉描述</th></tr></thead>
       <tbody>
-        <tr><td>Ch1 → Ch2</td><td>霧の中に、窯の煙がほんの少し見える。</td></tr>
-        <tr><td>Ch2 → Ch3</td><td>石畳の先に、緑の影。</td></tr>
-        <tr><td>Ch3 → Ch4</td><td>木々の間から、灰色の石が並んでいる。</td></tr>
-        <tr><td>Ch4 → Ch5</td><td>道の果てに、崖の縁。その向こうに、海。</td></tr>
-        <tr><td>Ch5 → Ch6</td><td>霧が晴れると、灯台の輪郭がはっきりと見えた。</td></tr>
+        <tr><td>1</td><td>关卡 91</td><td class="stage-name">荒废</td><td>营地帐篷架生锈，篝火台积灰，山路木牌腐朽，整体阴暗色调，只有树缝间漏出的光。</td></tr>
+        <tr><td>2</td><td>关卡 98</td><td class="stage-name">兆头</td><td>营地帐篷架修复，律自己住进去了；篝火台清理，当晚就生了火，营地第一次有了人的温度。</td></tr>
+        <tr><td>3</td><td>关卡 108</td><td class="stage-name">萌芽</td><td>小径木牌修缮，夏帆的字迹，路名都是花的名字；某个岔路口出现ひなた留下的符号木板，木板下压着一束半干的野花。</td></tr>
+        <tr class="climax-row"><td>4</td><td>关卡 120</td><td class="stage-name">章末大变化</td><td>营地瞭望点修复，可以同时看见灯塔和冬子家的灯。律仰头看星空，把帽子放在膝盖上。日记：「今天没有工作要交，没有人等我回邮件。星星很多。我不知道我还记不记得怎么浪费时间。」</td></tr>
       </tbody>
     </table>
-  </section>
+  </div>
 
-  <!-- ───────────────── 好友系统 ───────────────── -->
-  <section id="friends">
-    <div class="section-header">
-      <div class="section-icon icon-mystery">👥</div>
-      <div>
-        <h2>好友进度展示系统</h2>
-        <div class="section-sub">好友进度系统 — 第二期预留</div>
+  <div class="chapter-card">
+    <div class="chapter-header">
+      <div class="chapter-num">5</div>
+      <div class="chapter-info">
+        <h3>接受 — 温泉山谷（温泉の谷）</h3>
+        <div class="meta">关卡 121–150 · NPC：丸山ひなた（核心章）· 情绪：放松 · 和解 · 第一次钓到鱼</div>
       </div>
     </div>
-
-    <div class="callout callout-warning">
-      <div class="callout-icon">⚠️</div>
-      <div class="callout-text"><strong>第一期状态：</strong>仅设计数据结构，UI不实现。以下字段在后端预留，供第二期接入 Game Center / Google Play 后使用。</div>
-    </div>
-
-    <h3>好友数据结构（第一期预留字段）</h3>
-    <table class="schema-table">
-      <thead><tr><th>字段名</th><th>类型</th><th>说明</th></tr></thead>
+    <table class="stage-table">
+      <thead><tr><th>阶段</th><th>触发关卡</th><th>名称</th><th>视觉描述</th></tr></thead>
       <tbody>
-        <tr><td class="field-name">user_id</td><td class="field-type">string</td><td class="field-desc">玩家唯一标识符</td></tr>
-        <tr><td class="field-name">display_name</td><td class="field-type">string</td><td class="field-desc">显示名称</td></tr>
-        <tr><td class="field-name">current_chapter</td><td class="field-type">integer (1–6)</td><td class="field-desc">当前所在章节</td></tr>
-        <tr><td class="field-name">current_level</td><td class="field-type">integer (1–180)</td><td class="field-desc">当前关卡编号</td></tr>
-        <tr><td class="field-name">island_stage</td><td class="field-type">integer (1–24)</td><td class="field-desc">当前岛屿视觉阶段（6章×4阶段=24节点）</td></tr>
-        <tr><td class="field-name">last_active_at</td><td class="field-type">ISO8601 timestamp</td><td class="field-desc">最后活跃时间</td></tr>
-        <tr><td class="field-name">opt_in_social</td><td class="field-type">boolean</td><td class="field-desc">是否同意显示好友进度（默认 false）</td></tr>
-        <tr><td class="field-name">avatar_preset_id</td><td class="field-type">string</td><td class="field-desc">头像预设ID</td></tr>
+        <tr><td>1</td><td>关卡 121</td><td class="stage-name">荒废</td><td>温泉石道堵塞，热气散不出来，木亭朽败，山谷入口牌坊倒塌，一片寂静。</td></tr>
+        <tr><td>2</td><td>关卡 128</td><td class="stage-name">兆头</td><td>温泉石道修复，热气顺着石缝漫出来了；木亭修缮，ひなた说「渉以前在这里教我钓鱼的」。</td></tr>
+        <tr><td>3</td><td>关卡 138</td><td class="stage-name">萌芽</td><td>温泉池边护栏修复，健三来看了看，说「挺结实的，好」；山谷入口牌坊修复，门牌是冬子用渉的字体描的。</td></tr>
+        <tr class="climax-row"><td>4</td><td>关卡 150</td><td class="stage-name">章末大变化</td><td>律第一次钓到鱼。ひなた侧过脸，眼角带着一丝笑，说了两个字：「还行。」律日记：「当客户说还行，我不高兴了三天。她说了同样两个字，我想记住很久。」灯塔轮廓清晰，温暖的光从灯室向外渗出。</td></tr>
       </tbody>
     </table>
+  </div>
 
-    <h3>第二期 UI 设计规格</h3>
-    <div class="field-row"><div class="field-label">接入平台</div><div class="field-value">Game Center (iOS) · Google Play Games (Android)</div></div>
-    <div class="field-row"><div class="field-label">界面位置</div><div class="field-value">岛屿地图界面，好友进度气泡叠加在对应章节区域</div></div>
-    <div class="field-row"><div class="field-label">显示内容</div><div class="field-value highlight">头像 + 当前章节名称（不显示具体关卡数，避免比较压力）</div></div>
-    <div class="field-row"><div class="field-label">互动方式</div><div class="field-value">点击好友气泡可发送鼓励表情（无竞争性语言）</div></div>
-    <div class="field-row"><div class="field-label">隐私设置</div><div class="field-value">完全可选，默认不显示好友信息</div></div>
-
-    <h3>社交设计约束</h3>
-    <div class="tag-list">
-      <span class="tag" style="background:rgba(200,116,58,0.15);color:var(--warm);border-color:var(--warm-border)">禁止 PvP</span>
-      <span class="tag" style="background:rgba(200,116,58,0.15);color:var(--warm);border-color:var(--warm-border)">禁止排行榜</span>
-      <span class="tag" style="background:rgba(200,116,58,0.15);color:var(--warm);border-color:var(--warm-border)">禁止强制社交</span>
-      <span class="tag-green">仅可选的鼓励表情</span>
-      <span class="tag-green">默认不显示好友信息</span>
-    </div>
-  </section>
-
-  <!-- ───────────────── 排除项 ───────────────── -->
-  <section id="exclusions">
-    <div class="section-header">
-      <div class="section-icon icon-warm">🚫</div>
-      <div>
-        <h2>设计排除项</h2>
-        <div class="section-sub">排除系统 — 治愈调性保护</div>
+  <div class="chapter-card">
+    <div class="chapter-header">
+      <div class="chapter-num" style="background:var(--lighthouse-gold);color:#3d2e1e;">6</div>
+      <div class="chapter-info">
+        <h3>点亮 — 夜晚灯塔（夜の灯台）</h3>
+        <div class="meta">关卡 151–180 · NPC：丸山冬子 · 情绪：孤独中的温暖 · 觉醒</div>
       </div>
     </div>
-
-    <div class="callout callout-warning">
-      <div class="callout-icon">🛡️</div>
-      <div class="callout-text"><strong>治愈调性保护：</strong>以下系统被明确排除，任何未来迭代均不得重新引入。Glow Island的差异化来自于「不催人、不比较、不施压」的体验承诺。</div>
-    </div>
-
-    <table class="exclusion-table">
-      <thead><tr><th>排除系统</th><th>排除原因</th></tr></thead>
+    <table class="stage-table">
+      <thead><tr><th>阶段</th><th>触发关卡</th><th>名称</th><th>视觉描述</th></tr></thead>
       <tbody>
-        <tr>
-          <td class="excl-name">独立技能树</td>
-          <td class="excl-reason">岛屿地图本身就是视觉化元进度展示，不需要额外复杂系统，增加认知负担</td>
-        </tr>
-        <tr>
-          <td class="excl-name">限时活动 / 时间限制元玩法</td>
-          <td class="excl-reason">保持治愈调性，排除一切时间压力——岛不催人</td>
-        </tr>
-        <tr>
-          <td class="excl-name">PvP / 排行榜</td>
-          <td class="excl-reason">治愈游戏核心价值观：不催人，不比较；竞争机制与叙事调性根本冲突</td>
-        </tr>
-        <tr>
-          <td class="excl-name">体力 / 生命值系统</td>
-          <td class="excl-reason">无体力是产品核心差异化承诺（F-004），与竞品的最根本区别</td>
-        </tr>
-        <tr>
-          <td class="excl-name">强制社交 / 公会义务</td>
-          <td class="excl-reason">社交完全可选；好友功能第二期才实现且仅为软激励，绝不强制</td>
-        </tr>
+        <tr><td>1</td><td>关卡 151</td><td class="stage-name">荒废</td><td>灯塔外壁发黑，灯室封闭积灰，周围杂草覆盖，黑暗中灯塔是整个岛上最沉默的地方。</td></tr>
+        <tr><td>2</td><td>关卡 158</td><td class="stage-name">兆头</td><td>灯塔外壁修缮，白色重新出来了，不是新刷的那种白，是老白；ひなた一个人清洁灯室，积了很多年的灰。</td></tr>
+        <tr><td>3</td><td>关卡 168</td><td class="stage-name">萌芽</td><td>灯具修复，健三找来零件；冬子每晚在灯塔旁说话，议长陪着。律路过时每次都能听到「律今天很努力」。</td></tr>
+        <tr class="climax-row"><td>4</td><td>关卡 180</td><td class="stage-name">点灯时刻</td><td>律递出点火装置，ひなた握住，停了一下，点亮了。暖黄光柱从塔顶扫出，照过所有已修复的地方——花田、小镇、码头、营地——最后落在夜海上，拉出一条长长的金色水线。冬子说：「渉さん、見えてますよ。」律和ひなた站在光里，什么都没说，什么都说了。岛重新出现在地图上。</td></tr>
       </tbody>
     </table>
-  </section>
+  </div>
+</div>
 
-  <!-- ───────────────── 评审清单 ───────────────── -->
-  <section id="checklist">
-    <div class="section-header">
-      <div class="section-icon icon-gold">✅</div>
-      <div>
-        <h2>评审清单</h2>
-        <div class="section-sub">审批清单（人工关卡）</div>
+<!-- TAB 3: 叙事解锁 -->
+<div id="tab-narrative" class="tab-content">
+  <div class="section">
+    <div class="section-title">叙事节奏规则</div>
+    <p>每章30关内分布 <strong>3–5 个剧情触发点</strong>，章末必有一个<strong>情感高潮 + 视觉大变化</strong>。叙事触发为通关驱动，非时间/登录驱动。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">叙事解锁类型</div>
+    <div class="unlock-grid">
+      <div class="unlock-card">
+        <div class="type-badge" style="background:var(--tag-blue);color:var(--tag-blue-text);">NPC对话</div>
+        <h4>NPC 对话片段</h4>
+        <p style="font-size:12px;">通关特定关卡后解锁 NPC 的新对话。轻量文字气泡，温暖但不打断游戏节奏。交付方式：关卡结算后文字气泡。</p>
+      </div>
+      <div class="unlock-card">
+        <div class="type-badge" style="background:var(--tag-green);color:var(--tag-green-text);">日记碎片</div>
+        <h4>渉的记忆碎片（共24块）</h4>
+        <p style="font-size:12px;">丸山渉的日记碎片，每章解锁数条，揭开岛屿谜题层。集齐24块解锁最终幕后故事：渉为什么会知道律会来。交付：记忆日志书本式UI。</p>
+      </div>
+      <div class="unlock-card">
+        <div class="type-badge" style="background:#ffe8f0;color:#aa3366;">ひなた情感线</div>
+        <h4>丸山ひなた 情感演出（共12节点）</h4>
+        <p style="font-size:12px;">律与ひなた的情感演出，贯穿6章，共12个节点。触发方式：章节修复里程碑。感情弧：Ch1注意→Ch2共鸣→Ch3并肩→Ch4寻找→Ch5临界→Ch6收容。</p>
+      </div>
+      <div class="unlock-card">
+        <div class="type-badge" style="background:#f0e8ff;color:#6633aa;">谜题</div>
+        <h4>三块风化石刻（谜题线）</h4>
+        <ul class="stone-list">
+          <li>「りつ」— Ch1 码头附近</li>
+          <li>「二〇二六」— Ch3 花田山坡</li>
+          <li>「灯を見る人」— Ch5 灯台基石</li>
+        </ul>
+        <p style="font-size:12px;margin-top:8px;">游戏永远不确认这是命运还是巧合。答案属于玩家自己。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">NPC Idle 台词系统</div>
+    <div class="card">
+      <h4>设计原则</h4>
+      <p>NPC 在关卡间隙随机触发日常台词（非剧情推进，纯氛围），轻量文字气泡，温暖但不打断游戏节奏。触发条件：关卡间随机概率。非阻断式，自动消失或点击跳过。共享 meta 层触发器。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">渉记忆碎片来源</div>
+    <div class="card-grid">
+      <div class="card"><h4>每日签到</h4><p>Day 3 首次提示，Day 14 第二块碎片，D30+ 季节礼物持续提供。</p></div>
+      <div class="card"><h4>ひなた情感节点</h4><p>Ch2-a 陶器碎片、Ch5-b ひなた朗读渉日记——叙事情感高潮与碎片系统深度融合。</p></div>
+      <div class="card"><h4>章节修复里程碑</h4><p>完成特定修复阶段后自然解锁碎片 03–12，无需额外农场行为。</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 4: 账号与后端系统 -->
+<div id="tab-account" class="tab-content">
+  <div class="warn-box">
+    <strong>v3.0 重要变更：</strong>本节内容已全面修订。移除 Game Center 及 Google Play Games Services。好友系统 Phase 2 改为基于自建后端实现。中国区相关登录方式不在需求范围内。
+  </div>
+
+  <div class="section">
+    <div class="section-title">登录方案</div>
+    <div class="login-option-grid">
+      <div class="login-card">
+        <span class="platform-icon">&#x1F34E;</span>
+        <div class="platform-tag ios-tag">仅 iOS</div>
+        <h4>Sign in with Apple</h4>
+        <p>iOS 平台登录方式。Apple ID 登录后，引导用户绑定邮箱作为跨平台主键。</p>
+        <p style="margin-top:8px;font-size:11px;color:var(--text-muted);">注：苹果审核要求若 App 提供第三方登录，必须同时提供 Sign in with Apple 选项。</p>
+      </div>
+      <div class="login-card">
+        <span class="platform-icon">&#x1F916;</span>
+        <div class="platform-tag android-tag">仅 Android</div>
+        <h4>Google Sign-In</h4>
+        <p>Android 平台登录方式。使用 Google Identity（OAuth 2.0），不接入 Google Play Games Services。</p>
+        <p style="margin-top:8px;font-size:11px;color:var(--text-muted);">Google 登录后同样引导绑定邮箱以启用跨平台进度同步。</p>
+      </div>
+      <div class="login-card primary">
+        <span class="platform-icon">&#x1F4E7;</span>
+        <div class="platform-tag all-tag">全平台</div>
+        <h4>邮箱 + 密码</h4>
+        <p>跨平台通用登录方式。<strong>邮箱为整个账号系统的主键（Primary Key）</strong>。绑定 Apple/Google 后，可用邮箱在任意平台登录同一账号。</p>
       </div>
     </div>
 
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div>岛屿地图视觉变化节点与关卡通关进度精确对齐（每N关一次，N由progression-curve-design确定）</div>
+    <div class="info-box" style="margin-top:0;">
+      <strong>跨平台身份认同原则：</strong>邮箱是唯一跨平台身份标识。Apple ID / Google 账号登录成功后，提示用户设置或绑定邮箱，以便在不同平台和设备间访问同一存档。后端通过邮箱主键识别同一用户，自动同步进度。
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">账号注册与登录流程</div>
+    <div class="card-grid">
+      <div class="card">
+        <h4>游客模式</h4>
+        <p>首次进入无需登录，本地存档优先。游戏内适时提示注册（触发时机：通关 Ch1 后或 D3）以启用云同步，不强制注册。</p>
       </div>
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div>6章节各自的岛屿视觉阶段描述清晰（荒废/兆头/萌芽/章末大变化 四阶段各有明确视觉状态说明）</div>
-      </div>
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div>章末必有明显视觉大变化（情感高潮锚点）——6章×1次章末大变化均已定义</div>
-      </div>
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div>日记碎片解锁触发机制与关卡节点对应关系已定义（总24块，触发方式：关卡里程碑+每日礼物+ひなた节点）</div>
-      </div>
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div>好友进度展示（第二期）所需的数据结构字段已在JSON中预留（8个字段，含 opt_in_social 默认false）</div>
-      </div>
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div>NPC idle台词系统设计为非阻断式（随机触发，轻量气泡，自动消失或点击跳过）</div>
-      </div>
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div>设计排除项完整列出（技能树/限时活动/PvP/体力系统/强制社交）</div>
-      </div>
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div>灯塔远景锚点6阶段可见度描述清晰，Ch6点灯后永久保持 lighthouse_glow_always_on</div>
-      </div>
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div>每章3–5个叙事触发点分布均匀，章末必有一个情感高潮（6章均已定义，符合节奏要求）</div>
+      <div class="card">
+        <h4>跨平台账号链接</h4>
+        <p>同一邮箱可绑定 Apple ID 和 Google 账号。iOS 用 Apple 登录、Android 用 Google 登录时，后端通过邮箱主键识别为同一用户，自动同步进度。</p>
       </div>
     </div>
+    <div class="subsection-title" style="margin-top:20px;">注册流程步骤</div>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="flow-step-num">1</div><div class="flow-step-content">选择登录方式（Apple / Google / 邮箱）</div></div>
+      <div class="flow-step"><div class="flow-step-num">2</div><div class="flow-step-content">Apple / Google OAuth 完成后，提示绑定或验证邮箱</div></div>
+      <div class="flow-step"><div class="flow-step-num">3</div><div class="flow-step-content">邮箱注册需发送验证邮件（6 位数字验证码，15 分钟有效期）</div></div>
+      <div class="flow-step"><div class="flow-step-num">4</div><div class="flow-step-content">账号创建完成后，本地存档自动迁移至云端</div></div>
+    </div>
+  </div>
 
-    <!-- Phase Roadmap -->
-    <h3 style="margin-top:2rem">阶段路线图</h3>
-    <div class="roadmap">
-      <div class="roadmap-phase">
-        <div class="roadmap-phase-label">第一期 — Web Demo</div>
-        <h4 style="color:var(--accent2)">核心系统</h4>
-        <p>岛屿地图视觉进度 · 叙事解锁（6章全部内容）· 每日礼物（D1–D7精确）· 灯塔远景锚点 · 好友系统数据结构预留（UI不实现）</p>
-      </div>
-      <div class="roadmap-phase">
-        <div class="roadmap-phase-label">第二期 — iOS / Android</div>
-        <h4 style="color:var(--amber)">扩展系统</h4>
-        <p>接入 Game Center / Google Play · 好友进度展示UI实现 · 季节系统完整运营 · D30+季节循环活化</p>
+  <div class="section">
+    <div class="section-title">自建轻量后端</div>
+    <div class="info-box">不依赖 Game Center 或 Google Play Games 后端基础设施。自建简单 REST API 服务端，处理账号认证、进度同步和好友关系（Phase 2）。</div>
+
+    <div class="subsection-title">技术栈方案对比</div>
+    <div class="backend-option">
+      <h4>方案 A — Firebase（推荐·快速上线）<span class="rec-badge">推荐早期</span></h4>
+      <div class="spec-row"><span class="spec-label">认证</span><span class="spec-val">Firebase Authentication（Apple / Google / 邮箱开箱即用）</span></div>
+      <div class="spec-row"><span class="spec-label">数据库</span><span class="spec-val">Firestore（NoSQL，无需运维）</span></div>
+      <div class="spec-row"><span class="spec-label">函数</span><span class="spec-val">Cloud Functions（Serverless，按用量计费）</span></div>
+      <div class="pro-con">
+        <div class="pro">Auth + DB + Functions 一体，开箱即用</div>
+        <div class="pro">免费额度覆盖早期 DAU</div>
+        <div class="con">供应商锁定</div>
+        <div class="con">长期成本随 DAU 上升</div>
       </div>
     </div>
+    <div class="backend-option">
+      <h4>方案 B — Supabase（开源 BaaS）</h4>
+      <div class="spec-row"><span class="spec-label">认证</span><span class="spec-val">Supabase Auth（Apple / Google / 邮箱）</span></div>
+      <div class="spec-row"><span class="spec-label">数据库</span><span class="spec-val">PostgreSQL（关系型，结构化存储）</span></div>
+      <div class="spec-row"><span class="spec-label">函数</span><span class="spec-val">Edge Functions（Deno）</span></div>
+      <div class="pro-con">
+        <div class="pro">开源可自建，PostgreSQL 成熟</div>
+        <div class="pro">迁移自由度高</div>
+        <div class="con">自建运维成本略高</div>
+        <div class="con">生态不如 Firebase 完整</div>
+      </div>
+    </div>
+    <div class="backend-option recommended">
+      <h4>方案 C — 自建 Fastify + PostgreSQL（长期自主）<span class="rec-badge">与现有偏好一致</span></h4>
+      <div class="spec-row"><span class="spec-label">认证</span><span class="spec-val">自实现 OAuth 2.0（Apple / Google）+ JWT + bcrypt</span></div>
+      <div class="spec-row"><span class="spec-label">数据库</span><span class="spec-val">PostgreSQL（Prisma ORM）— 与 pipeline_preferences 完全一致</span></div>
+      <div class="spec-row"><span class="spec-label">框架</span><span class="spec-val">Fastify REST API</span></div>
+      <div class="pro-con">
+        <div class="pro">完全掌控，零供应商锁定</div>
+        <div class="pro">技术栈与现有偏好完全一致</div>
+        <div class="con">Auth 安全实现需仔细</div>
+        <div class="con">初期运维成本最高</div>
+      </div>
+    </div>
+  </div>
 
-    <hr class="divider">
-    <p style="text-align:center;font-size:0.78rem;color:var(--muted)">
-      Glow Island &nbsp;·&nbsp; 元游戏层设计 v2.0 &nbsp;·&nbsp; 生成日期：2026-05-13 &nbsp;·&nbsp; 状态：草稿（待人工审批）
-    </p>
-  </section>
+  <div class="section">
+    <div class="section-title">核心 API 端点</div>
+    <div class="card">
+      <ul class="api-list">
+        <li><span class="api-method">POST</span><span class="api-path">/auth/apple</span><span class="api-desc">Apple ID 登录 / 注册</span></li>
+        <li><span class="api-method">POST</span><span class="api-path">/auth/google</span><span class="api-desc">Google 登录 / 注册</span></li>
+        <li><span class="api-method">POST</span><span class="api-path">/auth/email/register</span><span class="api-desc">邮箱注册（含发送验证码）</span></li>
+        <li><span class="api-method">POST</span><span class="api-path">/auth/email/login</span><span class="api-desc">邮箱登录</span></li>
+        <li><span class="api-method">POST</span><span class="api-path">/auth/link</span><span class="api-desc">绑定第三方账号至邮箱主键</span></li>
+        <li><span class="api-method">GET</span><span class="api-path">/player/progress</span><span class="api-desc">拉取云端存档</span></li>
+        <li><span class="api-method">PUT</span><span class="api-path">/player/progress</span><span class="api-desc">推送本地存档至云端</span></li>
+        <li class="api-phase2"><span class="api-method">GET</span><span class="api-path">/friends</span><span class="api-desc">获取好友列表（Phase 2）</span></li>
+        <li class="api-phase2"><span class="api-method">POST</span><span class="api-path">/friends/invite</span><span class="api-desc">发送好友邀请（Phase 2）</span></li>
+      </ul>
+    </div>
+  </div>
 
-</div><!-- end container -->
+  <div class="section">
+    <div class="section-title">数据模型</div>
+    <div class="schema-grid">
+      <div class="schema-card">
+        <h4>users</h4>
+        <div class="field-row"><span class="field-name">user_id</span><span class="field-type">UUID</span><span class="field-note">PK</span></div>
+        <div class="field-row"><span class="field-name">email</span><span class="field-type">string (unique)</span><span class="field-note">跨平台主键</span></div>
+        <div class="field-row"><span class="field-name">email_verified</span><span class="field-type">boolean</span><span></span></div>
+        <div class="field-row"><span class="field-name">apple_sub</span><span class="field-type">string?</span><span class="field-note">nullable</span></div>
+        <div class="field-row"><span class="field-name">google_sub</span><span class="field-type">string?</span><span class="field-note">nullable</span></div>
+        <div class="field-row"><span class="field-name">display_name</span><span class="field-type">string</span><span></span></div>
+        <div class="field-row"><span class="field-name">avatar_preset_id</span><span class="field-type">string</span><span></span></div>
+        <div class="field-row"><span class="field-name">created_at</span><span class="field-type">ISO8601</span><span></span></div>
+        <div class="field-row"><span class="field-name">last_login_at</span><span class="field-type">ISO8601</span><span></span></div>
+      </div>
+      <div class="schema-card">
+        <h4>player_progress</h4>
+        <div class="field-row"><span class="field-name">user_id</span><span class="field-type">UUID</span><span class="field-note">FK users</span></div>
+        <div class="field-row"><span class="field-name">current_chapter</span><span class="field-type">integer 1-6</span><span></span></div>
+        <div class="field-row"><span class="field-name">current_level</span><span class="field-type">integer 1-180</span><span></span></div>
+        <div class="field-row"><span class="field-name">island_stage</span><span class="field-type">integer 1-24</span><span></span></div>
+        <div class="field-row"><span class="field-name">beach_coins</span><span class="field-type">integer</span><span></span></div>
+        <div class="field-row"><span class="field-name">memory_fragments</span><span class="field-type">integer[]</span><span></span></div>
+        <div class="field-row"><span class="field-name">hinata_beats</span><span class="field-type">string[]</span><span></span></div>
+        <div class="field-row"><span class="field-name">daily_login_streak</span><span class="field-type">integer</span><span></span></div>
+        <div class="field-row"><span class="field-name">last_login_date</span><span class="field-type">date</span><span></span></div>
+        <div class="field-row"><span class="field-name">updated_at</span><span class="field-type">ISO8601</span><span></span></div>
+      </div>
+      <div class="schema-card">
+        <h4>friends <span style="font-size:11px;font-weight:400;color:var(--text-muted);">Phase 2 预留</span></h4>
+        <div class="field-row"><span class="field-name">user_id</span><span class="field-type">UUID</span><span class="field-note">FK users</span></div>
+        <div class="field-row"><span class="field-name">friend_id</span><span class="field-type">UUID</span><span class="field-note">FK users</span></div>
+        <div class="field-row"><span class="field-name">status</span><span class="field-type">pending|accepted</span><span></span></div>
+        <div class="field-row"><span class="field-name">created_at</span><span class="field-type">ISO8601</span><span></span></div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">好友添加：邮箱/用户名搜索或分享邀请链接。不依赖 Game Center 或 Google Play Games 好友列表。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">安全要求</div>
+    <div class="card-grid">
+      <div class="card">
+        <h4>传输安全</h4>
+        <p>所有 API 使用 HTTPS；JWT access token（短效）+ refresh token（长效）机制；Apple/Google OAuth token 在服务端校验，不信任客户端原始 token。</p>
+      </div>
+      <div class="card">
+        <h4>账号安全</h4>
+        <p>邮箱注册需验证（6 位数字验证码，15 分钟有效期）；密码哈希：bcrypt（cost factor 大于等于 12）；支持账号删除（App Store / Google Play 均强制要求）。</p>
+      </div>
+      <div class="card">
+        <h4>进度同步策略</h4>
+        <p>冲突解决：last_write_wins with server timestamp。离线支持：本地存档优先，联网时自动同步。同步频率：章节完成 + 每日登录 + App 切入后台事件。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">市场范围</div>
+    <div class="card-grid">
+      <div class="card">
+        <h4>目标市场</h4>
+        <p>日本 · 东南亚 · 欧美 · 台湾/香港。App Store 全球上架（排除中国区）。Google Play 全球上架（排除中国区）。</p>
+      </div>
+      <div class="card highlight">
+        <h4>不上架中国区</h4>
+        <p>无需微信登录、手机号登录、实名认证等中国特有合规要求。无需游戏版号相关申请流程。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">排除系统</div>
+    <div class="exclusion-list">
+      <div class="exclusion-item">
+        <div class="exclusion-icon">x</div>
+        <div class="exclusion-text">
+          <h5>Game Center</h5>
+          <p>不使用 Apple 平台原生成就/排行榜。社交功能由自建后端实现。</p>
+        </div>
+      </div>
+      <div class="exclusion-item">
+        <div class="exclusion-icon">x</div>
+        <div class="exclusion-text">
+          <h5>Google Play Games Services</h5>
+          <p>登录仅使用 Google Identity（OAuth 2.0）。不接入 GPGS 排行榜/成就。</p>
+        </div>
+      </div>
+      <div class="exclusion-item">
+        <div class="exclusion-icon">x</div>
+        <div class="exclusion-text">
+          <h5>微信 / 手机号登录</h5>
+          <p>不上架中国区市场，无需中国特有登录方式。</p>
+        </div>
+      </div>
+      <div class="exclusion-item">
+        <div class="exclusion-icon">x</div>
+        <div class="exclusion-text">
+          <h5>PvP / 排行榜</h5>
+          <p>治愈游戏价值观：不催人，不比较。好友功能仅为轻社交同伴展示。</p>
+        </div>
+      </div>
+      <div class="exclusion-item">
+        <div class="exclusion-icon">x</div>
+        <div class="exclusion-text">
+          <h5>体力 / 生命值系统</h5>
+          <p>无体力是产品核心差异化承诺（F-004 必需功能）。</p>
+        </div>
+      </div>
+      <div class="exclusion-item">
+        <div class="exclusion-icon">x</div>
+        <div class="exclusion-text">
+          <h5>限时活动 / 时间限制元玩法</h5>
+          <p>保持治愈调性，排除一切时间压力。季节系统仅为视觉叠加，不引入压迫感。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">阶段路线图</div>
+    <div class="phase-grid">
+      <div class="phase-card p1">
+        <h4>Phase 1 — Web Demo / 原生 App 早期版本</h4>
+        <ul>
+          <li>岛屿地图视觉进度系统</li>
+          <li>叙事解锁（剧情/日记碎片/ひなた情感线）</li>
+          <li>每日礼物系统（D1–D7 精确设计）</li>
+          <li>灯塔远景锚点</li>
+          <li><strong>账号系统：Apple / Google / 邮箱登录 + 云端进度同步</strong></li>
+          <li>好友功能：数据结构后端预留，UI 不实现</li>
+        </ul>
+      </div>
+      <div class="phase-card p2">
+        <h4>Phase 2 — iOS + Android 完整版</h4>
+        <ul>
+          <li>好友进度展示 UI（基于自建后端，邀请链接/搜索方式添加好友）</li>
+          <li>好友鼓励表情互动</li>
+          <li>季节系统完整运营</li>
+          <li>完整 180 关内容上线</li>
+          <li>渉 24 块日记碎片全部解锁路径完整</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
 </body>
 </html>

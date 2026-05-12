@@ -1,0 +1,37 @@
+{
+  "report_id": "glow-island-template-runtime-load-qa-report-v1",
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "status": "load_ready_with_warnings",
+  "verdicts": [
+    {
+      "template_id": "level_ch1_lv1",
+      "template_kind": "level",
+      "loader_target": "implement-puzzle-core (Cocos Creator 3.x)",
+      "validation_method": "schema_json_validation",
+      "status": "load_ready",
+      "evidence_paths": [".allforai/game-templates/instances/level.json#level_ch1_lv1"],
+      "parse_errors": [],
+      "resolution_errors": [],
+      "missing_refs": [],
+      "repair_target": null,
+      "blocks_runtime": false
+    },
+    {
+      "template_id": "level_ch4_lv20 (pierce preset)",
+      "template_kind": "level",
+      "loader_target": "implement-special-mechanics",
+      "validation_method": "schema_json_validation",
+      "status": "load_ready",
+      "evidence_paths": [".allforai/game-templates/instances/level.json#level_ch4_lv20"],
+      "parse_errors": [],
+      "resolution_errors": [],
+      "missing_refs": [],
+      "repair_target": null,
+      "blocks_runtime": false
+    }
+  ],
+  "loader_note": "Cocos Creator runtime loader尚未实现（implement-puzzle-core节点在游戏设计之后），故使用static JSON schema validation。runtime headless load测试推迟至implement-puzzle-core完成。",
+  "loader_available": false,
+  "conclusion": "静态JSON schema验证通过。runtime loader test推迟至implement-puzzle-core节点，为non-blocking警告。"
+}

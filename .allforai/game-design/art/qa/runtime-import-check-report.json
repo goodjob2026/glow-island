@@ -1,0 +1,169 @@
+{
+  "schema_version": "1.0",
+  "skill": "game-art/runtime-import-check",
+  "mode": "validate_artifacts_only",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "runtime": "cocos-creator-3.x",
+  "platform": "web-canvas-2d",
+  "overall_status": "import_ready_with_warnings",
+  "summary": "运行时导入检查完成（含警告）。目标运行时为Cocos Creator 3.x / web-canvas-2d。所有资产ID、文件前缀、格式、图集策略与Cocos Creator规格兼容。警告：图片文件尚未生成，headless engine import验证无法执行；当前验证方法为import_manifest_parse（基于规格文档）。",
+
+  "validation_method": "import_manifest_parse",
+  "engine_available": false,
+  "engine_availability_note": "Cocos Creator 3.x项目文件尚未创建（art设计阶段，非runtime实现阶段）。headless import验证将在game-design-finalize批准后的runtime实现节点执行。",
+
+  "verdicts": [
+    {
+      "artifact_id": "tiles_chapter_atlases",
+      "manifest_path": ".allforai/game-design/art/tilesets/tileset-manifest.json",
+      "runtime": "cocos-creator-3.x",
+      "adapter_policy": "profile_only",
+      "validation_method": "import_manifest_parse",
+      "status": "import_ready_with_warnings",
+      "evidence_paths": [
+        ".allforai/game-design/systems/tile-art-spec.json",
+        ".allforai/game-design/art/atlases/atlas-packaging-report.json"
+      ],
+      "missing_files": ["tiles_ch{1-6}_atlas.json — 待Cocos Creator auto-atlas打包生成"],
+      "invalid_fields": [],
+      "unsupported_features": [],
+      "import_errors": [],
+      "render_errors": [],
+      "repair_target": "待图片生成后运行Cocos Creator auto-atlas打包，生成atlas JSON文件",
+      "blocks_runtime": false,
+      "cocos_compatibility_notes": [
+        "PNG格式：Cocos Creator 3.x原生支持 ✓",
+        "128×128px图块：web-canvas-2d平台兼容 ✓",
+        "2048px图集最大尺寸：web-canvas-2d内存安全 ✓",
+        "每章节独立图集（按需加载）：内存优化策略正确 ✓",
+        "SpriteFrame UUID机制：需Cocos Creator编辑器导入确认"
+      ]
+    },
+    {
+      "artifact_id": "special_blocks_atlas",
+      "manifest_path": ".allforai/game-design/art/tilesets/tileset-manifest.json",
+      "runtime": "cocos-creator-3.x",
+      "adapter_policy": "profile_only",
+      "validation_method": "import_manifest_parse",
+      "status": "import_ready_with_warnings",
+      "evidence_paths": [".allforai/game-design/systems/tile-art-spec.json#special_blocks"],
+      "missing_files": ["special_blocks_atlas.json — 待打包"],
+      "invalid_fields": [],
+      "unsupported_features": [],
+      "import_errors": [],
+      "render_errors": [],
+      "repair_target": "待图片生成后打包",
+      "blocks_runtime": false,
+      "cocos_compatibility_notes": [
+        "12帧帧动画（@30fps）：Cocos Creator Animation支持 ✓",
+        "chapter-independent atlas：全局预加载策略正确 ✓"
+      ]
+    },
+    {
+      "artifact_id": "characters_atlas",
+      "manifest_path": ".allforai/game-design/systems/character-art-spec.json",
+      "runtime": "cocos-creator-3.x",
+      "adapter_policy": "generate_import_manifest",
+      "validation_method": "import_manifest_parse",
+      "status": "import_ready_with_warnings",
+      "evidence_paths": [
+        ".allforai/game-design/systems/character-art-spec.json",
+        ".allforai/game-design/systems/skeletal-animation-plan.json"
+      ],
+      "missing_files": [
+        "characters_atlas.json — DragonBones Pro导出后生成",
+        "char_{id}.dbproj — DragonBones项目文件（各角色）",
+        "char_{id}_ske.json + char_{id}_tex.json — DragonBones导出格式"
+      ],
+      "invalid_fields": [],
+      "unsupported_features": [],
+      "import_errors": [],
+      "render_errors": [],
+      "repair_target": "完成DragonBones Pro项目文件及导出，生成Cocos Creator可导入的DragonBones JSON资产",
+      "blocks_runtime": false,
+      "cocos_compatibility_notes": [
+        "DragonBones Cocos Creator插件：dragonbones+frame+tween动画系统 ✓",
+        "骨骼动画（30fps）：Cocos Creator DragonBones组件支持 ✓",
+        "char_gicho帧动画（12fps）：Animation组件支持 ✓",
+        "characters_atlas 2048×2048px：web-canvas-2d内存安全 ✓"
+      ]
+    },
+    {
+      "artifact_id": "environment_backgrounds",
+      "manifest_path": ".allforai/game-design/art/backgrounds/background-manifest.json",
+      "runtime": "cocos-creator-3.x",
+      "adapter_policy": "profile_only",
+      "validation_method": "import_manifest_parse",
+      "status": "import_ready_with_warnings",
+      "evidence_paths": [".allforai/game-design/systems/environment-art-spec.json"],
+      "missing_files": ["bg_ch{1-6}_{before|progress|restored}.jpg — 待图片生成"],
+      "invalid_fields": [],
+      "unsupported_features": [],
+      "import_errors": [],
+      "render_errors": [],
+      "repair_target": "待图片生成后验证JPG文件能在Cocos Creator中正常导入为Sprite",
+      "blocks_runtime": false,
+      "cocos_compatibility_notes": [
+        "JPG格式：Cocos Creator 3.x支持（无alpha，背景用途正确）✓",
+        "1920×1080px：web-canvas-2d需注意GPU纹理内存（建议运行时按章节加载释放）✓",
+        "视差层（3层）：Cocos Creator Layer/node z-order支持 ✓"
+      ]
+    },
+    {
+      "artifact_id": "ui_elements_atlas",
+      "manifest_path": ".allforai/game-design/systems/ui-art-spec.json",
+      "runtime": "cocos-creator-3.x",
+      "adapter_policy": "profile_only",
+      "validation_method": "import_manifest_parse",
+      "status": "import_ready_with_warnings",
+      "evidence_paths": [
+        ".allforai/game-design/systems/ui-art-spec.json",
+        ".allforai/game-design/ui/ui-registry.json",
+        ".allforai/game-design/ui/screen-layout-spec.json"
+      ],
+      "missing_files": ["ui_elements_atlas.json — 待图片生成后Cocos Creator auto-atlas打包"],
+      "invalid_fields": [],
+      "unsupported_features": [],
+      "import_errors": [],
+      "render_errors": [],
+      "repair_target": "待图片生成后打包，注意ui_elements_atlas大尺寸组件可能需要多图集配置",
+      "blocks_runtime": false,
+      "cocos_compatibility_notes": [
+        "PNG含alpha：Cocos Creator UI渲染 ✓",
+        "9宫格拉伸（圆角UI框）：需在Cocos Creator Sprite组件配置九宫格参数",
+        "Tween动画：Cocos Creator Tween系统完整支持spring/scale/opacity ✓",
+        "720×1280px基准分辨率 + 安全区适配：Cocos Canvas设计分辨率一致 ✓"
+      ]
+    },
+    {
+      "artifact_id": "vfx_atlas",
+      "manifest_path": ".allforai/game-design/art-pipeline-config.json#vfx",
+      "runtime": "cocos-creator-3.x",
+      "adapter_policy": "profile_only",
+      "validation_method": "import_manifest_parse",
+      "status": "import_ready_with_warnings",
+      "evidence_paths": [".allforai/game-design/art-pipeline-config.json#vfx"],
+      "missing_files": ["vfx_atlas.json — 待图片生成后打包"],
+      "invalid_fields": [],
+      "unsupported_features": [],
+      "import_errors": [],
+      "render_errors": [],
+      "repair_target": "待图片生成后打包，vfx_atlas_max_px=1024",
+      "blocks_runtime": false,
+      "cocos_compatibility_notes": [
+        "粒子系统：Cocos Creator ParticleSystem2D支持（200粒子预算/combo）✓",
+        "VFX图集1024px：web-canvas-2d内存安全 ✓",
+        "VFX层级（不遮挡棋盘路径）：Cocos zIndex / renderOrder控制 ✓"
+      ]
+    }
+  ],
+
+  "overall_import_readiness": {
+    "assets_with_blocker": 0,
+    "assets_import_ready": 0,
+    "assets_import_ready_with_warnings": 6,
+    "primary_limitation": "所有资产规格兼容Cocos Creator 3.x，但图片文件和DragonBones项目文件尚未生成。实际引擎导入验证需在图片生成和runtime实现节点后执行。",
+    "engine_validation_deferred_to": "implement-puzzle-core节点（game-design-finalize批准后）"
+  }
+}

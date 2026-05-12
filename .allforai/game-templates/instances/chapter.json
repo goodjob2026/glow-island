@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "template_kind": "chapter",
+  "schema_id": "chapter-schema-v1",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "source_refs": [
+    ".allforai/game-design/systems/level-design.json",
+    ".allforai/game-design/systems/retention-hook.json"
+  ],
+  "instances": [
+    {
+      "template_id": "chapter_1",
+      "chapter": 1, "theme": "海边码头", "area_jp": "漁港",
+      "level_range": "1-30", "level_global_range": "1-30",
+      "season": "spring", "grid_size": "8×8",
+      "step_range": "25–35", "first_pass_target": 0.80,
+      "material_reward": "shell_fragment",
+      "npc_guide_id": "npc_isobe_kenzo",
+      "background_art_refs": ["art/backgrounds/ch1_harbor_stage1", "art/backgrounds/ch1_harbor_stage2", "art/backgrounds/ch1_harbor_stage3"],
+      "bgm_ref": "bgm_spring_harbor",
+      "state": "validated"
+    },
+    {
+      "template_id": "chapter_2",
+      "chapter": 2, "theme": "中央小镇", "area_jp": "中央商店街",
+      "level_range": "1-30", "level_global_range": "31-60",
+      "season": "summer", "grid_size": "8×8→9×9",
+      "step_range": "28–38", "first_pass_target": 0.75,
+      "material_reward": "clay_shard",
+      "npc_guide_id": "npc_kirishima_umeko",
+      "background_art_refs": ["art/backgrounds/ch2_town_stage1", "art/backgrounds/ch2_town_stage2", "art/backgrounds/ch2_town_stage3"],
+      "bgm_ref": "bgm_summer_town",
+      "state": "validated"
+    },
+    {
+      "template_id": "chapter_3",
+      "chapter": 3, "theme": "花田山坡", "area_jp": "花畑",
+      "level_range": "1-30", "level_global_range": "61-90",
+      "season": "autumn", "grid_size": "8×8（异形）",
+      "step_range": "30–40", "first_pass_target": 0.72,
+      "material_reward": "pine_needle",
+      "npc_guide_id": "npc_umino_naho",
+      "background_art_refs": ["art/backgrounds/ch3_hillfield_stage1", "art/backgrounds/ch3_hillfield_stage2", "art/backgrounds/ch3_hillfield_stage3"],
+      "bgm_ref": "bgm_autumn_field",
+      "state": "validated"
+    },
+    {
+      "template_id": "chapter_4",
+      "chapter": 4, "theme": "森林露营地", "area_jp": "森のキャンプ",
+      "level_range": "1-30", "level_global_range": "91-120",
+      "season": "winter", "grid_size": "8×8（异形）",
+      "step_range": "33–40", "first_pass_target": 0.70,
+      "material_reward": "torii_fragment",
+      "npc_guide_id": "npc_gicho_cat",
+      "background_art_refs": ["art/backgrounds/ch4_forest_stage1", "art/backgrounds/ch4_forest_stage2", "art/backgrounds/ch4_forest_stage3"],
+      "bgm_ref": "bgm_winter_forest",
+      "state": "validated"
+    },
+    {
+      "template_id": "chapter_5",
+      "chapter": 5, "theme": "温泉山谷", "area_jp": "温泉谷",
+      "level_range": "1-30", "level_global_range": "121-150",
+      "season": "spring_second", "grid_size": "9×9（异形）",
+      "step_range": "40", "first_pass_target": 0.70,
+      "material_reward": "rope_fiber",
+      "npc_guide_id": "npc_maruyama_hinata",
+      "background_art_refs": ["art/backgrounds/ch5_onsen_stage1", "art/backgrounds/ch5_onsen_stage2", "art/backgrounds/ch5_onsen_stage3"],
+      "bgm_ref": "bgm_spring2_onsen",
+      "state": "validated"
+    },
+    {
+      "template_id": "chapter_6",
+      "chapter": 6, "theme": "夜晚灯塔", "area_jp": "灯台",
+      "level_range": "1-30", "level_global_range": "151-180",
+      "season": "summer_second", "grid_size": "10×10（异形）",
+      "step_range": "40", "first_pass_target": 0.68,
+      "material_reward": "lighthouse_key",
+      "npc_guide_id": "npc_maruyama_fuyuko",
+      "background_art_refs": ["art/backgrounds/ch6_lighthouse_stage1", "art/backgrounds/ch6_lighthouse_stage2", "art/backgrounds/ch6_lighthouse_stage3"],
+      "bgm_ref": "bgm_summer2_lighthouse",
+      "state": "validated"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-12T21:55:00Z",
+  "engine": {
+    "id": "cocos-creator",
+    "version": "3.8.8",
+    "app_path": "/Applications/CocosCreator.app",
+    "executable_path": "/Applications/CocosCreator.app/Contents/MacOS/CocosCreator",
+    "cli_adapter": ".allforai/bootstrap/scripts/cocos-cli",
+    "validation_command": ".allforai/bootstrap/scripts/cocos-cli --version"
+  },
+  "runtime_import": {
+    "status": "configured_but_unverified",
+    "reason": "Cocos Creator 3.8.8 executable is installed and the project adapter is validated for version detection, but no project-specific import/build command has completed yet.",
+    "build_command": ".allforai/bootstrap/scripts/cocos-cli --project game-client --build",
+    "preview_command": ".allforai/bootstrap/scripts/cocos-cli --project game-client --preview",
+    "required_before_engine_ready": true
+  },
+  "animation_formats": {
+    "dragonbones": {
+      "skeleton": "DragonBones JSON",
+      "texture": "PNG texture atlas",
+      "runtime_required": true
+    },
+    "frame_animation": {
+      "texture": "PNG sprite strip or atlas",
+      "manifest": "atlas JSON"
+    }
+  },
+  "handoff_status": "configured_pending_runtime_import_validation",
+  "consumer_refs": [
+    "game-art/40-qa/runtime-import-check",
+    "game-art/40-qa/engine-ready-art-output-contract",
+    "game-frontend/20-spec/asset-import-binding-spec"
+  ]
+}

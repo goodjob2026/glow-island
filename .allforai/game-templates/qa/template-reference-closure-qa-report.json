@@ -1,0 +1,28 @@
+{
+  "report_id": "glow-island-template-reference-closure-qa-report-v1",
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "status": "passed_with_warnings",
+  "findings": [
+    {
+      "finding_id": "CLS-W001",
+      "template_id": "level (all)",
+      "template_kind": "level",
+      "contract_axis": "runtime_load_gap",
+      "severity": "warning",
+      "expected": "完整180关实例均validated",
+      "actual": "4个representative instances validated；完整实例待level-editor-tool生成",
+      "evidence_paths": [".allforai/game-templates/instances/level.json"],
+      "repair_target": "level-editor-tool节点执行后生成完整180关",
+      "blocks_runtime": false,
+      "state": "passed_with_warnings"
+    }
+  ],
+  "blocking_issues": [],
+  "no_schema_gaps": true,
+  "no_missing_source_refs": true,
+  "no_orphan_templates": true,
+  "no_cycles": true,
+  "no_illegal_overrides": true,
+  "conclusion": "Template reference closure QA通过（含1个非blocking警告：完整关卡实例待level-editor-tool生成）。"
+}

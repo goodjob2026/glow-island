@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "skill": "game-art/tileset-spec",
+  "result": "COMPLETED",
+
+  "applicability": {
+    "status": "APPLICABLE",
+    "reason": "Glow Island is a casual mobile match-3 puzzle game. The board consists of a repeatable grid of icon-based cells. This confirms puzzle_grid tilemap mode."
+  },
+
+  "mode_selection": {
+    "selected_mode": "puzzle_grid",
+    "projection": "orthographic",
+    "connectivity": "single_tiles",
+    "collision_model": "none",
+    "rationale": "Each board cell displays exactly one tile icon. No terrain transitions or autotile blending needed. Connectivity is single_tiles (independent icon-per-cell). Collision does not apply to puzzle grid icons."
+  },
+
+  "inferred_defaults": {
+    "tile_size_px": 128,
+    "source": "art-pipeline-config.json tileset.tile_size_px"
+  },
+
+  "missing_inputs": [],
+
+  "terrain_summary": {
+    "regular_tiles_count": 20,
+    "special_block_count": 5,
+    "total_terrain_sets": 25,
+    "chapter_variants_per_regular_tile": 6,
+    "frame_variants_per_special_block": 12,
+    "total_variant_files": 180
+  },
+
+  "atlas_summary": {
+    "chapter_atlases": 6,
+    "special_blocks_atlas": 1,
+    "total_atlases": 7,
+    "atlas_max_px": 2048
+  },
+
+  "validation_checks": [
+    { "check_id": "mode_supported",            "status": "PASS" },
+    { "check_id": "projection_defined",         "status": "PASS" },
+    { "check_id": "tile_size_defined",          "status": "PASS" },
+    { "check_id": "connectivity_defined",       "status": "PASS" },
+    { "check_id": "collision_model_defined",    "status": "PASS" },
+    { "check_id": "terrain_sets_complete",      "status": "PASS" },
+    { "check_id": "terrain_prefixes_present",   "status": "PASS" },
+    { "check_id": "walkability_collision_set",  "status": "PASS" },
+    { "check_id": "variant_requirements_met",   "status": "PASS" },
+    { "check_id": "atlas_contract_complete",    "status": "PASS" },
+    { "check_id": "preview_maps_defined",       "status": "PASS" },
+    { "check_id": "puzzle_grid_minimums",       "status": "PASS" }
+  ],
+
+  "overall_validation": "PASS"
+}

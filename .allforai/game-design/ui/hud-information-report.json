@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/hud-information-design",
+  "status": "COMPLETED",
+  "checks_passed": [
+    "所有 critical 失败条件（步数耗尽）均有对应 HUD 信号（step_counter）",
+    "每个 HUD 信号均有 priority / visibility / update_rate",
+    "无 hidden 信号被标记为 critical",
+    "gameplay 界面存在 playfield_protection 定义",
+    "小屏幕 fallback 保留了 critical 信号",
+    "图标引用均在 asset-registry.json 中存在",
+    "always-visible 信号数量 = 3（step_counter / beach_coin_balance / lighthouse_progress），符合移动端容量限制"
+  ],
+  "checks_warned": [
+    "combo_counter 由 VFX 层处理，未在 HUD 固定区域分配像素，如后续 VFX 层未实现需补充"
+  ],
+  "checks_failed": [],
+  "missing_critical_signals": [],
+  "overload_warnings": []
+}

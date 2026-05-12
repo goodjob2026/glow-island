@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "template_kind": "economy_sku",
+  "schema_id": "economy-sku-schema-v1",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "source_refs": [".allforai/game-design/systems/monetization-design.json#iap_skus"],
+  "instances": [
+    {
+      "template_id": "sku_pack_small",
+      "sku_id": "pack_small",
+      "name_cn": "一抔沙",
+      "name_en": "A Handful of Sand",
+      "price_usd": 0.99,
+      "beach_coins": 60,
+      "is_subscription": false,
+      "positioning": "低门槛入门包",
+      "art_refs": { "icon_runtime_id": "art/ui/shop_icon_pack_small" },
+      "audio_refs": { "sfx_purchase": "sfx_beach_coin_gain" },
+      "state": "validated"
+    },
+    {
+      "template_id": "sku_pack_medium",
+      "sku_id": "pack_medium",
+      "name_cn": "一把贝壳",
+      "name_en": "A Handful of Shells",
+      "price_usd": 3.99,
+      "beach_coins": 280,
+      "is_subscription": false,
+      "positioning": "主力单次购买，性价比锚点",
+      "art_refs": { "icon_runtime_id": "art/ui/shop_icon_pack_medium" },
+      "audio_refs": { "sfx_purchase": "sfx_beach_coin_gain" },
+      "state": "validated"
+    },
+    {
+      "template_id": "sku_pack_large",
+      "sku_id": "pack_large",
+      "name_cn": "一篮珊瑚",
+      "name_en": "A Basket of Coral",
+      "price_usd": 9.99,
+      "beach_coins": 820,
+      "is_subscription": false,
+      "positioning": "重度玩家储粮包",
+      "art_refs": { "icon_runtime_id": "art/ui/shop_icon_pack_large" },
+      "audio_refs": { "sfx_purchase": "sfx_beach_coin_gain" },
+      "state": "validated"
+    },
+    {
+      "template_id": "sku_pack_monthly_card",
+      "sku_id": "pack_monthly_card",
+      "name_cn": "月卡",
+      "name_en": "Monthly Card",
+      "price_usd": 4.99,
+      "beach_coins": 0,
+      "delivery": "30_coins_per_day_x30",
+      "beach_coins_total": 900,
+      "bonus": "沙漏奖励2倍",
+      "is_subscription": true,
+      "renewal_reminder_days": 3,
+      "positioning": "订阅留存锚点，沙漏翻倍",
+      "art_refs": { "icon_runtime_id": "art/ui/shop_icon_monthly_card" },
+      "audio_refs": { "sfx_purchase": "sfx_beach_coin_gain" },
+      "state": "validated"
+    }
+  ]
+}

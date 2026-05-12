@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "template_kind": "tile_type",
+  "schema_id": "tile-type-schema-v1",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "source_refs": [".allforai/game-design/systems/puzzle-design.json#tile_types"],
+  "instances": [
+    { "template_id": "tile_type_T01", "tile_type_id": "T01", "code": "T01", "name_cn": "珊瑚橙", "color_hex": "#FF8C5A", "unlock_chapter": 1, "art_refs": { "runtime_id": "art/tiles/tile_T01" }, "state": "validated" },
+    { "template_id": "tile_type_T02", "tile_type_id": "T02", "code": "T02", "name_cn": "海浪蓝", "color_hex": "#4DA6D4", "unlock_chapter": 1, "art_refs": { "runtime_id": "art/tiles/tile_T02" }, "state": "validated" },
+    { "template_id": "tile_type_T03", "tile_type_id": "T03", "code": "T03", "name_cn": "沙滩米", "color_hex": "#E8D5A3", "unlock_chapter": 1, "art_refs": { "runtime_id": "art/tiles/tile_T03" }, "state": "validated" },
+    { "template_id": "tile_type_T04", "tile_type_id": "T04", "code": "T04", "name_cn": "海草绿", "color_hex": "#7BC67A", "unlock_chapter": 1, "art_refs": { "runtime_id": "art/tiles/tile_T04" }, "state": "validated" },
+    { "template_id": "tile_type_T05", "tile_type_id": "T05", "code": "T05", "name_cn": "灯笼黄", "color_hex": "#FFD166", "unlock_chapter": 2, "art_refs": { "runtime_id": "art/tiles/tile_T05" }, "state": "validated" },
+    { "template_id": "tile_type_T06", "tile_type_id": "T06", "code": "T06", "name_cn": "石板灰", "color_hex": "#A0A0A0", "unlock_chapter": 2, "art_refs": { "runtime_id": "art/tiles/tile_T06" }, "state": "validated" },
+    { "template_id": "tile_type_T07", "tile_type_id": "T07", "code": "T07", "name_cn": "砖瓦红", "color_hex": "#C0504D", "unlock_chapter": 2, "art_refs": { "runtime_id": "art/tiles/tile_T07" }, "state": "validated" },
+    { "template_id": "tile_type_T08", "tile_type_id": "T08", "code": "T08", "name_cn": "暖木棕", "color_hex": "#8B5E3C", "unlock_chapter": 2, "art_refs": { "runtime_id": "art/tiles/tile_T08" }, "state": "validated" },
+    { "template_id": "tile_type_T09", "tile_type_id": "T09", "code": "T09", "name_cn": "薰衣草紫", "color_hex": "#B08DCA", "unlock_chapter": 3, "art_refs": { "runtime_id": "art/tiles/tile_T09" }, "state": "validated" },
+    { "template_id": "tile_type_T10", "tile_type_id": "T10", "code": "T10", "name_cn": "粉樱", "color_hex": "#F4A7B9", "unlock_chapter": 3, "art_refs": { "runtime_id": "art/tiles/tile_T10" }, "state": "validated" },
+    { "template_id": "tile_type_T11", "tile_type_id": "T11", "code": "T11", "name_cn": "晨雾白", "color_hex": "#EAF0F6", "unlock_chapter": 3, "art_refs": { "runtime_id": "art/tiles/tile_T11" }, "state": "validated" },
+    { "template_id": "tile_type_T12", "tile_type_id": "T12", "code": "T12", "name_cn": "苔藓绿", "color_hex": "#4E7C59", "unlock_chapter": 3, "art_refs": { "runtime_id": "art/tiles/tile_T12" }, "state": "validated" },
+    { "template_id": "tile_type_T13", "tile_type_id": "T13", "code": "T13", "name_cn": "深林棕", "color_hex": "#5C4033", "unlock_chapter": 4, "art_refs": { "runtime_id": "art/tiles/tile_T13" }, "state": "validated" },
+    { "template_id": "tile_type_T14", "tile_type_id": "T14", "code": "T14", "name_cn": "营火橙", "color_hex": "#E07832", "unlock_chapter": 4, "art_refs": { "runtime_id": "art/tiles/tile_T14" }, "state": "validated" },
+    { "template_id": "tile_type_T15", "tile_type_id": "T15", "code": "T15", "name_cn": "星空靛", "color_hex": "#3D4A8A", "unlock_chapter": 4, "art_refs": { "runtime_id": "art/tiles/tile_T15" }, "state": "validated" },
+    { "template_id": "tile_type_T16", "tile_type_id": "T16", "code": "T16", "name_cn": "萤光绿", "color_hex": "#A3E635", "unlock_chapter": 4, "art_refs": { "runtime_id": "art/tiles/tile_T16" }, "state": "validated" },
+    { "template_id": "tile_type_T17", "tile_type_id": "T17", "code": "T17", "name_cn": "温泉白", "color_hex": "#F0EAE2", "unlock_chapter": 5, "art_refs": { "runtime_id": "art/tiles/tile_T17" }, "state": "validated" },
+    { "template_id": "tile_type_T18", "tile_type_id": "T18", "code": "T18", "name_cn": "矿物蓝", "color_hex": "#6EB5C0", "unlock_chapter": 5, "art_refs": { "runtime_id": "art/tiles/tile_T18" }, "state": "validated" },
+    { "template_id": "tile_type_T19", "tile_type_id": "T19", "code": "T19", "name_cn": "夜深蓝", "color_hex": "#1A2A4A", "unlock_chapter": 6, "art_refs": { "runtime_id": "art/tiles/tile_T19" }, "state": "validated" },
+    { "template_id": "tile_type_T20", "tile_type_id": "T20", "code": "T20", "name_cn": "灯塔金", "color_hex": "#FFB830", "unlock_chapter": 6, "art_refs": { "runtime_id": "art/tiles/tile_T20" }, "state": "validated" }
+  ]
+}

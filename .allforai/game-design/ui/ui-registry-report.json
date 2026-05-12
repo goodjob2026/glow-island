@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/ui-registry",
+  "status": "COMPLETED",
+  "checks_passed": [
+    "所有 ID 为小写 snake_case 且在各实体类型内唯一",
+    "UI 资产 ID 与游戏世界美术 asset_id 无冲突（UI 使用 ui_ 前缀，世界美术使用 tile_/char_/bg_/vfx_/prop_ 前缀）",
+    "所有路径以 .allforai/game-design/ui/ 开头",
+    "每个 screen 仅引用已注册的 component",
+    "所有游戏美术资产引用在 asset-registry.json 中均已存在",
+    "每个实体均有生命周期状态",
+    "10 个 UI 资产（来自 concept-contract.json canonical_registry.ui[]）全部注册"
+  ],
+  "checks_warned": [],
+  "checks_failed": [],
+  "id_collision_check": "通过",
+  "asset_refs_unresolved": [],
+  "missing_screens": [],
+  "missing_components": []
+}

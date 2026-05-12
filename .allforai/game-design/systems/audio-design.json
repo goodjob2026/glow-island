@@ -1,6 +1,7 @@
 {
-  "schema": "audio-design-v2",
+  "schema": "audio-design-v3",
   "generated_at": "2026-05-13T00:00:00Z",
+  "revision": "v3.0 — 新增 day_night_bgm_system（日夜三段参数系统）、season_bgm_variants（四季叠加层）、冬季温泉专属SFX（sfx_winter_snow_fall / sfx_onsen_steam_winter）、季节切换音效（sfx_season_transition）。",
   "project": "glow-island",
   "language_note": "HTML输出使用中文(zh-CN)；游戏内专有名词保留日文；JSON字段名保留英文snake_case",
   "area": "輝島（Kagayaki-jima）",
@@ -356,6 +357,111 @@
       "pitch_variance": "±1半音",
       "audio_config_enum": "SFXKey.TOOL_USE",
       "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_dusk_bell",
+      "design_label": "dusk_bell",
+      "event": "每日17:00整，黄昏时段开始时（每日一次）",
+      "feel": "远处寺庙钟声——温柔提示傍晚降临，不惊扰",
+      "sonic_description": "单音低频钟声（约A2，~110Hz），起音60ms，混响尾音1.5秒。有机金属质感，不刺耳。",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "low",
+      "volume_relative": 0.55,
+      "pitch_variance": "无",
+      "audio_config_enum": "SFXKey.DUSK_BELL",
+      "milestone_gate": "beta"
+    },
+    {
+      "key": "sfx_lighthouse_night_chime",
+      "design_label": "lighthouse_night_chime",
+      "event": "Ch6夜晚时段灯塔点亮（仅一次）",
+      "feel": "风铃+钢琴——如灯光颤动的声音呈现，温柔空灵",
+      "sonic_description": "3–4个风铃音（E5→G5→B5→E6，间隔300ms），最后叠入钢琴E5单音（起音50ms，衰减800ms，轻reverb）。",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.7,
+      "pitch_variance": "无",
+      "one_time_play": true,
+      "audio_config_enum": "SFXKey.LIGHTHOUSE_NIGHT_CHIME",
+      "milestone_gate": "gold"
+    },
+    {
+      "key": "sfx_season_transition",
+      "design_label": "season_transition",
+      "event": "章节完成→下章开始，发生季节切换时",
+      "feel": "轻柔风铃串——季节翻页感，温柔升调后消散",
+      "sonic_description": "2–3个风铃音（E5→G5→B5，每音间隔200ms），末音加300ms混响衰减。轻盈，不打断情绪。",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "medium",
+      "volume_relative": 0.7,
+      "pitch_variance": "无",
+      "duration_seconds": 1.8,
+      "audio_config_enum": "SFXKey.SEASON_TRANSITION",
+      "milestone_gate": "beta"
+    },
+    {
+      "key": "sfx_sakura_fall",
+      "design_label": "sakura_fall",
+      "event": "春季场景（Ch1/Ch5）樱花粒子特效激活时",
+      "feel": "极轻柔高频沙沙声——花瓣落木板的质感，背景感",
+      "sonic_description": "高频白噪音（6kHz–12kHz）极短loop，声压很低。随粒子密度动态调节音量（0–0.25）。",
+      "loop": true,
+      "spatial_3d": false,
+      "priority": "low",
+      "volume_dynamic": true,
+      "volume_range": "0–0.25",
+      "duration_seconds": 0.8,
+      "audio_config_enum": "SFXKey.SAKURA_FALL",
+      "milestone_gate": "beta"
+    },
+    {
+      "key": "sfx_autumn_leaves_wind",
+      "design_label": "autumn_leaves_wind",
+      "event": "秋季场景（Ch3）落叶粒子特效激活时",
+      "feel": "低频风声+干燥落叶摩擦声——温暖略带忧郁",
+      "sonic_description": "低频风声底（200–600Hz），叠加高频干燥摩擦质感（4kHz–8kHz），2秒无缝loop，有机温暖。",
+      "loop": true,
+      "spatial_3d": false,
+      "priority": "low",
+      "volume_relative": 0.3,
+      "duration_seconds": 2.0,
+      "audio_config_enum": "SFXKey.AUTUMN_LEAVES_WIND",
+      "milestone_gate": "beta"
+    },
+    {
+      "key": "sfx_winter_snow_fall",
+      "design_label": "winter_snow_fall",
+      "event": "Ch4冬季场景激活，雪粒子常驻播放",
+      "feel": "极轻柔雪粒子落水面声——高频细腻沙沙声，声压极低，几乎像气息",
+      "sonic_description": "极高频白噪音（8kHz–16kHz），极低声压（峰值音量0.3）。0.5秒无缝loop。随雪粒子视觉密度动态调节音量（0–0.3）。",
+      "loop": true,
+      "spatial_3d": false,
+      "priority": "low",
+      "volume_dynamic": true,
+      "volume_range": "0–0.3",
+      "duration_seconds": 0.5,
+      "audio_config_enum": "SFXKey.WINTER_SNOW_FALL",
+      "forbidden_note": "不允许有可识别的水滴声或撞击瞬态——只有极轻柔的质感底噪",
+      "milestone_gate": "beta"
+    },
+    {
+      "key": "sfx_onsen_steam_winter",
+      "design_label": "onsen_steam_winter",
+      "event": "Ch4温泉场景，温泉蒸汽视觉元素激活时",
+      "feel": "低频咕噜声+蒸汽喷出声——比普通温泉蒸汽更强，静谧而温暖",
+      "sonic_description": "低频气泡声（~120Hz，有机质感的咕噜）叠加宽频白噪音低频（100–500Hz，轻柔蒸汽喷出感）。2秒无缝loop，无明显节奏感。比普通温泉底层音高+4dB，仍为背景感。",
+      "loop": true,
+      "spatial_3d": false,
+      "priority": "medium",
+      "volume_relative": 0.45,
+      "volume_boost_vs_normal_onsen_db": 4,
+      "duration_seconds": 2.0,
+      "audio_config_enum": "SFXKey.ONSEN_STEAM_WINTER",
+      "pairing_note": "应与sfx_winter_snow_fall同时播放，形成「雪夜温泉」声景",
+      "milestone_gate": "beta"
     }
   ],
 
@@ -869,6 +975,278 @@
     }
   },
 
+  "day_night_bgm_system": {
+    "description": "日夜BGM过渡系统——不换曲，不硬切。在当前章节BGM基础上通过参数调整实现白天→黄昏→夜晚的自然过渡。三个时段对应三套参数集，过渡使用线性插值渐变。",
+    "design_principle": "tempo和音量参数由 AudioManager.setTimeOfDay() 统一驱动，与 Combo tempo 加速系统独立，最终 tempo 倍率为章节原速 × 日夜倍率 × Combo倍率的乘积。",
+    "time_periods": [
+      {
+        "id": "day",
+        "label": "白天（昼間）",
+        "time_range": "06:00–17:00",
+        "tempo_multiplier": 1.0,
+        "volume_offset_db": 0,
+        "instrument_color": "明亮温暖，所有层正常播放",
+        "warm_instrument_gain_db": 0,
+        "string_pad_volume": 0,
+        "ambient_layer": {
+          "cricket_volume": 0,
+          "ocean_bass_boost": 0,
+          "bird_volume": 1.0
+        },
+        "transition_seconds": null,
+        "note": "基准状态，章节BGM原速原音量"
+      },
+      {
+        "id": "dusk",
+        "label": "黄昏（夕暮れ）",
+        "time_range": "17:00–20:00",
+        "tempo_multiplier": 0.93,
+        "tempo_reduction_percent": "5–8%",
+        "volume_offset_db": 0,
+        "instrument_color": "暖色调增强，木吉他/钢琴音量+3dB",
+        "warm_instrument_gain_db": 3,
+        "string_pad_volume": 0.2,
+        "ambient_layer": {
+          "cricket_volume": 0.1,
+          "ocean_bass_boost": 0,
+          "bird_volume": 0.5,
+          "distant_wind_chime_volume": 0.3
+        },
+        "transition_seconds": 8,
+        "transition_method": "linear interpolation",
+        "one_time_sfx": {
+          "key": "sfx_dusk_bell",
+          "trigger": "17:00整，每日一次",
+          "description": "远处寺庙钟声，单音低沉，带长尾混响，温柔提示傍晚降临",
+          "duration_seconds": 2,
+          "loop": false
+        }
+      },
+      {
+        "id": "night",
+        "label": "夜晚（夜）",
+        "time_range": "20:00–06:00",
+        "tempo_multiplier": 0.88,
+        "tempo_reduction_percent": "在黄昏基础上再降5%，相对原速约−12%",
+        "volume_offset_db": -2,
+        "instrument_color": "引入轻柔弦乐pad，高频乐器（风铃/三角铁）轻微淡出",
+        "warm_instrument_gain_db": 2,
+        "string_pad_volume": 0.5,
+        "ambient_layer": {
+          "cricket_volume": 0.4,
+          "ocean_bass_boost": 0.2,
+          "bird_volume": 0
+        },
+        "transition_seconds": 12,
+        "transition_method": "linear interpolation"
+      }
+    ],
+    "chapter6_night_special": {
+      "sfx_key": "sfx_lighthouse_night_chime",
+      "trigger": "Ch6 / 夜晚时段 / 灯塔点亮事件",
+      "one_time_play": true,
+      "description": "风铃串（3–4个音，轻柔升调）+ 单音钢琴（E5，1秒衰减）。如灯光照亮夜空的同时，世界微微颤了一下。",
+      "duration_seconds": 3.5,
+      "loop": false,
+      "milestone_gate": "gold"
+    },
+    "implementation_api": "AudioManager.setTimeOfDay(period: 'day' | 'dusk' | 'night', transitionSeconds: number)",
+    "time_source": "设备本地时钟或游戏内虚拟时间系统（二选一，优先设备时钟）"
+  },
+
+  "season_bgm_variants": {
+    "description": "四季BGM叠加层系统——在章节BGM三层结构（底层/旋律层/强度层）基础上额外叠加季节特有层，叠加而非替换。",
+    "chapter_season_mapping": {
+      "ch1": "spring",
+      "ch2": "summer",
+      "ch3": "autumn",
+      "ch4": "winter",
+      "ch5": "spring",
+      "ch6": "summer"
+    },
+    "layer_activation": {
+      "fade_in_seconds": 4,
+      "fade_out_seconds": 4,
+      "trigger": "进入对应章节时淡入",
+      "tempo_sync": "与主BGM tempo（含日夜偏移）保持同步"
+    },
+    "seasons": [
+      {
+        "id": "spring",
+        "label": "春（春）",
+        "chapters": [1, 5],
+        "emotional_tone": "清新萌芽、轻盈好奇、初到之感",
+        "added_instruments": [
+          "celesta（钢片琴）高频点缀",
+          "triangle（三角铁）轻触，每4拍一次"
+        ],
+        "ambient_layer_additions": [
+          "sfx_sakura_fall（樱花飘落特效音，随粒子密度调节音量）"
+        ],
+        "tempo_offset_percent": 0,
+        "layer_volume": 0.35,
+        "asset_key_pattern": "season_layer_spring_{chapter}.ogg",
+        "milestone_gate": "beta"
+      },
+      {
+        "id": "summer",
+        "label": "夏（夏）",
+        "chapters": [2, 6],
+        "emotional_tone": "活力热情、节奏感略强、阳光直射",
+        "added_instruments": [
+          "手鼓节拍感增强（底层手鼓音量+20%）"
+        ],
+        "ambient_layer_additions": [
+          "海浪声涌现增强+15%",
+          "sfx_cicada_summer（蝉鸣层）淡入"
+        ],
+        "tempo_offset_percent": 3,
+        "layer_volume": 0.4,
+        "asset_key_pattern": "season_layer_summer_{chapter}.ogg",
+        "milestone_gate": "beta"
+      },
+      {
+        "id": "autumn",
+        "label": "秋（秋）",
+        "chapters": [3],
+        "emotional_tone": "温暖沉静、情绪松动、带一点感伤",
+        "added_instruments": [
+          "弦乐pad比重增加+30%",
+          "钢琴改为更slow touch（起音延迟+50ms）"
+        ],
+        "ambient_layer_additions": [
+          "sfx_autumn_leaves_wind（落叶风声环境层）轻柔持续"
+        ],
+        "tempo_offset_percent": -3,
+        "layer_volume": 0.4,
+        "asset_key_pattern": "season_layer_autumn_{chapter}.ogg",
+        "milestone_gate": "beta"
+      },
+      {
+        "id": "winter",
+        "label": "冬（冬）",
+        "chapters": [4],
+        "emotional_tone": "最静谧治愈、内省、篝火温暖与雪夜的对比",
+        "added_instruments": [
+          "弦乐pad主导（其余乐器轻微淡出至0.4音量）",
+          "钢琴稀疏点缀（间距拉宽至每8拍一次）"
+        ],
+        "ambient_layer_additions": [
+          "极轻微白噪音低频（wind whisper，音量0.15）",
+          "sfx_winter_snow_fall（雪落声loop）",
+          "sfx_onsen_steam_winter（温泉蒸汽加强，温泉场景激活时）"
+        ],
+        "tempo_offset_percent": -8,
+        "layer_volume": 0.45,
+        "note": "与夜晚系统叠加后相对原速可达约−20%（0.88×0.92≈0.81x），属设计意图范围内",
+        "asset_key_pattern": "season_layer_winter_{chapter}.ogg",
+        "milestone_gate": "beta"
+      }
+    ],
+    "season_sfx": [
+      {
+        "key": "sfx_season_transition",
+        "label": "季节切换音效",
+        "trigger": "章节完成→下章开始时，发生季节切换（如Ch1春→Ch2夏）",
+        "description": "轻柔风铃串（2–3个音），温柔升调后消散，季节翻页感",
+        "sonic_description": "2–3个风铃音（E5→G5→B5，每音间隔200ms），末音加300ms混响衰减。轻盈，不打断情绪。",
+        "duration_seconds": 1.8,
+        "loop": false,
+        "priority": "medium",
+        "volume_relative": 0.7,
+        "audio_config_enum": "SFXKey.SEASON_TRANSITION",
+        "milestone_gate": "beta"
+      },
+      {
+        "key": "sfx_sakura_fall",
+        "label": "樱花飘落音",
+        "trigger": "春季场景（Ch1/Ch5）樱花粒子特效激活时",
+        "description": "极轻柔高频沙沙声（花瓣落木板），随粒子密度动态调节音量（0–0.25）",
+        "sonic_description": "高频白噪音（6kHz–12kHz）极短loop。声压很低，背景感，不抢注意力。",
+        "duration_seconds": 0.8,
+        "loop": true,
+        "volume_dynamic": true,
+        "volume_range": "0–0.25",
+        "priority": "low",
+        "audio_config_enum": "SFXKey.SAKURA_FALL",
+        "milestone_gate": "beta"
+      },
+      {
+        "key": "sfx_autumn_leaves_wind",
+        "label": "秋日落叶风声",
+        "trigger": "秋季场景（Ch3）落叶粒子特效激活时",
+        "description": "低频风声 + 干燥落叶摩擦声，温暖略带忧郁",
+        "sonic_description": "低频风声底（200–600Hz），叠加高频干燥摩擦质感（4kHz–8kHz），总体有机温暖。2秒loop无接缝。",
+        "duration_seconds": 2.0,
+        "loop": true,
+        "volume_relative": 0.3,
+        "priority": "low",
+        "audio_config_enum": "SFXKey.AUTUMN_LEAVES_WIND",
+        "milestone_gate": "beta"
+      },
+      {
+        "key": "sfx_winter_snow_fall",
+        "label": "冬季雪落声",
+        "trigger": "Ch4冬季场景激活，雪粒子常驻播放",
+        "description": "极轻柔的雪粒子落在水面声——高频细腻沙沙声（白噪音极高频部分），声压极低，几乎像气息",
+        "sonic_description": "极高频白噪音（8kHz–16kHz），极低声压（峰值音量0.3）。0.5秒无缝loop。随雪粒子视觉密度动态调节音量（0–0.3）。不抢任何注意力，只是让沉默更有质感。",
+        "duration_seconds": 0.5,
+        "loop": true,
+        "volume_dynamic": true,
+        "volume_range": "0–0.3",
+        "priority": "low",
+        "volume_relative": 0.2,
+        "audio_config_enum": "SFXKey.WINTER_SNOW_FALL",
+        "forbidden_note": "不允许有可识别的水滴声或撞击瞬态——只有极轻柔的质感底噪",
+        "milestone_gate": "beta"
+      },
+      {
+        "key": "sfx_onsen_steam_winter",
+        "label": "冬季温泉蒸汽声",
+        "trigger": "Ch4温泉场景，温泉蒸汽视觉元素激活时",
+        "description": "比普通温泉蒸汽更强的气泡/蒸汽声——低频咕噜声叠加蒸汽喷出声，比普通温泉蒸汽音高+4dB",
+        "sonic_description": "低频气泡声（~120Hz，有机质感的咕噜）叠加宽频白噪音低频（100–500Hz，轻柔蒸汽喷出感）。2秒无缝loop，无明显节奏感，像持续的温泉涌动。音量比普通温泉底层音高+4dB，但仍为背景感音效。",
+        "duration_seconds": 2.0,
+        "loop": true,
+        "volume_relative": 0.45,
+        "volume_boost_vs_normal_onsen_db": 4,
+        "priority": "medium",
+        "audio_config_enum": "SFXKey.ONSEN_STEAM_WINTER",
+        "pairing_note": "应与sfx_winter_snow_fall同时播放，形成「雪夜温泉」声景：极静（雪）×极暖（蒸汽）",
+        "milestone_gate": "beta"
+      },
+      {
+        "key": "sfx_dusk_bell",
+        "label": "黄昏钟声",
+        "trigger": "每日17:00整，黄昏时段开始时（每日一次）",
+        "description": "远处寺庙钟声，单音低沉，带长尾混响，温柔提示傍晚降临",
+        "sonic_description": "单音低频钟声（约A2，~110Hz），起音60ms，混响尾音1.5秒。有机金属质感，不刺耳。",
+        "duration_seconds": 2.0,
+        "loop": false,
+        "volume_relative": 0.55,
+        "priority": "low",
+        "audio_config_enum": "SFXKey.DUSK_BELL",
+        "milestone_gate": "beta"
+      },
+      {
+        "key": "sfx_lighthouse_night_chime",
+        "label": "灯塔夜晚点亮风铃",
+        "trigger": "Ch6 / 夜晚时段 / 灯塔点亮事件（仅一次）",
+        "description": "风铃串（3–4个音，轻柔升调）+ 单音钢琴（E5），如灯光颤动的声音呈现",
+        "sonic_description": "3–4个风铃音（E5→G5→B5→E6，间隔300ms），最后叠入钢琴E5单音（起音50ms，衰减800ms，轻reverb）。温柔、空灵，不与sfx_lighthouse_on重叠（此为前者结束后的夜晚版本）。",
+        "duration_seconds": 3.5,
+        "loop": false,
+        "one_time_play": true,
+        "priority": "high",
+        "volume_relative": 0.7,
+        "audio_config_enum": "SFXKey.LIGHTHOUSE_NIGHT_CHIME",
+        "milestone_gate": "gold"
+      }
+    ],
+    "implementation_api": "AudioManager.setSeasonLayer(season: 'spring' | 'summer' | 'autumn' | 'winter', chapter: number)",
+    "total_season_layer_files": "最多20条（4季节×5章，实际按需制作）"
+  },
+
   "technical_specs": {
     "platform_priority": "Web优先（Cocos Creator web-mobile导出），移动端后期适配",
     "formats": {
@@ -955,15 +1333,31 @@
     { "asset_id": "voice_kenzo_haha", "type": "voice", "description": "磯部健三——「はは」温暖粗犷笑声", "format": "ogg + mp3", "duration": "0.6s", "milestone_gate": "beta", "status": "spec_only" },
     { "asset_id": "voice_umeko_hum", "type": "voice", "description": "桐島梅子——满足无词哼鸣", "format": "ogg + mp3", "duration": "2.0s", "milestone_gate": "beta", "status": "spec_only" },
     { "asset_id": "voice_naho_a", "type": "voice", "description": "海野夏帆——「あっ」惊叹", "format": "ogg + mp3", "duration": "0.3s", "milestone_gate": "beta", "status": "spec_only" },
-    { "asset_id": "voice_fuyuko_arigatou", "type": "voice", "description": "丸山冬子——「…ありがとう」近低语（仅一次）", "format": "ogg + mp3", "duration": "1.2s", "milestone_gate": "gold", "status": "spec_only" }
+    { "asset_id": "voice_fuyuko_arigatou", "type": "voice", "description": "丸山冬子——「…ありがとう」近低语（仅一次）", "format": "ogg + mp3", "duration": "1.2s", "milestone_gate": "gold", "status": "spec_only" },
+    { "asset_id": "sfx_dusk_bell", "type": "sfx", "description": "黄昏钟声——每日17:00整触发", "format": "ogg + mp3", "duration": "2.0s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sfx_lighthouse_night_chime", "type": "sfx", "description": "灯塔夜晚点亮风铃（Ch6 / 夜晚 / 仅一次）", "format": "ogg + mp3", "duration": "3.5s", "milestone_gate": "gold", "status": "spec_only" },
+    { "asset_id": "sfx_season_transition", "type": "sfx", "description": "季节切换过渡风铃串", "format": "ogg + mp3", "duration": "1.8s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sfx_sakura_fall", "type": "sfx", "description": "樱花飘落高频沙沙声（spring loop）", "format": "ogg + mp3", "duration": "0.8s loop", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sfx_autumn_leaves_wind", "type": "sfx", "description": "秋日落叶风声（autumn loop）", "format": "ogg + mp3", "duration": "2.0s loop", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sfx_winter_snow_fall", "type": "sfx", "description": "冬季雪粒子落水面极轻沙沙声（winter / Ch4 loop）", "format": "ogg + mp3", "duration": "0.5s loop", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sfx_onsen_steam_winter", "type": "sfx", "description": "冬季温泉蒸汽增强气泡声（Ch4温泉场景 loop）", "format": "ogg + mp3", "duration": "2.0s loop", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "season_layer_spring_ch1", "type": "bgm_season_layer", "description": "春季叠加层——Ch1（钢片琴/三角铁点缀）", "format": "ogg + mp3", "duration": "120s loop", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "season_layer_spring_ch5", "type": "bgm_season_layer", "description": "春季叠加层——Ch5（同Ch1，章节适配版）", "format": "ogg + mp3", "duration": "120s loop", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "season_layer_summer_ch2", "type": "bgm_season_layer", "description": "夏季叠加层——Ch2（蝉鸣/手鼓增强）", "format": "ogg + mp3", "duration": "120s loop", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "season_layer_summer_ch6", "type": "bgm_season_layer", "description": "夏季叠加层——Ch6（同Ch2，章节适配版）", "format": "ogg + mp3", "duration": "120s loop", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "season_layer_autumn_ch3", "type": "bgm_season_layer", "description": "秋季叠加层——Ch3（弦乐warm增强/落叶风声）", "format": "ogg + mp3", "duration": "120s loop", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "season_layer_winter_ch4", "type": "bgm_season_layer", "description": "冬季叠加层——Ch4（弦乐主导/风声/雪声，最静谧）", "format": "ogg + mp3", "duration": "120s loop", "milestone_gate": "beta", "status": "spec_only" }
   ],
 
   "total_asset_count": {
     "bgm_files": 7,
+    "season_bgm_layers": "最多20（4季节×5章）",
     "sting_files": 6,
     "gameplay_sfx": 15,
+    "day_night_season_sfx": 7,
     "ui_sfx": 12,
     "voice_clips": 7,
-    "total": 47
+    "total_base": 47,
+    "total_with_season": "最多67+"
   }
 }

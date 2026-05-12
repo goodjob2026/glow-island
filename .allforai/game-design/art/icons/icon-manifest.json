@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/icon-generation",
+  "node": "ui-art-gen",
+  "atlas_plan": {
+    "atlas_id": "ui_elements_atlas",
+    "atlas_path": ".allforai/game-design/art/atlases/ui_elements_atlas.json",
+    "max_size_px": 2048,
+    "format": "png"
+  },
+  "icons": [
+    {
+      "asset_id": "ui_coin_icon",
+      "file_prefix": "ui_coin_icon",
+      "category": "currency",
+      "size_px": 64,
+      "state": "spec_ready",
+      "paths": {
+        "default": ".allforai/game-design/art/icons/ui_coin_icon.png"
+      },
+      "atlas_ref": "ui_elements_atlas"
+    },
+    {
+      "asset_id": "ui_star_icon",
+      "file_prefix": "ui_star_icon",
+      "category": "hud",
+      "size_px": 64,
+      "state": "spec_ready",
+      "paths": {
+        "empty": ".allforai/game-design/art/icons/ui_star_icon_empty.png",
+        "filled": ".allforai/game-design/art/icons/ui_star_icon_filled.png",
+        "half": ".allforai/game-design/art/icons/ui_star_icon_half.png"
+      },
+      "atlas_ref": "ui_elements_atlas"
+    }
+  ],
+  "validation_status": "COMPLETED_WITH_LIMITS",
+  "limit_reason": "图片生成待执行，所有 spec 已完成"
+}

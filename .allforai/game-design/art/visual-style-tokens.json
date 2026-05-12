@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "source": {
+    "art_style_guide": ".allforai/game-design/art-style-guide.json",
+    "concept_contract": ".allforai/concept-contract.json",
+    "asset_registry": ".allforai/game-design/asset-registry.json"
+  },
+  "skill": "game-art/visual-style-tokens",
+  "status": "COMPLETED",
+
+  "color": {
+    "primary_palette": {
+      "island_sand":    "#F7EDD8",
+      "coral_warm":     "#E8866A",
+      "coral_soft":     "#F2A98A",
+      "ocean_teal":     "#5BBFB5",
+      "bamboo_green":   "#7DBE77",
+      "sakura_pink":    "#F0C4C4",
+      "driftwood":      "#C4955A",
+      "warm_dune":      "#E2C48A",
+      "golden_hour":    "#F5C842",
+      "dusk_orange":    "#EE8C55",
+      "night_indigo":   "#1E2E50",
+      "moonlight":      "#F5F0E8",
+      "forest_moss":    "#4A7D55",
+      "torii_red":      "#C8402A",
+      "stone_blue":     "#8EA0AA",
+      "lavender_soft":  "#D4A8C8"
+    },
+    "character_signature_colors": {
+      "char_ritsu":   null,
+      "char_hinata":  "#F0C4C4",
+      "char_kenzo":   "#4A6D9A",
+      "char_umeko":   "#7DBE77",
+      "char_natsuka": "#3D6645",
+      "char_fuyuko":  "#2A4060",
+      "char_gicho":   "#2A3650"
+    },
+    "prohibited_values": ["#000000", "#00FFFF"],
+    "darkest_allowed_dark": "#3A2810",
+    "darkest_allowed_blue": "#1E2E50",
+    "saturation_stages": {
+      "s0_before_repair": { "saturation": "8-15%",  "brightness": "42-48%", "label": "褪色枯岛" },
+      "s1":               { "saturation": "28-38%",                          "label": "轮廓找回淡彩" },
+      "s2":               { "saturation": "48-58%",                          "label": "生活气息色彩" },
+      "s3":               { "saturation": "62-72%",                          "label": "角色回归满生命力" },
+      "s4_full":          { "saturation": "75-88%",                          "label": "完整水彩光效全开" }
+    }
+  },
+
+  "line": {
+    "outline_style": "primary_color_darkened_32pct",
+    "outline_width_px": 2,
+    "pure_black_outline_prohibited": true,
+    "line_weight_feel": "hand-drawn organic, slightly variable",
+    "inner_detail_lines": "thin, 1px, same hue-shifted dark"
+  },
+
+  "shape": {
+    "corner_radius_policy": "min_16px_all_UI_elements",
+    "character_silhouette": "unique_single_color_silhouette_readable_at_any_resolution",
+    "tile_corner_radius_2x": 24,
+    "button_corner_radius_px": 24,
+    "dialog_corner_radius_px": 20,
+    "organic_forms": true,
+    "geometric_sharp_corners_prohibited": true
+  },
+
+  "material": {
+    "render_style": "hand_drawn_watercolor",
+    "texture_overlay": "paper_texture_at_6pct_opacity",
+    "shadow_style": "0 4px 0 rgba(0,0,0,0.10)",
+    "shadow_max_opacity": 0.15,
+    "shading_approach": "flat_plus_soft_shadow_no_photorealistic_speculars",
+    "metal_chrome_prohibited": true
+  },
+
+  "camera_view": {
+    "dimension": "2d",
+    "primary_view": "three_quarter_overhead_casual",
+    "character_view": "front_facing",
+    "tile_view": "top_down_slight_perspective"
+  },
+
+  "lighting": {
+    "ambient": "warm_natural_daylight",
+    "chapter_6_override": "night_indigo_#1E2E50_with_golden_lighthouse_beam",
+    "neon_prohibited": true,
+    "vfx_glow_color": "#F5C842",
+    "max_vfx_particle_budget": 200
+  },
+
+  "typography_mood": {
+    "font_family_primary": "思源圆体",
+    "font_family_fallback": ["SF Pro Rounded", "Nunito"],
+    "feel": "rounded, friendly, not aggressive",
+    "pixel_font_prohibited": true
+  },
+
+  "ui_compatibility": {
+    "ui_palette_bg": "#F7EDD8",
+    "ui_palette_dialog_wood": "#E8D8B4",
+    "ui_palette_border_brown": "#8B6030",
+    "ui_palette_text_dark": "#3A2810",
+    "ui_palette_button_primary": "#F0997A",
+    "shared_language": "soft_wood_sign_flat_shadow_rounded_corners"
+  },
+
+  "vfx_intensity": {
+    "max_particle_budget": 200,
+    "style": "healing_warm_not_aggressive",
+    "excessive_debris_prohibited": true,
+    "high_contrast_alert_tones_prohibited": true
+  },
+
+  "image_generation_constraints": {
+    "positive_style_guidance": [
+      "hand-drawn watercolor illustration",
+      "warm pastel palette",
+      "chibi anime proportions 1:1.5 head-body ratio",
+      "soft rounded organic shapes",
+      "flat shading with soft shadow",
+      "paper texture overlay",
+      "japanese healing island aesthetic",
+      "transparent or neutral background",
+      "no baked drop shadows crossing part boundaries"
+    ],
+    "negative_style_guidance": [
+      "no pixel art",
+      "no hyper-realistic 3D rendering",
+      "no neon cyberpunk palette",
+      "no metallic chrome gradients",
+      "no pure black #000000",
+      "no sharp geometric corners",
+      "no Material Design sharp vector icons",
+      "no excessive particle debris",
+      "no high contrast alert tones",
+      "no text labels baked into character art",
+      "no motion blur",
+      "no cropped limbs"
+    ]
+  }
+}

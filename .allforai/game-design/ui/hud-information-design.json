@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/hud-information-design",
+  "game_context": {
+    "core_mechanic": "连连看路径匹配（≤2次转弯） + 节奏驱动连击系统",
+    "failure_condition": "步数耗尽",
+    "currency": "沙滩币（beach_coin）— 唯一货币",
+    "progression_signal": "灯塔进度（chapter repair progress）"
+  },
+  "hud_signals": [
+    {
+      "signal_id": "step_counter",
+      "meaning": "当前剩余步数，耗尽则关卡失败",
+      "priority": "critical",
+      "visibility": "always",
+      "asset_refs": ["ui_hud_bar"],
+      "update_rate": "event",
+      "failure_if_missing": true,
+      "warning_threshold": "剩余步数 ≤ 5 时变为珊瑚红色警示",
+      "display_format": "数字，居中显示于 HUD 底栏步数区"
+    },
+    {
+      "signal_id": "combo_counter",
+      "meaning": "当前连击链数与剩余计时（2000ms窗口）",
+      "priority": "active",
+      "visibility": "contextual",
+      "asset_refs": ["vfx_combo_burst"],
+      "update_rate": "realtime",
+      "failure_if_missing": false,
+      "note": "Combo ≥ 2 时显示泡泡；超时消失；由 VFX 层处理，不占 HUD 固定区域"
+    },
+    {
+      "signal_id": "beach_coin_balance",
+      "meaning": "当前沙滩币余额，用于购买场外辅助道具",
+      "priority": "ambient",
+      "visibility": "always",
+      "asset_refs": ["ui_coin_icon"],
+      "update_rate": "event",
+      "failure_if_missing": false,
+      "display_format": "沙滩币图标 + 数字，显示于 HUD 底栏左侧"
+    },
+    {
+      "signal_id": "lighthouse_progress",
+      "meaning": "章节修复进度，完成后触发场景复原",
+      "priority": "ambient",
+      "visibility": "always",
+      "asset_refs": ["ui_lighthouse_progress"],
+      "update_rate": "event",
+      "failure_if_missing": false,
+      "display_format": "灯塔形竖向进度条，位于棋盘右侧边缘，高度不超过棋盘高度的 60%"
+    },
+    {
+      "signal_id": "ui_assist_buttons",
+      "meaning": "场外辅助道具：重排（30沙滩币）、预判（30沙滩币）、续关（30沙滩币+5步）",
+      "priority": "active",
+      "visibility": "always",
+      "asset_refs": ["ui_btn_shuffle", "ui_btn_hint", "ui_btn_continue"],
+      "update_rate": "event",
+      "failure_if_missing": false,
+      "note": "续关按钮仅在步数耗尽时高亮激活；重排/预判常驻但余额不足时变 disabled"
+    }
+  ],
+  "playfield_protection": {
+    "protected_regions": [
+      "棋盘主区域（board_center），不得被任何 HUD 元素遮挡",
+      "连连看连线路径区",
+      "连击泡泡弹出区（棋盘上方 20% 区域，contextual）"
+    ],
+    "max_coverage_percent": 18,
+    "hud_zones": {
+      "bottom_bar": {
+        "region": "棋盘下方固定区域",
+        "height_px": 80,
+        "width_px": 720,
+        "contents": ["步数计数器（居中）", "沙滩币余额（左）", "辅助按钮组（右）"]
+      },
+      "right_sidebar": {
+        "region": "棋盘右侧",
+        "width_px": 60,
+        "contents": ["灯塔进度条（贯穿棋盘高度）"]
+      }
+    },
+    "board_clearance": "HUD 底栏顶部与棋盘底部之间保留 8px 间距；右侧进度条与棋盘右边缘保留 4px 间距"
+  },
+  "fallback_hud": {
+    "scenario": "小屏幕（<360px宽）",
+    "strategy": "步数计数器保持显示（critical），沙滩币数字缩小至 12sp，辅助按钮图标缩小至 44px tap target 最小值，灯塔进度条缩窄至 40px",
+    "critical_signals_preserved": ["step_counter"]
+  },
+  "validation_status": "COMPLETED"
+}

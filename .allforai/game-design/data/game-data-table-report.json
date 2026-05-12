@@ -1,0 +1,10 @@
+{
+  "report_id": "glow-island-data-table-report-v1",
+  "status": "validated",
+  "tables_count": 5,
+  "all_required_columns_present": true,
+  "all_ids_resolve_to_source": true,
+  "numeric_fields_typed": true,
+  "runtime_consumers_declared": true,
+  "conclusion": "5个数据表均验证通过（tile_types/obstacles/economy_skus/combo_multiplier_curve/chapter_config）。"
+}

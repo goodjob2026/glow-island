@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-12T21:47:58Z",
+  "source_skill": "game-art/00-env/2d-animation-toolchain-env",
+  "input_paths": {
+    "animation_production_plan": ".allforai/game-design/art/animation/2d-animation-production-plan.json",
+    "engine_export_profile": ".allforai/game-design/art/export/engine-export-profile.json",
+    "asset_registry": ".allforai/game-design/asset-registry.json"
+  },
+  "required_capabilities": [
+    "dragonbones_skeletal_authoring_export",
+    "frame_animation_atlas_packaging",
+    "image_processing",
+    "video_or_gif_preview_encoding",
+    "cocos_creator_runtime_import"
+  ],
+  "tools": [
+    {
+      "tool_id": "dragonbones_pro",
+      "tool_kind": "skeletal_editor",
+      "required_for": [
+        "characters.skeletal_animation",
+        "dragonbones_json_export",
+        "png_texture_atlas_export"
+      ],
+      "required": true,
+      "preferred_access": "cli_or_project_adapter",
+      "cli_command": "dragonbones",
+      "availability": "missing",
+      "version": null,
+      "install_policy": "not_installable",
+      "install_command": null,
+      "validation_command": "command -v dragonbones && dragonbones --version",
+      "validation_evidence": {
+        "checked": true,
+        "command_found": false,
+        "exit_status": 127,
+        "notes": "No Homebrew formula/cask was found by `brew search dragonbones`; no reliable automatic install path was available."
+      },
+      "failure_status": "blocked_by_missing_toolchain",
+      "consumer_refs": [
+        "game-art/30-generate/skeletal-animation",
+        "game-art/40-qa/runtime-import-check",
+        "game-art/40-qa/engine-ready-art-output-contract"
+      ]
+    },
+    {
+      "tool_id": "spine",
+      "tool_kind": "skeletal_editor",
+      "required_for": [
+        "declared_fallback_only"
+      ],
+      "required": false,
+      "preferred_access": "cli_or_project_adapter",
+      "cli_command": "spine",
+      "availability": "missing",
+      "version": null,
+      "install_policy": "manual_only",
+      "install_command": null,
+      "validation_command": "command -v spine && spine --version",
+      "validation_evidence": {
+        "checked": true,
+        "command_found": false,
+        "exit_status": 127,
+        "notes": "Spine is not selected by the production plan and must not replace DragonBones unless an upstream fallback explicitly selects it."
+      },
+      "failure_status": "not_blocking_optional_tool",
+      "consumer_refs": []
+    },
+    {
+      "tool_id": "imagemagick",
+      "tool_kind": "image_processor",
+      "required_for": [
+        "alpha_crop_resize_checks",
+        "frame_sheet_inspection",
+        "static_keyframe_board_generation"
+      ],
+      "required": true,
+      "preferred_access": "cli",
+      "cli_command": "magick",
+      "availability": "available",
+      "version": "ImageMagick 7.1.2-21 Q16-HDRI aarch64",
+      "install_policy": "auto_install_if_missing",
+      "install_command": "brew install imagemagick",
+      "validation_command": "magick --version",
+      "validation_evidence": {
+        "checked": true,
+        "command_path": "/opt/homebrew/bin/magick",
+        "exit_status": 0
+      },
+      "failure_status": null,
+      "consumer_refs": [
+        "game-art/30-generate/frame-animation-generation",
+        "game-art/40-qa/atlas-packaging",
+        "game-art/40-qa/art-preview-qa"
+      ]
+    },
+    {
+      "tool_id": "ffmpeg",
+      "tool_kind": "preview_renderer",
+      "required_for": [
+        "gif_or_video_preview_encoding",
+        "animation_review_evidence"
+      ],
+      "required": true,
+      "preferred_access": "cli",
+      "cli_command": "ffmpeg",
+      "availability": "available",
+      "version": "ffmpeg 8.1.1",
+      "install_policy": "already_available",
+      "install_command": null,
+      "validation_command": "ffmpeg -version",
+      "validation_evidence": {
+        "checked": true,
+        "command_path": "/opt/homebrew/bin/ffmpeg",
+        "exit_status": 0
+      },
+      "failure_status": null,
+      "consumer_refs": [
+        "game-art/30-generate/skeletal-animation",
+        "game-art/30-generate/frame-animation-generation",
+        "game-art/40-qa/art-preview-qa"
+      ]
+    },
+    {
+      "tool_id": "free_tex_packer_cli",
+      "tool_kind": "atlas_packer",
+      "required_for": [
+        "png_texture_atlas_packaging",
+        "frame_animation_atlas_packaging"
+      ],
+      "required": true,
+      "preferred_access": "cli",
+      "cli_command": "free-tex-packer-cli",
+      "availability": "available",
+      "version": "0.3.0",
+      "install_policy": "auto_install_if_missing",
+      "install_command": "npm install -g free-tex-packer-cli",
+      "validation_command": "free-tex-packer-cli --version",
+      "validation_evidence": {
+        "checked": true,
+        "command_path": "/opt/homebrew/bin/free-tex-packer-cli",
+        "global_package": "/opt/homebrew/lib/node_modules/free-tex-packer-cli",
+        "exit_status": 0
+      },
+      "failure_status": null,
+      "consumer_refs": [
+        "game-art/40-qa/atlas-packaging",
+        "game-art/40-qa/engine-ready-art-output-contract"
+      ]
+    },
+    {
+      "tool_id": "cocos_creator_cli",
+      "tool_kind": "runtime_importer",
+      "required_for": [
+        "cocos_creator_runtime_import",
+        "cocos_creator_build",
+        "dragonbones_runtime_load_validation"
+      ],
+      "required": true,
+      "preferred_access": "project_cli_adapter",
+      "cli_command": ".allforai/bootstrap/scripts/cocos-cli",
+      "availability": "available",
+      "version": "3.8.8",
+      "install_policy": "provided_by_project",
+      "install_command": null,
+      "validation_command": ".allforai/bootstrap/scripts/cocos-cli --version",
+      "validation_evidence": {
+        "checked": true,
+        "command_path": ".allforai/bootstrap/scripts/cocos-cli",
+        "adapter_path": ".allforai/bootstrap/scripts/cocos-cli",
+        "app_path": "/Applications/CocosCreator.app",
+        "executable_path": "/Applications/CocosCreator.app/Contents/MacOS/CocosCreator",
+        "exit_status": 0,
+        "notes": "Cocos Creator GUI app 3.8.8 was already installed. A project-local adapter was created for deterministic version detection and future build/import commands; no global PATH mutation is required."
+      },
+      "failure_status": null,
+      "consumer_refs": [
+        "game-art/40-qa/runtime-import-check",
+        "game-frontend/20-spec/asset-import-binding-spec"
+      ]
+    },
+    {
+      "tool_id": "aseprite",
+      "tool_kind": "frame_editor",
+      "required_for": [
+        "optional_frame_animation_authoring"
+      ],
+      "required": false,
+      "preferred_access": "cli",
+      "cli_command": "aseprite",
+      "availability": "missing",
+      "version": null,
+      "install_policy": "manual_only",
+      "install_command": null,
+      "validation_command": "command -v aseprite && aseprite --version",
+      "validation_evidence": {
+        "checked": true,
+        "command_found": false,
+        "exit_status": 127
+      },
+      "failure_status": "not_blocking_optional_tool",
+      "consumer_refs": [
+        "game-art/30-generate/frame-animation-generation"
+      ]
+    }
+  ]
+}

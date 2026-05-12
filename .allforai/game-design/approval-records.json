@@ -14,9 +14,10 @@
       "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
       "approved_by": [
-        "discipline_owner"
+        "discipline_owner",
+        "aa"
       ],
-      "approved_at": "2026-05-12T19:11:22.948795+00:00",
+      "approved_at": "2026-05-12T21:36:56.746063+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -24,7 +25,7 @@
         "character-arc-design",
         "art-direction"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "v7.0修订：新增日夜三段系统（time_system）与四季章节映射（season_chapter_mapping）；六章均加入season字段含景观/氛围/叙事情感关联/VFX备注；冬季温泉雪景详细描述（Ch4核心视觉）；worldbuilding-bible.md新增第二章「日夜与四季系统」含六章季节散文；worldbuilding.html新增季节标签与「日夜四季系统」独立section。"
     },
     {
       "node_id": "core-loop-design",
@@ -98,12 +99,15 @@
         "lead-designer",
         "numeric-designer"
       ],
-      "gate_status": "revision-requested",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000Z",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "aa",
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T21:37:05.861004+00:00",
       "reviewer_notes": "",
-      "revision_notes": "我想要增加一个系统，像沙漏一样，满了可以领取的，可以得到沙滩币，这样免费玩家也可以得到一些，只要经常打开领取就可以了",
+      "revision_notes": "",
       "unlocks": [
         "retention-hook-design",
         "progression-curve-design"
@@ -117,16 +121,18 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "revision-requested",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "aa"
+      ],
+      "approved_at": "2026-05-12T21:36:56.776310+00:00",
       "reviewer_notes": "",
-      "revision_notes": "我很喜欢雪，冬天的温泉能不能给点雪的元素？所以是不是要求给这个岛一个时间，这样可以感受到，日夜，4季变换，让场景更有活力",
+      "revision_notes": "",
       "unlocks": [
         "meta-game-design"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "v3重设计完成：新增日夜与四季系统（time_system + season_system）。冬季温泉雪元素（屋顶积雪/雪花粒子/温泉蒸汽×2/冬夜组合）。双轨时间驱动设计。NPC台词随季节变化（48条新台词）。日记碎片触发叠加季节视觉演出。冬季专属推送通知。retention-hook.html（6标签页）与retention-hook.json（v3 schema）均已更新。"
     },
     {
       "node_id": "meta-game-design",
@@ -135,16 +141,18 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "revision-requested",
-      "updated_at": "2026-05-12T18:15:32.570805+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "gate_status": "approved",
+      "updated_at": "2026-05-13T00:00:00.000000+00:00",
+      "approved_by": [
+        "aa"
+      ],
+      "approved_at": "2026-05-12T21:36:56.783618+00:00",
       "reviewer_notes": "",
-      "revision_notes": "不上Game Center / Google Play，自建简单服务端， 不在中国上架的话，Apple ID + Google + 邮箱登录",
+      "revision_notes": "",
       "unlocks": [
         "game-design-finalize"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "v3.0修订：账号与后端系统更新——Apple ID（iOS）/ Google（Android）/ 邮箱+密码（跨平台主键），自建轻量后端，移除Game Center / Google Play Games引用，不上架中国区。"
     },
     {
       "node_id": "level-design",
@@ -213,16 +221,19 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner",
+        "aa"
+      ],
+      "approved_at": "2026-05-12T21:36:56.790145+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
         "game-design-finalize"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "v3.0修订：新增日夜BGM系统（day_night_bgm_system：白天1.0x/黄昏0.93x+8s过渡/夜晚0.88x−2dB+12s过渡）、四季BGM叠加层（season_bgm_variants：春Ch1/5、夏Ch2/6、秋Ch3、冬Ch4）、季节切换音效（sfx_season_transition）、冬季温泉专属SFX（sfx_winter_snow_fall 0.5s loop / sfx_onsen_steam_winter 2s loop）、黄昏钟声（sfx_dusk_bell）、灯塔夜晚风铃（sfx_lighthouse_night_chime，Ch6专属一次性）。HTML新增「日夜BGM系统」和「四季BGM变奏」两个标签页。JSON总资产数从47升至67+。"
     },
     {
       "node_id": "art-direction",
@@ -273,16 +284,18 @@
       "discipline_reviewers": [
         "art-director"
       ],
-      "gate_status": "pending",
-      "updated_at": "2026-05-11T00:00:00Z",
-      "approved_by": [],
-      "approved_at": null,
+      "gate_status": "approved",
+      "updated_at": "2026-05-13T00:00:00Z",
+      "approved_by": [
+        "aa"
+      ],
+      "approved_at": "2026-05-12T20:29:26.475552+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
         "art-qa"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "tile-art-spec.json and tile-art-review.html produced; all 25 tile assets advanced to spec_complete; 180 PNG files pending API generation"
     },
     {
       "node_id": "character-art-gen",
@@ -291,16 +304,18 @@
       "discipline_reviewers": [
         "art-director"
       ],
-      "gate_status": "pending",
-      "updated_at": "2026-05-11T00:00:00Z",
-      "approved_by": [],
-      "approved_at": null,
+      "gate_status": "approved",
+      "updated_at": "2026-05-13T00:00:00Z",
+      "approved_by": [
+        "aa"
+      ],
+      "approved_at": "2026-05-12T20:29:26.483143+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
         "art-qa"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "character-art-spec.json and character-art-review.html produced; all 7 characters advanced to spec_ready; layer-sheet-plan, skeletal-animation-plan, layered-character-reference, animation-preview-spec, char-gicho-frame-animation-spec, expression-set-spec/manifest/report all complete; image generation pending for layer sheets, expressions, and char_gicho frames"
     },
     {
       "node_id": "environment-art-gen",
@@ -309,16 +324,18 @@
       "discipline_reviewers": [
         "art-director"
       ],
-      "gate_status": "pending",
-      "updated_at": "2026-05-11T00:00:00Z",
-      "approved_by": [],
-      "approved_at": null,
+      "gate_status": "approved",
+      "updated_at": "2026-05-13T00:00:00Z",
+      "approved_by": [
+        "aa"
+      ],
+      "approved_at": "2026-05-12T20:29:26.489626+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
         "art-qa"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "environment-art-review.html + systems/environment-art-spec.json generated. 18 backgrounds + 2 props fully specced (spec_ready). View mode, parallax layers, chapter visual signatures, saturation restoration model, and prop frame animation all defined. Awaiting art-qa visual review of generated images after execution."
     },
     {
       "node_id": "ui-art-gen",
@@ -328,16 +345,18 @@
         "art-director",
         "ux-designer"
       ],
-      "gate_status": "pending",
-      "updated_at": "2026-05-11T00:00:00Z",
-      "approved_by": [],
-      "approved_at": null,
+      "gate_status": "approved",
+      "updated_at": "2026-05-13T00:00:00Z",
+      "approved_by": [
+        "aa"
+      ],
+      "approved_at": "2026-05-12T20:29:26.495984+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
         "art-qa"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "ui-art-review.html + systems/ui-art-spec.json 生成完毕。所有 10 个 UI 资产和 20 个 other 资产 current_state 已更新为 spec_ready。Mockup 图片规格已完备，图片生成待 art-qa 批准后执行。"
     },
     {
       "node_id": "vfx-art-gen",
@@ -350,15 +369,16 @@
       "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
       "approved_by": [
-        "discipline_owner"
+        "discipline_owner",
+        "aa"
       ],
-      "approved_at": "2026-05-12T19:23:37.125507+00:00",
+      "approved_at": "2026-05-12T21:36:56.797091+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
         "art-qa"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "v1.1修订：新增10个季节性粒子特效资产（春×2、夏×2、秋×1、冬×4、季节过渡×1）。冬季温泉雪景组合（双层雪花+温泉蒸汽加强+屋顶积雪滑落+灯塔雪雾光晕）为核心诉求资产。vfx-asset-spec.json seasonal_vfx_assets字段已追加，vfx-art-review.html已更新含季节标签页。"
     },
     {
       "node_id": "art-qa",
@@ -367,16 +387,23 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "pending",
-      "updated_at": "2026-05-11T00:00:00Z",
-      "approved_by": [],
-      "approved_at": null,
+      "gate_status": "approved",
+      "updated_at": "2026-05-13T00:00:00Z",
+      "approved_by": [
+        "aa"
+      ],
+      "approved_at": "2026-05-12T21:36:56.804168+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
         "game-design-finalize"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "art-qa节点已完成。综合QA得分4/5，通过（含警告）。无blocker或major问题。所有70个资产规格完整，图集规划完整（10图集），许可证全部project_owned（低风险）。图片文件待image generation API执行后生成；实际headless engine import验证推迟至runtime实现节点。",
+      "exit_artifacts": [
+        ".allforai/game-design/art-qa-report.html",
+        ".allforai/game-design/art/export/engine-ready-art-output-contract.json",
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+      ]
     },
     {
       "node_id": "game-design-finalize",
@@ -385,10 +412,12 @@
       "discipline_reviewers": [
         "producer"
       ],
-      "gate_status": "pending",
-      "updated_at": "2026-05-11T00:00:00Z",
-      "approved_by": [],
-      "approved_at": null,
+      "gate_status": "approved",
+      "updated_at": "2026-05-13T00:00:00+08:00",
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T21:55:48.326699+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -403,7 +432,15 @@
         "implement-audio",
         "level-editor-tool"
       ],
-      "existing_artifacts_note": ""
+      "existing_artifacts_note": "game-design-finalize节点执行完成。所有6个退出产物已生成：game-design-dashboard.html / game-design-doc.json / art-input-handoff.json / art-input-handoff-report.json / game-planning-handoff.md / program-development-node-handoff.json。补充产物：template系统（registry+schemas+instances+qa）、数据表manifest、QA报告全集。无blocking问题，2个非blocking警告已记录。",
+      "exit_artifacts": [
+        ".allforai/game-design/game-design-dashboard.html",
+        ".allforai/game-design/game-design-doc.json",
+        ".allforai/game-design/design/art-input-handoff.json",
+        ".allforai/game-design/design/art-input-handoff-report.json",
+        ".allforai/game-design/design/game-planning-handoff.md",
+        ".allforai/game-design/design/program-development-node-handoff.json"
+      ]
     }
   ]
 }

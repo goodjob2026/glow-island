@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-12T21:47:58Z",
+  "source_skill": "game-art/00-env/2d-animation-toolchain-env",
+  "status": "blocked_by_missing_toolchain",
+  "completion_verdict": "FAILED_VALIDATION",
+  "summary": "The reusable image, preview, atlas tools, and Cocos Creator CLI adapter are available after installation/configuration, but the selected character animation path still requires DragonBones-compatible authoring/export evidence.",
+  "required_capabilities": [
+    {
+      "capability": "dragonbones_skeletal_authoring_export",
+      "required_by": "characters.skeletal_animation",
+      "status": "blocked_by_missing_toolchain",
+      "tool_id": "dragonbones_pro"
+    },
+    {
+      "capability": "frame_animation_atlas_packaging",
+      "required_by": "special_blocks.frame_animation",
+      "status": "validated",
+      "tool_id": "free_tex_packer_cli"
+    },
+    {
+      "capability": "image_processing",
+      "required_by": "animation QA and atlas preparation",
+      "status": "validated",
+      "tool_id": "imagemagick"
+    },
+    {
+      "capability": "video_or_gif_preview_encoding",
+      "required_by": "animation preview QA",
+      "status": "validated",
+      "tool_id": "ffmpeg"
+    },
+    {
+      "capability": "cocos_creator_runtime_import",
+      "required_by": "engine-ready animation validation",
+      "status": "configured_but_unverified",
+      "tool_id": "cocos_creator_cli"
+    }
+  ],
+  "install_attempts": [
+    {
+      "tool_id": "cocos_creator_cli",
+      "command": "create project-local adapter .allforai/bootstrap/scripts/cocos-cli",
+      "result": "adapter_configured",
+      "validated_by": ".allforai/bootstrap/scripts/cocos-cli --version"
+    },
+    {
+      "tool_id": "imagemagick",
+      "command": "brew install imagemagick",
+      "result": "installed",
+      "validated_by": "magick --version"
+    },
+    {
+      "tool_id": "free_tex_packer_cli",
+      "command": "npm install -g free-tex-packer-cli",
+      "result": "installed",
+      "validated_by": "free-tex-packer-cli --version"
+    }
+  ],
+  "validation_evidence": [
+    {
+      "tool_id": "magick",
+      "command": "magick --version",
+      "result": "available",
+      "version": "ImageMagick 7.1.2-21"
+    },
+    {
+      "tool_id": "ffmpeg",
+      "command": "ffmpeg -version",
+      "result": "available",
+      "version": "8.1.1"
+    },
+    {
+      "tool_id": "free-tex-packer-cli",
+      "command": "free-tex-packer-cli --version",
+      "result": "available",
+      "version": "0.3.0"
+    },
+    {
+      "tool_id": "dragonbones",
+      "command": "command -v dragonbones",
+      "result": "missing"
+    },
+    {
+      "tool_id": "cocos-cli",
+      "command": ".allforai/bootstrap/scripts/cocos-cli --version",
+      "result": "available",
+      "version": "3.8.8"
+    }
+  ],
+  "blocked_downstream_skills": [
+    {
+      "skill": "game-art/30-generate/skeletal-animation",
+      "reason": "DragonBones-compatible authoring/export tool is missing and no reliable automatic install path was found."
+    },
+    {
+      "skill": "game-art/40-qa/engine-ready-art-output-contract",
+      "reason": "Animation assets cannot be marked engine-ready without DragonBones export evidence. Cocos adapter is configured, but full project import/build validation still needs to run after animation assets exist."
+    }
+  ],
+  "repair_routing": [
+    {
+      "failure": "DragonBones requested but unavailable",
+      "route": "Install/configure DragonBones Pro or add a project adapter that can export DragonBones JSON and atlas, then rerun this skill."
+    },
+    {
+      "failure": "Fallback desired",
+      "route": "Update 2d-animation-production-plan with an explicit fallback before switching characters away from DragonBones."
+    }
+  ],
+  "next_action": "Do not run skeletal-animation as approved production output yet. Frame/special-block atlas preparation and Cocos adapter-based validation can proceed; DragonBones character animation remains blocked."
+}

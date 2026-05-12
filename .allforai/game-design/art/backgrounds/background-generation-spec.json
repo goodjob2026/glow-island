@@ -1,0 +1,454 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "generated_by": "environment-art-gen",
+  "view_mode_ref": ".allforai/game-design/art/view/2d-view-mode-spec.json",
+  "style_guide_ref": ".allforai/game-design/art-style-guide.json",
+  "asset_registry_ref": ".allforai/game-design/asset-registry.json",
+
+  "global_spec": {
+    "format": "jpg",
+    "dimensions_px": {"width": 1920, "height": 1080},
+    "art_style": "hand_drawn_watercolor",
+    "style_keywords": ["japanese-healing-island", "hand-drawn-watercolor", "soft-rounded-organic", "warm-pastel-palette"],
+    "prohibited_styles": ["pixel_art", "hyper_realistic_3d", "neon_cyberpunk_palette", "metallic_chrome_gradients", "pure_black_000000"],
+    "parallax_layers": 3,
+    "parallax_layer_labels": ["sky_far", "midground", "foreground_elements"],
+    "lighting_model": "consistent_warm_overhead_soft_diffuse",
+    "light_source_direction": "upper_right_diagonal",
+    "light_source_notes": "All 6 chapters use the same directional light model (upper-right soft diffuse). Chapter 6 nighttime uses moonlight from upper-right with warm golden lighthouse beam as secondary light source.",
+    "ui_negative_space": "Center 60% of screen horizontally kept free from busy foreground elements — reserved for puzzle board overlay",
+    "tile_seam_notes": "Backgrounds are full-bleed JPGs; seamless tiling not required. Board overlays the background as a separate layer.",
+    "saturation_restoration_model": {
+      "before": {"saturation": "8-15%", "brightness": "42-48%", "label": "褪色枯岛 — 灰调、枯寂、未修复"},
+      "in_progress": {"saturation": "28-48%", "brightness": "50-60%", "label": "轮廓找回淡彩 — 色彩局部回归、修复感"},
+      "restored": {"saturation": "62-88%", "brightness": "62-75%", "label": "完整水彩光效全开 — 满生命力"}
+    }
+  },
+
+  "chapter_specs": [
+    {
+      "chapter": 1,
+      "scene_name": "海边码头（海边の波止場）",
+      "scene_type": "coastal_harbor",
+      "primary_hue": "#5BBFB5",
+      "secondary_hue": "#F7EDD8",
+      "accent_hue": "#EE8C55",
+      "board_bg_gradient": "#A8DDD8 → #C8EEE8",
+      "unique_visual_signature": "木制码头栈桥、停泊渔船、海鸥、灯塔轮廓（远景）、低潮礁石",
+      "sky_far_layer": "低云淡青蓝天、远海地平线、隐约灯塔剪影",
+      "midground_layer": "码头木栈桥、停泊小渔船、木制储物箱",
+      "foreground_elements_layer": "绳索、浮标、礁石、海草、前景木桩",
+      "parallax_depth_cues": ["sea_horizon_receding", "dock_planks_orthogonal", "rope_and_buoy_foreground"],
+      "assets": [
+        {"asset_id": "bg_ch1_before", "state_label": "修复前", "saturation": "8-15%", "brightness": "42-48%", "mood": "abandoned_harbor_gray_desaturated"},
+        {"asset_id": "bg_ch1_progress", "state_label": "修复中", "saturation": "28-38%", "brightness": "50-56%", "mood": "harbor_waking_partial_color"},
+        {"asset_id": "bg_ch1_restored", "state_label": "修复后", "saturation": "62-75%", "brightness": "62-70%", "mood": "vibrant_sunny_harbor_full_watercolor"}
+      ]
+    },
+    {
+      "chapter": 2,
+      "scene_name": "中央小镇（中央の町）",
+      "scene_type": "village_town_square",
+      "primary_hue": "#7DBE77",
+      "secondary_hue": "#C4955A",
+      "accent_hue": "#F5C842",
+      "board_bg_gradient": "#C8E8C0 → #E0F0D8",
+      "unique_visual_signature": "石板小路、木质店铺招牌、竹林屏障、晾晒的布帘、花盆与路灯",
+      "sky_far_layer": "暖白晴空、轻云、远处山脉青绿剪影",
+      "midground_layer": "木质两层店铺（杂货铺/茶馆）、竹林、石板广场",
+      "foreground_elements_layer": "木桶花盆、布帘、石灯笼、木牌",
+      "parallax_depth_cues": ["cobblestone_receding_path", "bamboo_grove_mid", "hanging_noren_foreground"],
+      "assets": [
+        {"asset_id": "bg_ch2_before", "state_label": "修复前", "saturation": "8-15%", "brightness": "42-48%", "mood": "quiet_abandoned_town_gray"},
+        {"asset_id": "bg_ch2_progress", "state_label": "修复中", "saturation": "28-48%", "brightness": "50-58%", "mood": "town_reopening_warm_greens"},
+        {"asset_id": "bg_ch2_restored", "state_label": "修复后", "saturation": "62-80%", "brightness": "65-72%", "mood": "lively_village_full_color_warm"}
+      ]
+    },
+    {
+      "chapter": 3,
+      "scene_name": "花田山坡（花畑の丘）",
+      "scene_type": "flower_hill_meadow",
+      "primary_hue": "#F0C4C4",
+      "secondary_hue": "#D4A8C8",
+      "accent_hue": "#EE8C55",
+      "board_bg_gradient": "#F8E8E8 → #FFF5F5",
+      "unique_visual_signature": "粉色花田（樱花/波斯菊）、木制观景台、山坡起伏、蝴蝶剪影、花茎摇摆感",
+      "sky_far_layer": "柔粉蓝天、飘落花瓣远景、朦胧山峦",
+      "midground_layer": "花田山坡、木制小观景台、散落树木",
+      "foreground_elements_layer": "近景花丛（樱花/波斯菊）、草叶、蝴蝶点缀",
+      "parallax_depth_cues": ["hillside_receding_grade", "flower_rows_diminishing", "foreground_petals_close"],
+      "assets": [
+        {"asset_id": "bg_ch3_before", "state_label": "修复前", "saturation": "8-15%", "brightness": "42-48%", "mood": "withered_hill_gray_no_flowers"},
+        {"asset_id": "bg_ch3_progress", "state_label": "修复中", "saturation": "38-52%", "brightness": "55-62%", "mood": "flowers_blooming_partial_pink"},
+        {"asset_id": "bg_ch3_restored", "state_label": "修复后", "saturation": "68-82%", "brightness": "68-76%", "mood": "full_bloom_sakura_paradise"}
+      ]
+    },
+    {
+      "chapter": 4,
+      "scene_name": "森林露营地（森のキャンプ場）",
+      "scene_type": "forest_campsite",
+      "primary_hue": "#4A7D55",
+      "secondary_hue": "#C4955A",
+      "accent_hue": "#F5C842",
+      "board_bg_gradient": "#3D5040 → #5A7058",
+      "unique_visual_signature": "营地帐篷、篝火台、大树根、苔藓石块、吊床、营地绳灯",
+      "sky_far_layer": "林冠缝隙蓝天或傍晚橙天、远景针叶林剪影",
+      "midground_layer": "大树干、帐篷群、营地木台",
+      "foreground_elements_layer": "苔藓岩石、蕨草、近景树根、营地装饰物",
+      "parallax_depth_cues": ["forest_canopy_overhead", "tent_ground_depth", "mossy_rock_foreground"],
+      "assets": [
+        {"asset_id": "bg_ch4_before", "state_label": "修复前", "saturation": "8-15%", "brightness": "38-45%", "mood": "overgrown_abandoned_forest_dim"},
+        {"asset_id": "bg_ch4_progress", "state_label": "修复中", "saturation": "28-45%", "brightness": "48-56%", "mood": "campsite_clearing_returning_green"},
+        {"asset_id": "bg_ch4_restored", "state_label": "修复后", "saturation": "62-78%", "brightness": "60-68%", "mood": "cozy_forest_camp_warm_fire_glow"}
+      ]
+    },
+    {
+      "chapter": 5,
+      "scene_name": "温泉山谷（温泉の谷）",
+      "scene_type": "hot_spring_valley",
+      "primary_hue": "#C4955A",
+      "secondary_hue": "#5BBFB5",
+      "accent_hue": "#F7EDD8",
+      "board_bg_gradient": "#F0D8B0 → #E8C890",
+      "unique_visual_signature": "露天温泉池（热气袅绕）、竹篱笆、山谷岩石、红叶/雪景、木制浴舍",
+      "sky_far_layer": "暖橙黄夕阳或冬雪天空、远山雪顶（季节感）",
+      "midground_layer": "温泉池、竹篱笆围栏、浴舍木屋",
+      "foreground_elements_layer": "热气蒸腾VFX、岩石苔藓、红叶/雪花、竹节前景",
+      "parallax_depth_cues": ["valley_walls_receding", "hot_spring_pool_mid", "steam_and_rocks_foreground"],
+      "seasonal_note": "修复后场景可同时呈现红叶与初雪元素（温泉山谷の四季感），与retention-hook-design季节系统预留接口",
+      "assets": [
+        {"asset_id": "bg_ch5_before", "state_label": "修复前", "saturation": "8-15%", "brightness": "38-45%", "mood": "dried_silent_valley_cold_gray"},
+        {"asset_id": "bg_ch5_progress", "state_label": "修复中", "saturation": "32-50%", "brightness": "50-58%", "mood": "hot_spring_warming_earth_tones"},
+        {"asset_id": "bg_ch5_restored", "state_label": "修复后", "saturation": "65-80%", "brightness": "62-72%", "mood": "steaming_onsen_autumnal_warm_or_snowy_serene"}
+      ]
+    },
+    {
+      "chapter": 6,
+      "scene_name": "夜晚灯塔（夜の燈台）",
+      "scene_type": "lighthouse_night",
+      "primary_hue": "#1E2E50",
+      "secondary_hue": "#F5C842",
+      "accent_hue": "#F5F0E8",
+      "board_bg_gradient": "#0E1830 → #1E2E50",
+      "unique_visual_signature": "海边悬崖灯塔（全景）、星空、月光海面、灯塔金色光束旋转、夜间礁岸",
+      "sky_far_layer": "深蓝夜空、星点、月亮、远海反光",
+      "midground_layer": "灯塔主体（白底红横纹）、悬崖岩壁、海湾",
+      "foreground_elements_layer": "礁石、夜间海草、浪花、灯塔光束前景投影",
+      "parallax_depth_cues": ["starfield_far", "lighthouse_mid_dominant", "cliff_rocks_foreground"],
+      "lighting_special": "灯塔金色光束（#F5C842）为场景主光源，上右方月光为辅助光；与标准白日光源方向一致（上右），保证光照模型统一",
+      "assets": [
+        {"asset_id": "bg_ch6_before", "state_label": "修复前", "saturation": "8-12%", "brightness": "30-38%", "mood": "dark_abandoned_lighthouse_near_black"},
+        {"asset_id": "bg_ch6_progress", "state_label": "修复中", "saturation": "20-38%", "brightness": "40-50%", "mood": "lighthouse_flickering_returning_glow"},
+        {"asset_id": "bg_ch6_restored", "state_label": "修复后", "saturation": "55-75%", "brightness": "55-65%", "mood": "full_lighthouse_beam_starry_night_golden"}
+      ]
+    }
+  ],
+
+  "image_generation_requests": [
+    {
+      "request_id": "bg_ch1_before_gen",
+      "asset_id": "bg_ch1_before",
+      "file_prefix": "bg_ch1_before",
+      "generation_profile": {
+        "task_type": "background",
+        "model_class": "image_generation",
+        "recommended_model": "google-imagen-4",
+        "prompt_template": "background_prompt",
+        "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true, "multi_frame_consistency": false, "small_size_readability": false, "seamless_edges": false, "layout_fidelity": false}
+      },
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor style. Abandoned Japanese island coastal harbor (海边码头). Wooden dock pier, weathered fishing boats moored, stone quay wall, distant lighthouse silhouette on horizon, seagulls resting on pilings. Completely desaturated (8-15% saturation), gray-blue tone, dim faded light. Overcast sky, calm gray water reflecting clouds. Three parallax layers: far sky horizon, mid dock structures, near rope and bollard foreground. Wide 16:9 panoramic composition, center 60% kept clear for puzzle board overlay. Soft organic lines, no sharp edges.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon colors, no pure black #000000, no text or labels, no UI elements, no people, no high contrast, no sharp geometric shapes, no photorealism",
+        "composition": "Horizontal panoramic 1920x1080. Sky occupies top 40%, harbor structures mid 35%, foreground elements bottom 25%. Center zone minimally detailed to allow board overlay.",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {
+        "path": ".allforai/game-design/art/backgrounds/bg_ch1_before.jpg",
+        "format": "jpg",
+        "alpha_required": false,
+        "file_prefix_required": "bg_ch1_before"
+      }
+    },
+    {
+      "request_id": "bg_ch1_progress_gen",
+      "asset_id": "bg_ch1_progress",
+      "file_prefix": "bg_ch1_progress",
+      "generation_profile": {
+        "task_type": "background",
+        "model_class": "image_generation",
+        "recommended_model": "google-imagen-4",
+        "prompt_template": "background_prompt",
+        "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}
+      },
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor style. Japanese island coastal harbor partially restored. Same composition as before-state: wooden dock pier, fishing boats, lighthouse. Colors returning (28-38% saturation), teal-blue hues (#5BBFB5 family) softly emerging, some areas still gray. Morning light quality, partial warmth. Gentle watercolor wash, imperfect edges, healing aesthetic.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "Same layout as before-state. Horizontal panoramic 1920x1080. Center zone kept clear.",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {
+        "path": ".allforai/game-design/art/backgrounds/bg_ch1_progress.jpg",
+        "format": "jpg",
+        "alpha_required": false,
+        "file_prefix_required": "bg_ch1_progress"
+      }
+    },
+    {
+      "request_id": "bg_ch1_restored_gen",
+      "asset_id": "bg_ch1_restored",
+      "file_prefix": "bg_ch1_restored",
+      "generation_profile": {
+        "task_type": "background",
+        "model_class": "image_generation",
+        "recommended_model": "google-imagen-4",
+        "prompt_template": "background_prompt",
+        "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}
+      },
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor style. Vibrant Japanese island coastal harbor fully restored. Sunny harbor scene: teal ocean (#5BBFB5), warm sand dock wood, colorful fishing boats with red/orange accents, seagulls in blue sky, lighthouse bright white with coral stripes in far distance. Full saturation (62-75%), warm soft light from upper-right. Joyful healing atmosphere. Rich watercolor detail, organic brush strokes.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "Horizontal panoramic 1920x1080. Center zone kept clear for board overlay.",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {
+        "path": ".allforai/game-design/art/backgrounds/bg_ch1_restored.jpg",
+        "format": "jpg",
+        "alpha_required": false,
+        "file_prefix_required": "bg_ch1_restored"
+      }
+    },
+    {
+      "request_id": "bg_ch2_before_gen",
+      "asset_id": "bg_ch2_before",
+      "file_prefix": "bg_ch2_before",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Abandoned Japanese island village town square. Cobblestone path, closed wooden shops (grocer, tea house), bamboo grove screen, unlit stone lanterns, weathered hanging noren curtains. Fully desaturated (8-15% saturation), gray-green muted tones, overcast. Three parallax layers: far sky + mountains, mid shop buildings + bamboo, near wood barrels + lanterns. 1920x1080 horizontal, center clear.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text or labels, no people, no high contrast, no sharp geometric shapes, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal for board overlay",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch2_before.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch2_before"}
+    },
+    {
+      "request_id": "bg_ch2_progress_gen",
+      "asset_id": "bg_ch2_progress",
+      "file_prefix": "bg_ch2_progress",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Japanese village town square partially restored. Same layout as before: shops, bamboo, cobblestone. Green (#7DBE77) and warm brown (#C4955A) hues emerging (28-48% saturation). Some lanterns lit with warm glow. Morning warmth returning, partial watercolor color wash. Healing feeling.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch2_progress.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch2_progress"}
+    },
+    {
+      "request_id": "bg_ch2_restored_gen",
+      "asset_id": "bg_ch2_restored",
+      "file_prefix": "bg_ch2_restored",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Lively restored Japanese village town square. Warm sunny day: open colorful shops, noren curtains swaying, lit stone lanterns, bamboo rustling, flower pots on cobblestone path. Full saturation (62-80%), warm greens (#7DBE77) and driftwood browns (#C4955A) and golden (#F5C842) accents. Joyful community atmosphere.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch2_restored.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch2_restored"}
+    },
+    {
+      "request_id": "bg_ch3_before_gen",
+      "asset_id": "bg_ch3_before",
+      "file_prefix": "bg_ch3_before",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Withered Japanese island flower hill with dead meadow. Rolling hillside, bare stems where flowers used to grow, small wooden observation deck, overcast pale sky. Fully desaturated (8-15% saturation), gray-pink muted tones, no color bloom. Three parallax layers: far misty mountains + pale sky, mid dry hillside + bare deck, near dry grass + stems.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal for board overlay",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch3_before.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch3_before"}
+    },
+    {
+      "request_id": "bg_ch3_progress_gen",
+      "asset_id": "bg_ch3_progress",
+      "file_prefix": "bg_ch3_progress",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Japanese flower hill partially restored. Sakura and cosmos flowers blooming in patches (38-52% saturation), pink hues (#F0C4C4) emerging across hillside, some areas still bare. Soft watercolor bloom quality, gentle partial color wash, healing feeling.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch3_progress.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch3_progress"}
+    },
+    {
+      "request_id": "bg_ch3_restored_gen",
+      "asset_id": "bg_ch3_restored",
+      "file_prefix": "bg_ch3_restored",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Full bloom Japanese sakura flower hill paradise. Hillside covered in pink sakura (#F0C4C4) and lavender cosmos flowers, petals drifting in breeze, butterfly silhouettes, wooden observation deck with flower garlands, soft blue-pink sky. Full saturation (68-82%), warm light from upper right, joyful soft romantic atmosphere.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch3_restored.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch3_restored"}
+    },
+    {
+      "request_id": "bg_ch4_before_gen",
+      "asset_id": "bg_ch4_before",
+      "file_prefix": "bg_ch4_before",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Overgrown abandoned forest campsite. Dense dark trees, collapsed tent remnants, cold ash fire pit, mossy boulders, tangled roots, ferns, dim filtered light through canopy. Fully desaturated (8-15% saturation), deep dark gray-green muted tones, heavy overcast. Three parallax layers: far canopy + sky slivers, mid tree trunks + tent ruins, near mossy rocks + ferns.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch4_before.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch4_before"}
+    },
+    {
+      "request_id": "bg_ch4_progress_gen",
+      "asset_id": "bg_ch4_progress",
+      "file_prefix": "bg_ch4_progress",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Forest campsite partially cleared and restored. Trees still prominent but clearing visible, tent pitched, campfire ring set up but unlit, green (#4A7D55) beginning to emerge from gray (28-45% saturation). Dappled light through canopy, warm hope in the forest air.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch4_progress.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch4_progress"}
+    },
+    {
+      "request_id": "bg_ch4_restored_gen",
+      "asset_id": "bg_ch4_restored",
+      "file_prefix": "bg_ch4_restored",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Cozy Japanese forest campsite fully restored. Warm glowing campfire, string lights on trees, colorful tent with lantern, lush moss on boulders and ferns, golden light filtering through green canopy (#4A7D55). Warm orange campfire glow (#C4955A) as secondary accent. Full saturation (62-78%), magical healing forest atmosphere, golden hour quality.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch4_restored.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch4_restored"}
+    },
+    {
+      "request_id": "bg_ch5_before_gen",
+      "asset_id": "bg_ch5_before",
+      "file_prefix": "bg_ch5_before",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Dried silent Japanese hot spring valley, empty and cold. Rocky valley walls, dry hot spring pools (no water or steam), bare bamboo fencing, weathered wooden bath house. Fully desaturated (8-15% saturation), cold gray-brown tones, overcast cold sky. Three parallax layers: far mountain valley + sky, mid dry pools + bathhouse, near dry rocks + bare bamboo.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch5_before.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch5_before"}
+    },
+    {
+      "request_id": "bg_ch5_progress_gen",
+      "asset_id": "bg_ch5_progress",
+      "file_prefix": "bg_ch5_progress",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Japanese hot spring valley partially restored. Pools filling with water, faint wisps of steam, bamboo fence repaired in some sections, wooden bathhouse walls brightening. Warm earth tones (#C4955A) and teal (#5BBFB5) emerging (32-50% saturation), soft dawn warmth.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch5_progress.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch5_progress"}
+    },
+    {
+      "request_id": "bg_ch5_restored_gen",
+      "asset_id": "bg_ch5_restored",
+      "file_prefix": "bg_ch5_restored",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Steaming serene Japanese hot spring valley fully restored. Beautiful outdoor onsen pool with rising steam, bamboo fence, wooden bathhouse with warm lanterns, autumn red maple leaves on one side and light snow dusting on the other (four-season magic). Full saturation (65-80%), warm golden light from upper right, deeply peaceful healing atmosphere.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, center 60% kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch5_restored.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch5_restored"}
+    },
+    {
+      "request_id": "bg_ch6_before_gen",
+      "asset_id": "bg_ch6_before",
+      "file_prefix": "bg_ch6_before",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Dark abandoned lighthouse on rocky coastal cliff at night. Lighthouse tower dark (no light), jagged cliff rocks, black quiet sea, overcast moonless sky. Heavily desaturated (8-12% saturation), near-black deep navy tones (#0E1830 family), extremely dim, ominous stillness. Three parallax layers: far dark starless sky + sea, mid dark lighthouse + cliff, near silhouette rocks + waves.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, lighthouse dominant in upper-mid region, center zone kept minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch6_before.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch6_before"}
+    },
+    {
+      "request_id": "bg_ch6_progress_gen",
+      "asset_id": "bg_ch6_progress",
+      "file_prefix": "bg_ch6_progress",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Lighthouse on cliff partially restored at night. Lighthouse beginning to glow with faint golden flicker, moon visible through clearing clouds, stars appearing, sea reflecting faint light. Navy blue (#1E2E50) with golden (#F5C842) hints emerging (20-38% saturation). Hope returning to darkness.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, lighthouse centered-upper, center zone minimal",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch6_progress.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch6_progress"}
+    },
+    {
+      "request_id": "bg_ch6_restored_gen",
+      "asset_id": "bg_ch6_restored",
+      "file_prefix": "bg_ch6_restored",
+      "generation_profile": {"task_type": "background", "model_class": "image_generation", "recommended_model": "google-imagen-4", "prompt_template": "background_prompt", "output_constraints": {"alpha": false, "exact_size": true, "style_lock": true}},
+      "prompt_contract": {
+        "positive_prompt": "Hand-drawn watercolor. Magnificent fully restored lighthouse blazing at night on coastal cliff. Rotating golden beam (#F5C842) sweeping the starry sea, white lighthouse tower with coral red stripe (#E8866A), brilliant star field above, moonlight (#F5F0E8) on calm dark navy ocean (#1E2E50). Full saturation (55-75%), golden light is primary, moonlight is secondary, both from upper right. Epic, serene, triumphant island finale atmosphere.",
+        "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text, no UI, no people, no high contrast, no sharp geometry, no photorealism",
+        "composition": "1920x1080 horizontal panoramic, lighthouse as hero element upper-mid, center zone kept clear",
+        "background": "scene",
+        "size": {"width": 1920, "height": 1080},
+        "variants": []
+      },
+      "output_contract": {"path": ".allforai/game-design/art/backgrounds/bg_ch6_restored.jpg", "format": "jpg", "alpha_required": false, "file_prefix_required": "bg_ch6_restored"}
+    }
+  ]
+}

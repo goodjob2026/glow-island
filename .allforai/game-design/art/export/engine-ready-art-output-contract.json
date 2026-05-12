@@ -1,0 +1,534 @@
+{
+  "schema_version": "1.0",
+  "skill": "game-art/engine-ready-art-output-contract",
+  "contract_id": "glow-island-art-contract-v1",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+
+  "target_runtime": "cocos-creator-3.x",
+  "engine_export_profile_ref": ".allforai/game-design/art-pipeline-config.json",
+  "adapter_policy": "profile_only",
+
+  "state": "engine_ready_with_limits",
+  "state_reason": "所有70个资产规格完整（spec_complete/spec_ready），图集规划完整，运行时兼容性验证通过（import_manifest_parse方法）。限制：PNG/JPG文件及DragonBones项目文件待API执行后生成；实际headless engine import验证推迟至runtime实现节点。",
+
+  "format_decisions": {
+    "tiles": {
+      "format": "PNG",
+      "color_mode": "RGBA",
+      "resolution": "128×128px (2x design)",
+      "fallback_resolution": "64×64px (1x fallback)",
+      "compression": "none",
+      "alpha": true,
+      "rationale": "需要透明背景支持图块消除动画VFX叠加"
+    },
+    "characters": {
+      "format": "PNG",
+      "color_mode": "RGBA",
+      "resolution": "256×512px (human), 192×192px (char_gicho)",
+      "compression": "none",
+      "alpha": true,
+      "animation_export": "DragonBones JSON + Atlas PNG",
+      "rationale": "DragonBones骨骼动画格式（Cocos Creator原生插件支持）"
+    },
+    "backgrounds": {
+      "format": "JPG",
+      "color_mode": "RGB",
+      "resolution": "1920×1080px",
+      "compression": "quality_85",
+      "alpha": false,
+      "rationale": "背景无alpha需求，JPG节省内存"
+    },
+    "props": {
+      "format": "PNG",
+      "color_mode": "RGBA",
+      "resolution": "varies（prop_notebook 180×240px，prop_lighthouse_lamp 256×256px）",
+      "alpha": true,
+      "rationale": "道具需要透明背景进行场景叠加"
+    },
+    "ui": {
+      "format": "PNG",
+      "color_mode": "RGBA",
+      "resolution": "2x design，1x fallback",
+      "alpha": true,
+      "atlas": "ui_elements_atlas",
+      "rationale": "UI元素需要透明背景和图集打包减少drawcall"
+    },
+    "vfx": {
+      "format": "PNG",
+      "color_mode": "RGBA",
+      "resolution": "per-frame（帧动画序列）",
+      "atlas_max": "1024×1024px",
+      "alpha": true,
+      "rationale": "VFX粒子和帧序列需要透明背景，独立小图集控制内存"
+    }
+  },
+
+  "asset_manifest_refs": [
+    ".allforai/game-design/art/tilesets/tileset-manifest.json",
+    ".allforai/game-design/systems/tile-art-spec.json",
+    ".allforai/game-design/systems/character-art-spec.json",
+    ".allforai/game-design/systems/environment-art-spec.json",
+    ".allforai/game-design/systems/ui-art-spec.json",
+    ".allforai/game-design/ui/ui-registry.json"
+  ],
+
+  "atlas_refs": [
+    {
+      "atlas_id": "tiles_ch1_atlas",
+      "spec": ".allforai/game-design/art/atlases/atlas-packaging-report.json",
+      "max_size_px": 2048,
+      "state": "planned"
+    },
+    {
+      "atlas_id": "tiles_ch2_atlas",
+      "spec": ".allforai/game-design/art/atlases/atlas-packaging-report.json",
+      "max_size_px": 2048,
+      "state": "planned"
+    },
+    {
+      "atlas_id": "tiles_ch3_atlas",
+      "spec": ".allforai/game-design/art/atlases/atlas-packaging-report.json",
+      "max_size_px": 2048,
+      "state": "planned"
+    },
+    {
+      "atlas_id": "tiles_ch4_atlas",
+      "spec": ".allforai/game-design/art/atlases/atlas-packaging-report.json",
+      "max_size_px": 2048,
+      "state": "planned"
+    },
+    {
+      "atlas_id": "tiles_ch5_atlas",
+      "spec": ".allforai/game-design/art/atlases/atlas-packaging-report.json",
+      "max_size_px": 2048,
+      "state": "planned"
+    },
+    {
+      "atlas_id": "tiles_ch6_atlas",
+      "spec": ".allforai/game-design/art/atlases/atlas-packaging-report.json",
+      "max_size_px": 2048,
+      "state": "planned"
+    },
+    {
+      "atlas_id": "special_blocks_atlas",
+      "spec": ".allforai/game-design/art/atlases/atlas-packaging-report.json",
+      "max_size_px": 2048,
+      "chapter_independent": true,
+      "state": "planned"
+    },
+    {
+      "atlas_id": "characters_atlas",
+      "spec": ".allforai/game-design/systems/character-art-spec.json",
+      "max_size_px": 2048,
+      "tool": "dragonbones_pro_export",
+      "state": "planned"
+    },
+    {
+      "atlas_id": "ui_elements_atlas",
+      "spec": ".allforai/game-design/art/atlases/atlas-packaging-report.json",
+      "max_size_px": 2048,
+      "state": "planned"
+    },
+    {
+      "atlas_id": "vfx_atlas",
+      "spec": ".allforai/game-design/art/atlases/atlas-packaging-report.json",
+      "max_size_px": 1024,
+      "state": "planned"
+    }
+  ],
+
+  "animation_refs": [
+    {
+      "animation_id": "char_skeletal_dragonbones",
+      "spec": ".allforai/game-design/systems/skeletal-animation-plan.json",
+      "tool": "dragonbones_pro",
+      "fps": 30,
+      "animation_sets": ["idle", "happy", "surprised", "sad", "wave"],
+      "protagonist_extras": ["react_jump"],
+      "state": "spec_complete"
+    },
+    {
+      "animation_id": "char_gicho_frame_animation",
+      "spec": ".allforai/game-design/systems/char-gicho-frame-animation-spec.json",
+      "fps": 12,
+      "frame_count": 15,
+      "state": "spec_complete"
+    },
+    {
+      "animation_id": "special_block_frame_animations",
+      "spec": ".allforai/game-design/systems/tile-art-spec.json#special_blocks",
+      "fps": 30,
+      "frame_count_per_block": 12,
+      "block_count": 5,
+      "state": "spec_complete"
+    },
+    {
+      "animation_id": "prop_lighthouse_lamp_frame",
+      "spec": ".allforai/game-design/systems/environment-art-spec.json#prop_spec_summary",
+      "fps": 12,
+      "frame_count": 8,
+      "state": "spec_complete"
+    }
+  ],
+
+  "state_machine_refs": [],
+
+  "skeleton_refs": [
+    {
+      "skeleton_id": "char_ritsu_dragonbones",
+      "character": "山田律",
+      "bone_count": 16,
+      "part_count": 18,
+      "format": "dragonbones_json",
+      "state": "spec_ready"
+    },
+    {
+      "skeleton_id": "char_hinata_dragonbones",
+      "character": "丸山ひなた",
+      "bone_count": 16,
+      "part_count": 18,
+      "format": "dragonbones_json",
+      "state": "spec_ready"
+    },
+    {
+      "skeleton_id": "char_kenzo_dragonbones",
+      "character": "磯部健三",
+      "bone_count": 16,
+      "part_count": 16,
+      "format": "dragonbones_json",
+      "state": "spec_ready"
+    },
+    {
+      "skeleton_id": "char_umeko_dragonbones",
+      "character": "桐島梅子",
+      "bone_count": 16,
+      "part_count": 16,
+      "format": "dragonbones_json",
+      "state": "spec_ready"
+    },
+    {
+      "skeleton_id": "char_natsuka_dragonbones",
+      "character": "海野夏帆",
+      "bone_count": 16,
+      "part_count": 17,
+      "format": "dragonbones_json",
+      "state": "spec_ready"
+    },
+    {
+      "skeleton_id": "char_fuyuko_dragonbones",
+      "character": "丸山冬子",
+      "bone_count": 16,
+      "part_count": 16,
+      "format": "dragonbones_json",
+      "state": "spec_ready"
+    }
+  ],
+
+  "tilemap_refs": [
+    {
+      "tilemap_id": "puzzle_grid",
+      "spec": ".allforai/game-design/systems/tile-art-spec.json#tilemap",
+      "mode": "puzzle_grid",
+      "projection": "orthographic",
+      "tile_size_px": 128,
+      "connectivity": "single_tiles",
+      "collision_model": "none"
+    }
+  ],
+
+  "ui_asset_refs": [
+    {
+      "ui_id": "ui_hud_bar",
+      "spec": ".allforai/game-design/systems/ui-art-spec.json",
+      "atlas": "ui_elements_atlas",
+      "states": ["normal", "low", "critical", "empty"]
+    },
+    {
+      "ui_id": "ui_card_level",
+      "spec": ".allforai/game-design/systems/ui-art-spec.json",
+      "atlas": "ui_elements_atlas",
+      "states": ["default", "selected", "locked", "disabled", "new", "upgradable"]
+    },
+    {
+      "ui_id": "ui_btn_shuffle",
+      "spec": ".allforai/game-design/systems/ui-art-spec.json",
+      "atlas": "ui_elements_atlas",
+      "states": ["normal", "pressed", "disabled", "locked"],
+      "cost": "30沙滩币"
+    },
+    {
+      "ui_id": "ui_btn_hint",
+      "spec": ".allforai/game-design/systems/ui-art-spec.json",
+      "atlas": "ui_elements_atlas",
+      "states": ["normal", "pressed", "disabled", "locked"],
+      "cost": "30沙滩币"
+    },
+    {
+      "ui_id": "ui_btn_continue",
+      "spec": ".allforai/game-design/systems/ui-art-spec.json",
+      "atlas": "ui_elements_atlas",
+      "states": ["normal", "pressed", "disabled", "highlighted", "locked"],
+      "cost": "30沙滩币+5步"
+    },
+    {
+      "ui_id": "ui_panel_shop",
+      "spec": ".allforai/game-design/systems/ui-art-spec.json",
+      "atlas": "ui_elements_atlas",
+      "states": ["entering", "open", "confirming", "closing", "blocked"]
+    },
+    {
+      "ui_id": "ui_panel_npc_dialogue",
+      "spec": ".allforai/game-design/systems/ui-art-spec.json",
+      "atlas": "ui_elements_atlas",
+      "states": ["entering", "open", "confirming", "closing", "blocked"]
+    },
+    {
+      "ui_id": "ui_coin_icon",
+      "spec": ".allforai/game-design/systems/ui-art-spec.json",
+      "atlas": "ui_elements_atlas",
+      "currency_type": "沙滩币（唯一货币）"
+    },
+    {
+      "ui_id": "ui_star_icon",
+      "spec": ".allforai/game-design/systems/ui-art-spec.json",
+      "atlas": "ui_elements_atlas",
+      "variants": ["empty", "filled", "half"]
+    },
+    {
+      "ui_id": "ui_lighthouse_progress",
+      "spec": ".allforai/game-design/systems/ui-art-spec.json",
+      "atlas": "ui_elements_atlas",
+      "states": ["normal", "low", "gain", "critical", "full", "loss", "empty"]
+    }
+  ],
+
+  "vfx_refs": [
+    {
+      "vfx_id": "vfx_combo_burst",
+      "atlas": "vfx_atlas",
+      "particle_budget": 200,
+      "particle_theme": "chapter_accent_color_themed"
+    },
+    {
+      "vfx_id": "vfx_match_disappear",
+      "atlas": "vfx_atlas",
+      "frames": 8,
+      "duration_ms": 250
+    },
+    {
+      "vfx_id": "vfx_lighthouse_glow",
+      "atlas": "vfx_atlas",
+      "frames": 24,
+      "color": "#F5C842"
+    },
+    {
+      "vfx_id": "vfx_wave_clear",
+      "atlas": "vfx_atlas",
+      "style": "warm_white_ripple_expanding_ring",
+      "duration_ms": 500
+    },
+    {
+      "vfx_id": "vfx_chapter_restore",
+      "atlas": "vfx_atlas",
+      "style": "crossfade_plus_white_light_wave_from_center",
+      "crossfade_s": 0.8,
+      "light_wave_s": 0.6
+    },
+    {
+      "vfx_id": "vfx_combo_multiplier_x2",
+      "atlas": "vfx_atlas",
+      "combo_level": 2
+    },
+    {
+      "vfx_id": "vfx_combo_multiplier_x3",
+      "atlas": "vfx_atlas",
+      "combo_level": 3
+    },
+    {
+      "vfx_id": "vfx_combo_multiplier_x5",
+      "atlas": "vfx_atlas",
+      "combo_level": 5
+    }
+  ],
+
+  "layering_refs": [
+    {
+      "layer_name": "background",
+      "z_index": 0,
+      "contents": "bg_ch{N}_{state}.jpg"
+    },
+    {
+      "layer_name": "board_tiles",
+      "z_index": 10,
+      "contents": "tile_*.png via tiles_ch{N}_atlas"
+    },
+    {
+      "layer_name": "characters",
+      "z_index": 20,
+      "contents": "char_*.dragonbones via characters_atlas"
+    },
+    {
+      "layer_name": "vfx_match",
+      "z_index": 30,
+      "contents": "vfx_match_disappear, tile disappear particle effects",
+      "constraint": "不遮挡棋盘连接路径（transparent tile boundary）"
+    },
+    {
+      "layer_name": "vfx_combo",
+      "z_index": 35,
+      "contents": "vfx_combo_burst, vfx_combo_multiplier_*",
+      "constraint": "combo气泡不遮挡棋盘路径"
+    },
+    {
+      "layer_name": "hud",
+      "z_index": 50,
+      "contents": "ui_hud_bar, ui_lighthouse_progress, ui_coin_icon, ui_star_icon"
+    },
+    {
+      "layer_name": "modals",
+      "z_index": 100,
+      "contents": "ui_panel_shop, ui_panel_npc_dialogue, ui_card_level"
+    }
+  ],
+
+  "source_3d_refs": [],
+  "runtime_excluded_source_refs": [],
+
+  "import_paths": {
+    "tiles": "assets/art/tiles/{atlas_id}/",
+    "characters": "assets/art/characters/",
+    "backgrounds": "assets/art/backgrounds/ch{N}/",
+    "props": "assets/art/props/",
+    "ui": "assets/art/ui/",
+    "vfx": "assets/art/vfx/"
+  },
+
+  "runtime_ids": {
+    "id_scheme": "art/{category}/{asset_id}",
+    "examples": [
+      "art/tiles/tile_tuna",
+      "art/characters/char_ritsu",
+      "art/backgrounds/bg_ch1_before",
+      "art/ui/ui_hud_bar",
+      "art/vfx/vfx_combo_burst"
+    ]
+  },
+
+  "pivot_anchor_policy": {
+    "tiles": {"x": 0.5, "y": 0.5, "space": "normalized"},
+    "characters": {"x": 0.5, "y": 1.0, "space": "normalized"},
+    "backgrounds": {"x": 0.5, "y": 0.5, "space": "normalized"},
+    "props": {"x": 0.5, "y": 0.5, "space": "normalized"},
+    "ui_icons": {"x": 0.5, "y": 0.5, "space": "normalized"},
+    "vfx_particles": {"x": 0.5, "y": 0.5, "space": "normalized"}
+  },
+
+  "sorting_policy": {
+    "tile_render_order": "board_tiles layer (z=10); within layer sorted by grid position",
+    "character_render_order": "characters layer (z=20); front-to-back by y position",
+    "vfx_render_order": "vfx_match (z=30) / vfx_combo (z=35); never below board tiles",
+    "ui_render_order": "hud (z=50) / modals (z=100); always above all game layers"
+  },
+
+  "collision_helper_refs": [],
+
+  "qa_summary": {
+    "art_preview_qa": {
+      "status": "passed_with_warnings",
+      "report": ".allforai/game-design/art/qa/art-preview-qa-report.json",
+      "score": "4/5",
+      "blockers": 0,
+      "warnings": 1
+    },
+    "style_consistency_qa": {
+      "status": "passed_with_warnings",
+      "report": ".allforai/game-design/art/qa/2d-style-consistency-qa-report.json",
+      "score": "4/5",
+      "blockers": 0,
+      "major": 0,
+      "minor": 1,
+      "warnings": 1
+    },
+    "ui_readability_qa": {
+      "status": "passed_with_warnings",
+      "report": ".allforai/game-design/ui/ui-readability-qa-report.json",
+      "score": "4/5",
+      "blockers": 0,
+      "minor": 1,
+      "warnings": 1
+    },
+    "atlas_packaging_qa": {
+      "status": "completed_with_limits",
+      "report": ".allforai/game-design/art/atlases/atlas-packaging-report.json",
+      "atlases_planned": 10,
+      "physical_packing_pending": true
+    },
+    "runtime_import_qa": {
+      "status": "import_ready_with_warnings",
+      "report": ".allforai/game-design/art/qa/runtime-import-check-report.json",
+      "validation_method": "import_manifest_parse",
+      "engine_available": false
+    },
+    "license_provenance_qa": {
+      "status": "passed",
+      "report": ".allforai/game-design/art/sourcing/asset-license-provenance-qa-report.json",
+      "all_project_owned": true,
+      "risk_level": "low"
+    }
+  },
+
+  "fallback_summary": {
+    "tile_fallback": "1x resolution (64×64px) 图集；色彩饱和度回退至s2阶段",
+    "character_fallback": "静态pose PNG（无骨骼动画）作为DragonBones不可用时的备用",
+    "background_fallback": "纯色章节主色调矩形背景（最低配设备兼容）",
+    "ui_fallback": "简化线框UI（极低端设备；不影响核心玩法）",
+    "vfx_fallback": "禁用粒子效果（仅保留图块消失基础动画）"
+  },
+
+  "known_limitations": [
+    "所有PNG/JPG图片文件尚未通过image generation API生成。state=engine_ready_with_limits基于规格完整性判断。",
+    "DragonBones项目文件（.dbproj）和动画导出（_ske.json/_tex.json）需人工在DragonBones Pro中完成。",
+    "实际headless Cocos Creator import验证推迟至runtime实现节点（implement-puzzle-core）。",
+    "ui_elements_atlas在多态变体场景下可能需要配置atlas自动分割（>2048×2048时）。",
+    "characters_atlas由DragonBones Pro自动导出生成，不在本管线直接控制范围内。"
+  ],
+
+  "consumer_contracts": [
+    {
+      "consumer": "implement-puzzle-core",
+      "requires": ["tile atlas IDs", "tile_size_px=128", "saturation stages", "special_block mechanics"],
+      "contract_ref": ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+    },
+    {
+      "consumer": "implement-game-session",
+      "requires": ["character dragonbones exports", "animation_sets per character", "expression_types"],
+      "contract_ref": ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+    },
+    {
+      "consumer": "implement-ui-systems",
+      "requires": ["ui_elements_atlas", "component states", "motion design specs"],
+      "contract_ref": ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+    },
+    {
+      "consumer": "implement-island-map",
+      "requires": ["background assets", "parallax layers", "chapter restoration states"],
+      "contract_ref": ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+    }
+  ],
+
+  "validation": {
+    "registry_gate": "PASS — 70个资产均有stable asset_id和file_prefix",
+    "paths_gate": "PASS_WITH_LIMITS — 路径规范完整，图片文件待生成",
+    "atlas_gate": "PASS_WITH_LIMITS — 图集规划完整，物理打包待图片生成后执行",
+    "animation_gate": "PASS_WITH_LIMITS — 动画规格完整，DragonBones导出待人工完成",
+    "layers_gate": "PASS — 7层渲染顺序定义完整",
+    "3d_source_exclusion_gate": "PASS — 无3D源资产（dimension=2D）",
+    "runtime_gate": "PASS_WITH_LIMITS — import_manifest_parse验证通过，headless import待执行",
+    "qa_gate": "PASS — 无QA blocker或major问题",
+    "adapter_gate": "PASS — adapter_policy=profile_only，Cocos Creator 3.x原生支持",
+    "format_decisions_gate": "PASS — 格式决策明确（PNG/JPG/DragonBones JSON）",
+    "import_evidence_gate": "PASS_WITH_LIMITS — import_manifest_parse证据存在；headless import待执行",
+    "common_manifest_gate": "PASS — engine_profile_ref/adapter_policy/runtime_ids/format_refs均已定义"
+  }
+}

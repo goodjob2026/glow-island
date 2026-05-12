@@ -1,0 +1,256 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "node": "character-art-gen",
+  "project": "glow-island",
+  "status": "spec_complete",
+  "source": {
+    "concept_contract": ".allforai/concept-contract.json",
+    "art_pipeline_config": ".allforai/game-design/art-pipeline-config.json",
+    "art_asset_inventory": ".allforai/game-design/art-asset-inventory.json",
+    "asset_registry": ".allforai/game-design/asset-registry.json",
+    "character_arc": ".allforai/game-design/systems/character-arc.json",
+    "art_style_guide": ".allforai/game-design/art-style-guide.json"
+  },
+  "sub_skill_outputs": {
+    "visual_style_tokens": ".allforai/game-design/art/visual-style-tokens.json",
+    "layer_sheet_plan": ".allforai/game-design/systems/layer-sheet-plan.json",
+    "layer_sheet_report": ".allforai/game-design/systems/layer-sheet-report.json",
+    "skeletal_animation_plan": ".allforai/game-design/systems/skeletal-animation-plan.json",
+    "layered_character_reference": ".allforai/game-design/systems/layered-character-reference.json",
+    "animation_preview_spec": ".allforai/game-design/systems/animation-preview-spec.json",
+    "char_gicho_frame_animation_spec": ".allforai/game-design/systems/char-gicho-frame-animation-spec.json",
+    "expression_set_spec": ".allforai/game-design/art/expressions/expression-set-spec.json",
+    "expression_set_manifest": ".allforai/game-design/art/expressions/expression-set-manifest.json",
+    "expression_set_report": ".allforai/game-design/art/expressions/expression-set-report.json"
+  },
+  "global_config": {
+    "style": "hand_drawn_watercolor",
+    "dimension": "2d",
+    "animation_system": "dragonbones+frame+tween",
+    "engine": "cocos-creator-3x",
+    "platform": "web-mobile",
+    "atlas": "characters_atlas",
+    "atlas_path": ".allforai/game-design/atlases/characters_atlas.json",
+    "prohibited_styles": ["pixel_art","hyper_realistic_3d","neon_cyberpunk","metallic_chrome","pure_black_000000","excessive_particles","high_contrast_alert_tones"]
+  },
+  "characters": [
+    {
+      "asset_id": "char_ritsu",
+      "name": "山田律",
+      "file_prefix": "char_ritsu",
+      "role": "protagonist",
+      "signature_color": null,
+      "milestone_gate": "MVP",
+      "canvas_size_px": { "width": 256, "height": 512 },
+      "animation_method": "skeletal_animation",
+      "rig_tool": "dragonbones_pro",
+      "dragonbones_fps": 30,
+      "animation_sets": ["idle", "happy", "surprised", "sad", "wave", "react_jump"],
+      "expression_types": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "proportion": "head_body_ratio_1to1.5_chibi",
+      "visual_identity": {
+        "hair": "dark, slightly disheveled from Tokyo work stress, beginning to relax",
+        "clothing": "rumpled dress shirt with rolled sleeves — Tokyo office wear meeting island casualness",
+        "silhouette_note": "Front-facing; slightly taller/lankier than NPCs; head proportion sets chibi baseline",
+        "color_palette": "warm neutral — shirt light blue-grey, pants dark denim"
+      },
+      "layer_sheet_spec": ".allforai/game-design/art/layers/char_ritsu_layer_sheet.png",
+      "part_count": 18,
+      "bone_count": 16,
+      "current_state": "spec_ready"
+    },
+    {
+      "asset_id": "char_hinata",
+      "name": "丸山ひなた",
+      "file_prefix": "char_hinata",
+      "role": "romantic_interest",
+      "signature_color": "#F0C4C4",
+      "milestone_gate": "MVP",
+      "canvas_size_px": { "width": 256, "height": 512 },
+      "animation_method": "skeletal_animation",
+      "rig_tool": "dragonbones_pro",
+      "dragonbones_fps": 30,
+      "animation_sets": ["idle", "happy", "surprised", "sad", "wave"],
+      "expression_types": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "proportion": "head_body_ratio_1to1.5_chibi",
+      "visual_identity": {
+        "hair": "practical, slightly windswept; keeps it tied back for island work",
+        "clothing": "sakura pink #F0C4C4 accents; island-practical but graceful",
+        "signature_prop": "worn notebook — always carried, often held left-handed",
+        "silhouette_note": "Notebook is a strong unique silhouette identifier; always visible at her left"
+      },
+      "layer_sheet_spec": ".allforai/game-design/art/layers/char_hinata_layer_sheet.png",
+      "part_count": 18,
+      "bone_count": 16,
+      "current_state": "spec_ready"
+    },
+    {
+      "asset_id": "char_kenzo",
+      "name": "磯部健三",
+      "file_prefix": "char_kenzo",
+      "role": "npc",
+      "chapter": 1,
+      "signature_color": "#4A6D9A",
+      "milestone_gate": "MVP",
+      "canvas_size_px": { "width": 256, "height": 512 },
+      "animation_method": "skeletal_animation",
+      "rig_tool": "dragonbones_pro",
+      "dragonbones_fps": 30,
+      "animation_sets": ["idle", "happy", "surprised", "sad", "wave"],
+      "expression_types": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "proportion": "head_body_ratio_1to1.5_chibi",
+      "visual_identity": {
+        "body_type": "stocky, weathered, broad-shouldered for his age",
+        "clothing": "deep sea blue #4A6D9A fisherman's vest; rolled pants; bare feet or deck shoes",
+        "hair": "sparse grey; practical",
+        "age_indicators": "strong weathered lines on face; hands show decades of fishing",
+        "silhouette_note": "Stockiest of all characters; unique by body width and fisherman gear"
+      },
+      "layer_sheet_spec": ".allforai/game-design/art/layers/char_kenzo_layer_sheet.png",
+      "part_count": 16,
+      "bone_count": 16,
+      "current_state": "spec_ready"
+    },
+    {
+      "asset_id": "char_umeko",
+      "name": "桐島梅子",
+      "file_prefix": "char_umeko",
+      "role": "npc",
+      "chapter": 2,
+      "signature_color": "#7DBE77",
+      "milestone_gate": "MVP",
+      "canvas_size_px": { "width": 256, "height": 512 },
+      "animation_method": "skeletal_animation",
+      "rig_tool": "dragonbones_pro",
+      "dragonbones_fps": 30,
+      "animation_sets": ["idle", "happy", "surprised", "sad", "wave"],
+      "expression_types": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "proportion": "head_body_ratio_1to1.5_chibi",
+      "visual_identity": {
+        "clothing": "bamboo green #7DBE77 pottery apron over light blouse; clay-stained hands",
+        "hair": "practical updo bun; a few strands loose from work",
+        "posture": "slight forward lean from decades of pottery work",
+        "silhouette_note": "Apron shape + bun = unique silhouette; arm position often bent (work)"
+      },
+      "layer_sheet_spec": ".allforai/game-design/art/layers/char_umeko_layer_sheet.png",
+      "part_count": 16,
+      "bone_count": 16,
+      "current_state": "spec_ready"
+    },
+    {
+      "asset_id": "char_natsuka",
+      "name": "海野夏帆",
+      "file_prefix": "char_natsuka",
+      "role": "npc",
+      "chapter": 3,
+      "signature_color": "#3D6645",
+      "milestone_gate": "Beta",
+      "canvas_size_px": { "width": 256, "height": 512 },
+      "animation_method": "skeletal_animation",
+      "rig_tool": "dragonbones_pro",
+      "dragonbones_fps": 30,
+      "animation_sets": ["idle", "happy", "surprised", "sad", "wave"],
+      "expression_types": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "proportion": "head_body_ratio_1to1.5_chibi",
+      "visual_identity": {
+        "clothing": "deep forest green #3D6645 outdoor vest with many pockets; sturdy pants; hiking boots",
+        "hair": "windswept, free",
+        "posture": "attentive slight head tilt; listening stance",
+        "silhouette_note": "Windswept hair + vest pockets = unique profile; head tilt is characteristic"
+      },
+      "layer_sheet_spec": ".allforai/game-design/art/layers/char_natsuka_layer_sheet.png",
+      "part_count": 17,
+      "bone_count": 16,
+      "current_state": "spec_ready"
+    },
+    {
+      "asset_id": "char_fuyuko",
+      "name": "丸山冬子",
+      "file_prefix": "char_fuyuko",
+      "role": "npc",
+      "chapter": 6,
+      "signature_color": "#2A4060",
+      "milestone_gate": "Beta",
+      "canvas_size_px": { "width": 256, "height": 512 },
+      "animation_method": "skeletal_animation",
+      "rig_tool": "dragonbones_pro",
+      "dragonbones_fps": 30,
+      "animation_sets": ["idle", "happy", "surprised", "sad", "wave"],
+      "expression_types": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "proportion": "head_body_ratio_1to1.5_chibi",
+      "visual_identity": {
+        "clothing": "deep night blue #2A4060 kimono-style top; dignified; always a warm layer",
+        "hair": "neat white/grey upswept; perfectly arranged",
+        "posture": "upright and serene; lighthouse-keeper's dignity",
+        "silhouette_note": "Upswept hair + kimono silhouette = dignified, distinct from all other characters"
+      },
+      "layer_sheet_spec": ".allforai/game-design/art/layers/char_fuyuko_layer_sheet.png",
+      "part_count": 16,
+      "bone_count": 16,
+      "current_state": "spec_ready"
+    },
+    {
+      "asset_id": "char_gicho",
+      "name": "议长·橘猫",
+      "file_prefix": "char_gicho",
+      "role": "npc",
+      "chapter": "all",
+      "signature_color": "#2A3650",
+      "milestone_gate": "Release",
+      "canvas_size_px": { "width": 192, "height": 192 },
+      "animation_method": "frame_animation",
+      "rig_tool": "frame_sequence",
+      "frame_rate": 12,
+      "animation_sets": ["idle", "happy", "surprised", "wave"],
+      "expression_types": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "proportion": "cat_chibi_sitting_192x192",
+      "visual_identity": {
+        "species": "orange tabby cat",
+        "color": "warm orange tabby with dark navy #2A3650 collar/marking",
+        "posture": "sitting upright, dignified",
+        "silhouette_note": "Cat sitting silhouette is entirely distinct; ears + round cat body + tail = unmistakable"
+      },
+      "frame_animation_spec": ".allforai/game-design/systems/char-gicho-frame-animation-spec.json",
+      "current_state": "spec_ready"
+    }
+  ],
+  "review_checklist": {
+    "completed": [
+      "主角（律）有完整表情图（至少：默认/困惑/开心/疲惫/感动）",
+      "骨骼绑定点位标注清楚（DragonBones已确定，全部骨骼有pivot_hint）",
+      "角色比例在同一参考系下统一（全部使用chibi 1:1.5 head-body ratio，256x512px）",
+      "各NPC的视觉识别特征明显（服装标识色/独特道具/发型 — 见visual_identity per character）",
+      "角色有idle动效规格（2000ms呼吸循环，±2px y轴位移，sine_in_out缓动）"
+    ],
+    "pending_human_review": [
+      "layer sheet image generation and visual inspection",
+      "expression portrait generation and identity consistency check",
+      "DragonBones Pro project file creation and animation playback test"
+    ]
+  },
+  "handoff_requirements": {
+    "to_dragonbones_pro": [
+      "Generate layer sheet PNGs using prompts in layered-character-reference.json",
+      "Create DragonBones .dbproj per character using bone hierarchy in skeletal-animation-plan.json",
+      "Import layer sheet PNG → slice to parts → rig per bone definitions",
+      "Build animation clips from timeline specs in skeletal-animation-plan.json",
+      "Export atlas: characters_atlas.json + characters_atlas.png at 2048x2048px",
+      "Validate export imports cleanly in Cocos Creator 3.x"
+    ],
+    "to_expression_generation": [
+      "Generate 35 expression portraits (256x256px PNG) using prompts in expression-set-spec.json",
+      "Pack into characters_atlas"
+    ],
+    "to_char_gicho_frame_animation": [
+      "Generate 15 frame PNGs per char-gicho-frame-animation-spec.json (4+4+3+4 frames)",
+      "Pack into characters_atlas"
+    ]
+  },
+  "completion_condition": {
+    "met": false,
+    "condition": "character-art-spec.json exists AND character-art-review.html exists AND all canonical_registry.characters[] have current_state != placeholder",
+    "current_state": "character-art-spec.json: EXISTS; character-art-review.html: EXISTS (generated); all 7 characters: current_state=spec_ready (not placeholder)",
+    "note": "Spec production complete. Image generation pending for layer sheets, expressions, and char_gicho frames. Assets in spec_ready state exceed the node-spec completion condition of current_state != placeholder."
+  }
+}

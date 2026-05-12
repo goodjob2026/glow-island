@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "generated_by": "environment-art-gen",
+  "node": "environment-art-gen",
+  "status": "spec_complete_pending_generation",
+
+  "source_inputs": {
+    "concept_contract": ".allforai/concept-contract.json",
+    "art_pipeline_config": ".allforai/game-design/art-pipeline-config.json",
+    "art_asset_inventory": ".allforai/game-design/art-asset-inventory.json",
+    "asset_registry": ".allforai/game-design/asset-registry.json",
+    "art_style_guide": ".allforai/game-design/art-style-guide.json"
+  },
+
+  "asset_scope": {
+    "environments_in_concept_contract": 0,
+    "backgrounds_in_other": 18,
+    "props_in_other": 2,
+    "total_assets": 20,
+    "scope_note": "canonical_registry.environments[] is empty; all environment assets are registered under canonical_registry.other[] as background and prop types per concept-freeze design decision."
+  },
+
+  "step_0_source_resolution": {
+    "strategy": "all_assets_ai_generated",
+    "notes": "All 20 environment assets (18 backgrounds + 2 props) have source_strategy=llm_image_generation in asset-registry.json, which maps to ai_generated. Step 0 skipped per node-spec. All assets proceed directly to Step 1 (Pre-Spec) and Step 2 (Generate).",
+    "result": "SKIPPED_AI_GENERATED"
+  },
+
+  "step_1_pre_spec": {
+    "sub_skill": "game-art/2d-view-mode-spec",
+    "output": ".allforai/game-design/art/view/2d-view-mode-spec.json",
+    "report": ".allforai/game-design/art/view/2d-view-mode-report.json",
+    "result": "COMPLETED",
+    "view_mode": "board_grid",
+    "secondary_view_mode": "visual_novel",
+    "dimension": "2d",
+    "note": "dimension=2d; no 3d-source-asset-spec required. View mode: board_grid (match-3 puzzle) with visual_novel staging for character dialogue. 3-layer parallax defined."
+  },
+
+  "step_2_generate": {
+    "background_generation": {
+      "sub_skill": "game-art/background-generation",
+      "spec": ".allforai/game-design/art/backgrounds/background-generation-spec.json",
+      "manifest": ".allforai/game-design/art/backgrounds/background-manifest.json",
+      "report": ".allforai/game-design/art/backgrounds/background-report.json",
+      "result": "COMPLETED_WITH_LIMITS",
+      "total": 18,
+      "state": "spec_ready"
+    },
+    "prop_generation": {
+      "sub_skill": "game-art/prop-generation",
+      "spec": ".allforai/game-design/art/props/prop-generation-spec.json",
+      "manifest": ".allforai/game-design/art/props/prop-manifest.json",
+      "report": ".allforai/game-design/art/props/prop-report.json",
+      "result": "COMPLETED_WITH_LIMITS",
+      "total": 2,
+      "state": "spec_ready"
+    },
+    "render_to_2d": {
+      "result": "SKIPPED",
+      "note": "No assets with dimension=3d or 2.5d. All environment assets are 2D. render-to-2d-asset-generation not required."
+    }
+  },
+
+  "global_art_rules": {
+    "art_style": "hand_drawn_watercolor",
+    "style_keywords": ["japanese-healing-island", "hand-drawn-watercolor", "soft-rounded-organic", "warm-pastel-palette"],
+    "dimension": "2d",
+    "engine": "cocos-creator-3.x",
+    "platform": "web-canvas-2d",
+    "primary_generation_api": "google-imagen-4",
+    "fallback_generation_api": "openrouter-gpt-image"
+  },
+
+  "background_spec_summary": {
+    "format": "jpg",
+    "dimensions_px": {"width": 1920, "height": 1080},
+    "total_backgrounds": 18,
+    "chapters": 6,
+    "states_per_chapter": ["before", "in_progress", "restored"],
+    "parallax_layers": 3,
+    "parallax_layer_labels": ["sky_far", "midground", "foreground_elements"],
+    "parallax_factors": [0.0, 0.3, 0.6],
+    "lighting_model": "upper_right_soft_diffuse_all_chapters",
+    "saturation_restoration_model": {
+      "before": "8-15% saturation, 42-48% brightness",
+      "in_progress": "28-52% saturation, 48-62% brightness",
+      "restored": "55-82% saturation, 55-76% brightness"
+    },
+    "board_shape_evolution": {
+      "ch1_2": "standard_rectangle_8x8_or_9x9",
+      "ch3_plus": "irregular_shaped_bay_island_outline"
+    },
+    "ui_safe_zone": "center 60% of screen horizontally kept free from dense foreground elements",
+    "chapter_visual_signatures": [
+      {"chapter": 1, "scene": "海边码头", "signature": "码头木栈桥·渔船·灯塔远景·海鸥", "dominant_hue": "#5BBFB5"},
+      {"chapter": 2, "scene": "中央小镇", "signature": "石板路·木店铺·竹林·暖绿村镇", "dominant_hue": "#7DBE77"},
+      {"chapter": 3, "scene": "花田山坡", "signature": "樱花花田·蝴蝶·木观景台·粉粉花海", "dominant_hue": "#F0C4C4"},
+      {"chapter": 4, "scene": "森林露营地", "signature": "篝火·帐篷·大树·苔藓营地", "dominant_hue": "#4A7D55"},
+      {"chapter": 5, "scene": "温泉山谷", "signature": "露天温泉·蒸汽·竹篱笆·红叶/雪", "dominant_hue": "#C4955A"},
+      {"chapter": 6, "scene": "夜晚灯塔", "signature": "灯塔光束·星空·深海夜色", "dominant_hue": "#1E2E50"}
+    ]
+  },
+
+  "prop_spec_summary": {
+    "format": "png",
+    "alpha_required": true,
+    "total_props": 2,
+    "props": [
+      {
+        "asset_id": "prop_notebook",
+        "name": "ひなた手账",
+        "dimensions_px": {"width": 180, "height": 240},
+        "animation": "static",
+        "variants": ["closed", "open"],
+        "role": "narrative_story_prop",
+        "milestone_gate": "Release"
+      },
+      {
+        "asset_id": "prop_lighthouse_lamp",
+        "name": "灯塔灯",
+        "dimensions_px": {"width": 256, "height": 256},
+        "animation": "frame_animation_8_frames_12fps",
+        "variants": ["frame_01 through frame_08 (clockwise rotation)"],
+        "role": "chapter_6_restoration_centerpiece_animated",
+        "milestone_gate": "Release"
+      }
+    ]
+  },
+
+  "asset_state_updates": {
+    "all_background_and_prop_assets": "spec_ready",
+    "current_state_in_inventory": "placeholder",
+    "target_state_after_generation": "generated",
+    "note": "Assets remain placeholder in art-asset-inventory.json until actual image generation is executed post-approval. Specs are complete and ready for generation."
+  },
+
+  "review_checklist_evidence": {
+    "tile_seamless": "N/A — backgrounds are full-bleed JPGs; seamless tiling not required for background assets",
+    "parallax_layers_match_config": "PASS — 3 parallax layers (sky_far/midground/foreground_elements) defined, matching art-pipeline-config.parallax_layers=3",
+    "light_direction_unified": "PASS — all 6 chapters use upper-right soft diffuse lighting model. Chapter 6 night: same direction with moonlight+lighthouse secondary. Consistent across all scenes.",
+    "six_chapters_distinct": "PASS — each chapter has unique visual signature, dominant hue, scene type, and prop vocabulary. See chapter_visual_signatures above.",
+    "restoration_states_distinct": "PASS — 3 states per chapter with clearly different saturation/brightness profiles. Before: 8-15%, In-progress: 28-52%, Restored: 55-82%."
+  },
+
+  "completion_condition_check": {
+    "environment_art_spec_json_exists": true,
+    "environment_art_review_html_exists": false,
+    "all_assets_not_placeholder_check": "PENDING — assets spec_ready but current_state still 'placeholder' in inventory; image generation not yet executed. Completion per spec: spec documents complete, HTML review pending write.",
+    "upstream_defect": false
+  }
+}

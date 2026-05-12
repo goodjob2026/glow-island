@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 环境美术评审</title>
+  <style>
+    :root {
+      --sand: #F7EDD8;
+      --coral: #E8866A;
+      --coral-soft: #F2A98A;
+      --teal: #5BBFB5;
+      --green: #7DBE77;
+      --pink: #F0C4C4;
+      --forest: #4A7D55;
+      --driftwood: #C4955A;
+      --night: #1E2E50;
+      --golden: #F5C842;
+      --text-dark: #3A2810;
+      --border: #8B6030;
+      --wood: #E8D8B4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "思源圆体", "SF Pro Rounded", "Nunito", sans-serif;
+      background: #F0E8D0;
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* === HEADER === */
+    .header {
+      background: linear-gradient(135deg, var(--night) 0%, #2A4070 60%, #1E3060 100%);
+      color: #F5F0E8;
+      padding: 36px 40px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(245,200,66,0.18) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .header-tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--golden);
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .header h1 span { color: var(--golden); }
+    .header-meta {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-top: 12px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .header-meta span { display: flex; align-items: center; gap: 6px; }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-review { background: rgba(245,200,66,0.2); color: var(--golden); border: 1px solid rgba(245,200,66,0.4); }
+    .badge-pass { background: rgba(125,190,119,0.2); color: #4A9A44; border: 1px solid rgba(125,190,119,0.4); }
+    .badge-pending { background: rgba(196,149,90,0.2); color: #8B6030; border: 1px solid rgba(196,149,90,0.4); }
+
+    /* === NAV TABS === */
+    .tabs-container {
+      background: var(--wood);
+      border-bottom: 2px solid var(--border);
+      padding: 0 32px;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .tab {
+      padding: 14px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+      opacity: 0.55;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .tab:hover { opacity: 0.85; }
+    .tab.active {
+      opacity: 1;
+      border-bottom-color: var(--coral);
+      color: var(--coral);
+    }
+
+    /* === MAIN CONTENT === */
+    .content { padding: 32px 40px; max-width: 1200px; }
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* === CARDS === */
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(58,40,16,0.08);
+      border: 1px solid rgba(139,96,48,0.12);
+    }
+    .card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    /* === CHAPTER CARDS === */
+    .chapter-card {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(139,96,48,0.15);
+      background: white;
+    }
+    .chapter-header {
+      padding: 14px 16px 10px;
+      color: white;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .chapter-num { font-size: 11px; opacity: 0.8; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+    .chapter-name { font-size: 15px; font-weight: 700; margin-top: 2px; }
+    .chapter-hue-chip {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.4);
+      flex-shrink: 0;
+    }
+    .chapter-body { padding: 14px 16px; }
+    .state-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid #F0E8D8;
+      font-size: 13px;
+    }
+    .state-row:last-child { border-bottom: none; }
+    .state-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-before { background: #9AA0A6; }
+    .dot-progress { background: var(--driftwood); }
+    .dot-restored { background: var(--green); }
+    .state-label { font-weight: 600; color: var(--text-dark); min-width: 60px; }
+    .state-sat { font-size: 11px; color: #8B8070; margin-left: auto; }
+    .signature-text {
+      font-size: 11px;
+      color: #7A6A5A;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #F0E8D8;
+      line-height: 1.5;
+    }
+
+    /* === PARALLAX SPEC === */
+    .parallax-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .layer-row {
+      display: grid;
+      grid-template-columns: 24px 100px 80px 1fr;
+      align-items: start;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+    .layer-row.sky { background: #EEF5FF; }
+    .layer-row.mid { background: #EEF5EE; }
+    .layer-row.fore { background: #FFF5EE; }
+    .layer-index { font-weight: 700; opacity: 0.5; font-size: 12px; }
+    .layer-id { font-weight: 700; color: var(--text-dark); }
+    .layer-factor { font-size: 12px; color: #8B6030; font-weight: 600; }
+    .layer-desc { color: #5A4A3A; line-height: 1.4; }
+
+    /* === REVIEW CHECKLIST === */
+    .checklist { list-style: none; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #F0E8D8;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .check-icon {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .check-pass { background: #EAF6E8; color: #4A9A44; }
+    .check-pending { background: #FFF5E8; color: #C4955A; }
+    .check-na { background: #F0F0F0; color: #909090; }
+    .check-title { font-weight: 700; margin-bottom: 3px; }
+    .check-detail { font-size: 12px; color: #7A6A5A; }
+
+    /* === PROP CARDS === */
+    .prop-card {
+      border: 1px solid rgba(139,96,48,0.15);
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+    .prop-header {
+      background: linear-gradient(135deg, var(--sand), var(--wood));
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(139,96,48,0.12);
+    }
+    .prop-header h4 { font-size: 15px; font-weight: 700; }
+    .prop-header .prop-id { font-size: 11px; color: #8B6030; font-family: monospace; }
+    .prop-body { padding: 14px 16px; }
+    .prop-meta { font-size: 12px; color: #7A6A5A; margin-bottom: 8px; }
+    .prop-meta span { font-weight: 600; color: var(--text-dark); }
+    .variant-tag {
+      display: inline-block;
+      background: #F0E8D8;
+      border-radius: 6px;
+      padding: 3px 9px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #5A4A3A;
+      margin: 2px 3px 2px 0;
+    }
+
+    /* === SUMMARY TABLE === */
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .summary-table th {
+      background: var(--wood);
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    .summary-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #F0E8D8;
+      vertical-align: top;
+    }
+    .summary-table tr:last-child td { border-bottom: none; }
+    .summary-table tr:hover td { background: #FAF5EC; }
+    .file-path {
+      font-family: monospace;
+      font-size: 11px;
+      color: #5A5A8A;
+      background: #F5F5FF;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* === PIPELINE STATUS === */
+    .pipeline-steps { display: flex; flex-direction: column; gap: 12px; }
+    .pipeline-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      border: 1px solid rgba(139,96,48,0.12);
+    }
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .step-complete { background: #EAF6E8; color: #4A9A44; border: 1.5px solid #4A9A44; }
+    .step-skipped { background: #F0F0F0; color: #909090; border: 1.5px solid #C0C0C0; }
+    .step-limit { background: #FFF5E8; color: #C4955A; border: 1.5px solid #C4955A; }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 700; margin-bottom: 4px; }
+    .step-desc { color: #7A6A5A; line-height: 1.4; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 700px) {
+      .content { padding: 20px; }
+      .header { padding: 24px 20px; }
+      .tabs-container { padding: 0 16px; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-tag">环境美术评审 · Environment Art Review</div>
+  <h1>Glow Island — <span>環境アート</span> 生成规格</h1>
+  <div class="header-meta">
+    <span>节点：environment-art-gen</span>
+    <span>日期：2026-05-13</span>
+    <span>资产总数：20（背景18 + 道具2）</span>
+    <span><span class="badge badge-review">待评审</span></span>
+  </div>
+</div>
+
+<!-- TAB NAV -->
+<div class="tabs-container">
+  <div class="tab active" onclick="switchTab('overview')">总览</div>
+  <div class="tab" onclick="switchTab('chapters')">六章节背景</div>
+  <div class="tab" onclick="switchTab('parallax')">视差层规格</div>
+  <div class="tab" onclick="switchTab('props')">场景道具</div>
+  <div class="tab" onclick="switchTab('checklist')">评审清单</div>
+  <div class="tab" onclick="switchTab('pipeline')">生成流水线</div>
+</div>
+
+<!-- ======================== OVERVIEW ======================== -->
+<div class="content">
+<div id="overview" class="section active">
+
+  <div class="card">
+    <h3>环境美术范围</h3>
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:14px; margin-top:4px;">
+      <div style="text-align:center; padding:16px; background:#EEF5FF; border-radius:10px;">
+        <div style="font-size:32px; font-weight:800; color:#5BBFB5;">18</div>
+        <div style="font-size:12px; color:#7A6A5A; margin-top:4px;">场景背景<br>（6章 × 3状态）</div>
+      </div>
+      <div style="text-align:center; padding:16px; background:#FFF5EE; border-radius:10px;">
+        <div style="font-size:32px; font-weight:800; color:#C4955A;">2</div>
+        <div style="font-size:12px; color:#7A6A5A; margin-top:4px;">场景道具<br>（手账 + 灯塔灯）</div>
+      </div>
+      <div style="text-align:center; padding:16px; background:#EEF5EE; border-radius:10px;">
+        <div style="font-size:32px; font-weight:800; color:#7DBE77;">3</div>
+        <div style="font-size:12px; color:#7A6A5A; margin-top:4px;">视差层<br>（远景/中景/前景）</div>
+      </div>
+      <div style="text-align:center; padding:16px; background:#F5F5FF; border-radius:10px;">
+        <div style="font-size:32px; font-weight:800; color:#E8866A;">6</div>
+        <div style="font-size:12px; color:#7A6A5A; margin-top:4px;">章节场景<br>各有独特视觉特征</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>生成规格摘要</h3>
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>背景（背景图）</th>
+          <th>道具（Props）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>格式</td><td>JPG</td><td>PNG（透明通道）</td></tr>
+        <tr><td>尺寸</td><td>1920 × 1080 px</td><td>180×240（手账）/ 256×256（灯塔灯）</td></tr>
+        <tr><td>美术风格</td><td colspan="2">手绘水彩（hand_drawn_watercolor）</td></tr>
+        <tr><td>主生成API</td><td colspan="2">Google Imagen 4（备用：OpenRouter GPT-Image）</td></tr>
+        <tr><td>视差层数</td><td>3层：远景/中景/前景</td><td>N/A（叠加于背景之上）</td></tr>
+        <tr><td>光源方向</td><td colspan="2">右上方柔和散射光（全6章统一）</td></tr>
+        <tr><td>当前状态</td><td colspan="2">spec_ready（规格完成，待生成执行）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>饱和度修复三段模型</h3>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;">
+      <div style="flex:1; min-width:160px; padding:14px; background:#F5F5F5; border-radius:10px; border-left:4px solid #9AA0A6;">
+        <div style="font-weight:700; margin-bottom:6px;">修复前</div>
+        <div style="font-size:13px; color:#7A6A5A;">饱和度：8-15%<br>亮度：42-48%<br>情绪：褪色枯岛 · 灰调寂静</div>
+      </div>
+      <div style="flex:1; min-width:160px; padding:14px; background:#FFF5E8; border-radius:10px; border-left:4px solid var(--driftwood);">
+        <div style="font-weight:700; margin-bottom:6px;">修复中</div>
+        <div style="font-size:13px; color:#7A6A5A;">饱和度：28-52%<br>亮度：48-62%<br>情绪：色彩局部回归 · 修复感</div>
+      </div>
+      <div style="flex:1; min-width:160px; padding:14px; background:#EAF6E8; border-radius:10px; border-left:4px solid var(--green);">
+        <div style="font-weight:700; margin-bottom:6px;">修复后</div>
+        <div style="font-size:13px; color:#7A6A5A;">饱和度：55-82%<br>亮度：55-76%<br>情绪：完整水彩光效 · 满生命力</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ======================== CHAPTERS ======================== -->
+<div id="chapters" class="section">
+
+  <div class="card">
+    <h3>六章节场景背景规格</h3>
+    <p style="font-size:13px; color:#7A6A5A; margin-bottom:16px;">每章节有3种修复状态（修复前/修复中/修复后），合计18张背景图。每章节具备独特视觉特征与主色调。</p>
+    <div class="card-grid">
+
+      <!-- Ch1 -->
+      <div class="chapter-card">
+        <div class="chapter-header" style="background:linear-gradient(135deg,#4AAFA5,#5BBFB5);">
+          <div>
+            <div class="chapter-num">第一章</div>
+            <div class="chapter-name">海边码头</div>
+            <div style="font-size:11px; opacity:0.8; margin-top:2px;">海边の波止場</div>
+          </div>
+          <div class="chapter-hue-chip" style="background:#5BBFB5;"></div>
+        </div>
+        <div class="chapter-body">
+          <div class="state-row"><div class="state-dot dot-before"></div><span class="state-label">修复前</span><span class="state-sat">8-15% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-progress"></div><span class="state-label">修复中</span><span class="state-sat">28-38% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-restored"></div><span class="state-label">修复后</span><span class="state-sat">62-75% 饱和</span></div>
+          <div class="signature-text">码头木栈桥 · 停泊渔船 · 灯塔远景 · 浮标绳索 · 海鸥点缀</div>
+        </div>
+      </div>
+
+      <!-- Ch2 -->
+      <div class="chapter-card">
+        <div class="chapter-header" style="background:linear-gradient(135deg,#6DAE67,#7DBE77);">
+          <div>
+            <div class="chapter-num">第二章</div>
+            <div class="chapter-name">中央小镇</div>
+            <div style="font-size:11px; opacity:0.8; margin-top:2px;">中央の町</div>
+          </div>
+          <div class="chapter-hue-chip" style="background:#7DBE77;"></div>
+        </div>
+        <div class="chapter-body">
+          <div class="state-row"><div class="state-dot dot-before"></div><span class="state-label">修复前</span><span class="state-sat">8-15% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-progress"></div><span class="state-label">修复中</span><span class="state-sat">28-48% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-restored"></div><span class="state-label">修复后</span><span class="state-sat">62-80% 饱和</span></div>
+          <div class="signature-text">石板小路 · 木质店铺招牌 · 竹林屏障 · 晾晒布帘 · 石灯笼</div>
+        </div>
+      </div>
+
+      <!-- Ch3 -->
+      <div class="chapter-card">
+        <div class="chapter-header" style="background:linear-gradient(135deg,#E0B4B4,#F0C4C4);">
+          <div>
+            <div class="chapter-num">第三章</div>
+            <div class="chapter-name">花田山坡</div>
+            <div style="font-size:11px; opacity:0.8; margin-top:2px;">花畑の丘</div>
+          </div>
+          <div class="chapter-hue-chip" style="background:#F0C4C4; border-color:rgba(139,96,48,0.3);"></div>
+        </div>
+        <div class="chapter-body">
+          <div class="state-row"><div class="state-dot dot-before"></div><span class="state-label">修复前</span><span class="state-sat">8-15% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-progress"></div><span class="state-label">修复中</span><span class="state-sat">38-52% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-restored"></div><span class="state-label">修复后</span><span class="state-sat">68-82% 饱和</span></div>
+          <div class="signature-text">粉色花田（樱花/波斯菊） · 木制观景台 · 山坡起伏 · 蝴蝶剪影</div>
+        </div>
+      </div>
+
+      <!-- Ch4 -->
+      <div class="chapter-card">
+        <div class="chapter-header" style="background:linear-gradient(135deg,#3A6D45,#4A7D55);">
+          <div>
+            <div class="chapter-num">第四章</div>
+            <div class="chapter-name">森林露营地</div>
+            <div style="font-size:11px; opacity:0.8; margin-top:2px;">森のキャンプ場</div>
+          </div>
+          <div class="chapter-hue-chip" style="background:#4A7D55;"></div>
+        </div>
+        <div class="chapter-body">
+          <div class="state-row"><div class="state-dot dot-before"></div><span class="state-label">修复前</span><span class="state-sat">8-15% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-progress"></div><span class="state-label">修复中</span><span class="state-sat">28-45% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-restored"></div><span class="state-label">修复后</span><span class="state-sat">62-78% 饱和</span></div>
+          <div class="signature-text">营地帐篷 · 篝火台 · 大树根与苔藓岩石 · 吊床 · 营地绳灯</div>
+        </div>
+      </div>
+
+      <!-- Ch5 -->
+      <div class="chapter-card">
+        <div class="chapter-header" style="background:linear-gradient(135deg,#B4854A,#C4955A);">
+          <div>
+            <div class="chapter-num">第五章</div>
+            <div class="chapter-name">温泉山谷</div>
+            <div style="font-size:11px; opacity:0.8; margin-top:2px;">温泉の谷</div>
+          </div>
+          <div class="chapter-hue-chip" style="background:#C4955A;"></div>
+        </div>
+        <div class="chapter-body">
+          <div class="state-row"><div class="state-dot dot-before"></div><span class="state-label">修复前</span><span class="state-sat">8-15% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-progress"></div><span class="state-label">修复中</span><span class="state-sat">32-50% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-restored"></div><span class="state-label">修复后</span><span class="state-sat">65-80% 饱和</span></div>
+          <div class="signature-text">露天温泉池（热气袅绕） · 竹篱笆 · 木制浴舍 · 红叶与初雪四季感</div>
+        </div>
+      </div>
+
+      <!-- Ch6 -->
+      <div class="chapter-card">
+        <div class="chapter-header" style="background:linear-gradient(135deg,#0E1830,#1E2E50);">
+          <div>
+            <div class="chapter-num">第六章</div>
+            <div class="chapter-name">夜晚灯塔</div>
+            <div style="font-size:11px; opacity:0.8; margin-top:2px;">夜の燈台</div>
+          </div>
+          <div class="chapter-hue-chip" style="background:#1E2E50;"></div>
+        </div>
+        <div class="chapter-body">
+          <div class="state-row"><div class="state-dot dot-before"></div><span class="state-label">修复前</span><span class="state-sat">8-12% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-progress"></div><span class="state-label">修复中</span><span class="state-sat">20-38% 饱和</span></div>
+          <div class="state-row"><div class="state-dot dot-restored"></div><span class="state-label">修复后</span><span class="state-sat">55-75% 饱和</span></div>
+          <div class="signature-text">悬崖灯塔（全景） · 星空 · 月光海面 · 金色光束旋转 · 夜间礁岸</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>棋盘形态演变</h3>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:200px; padding:14px; background:#EEF5FF; border-radius:10px;">
+        <div style="font-weight:700; margin-bottom:6px;">第1-2章</div>
+        <div style="font-size:13px; color:#5A6A7A;">标准矩形棋盘（8×8 或 9×9）<br>背景构图：水平等比视野，对称感</div>
+      </div>
+      <div style="flex:1; min-width:200px; padding:14px; background:#FFF5E8; border-radius:10px;">
+        <div style="font-weight:700; margin-bottom:6px;">第3-6章</div>
+        <div style="font-size:13px; color:#7A5A3A;">异形岛屿轮廓棋盘（海湾形状）<br>背景构图：有机曲线视野，自然框架</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ======================== PARALLAX ======================== -->
+<div id="parallax" class="section">
+
+  <div class="card">
+    <h3>视差层规格（所有章节统一）</h3>
+    <p style="font-size:13px; color:#7A6A5A; margin-bottom:16px;">与 art-pipeline-config.json 的 parallax_layers=3 完全对应。每张背景图均包含3个视差层。</p>
+    <div class="parallax-layers">
+      <div class="layer-row sky">
+        <div class="layer-index">0</div>
+        <div class="layer-id">sky_far<br><span style="font-weight:400; font-size:11px; color:#8B6030;">远景天空层</span></div>
+        <div class="layer-factor">视差系数<br>0.0（固定）</div>
+        <div class="layer-desc">远景天空与海平面/山脉轮廓。几乎不移动。<br>内容：天空色调、远海/远山、云朵、月亮（第6章）</div>
+      </div>
+      <div class="layer-row mid">
+        <div class="layer-index">1</div>
+        <div class="layer-id">midground<br><span style="font-weight:400; font-size:11px; color:#8B6030;">中景主体层</span></div>
+        <div class="layer-factor">视差系数<br>0.3（轻移）</div>
+        <div class="layer-desc">各章节核心场景元素。章节独特视觉特征的主要载体。<br>内容：码头/店铺/山坡/树木/温泉/灯塔等章节主体</div>
+      </div>
+      <div class="layer-row fore">
+        <div class="layer-index">2</div>
+        <div class="layer-id">foreground_elements<br><span style="font-weight:400; font-size:11px; color:#8B6030;">前景装饰层</span></div>
+        <div class="layer-factor">视差系数<br>0.6（快移）</div>
+        <div class="layer-desc">前景框架装饰元素，增加景深层次感。<br>内容：绳索/浮标/花草/苔藓/竹节/礁石等前景物</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>光源方向规范</h3>
+    <div style="padding:14px; background:#FFF5E8; border-radius:10px; border-left:4px solid var(--golden);">
+      <div style="font-weight:700; margin-bottom:8px;">全场景统一光照模型：右上方柔和散射光</div>
+      <div style="font-size:13px; color:#7A6A5A; line-height:1.6;">
+        所有6个章节背景使用同一光源方向：右上方（upper-right）柔和散射光。<br>
+        <strong>第6章夜晚特殊处理：</strong>月光（右上方，主光源）+ 灯塔金色光束（#F5C842，旋转次光源）。<br>
+        光源方向与白日一致，确保光照模型在所有章节中统一，角色叠加时阴影方向正确。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>棋盘安全区域</h3>
+    <div style="padding:14px; background:#EEF5FF; border-radius:10px;">
+      <div style="font-weight:700; margin-bottom:8px;">屏幕中央60%水平区域保留为棋盘叠加安全区</div>
+      <div style="font-size:13px; color:#5A6A7A; line-height:1.6;">
+        所有背景图生成提示词均包含约束：屏幕中央60%区域保持简洁，不堆叠复杂前景细节。<br>
+        棋盘作为独立图层覆盖于背景之上，与背景无视觉干扰。<br>
+        前景元素集中在左右20%和底部区域进行边框式构图。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ======================== PROPS ======================== -->
+<div id="props" class="section">
+
+  <div class="card">
+    <h3>场景道具规格</h3>
+    <div class="card-grid">
+
+      <div class="prop-card">
+        <div class="prop-header">
+          <h4>ひなた手账</h4>
+          <div class="prop-id">prop_notebook</div>
+        </div>
+        <div class="prop-body">
+          <div class="prop-meta">类型：<span>叙事道具（静态）</span></div>
+          <div class="prop-meta">尺寸：<span>180 × 240 px</span></div>
+          <div class="prop-meta">格式：<span>PNG（透明通道）</span></div>
+          <div class="prop-meta">动画：<span>静态（static）</span></div>
+          <div class="prop-meta">章节关联：<span>全章节（叙事道具）</span></div>
+          <div class="prop-meta">里程碑：<span>Release</span></div>
+          <div style="margin-top:10px; margin-bottom:6px; font-size:12px; font-weight:700;">变体（2个）：</div>
+          <span class="variant-tag">closed 封面</span>
+          <span class="variant-tag">open 展开内页</span>
+          <div style="font-size:12px; color:#7A6A5A; margin-top:10px; line-height:1.5;">
+            丸山ひなた的个人手帐，用于NPC对话场景和章节解锁叙事展示。粉色布质封面，竖排日文手写体内页。
+          </div>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-header">
+          <h4>灯塔灯</h4>
+          <div class="prop-id">prop_lighthouse_lamp</div>
+        </div>
+        <div class="prop-body">
+          <div class="prop-meta">类型：<span>动态环境道具（帧动画）</span></div>
+          <div class="prop-meta">尺寸：<span>256 × 256 px</span></div>
+          <div class="prop-meta">格式：<span>PNG（透明通道）</span></div>
+          <div class="prop-meta">动画：<span>8帧循环 · 12 FPS</span></div>
+          <div class="prop-meta">章节关联：<span>第6章（夜晚灯塔）</span></div>
+          <div class="prop-meta">里程碑：<span>Release</span></div>
+          <div style="margin-top:10px; margin-bottom:6px; font-size:12px; font-weight:700;">8帧旋转动画序列：</div>
+          <span class="variant-tag">帧01 右上</span>
+          <span class="variant-tag">帧02 右</span>
+          <span class="variant-tag">帧03 右下</span>
+          <span class="variant-tag">帧04 下</span>
+          <span class="variant-tag">帧05 左下</span>
+          <span class="variant-tag">帧06 左</span>
+          <span class="variant-tag">帧07 左上</span>
+          <span class="variant-tag">帧08 上</span>
+          <div style="font-size:12px; color:#7A6A5A; margin-top:10px; line-height:1.5;">
+            灯塔灯芯顺时针旋转动画（360°/8帧）。金色光束（#F5C842）。章节6修复核心视觉锚点，与 vfx_lighthouse_glow 联动。
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ======================== CHECKLIST ======================== -->
+<div id="checklist" class="section">
+
+  <div class="card">
+    <h3>评审清单</h3>
+    <ul class="checklist">
+      <li>
+        <div class="check-icon check-na">—</div>
+        <div>
+          <div class="check-title">地砖可无缝拼接（边缘像素匹配）</div>
+          <div class="check-detail">不适用 — 背景资产为全出血JPG，非地砖贴图，无需无缝拼接。地砖无缝拼接适用于 tile-art-gen 节点评审。</div>
+        </div>
+      </li>
+      <li>
+        <div class="check-icon check-pass">✓</div>
+        <div>
+          <div class="check-title">视差层数与 art-pipeline-config 一致（背景/中景/前景层分离）</div>
+          <div class="check-detail">通过 — art-pipeline-config.json 规定 parallax_layers=3，labels=["sky_far","midground","foreground_elements"]。本规格中所有18张背景均定义了3个视差层，视差系数 0.0/0.3/0.6，与配置完全一致。</div>
+        </div>
+      </li>
+      <li>
+        <div class="check-icon check-pass">✓</div>
+        <div>
+          <div class="check-title">光源方向全场景统一（所有章节使用相同光照模型）</div>
+          <div class="check-detail">通过 — 全6章统一使用"右上方柔和散射光"模型。第6章夜晚场景中，月光（主）和灯塔金色光束（次）均来自右上方，保持光源方向一致性。所有背景提示词均包含此光照约束。</div>
+        </div>
+      </li>
+      <li>
+        <div class="check-icon check-pass">✓</div>
+        <div>
+          <div class="check-title">6章节场景各有独特视觉特征</div>
+          <div class="check-detail">
+            通过 — 每章节均有完全不同的场景类型、主色调和标志性视觉元素：<br>
+            Ch1 海边码头（#5BBFB5茶青） · Ch2 中央小镇（#7DBE77暖绿） · Ch3 花田山坡（#F0C4C4粉红）<br>
+            Ch4 森林露营地（#4A7D55深绿） · Ch5 温泉山谷（#C4955A土黄） · Ch6 夜晚灯塔（#1E2E50夜靛）
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="check-icon check-pass">✓</div>
+        <div>
+          <div class="check-title">岛屿进度状态变化资产已区分（每章节前/后期场景状态两套）</div>
+          <div class="check-detail">通过 — 每章节提供3套状态（修复前/修复中/修复后），共18张背景。饱和度范围明确区分：修复前8-15%（灰调枯岛），修复中28-52%（色彩回归），修复后55-82%（满生命力水彩）。符合并超出"两套"要求（实为三套）。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card" style="border-left: 4px solid var(--golden);">
+    <h3>待生成后验证项</h3>
+    <ul class="checklist">
+      <li>
+        <div class="check-icon check-pending">◷</div>
+        <div>
+          <div class="check-title">风格一致性检查（手绘水彩，禁止像素艺术/3D/霓虹）</div>
+          <div class="check-detail">待图像生成后视觉检验。提示词中已包含负面约束，但需人工确认生成结果符合 art-style-guide.json 规范。</div>
+        </div>
+      </li>
+      <li>
+        <div class="check-icon check-pending">◷</div>
+        <div>
+          <div class="check-title">棋盘安全区域不被前景遮挡（中央60%区域留白）</div>
+          <div class="check-detail">待图像生成后视觉检验。提示词已包含"中央60%区域保持简洁"约束，需生成后确认实际图像构图。</div>
+        </div>
+      </li>
+      <li>
+        <div class="check-icon check-pending">◷</div>
+        <div>
+          <div class="check-title">prop_lighthouse_lamp 8帧多帧一致性（缩放/锚点统一）</div>
+          <div class="check-detail">待图像生成后检验。帧动画生成提示词已包含 multi_frame_consistency=true 约束，需生成后确认8帧一致性。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ======================== PIPELINE ======================== -->
+<div id="pipeline" class="section">
+
+  <div class="card">
+    <h3>节点执行流水线状态</h3>
+    <div class="pipeline-steps">
+
+      <div class="pipeline-step">
+        <div class="step-num step-skipped">S0</div>
+        <div class="step-body">
+          <div class="step-title">Step 0 — 来源解析（已跳过）</div>
+          <div class="step-desc">所有20个环境资产的 source_strategy=llm_image_generation（等同于 ai_generated）。按节点规格，ai_generated 直接跳过 Step 0，进入 Step 1。无需资产包搜索或授权验证。</div>
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="step-num step-complete">✓</div>
+        <div class="step-body">
+          <div class="step-title">Step 1 — Pre-Spec（2D视角模式规格）</div>
+          <div class="step-desc">
+            sub-skill: game-art/2d-view-mode-spec<br>
+            结果：COMPLETED · 视角模式：board_grid（主）+ visual_novel（副）<br>
+            输出：<span class="file-path">.allforai/game-design/art/view/2d-view-mode-spec.json</span><br>
+            所有资产均为 dimension=2d，无需 3d-source-asset-spec。
+          </div>
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="step-num step-limit">~</div>
+        <div class="step-body">
+          <div class="step-title">Step 2a — 背景生成（规格完成，待执行）</div>
+          <div class="step-desc">
+            sub-skill: game-art/background-generation · 结果：COMPLETED_WITH_LIMITS<br>
+            18张背景全部规格完成（含完整生成提示词）。状态：spec_ready。<br>
+            <span class="file-path">.allforai/game-design/art/backgrounds/background-generation-spec.json</span><br>
+            实际图像生成待 art-qa 评审通过后执行。
+          </div>
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="step-num step-limit">~</div>
+        <div class="step-body">
+          <div class="step-title">Step 2b — 道具生成（规格完成，待执行）</div>
+          <div class="step-desc">
+            sub-skill: game-art/prop-generation · 结果：COMPLETED_WITH_LIMITS<br>
+            2个道具全部规格完成（prop_notebook 2变体 + prop_lighthouse_lamp 8帧）。状态：spec_ready。<br>
+            <span class="file-path">.allforai/game-design/art/props/prop-generation-spec.json</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="step-num step-skipped">—</div>
+        <div class="step-body">
+          <div class="step-title">Step 2c — 3D渲染转2D（已跳过）</div>
+          <div class="step-desc">所有环境资产均为 dimension=2d，无需 render-to-2d-asset-generation。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>产出文件索引</h3>
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>文件</th>
+          <th>类型</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="file-path">.allforai/game-design/art/view/2d-view-mode-spec.json</span></td>
+          <td>视角模式规格</td>
+          <td><span class="badge badge-pass">已生成</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-path">.allforai/game-design/art/view/2d-view-mode-report.json</span></td>
+          <td>视角模式报告</td>
+          <td><span class="badge badge-pass">已生成</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-path">.allforai/game-design/art/backgrounds/background-generation-spec.json</span></td>
+          <td>背景生成规格（18背景）</td>
+          <td><span class="badge badge-pass">已生成</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-path">.allforai/game-design/art/backgrounds/background-manifest.json</span></td>
+          <td>背景资产清单</td>
+          <td><span class="badge badge-pass">已生成</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-path">.allforai/game-design/art/backgrounds/background-report.json</span></td>
+          <td>背景生成报告</td>
+          <td><span class="badge badge-pass">已生成</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-path">.allforai/game-design/art/props/prop-generation-spec.json</span></td>
+          <td>道具生成规格</td>
+          <td><span class="badge badge-pass">已生成</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-path">.allforai/game-design/art/props/prop-manifest.json</span></td>
+          <td>道具资产清单</td>
+          <td><span class="badge badge-pass">已生成</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-path">.allforai/game-design/art/props/prop-report.json</span></td>
+          <td>道具生成报告</td>
+          <td><span class="badge badge-pass">已生成</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-path">.allforai/game-design/systems/environment-art-spec.json</span></td>
+          <td>环境美术规格主文档</td>
+          <td><span class="badge badge-pass">已生成</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-path">.allforai/game-design/environment-art-review.html</span></td>
+          <td>本评审文档</td>
+          <td><span class="badge badge-pass">已生成</span></td>
+        </tr>
+        <tr>
+          <td>实际图像文件（.jpg/.png）</td>
+          <td>生成图像资产</td>
+          <td><span class="badge badge-pending">待执行</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</div><!-- /content -->
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = ['overview','chapters','parallax','props','checklist','pipeline'];
+  const idx = tabs.indexOf(id);
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+}
+</script>
+
+</body>
+</html>

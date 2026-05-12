@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "state": "validated",
+  "rules": [
+    {
+      "template_kind": "level",
+      "base_template_policy": "no_base — 每关独立实例，不继承",
+      "variant_policy": "zen_mode variant: step_count=null，其余字段继承base level实例",
+      "overrideable_fields": ["step_count", "zen_mode", "design_notes"],
+      "locked_fields": ["chapter", "level_number", "level_global_index", "grid_width", "grid_height"],
+      "merge_strategy": "override_explicit_fields",
+      "ref_override_policy": "tile_type_ids/obstacle_placements不可override（来自source spec）",
+      "cycle_detection": "no_inheritance_chains — 无循环风险",
+      "runtime_resolution_policy": "pre_flattened — 导出时已展平，runtime不做继承解析",
+      "state": "validated",
+      "repair_target": ".allforai/game-design/systems/level-design.json"
+    },
+    {
+      "template_kind": "tile_type",
+      "base_template_policy": "no_base",
+      "variant_policy": "chapter_variant: art_ref按chapter index切换，其余字段不变",
+      "overrideable_fields": ["art_refs"],
+      "locked_fields": ["tile_type_id", "name_cn", "color_hex", "unlock_chapter"],
+      "merge_strategy": "override_explicit_fields",
+      "ref_override_policy": "art_refs可按章节覆盖（不同章节不同atlas）",
+      "cycle_detection": "no_inheritance_chains",
+      "runtime_resolution_policy": "pre_flattened",
+      "state": "validated",
+      "repair_target": ".allforai/game-design/systems/puzzle-design.json"
+    }
+  ],
+  "report_ref": ".allforai/game-templates/schemas/template-inheritance-report.json"
+}

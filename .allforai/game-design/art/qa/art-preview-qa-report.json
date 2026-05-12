@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "skill": "game-art/art-preview-qa",
+  "mode": "validate_artifacts_only",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "status": "COMPLETED_WITH_LIMITS",
+  "overall_verdict": "passed_with_warnings",
+  "summary": "全资产预览QA完成。所有70个资产已从canonical_registry中验证规格完整性。资产处于spec_complete/spec_ready状态（图片文件待API生成执行）。无UPSTREAM_DEFECT。警告：PNG/JPG图片文件尚未生成，视觉验证仅基于规格文档，不包含像素级检查。",
+
+  "input_paths": {
+    "asset_registry": ".allforai/game-design/asset-registry.json",
+    "ui_registry": ".allforai/game-design/ui/ui-registry.json",
+    "concept_contract": ".allforai/concept-contract.json",
+    "tile_art_spec": ".allforai/game-design/systems/tile-art-spec.json",
+    "character_art_spec": ".allforai/game-design/systems/character-art-spec.json",
+    "environment_art_spec": ".allforai/game-design/systems/environment-art-spec.json",
+    "ui_art_spec": ".allforai/game-design/systems/ui-art-spec.json"
+  },
+
+  "asset_counts": {
+    "tiles_regular": 20,
+    "tiles_special": 5,
+    "characters": 7,
+    "backgrounds": 18,
+    "props": 2,
+    "ui_components": 10,
+    "vfx": 8,
+    "total": 70
+  },
+
+  "validation_method": "artifact_spec_review",
+  "executable_preview_available": false,
+  "limitation_note": "图片生成API（google-imagen-4 / openrouter-gpt-image）尚未执行实际图片文件生成。所有资产为spec_complete或spec_ready状态。像素级预览QA需等待图片生成后补全。",
+
+  "issues": [
+    {
+      "issue_id": "apqa-001",
+      "asset_id": "all_70_assets",
+      "producer_skill": "tile-art-gen / character-art-gen / environment-art-gen / ui-art-gen / vfx-art-gen",
+      "consumer_skill": "art-qa",
+      "severity": "warning",
+      "root_cause": "image_generation",
+      "evidence": "所有资产PNG/JPG文件尚未由image generation API生成。规格文档完整，但无实际图像文件可供像素级QA。",
+      "repair_target": "执行image generation API（google-imagen-4）后重新运行art-preview-qa",
+      "requested_action": "生成图像文件后进行像素级验证",
+      "blocks_runtime": false
+    }
+  ],
+
+  "spec_validation_results": {
+    "tiles_regular": {
+      "count_check": "PASS — 20 tiles，匹配canonical_registry.tiles中的20个基础图块",
+      "file_prefix_check": "PASS — 所有tile_前缀符合命名规范",
+      "state_check": "PASS — 全部20个常规图块状态为spec_complete",
+      "saturation_stages_check": "PASS — 6章节色彩变体已定义（s0→s4_full饱和度阶段）",
+      "format_check": "PASS — PNG格式，128×128px（2x），8px出血，24px圆角",
+      "alpha_check": "PASS — 规格要求透明背景PNG"
+    },
+    "tiles_special": {
+      "count_check": "PASS — 5种特殊块（light_wave/light_chain/pierce/swap/cascade），匹配concept-contract",
+      "animation_check": "PASS — 每种12帧动画（@30fps），规格完整",
+      "color_badge_check": "PASS — 5种独特颜色徽章（#7ECDE8/#F0C4C4/#F5A840/#F5C842/#4A7D55）",
+      "state_check": "PASS — 全部5个特殊块状态为spec_complete"
+    },
+    "characters": {
+      "count_check": "PASS — 7个角色，匹配concept-contract.canonical_registry.characters",
+      "canvas_check": "PASS — char_ritsu~char_fuyuko为256×512px，char_gicho为192×192px",
+      "animation_check": "PASS — 骨骼动画（DragonBones，30fps），char_gicho使用帧动画（12fps）",
+      "state_check": "PASS — 全部7个角色状态为spec_ready（超过placeholder要求）"
+    },
+    "environments": {
+      "count_check": "PASS — 18个背景（6章×3状态）+2个道具，匹配concept-contract.other",
+      "format_check": "PASS — 背景JPG 1920×1080px，道具PNG含alpha",
+      "saturation_model_check": "PASS — before/in_progress/restored三态饱和度模型已定义",
+      "state_check": "PASS — 全部20个环境资产状态为spec_ready"
+    },
+    "ui_components": {
+      "count_check": "PASS — 10个UI组件，匹配canonical_registry.ui",
+      "state_check_check": "PASS — 所有组件有normal/pressed/disabled状态变体",
+      "atlas_check": "PASS — 全部UI资产规划打包至ui_elements_atlas",
+      "state_check": "PASS — 全部10个UI资产状态为spec_ready"
+    },
+    "vfx": {
+      "count_check": "PASS — 8个VFX资产，匹配canonical_registry.vfx",
+      "particle_budget_check": "PASS — combo burst粒子上限200，符合治愈美学（无过度粒子碎片）",
+      "atlas_check": "PASS — vfx_atlas_max_px=1024，独立于角色/图块图集"
+    }
+  },
+
+  "prohibition_style_check": {
+    "pixel_art": "PASS — 所有规格明确标注hand_drawn_watercolor",
+    "hyper_realistic_3d": "PASS — dimension=2d，无3D流程",
+    "neon_cyberpunk": "PASS — 所有色彩值均为暖色系/海岛色系",
+    "pure_black_000000": "PASS — 规格指定描边颜色为主色加深32%，禁止#000000",
+    "sharp_corner_geometric_ui": "PASS — 所有UI组件指定≥20px圆角",
+    "excessive_particle_debris": "PASS — VFX粒子预算受控（200粒子上限）",
+    "high_contrast_alert_tones": "PASS — 无高对比警示色调"
+  }
+}

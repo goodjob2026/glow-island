@@ -1,0 +1,529 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "skill": "game-art/tileset-generation",
+  "mode": "spec_generate_validate",
+  "input": {
+    "tileset_spec": ".allforai/game-design/art/tilesets/tileset-spec.json",
+    "art_style_guide": ".allforai/game-design/art-style-guide.json",
+    "asset_registry": ".allforai/game-design/asset-registry.json",
+    "concept_contract": ".allforai/concept-contract.json"
+  },
+  "generation_context": {
+    "image_generation_available": true,
+    "primary_api": "google-imagen-4",
+    "fallback_api": "openrouter-gpt-image",
+    "vision_validation_available": true,
+    "atlas_tool_available": true,
+    "max_repair_attempts": 3
+  },
+
+  "global_prompt_constraints": {
+    "tile_size_px": 128,
+    "canvas_bleed_px": 8,
+    "effective_draw_area_px": 112,
+    "projection": "orthographic top-down icon view, slight 3/4 perspective angle for depth",
+    "render_style": "hand-drawn watercolor, soft organic brushwork, warm pastel palette",
+    "background": "transparent PNG with 8px bleed zone",
+    "corner_radius": "24px rounded corners at 2x (256px) scale",
+    "outline": "primary subject color darkened 32%, 2px outline, no pure black",
+    "paper_texture": "subtle paper grain overlay at 6% opacity inside draw area",
+    "no_text_labels": true,
+    "no_shadows_crossing_boundary": true,
+    "consistent_lighting": "soft top-left ambient light, no harsh directional shadows",
+    "small_scale_readability": "silhouette must read clearly at 32×32px",
+    "style_reference": "Animal Crossing New Horizons icon art × Wytchwood watercolor texture",
+    "prohibited": ["pixel art", "hyper-realistic 3D", "neon cyberpunk colors", "metallic chrome gradients", "pure black #000000", "sharp geometric corners"]
+  },
+
+  "saturation_stage_filter": {
+    "s0_before_repair": {
+      "saturation_adjustment": "reduce saturation to 8-15%, reduce brightness to 42-48%",
+      "description": "褪色枯岛 — aged, faded, desaturated island before restoration begins",
+      "filter_note": "Apply desaturation post-generation: hsl saturation 8-15%, brightness 42-48%"
+    },
+    "s1": {
+      "saturation_adjustment": "saturation 28-38%",
+      "description": "轮廓找回淡彩 — faint color returning, outlines becoming visible"
+    },
+    "s2": {
+      "saturation_adjustment": "saturation 48-58%",
+      "description": "生活气息色彩 — lively colors, island showing signs of recovery"
+    },
+    "s3": {
+      "saturation_adjustment": "saturation 62-72%",
+      "description": "角色回归满生命力 — near-full color as characters return"
+    },
+    "s4_full": {
+      "saturation_adjustment": "saturation 75-88%",
+      "description": "完整水彩光效全开 — full vibrant watercolor with light effects active"
+    }
+  },
+
+  "tile_generation_specs": [
+    {
+      "terrain_id": "tile_tuna",
+      "asset_id": "tile_tuna",
+      "name": "金枪鱼",
+      "base_prompt": "Hand-drawn watercolor style game icon of a golden bluefin tuna fish, cute chibi proportions, rounded body, side-profile with slight upward tilt, warm golden-yellow scales with teal accent fins, soft organic brushwork, transparent background, 128×128px with 8px bleed, no text, no labels, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon colors, sharp geometric shapes, pure black outlines, text, UI elements, decorations outside tile boundary",
+      "chapter_color_mods": {
+        "ch1": "primary teal #5BBFB5 tint on environment elements, base saturation 8-15%",
+        "ch2": "bamboo green #7DBE77 environment tint, saturation 28-38%",
+        "ch3": "sakura pink #F0C4C4 environment tint, saturation 48-58%",
+        "ch4": "forest moss #4A7D55 environment tint, saturation 62-72%",
+        "ch5": "driftwood #C4955A warm tint, saturation 62-72%",
+        "ch6": "night indigo #1E2E50 cool tint with golden hour accent, saturation 75-88%"
+      },
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_tuna_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_tuna_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_tuna_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_tuna_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_tuna_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_tuna_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_octopus",
+      "asset_id": "tile_octopus",
+      "name": "章鱼",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi octopus, round head with large friendly eyes, 8 rounded tentacles curling inward, pink-purple watercolor palette, soft organic brushwork, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon colors, sharp corners, pure black, text",
+      "chapter_color_mods": {
+        "ch1": "cool teal wash, saturation 8-15%",
+        "ch2": "warm green wash, saturation 28-38%",
+        "ch3": "sakura pink accent, saturation 48-58%",
+        "ch4": "deep forest tone, saturation 62-72%",
+        "ch5": "warm amber tone, saturation 62-72%",
+        "ch6": "night blue with golden glow, saturation 75-88%"
+      },
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_octopus_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_octopus_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_octopus_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_octopus_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_octopus_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_octopus_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_starfish",
+      "asset_id": "tile_starfish",
+      "name": "海星",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi starfish, 5 rounded arms with small bumps, warm coral-orange color with soft cream highlights, slight tilt for dynamism, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_starfish_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_starfish_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_starfish_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_starfish_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_starfish_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_starfish_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_hermit_crab",
+      "asset_id": "tile_hermit_crab",
+      "name": "寄居蟹",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi hermit crab peeking out of a spiral shell, small round claws raised cheerfully, warm sandy-tan shell with peach crab body, soft watercolor brushwork, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_hermit_crab_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_hermit_crab_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_hermit_crab_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_hermit_crab_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_hermit_crab_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_hermit_crab_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_lanternfish",
+      "asset_id": "tile_lanternfish",
+      "name": "灯笼鱼",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi anglerfish lanternfish, round dark body with large glowing bioluminescent lure dangling above, big friendly eyes, deep teal-midnight blue with warm gold lure glow, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon cyberpunk, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_lanternfish_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_lanternfish_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_lanternfish_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_lanternfish_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_lanternfish_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_lanternfish_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_pufferfish",
+      "asset_id": "tile_pufferfish",
+      "name": "河豚",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi pufferfish fully inflated, round spiky silhouette, light yellow-cream body with short rounded spines, cheerful expression, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_pufferfish_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_pufferfish_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_pufferfish_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_pufferfish_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_pufferfish_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_pufferfish_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_whale",
+      "asset_id": "tile_whale",
+      "name": "鲸鱼",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi blue whale, rounded streamlined body, small water spout from blowhole, gentle friendly expression, soft ocean blue with teal belly highlights, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_whale_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_whale_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_whale_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_whale_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_whale_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_whale_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_coral",
+      "asset_id": "tile_coral",
+      "name": "珊瑚",
+      "base_prompt": "Hand-drawn watercolor style game icon of cute chibi branching coral, three to five upward branches with rounded tips, warm coral orange-pink watercolor palette with subtle texture, small decorative dots, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_coral_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_coral_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_coral_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_coral_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_coral_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_coral_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_conch",
+      "asset_id": "tile_conch",
+      "name": "海螺",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi spiral conch shell, wide opening facing viewer, warm peach-cream tones with soft pink inner glow, organic rounded form, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_conch_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_conch_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_conch_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_conch_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_conch_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_conch_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_shell",
+      "asset_id": "tile_shell",
+      "name": "贝壳",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi scallop shell, fan shape with ridged top edge, cream and soft lilac watercolor gradient, simple and iconic silhouette, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_shell_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_shell_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_shell_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_shell_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_shell_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_shell_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_crab",
+      "asset_id": "tile_crab",
+      "name": "螃蟹",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi red crab, round body with both claws raised joyfully, friendly big eyes, vivid red-coral watercolor with warm highlights, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_crab_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_crab_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_crab_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_crab_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_crab_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_crab_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_turtle",
+      "asset_id": "tile_turtle",
+      "name": "海龟",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi sea turtle, round patterned shell with hexagonal plates, four flippers spread wide, warm green with sandy yellow shell, friendly expression, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_turtle_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_turtle_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_turtle_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_turtle_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_turtle_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_turtle_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_jellyfish",
+      "asset_id": "tile_jellyfish",
+      "name": "水母",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi jellyfish, round translucent dome with 4-6 trailing tendrils, soft lavender-pink with inner glow, dreamy watercolor texture, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_jellyfish_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_jellyfish_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_jellyfish_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_jellyfish_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_jellyfish_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_jellyfish_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_flying_fish",
+      "asset_id": "tile_flying_fish",
+      "name": "飞鱼",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi flying fish leaping mid-air, elongated pectoral fins spread as wings, silvery-blue body with warm amber belly, small water droplets below, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_flying_fish_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_flying_fish_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_flying_fish_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_flying_fish_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_flying_fish_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_flying_fish_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_dolphin",
+      "asset_id": "tile_dolphin",
+      "name": "海豚",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi dolphin leaping upward, streamlined rounded body, soft ocean-blue with white belly, friendly smile and small dorsal fin, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_dolphin_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_dolphin_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_dolphin_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_dolphin_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_dolphin_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_dolphin_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_seagull",
+      "asset_id": "tile_seagull",
+      "name": "海鸥",
+      "base_prompt": "Hand-drawn watercolor style game icon of a cute chibi seagull in flight, wings spread wide in a gentle arc, white body with soft grey wingtips and yellow beak, minimal sky-blue shadow, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_seagull_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_seagull_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_seagull_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_seagull_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_seagull_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_seagull_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_coconut_palm",
+      "asset_id": "tile_coconut_palm",
+      "name": "椰子树",
+      "base_prompt": "Hand-drawn watercolor style game icon of a miniature chibi coconut palm tree, slightly curved trunk, 4-5 large palm fronds fanning out at top, 2-3 brown coconuts visible, tropical green with sandy-tan trunk, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_coconut_palm_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_coconut_palm_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_coconut_palm_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_coconut_palm_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_coconut_palm_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_coconut_palm_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_lighthouse",
+      "asset_id": "tile_lighthouse",
+      "name": "灯塔",
+      "base_prompt": "Hand-drawn watercolor style game icon of a miniature chibi lighthouse, white and red striped tower with rounded top lantern room, warm golden light glow from top, small waves at base, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_lighthouse_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_lighthouse_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_lighthouse_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_lighthouse_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_lighthouse_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_lighthouse_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_fishing_boat",
+      "asset_id": "tile_fishing_boat",
+      "name": "渔船",
+      "base_prompt": "Hand-drawn watercolor style game icon of a miniature chibi wooden fishing boat, rounded hull, small mast with furled sail, warm driftwood-brown wood with teal water ripples at hull, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_fishing_boat_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_fishing_boat_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_fishing_boat_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_fishing_boat_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_fishing_boat_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_fishing_boat_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_buoy",
+      "asset_id": "tile_buoy",
+      "name": "浮标",
+      "base_prompt": "Hand-drawn watercolor style game icon of a chibi maritime buoy, round ball shape with flat top, bold red and white horizontal stripes, small anchor chain hanging below, bobbing on a tiny wave, transparent background, 128×128px with 8px bleed, no text, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text",
+      "output_paths": {
+        "ch1": ".allforai/game-design/art/tilesets/tile_buoy_ch1.png",
+        "ch2": ".allforai/game-design/art/tilesets/tile_buoy_ch2.png",
+        "ch3": ".allforai/game-design/art/tilesets/tile_buoy_ch3.png",
+        "ch4": ".allforai/game-design/art/tilesets/tile_buoy_ch4.png",
+        "ch5": ".allforai/game-design/art/tilesets/tile_buoy_ch5.png",
+        "ch6": ".allforai/game-design/art/tilesets/tile_buoy_ch6.png"
+      }
+    },
+    {
+      "terrain_id": "tile_wave_block",
+      "asset_id": "tile_wave_block",
+      "name": "光波特殊块",
+      "special_block": true,
+      "color_badge": "#7ECDE8",
+      "base_prompt": "Hand-drawn watercolor style special game tile icon, teal-cyan #7ECDE8 background cell, concentric ring ripple pattern with warm white inner glow, expanding wave motif visible at center, 12-frame idle animation loop, glowing breathing pulse effect, special block badge in bottom-left corner, transparent background, 128×128px with 8px bleed, highly readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon cyberpunk, pure black, text labels",
+      "frame_generation": {
+        "frame_count": 12,
+        "animation_loop": "idle_breathing_pulse",
+        "period_s": [2.0, 2.8],
+        "frame_timing_ms": [167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167]
+      },
+      "output_paths": {
+        "frame_01": ".allforai/game-design/art/tilesets/tile_wave_block_frame_01.png",
+        "frame_02": ".allforai/game-design/art/tilesets/tile_wave_block_frame_02.png",
+        "frame_03": ".allforai/game-design/art/tilesets/tile_wave_block_frame_03.png",
+        "frame_04": ".allforai/game-design/art/tilesets/tile_wave_block_frame_04.png",
+        "frame_05": ".allforai/game-design/art/tilesets/tile_wave_block_frame_05.png",
+        "frame_06": ".allforai/game-design/art/tilesets/tile_wave_block_frame_06.png",
+        "frame_07": ".allforai/game-design/art/tilesets/tile_wave_block_frame_07.png",
+        "frame_08": ".allforai/game-design/art/tilesets/tile_wave_block_frame_08.png",
+        "frame_09": ".allforai/game-design/art/tilesets/tile_wave_block_frame_09.png",
+        "frame_10": ".allforai/game-design/art/tilesets/tile_wave_block_frame_10.png",
+        "frame_11": ".allforai/game-design/art/tilesets/tile_wave_block_frame_11.png",
+        "frame_12": ".allforai/game-design/art/tilesets/tile_wave_block_frame_12.png"
+      }
+    },
+    {
+      "terrain_id": "tile_light_chain_block",
+      "asset_id": "tile_light_chain_block",
+      "name": "光链特殊块",
+      "special_block": true,
+      "color_badge": "#F0C4C4",
+      "base_prompt": "Hand-drawn watercolor style special game tile icon, sakura pink #F0C4C4 background cell with gold chain link motif, golden scan-line pulse radiating outward in chain pattern, warm gold #F5C842 connecting lines with soft glow, 12-frame idle animation, breathing pulse, transparent background, 128×128px with 8px bleed, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text labels",
+      "frame_generation": {
+        "frame_count": 12,
+        "animation_loop": "idle_breathing_pulse",
+        "period_s": [2.0, 2.8]
+      },
+      "output_paths": {
+        "frame_01": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_01.png",
+        "frame_02": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_02.png",
+        "frame_03": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_03.png",
+        "frame_04": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_04.png",
+        "frame_05": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_05.png",
+        "frame_06": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_06.png",
+        "frame_07": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_07.png",
+        "frame_08": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_08.png",
+        "frame_09": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_09.png",
+        "frame_10": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_10.png",
+        "frame_11": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_11.png",
+        "frame_12": ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_12.png"
+      }
+    },
+    {
+      "terrain_id": "tile_pierce_block",
+      "asset_id": "tile_pierce_block",
+      "name": "穿透特殊块",
+      "special_block": true,
+      "color_badge": "#F5A840",
+      "base_prompt": "Hand-drawn watercolor style special game tile icon, orange #F5A840 background cell with directional arrow motif pointing right, blue-white edge burst glow at arrowhead, sharp directional energy lines, 12-frame idle animation with breathing glow, transparent background, 128×128px with 8px bleed, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text labels",
+      "frame_generation": {
+        "frame_count": 12,
+        "animation_loop": "idle_breathing_pulse",
+        "period_s": [2.0, 2.8]
+      },
+      "output_paths": {
+        "frame_01": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_01.png",
+        "frame_02": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_02.png",
+        "frame_03": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_03.png",
+        "frame_04": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_04.png",
+        "frame_05": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_05.png",
+        "frame_06": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_06.png",
+        "frame_07": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_07.png",
+        "frame_08": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_08.png",
+        "frame_09": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_09.png",
+        "frame_10": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_10.png",
+        "frame_11": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_11.png",
+        "frame_12": ".allforai/game-design/art/tilesets/tile_pierce_block_frame_12.png"
+      }
+    },
+    {
+      "terrain_id": "tile_swap_block",
+      "asset_id": "tile_swap_block",
+      "name": "置换特殊块",
+      "special_block": true,
+      "color_badge": "#F5C842",
+      "base_prompt": "Hand-drawn watercolor style special game tile icon, golden yellow #F5C842 background cell with two circular arrows forming a swap/exchange symbol, green spiral accent, elastic spring bounce energy lines, 12-frame idle animation with breathing glow, transparent background, 128×128px with 8px bleed, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text labels",
+      "frame_generation": {
+        "frame_count": 12,
+        "animation_loop": "idle_breathing_pulse",
+        "period_s": [2.0, 2.8]
+      },
+      "output_paths": {
+        "frame_01": ".allforai/game-design/art/tilesets/tile_swap_block_frame_01.png",
+        "frame_02": ".allforai/game-design/art/tilesets/tile_swap_block_frame_02.png",
+        "frame_03": ".allforai/game-design/art/tilesets/tile_swap_block_frame_03.png",
+        "frame_04": ".allforai/game-design/art/tilesets/tile_swap_block_frame_04.png",
+        "frame_05": ".allforai/game-design/art/tilesets/tile_swap_block_frame_05.png",
+        "frame_06": ".allforai/game-design/art/tilesets/tile_swap_block_frame_06.png",
+        "frame_07": ".allforai/game-design/art/tilesets/tile_swap_block_frame_07.png",
+        "frame_08": ".allforai/game-design/art/tilesets/tile_swap_block_frame_08.png",
+        "frame_09": ".allforai/game-design/art/tilesets/tile_swap_block_frame_09.png",
+        "frame_10": ".allforai/game-design/art/tilesets/tile_swap_block_frame_10.png",
+        "frame_11": ".allforai/game-design/art/tilesets/tile_swap_block_frame_11.png",
+        "frame_12": ".allforai/game-design/art/tilesets/tile_swap_block_frame_12.png"
+      }
+    },
+    {
+      "terrain_id": "tile_cascade_block",
+      "asset_id": "tile_cascade_block",
+      "name": "连锁特殊块",
+      "special_block": true,
+      "color_badge": "#4A7D55",
+      "base_prompt": "Hand-drawn watercolor style special game tile icon, forest green #4A7D55 background cell with chain link sequence motif, orange-red expanding ripple rings in cascading sequence, sequential chain dots suggesting auto-chain action, 12-frame idle animation with breathing glow, transparent background, 128×128px with 8px bleed, readable at 32px",
+      "negative_prompt": "pixel art, realistic photo, 3D render, neon, pure black, text labels",
+      "frame_generation": {
+        "frame_count": 12,
+        "animation_loop": "idle_breathing_pulse",
+        "period_s": [2.0, 2.8]
+      },
+      "output_paths": {
+        "frame_01": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_01.png",
+        "frame_02": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_02.png",
+        "frame_03": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_03.png",
+        "frame_04": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_04.png",
+        "frame_05": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_05.png",
+        "frame_06": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_06.png",
+        "frame_07": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_07.png",
+        "frame_08": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_08.png",
+        "frame_09": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_09.png",
+        "frame_10": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_10.png",
+        "frame_11": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_11.png",
+        "frame_12": ".allforai/game-design/art/tilesets/tile_cascade_block_frame_12.png"
+      }
+    }
+  ],
+
+  "repair_plan": {
+    "max_attempts": 3,
+    "failure_codes_triggering_repair": ["SEAM_FAILURE", "WRONG_SCALE", "STYLE_DRIFT", "BAD_ALPHA", "LOW_READABILITY", "CROPPED_SUBJECT"],
+    "repair_strategy": "Adjust prompt specificity — add more concrete size/shape descriptors; increase bleed specification; add 'centered subject, full body visible within frame'; switch to fallback API (openrouter-gpt-image) on third attempt"
+  }
+}

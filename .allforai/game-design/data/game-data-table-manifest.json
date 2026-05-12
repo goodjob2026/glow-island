@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "generated_by": "game-design-finalize / design-data-table-generation",
+  "tables": [
+    {
+      "table_id": "tile_types",
+      "table_kind": "content",
+      "source_spec_refs": [".allforai/game-design/systems/puzzle-design.json#tile_types"],
+      "format": "json",
+      "path": ".allforai/game-design/data/tables/tile_types.json",
+      "required_columns": ["id", "code", "name_cn", "color_hex", "unlock_chapter", "theme"],
+      "row_count": 20,
+      "runtime_consumer_refs": ["implement-puzzle-core"],
+      "validation_status": "validated",
+      "state": "generated",
+      "consumer_refs": ["implement-puzzle-core", "level-editor-tool"]
+    },
+    {
+      "table_id": "obstacles",
+      "table_kind": "content",
+      "source_spec_refs": [".allforai/game-design/systems/puzzle-design.json#obstacles"],
+      "format": "json",
+      "path": ".allforai/game-design/data/tables/obstacles.json",
+      "required_columns": ["id", "name", "unlock_chapter", "clear_method", "blocks_path"],
+      "row_count": 8,
+      "runtime_consumer_refs": ["implement-puzzle-core", "implement-special-mechanics"],
+      "validation_status": "validated",
+      "state": "generated",
+      "consumer_refs": ["implement-puzzle-core"]
+    },
+    {
+      "table_id": "economy_skus",
+      "table_kind": "economy",
+      "source_spec_refs": [".allforai/game-design/systems/monetization-design.json#iap_skus"],
+      "format": "json",
+      "path": ".allforai/game-design/data/tables/economy_skus.json",
+      "required_columns": ["sku_id", "name_cn", "price_usd", "beach_coins"],
+      "row_count": 4,
+      "runtime_consumer_refs": ["implement-shop-iap"],
+      "validation_status": "validated",
+      "state": "generated",
+      "consumer_refs": ["implement-shop-iap"]
+    },
+    {
+      "table_id": "combo_multiplier_curve",
+      "table_kind": "balance",
+      "source_spec_refs": [".allforai/game-design/systems/progression-curve.json#combo_multiplier_curve"],
+      "format": "json",
+      "path": ".allforai/game-design/data/tables/combo_multiplier_curve.json",
+      "required_columns": ["combo_count", "multiplier", "label"],
+      "row_count": 6,
+      "runtime_consumer_refs": ["implement-puzzle-core"],
+      "validation_status": "validated",
+      "state": "generated",
+      "consumer_refs": ["implement-puzzle-core"]
+    },
+    {
+      "table_id": "chapter_config",
+      "table_kind": "level",
+      "source_spec_refs": [
+        ".allforai/game-design/systems/level-design.json#chapters_detail",
+        ".allforai/game-design/systems/retention-hook.json#season_chapter_mapping"
+      ],
+      "format": "json",
+      "path": ".allforai/game-design/data/tables/chapter_config.json",
+      "required_columns": ["chapter", "theme", "season", "grid_size", "step_range", "npc_guide"],
+      "row_count": 6,
+      "runtime_consumer_refs": ["implement-game-session", "implement-island-map"],
+      "validation_status": "validated",
+      "state": "generated",
+      "consumer_refs": ["implement-game-session", "implement-island-map"]
+    }
+  ],
+  "report_ref": ".allforai/game-design/data/game-data-table-report.json"
+}

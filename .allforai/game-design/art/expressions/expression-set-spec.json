@@ -1,0 +1,348 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/expression-set-generation",
+  "source": {
+    "art_pipeline_config": ".allforai/game-design/art-pipeline-config.json",
+    "asset_registry": ".allforai/game-design/asset-registry.json",
+    "style_tokens": ".allforai/game-design/art/visual-style-tokens.json",
+    "character_arc": ".allforai/game-design/systems/character-arc.json"
+  },
+  "expression_types": ["default", "happy", "thinking", "surprised", "react_jump"],
+  "expression_count": 5,
+  "portrait_size_px": { "width": 256, "height": 256 },
+  "format": "png",
+  "atlas": ".allforai/game-design/atlases/characters_atlas.json",
+  "style_notes": "All expressions must maintain chibi 1:1.5 head-body ratio. Face occupies approximately 60% of portrait canvas. Eyes must be expressive and readable at small UI size. Watercolor soft lines, warm pastel. No text baked in. Transparent background.",
+  "characters": [
+    {
+      "asset_id": "char_ritsu",
+      "file_prefix": "char_ritsu",
+      "name": "山田律",
+      "expressions": [
+        {
+          "expression_id": "default",
+          "emotion": "neutral_guarded",
+          "dialogue_state": "listening or idle",
+          "file": "char_ritsu_expr_default.png",
+          "prompt": "Hand-drawn watercolor portrait. 山田律 (Yamada Ritsu), 29-year-old male. Default/neutral expression: slightly tired eyes, soft closed mouth, not smiling but not unhappy — the face of someone who has been working too hard for too long but is beginning to breathe. Chibi proportions, warm pastel. 256x256px, transparent background.",
+          "design_note": "Ritsu's default is subdued; his healing arc starts here. Eyes slightly heavy-lidded, posture-neutral in face."
+        },
+        {
+          "expression_id": "happy",
+          "emotion": "genuine_surprise_delight",
+          "dialogue_state": "positive puzzle outcome or NPC warmth moment",
+          "file": "char_ritsu_expr_happy.png",
+          "prompt": "Hand-drawn watercolor portrait. 山田律 happy expression: wide open eyes, genuine slightly-surprised smile — the look of someone who didn't expect to feel good but does. Not over-the-top, warm and a little disarmed. 256x256px transparent.",
+          "design_note": "His happy is rare and honest; not performance, more like a crack in the armor."
+        },
+        {
+          "expression_id": "thinking",
+          "emotion": "focused_with_new_curiosity",
+          "dialogue_state": "puzzle reasoning or NPC insight moment",
+          "file": "char_ritsu_expr_thinking.png",
+          "prompt": "Hand-drawn watercolor portrait. 山田律 thinking expression: eyes slightly narrowed, head tilted subtly, mouth closed. The focused look of someone beginning to care about something. Not stressed, quietly engaged. 256x256px transparent.",
+          "design_note": "Shows his Tokyo-analyst mind applied to something worth caring about; a positive evolution of default."
+        },
+        {
+          "expression_id": "surprised",
+          "emotion": "genuine_startled",
+          "dialogue_state": "unexpected NPC reveal or plot beat",
+          "file": "char_ritsu_expr_surprised.png",
+          "prompt": "Hand-drawn watercolor portrait. 山田律 surprised expression: eyes wide open, eyebrows raised, mouth slightly open — the look of someone who expected nothing and got something real. Clean startle, not comedic. 256x256px transparent.",
+          "design_note": "Readable at small dialogue portrait size; eyes are primary signal."
+        },
+        {
+          "expression_id": "react_jump",
+          "emotion": "open_emotional_response",
+          "dialogue_state": "ritsu-only: first beauty/smell moment (Ch3花田)",
+          "file": "char_ritsu_expr_react_jump.png",
+          "prompt": "Hand-drawn watercolor portrait. 山田律 react_jump expression: eyes suddenly open and soft, mouth slightly open in genuine wonder — the face of someone who has not felt something beautiful in five years and just did. Warm, unguarded, slightly watery eyes. 256x256px transparent.",
+          "design_note": "This expression is ritsu-specific and rare; the emotional high point of his arc."
+        }
+      ]
+    },
+    {
+      "asset_id": "char_hinata",
+      "file_prefix": "char_hinata",
+      "name": "丸山ひなた",
+      "expressions": [
+        {
+          "expression_id": "default",
+          "emotion": "observant_composed",
+          "dialogue_state": "recording in notebook, observing",
+          "file": "char_hinata_expr_default.png",
+          "prompt": "Hand-drawn watercolor portrait. 丸山ひなた (Maruyama Hinata), 24-year-old female. Default expression: calm, slightly downcast eyes focused on something out of frame (her notebook), closed small mouth. The composed face of someone who has a system for everything. Signature sakura pink #F0C4C4 in clothing. 256x256px transparent.",
+          "design_note": "Her default shows controlled attention; she is measuring something."
+        },
+        {
+          "expression_id": "happy",
+          "emotion": "rare_contained_warmth",
+          "dialogue_state": "data aligns perfectly or ritsu moment",
+          "file": "char_hinata_expr_happy.png",
+          "prompt": "Hand-drawn watercolor portrait. 丸山ひなた happy expression: very small genuine smile, eyes crinkle slightly — a warmth that escapes her control system. Not exuberant. The face of someone who allowed one thing to be nice. 256x256px transparent.",
+          "design_note": "Her happy is quiet; half-smile max; eyes tell the real story."
+        },
+        {
+          "expression_id": "thinking",
+          "emotion": "analytical_calm",
+          "dialogue_state": "adding a note to notebook, calculating",
+          "file": "char_hinata_expr_thinking.png",
+          "prompt": "Hand-drawn watercolor portrait. 丸山ひなた thinking expression: eyes looking up-right (accessing data), mouth neutral, pen-tapping gesture implied. Focused precision. 256x256px transparent.",
+          "design_note": "Shows her notebook system at work; analytical but warm-toned."
+        },
+        {
+          "expression_id": "surprised",
+          "emotion": "unexpected_variable_detected",
+          "dialogue_state": "ritsu does something outside her predictions",
+          "file": "char_hinata_expr_surprised.png",
+          "prompt": "Hand-drawn watercolor portrait. 丸山ひなた surprised expression: eyes wide, slight furrow — not fear, but system-error confusion. The face of someone whose model just got a 37% deviation. Cute and genuine. 256x256px transparent.",
+          "design_note": "Her surprised face is about data error not danger; curious, not scared."
+        },
+        {
+          "expression_id": "react_jump",
+          "emotion": "system_override_moment",
+          "dialogue_state": "Ch5 「还行」 moment; seeing 灯台 light for first time",
+          "file": "char_hinata_expr_react_jump.png",
+          "prompt": "Hand-drawn watercolor portrait. 丸山ひなた react_jump expression: eyes suddenly soft and open, a warmth she can't log in her notebook. The control system down for one breath. Not sad, not ecstatic — just present, unguarded. 256x256px transparent.",
+          "design_note": "The rarest ひなた expression; almost identical emotional beat to ritsu's react_jump but from her internal world."
+        }
+      ]
+    },
+    {
+      "asset_id": "char_kenzo",
+      "file_prefix": "char_kenzo",
+      "name": "磯部健三",
+      "expressions": [
+        {
+          "expression_id": "default",
+          "emotion": "steady_watchful",
+          "dialogue_state": "at dock, listening",
+          "file": "char_kenzo_expr_default.png",
+          "prompt": "Hand-drawn watercolor portrait. 磯部健三 (Isobe Kenzo), approx 70-year-old male fisherman. Default expression: weathered calm face, eyes steady and unhurried. The face of a man who has seen fifty years of sea. Signature deep blue #4A6D9A in clothing. 256x256px transparent.",
+          "design_note": "Wrinkles from weather not stress; eyes hold depth not sadness."
+        },
+        {
+          "expression_id": "happy",
+          "emotion": "quiet_satisfaction",
+          "dialogue_state": "ritsu shows growth",
+          "file": "char_kenzo_expr_happy.png",
+          "prompt": "Hand-drawn watercolor portrait. 磯部健三 happy: very slight upward curve of mouth — for him this IS a grin. Eyes warm but still calm. 256x256px transparent.",
+          "design_note": "His happy is microscopic; players who know him will recognize it."
+        },
+        {
+          "expression_id": "thinking",
+          "emotion": "reading_the_sea",
+          "dialogue_state": "checking weather or tide",
+          "file": "char_kenzo_expr_thinking.png",
+          "prompt": "Hand-drawn watercolor portrait. 磯部健三 thinking: eyes slightly squinted against imaginary horizon-glare, mouth neutral. The focused look of a mariner reading conditions. 256x256px transparent.",
+          "design_note": "Thinking for kenzo means looking at something far away."
+        },
+        {
+          "expression_id": "surprised",
+          "emotion": "rare_disruption",
+          "dialogue_state": "unexpected catch or news",
+          "file": "char_kenzo_expr_surprised.png",
+          "prompt": "Hand-drawn watercolor portrait. 磯部健三 surprised: eyebrows raised slightly, eyes marginally wider — still calm but genuine response. The sea-captain version of surprised. 256x256px transparent.",
+          "design_note": "Even his surprised is contained; decades of ocean taught him not to overreact."
+        },
+        {
+          "expression_id": "react_jump",
+          "emotion": "deep_recognition",
+          "dialogue_state": "Ch1 kenzo says 「能走就行」to ritsu's growth",
+          "file": "char_kenzo_expr_react_jump.png",
+          "prompt": "Hand-drawn watercolor portrait. 磯部健三 react_jump: eyes soft and far-away, slight nod energy — the face of a man who recognizes something that took him forty years to learn, manifesting in someone else. Tender. 256x256px transparent.",
+          "design_note": "Not joy, more like recognition. The rarest kenzo expression."
+        }
+      ]
+    },
+    {
+      "asset_id": "char_umeko",
+      "file_prefix": "char_umeko",
+      "name": "桐島梅子",
+      "expressions": [
+        {
+          "expression_id": "default",
+          "emotion": "appraising_direct",
+          "dialogue_state": "observing, forming assessment",
+          "file": "char_umeko_expr_default.png",
+          "prompt": "Hand-drawn watercolor portrait. 桐島梅子 (Kirishima Umeko), approx 55-year-old female pottery artisan. Default expression: calm direct gaze, slight upward expression of assessment — she is always reading people like clay. Signature bamboo green #7DBE77. 256x256px transparent.",
+          "design_note": "Direct but warm; not stern; she is interested not judging."
+        },
+        {
+          "expression_id": "happy",
+          "emotion": "artisan_satisfaction",
+          "dialogue_state": "ritsu's bowl moment; craft moment",
+          "file": "char_umeko_expr_happy.png",
+          "prompt": "Hand-drawn watercolor portrait. 桐島梅子 happy: a full warm smile — for Umeko happy comes easy, grounded in three decades of making things with her hands. Crinkle eyes. 256x256px transparent.",
+          "design_note": "Her warmth is accessible and honest; she doesn't hide her satisfaction."
+        },
+        {
+          "expression_id": "thinking",
+          "emotion": "forming_the_question",
+          "dialogue_state": "preparing to ask ritsu the hard question",
+          "file": "char_umeko_expr_thinking.png",
+          "prompt": "Hand-drawn watercolor portrait. 桐島梅子 thinking: eyes quiet, head slightly tilted, mouth closed but mobile — forming the exact right words. Artisan precision with language. 256x256px transparent.",
+          "design_note": "Her thinking face is the same as shaping clay; methodical, present."
+        },
+        {
+          "expression_id": "surprised",
+          "emotion": "unexpected_honesty",
+          "dialogue_state": "ritsu says something genuine she didn't expect",
+          "file": "char_umeko_expr_surprised.png",
+          "prompt": "Hand-drawn watercolor portrait. 桐島梅子 surprised: eyes open wide, honest delight — someone who has been asking the same question for thirty years and just got a new answer. Warm surprise. 256x256px transparent.",
+          "design_note": "Her surprised is joyful not alarmed."
+        },
+        {
+          "expression_id": "react_jump",
+          "emotion": "deep_craft_recognition",
+          "dialogue_state": "the moment ritsu's irregular bowl is placed on display",
+          "file": "char_umeko_expr_react_jump.png",
+          "prompt": "Hand-drawn watercolor portrait. 桐島梅子 react_jump: eyes soft and full, a smile that has thirty years of bowls behind it. The face of an artisan recognizing when something imperfect is exactly right. 256x256px transparent.",
+          "design_note": "This is her most emotionally open moment; imperfection validated."
+        }
+      ]
+    },
+    {
+      "asset_id": "char_natsuka",
+      "file_prefix": "char_natsuka",
+      "name": "海野夏帆",
+      "expressions": [
+        {
+          "expression_id": "default",
+          "emotion": "quietly_attentive",
+          "dialogue_state": "observing nature or ritsu's movements",
+          "file": "char_natsuka_expr_default.png",
+          "prompt": "Hand-drawn watercolor portrait. 海野夏帆 (Umino Naho), 32-year-old female nature guide. Default expression: calm listening face, eyes slightly angled as if hearing something far away, mouth neutral. Signature deep forest green #3D6645. 256x256px transparent.",
+          "design_note": "She notices everything before she says anything; default is active listening."
+        },
+        {
+          "expression_id": "happy",
+          "emotion": "flower_moment_warmth",
+          "dialogue_state": "handing ritsu the half-open flower bundle",
+          "file": "char_natsuka_expr_happy.png",
+          "prompt": "Hand-drawn watercolor portrait. 海野夏帆 happy: a gentle open smile — shy but genuine. The face of someone who finds it easier to express through giving flowers than words, but this once is smiling. 256x256px transparent.",
+          "design_note": "Naho's happy is quiet and flower-like; soft, not loud."
+        },
+        {
+          "expression_id": "thinking",
+          "emotion": "reading_the_terrain",
+          "dialogue_state": "assessing plant health or path condition",
+          "file": "char_natsuka_expr_thinking.png",
+          "prompt": "Hand-drawn watercolor portrait. 海野夏帆 thinking: head tilted, eyes focused downward-left, tracking something invisible. The attentiveness of a field naturalist. Quiet, sure. 256x256px transparent.",
+          "design_note": "Her thinking face looks like she's hearing the mountain."
+        },
+        {
+          "expression_id": "surprised",
+          "emotion": "sudden_direct_moment",
+          "dialogue_state": "forcing herself to speak directly for first time",
+          "file": "char_natsuka_expr_surprised.png",
+          "prompt": "Hand-drawn watercolor portrait. 海野夏帆 surprised: eyes open, breath caught — the face of someone who just said something too direct for her comfort and isn't sure how it landed. Vulnerable. 256x256px transparent.",
+          "design_note": "Her surprised is a form of self-exposure; she surprised herself too."
+        },
+        {
+          "expression_id": "react_jump",
+          "emotion": "「半开的花已经是花了」moment",
+          "dialogue_state": "Ch3 delivering her key line about half-open flowers",
+          "file": "char_natsuka_expr_react_jump.png",
+          "prompt": "Hand-drawn watercolor portrait. 海野夏帆 react_jump: soft open eyes, the gentlest smile, like sunlight through leaves — she is teaching ritsu by example right now, and she knows it. 256x256px transparent.",
+          "design_note": "This is her most articulate moment through expression, not words."
+        }
+      ]
+    },
+    {
+      "asset_id": "char_fuyuko",
+      "file_prefix": "char_fuyuko",
+      "name": "丸山冬子",
+      "expressions": [
+        {
+          "expression_id": "default",
+          "emotion": "serene_patient",
+          "dialogue_state": "standing at lighthouse, keeping watch",
+          "file": "char_fuyuko_expr_default.png",
+          "prompt": "Hand-drawn watercolor portrait. 丸山冬子 (Maruyama Fuyuko), 65-year-old female lighthouse keeper's widow. Default expression: calm, warm-eyed serenity. The face of someone who has made peace with waiting and finds it dignified, not sad. Signature deep night blue #2A4060. 256x256px transparent.",
+          "design_note": "She radiates quiet protection; default is not neutral, it is peaceful."
+        },
+        {
+          "expression_id": "happy",
+          "emotion": "entrusted_completion",
+          "dialogue_state": "returning a kept item to its rightful owner",
+          "file": "char_fuyuko_expr_happy.png",
+          "prompt": "Hand-drawn watercolor portrait. 丸山冬子 happy: warm grandmother smile, eyes soft and full — the happiness of someone whose purpose was fulfilled. Not triumph, not relief — rightness. 256x256px transparent.",
+          "design_note": "Her happy is about completion, not excitement."
+        },
+        {
+          "expression_id": "thinking",
+          "emotion": "weighing_the_right_moment",
+          "dialogue_state": "deciding when to give ritsu what渉 left behind",
+          "file": "char_fuyuko_expr_thinking.png",
+          "prompt": "Hand-drawn watercolor portrait. 丸山冬子 thinking: eyes looking to the side, slight nostalgic weight — she is measuring the right moment like a lighthouse keeper reads weather. Quiet and deliberate. 256x256px transparent.",
+          "design_note": "Her thinking is heavy with six decades of knowing how things should be timed."
+        },
+        {
+          "expression_id": "surprised",
+          "emotion": "unexpected_convergence",
+          "dialogue_state": "recognizing渉's prediction came true",
+          "file": "char_fuyuko_expr_surprised.png",
+          "prompt": "Hand-drawn watercolor portrait. 丸山冬子 surprised: eyes widened gently, hand-to-heart gesture implied — the surprise of the unmistakable. Not shock, recognition. Like the lighthouse finding what it was looking for. 256x256px transparent.",
+          "design_note": "Her surprised is always recognition; she's been expecting this."
+        },
+        {
+          "expression_id": "react_jump",
+          "emotion": "灯亮了",
+          "dialogue_state": "Ch6 lighthouse ignites; 「渉さん、見えてますよ」",
+          "file": "char_fuyuko_expr_react_jump.png",
+          "prompt": "Hand-drawn watercolor portrait. 丸山冬子 react_jump: eyes full and shining, the most open her face has ever been — not crying, not laughing, just the face of a woman whose longest vigil just completed. Profound warmth. 256x256px transparent.",
+          "design_note": "This is the emotional peak of the whole game expressed in one face."
+        }
+      ]
+    },
+    {
+      "asset_id": "char_gicho",
+      "file_prefix": "char_gicho",
+      "name": "议长·橘猫",
+      "expressions": [
+        {
+          "expression_id": "default",
+          "emotion": "regal_observing",
+          "dialogue_state": "sitting wherever feels right",
+          "file": "char_gicho_expr_default.png",
+          "prompt": "Hand-drawn watercolor portrait. 议长·橘猫 (Chairman, orange tabby cat). Default expression: cat resting face — slightly narrowed dignified eyes, the air of someone who has been running this island far longer than anyone else. 256x256px transparent.",
+          "design_note": "Cat's resting expression is inherently judgmental but the watercolor warmth softens it."
+        },
+        {
+          "expression_id": "happy",
+          "emotion": "the_verdicts_in",
+          "dialogue_state": "approving of ritsu; that 12-second sit-beside moment",
+          "file": "char_gicho_expr_happy.png",
+          "prompt": "Hand-drawn watercolor portrait. 议长·橘猫 happy: cat happy squint — eyes crinkled to happy slits. The face of a cat who has approved something and everyone knows it. 256x256px transparent.",
+          "design_note": "Cat's approval is enormous; this is the Chairman endorsing ritsu's island membership."
+        },
+        {
+          "expression_id": "thinking",
+          "emotion": "assessing",
+          "dialogue_state": "sitting near ritsu making his judgment",
+          "file": "char_gicho_expr_thinking.png",
+          "prompt": "Hand-drawn watercolor portrait. 议长·橘猫 thinking: cat considering face — one eye slightly more open, tail still, the deliberate assessment of a very old cat deciding something important. 256x256px transparent.",
+          "design_note": "This is the face during the famous 12 seconds."
+        },
+        {
+          "expression_id": "surprised",
+          "emotion": "unusual_anomaly_detected",
+          "dialogue_state": "something genuinely new on the island",
+          "file": "char_gicho_expr_surprised.png",
+          "prompt": "Hand-drawn watercolor portrait. 议长·橘猫 surprised: ears fully forward, eyes wide — for a cat this old to be surprised, something truly unusual must have happened. Alert and genuinely interested. 256x256px transparent.",
+          "design_note": "Very rare expression; the Chairman has seen everything before — almost."
+        },
+        {
+          "expression_id": "react_jump",
+          "emotion": "cat_purr_energy",
+          "dialogue_state": "attending Fuyuko's nightly lighthouse vigil",
+          "file": "char_gicho_expr_react_jump.png",
+          "prompt": "Hand-drawn watercolor portrait. 议长·橘猫 react_jump: eyes softly closed, content expression of deep satisfaction — the face of a cat being exactly where it is supposed to be. Warmth absolute. 256x256px transparent.",
+          "design_note": "His highest expression state; he closes his eyes meaning full trust and contentment."
+        }
+      ]
+    }
+  ]
+}

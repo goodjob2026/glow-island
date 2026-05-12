@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/frame-animation-generation",
+  "asset_id": "char_gicho",
+  "file_prefix": "char_gicho",
+  "name": "议长·橘猫",
+  "canvas_size_px": { "width": 192, "height": 192 },
+  "frame_rate": 12,
+  "format": "png",
+  "atlas": ".allforai/game-design/atlases/characters_atlas.json",
+  "note": "char_gicho uses frame animation (not DragonBones) per art-asset-inventory.json animation_method=frame_animation. Cat character uses simpler part set: head, ears, torso, tail. 192x192px compact canvas.",
+  "animations": [
+    {
+      "animation_id": "idle",
+      "loop": true,
+      "duration_ms": 2000,
+      "frame_count": 4,
+      "frame_files": [
+        "char_gicho_idle_f01.png",
+        "char_gicho_idle_f02.png",
+        "char_gicho_idle_f03.png",
+        "char_gicho_idle_f04.png"
+      ],
+      "description": "Sitting cat. Subtle breathing: chest rises slightly f02, tail tip curls f03. Eyes half-closed, dignified. Loop seamless.",
+      "image_prompt": "Hand-drawn watercolor animation frame. 议长·橘猫 (Chairman orange tabby cat), dignified sitting pose, 192x192px canvas. {FRAME_DESCRIPTION}. Warm pastel watercolor chibi style, signature color deep navy #2A3650 on collar/marking. Transparent background. No text."
+    },
+    {
+      "animation_id": "happy",
+      "loop": false,
+      "duration_ms": 600,
+      "frame_count": 4,
+      "frame_files": [
+        "char_gicho_happy_f01.png",
+        "char_gicho_happy_f02.png",
+        "char_gicho_happy_f03.png",
+        "char_gicho_happy_f04.png"
+      ],
+      "description": "Cat narrows eyes contentedly, tail rises and curls in half-circle. f01 neutral, f02 eyes narrowing, f03 full happy squint + tail up, f04 settle back.",
+      "image_prompt": "Hand-drawn watercolor animation frame. 议长·橘猫 happy expression, {FRAME_DESCRIPTION}. 192x192px. Same style as idle."
+    },
+    {
+      "animation_id": "surprised",
+      "loop": false,
+      "duration_ms": 500,
+      "frame_count": 3,
+      "frame_files": [
+        "char_gicho_surprised_f01.png",
+        "char_gicho_surprised_f02.png",
+        "char_gicho_surprised_f03.png"
+      ],
+      "description": "Cat ears perk straight up, eyes go wide. f01 neutral, f02 ears fully alert + eyes wide, f03 settle. Quick readability.",
+      "image_prompt": "Hand-drawn watercolor animation frame. 议长·橘猫 surprised expression, {FRAME_DESCRIPTION}. 192x192px. Same style."
+    },
+    {
+      "animation_id": "wave",
+      "loop": false,
+      "duration_ms": 800,
+      "frame_count": 4,
+      "frame_files": [
+        "char_gicho_wave_f01.png",
+        "char_gicho_wave_f02.png",
+        "char_gicho_wave_f03.png",
+        "char_gicho_wave_f04.png"
+      ],
+      "description": "Cat raises one paw in greeting gesture. f01 neutral, f02 paw raises, f03 paw at peak, f04 paw lowers. Dignified, not frantic.",
+      "image_prompt": "Hand-drawn watercolor animation frame. 议长·橘猫 greeting paw wave, {FRAME_DESCRIPTION}. 192x192px. Same style."
+    }
+  ],
+  "output_paths": {
+    "frames_dir": ".allforai/game-design/art/char_gicho/",
+    "spec_path": ".allforai/game-design/systems/char-gicho-frame-animation-spec.json",
+    "atlas_strip_path": ".allforai/game-design/art/char_gicho_frames_strip.png"
+  },
+  "validation": {
+    "checks": [
+      "all_frames_same_canvas_size_192x192",
+      "transparent_background",
+      "consistent_cat_proportions_across_frames",
+      "no_style_drift_between_animations",
+      "loop_frames_match_first_and_last_pose"
+    ],
+    "verdict": "spec_ready",
+    "visual_validation": "pending_image_generation"
+  }
+}

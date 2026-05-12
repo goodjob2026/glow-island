@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/skeletal-animation",
+  "render_path": "static_keyframe_board",
+  "render_unavailable_note": "DragonBones Pro detected but requires IDE project creation. All specs are complete for handoff to DragonBones Pro. Keyframe sheet specs provided as static previews.",
+  "preview_items": [
+    { "asset_id": "char_ritsu",   "animation_id": "idle",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_ritsu_idle_keyframes.png",       "duration_ms": 2000, "loop": true,  "key_poses": ["neutral_t0","inhale_t1000","exhale_t2000"] },
+    { "asset_id": "char_ritsu",   "animation_id": "happy",      "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_ritsu_happy_keyframes.png",      "duration_ms": 800,  "loop": false, "key_poses": ["neutral_t0","jump_peak_t300","land_settle_t600","recover_t800"] },
+    { "asset_id": "char_ritsu",   "animation_id": "surprised",  "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_ritsu_surprised_keyframes.png",  "duration_ms": 600,  "loop": false, "key_poses": ["neutral_t0","recoil_t150","hold_t400","recover_t600"] },
+    { "asset_id": "char_ritsu",   "animation_id": "sad",        "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_ritsu_sad_keyframes.png",        "duration_ms": 1200, "loop": false, "key_poses": ["neutral_t0","droop_t500","hold_t900","recover_t1200"] },
+    { "asset_id": "char_ritsu",   "animation_id": "wave",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_ritsu_wave_keyframes.png",       "duration_ms": 1000, "loop": false, "key_poses": ["neutral_t0","raise_t200","wave_peak_t500","wave_return_t750","lower_t1000"] },
+    { "asset_id": "char_ritsu",   "animation_id": "react_jump", "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_ritsu_react_jump_keyframes.png", "duration_ms": 600,  "loop": false, "key_poses": ["neutral_t0","startled_t100","recoil_t200","open_t400","settle_t600"] },
+
+    { "asset_id": "char_hinata",  "animation_id": "idle",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_hinata_idle_keyframes.png",      "duration_ms": 2000, "loop": true,  "key_poses": ["neutral_with_notebook_t0","notebook_tilt_t1000","neutral_t2000"] },
+    { "asset_id": "char_hinata",  "animation_id": "happy",      "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_hinata_happy_keyframes.png",     "duration_ms": 700,  "loop": false, "key_poses": ["neutral_t0","contained_lift_t250","settle_t700"] },
+    { "asset_id": "char_hinata",  "animation_id": "surprised",  "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_hinata_surprised_keyframes.png", "duration_ms": 500,  "loop": false, "key_poses": ["neutral_t0","pop_t120","recover_t500"] },
+    { "asset_id": "char_hinata",  "animation_id": "sad",        "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_hinata_sad_keyframes.png",       "duration_ms": 1000, "loop": false, "key_poses": ["neutral_t0","head_tilt_t400","hold_t750","recover_t1000"] },
+    { "asset_id": "char_hinata",  "animation_id": "wave",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_hinata_wave_keyframes.png",      "duration_ms": 900,  "loop": false, "key_poses": ["neutral_t0","raise_t200","wave_t500","lower_t900"] },
+
+    { "asset_id": "char_kenzo",   "animation_id": "idle",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_kenzo_idle_keyframes.png",       "duration_ms": 2000, "loop": true,  "key_poses": ["steady_t0","slow_breath_t1000","return_t2000"] },
+    { "asset_id": "char_kenzo",   "animation_id": "happy",      "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_kenzo_happy_keyframes.png",      "duration_ms": 800,  "loop": false, "key_poses": ["neutral_t0","micro_nod_t300","settle_t800"] },
+    { "asset_id": "char_kenzo",   "animation_id": "surprised",  "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_kenzo_surprised_keyframes.png",  "duration_ms": 500,  "loop": false, "key_poses": ["neutral_t0","alert_t150","settle_t500"] },
+    { "asset_id": "char_kenzo",   "animation_id": "sad",        "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_kenzo_sad_keyframes.png",        "duration_ms": 1000, "loop": false, "key_poses": ["neutral_t0","head_bow_t400","settle_t1000"] },
+    { "asset_id": "char_kenzo",   "animation_id": "wave",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_kenzo_wave_keyframes.png",       "duration_ms": 900,  "loop": false, "key_poses": ["neutral_t0","raise_t200","hold_t600","lower_t900"] },
+
+    { "asset_id": "char_umeko",   "animation_id": "idle",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_umeko_idle_keyframes.png",       "duration_ms": 2000, "loop": true,  "key_poses": ["forward_lean_t0","breath_t1000","return_t2000"] },
+    { "asset_id": "char_umeko",   "animation_id": "happy",      "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_umeko_happy_keyframes.png",      "duration_ms": 700,  "loop": false, "key_poses": ["neutral_t0","nod_t200","settle_t700"] },
+    { "asset_id": "char_umeko",   "animation_id": "surprised",  "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_umeko_surprised_keyframes.png",  "duration_ms": 500,  "loop": false, "key_poses": ["neutral_t0","open_t130","settle_t500"] },
+    { "asset_id": "char_umeko",   "animation_id": "sad",        "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_umeko_sad_keyframes.png",        "duration_ms": 1000, "loop": false, "key_poses": ["forward_lean_t0","deeper_bow_t400","return_t1000"] },
+    { "asset_id": "char_umeko",   "animation_id": "wave",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_umeko_wave_keyframes.png",       "duration_ms": 900,  "loop": false, "key_poses": ["neutral_t0","raise_t200","hold_t600","lower_t900"] },
+
+    { "asset_id": "char_natsuka", "animation_id": "idle",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_natsuka_idle_keyframes.png",     "duration_ms": 2000, "loop": true,  "key_poses": ["attentive_t0","listen_tilt_t800","return_t2000"] },
+    { "asset_id": "char_natsuka", "animation_id": "happy",      "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_natsuka_happy_keyframes.png",    "duration_ms": 700,  "loop": false, "key_poses": ["neutral_t0","lift_t250","settle_t700"] },
+    { "asset_id": "char_natsuka", "animation_id": "surprised",  "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_natsuka_surprised_keyframes.png","duration_ms": 500,  "loop": false, "key_poses": ["neutral_t0","startle_t140","settle_t500"] },
+    { "asset_id": "char_natsuka", "animation_id": "sad",        "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_natsuka_sad_keyframes.png",      "duration_ms": 1000, "loop": false, "key_poses": ["neutral_t0","bow_t400","return_t1000"] },
+    { "asset_id": "char_natsuka", "animation_id": "wave",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_natsuka_wave_keyframes.png",     "duration_ms": 900,  "loop": false, "key_poses": ["neutral_t0","raise_t200","hold_t600","lower_t900"] },
+
+    { "asset_id": "char_fuyuko",  "animation_id": "idle",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_fuyuko_idle_keyframes.png",      "duration_ms": 2000, "loop": true,  "key_poses": ["serene_t0","slight_breath_t1000","return_t2000"] },
+    { "asset_id": "char_fuyuko",  "animation_id": "happy",      "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_fuyuko_happy_keyframes.png",     "duration_ms": 800,  "loop": false, "key_poses": ["neutral_t0","nod_t300","warm_settle_t800"] },
+    { "asset_id": "char_fuyuko",  "animation_id": "surprised",  "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_fuyuko_surprised_keyframes.png", "duration_ms": 500,  "loop": false, "key_poses": ["serene_t0","recognition_t140","settle_t500"] },
+    { "asset_id": "char_fuyuko",  "animation_id": "sad",        "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_fuyuko_sad_keyframes.png",       "duration_ms": 1200, "loop": false, "key_poses": ["serene_t0","tender_bow_t500","hold_t900","return_t1200"] },
+    { "asset_id": "char_fuyuko",  "animation_id": "wave",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_fuyuko_wave_keyframes.png",      "duration_ms": 1000, "loop": false, "key_poses": ["neutral_t0","raise_t250","hold_t650","lower_t1000"] },
+
+    { "asset_id": "char_gicho",   "animation_id": "idle",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_gicho_idle_keyframes.png",       "duration_ms": 2000, "loop": true,  "frame_count": 4, "note": "frame animation; 4 frames at 12fps" },
+    { "asset_id": "char_gicho",   "animation_id": "happy",      "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_gicho_happy_keyframes.png",      "duration_ms": 600,  "loop": false, "frame_count": 4 },
+    { "asset_id": "char_gicho",   "animation_id": "surprised",  "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_gicho_surprised_keyframes.png",  "duration_ms": 500,  "loop": false, "frame_count": 3 },
+    { "asset_id": "char_gicho",   "animation_id": "wave",       "preview_type": "keyframe_sheet", "image_path": ".allforai/game-design/art/char_gicho_wave_keyframes.png",       "duration_ms": 800,  "loop": false, "frame_count": 4 }
+  ]
+}

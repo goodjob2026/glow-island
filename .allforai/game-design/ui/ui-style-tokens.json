@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/ui-mockup-generation",
+  "source_style_tokens": ".allforai/game-design/art/visual-style-tokens.json",
+  "color": {
+    "background_sand": "#F7EDD8",
+    "dialog_wood": "#E8D8B4",
+    "border_brown": "#8B6030",
+    "text_dark": "#3A2810",
+    "text_medium": "#8B6030",
+    "button_primary_top": "#F0997A",
+    "button_primary_bottom": "#E8866A",
+    "button_primary_pressed": "#D0705A",
+    "button_disabled_fill": "#C8B8A0",
+    "button_disabled_text": "#8A7860",
+    "soft_currency": "#F5C842",
+    "hard_currency_start": "#5BBFB5",
+    "hard_currency_end": "#3A9E94",
+    "progress_fill": "#7DBE77",
+    "combo_bubble_bg": "#C85A40",
+    "combo_text": "#F5C842",
+    "step_warning": "#EE8C55",
+    "step_critical": "#C85A40"
+  },
+  "typography": {
+    "family_primary": "思源圆体",
+    "family_fallback": ["SF Pro Rounded", "Nunito"],
+    "scale_factor": "2x",
+    "sizes": {
+      "display": 32,
+      "heading": 24,
+      "subheading": 20,
+      "body": 16,
+      "caption": 13,
+      "micro": 11
+    },
+    "colors": {
+      "on_primary": "#FFFFFF",
+      "on_surface": "#3A2810",
+      "on_disabled": "#8A7860"
+    }
+  },
+  "spacing": {
+    "base_unit_px": 8,
+    "panel_padding_px": 16,
+    "button_padding_horizontal_px": 20,
+    "list_item_gap_px": 8,
+    "card_gap_px": 16
+  },
+  "border": {
+    "width_px": 2,
+    "color": "#8B6030",
+    "style": "solid",
+    "corner_radius_button_px": 24,
+    "corner_radius_dialog_px": 20,
+    "corner_radius_card_px": 16,
+    "corner_radius_icon_px": 12
+  },
+  "panel": {
+    "fill": "#E8D8B4",
+    "border": "2px solid #8B6030",
+    "shadow": "0 8px 24px rgba(0,0,0,0.15)",
+    "texture": "wood_sign_warm_sand",
+    "scrim_color": "#1E2E50",
+    "scrim_opacity": 0.5
+  },
+  "feedback": {
+    "coin_gain_color": "#F5C842",
+    "step_warning_pulse_hz": 0.8,
+    "button_press_translate_y_px": 2,
+    "modal_enter_spring": "scale_0.7→1.05→1.0",
+    "modal_enter_duration_s": 0.4,
+    "modal_exit_duration_s": 0.25
+  },
+  "icon": {
+    "style": "hand_drawn_organic_filled",
+    "size_standard_px": 64,
+    "size_button_px": 56,
+    "line_weight_px": 2,
+    "shadow": "0 2px 4px rgba(0,0,0,0.08)"
+  }
+}

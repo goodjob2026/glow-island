@@ -1,0 +1,12 @@
+{
+  "report_id": "glow-island-template-registry-report-v1",
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "status": "validated",
+  "template_kinds_count": 5,
+  "all_have_source_domain": true,
+  "all_have_runtime_consumer": true,
+  "all_have_repair_target": true,
+  "orphaned_templates": [],
+  "conclusion": "5种template种类（level/tile_type/economy_sku/npc/chapter）均有明确source domain、runtime consumer和repair target。"
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "generated_by": "environment-art-gen",
+  "spec_ref": ".allforai/game-design/art/props/prop-generation-spec.json",
+  "total_props": 2,
+  "entries": [
+    {
+      "asset_id": "prop_notebook",
+      "file_prefix": "prop_notebook",
+      "prop_kind": "story_prop",
+      "gameplay_role": "narrative_item",
+      "scale_class": "small",
+      "collision_hint": "none",
+      "anchor": "center_bottom",
+      "variants": [
+        {
+          "variant_id": "closed",
+          "file_prefix": "prop_notebook_closed",
+          "image_request_id": "prop_notebook_closed_gen",
+          "path": ".allforai/game-design/art/props/prop_notebook_closed.png",
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "open",
+          "file_prefix": "prop_notebook_open",
+          "image_request_id": "prop_notebook_open_gen",
+          "path": ".allforai/game-design/art/props/prop_notebook_open.png",
+          "state": "spec_ready"
+        }
+      ],
+      "state": "spec_ready",
+      "consumers": ["environment-art-gen", "art-qa", "runtime-npc-dialogue"],
+      "validation": {
+        "style_check": "pending",
+        "alpha_check": "pending",
+        "scale_readability_check": "pending",
+        "collision_metadata_check": "pass"
+      }
+    },
+    {
+      "asset_id": "prop_lighthouse_lamp",
+      "file_prefix": "prop_lighthouse_lamp",
+      "prop_kind": "animated_environment_prop",
+      "gameplay_role": "chapter_6_restoration_centerpiece",
+      "scale_class": "medium",
+      "collision_hint": "none",
+      "anchor": "center_bottom",
+      "variants": [
+        {"variant_id": "prop_lighthouse_lamp_frame_01", "file_prefix": "prop_lighthouse_lamp_frame_01", "image_request_id": "prop_lighthouse_lamp_framesheet_gen", "path": ".allforai/game-design/art/props/prop_lighthouse_lamp_frames/prop_lighthouse_lamp_frame_01.png", "state": "spec_ready"},
+        {"variant_id": "prop_lighthouse_lamp_frame_02", "file_prefix": "prop_lighthouse_lamp_frame_02", "image_request_id": "prop_lighthouse_lamp_framesheet_gen", "path": ".allforai/game-design/art/props/prop_lighthouse_lamp_frames/prop_lighthouse_lamp_frame_02.png", "state": "spec_ready"},
+        {"variant_id": "prop_lighthouse_lamp_frame_03", "file_prefix": "prop_lighthouse_lamp_frame_03", "image_request_id": "prop_lighthouse_lamp_framesheet_gen", "path": ".allforai/game-design/art/props/prop_lighthouse_lamp_frames/prop_lighthouse_lamp_frame_03.png", "state": "spec_ready"},
+        {"variant_id": "prop_lighthouse_lamp_frame_04", "file_prefix": "prop_lighthouse_lamp_frame_04", "image_request_id": "prop_lighthouse_lamp_framesheet_gen", "path": ".allforai/game-design/art/props/prop_lighthouse_lamp_frames/prop_lighthouse_lamp_frame_04.png", "state": "spec_ready"},
+        {"variant_id": "prop_lighthouse_lamp_frame_05", "file_prefix": "prop_lighthouse_lamp_frame_05", "image_request_id": "prop_lighthouse_lamp_framesheet_gen", "path": ".allforai/game-design/art/props/prop_lighthouse_lamp_frames/prop_lighthouse_lamp_frame_05.png", "state": "spec_ready"},
+        {"variant_id": "prop_lighthouse_lamp_frame_06", "file_prefix": "prop_lighthouse_lamp_frame_06", "image_request_id": "prop_lighthouse_lamp_framesheet_gen", "path": ".allforai/game-design/art/props/prop_lighthouse_lamp_frames/prop_lighthouse_lamp_frame_06.png", "state": "spec_ready"},
+        {"variant_id": "prop_lighthouse_lamp_frame_07", "file_prefix": "prop_lighthouse_lamp_frame_07", "image_request_id": "prop_lighthouse_lamp_framesheet_gen", "path": ".allforai/game-design/art/props/prop_lighthouse_lamp_frames/prop_lighthouse_lamp_frame_07.png", "state": "spec_ready"},
+        {"variant_id": "prop_lighthouse_lamp_frame_08", "file_prefix": "prop_lighthouse_lamp_frame_08", "image_request_id": "prop_lighthouse_lamp_framesheet_gen", "path": ".allforai/game-design/art/props/prop_lighthouse_lamp_frames/prop_lighthouse_lamp_frame_08.png", "state": "spec_ready"}
+      ],
+      "state": "spec_ready",
+      "consumers": ["environment-art-gen", "art-qa", "runtime-chapter-6-scene", "vfx-lighthouse-glow"],
+      "validation": {
+        "style_check": "pending",
+        "alpha_check": "pending",
+        "multi_frame_consistency_check": "pending",
+        "scale_readability_check": "pending",
+        "collision_metadata_check": "pass"
+      }
+    }
+  ]
+}

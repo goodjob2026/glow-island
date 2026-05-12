@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/screen-layout-spec",
+  "status": "COMPLETED",
+  "checks_passed": [
+    "所有目标 screen 均有布局条目",
+    "所有 breakpoint 均已定义（720×1280 移动端竖屏基准）",
+    "HUD 底栏（y=1100–1180）与棋盘区域（y=100–1100）不重叠",
+    "灯塔侧栏（x=660–720）与主棋盘左侧无重叠",
+    "商店 modal 尺寸（480×640）适合最小目标视口",
+    "对话框布局保留角色立绘区域，不遮挡棋盘连线区",
+    "z_order 明确定义，dialogue/shop overlay 在最顶层（z=10）",
+    "所有 screen 均有明确的 navigation back_behavior"
+  ],
+  "checks_warned": [],
+  "checks_failed": [],
+  "repaired_conflicts": []
+}

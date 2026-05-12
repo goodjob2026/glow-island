@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/icon-generation",
+  "node": "ui-art-gen",
+  "style_basis": {
+    "dimension": "2d",
+    "render_style": "hand_drawn",
+    "background_policy": "transparent",
+    "sizes": [64],
+    "atlas_target": "ui_elements_atlas"
+  },
+  "icon_style_tokens": {
+    "outline_weight_px": 2,
+    "outline_color_rule": "主色加深32%，禁止纯黑 #000000",
+    "fill_style": "flat_watercolor_with_soft_gradient",
+    "shadow": "0 2px 4px rgba(0,0,0,0.08)",
+    "corner_rounding": "organic_natural",
+    "readability_at_32px": "required",
+    "positive_style_keywords": ["hand-drawn watercolor", "soft warm pastel", "round organic shapes", "healing Japanese island"],
+    "negative_style_keywords": ["pixel art", "neon", "metallic chrome", "pure black", "sharp geometric", "hyper-realistic 3D"]
+  },
+  "icons": [
+    {
+      "asset_id": "ui_coin_icon",
+      "name": "沙滩币图标",
+      "file_prefix": "ui_coin_icon",
+      "category": "currency",
+      "semantic": "沙滩币（beach_coin），游戏唯一软货币，用于购买场外辅助道具",
+      "consumer_refs": ["cmp_coin_display", "screen_gameplay", "screen_level_select", "screen_shop"],
+      "size_px": 64,
+      "background_policy": "transparent",
+      "output_path": ".allforai/game-design/art/icons/ui_coin_icon.png",
+      "prompt": "Hand-drawn watercolor beach coin icon, 64×64px, transparent background. Round coin shape, golden yellow #F5C842 fill, warm sand texture overlay, subtle shell or wave embossed pattern in driftwood #C4955A. Organic hand-drawn outline in warm brown (not black). Soft drop shadow. Clean, simple, readable at 32px. No text. Healing Japanese island aesthetic.",
+      "negative_prompt": "pixel art, neon, metallic chrome, pure black outline, sharp edges, realistic photo, text overlay, complex details",
+      "validation_checks": ["32px 下轮廓清晰可识别", "无文字覆盖", "透明背景", "颜色为金黄色系"]
+    },
+    {
+      "asset_id": "ui_star_icon",
+      "name": "星星图标",
+      "file_prefix": "ui_star_icon",
+      "category": "hud",
+      "semantic": "关卡完成评分星星（空/满/半），用于关卡卡片和结算界面",
+      "consumer_refs": ["cmp_star_icon", "screen_level_select"],
+      "size_px": 64,
+      "background_policy": "transparent",
+      "variants": ["empty", "filled", "half"],
+      "output_paths": {
+        "empty": ".allforai/game-design/art/icons/ui_star_icon_empty.png",
+        "filled": ".allforai/game-design/art/icons/ui_star_icon_filled.png",
+        "half": ".allforai/game-design/art/icons/ui_star_icon_half.png"
+      },
+      "prompt_filled": "Hand-drawn watercolor 5-point star icon, 64×64px, transparent background. Golden yellow #F5C842 fill, warm amber stroke #C4955A 2px, soft inner glow, organic round-tipped star shape. Healing Japanese island aesthetic. No text.",
+      "prompt_empty": "Hand-drawn watercolor 5-point star icon outline, 64×64px, transparent background. Grey-sand #C4B090 fill, brown outline #8B6030 2px. Same organic shape as filled variant. No text.",
+      "prompt_half": "Hand-drawn watercolor 5-point star icon, 64×64px, transparent background. Left half golden #F5C842, right half grey-sand #C4B090, split cleanly at center vertical axis. Organic round-tipped star shape. No text.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp geometric star, text overlay",
+      "validation_checks": ["三个变体形状完全一致", "满星与空星视觉对比明显", "64px 下轮廓清晰"]
+    }
+  ],
+  "validation_status": "COMPLETED_WITH_LIMITS",
+  "limit_reason": "图片生成待执行"
+}

@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "generated_by": "game-design-finalize / template-registry",
+  "source_refs": [
+    ".allforai/game-design/game-design-doc.json",
+    ".allforai/game-design/design/program-development-node-handoff.json"
+  ],
+
+  "templates": [
+    {
+      "template_kind": "level",
+      "schema_id": "level-schema-v1",
+      "owner_domain": "game-design / level-design",
+      "source_domains": [
+        ".allforai/game-design/systems/level-design.json",
+        ".allforai/game-design/systems/puzzle-design.json",
+        ".allforai/game-design/systems/core-mechanics.json"
+      ],
+      "required_ref_domains": ["tile_types", "obstacles", "special_tiles"],
+      "runtime_consumers": ["implement-puzzle-core", "implement-game-session", "level-editor-tool"],
+      "instance_path": ".allforai/game-templates/instances/level.json",
+      "schema_path": ".allforai/game-templates/schemas/level.schema.json",
+      "lifecycle_state": "instances_generated",
+      "repair_target": ".allforai/game-design/systems/level-design.json"
+    },
+    {
+      "template_kind": "tile_type",
+      "schema_id": "tile-type-schema-v1",
+      "owner_domain": "game-design / puzzle-design",
+      "source_domains": [
+        ".allforai/game-design/systems/puzzle-design.json",
+        ".allforai/game-design/systems/tile-art-spec.json"
+      ],
+      "required_ref_domains": ["art_refs", "unlock_chapter"],
+      "runtime_consumers": ["implement-puzzle-core"],
+      "instance_path": ".allforai/game-templates/instances/tile_type.json",
+      "schema_path": ".allforai/game-templates/schemas/tile_type.schema.json",
+      "lifecycle_state": "instances_generated",
+      "repair_target": ".allforai/game-design/systems/puzzle-design.json"
+    },
+    {
+      "template_kind": "economy_sku",
+      "schema_id": "economy-sku-schema-v1",
+      "owner_domain": "game-design / monetization-design",
+      "source_domains": [
+        ".allforai/game-design/systems/monetization-design.json"
+      ],
+      "required_ref_domains": ["beach_coins", "sku_id", "price_usd"],
+      "runtime_consumers": ["implement-shop-iap"],
+      "instance_path": ".allforai/game-templates/instances/economy_sku.json",
+      "schema_path": ".allforai/game-templates/schemas/economy_sku.schema.json",
+      "lifecycle_state": "instances_generated",
+      "repair_target": ".allforai/game-design/systems/monetization-design.json"
+    },
+    {
+      "template_kind": "npc",
+      "schema_id": "npc-schema-v1",
+      "owner_domain": "game-design / worldbuilding",
+      "source_domains": [
+        ".allforai/game-design/systems/worldbuilding.json",
+        ".allforai/game-design/systems/character-arc.json",
+        ".allforai/game-design/systems/character-art-spec.json"
+      ],
+      "required_ref_domains": ["character_id", "chapter_first_appears", "art_refs"],
+      "runtime_consumers": ["implement-ui-systems", "implement-game-session"],
+      "instance_path": ".allforai/game-templates/instances/npc.json",
+      "schema_path": ".allforai/game-templates/schemas/npc.schema.json",
+      "lifecycle_state": "instances_generated",
+      "repair_target": ".allforai/game-design/systems/worldbuilding.json"
+    },
+    {
+      "template_kind": "chapter",
+      "schema_id": "chapter-schema-v1",
+      "owner_domain": "game-design / level-design",
+      "source_domains": [
+        ".allforai/game-design/systems/level-design.json",
+        ".allforai/game-design/systems/worldbuilding.json",
+        ".allforai/game-design/systems/retention-hook.json"
+      ],
+      "required_ref_domains": ["level_range", "season", "background_art_refs"],
+      "runtime_consumers": ["implement-game-session", "implement-island-map"],
+      "instance_path": ".allforai/game-templates/instances/chapter.json",
+      "schema_path": ".allforai/game-templates/schemas/chapter.schema.json",
+      "lifecycle_state": "instances_generated",
+      "repair_target": ".allforai/game-design/systems/level-design.json"
+    }
+  ],
+
+  "report_ref": ".allforai/game-templates/template-registry-report.json"
+}

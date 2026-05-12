@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/ui-mockup-generation",
+  "status": "COMPLETED_WITH_LIMITS",
+  "limit_reason": "图片资产尚未生成（需在 art-qa 批准后由 AI 图片生成工具执行）；所有规格文档完整有效",
+  "checks_passed": [
+    "所有 mockup target 均引用已注册的 screen 或 component",
+    "所有 mockup output_path 以目标 file_prefix 开头",
+    "所有 screen mockup 均引用了对应的 layout breakpoint",
+    "所有 component mockup 均引用了 component-state-spec.json 中定义的状态",
+    "所有引用的游戏美术资产均在 asset-registry.json 中存在",
+    "ui-style-tokens.json 包含 color / typography / spacing / border / panel / feedback / icon 七类 token",
+    "12 个 mockup target 的提示词均包含正向/负向约束",
+    "10 个 canonical_registry.ui[] 资产全部在 mockup spec 中有对应条目"
+  ],
+  "checks_warned": [
+    "图片未生成，视觉验证将在图片生成后执行"
+  ],
+  "checks_failed": [],
+  "repair_log": [],
+  "unresolved_issues": []
+}

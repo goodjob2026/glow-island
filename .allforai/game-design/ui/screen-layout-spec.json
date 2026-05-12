@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/screen-layout-spec",
+  "base_resolution": { "width": 720, "height": 1280 },
+  "safe_area": { "top_px": 44, "bottom_px": 34, "left_px": 0, "right_px": 0 },
+  "screens": [
+    {
+      "screen_id": "screen_gameplay",
+      "name": "游戏主界面",
+      "layout_type": "gameplay",
+      "breakpoints": [
+        {
+          "name": "mobile_portrait_720x1280",
+          "width": 720,
+          "height": 1280,
+          "regions": [
+            {
+              "region_id": "status_bar",
+              "label": "状态栏（步数+章节名）",
+              "bounds": { "x": 0, "y": 44, "w": 720, "h": 56 },
+              "protected": false,
+              "contents": ["step_counter（居中）", "chapter_name（右上角）"]
+            },
+            {
+              "region_id": "playfield",
+              "label": "棋盘区域",
+              "bounds": { "x": 0, "y": 100, "w": 660, "h": 1000 },
+              "protected": true,
+              "note": "宽度 660px 为棋盘占位，右侧 60px 留给灯塔进度条"
+            },
+            {
+              "region_id": "lighthouse_sidebar",
+              "label": "灯塔进度条侧栏",
+              "bounds": { "x": 660, "y": 100, "w": 60, "h": 1000 },
+              "protected": false,
+              "contents": ["ui_lighthouse_progress"]
+            },
+            {
+              "region_id": "hud_bottom_bar",
+              "label": "HUD 底栏",
+              "bounds": { "x": 0, "y": 1100, "w": 720, "h": 80 },
+              "protected": false,
+              "contents": [
+                "ui_coin_icon + 沙滩币数字（左 16px 起）",
+                "ui_btn_shuffle（右起第3个，各80px）",
+                "ui_btn_hint（右起第2个）",
+                "ui_btn_continue（右起第1个）"
+              ]
+            },
+            {
+              "region_id": "safe_zone_bottom",
+              "label": "底部安全区",
+              "bounds": { "x": 0, "y": 1180, "w": 720, "h": 66 },
+              "protected": false,
+              "contents": ["空白，Home 条预留"]
+            }
+          ],
+          "safe_zones": [
+            { "zone_id": "sz_top", "bounds": { "x": 0, "y": 0, "w": 720, "h": 44 } },
+            { "zone_id": "sz_bottom", "bounds": { "x": 0, "y": 1246, "w": 720, "h": 34 } }
+          ]
+        }
+      ],
+      "navigation": { "back_behavior": "pause_menu" },
+      "hud_compliance": "HUD 底栏（y=1100–1180）不覆盖棋盘区域（y=100–1100），灯塔侧栏（x=660–720）不遮挡主棋盘",
+      "z_order": [
+        "bg_chapter（z=0）",
+        "board_tiles（z=1）",
+        "combo_vfx_overlay（z=2）",
+        "hud_bottom_bar（z=3）",
+        "lighthouse_sidebar（z=3）",
+        "status_bar（z=3）",
+        "dialogue_panel_overlay（z=10）",
+        "shop_modal_overlay（z=10）"
+      ]
+    },
+    {
+      "screen_id": "screen_level_select",
+      "name": "关卡选择",
+      "layout_type": "list",
+      "breakpoints": [
+        {
+          "name": "mobile_portrait_720x1280",
+          "width": 720,
+          "height": 1280,
+          "regions": [
+            {
+              "region_id": "header",
+              "label": "顶部标题栏",
+              "bounds": { "x": 0, "y": 44, "w": 720, "h": 80 },
+              "contents": ["章节名称", "沙滩币余额（右）"]
+            },
+            {
+              "region_id": "level_grid",
+              "label": "关卡卡片网格",
+              "bounds": { "x": 16, "y": 140, "w": 688, "h": 1040 },
+              "contents": ["ui_card_level × N（2列网格，卡片 320×180px，间距 16px）"]
+            },
+            {
+              "region_id": "safe_zone_bottom",
+              "bounds": { "x": 0, "y": 1246, "w": 720, "h": 34 },
+              "contents": []
+            }
+          ],
+          "safe_zones": [
+            { "zone_id": "sz_top", "bounds": { "x": 0, "y": 0, "w": 720, "h": 44 } },
+            { "zone_id": "sz_bottom", "bounds": { "x": 0, "y": 1246, "w": 720, "h": 34 } }
+          ]
+        }
+      ],
+      "navigation": { "back_behavior": "main_menu" }
+    },
+    {
+      "screen_id": "screen_shop",
+      "name": "商店",
+      "layout_type": "modal",
+      "breakpoints": [
+        {
+          "name": "mobile_portrait_720x1280",
+          "width": 720,
+          "height": 1280,
+          "regions": [
+            {
+              "region_id": "scrim",
+              "label": "半透明遮罩",
+              "bounds": { "x": 0, "y": 0, "w": 720, "h": 1280 },
+              "opacity": 0.5,
+              "color": "#1E2E50"
+            },
+            {
+              "region_id": "shop_panel",
+              "label": "商店面板",
+              "bounds": { "x": 120, "y": 300, "w": 480, "h": 640 },
+              "contents": ["ui_panel_shop", "道具列表", "沙滩币余额", "关闭按钮"]
+            }
+          ],
+          "safe_zones": []
+        }
+      ],
+      "navigation": { "back_behavior": "dismiss_modal" }
+    },
+    {
+      "screen_id": "screen_dialogue",
+      "name": "NPC 对话",
+      "layout_type": "modal",
+      "breakpoints": [
+        {
+          "name": "mobile_portrait_720x1280",
+          "width": 720,
+          "height": 1280,
+          "regions": [
+            {
+              "region_id": "character_area",
+              "label": "NPC 立绘区域（棋盘上方）",
+              "bounds": { "x": 0, "y": 100, "w": 720, "h": 700 },
+              "contents": ["char_* 立绘（下半身不显示，角色居左或居右）"]
+            },
+            {
+              "region_id": "dialogue_panel",
+              "label": "对话框",
+              "bounds": { "x": 0, "y": 1000, "w": 720, "h": 200 },
+              "contents": ["ui_panel_npc_dialogue（NPC名字 + 对话文本 + 继续提示）"]
+            }
+          ],
+          "safe_zones": [
+            { "zone_id": "sz_bottom", "bounds": { "x": 0, "y": 1246, "w": 720, "h": 34 } }
+          ]
+        }
+      ],
+      "navigation": { "back_behavior": "tap_to_continue" }
+    }
+  ],
+  "validation_status": "COMPLETED"
+}

@@ -1,0 +1,9 @@
+{
+  "report_id": "glow-island-template-inheritance-report-v1",
+  "status": "validated",
+  "no_cycles": true,
+  "no_ambiguous_merges": true,
+  "no_illegal_overrides": true,
+  "runtime_resolution": "pre_flattened — 所有模板在导出时展平，runtime不解析继承",
+  "conclusion": "继承规则可确定性解析，无循环，无非法覆盖。"
+}

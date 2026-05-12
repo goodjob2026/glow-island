@@ -1,0 +1,362 @@
+{
+  "handoff_id": "glow-island-art-input-handoff-v1",
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "generated_by": "game-design-finalize / art-input-handoff-generation",
+  "state": "validated",
+  "source_refs": {
+    "product_concept": ".allforai/product-concept/concept-baseline.json",
+    "game_design_doc": ".allforai/game-design/game-design-doc.json",
+    "art_style_guide": ".allforai/game-design/art-style-guide.json",
+    "art_asset_inventory": ".allforai/game-design/art-asset-inventory.json",
+    "art_pipeline_config": ".allforai/game-design/art-pipeline-config.json",
+    "engine_ready_manifest": ".allforai/game-runtime/art/engine-ready-art-manifest.json",
+    "output_contract": ".allforai/game-design/art/export/engine-ready-art-output-contract.json",
+    "tile_art_spec": ".allforai/game-design/systems/tile-art-spec.json",
+    "character_art_spec": ".allforai/game-design/systems/character-art-spec.json",
+    "environment_art_spec": ".allforai/game-design/systems/environment-art-spec.json",
+    "ui_art_spec": ".allforai/game-design/systems/ui-art-spec.json",
+    "vfx_asset_spec": ".allforai/game-design/systems/vfx-asset-spec.json"
+  },
+
+  "product_context": {
+    "game_title": "Glow Island (輝島)",
+    "genre": "休闲连连看 + 叙事治愈",
+    "platform": "iOS + Android (Cocos Creator 3.x)",
+    "session_style": "超休闲碎片化，快进快出，1–2分钟/关",
+    "core_player_emotion": "爽快连击 + 治愈叙事",
+    "narrative_tone": "治愈优先，温暖从不宣告——参考《小森林》节奏 + 动物森友会美学"
+  },
+
+  "audience_context": {
+    "primary": "25–35岁，移动端，有感情游戏经验，时间碎片化",
+    "art_complexity": "中等——轮廓清晰，可识别；不做像素/写实3D",
+    "ui_density": "低密度，治愈感优先，避免竞技感UI"
+  },
+
+  "human_preferences": {
+    "primary_reference": "Animal Crossing: New Horizons — 圆润粉彩，低饱和暖色",
+    "secondary_references": ["Wytchwood水彩质感", "A Short Hike户外构图", "Joe Hisaishi空间感"],
+    "negative_references": [
+      "像素艺术 (pixel art)",
+      "写实3D拟物化",
+      "霓虹/赛博配色",
+      "金属铬钢高光渐变",
+      "纯黑色 — 替换为深棕#3A2810或深蓝#1E2E50",
+      "锐利直角几何UI",
+      "侵入式弹窗视觉"
+    ],
+    "color_palette": {
+      "primary": "#E8866A (Coral Warm)",
+      "secondary": "#F7EDD8 (Island Sand)",
+      "accent": "#F5C842 (Golden Hour)",
+      "night_mode": "#1E2E50 (Night Indigo)"
+    },
+    "silhouette_language": "大圆角(≥16px)，有机自然轮廓，每个NPC单色剪影可识别"
+  },
+
+  "genre_and_view_implications": {
+    "view_mode": "2D俯视+斜视混合（连连看棋盘俯视，角色/场景侧面斜视）",
+    "camera": "固定摄像机，棋盘中心对齐屏幕",
+    "visual_vocabulary": "卡通手绘，图块主题插图，圆润可爱",
+    "asset_categories": ["tiles", "characters", "backgrounds", "ui", "vfx", "special_tiles"]
+  },
+
+  "gameplay_readability_requirements": [
+    {
+      "requirement_id": "read-001",
+      "source_skill": "core-mechanics",
+      "source_artifact": ".allforai/game-design/systems/core-mechanics.json",
+      "source_ref": "core_mechanic",
+      "player_facing_purpose": "玩家能快速识别同种图块并找到可连接路径",
+      "art_impact": "20种图块在128×128px下轮廓差异清晰，4种以上颜色差异足够辨识",
+      "program_impact": "图块碰撞区域精确到轮廓，hit-test基于bounding box",
+      "required_consumer": "implement-puzzle-core",
+      "priority": "critical",
+      "acceptance_signal": "20种图块在32×32px缩略图下仍可区分",
+      "repair_target": ".allforai/game-design/systems/tile-art-spec.json"
+    },
+    {
+      "requirement_id": "read-002",
+      "source_skill": "core-mechanics",
+      "source_artifact": ".allforai/game-design/systems/core-mechanics.json",
+      "source_ref": "special_tiles",
+      "player_facing_purpose": "5种特殊图块视觉上即可区分，玩家一眼知道触发效果",
+      "art_impact": "wave=涟漪光环暖白, light_chain=金色链环, pierce=蓝白光箭, swap=绿色旋转箭头, cascade=橙红波纹",
+      "program_impact": "特殊图块有独立sprite，与普通图块渲染层不同",
+      "required_consumer": "implement-special-mechanics",
+      "priority": "critical",
+      "acceptance_signal": "特殊图块在棋盘上与普通图块视觉差异大于60%",
+      "repair_target": ".allforai/game-design/systems/tile-art-spec.json"
+    },
+    {
+      "requirement_id": "read-003",
+      "source_skill": "core-mechanics",
+      "source_artifact": ".allforai/game-design/systems/core-mechanics.json",
+      "source_ref": "combo_system",
+      "player_facing_purpose": "Combo状态视觉反馈强烈——玩家感受到节奏爽快感",
+      "art_impact": "连线粒子 + Combo级别数字 + 屏幕边缘光晕（Combo高时）",
+      "program_impact": "VFX系统需根据combo_level切换粒子预设",
+      "required_consumer": "implement-puzzle-core",
+      "priority": "high",
+      "acceptance_signal": "Combo×6触发时屏幕特效明显区别于Combo×1",
+      "repair_target": ".allforai/game-design/systems/vfx-asset-spec.json"
+    }
+  ],
+
+  "world_and_tone_context": {
+    "island_name": "輝島（Kagayaki-jima）",
+    "tone": "治愈，不催你，温暖只是发生",
+    "restoration_visual_rule": "修复前灰白低饱和，每次修复后饱和度上升一阶；Ch6点灯后全岛最高饱和度",
+    "day_night_color_rules": {
+      "day": "暖白/自然光，饱和度标准",
+      "dusk": "暖橙色调，阴影拉长，最美时刻",
+      "night": "深蓝/靛蓝，低饱和度，灯台光柱为主光源"
+    },
+    "season_visual_rules": {
+      "spring": "樱花粉，明亮清新",
+      "summer": "翠绿饱满，蓝天高对比",
+      "autumn": "暖橙金色，秋叶渐变",
+      "winter": "冷白雪景，温泉蒸汽，灯台雪雾光晕"
+    }
+  },
+
+  "character_requirements": [
+    {
+      "requirement_id": "char-001",
+      "source_skill": "character-arc-design",
+      "source_artifact": ".allforai/game-design/systems/character-arc.json",
+      "character_id": "yamada_ritsu",
+      "name": "山田律",
+      "art_impact": "主角，全程可见；侧面+3/4视角；表情集：抵触/松动/感受/栖息/点亮；层片动画",
+      "required_consumer": "implement-ui-systems",
+      "priority": "critical",
+      "acceptance_signal": "所有6章情绪差异在表情动画中可读",
+      "repair_target": ".allforai/game-design/systems/character-art-spec.json"
+    },
+    {
+      "requirement_id": "char-002",
+      "source_skill": "character-arc-design",
+      "source_artifact": ".allforai/game-design/systems/character-arc.json",
+      "character_id": "maruyama_hinata",
+      "name": "丸山ひなた",
+      "art_impact": "女主，频繁出现；随身手账道具；日夜不同服装hint",
+      "required_consumer": "implement-ui-systems",
+      "priority": "critical",
+      "acceptance_signal": "手账道具在任何分辨率下可识别",
+      "repair_target": ".allforai/game-design/systems/character-art-spec.json"
+    },
+    {
+      "requirement_id": "char-003",
+      "source_skill": "worldbuilding",
+      "source_artifact": ".allforai/game-design/systems/worldbuilding.json",
+      "character_id": "npcs_group",
+      "name": "4个NPC（健三/梅子/夏帆/冬子）+ 议长猫",
+      "art_impact": "每个NPC单色剪影在任意分辨率可识别；议长猫全程出现",
+      "required_consumer": "implement-ui-systems",
+      "priority": "high",
+      "acceptance_signal": "5个角色剪影30×30px下可区分",
+      "repair_target": ".allforai/game-design/systems/character-art-spec.json"
+    }
+  ],
+
+  "environment_requirements": [
+    {
+      "requirement_id": "env-001",
+      "source_skill": "worldbuilding",
+      "source_artifact": ".allforai/game-design/systems/worldbuilding.json",
+      "source_ref": "season_chapter_mapping",
+      "player_facing_purpose": "6个章节区域有独特视觉主题，玩家进入新章节即感受到变化",
+      "art_impact": "18个背景场景（每章3个修复阶段）+ 日夜×季节叠加层变体",
+      "program_impact": "背景采用parallax多层，runtime_id由engine-ready-art-manifest提供",
+      "required_consumer": "implement-island-map",
+      "priority": "critical",
+      "acceptance_signal": "6章背景视觉主题差异明显，玩家无需UI提示即知道所在章节",
+      "repair_target": ".allforai/game-design/systems/environment-art-spec.json"
+    }
+  ],
+
+  "ui_requirements": [
+    {
+      "requirement_id": "ui-001",
+      "source_skill": "ftue-design",
+      "source_artifact": ".allforai/game-design/systems/ftue.json",
+      "source_ref": "tutorial_levels",
+      "player_facing_purpose": "教程引导无弹窗，纯视觉反馈",
+      "art_impact": "图块发光高亮动效，障碍物阻挡暖橙提示",
+      "program_impact": "highlight shader，不使用弹窗UI",
+      "required_consumer": "implement-ui-systems",
+      "priority": "critical",
+      "acceptance_signal": "Level 1教程完成率85%，零弹窗",
+      "repair_target": ".allforai/game-design/systems/ui-art-spec.json"
+    },
+    {
+      "requirement_id": "ui-002",
+      "source_skill": "monetization-design",
+      "source_artifact": ".allforai/game-design/systems/monetization-design.json",
+      "source_ref": "hourglass_reward_system.ui_placement",
+      "player_facing_purpose": "沙漏满载时玩家一眼可见，点击领取流畅",
+      "art_impact": "岛屿主题圆形沙漏图标（顶部棕榈树，底部珊瑚台座），满载发光+弹跳动画",
+      "program_impact": "沙漏状态由服务器时间驱动，UI实时更新fill_progress",
+      "required_consumer": "implement-shop-iap",
+      "priority": "high",
+      "acceptance_signal": "沙漏满载状态徽章在任何分辨率下可见",
+      "repair_target": ".allforai/game-design/systems/ui-art-spec.json"
+    }
+  ],
+
+  "animation_requirements": [
+    {
+      "requirement_id": "anim-001",
+      "source_skill": "core-mechanics",
+      "source_artifact": ".allforai/game-design/systems/core-mechanics.json",
+      "source_ref": "special_tiles[id=cascade].vfx_hint",
+      "player_facing_purpose": "连锁自动消除过程玩家能看清每一步",
+      "art_impact": "每次自动配对0.3s延迟，橙红波纹扩展动画",
+      "program_impact": "cascade序列动画需同步到audio sfx_special_cascade节奏",
+      "required_consumer": "implement-special-mechanics",
+      "priority": "high",
+      "acceptance_signal": "5连锁全程可见，无跳帧",
+      "repair_target": ".allforai/game-design/systems/vfx-asset-spec.json"
+    }
+  ],
+
+  "vfx_requirements": [
+    {
+      "requirement_id": "vfx-001",
+      "source_skill": "vfx-art-gen",
+      "source_artifact": ".allforai/game-design/systems/vfx-asset-spec.json",
+      "player_facing_purpose": "特殊图块激活视觉效果与连击爽快感正相关",
+      "art_impact": "5种特殊图块各有独立VFX预设；Combo峰值全屏特效",
+      "program_impact": "VFX由particle system驱动，需combo_level参数传入",
+      "required_consumer": "implement-puzzle-core",
+      "priority": "high",
+      "acceptance_signal": "Combo×6 wave触发时全屏特效不低于60fps",
+      "repair_target": ".allforai/game-design/systems/vfx-asset-spec.json"
+    },
+    {
+      "requirement_id": "vfx-002",
+      "source_skill": "retention-hook-design",
+      "source_artifact": ".allforai/game-design/systems/retention-hook.json",
+      "source_ref": "season_system",
+      "player_facing_purpose": "季节性粒子特效增强岛屿氛围，留存视觉新鲜感",
+      "art_impact": "10个季节粒子特效（春×2/夏×2/秋×1/冬×4/季节过渡×1），冬季温泉雪景组合为核心诉求",
+      "program_impact": "季节粒子按season_chapter_mapping触发，不影响游戏机制",
+      "required_consumer": "implement-island-map",
+      "priority": "high",
+      "acceptance_signal": "Ch4冬季温泉雪景（双层雪花+蒸汽+屋顶积雪）在目标设备60fps流畅",
+      "repair_target": ".allforai/game-design/systems/vfx-asset-spec.json"
+    }
+  ],
+
+  "audio_visual_sync_requirements": [
+    {
+      "requirement_id": "avsync-001",
+      "source_skill": "audio-design",
+      "source_artifact": ".allforai/game-design/systems/audio-design.json",
+      "source_ref": "combo_audio_system",
+      "player_facing_purpose": "Combo音效节奏与视觉特效同步，强化爽快感",
+      "art_impact": "连线特效时长需与sfx_combo_lv* 时长对齐（±50ms）",
+      "program_impact": "audio播放时机与vfx触发在同一帧",
+      "required_consumer": "implement-puzzle-core",
+      "priority": "high",
+      "acceptance_signal": "5次连续测试中音效与特效延迟≤50ms",
+      "repair_target": ".allforai/game-design/systems/audio-design.json"
+    }
+  ],
+
+  "level_and_camera_requirements": [
+    {
+      "requirement_id": "cam-001",
+      "source_skill": "puzzle-design",
+      "source_artifact": ".allforai/game-design/systems/puzzle-design.json",
+      "source_ref": "path_rules",
+      "player_facing_purpose": "棋盘全局可见，异形棋盘区域清晰",
+      "art_impact": "棋盘背景板与可交互格子有视觉区别（void格子不同材质）",
+      "program_impact": "固定摄像机，棋盘fit-to-screen，最小分辨率375×667px",
+      "required_consumer": "implement-puzzle-core",
+      "priority": "critical",
+      "acceptance_signal": "10×10异形棋盘在375px宽屏下每格≥32px",
+      "repair_target": ".allforai/game-design/systems/environment-art-spec.json"
+    }
+  ],
+
+  "content_asset_requirements": {
+    "tile_assets": {
+      "count": 20,
+      "size_px": "128×128",
+      "format": "PNG RGBA",
+      "chapter_variants": 6,
+      "total_files": 120,
+      "atlas_strategy": "per_chapter_atlas (10 atlases total)",
+      "runtime_ref": ".allforai/game-runtime/art/engine-ready-art-manifest.json",
+      "state": "spec_complete_pending_generation"
+    },
+    "character_assets": {
+      "count": 7,
+      "animation_system": "dragonbones layer-sheet",
+      "characters": ["山田律", "丸山ひなた", "磯部健三", "桐島梅子", "海野夏帆", "丸山冬子", "议长（猫）"],
+      "state": "spec_ready_pending_generation"
+    },
+    "background_assets": {
+      "count": 18,
+      "chapters": 6,
+      "layers": "parallax多层（近景/中景/远景/天空）",
+      "state": "spec_ready_pending_generation"
+    },
+    "ui_assets": {
+      "count": 30,
+      "includes": ["HUD", "棋盘面板", "沙漏图标", "IAP弹窗", "结算界面"],
+      "state": "spec_ready_pending_generation"
+    },
+    "vfx_assets": {
+      "count": 37,
+      "includes": ["5种特殊图块VFX", "combo_lv1~lv6反馈", "10个季节粒子", "修复动画"],
+      "state": "spec_ready_pending_generation"
+    }
+  },
+
+  "runtime_constraints": {
+    "engine": "cocos-creator-3.x",
+    "platform": "web-canvas-2d",
+    "min_resolution": "375×667px",
+    "target_fps": 60,
+    "texture_budget_per_chapter_mb": 64,
+    "atlas_max_px": "2048×2048",
+    "animation_system": "dragonbones+frame+tween",
+    "adapter_policy": "profile_only",
+    "runtime_id_source": ".allforai/game-runtime/art/engine-ready-art-manifest.json",
+    "no_hardcoded_paths": true
+  },
+
+  "accessibility_constraints": [
+    "图块颜色不是唯一区分方式——每种图块有独特图案/轮廓",
+    "大圆角(≥16px)触控目标，最小触控面积44×44px",
+    "文字不覆盖在复杂图案背景上"
+  ],
+
+  "asset_priority_hints": [
+    { "asset_group": "core_tiles_ch1_4", "priority": "MVP", "unblocks": ["implement-puzzle-core"] },
+    { "asset_group": "special_tile_vfx", "priority": "MVP", "unblocks": ["implement-special-mechanics"] },
+    { "asset_group": "main_characters_ritsu_hinata", "priority": "MVP", "unblocks": ["implement-ui-systems"] },
+    { "asset_group": "ch1_backgrounds", "priority": "MVP", "unblocks": ["implement-island-map"] },
+    { "asset_group": "ui_core_hud_iap", "priority": "MVP", "unblocks": ["implement-shop-iap"] },
+    { "asset_group": "seasonal_vfx_winter", "priority": "v1.1", "unblocks": ["implement-island-map"] }
+  ],
+
+  "unknowns": [],
+
+  "blocked_requirements": [],
+
+  "consumer_refs": [
+    "implement-puzzle-core",
+    "implement-special-mechanics",
+    "implement-game-session",
+    "implement-island-map",
+    "implement-ui-systems",
+    "implement-backend-api",
+    "implement-shop-iap",
+    "implement-audio",
+    "level-editor-tool"
+  ]
+}

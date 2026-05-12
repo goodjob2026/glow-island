@@ -85,3 +85,17 @@ Skip for assets already marked `adapted`.
 `.allforai/game-design/systems/tile-art-spec.json` exists AND `.allforai/game-design/tile-art-review.html` exists AND all `canonical_registry.tiles[]` entries have `current_state != "placeholder"`.
 
 If any sub-skill returns `UPSTREAM_DEFECT` → halt and report the defect. Do not advance to `art-qa`.
+
+### Step 3 — Seasonal Tile Variant Spec
+
+After completing Steps 0-2, invoke the project-local seasonal art skill:
+
+- `.allforai/bootstrap/specialized-skills/glow-island-seasonal-art-generation/SKILL.md`
+  - Mode: `tiles_only`
+  - Generates `.allforai/game-design/art/seasonal/seasonal-tile-variants-spec.json`
+  - All 25 base tiles must have palette-shift specs for all 4 seasons
+
+After seasonal spec is written, invoke tile readability validation:
+- `.allforai/bootstrap/specialized-skills/glow-island-tile-readability-qa/SKILL.md`
+  - Mode: `seasonal_only`
+  - Validates seasonal variants do not lose tile identity

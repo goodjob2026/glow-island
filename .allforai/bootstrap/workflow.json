@@ -345,7 +345,7 @@
       "hard_blocked_by": [
         "art-spec-design"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "tile-art-gen",
@@ -368,7 +368,7 @@
       "hard_blocked_by": [
         "concept-freeze"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "character-art-gen",
@@ -391,7 +391,7 @@
       "hard_blocked_by": [
         "concept-freeze"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "environment-art-gen",
@@ -414,7 +414,7 @@
       "hard_blocked_by": [
         "concept-freeze"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "ui-art-gen",
@@ -438,7 +438,7 @@
       "hard_blocked_by": [
         "concept-freeze"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "vfx-art-gen",
@@ -547,7 +547,7 @@
         "character-arc-design",
         "art-qa"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "setup-runtime-env",
@@ -939,6 +939,42 @@
         ".allforai/game-design/art-spec-design.html",
         ".allforai/game-design/art-asset-inventory.json"
       ]
+    },
+    {
+      "node": "art-qa",
+      "status": "completed",
+      "started_at": "2026-05-12T20:45:17.758717Z",
+      "completed_at": "2026-05-12T20:45:17.758717Z",
+      "artifacts_created": [
+        ".allforai/game-design/art-qa-report.html",
+        ".allforai/game-design/art/export/engine-ready-art-output-contract.json",
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+      ]
+    },
+    {
+      "node": "game-design-finalize",
+      "status": "completed",
+      "started_at": "2026-05-13T00:00:00+08:00",
+      "completed_at": "2026-05-13T00:00:00+08:00",
+      "artifacts_created": [
+        ".allforai/game-design/game-design-dashboard.html",
+        ".allforai/game-design/game-design-doc.json",
+        ".allforai/game-design/design/art-input-handoff.json",
+        ".allforai/game-design/design/art-input-handoff-report.json",
+        ".allforai/game-design/design/game-planning-handoff.md",
+        ".allforai/game-design/design/program-development-node-handoff.json",
+        ".allforai/game-templates/template-registry.json",
+        ".allforai/game-templates/schemas/level.schema.json",
+        ".allforai/game-templates/schemas/template-inheritance-spec.json",
+        ".allforai/game-templates/template-reference-map.json",
+        ".allforai/game-templates/instances/level.json",
+        ".allforai/game-templates/qa/template-reference-closure-qa-report.json",
+        ".allforai/game-templates/qa/template-runtime-load-qa-report.json",
+        ".allforai/game-design/data/game-data-table-manifest.json",
+        ".allforai/game-design/design/core-loop-closure-qa-report.json",
+        ".allforai/game-design/design/contract-wiring-qa-report.json",
+        ".allforai/game-design/design/game-design-final-closure-qa-report.json"
+      ]
     }
   ],
   "_previous_run_archive": "2026-05-08: 37/37 nodes completed (v0.8.2 LLM-based node-specs). Rebuilt 2026-05-11 with v0.8.3 thin sub-skill delegation format. Product concept enriched with narrative/quirky elements, single-currency model, combo timing system.",
@@ -951,5 +987,25 @@
   "game_scenario": "casual-mobile",
   "is_game_project": true,
   "concept_drift_detected_at": "2026-05-12T00:00:00Z",
-  "updated_at": "2026-05-12T16:09:54.799384+00:00"
+  "updated_at": "2026-05-12T16:09:54.799384+00:00",
+  "specialized_skills": [
+    {
+      "id": "glow-island-tile-readability-qa",
+      "path": ".allforai/bootstrap/specialized-skills/glow-island-tile-readability-qa/SKILL.md",
+      "trigger": "tile-art-gen, art-qa",
+      "generated_at": "2026-05-12T21:36:10.593044Z"
+    },
+    {
+      "id": "glow-island-board-solver-qa",
+      "path": ".allforai/bootstrap/specialized-skills/glow-island-board-solver-qa/SKILL.md",
+      "trigger": "puzzle-design, level-design",
+      "generated_at": "2026-05-12T21:36:10.593044Z"
+    },
+    {
+      "id": "glow-island-seasonal-art-generation",
+      "path": ".allforai/bootstrap/specialized-skills/glow-island-seasonal-art-generation/SKILL.md",
+      "trigger": "tile-art-gen, environment-art-gen, ui-art-gen",
+      "generated_at": "2026-05-12T21:36:10.593044Z"
+    }
+  ]
 }

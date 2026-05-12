@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/character-layer-sheet",
+  "verdict": "pass",
+  "summary": {
+    "character_count": 7,
+    "generated_count": 0,
+    "approved_count": 0,
+    "spec_ready_count": 7,
+    "automation_limited_count": 0
+  },
+  "failed_checks": [],
+  "visual_issues": [],
+  "repair_log": [],
+  "next_actions": [
+    "Layer sheet image prompts available for LLM image generation via google-imagen-4 or openrouter-gpt-image",
+    "char_ritsu through char_fuyuko: 2048x2048px DragonBones layer sheets — feed to skeletal-animation sub-skill",
+    "char_gicho: 1024x1024px cat layer sheet — feed to frame-animation-generation sub-skill",
+    "After image generation: run validate_existing mode to confirm part separation quality"
+  ]
+}

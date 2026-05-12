@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/icon-generation",
+  "status": "COMPLETED_WITH_LIMITS",
+  "checks_passed": [
+    "每个图标均有 asset_id / file_prefix / category / semantic / output_path",
+    "所有路径以 .allforai/game-design/art/icons/ 开头",
+    "所有路径以 file_prefix 开头",
+    "ui_star_icon 的三个变体（empty/filled/half）已声明",
+    "UI 消费方通过 asset_id 引用，未使用原始文件名",
+    "图标语义无重复符号冲突（沙滩币圆形金色 vs 星星五角形金色，形状完全不同）"
+  ],
+  "checks_warned": [
+    "图片尚未生成，视觉验证将在生成后执行"
+  ],
+  "checks_failed": [],
+  "repair_log": [],
+  "unresolved_limits": []
+}

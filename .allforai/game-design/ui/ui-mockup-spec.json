@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/ui-mockup-generation",
+  "generation_profile": {
+    "task_type": "ui_mockup",
+    "image_generation_available": true,
+    "vision_validation_available": true,
+    "max_repair_attempts": 3,
+    "primary_model": "google-imagen-4",
+    "fallback_model": "openrouter-gpt-image"
+  },
+  "mockup_targets": [
+    {
+      "target_id": "mockup_screen_gameplay",
+      "screen_id": "screen_gameplay",
+      "breakpoint": "mobile_portrait_720x1280",
+      "asset_file_prefix": "ui_screen_gameplay",
+      "output_path": ".allforai/game-design/ui/mockups/ui_screen_gameplay.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game UI screenshot, 720×1280 portrait. Top status bar: step counter centered (white number, 28sp 思源圆体, coral #E8866A warm background). Bottom HUD bar (720×80px, island sand #F7EDD8, wood border #8B6030, soft drop shadow): beach coin icon (golden #F5C842, 32px) + number on left; three round icon buttons (80×80px each, coral gradient #F0997A→#E8866A, 24px corner radius, soft shadow) on right showing shuffle/hint/continue icons. Right sidebar (60px wide): vertical lighthouse progress bar with bamboo green fill #7DBE77, lighthouse silhouette at top. Center playfield area: 8×8 grid of cute marine tile icons (tuna, octopus, starfish etc.) with hand-drawn style. Background: desaturated coastal harbor scene. Style: Animal Crossing × Japanese healing island watercolor, soft warm pastel, round organic shapes, no sharp corners, no pure black.",
+      "negative_prompt": "pixel art, hyper-realistic 3D, neon colors, metallic chrome, pure black #000000, sharp geometric UI, excessive debris particles, high contrast alert colors",
+      "layout_fidelity_checks": [
+        "HUD 底栏位于画面底部 80px 区域",
+        "灯塔进度条位于右侧 60px 侧栏",
+        "棋盘区域占据中间主要空间，未被 HUD 遮挡",
+        "3个辅助按钮右对齐，各 80px 宽"
+      ],
+      "text_fit_checks": ["步数数字清晰可读", "沙滩币数字清晰可读"],
+      "playfield_protection_checks": ["棋盘主区域未被 HUD 元素遮挡"]
+    },
+    {
+      "target_id": "mockup_screen_level_select",
+      "screen_id": "screen_level_select",
+      "breakpoint": "mobile_portrait_720x1280",
+      "asset_file_prefix": "ui_screen_level_select",
+      "output_path": ".allforai/game-design/ui/mockups/ui_screen_level_select.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game level select screen, 720×1280 portrait. Top header: chapter name in Japanese (e.g. 海辺の波止場), beach coin balance on right with golden coin icon. Main area: 2-column grid of level cards (320×180px each, island sand fill #F7EDD8, wood border #8B6030, 16px corner radius, soft shadow). Each card shows: level number (大号数字, dark brown text), 3 star icons (golden #F5C842 filled or grey empty). Some cards locked (greyed with padlock). Background: soft watercolor coastal gradient. Style: Animal Crossing healing island, warm pastel, round shapes.",
+      "negative_prompt": "pixel art, hyper-realistic 3D, neon colors, sharp corners, pure black",
+      "layout_fidelity_checks": ["卡片为 2 列网格", "每个卡片显示 3 颗星"],
+      "text_fit_checks": ["关卡编号清晰可读"]
+    },
+    {
+      "target_id": "mockup_screen_shop",
+      "screen_id": "screen_shop",
+      "breakpoint": "mobile_portrait_720x1280",
+      "asset_file_prefix": "ui_panel_shop",
+      "output_path": ".allforai/game-design/ui/mockups/ui_panel_shop.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game shop modal panel, 480×640px centered on screen with dark navy scrim (#1E2E50 50% opacity). Panel: warm wood texture #E8D8B4, border #8B6030 3px, 20px corner radius, soft shadow. Title: 商店 in bold 思源圆体. Item rows listing: 重排 (shuffle), 预判 (hint), 续关 (continue) — each row shows item icon, name, description, price in beach coins (golden coin icon + number). Close button top right. Style: Japanese healing island watercolor UI, wood sign aesthetic, round soft shapes.",
+      "negative_prompt": "pixel art, neon colors, sharp corners, metallic chrome, pure black",
+      "layout_fidelity_checks": ["面板居中显示", "背景有半透明遮罩", "关闭按钮在右上角"],
+      "text_fit_checks": ["道具名称和价格清晰可读"]
+    },
+    {
+      "target_id": "mockup_screen_dialogue",
+      "screen_id": "screen_dialogue",
+      "breakpoint": "mobile_portrait_720x1280",
+      "asset_file_prefix": "ui_panel_npc_dialogue",
+      "output_path": ".allforai/game-design/ui/mockups/ui_panel_npc_dialogue.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game NPC dialogue panel, 720×200px at bottom of screen. Panel: warm wood texture #E8D8B4, border-top #8B6030 2px. Left: NPC name in wood brown #8B6030, 16sp. Main area: dialogue text in dark brown #3A2810, 15sp, 1.6 line height, max width 640px, word wrap. Bottom right: small tap-to-continue hint icon in driftwood gold #C4955A. Style: Japanese healing island watercolor, warm pastel, no sharp corners.",
+      "negative_prompt": "pixel art, neon colors, sharp corners, pure black, excessive decoration",
+      "layout_fidelity_checks": ["对话框在屏幕底部", "NPC 名字在文本上方", "继续提示在右下角"],
+      "text_fit_checks": ["对话文字清晰可读，行高舒适"]
+    },
+    {
+      "target_id": "mockup_cmp_hud_bar",
+      "component_id": "cmp_hud_bar",
+      "state": "normal",
+      "breakpoint": "mobile_portrait_720x1280",
+      "asset_file_prefix": "ui_hud_bar",
+      "output_path": ".allforai/game-design/ui/mockups/ui_hud_bar_normal.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game HUD bottom bar, 720×80px. Island sand fill #F7EDD8, wood brown border #8B6030, soft shadow 0 4px 0 rgba(0,0,0,0.10). Left: small golden coin icon (32px) + beach coin number. Center: step counter number in dark brown, 28sp bold. Right: 3 square buttons (80×80px each, coral gradient, 24px corner radius): shuffle icon, magnifier/hint icon, + symbol/continue icon. All text 思源圆体. Style: Animal Crossing wooden signage UI aesthetic.",
+      "negative_prompt": "pixel art, neon, sharp corners, pure black",
+      "layout_fidelity_checks": ["步数居中", "3 个按钮右对齐", "沙滩币图标+数字左对齐"]
+    },
+    {
+      "target_id": "mockup_cmp_btn_shuffle_states",
+      "component_id": "cmp_btn_shuffle",
+      "state": "all_states",
+      "asset_file_prefix": "ui_btn_shuffle",
+      "output_path": ".allforai/game-design/ui/mockups/ui_btn_shuffle_states.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game button state sheet for 重排 (shuffle) button, 80×80px each, 4 states side by side: [normal: coral gradient #F0997A→#E8866A, shuffle swirl icon white, 重排 label 11sp white, 24px corner radius, soft shadow] [pressed: darker coral #D07862, slight scale 0.97, shadow reduced] [disabled: muted sand #C8B8A0, icon grey, opacity 0.6, no shadow] [locked: same as disabled + padlock overlay icon]. Clean white background for reference. Style: watercolor UI icons, warm pastel.",
+      "negative_prompt": "pixel art, neon, sharp corners, pure black"
+    },
+    {
+      "target_id": "mockup_cmp_btn_hint_states",
+      "component_id": "cmp_btn_hint",
+      "state": "all_states",
+      "asset_file_prefix": "ui_btn_hint",
+      "output_path": ".allforai/game-design/ui/mockups/ui_btn_hint_states.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game button state sheet for 预判 (hint) button, 80×80px each, 4 states side by side: [normal: coral gradient #F0997A→#E8866A, magnifier/eye icon white, 预判 label 11sp white, 24px corner radius, soft shadow] [pressed: darker coral, slight scale 0.97] [disabled: muted sand #C8B8A0, icon grey, opacity 0.6] [locked: disabled + padlock]. Style: watercolor UI.",
+      "negative_prompt": "pixel art, neon, sharp corners, pure black"
+    },
+    {
+      "target_id": "mockup_cmp_btn_continue_states",
+      "component_id": "cmp_btn_continue",
+      "state": "all_states",
+      "asset_file_prefix": "ui_btn_continue",
+      "output_path": ".allforai/game-design/ui/mockups/ui_btn_continue_states.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game button state sheet for 续关 (continue) button, 80×80px each, 5 states: [normal: muted sand-coral #C4B090, + icon, opacity 0.7] [pressed: darker, scale 0.97] [disabled: grey #C8B8A0, opacity 0.5] [highlighted: full coral gradient #F0997A→#E8866A, golden border glow #F5C842, golden label, pulse animation implied] [locked: dim opacity 0.3 + padlock]. Style: watercolor UI.",
+      "negative_prompt": "pixel art, neon, sharp corners, pure black"
+    },
+    {
+      "target_id": "mockup_cmp_coin_icon",
+      "component_id": "cmp_coin_display",
+      "state": "normal",
+      "asset_file_prefix": "ui_coin_icon",
+      "output_path": ".allforai/game-design/ui/mockups/ui_coin_icon.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game currency icon, 64×64px, beach coin (沙滩币). Round coin shape, golden yellow #F5C842 fill, warm sand texture overlay, subtle wave or shell embossed pattern in driftwood #C4955A. Soft drop shadow. Organic hand-drawn outline in warm brown. No text. Transparent background. Style: Animal Crossing healing island watercolor icon.",
+      "negative_prompt": "pixel art, neon, metallic chrome, pure black, sharp edges, realistic photo"
+    },
+    {
+      "target_id": "mockup_cmp_star_icon",
+      "component_id": "cmp_star_icon",
+      "state": "all_states",
+      "asset_file_prefix": "ui_star_icon",
+      "output_path": ".allforai/game-design/ui/mockups/ui_star_icon_states.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game star icon state sheet, 64×64px each, 3 states side by side: [empty: grey-sand #C4B090 fill, brown outline #8B6030] [filled: golden #F5C842 fill, warm amber stroke #C4955A, soft glow] [half: left half golden, right half grey]. Organic 5-point star shape, round tips, watercolor texture. Clean white background. Style: healing island watercolor icon.",
+      "negative_prompt": "pixel art, neon, sharp corners, pure black, geometric vector star"
+    },
+    {
+      "target_id": "mockup_cmp_lighthouse_progress",
+      "component_id": "cmp_lighthouse_progress",
+      "state": "all_states",
+      "asset_file_prefix": "ui_lighthouse_progress",
+      "output_path": ".allforai/game-design/ui/mockups/ui_lighthouse_progress_states.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game vertical lighthouse progress bar, 120×480px, 5 fill states side by side: [empty: grey fill #C8B8A0, dim lighthouse icon at top] [quarter 25%: bamboo green #7DBE77 partial fill] [half 50%: half filled green] [three-quarters 75%: mostly filled] [full: golden #F5C842 fill with soft glow, lighthouse icon glowing at top]. Organic rounded track, wood border texture. Style: Japanese island watercolor UI.",
+      "negative_prompt": "pixel art, neon, sharp corners, pure black, generic progress bar"
+    },
+    {
+      "target_id": "mockup_cmp_card_level",
+      "component_id": "cmp_level_card",
+      "state": "all_states",
+      "asset_file_prefix": "ui_card_level",
+      "output_path": ".allforai/game-design/ui/mockups/ui_card_level_states.png",
+      "status": "spec_ready",
+      "prompt": "Hand-drawn watercolor mobile game level card state sheet, 320×180px each, 4 key states: [default: island sand fill #F7EDD8, brown border, level number bold dark brown, 3 empty star icons below] [selected: coral border #E8866A, slightly enlarged shadow, coral accent] [locked: grey-sand fill #C8B8A0, padlock icon centered, muted text] [new: golden border #F5C842, NEW badge top-right in coral]. Watercolor texture, 16px corner radius. Style: healing island wood sign card.",
+      "negative_prompt": "pixel art, neon, sharp corners, pure black, generic card UI"
+    }
+  ],
+  "validation_status": "COMPLETED"
+}

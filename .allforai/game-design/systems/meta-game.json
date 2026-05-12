@@ -1,9 +1,10 @@
 {
-  "schema": "meta-game-v1",
-  "version": "2.0",
+  "schema": "meta-game-v2",
+  "version": "3.0",
   "generated_at": "2026-05-13T00:00:00+08:00",
   "project": "glow-island",
   "language": "zh-CN",
+  "revision": "v3.0 — 账号与后端系统更新：移除Game Center / Google Play Games引用；自建轻量后端；登录方案改为Apple ID（iOS）/ Google（Android）/ 邮箱+密码（跨平台），邮箱为主键。",
 
   "meta_game_philosophy": "元游戏层即岛屿地图本身。没有独立技能树或元进度系统；玩家的进度感来自岛屿视觉的逐步修复——废墟变为有色彩、有光、有声音的生活之地。这不是一个让人变好的系统，而是一个不催人的系统。",
 
@@ -447,7 +448,7 @@
       "phase_1_spec": {
         "note": "Phase 1仅设计数据结构，不实现UI。以下字段在后端预留，供Phase 2使用。",
         "friend_data_schema": {
-          "user_id": "string",
+          "user_id": "string (UUID, assigned by custom backend)",
           "display_name": "string",
           "current_chapter": "integer (1–6)",
           "current_level": "integer (1–180)",
@@ -458,16 +459,20 @@
         }
       },
       "phase_2_spec": {
-        "platform": ["Game Center (iOS)", "Google Play Games (Android)"],
+        "platform": "custom_backend_friends_api",
+        "note": "好友关系存储于自建后端，不依赖Game Center或Google Play Games",
         "ui_placement": "岛屿地图界面，好友进度气泡叠加在对应章节区域",
         "display_format": "头像+当前章节名称，不显示具体关卡数（避免比较压力）",
         "interaction": "点击好友气泡可发送鼓励表情（无竞争性语言）",
-        "privacy": "完全可选，默认不显示好友信息"
+        "privacy": "完全可选，默认不显示好友信息",
+        "friend_add_method": "邮箱/用户名搜索或分享邀请链接"
       },
       "design_constraints": {
         "no_pvp": true,
         "no_ranking": true,
         "no_forced_social": true,
+        "no_game_center": true,
+        "no_google_play_games": true,
         "allowed_social": "opt_in_soft_encouragement_only"
       },
       "progression_refs": ["chapter_structure"],
@@ -476,7 +481,7 @@
       "content_refresh_rule": "随好友游戏进度自动更新。",
       "ui_surfaces": ["island_map_screen_phase2"],
       "economy_refs": [],
-      "social_refs": ["game_center", "google_play_games"],
+      "social_refs": ["custom_backend_friends"],
       "art_requirements": ["friend_progress_bubble_sprite_phase2"],
       "audio_requirements": [],
       "runtime_system_refs": ["friend_data_api_phase2"],
@@ -512,6 +517,170 @@
       "telemetry_signals": ["lighthouse_stage_updated", "lighthouse_lit"],
       "state": "draft",
       "consumer_refs": ["art-direction", "audio-design"]
+    },
+    {
+      "system_id": "account_system",
+      "system_name": "账号与后端系统",
+      "player_motivation": "玩家可在iOS和Android之间无缝切换，跨平台进度不丢失；注册流程轻量，不强制要求账号即可体验完整游戏。",
+      "session_bridge": "登录状态持久化，进度存储在自建后端；每次启动游戏自动同步云端存档。",
+      "long_term_goal": "单一账号跨平台（iOS/Android）进度同步，Phase 2好友系统依托此账号体系建立。",
+      "login_options": [
+        {
+          "method": "apple_sign_in",
+          "platform": "iOS",
+          "description": "通过Sign in with Apple进行iOS平台登录。Apple ID登录后，引导用户绑定邮箱作为跨平台主键。",
+          "cross_platform": false,
+          "primary_key_binding": "user_email",
+          "notes": "苹果审核要求：若App提供第三方登录，必须同时提供Sign in with Apple选项。"
+        },
+        {
+          "method": "google_sign_in",
+          "platform": "Android",
+          "description": "通过Google Sign-In进行Android平台登录。Google账号登录后，引导用户绑定邮箱作为跨平台主键。",
+          "cross_platform": false,
+          "primary_key_binding": "user_email",
+          "notes": "不使用Google Play Games Services，仅使用Google Identity（OAuth 2.0）进行身份验证。"
+        },
+        {
+          "method": "email_password",
+          "platform": "all",
+          "description": "邮箱+密码登录，跨平台通用。邮箱为整个账号系统的主键（primary key）。绑定Apple/Google后，可用邮箱在任意平台登录同一账号。",
+          "cross_platform": true,
+          "primary_key_binding": "user_email",
+          "notes": "邮箱是跨平台唯一身份标识。Apple ID / Google账号登录成功后，需提示用户设置或绑定邮箱，以便在不同平台和设备间访问存档。"
+        }
+      ],
+      "account_flow": {
+        "guest_mode": {
+          "supported": true,
+          "description": "首次进入无需登录，本地存档优先。游戏内适时（如通关Ch1后）提示注册以启用云同步。",
+          "prompt_trigger": "chapter_1_completion_or_d3"
+        },
+        "account_creation": {
+          "steps": [
+            "选择登录方式（Apple / Google / 邮箱）",
+            "Apple/Google OAuth完成后，提示绑定或验证邮箱",
+            "邮箱注册需发送验证邮件（6位数字验证码）",
+            "账号创建后本地存档自动迁移至云端"
+          ]
+        },
+        "cross_platform_link": {
+          "description": "同一邮箱可绑定Apple ID和Google账号。玩家在iOS用Apple登录、在Android用Google登录时，后端通过邮箱主键识别为同一用户，自动同步进度。",
+          "deduplication": "email_as_primary_key"
+        }
+      },
+      "backend_spec": {
+        "architecture": "custom_lightweight_backend",
+        "description": "自建轻量REST API服务端，不依赖Game Center或Google Play Games后端。",
+        "recommended_stack": {
+          "option_a": {
+            "name": "Firebase (BaaS)",
+            "auth": "Firebase Authentication（支持Apple/Google/邮箱开箱即用）",
+            "database": "Firestore（NoSQL，无需运维）",
+            "functions": "Cloud Functions（Serverless，按用量计费）",
+            "pros": "开箱即用，Auth+DB+Functions一体，适合快速上线；免费额度够早期用量",
+            "cons": "供应商锁定，长期成本随DAU上升"
+          },
+          "option_b": {
+            "name": "Supabase (开源BaaS)",
+            "auth": "Supabase Auth（支持Apple/Google/邮箱）",
+            "database": "PostgreSQL（关系型，结构化存储）",
+            "functions": "Edge Functions（Deno）",
+            "pros": "开源可自建，PostgreSQL成熟，迁移自由度高",
+            "cons": "自建运维成本较Firebase略高"
+          },
+          "option_c": {
+            "name": "自建 Fastify + PostgreSQL",
+            "auth": "自实现OAuth 2.0对接（Apple/Google）+ JWT",
+            "database": "PostgreSQL（Prisma ORM，与现有pipeline_preferences一致）",
+            "functions": "Fastify REST API",
+            "pros": "完全掌控，无供应商锁定，技术栈与现有偏好(fastify-prisma-postgresql)完全一致",
+            "cons": "Auth安全实现需仔细，初期运维成本最高"
+          },
+          "recommended": "option_a_or_c",
+          "note": "早期推荐Firebase快速验证，若长期自主可控则选option_c（与现有backend偏好一致）。"
+        },
+        "core_apis": [
+          "POST /auth/apple — Apple ID登录/注册",
+          "POST /auth/google — Google登录/注册",
+          "POST /auth/email/register — 邮箱注册（含发送验证码）",
+          "POST /auth/email/login — 邮箱登录",
+          "POST /auth/link — 绑定第三方账号至邮箱主键",
+          "GET  /player/progress — 拉取云端存档",
+          "PUT  /player/progress — 推送本地存档至云端",
+          "GET  /friends — 获取好友列表（Phase 2）",
+          "POST /friends/invite — 发送好友邀请（Phase 2）"
+        ],
+        "data_model": {
+          "users": {
+            "user_id": "UUID (primary key)",
+            "email": "string (unique, cross-platform identity key)",
+            "email_verified": "boolean",
+            "apple_sub": "string (nullable, Apple user identifier)",
+            "google_sub": "string (nullable, Google user identifier)",
+            "display_name": "string",
+            "avatar_preset_id": "string",
+            "created_at": "ISO8601 timestamp",
+            "last_login_at": "ISO8601 timestamp"
+          },
+          "player_progress": {
+            "user_id": "UUID (FK → users)",
+            "current_chapter": "integer (1–6)",
+            "current_level": "integer (1–180)",
+            "island_stage": "integer (1–24)",
+            "beach_coins": "integer",
+            "memory_fragments_collected": "integer[]",
+            "hinata_beats_unlocked": "string[]",
+            "daily_login_streak": "integer",
+            "last_login_date": "date",
+            "updated_at": "ISO8601 timestamp"
+          },
+          "friends": {
+            "note": "Phase 2预留",
+            "user_id": "UUID",
+            "friend_id": "UUID",
+            "status": "pending | accepted",
+            "created_at": "ISO8601 timestamp"
+          }
+        },
+        "security": [
+          "所有API使用HTTPS",
+          "JWT token + refresh token机制",
+          "Apple/Google OAuth验证token在服务端校验，不信任客户端传入的原始token",
+          "邮箱注册需验证（6位数字验证码，15分钟有效期）",
+          "密码哈希：bcrypt (cost factor ≥ 12)"
+        ],
+        "sync_strategy": {
+          "conflict_resolution": "last_write_wins with server timestamp",
+          "offline_support": "本地存档优先，联网时自动同步；冲突时取server_updated_at较新的版本",
+          "sync_frequency": "chapter_completion + daily_login + app_background_event"
+        }
+      },
+      "excluded_platforms": {
+        "game_center": false,
+        "google_play_games": false,
+        "china_login_methods": false,
+        "note": "不上架中国区市场，无需微信登录/手机号登录/实名认证等中国特有合规要求。"
+      },
+      "market_scope": {
+        "target_markets": ["日本", "东南亚", "欧美", "台湾/香港"],
+        "excluded_markets": ["中国大陆"],
+        "app_store_regions": "全球（排除中国区）",
+        "google_play_regions": "全球（排除中国区）"
+      },
+      "progression_refs": ["phase_roadmap"],
+      "reward_model": { "type": "infrastructure", "description": "账号系统本身不产生游戏内奖励，是进度同步和社交的基础设施。" },
+      "reset_or_season_rule": "账号数据永久保留；玩家可在设置中申请删除账号（合规要求：App Store / Google Play均强制要求提供账号删除功能）。",
+      "content_refresh_rule": "跟随游戏版本迭代更新。",
+      "ui_surfaces": ["login_screen", "settings_account_screen", "cloud_sync_status_indicator"],
+      "economy_refs": ["beach_coins"],
+      "social_refs": ["custom_backend_friends"],
+      "art_requirements": ["login_screen_ui", "account_settings_ui"],
+      "audio_requirements": [],
+      "runtime_system_refs": ["auth_service", "progress_sync_service", "friend_data_api_phase2"],
+      "telemetry_signals": ["login_method_used", "account_created", "cross_platform_link_completed", "progress_synced"],
+      "state": "draft",
+      "consumer_refs": ["implement-backend-api", "platform-integration-phase2"]
     }
   ],
 
@@ -536,16 +705,28 @@
       {
         "system": "强制社交/公会义务",
         "reason": "社交完全可选，好友功能Phase 2才实现且仅为软激励"
+      },
+      {
+        "system": "Game Center（苹果平台成就/排行榜）",
+        "reason": "不使用平台原生排行榜/成就系统；社交功能由自建后端实现"
+      },
+      {
+        "system": "Google Play Games Services",
+        "reason": "不使用Google Play平台成就/排行榜；登录仅使用Google Identity（OAuth），不接入GPGS"
+      },
+      {
+        "system": "微信/手机号登录",
+        "reason": "不上架中国区市场，无需中国特有登录方式"
       }
     ]
   },
 
   "meta_layer_summary": {
-    "description": "Glow Island的元游戏层是一个有机整体：岛屿地图视觉进度+叙事解锁+每日礼物+远景灯塔锚点，四个系统共同服务于同一个玩家体验目标——让玩家感受到这里有自己的位置，不需要解释，不需要表演振作，不需要赶路。",
+    "description": "Glow Island的元游戏层是一个有机整体：岛屿地图视觉进度+叙事解锁+每日礼物+远景灯塔锚点+轻量自建账号系统，五个系统共同服务于同一个玩家体验目标——让玩家感受到这里有自己的位置，不需要解释，不需要表演振作，不需要赶路。",
     "core_loop_connection": "每一场连连看通关 → 岛屿视觉小变化/叙事触发点 → 玩家想打下一关 → 形成内驱力驱动的回路，资源系统（沙滩币/续关）是辅助而非驱动力。",
     "phase_roadmap": {
-      "phase_1": "Web demo：岛屿地图视觉进度+叙事解锁+每日礼物（D1–D7精确）+灯塔远景锚点。好友功能数据结构预留，UI不实现。",
-      "phase_2": "iOS+Android打包：接入Game Center/Google Play，实现好友进度展示UI，季节系统完整运营。"
+      "phase_1": "Web demo / 原生App早期版本：岛屿地图视觉进度+叙事解锁+每日礼物（D1–D7精确）+灯塔远景锚点+账号系统（Apple/Google/邮箱登录+进度云同步）。好友功能数据结构预留，UI不实现。",
+      "phase_2": "iOS+Android完整版：好友进度展示UI（基于自建后端，不依赖Game Center/Google Play Games），季节系统完整运营，好友邀请功能上线。"
     }
   }
 }

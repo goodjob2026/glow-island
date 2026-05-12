@@ -1,0 +1,26 @@
+{
+  "report_id": "glow-island-contract-wiring-qa-report-v1",
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "status": "passed_with_warnings",
+  "findings": [
+    {
+      "finding_id": "CW-W001",
+      "node_id": "game-design-finalize",
+      "sub_skill_path": "game-templates/template-runtime-load-qa",
+      "contract_axis": "validation_gap",
+      "severity": "warning",
+      "expected": "runtime loader test (Cocos Creator) executed",
+      "actual": "loader_unavailable — implement-puzzle-core尚未实现",
+      "evidence_paths": [".allforai/game-templates/qa/template-runtime-load-qa-report.json"],
+      "repair_target": "implement-puzzle-core → 执行headless load test",
+      "blocks_finalization": false,
+      "state": "passed_with_warnings"
+    }
+  ],
+  "all_skill_md_paths_exist": true,
+  "all_upstream_artifacts_present": true,
+  "all_declared_outputs_in_final_doc": true,
+  "states_flow_to_finalization": true,
+  "conclusion": "Contract wiring QA通过（含1个非blocking警告：runtime loader test推迟至implement-puzzle-core）。"
+}

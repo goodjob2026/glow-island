@@ -1,7 +1,7 @@
 {
-  "schema": "retention-hook-v2",
+  "schema": "retention-hook-v3",
   "generated_at": "2026-05-13T00:00:00Z",
-  "revision_notes": "v2 — 语言策略修复：HTML所有导航/标题/标签改为中文(zh-CN)，游戏内专有名词保留日文，JSON字段名保留英文snake_case。新增friend_progress_phase2数据结构预留。",
+  "revision_notes": "v3 — 新增日夜与四季系统（time_system + season_system）。冬季温泉获得雪元素。双轨时间驱动：现实时钟 + 关卡进度。NPC台词随季节变化，日记碎片触发时叠加季节视觉演出。纯视觉/氛围，无时限机制，保持治愈感。",
   "design_constraints": {
     "no_stamina_gate": true,
     "no_countdown_timers": true,
@@ -12,9 +12,198 @@
     "allowed_social": "opt_in_soft_leaderboard_only",
     "errc_eliminate": ["energy/stamina gates", "countdown timers blocking progress", "PvP/ranking", "forced social obligations"],
     "errc_reduce": ["hard difficulty walls", "time-limited event density", "intrusive popup purchase prompts"],
-    "errc_raise": ["combo satisfaction", "art quality", "narrative depth"],
-    "errc_create": ["island visual restoration", "hinata_romance_thread", "wataru_memory_fragment_system", "chapter_mechanic_progression"]
+    "errc_raise": ["combo satisfaction", "art quality", "narrative depth", "seasonal visual variety"],
+    "errc_create": ["island visual restoration", "hinata_romance_thread", "wataru_memory_fragment_system", "chapter_mechanic_progression", "day_night_cycle", "four_seasons_system"]
   },
+
+  "time_system": {
+    "description": "日夜与四季系统——双轨时间驱动，让輝島随时间呈现不同的光照、色温与氛围，增强视觉留存动力。纯氛围向，无时限机制。",
+    "drive_mode": "dual_track",
+    "dual_track_detail": {
+      "track_1_realtime": {
+        "source": "device_system_clock",
+        "description": "跟随设备本地时钟，划分白天/黄昏/夜晚三段。玩家不同时间打开游戏看到不同岛屿状态。",
+        "segments": [
+          {
+            "segment_id": "day",
+            "name_zh": "白天",
+            "time_range": "06:00–17:59",
+            "color_temperature": "暖白，高饱和度",
+            "lighting_note": "阳光充足，海面波光粼粼，NPC在户外活动"
+          },
+          {
+            "segment_id": "dusk",
+            "name_zh": "黄昏",
+            "time_range": "18:00–20:59",
+            "color_temperature": "橙红金色，降低饱和度",
+            "lighting_note": "夕阳斜照，长影，海面被染成橙色，灯台窗口开始亮起微光"
+          },
+          {
+            "segment_id": "night",
+            "name_zh": "夜晚",
+            "time_range": "21:00–05:59",
+            "color_temperature": "深蓝冷色调，点状暖光",
+            "lighting_note": "灯台在夜晚完全亮起（Ch1仅灯光状态预示，Ch6灯台正式点亮后夜晚效果最完整）；星空；NPC室内有灯火"
+          }
+        ]
+      },
+      "track_2_progress": {
+        "source": "level_completion_count",
+        "description": "关卡通关数量推动季节进度。每30关（一章）推进约一个季度。6章完整周期 = 春夏秋冬各呈现一次以上。",
+        "mapping": {
+          "ch1_levels_1_30": "spring",
+          "ch2_levels_31_60": "summer",
+          "ch3_levels_61_90": "autumn",
+          "ch4_levels_91_120": "winter",
+          "ch5_levels_121_150": "spring_second",
+          "ch6_levels_151_180": "summer_second"
+        },
+        "note": "进度季节与现实时钟日夜独立运作，叠加显示。例：现实夜晚 × 进度冬季 = 雪夜温泉场景，是最具视觉冲击力的状态之一。"
+      }
+    },
+    "combination_matrix": {
+      "description": "日夜段 × 四季 = 12种独特岛屿视觉状态，覆盖所有时间组合",
+      "highlight_combinations": [
+        {
+          "combo": "winter_night",
+          "name_zh": "冬夜温泉",
+          "description": "雪花轻飘，灯台光柱扫过雪雾，温泉蒸汽在蓝黑背景下格外浓厚，屋顶白雪在夜晚微泛蓝光。治愈感最高的场景状态之一。"
+        },
+        {
+          "combo": "spring_dusk",
+          "name_zh": "樱花黄昏",
+          "description": "橙红夕阳打在飘落的粉色花瓣上，花田山坡整片橙粉，温暖而短暂。"
+        },
+        {
+          "combo": "summer_day",
+          "name_zh": "夏日晴天",
+          "description": "海浪最活跃，阳光直射，海面反光强烈，NPC都在户外，最热闹的岛屿状态。"
+        },
+        {
+          "combo": "autumn_night",
+          "name_zh": "秋夜月下",
+          "description": "红叶在月光下呈暗铜色，营地篝火光与月光形成对比，安静而深邃。"
+        }
+      ]
+    },
+    "lighthouse_interaction": {
+      "description": "灯台是日夜系统的情感锚点。夜晚始终是灯台最有存在感的时段。",
+      "ch1_to_ch5_night": "灯台未修复，但窗缝透出微弱黄光——冬子每晚在里面坐着的暗示。",
+      "ch6_night_after_restore": "灯台全功率旋转光柱，整个岛屿夜间被周期性暖光扫过，最具仪式感的视觉状态。"
+    }
+  },
+
+  "season_system": {
+    "description": "四季系统——每个季节在岛屿场景、音效、NPC台词、视觉粒子效果上均有差异，让玩家感受到岛屿的生命力与时间流逝。",
+    "seasons": [
+      {
+        "season_id": "spring",
+        "name_zh": "春",
+        "name_ja": "春霞の島",
+        "chapter_range": "Ch1（L1-30），Ch5（L121-150）",
+        "visual_signature": "樱花飘落",
+        "particle_effect": "cherry_blossom_petals — 粉色/白色花瓣从屏幕上方缓缓飘落，随风偏转，落在地面逐渐消散",
+        "scene_changes": [
+          "花田山坡满开的樱花树（Ch3区域呼应）",
+          "码头栈板缝隙间冒出细草",
+          "NPC户外活动时间增长"
+        ],
+        "audio_notes": "增加鸟鸣频率，钢琴曲目偏明亮轻快",
+        "npc_seasonal_lines": {
+          "健三": "今年の桜、去年より遅かったな。海もそう思ってるかもしれない。",
+          "梅子": "春になると、土の匂いが変わる。碗の形も、少し丸くなりたくなる。",
+          "夏帆": "桜が散った後の土、踏むといい音がする。",
+          "冬子": "渉は毎年、桜が咲くと灯台に上っていた。上から見ると、島が全部ピンク色になるって。"
+        },
+        "wataru_diary_visual_flourish": "日记碎片解锁时，碎片边缘飘散樱花花瓣，背景音加一声远处风铃"
+      },
+      {
+        "season_id": "summer",
+        "name_zh": "夏",
+        "name_ja": "熱波の島",
+        "chapter_range": "Ch2（L31-60），Ch6（L151-180）",
+        "visual_signature": "海浪更活跃",
+        "particle_effect": "wave_spray — 海面波浪振幅增大，偶有浪花粒子溅起；傍晚萤火虫光点漂浮（仅黄昏/夜晚时段）",
+        "scene_changes": [
+          "码头晾晒的渔网增多",
+          "小镇喷泉水流更充沛",
+          "海面反光强烈（镜面光效增强）"
+        ],
+        "audio_notes": "蝉鸣声明显，海浪节奏加快，吉他曲目带一丝慵懒感",
+        "npc_seasonal_lines": {
+          "健三": "夏の海は正直だ。隠せない。全部光の中に出てくる。",
+          "梅子": "窯が暑い。でも夏の土は素直で、扱いやすい。",
+          "夏帆": "夕方になると蛍が出ます。崖の上から見るといいですよ。",
+          "冬子": "夏は島がうるさい。いい意味で。渉はこの季節が一番好きだった。"
+        },
+        "wataru_diary_visual_flourish": "日记碎片解锁时，背景叠加萤火虫光点飘浮"
+      },
+      {
+        "season_id": "autumn",
+        "name_zh": "秋",
+        "name_ja": "紅葉の島",
+        "chapter_range": "Ch3（L61-90）",
+        "visual_signature": "红叶飘落",
+        "particle_effect": "autumn_leaves — 橙红/深红/金黄三色叶片从树上飘散，比樱花粒子更重，落地时有轻微弹跳",
+        "scene_changes": [
+          "花田山坡的树木变为红橙色系",
+          "营地露营地地面铺满落叶",
+          "森林露营地晨雾更浓"
+        ],
+        "audio_notes": "风声加强，落叶沙沙声，钢琴曲目偏沉稳略带忧郁",
+        "npc_seasonal_lines": {
+          "健三": "秋の海は少し寂しい。でも、これが本当の色だと思う。",
+          "梅子": "秋は赤い碗を作りたくなる。理由は聞かないで。",
+          "夏帆": "葉が落ちると、木が正直になる。幹の形が全部見える。",
+          "冬子": "紅葉が散ると、冬子はいつも、冬の準備を始める。そういう人だった、渉は。"
+        },
+        "wataru_diary_visual_flourish": "日记碎片解锁时，碎片边缘有红叶飘散动效，音效带一声秋风"
+      },
+      {
+        "season_id": "winter",
+        "name_zh": "冬",
+        "name_ja": "冬凪の島",
+        "chapter_range": "Ch4（L91-120）",
+        "visual_signature": "飘雪 + 温泉雪景",
+        "particle_effect": "snowfall — 白色雪花粒子从屏幕上方缓缓飘落，密度随时段变化（夜晚密度+30%）；地面积雪随时间累积（视觉状态，非实时模拟）",
+        "scene_changes": [
+          "全岛场景叠加薄雪覆盖层（屋顶、木板、岩石均积雪）",
+          "温泉山谷（Ch5区域）特别效果：温泉蒸汽浓度大幅增强，烟雾粒子体积扩大2×，暖橙色蒸汽在冷蓝背景下形成强烈对比",
+          "灯台外壁白色在雪景中更洁净明亮",
+          "健三的渔船甲板有积雪纹理"
+        ],
+        "hot_spring_snow_detail": {
+          "description": "冬季温泉专属雪元素——这是用户明确要求的核心设计。温泉山谷在冬季呈现最治愈的视觉场景。",
+          "rooftop_snow": "温泉区建筑屋顶积雪（白色雪帽，边缘有雪粒子偶尔滑落）",
+          "snowflake_particles": "大颗粒雪花在温泉区上空漂浮，遇热气上升气流时轻微偏转",
+          "steam_enhancement": "温泉蒸汽在冬季大幅增强：粒子量×2，扩散范围+50%，蒸汽颜色偏暖橙白，与冷蓝雪景形成色温对比",
+          "visual_goal": "雪中泡温泉的治愈感——冷与暖的对比，静与动的融合。是整个游戏视觉留存力最高的场景组合之一。",
+          "ch4_note": "Ch4 = 森林露营地，温泉山谷在Ch5解锁。设计上，Ch4的冬季效果体现在营地和山坡；待玩家到达Ch5后，冬季温泉的完整雪元素才全部激活。若进度季节已经过冬但玩家尚未到Ch5，温泉场景仍会在玩家推进到Ch5后以冬季状态呈现（进度季节的冬效果持续到Ch5解锁后补偿触发）。"
+        },
+        "audio_notes": "环境音静谧，偶有风声，远处风铃声更清脆，钢琴曲目低沉缓慢；温泉区增加热气咕嘟声",
+        "npc_seasonal_lines": {
+          "健三": "冬の海は、静かで正直だ。嘘をつかない。",
+          "梅子": "寒い日は、碗の中の温かさがよくわかる。",
+          "夏帆": "雪が降ると、植物が静かになる。休んでいるんだと思う。",
+          "冬子": "渉は冬が一番好きだった。温泉に雪が積もると、世界がちょうどいい大きさになるって言っていた。"
+        },
+        "wataru_diary_visual_flourish": "日记碎片解锁时，碎片边缘有雪花粒子飘落，背景有温泉蒸汽上升；冬子的日记碎片专属——画面短暂呈现「雪中灯台」轮廓，伴随低沉钢琴单音",
+        "retention_hook": "冬季是视觉留存力最强的季节——玩家希望亲眼看到温泉积雪场景，形成「想看冬季温泉雪景」的具体回归动机"
+      }
+    ],
+    "season_npc_idle_trigger": {
+      "description": "季节台词作为NPC idle气泡出现——关卡间隙低频触发，不打断游戏节奏",
+      "trigger_rate": "每5-8关随机触发一次季节台词，与叙事台词共用idle气泡池",
+      "priority": "叙事关键台词优先，季节台词填充间隙"
+    },
+    "season_transition_animation": {
+      "description": "季节切换时（进度驱动）播放一个短暂的场景过渡动画",
+      "duration_seconds": 3,
+      "style": "淡入淡出，新季节粒子效果先于背景出现，营造「季节到来」的仪式感",
+      "trigger": "关卡通关触发季节切换时，在关卡结算界面后自动播放，可跳过"
+    }
+  },
+
   "daily_reward_calendar": {
     "week_1": [
       {
@@ -152,13 +341,15 @@
           "season": "winter",
           "name_ja": "冬凪の島",
           "duration_days": 30,
-          "exclusive_material": "冬の霜草",
-          "hinata_seasonal_line": "冬の島は静かです。でも、その静かさが好きだと、祖父はよく言っていました。",
-          "visual_effect": "frost_morning_mist"
+          "exclusive_material": "雪の結晶",
+          "hinata_seasonal_line": "温泉に雪が積もると、世界がちょうどいい大きさになる、と渉さんが言っていました。律さんも、そう思いますか？",
+          "visual_effect": "snowfall_overlay_plus_hot_spring_steam_enhanced",
+          "hot_spring_note": "冬季签到礼物配送动画：礼物箱出现时背景叠加温泉蒸汽+雪花粒子，是全年签到最有氛围感的状态"
         }
       ]
     }
   },
+
   "hinata_story_beats": [
     {
       "beat_id": "ch1-a",
@@ -330,6 +521,7 @@
       "unlock_reward": { "item": "lighthouse_glow_always_on", "function": "permanent_island_visual_state" }
     }
   ],
+
   "wataru_memory_fragment_system": {
     "description": "丸山渉（ひなたの祖父・元灯台守）の記憶断片を集めるメタゲームシステム。断片はプレイ・デイリー・ひなたイベントから自然に現れ、強制収集は一切なし。",
     "total_fragments": 24,
@@ -342,9 +534,17 @@
       { "source": "chapter_restoration_milestones", "fragment_ids": ["fragment_wataru_03_through_12"] },
       { "source": "seasonal_gifts_d30_plus", "fragment_ids": ["fragment_wataru_13_through_24"] }
     ],
+    "seasonal_visual_flourish": {
+      "description": "日记碎片触发时，播放与当前季节对应的视觉演出，强化沉浸感",
+      "spring": "碎片边缘飘散樱花花瓣，远处风铃单音",
+      "summer": "碎片背景叠加萤火虫光点飘浮",
+      "autumn": "碎片边缘有红叶飘散，音效带一声秋风",
+      "winter": "碎片边缘雪花粒子飘落，背景有温泉蒸汽上升；冬子专属碎片额外显示「雪中灯台」轮廓剪影"
+    },
     "viewer_ui": "memory_journal_book_style",
     "complete_reward": "epilogue_scene_hinata_reveals_grandfather_story"
   },
+
   "chapter_restoration_hooks": {
     "design_principle": "各章の終わりは次の章への視覚的誘惑。霧とぼかしで次エリアをほのめかす。",
     "visual_stages_per_chapter": 4,
@@ -364,6 +564,7 @@
       { "from": 5, "to": 6, "teaser": "霧が晴れると、灯台の輪郭がはっきりと見えた。" }
     ]
   },
+
   "retention_milestones": {
     "d1": {
       "hook": "What happened to the harbor overnight? / 港に何かが打ち上げられている",
@@ -394,6 +595,7 @@
       "retention_mechanic": "memory_system_fully_engaged_personal_revelation"
     }
   },
+
   "push_notification_strategy": {
     "opt_in": true,
     "opt_in_prompt_timing": "day_3_post_session_gentle_ask",
@@ -444,6 +646,12 @@
         "copy_note": "季節の変わり目。好奇心を呼ぶ。"
       },
       {
+        "trigger": "winter_season_hot_spring",
+        "timing": "morning_of_winter_season_start",
+        "copy_ja": "律さん、温泉に雪が積もっています。",
+        "copy_note": "冬季温泉専属通知。具体的なビジュアルへの好奇心を誘う。"
+      },
+      {
         "trigger": "hinata_story_beat_ready",
         "timing": "morning_after_trigger_condition_met",
         "copy_ja": "ひなたさんが、島のどこかに何かを置いていったようです。",
@@ -457,6 +665,7 @@
       "between_23:00_and_08:00_local_time"
     ]
   },
+
   "soft_streak_system": {
     "description": "連続ログインは祝うが、途切れても罰しない。ウェルカムバックギフトがストリークの代わりに機能する。",
     "streak_break_response": {
@@ -471,10 +680,11 @@
       { "day": 30, "gift": "hinata_personal_revelation + lighthouse_new_angle_unlock" }
     ]
   },
+
   "friend_progress_phase2": {
     "phase": "phase_2_reserved",
     "description": "好友进度展示系统——Phase 2实现，Phase 1数据结构已预留。展示朋友打到第几章，轻社交无竞技压力。",
-    "platform_integration": ["game_center_ios", "google_play_friends_android"],
+    "platform_integration": ["self_hosted_backend", "apple_id_auth", "google_auth"],
     "data_fields": {
       "friend_id": "string",
       "friend_display_name": "string",
@@ -507,6 +717,7 @@
       }
     }
   },
+
   "competitor_analysis": {
     "note": "参考比較。Glow Islandはすべての項目で差別化された立場を取る。",
     "competitors": [
@@ -540,7 +751,8 @@
         "energy_refill": "エネルギー制なし。いつでもプレイ可能",
         "story_event_frequency": "セッション後に届く（12回のひなたビート）。中断なし",
         "push_notification_cadence": "最大1回/日、D30以降は不在3日以上のみ。オプトイン必須",
-        "emotional_tone": "静かで深い。治癒感・関係性の温かさ・渉の記憶による物語の厚み"
+        "emotional_tone": "静かで深い。治癒感・関係性の温かさ・渉の記憶による物語の厚み",
+        "differentiator_new": "日夜×四季ビジュアルシステム——同ジャンルに類例なし。島が時間とともに変化する生命感が継続的な視覚的留存動力を生む"
       }
     ]
   }

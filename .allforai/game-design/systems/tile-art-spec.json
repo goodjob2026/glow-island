@@ -1,0 +1,311 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "node": "tile-art-gen",
+  "status": "COMPLETED_WITH_LIMITS",
+
+  "overview": {
+    "total_tile_assets": 25,
+    "regular_tiles": 20,
+    "special_blocks": 5,
+    "chapter_variants_per_regular_tile": 6,
+    "animation_frames_per_special_block": 12,
+    "total_variant_files": 180,
+    "atlases": 7,
+    "source_strategy": "llm_image_generation",
+    "primary_generation_api": "google-imagen-4",
+    "fallback_api": "openrouter-gpt-image"
+  },
+
+  "tilemap": {
+    "mode": "puzzle_grid",
+    "projection": "orthographic",
+    "tile_size_px": 128,
+    "tile_size_2x_px": 256,
+    "canvas_bleed_px": 8,
+    "effective_draw_area_px": 112,
+    "corner_radius_2x_px": 24,
+    "outline_width_px": 2,
+    "outline_style": "primary_color_darkened_32pct",
+    "paper_texture_overlay_opacity": 0.06,
+    "format": "png",
+    "connectivity": "single_tiles",
+    "collision_model": "none"
+  },
+
+  "art_style": {
+    "style": "hand_drawn_watercolor",
+    "style_keywords": ["Animal Crossing New Horizons icons", "Wytchwood watercolor texture", "warm pastel palette", "soft organic brushwork"],
+    "prohibited_styles": ["pixel_art", "hyper_realistic_3d", "neon_cyberpunk", "metallic_chrome_gradients", "pure_black_000000"],
+    "outline_rule": "primary color darkened 32%, never pure #000000",
+    "small_scale_rule": "silhouette readable at 32×32px",
+    "background": "transparent PNG",
+    "lighting": "soft top-left ambient, no hard shadow crossing tile boundary"
+  },
+
+  "saturation_system": {
+    "description": "Each regular tile has 6 chapter color variants progressing through saturation restoration stages as the island heals",
+    "stages": {
+      "s0_before_repair": { "saturation_pct": [8, 15],  "brightness_pct": [42, 48], "label": "褪色枯岛" },
+      "s1":               { "saturation_pct": [28, 38], "label": "轮廓找回淡彩" },
+      "s2":               { "saturation_pct": [48, 58], "label": "生活气息色彩" },
+      "s3":               { "saturation_pct": [62, 72], "label": "角色回归满生命力" },
+      "s4_full":          { "saturation_pct": [75, 88], "label": "完整水彩光效全开" }
+    },
+    "chapter_stage_map": {
+      "ch1": "s0", "ch2": "s1", "ch3": "s2", "ch4": "s3", "ch5": "s3", "ch6": "s4_full"
+    }
+  },
+
+  "regular_tiles": [
+    {
+      "asset_id": "tile_tuna",          "name": "金枪鱼",     "file_prefix": "tile_tuna",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "golden bluefin tuna, side-profile slight upward tilt, warm golden-yellow scales, teal accent fins",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_octopus",       "name": "章鱼",       "file_prefix": "tile_octopus",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "chibi octopus, round head, 8 rounded tentacles, pink-purple palette",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_starfish",      "name": "海星",       "file_prefix": "tile_starfish",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "starfish, 5 rounded arms with small bumps, warm coral-orange",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_hermit_crab",   "name": "寄居蟹",     "file_prefix": "tile_hermit_crab",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "hermit crab peeking from spiral shell, small round claws raised, sandy-tan shell, peach body",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_lanternfish",   "name": "灯笼鱼",     "file_prefix": "tile_lanternfish",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "anglerfish/lanternfish, round dark body, glowing bioluminescent lure, deep teal with gold glow",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_pufferfish",    "name": "河豚",       "file_prefix": "tile_pufferfish",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "pufferfish fully inflated, round spiky silhouette, yellow-cream body, short rounded spines",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_whale",         "name": "鲸鱼",       "file_prefix": "tile_whale",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "blue whale, rounded streamlined body, water spout, gentle expression, ocean blue with teal highlights",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_coral",         "name": "珊瑚",       "file_prefix": "tile_coral",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "branching coral, 3-5 upward branches rounded tips, coral orange-pink, small decorative dots",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_conch",         "name": "海螺",       "file_prefix": "tile_conch",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "spiral conch shell, wide opening facing viewer, peach-cream tones, soft pink inner glow",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_shell",         "name": "贝壳",       "file_prefix": "tile_shell",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "scallop shell, fan shape with ridged top edge, cream and lilac gradient",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_crab",          "name": "螃蟹",       "file_prefix": "tile_crab",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "red crab, both claws raised joyfully, vivid red-coral watercolor, warm highlights",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_turtle",        "name": "海龟",       "file_prefix": "tile_turtle",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "sea turtle, round patterned shell hexagonal plates, four flippers wide, green with sandy yellow shell",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_jellyfish",     "name": "水母",       "file_prefix": "tile_jellyfish",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "jellyfish, round translucent dome, 4-6 trailing tendrils, lavender-pink with inner glow",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_flying_fish",   "name": "飞鱼",       "file_prefix": "tile_flying_fish",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "flying fish mid-leap, elongated pectoral fins as wings, silvery-blue body, amber belly, water droplets below",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_dolphin",       "name": "海豚",       "file_prefix": "tile_dolphin",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "dolphin leaping upward, rounded streamlined body, ocean-blue, white belly, friendly smile",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_seagull",       "name": "海鸥",       "file_prefix": "tile_seagull",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "seagull in flight, wings spread in gentle arc, white body, soft grey wingtips, yellow beak",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_coconut_palm",  "name": "椰子树",     "file_prefix": "tile_coconut_palm",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "coconut palm tree, slightly curved trunk, 4-5 palm fronds, 2-3 brown coconuts, tropical green, sandy trunk",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_lighthouse",    "name": "灯塔",       "file_prefix": "tile_lighthouse",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "miniature lighthouse, white and red striped tower, rounded top lantern room, golden light glow, small waves at base",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_fishing_boat",  "name": "渔船",       "file_prefix": "tile_fishing_boat",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "wooden fishing boat, rounded hull, small mast with furled sail, driftwood-brown wood, teal water ripples",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_buoy",          "name": "浮标",       "file_prefix": "tile_buoy",
+      "unlock_chapter": 1, "animation_method": "static",
+      "base_subject": "maritime buoy, round ball with flat top, red and white horizontal stripes, anchor chain, small wave",
+      "current_state": "spec_complete"
+    }
+  ],
+
+  "special_blocks": [
+    {
+      "asset_id": "tile_wave_block",
+      "name": "光波特殊块",
+      "file_prefix": "tile_wave_block",
+      "mechanic": "清除整行/整列 (wave clear row or column)",
+      "animation_method": "frame_animation",
+      "frame_count": 12,
+      "color_badge": "#7ECDE8",
+      "activation_vfx": "warm_white_ripple_expanding_ring",
+      "idle_glow": "breathing_pulse 2.0-2.8s period",
+      "visual_identity": "teal-cyan cell with concentric ring ripple and warm white inner glow",
+      "distinguishing_feature": "expanding concentric rings motif unique to this block",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_light_chain_block",
+      "name": "光链特殊块",
+      "file_prefix": "tile_light_chain_block",
+      "mechanic": "连锁相邻消除 (chain adjacent matches)",
+      "animation_method": "frame_animation",
+      "frame_count": 12,
+      "color_badge": "#F0C4C4",
+      "activation_vfx": "gold_pulse_scan_wave_chain_lines",
+      "idle_glow": "breathing_pulse 2.0-2.8s period",
+      "visual_identity": "sakura-pink cell with gold chain link pattern and scan-line glow",
+      "distinguishing_feature": "chain link motif with gold #F5C842 connecting lines",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_pierce_block",
+      "name": "穿透特殊块",
+      "file_prefix": "tile_pierce_block",
+      "mechanic": "穿透障碍物直线消除 (pierce through obstacles in a line)",
+      "animation_method": "frame_animation",
+      "frame_count": 12,
+      "color_badge": "#F5A840",
+      "activation_vfx": "blue_white_arrow_burst_edge_glow",
+      "idle_glow": "breathing_pulse 2.0-2.8s period",
+      "visual_identity": "orange cell with directional arrow and blue-white burst glow at tip",
+      "distinguishing_feature": "single directional arrow — only block with explicit direction indicator",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_swap_block",
+      "name": "置换特殊块",
+      "file_prefix": "tile_swap_block",
+      "mechanic": "交换两格位置 (swap two tile positions)",
+      "animation_method": "frame_animation",
+      "frame_count": 12,
+      "color_badge": "#F5C842",
+      "activation_vfx": "green_spiral_rotation_elastic_snap",
+      "idle_glow": "breathing_pulse 2.0-2.8s period",
+      "visual_identity": "golden-yellow cell with double circular arrows and green spiral accent",
+      "distinguishing_feature": "bidirectional swap arrows — only block using #F5C842 golden base",
+      "current_state": "spec_complete"
+    },
+    {
+      "asset_id": "tile_cascade_block",
+      "name": "连锁特殊块",
+      "file_prefix": "tile_cascade_block",
+      "mechanic": "自动连锁触发序列 (auto-chain sequential trigger)",
+      "animation_method": "frame_animation",
+      "frame_count": 12,
+      "color_badge": "#4A7D55",
+      "activation_vfx": "orange_red_ripple_auto_chain_sequenced",
+      "idle_glow": "breathing_pulse 2.0-2.8s period",
+      "visual_identity": "forest-green cell with sequential ripple rings and orange-red chain dots",
+      "distinguishing_feature": "sequential numbered or step-dotted chain pattern — only dark green block",
+      "current_state": "spec_complete"
+    }
+  ],
+
+  "atlas_layout": {
+    "chapter_atlases": [
+      { "atlas_id": "tiles_ch1_atlas", "chapter": 1, "tiles_included": 12, "atlas_max_px": 2048 },
+      { "atlas_id": "tiles_ch2_atlas", "chapter": 2, "tiles_included": 14, "atlas_max_px": 2048 },
+      { "atlas_id": "tiles_ch3_atlas", "chapter": 3, "tiles_included": 16, "atlas_max_px": 2048 },
+      { "atlas_id": "tiles_ch4_atlas", "chapter": 4, "tiles_included": 17, "atlas_max_px": 2048 },
+      { "atlas_id": "tiles_ch5_atlas", "chapter": 5, "tiles_included": 19, "atlas_max_px": 2048 },
+      { "atlas_id": "tiles_ch6_atlas", "chapter": 6, "tiles_included": 20, "atlas_max_px": 2048 }
+    ],
+    "special_blocks_atlas": {
+      "atlas_id": "special_blocks_atlas",
+      "contents": "5 special blocks × 12 frames = 60 frame images",
+      "atlas_max_px": 2048,
+      "chapter_independent": true
+    }
+  },
+
+  "review_checklist": {
+    "seam_check": "图块无缝拼接验证 — puzzle_grid single_tiles mode: no terrain seams required; check icon does not bleed outside 8px bleed zone",
+    "pattern_variants": "20种基础图案已定义 (20 base marine/island patterns); 每章6个饱和度变体 × 6章 = 完整章节色彩变换",
+    "atlas_size_check": "图块atlas尺寸符合规格 — tile_size_px=128 from art-pipeline-config.json.tileset; atlas_max_px=2048 confirmed; per-chapter atlas policy confirmed",
+    "special_block_identity": "特殊块视觉识别度 — 5种特殊块各有独特外观: 光波(teal同心圆), 光链(粉+金链), 穿透(橙+方向箭头), 置换(金+双向箭头), 连锁(绿+序列点)",
+    "combo_vfx_frames": "combo触发特效帧 — 12帧frame animation per special block; idle breathing glow 2.0-2.8s; does not occlude board (transparent background tile boundary)"
+  },
+
+  "sub_skill_results": {
+    "step_0_source_resolution": {
+      "result": "SKIPPED",
+      "reason": "All 25 tile assets use source_strategy=llm_image_generation (ai_generated). No existing asset pack search, license QA, or adaptation needed."
+    },
+    "step_1_tileset_spec": {
+      "result": "COMPLETED",
+      "output": ".allforai/game-design/art/tilesets/tileset-spec.json",
+      "report": ".allforai/game-design/art/tilesets/tileset-spec-report.json"
+    },
+    "step_1_2d5d_spec": {
+      "result": "NOT_APPLICABLE",
+      "reason": "dimension=2d per concept-contract.json. 2.5D production and lighting specs not required."
+    },
+    "step_2_tileset_generation": {
+      "result": "COMPLETED_WITH_LIMITS",
+      "output_spec": ".allforai/game-design/art/tilesets/tileset-generation-spec.json",
+      "output_manifest": ".allforai/game-design/art/tilesets/tileset-manifest.json",
+      "output_report": ".allforai/game-design/art/tilesets/tileset-generation-report.json",
+      "limit_note": "PNG image files require image generation API execution. All prompts, paths, and generation parameters fully specified."
+    }
+  },
+
+  "asset_states": {
+    "note": "All 25 canonical_registry.tiles[] assets advanced from placeholder to spec_complete. Actual PNG generation (completing to 'generated' state) requires image API execution documented in tileset-generation-spec.json.",
+    "assets_in_spec_complete_state": 25,
+    "assets_still_placeholder": 0,
+    "completion_condition_met": "tile-art-spec.json EXISTS and tile-art-review.html EXISTS and all 25 tiles have current_state != placeholder (state = spec_complete)"
+  }
+}

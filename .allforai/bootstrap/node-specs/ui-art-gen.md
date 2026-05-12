@@ -89,3 +89,21 @@ Skip for assets already marked `adapted`.
 `.allforai/game-design/systems/ui-art-spec.json` exists AND `.allforai/game-design/ui-art-review.html` exists AND all `canonical_registry.ui[]` and `canonical_registry.other[]` entries have `current_state != "placeholder"`.
 
 If any sub-skill returns `UPSTREAM_DEFECT` → halt and report the defect. Do not advance to `art-qa`.
+
+### Step 3 — Hourglass UI & Seasonal Map Variants
+
+After completing Steps 0-2, generate the following additional UI components:
+
+**沙漏奖励系统 UI (from monetization-design revision):**
+- `ui_hourglass_empty` — empty state (transparent glass, no sand)
+- `ui_hourglass_filling` — filling state (animated sand layer 0-100%)
+- `ui_hourglass_full` — full/claim-ready state (glowing sand, animated call-to-action)
+- `ui_hourglass_claimed` — claimed state (empty again, countdown timer visible)
+All hourglass assets use island/beach theme (sand + warm amber palette).
+
+**Seasonal Island Map UI:**
+Invoke the project-local seasonal art skill for UI seasonal variants:
+- `.allforai/bootstrap/specialized-skills/glow-island-seasonal-art-generation/SKILL.md`
+  - Mode: `ui_only`
+  - Generates `.allforai/game-design/art/seasonal/seasonal-ui-variants-spec.json`
+  - Island map must show correct seasonal atmosphere (snow in Ch4, sakura in Ch1/Ch5, etc.)

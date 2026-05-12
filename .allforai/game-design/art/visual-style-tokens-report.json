@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/visual-style-tokens",
+  "verdict": "pass",
+  "summary": {
+    "token_groups_present": ["color", "line", "shape", "material", "camera_view", "lighting", "typography_mood", "ui_compatibility", "vfx_intensity", "image_generation_constraints"],
+    "color_values_valid": true,
+    "style_rules_consistent": true,
+    "ui_art_tokens_compatible": true,
+    "image_generation_constraints_complete": true
+  },
+  "passed_checks": [
+    "required_token_groups_exist",
+    "color_values_valid_hex",
+    "style_rules_not_contradictory",
+    "ui_and_art_tokens_share_compatible_palette",
+    "image_generation_prompt_constraints_include_positive_and_negative_guidance",
+    "prohibited_styles_enumerated",
+    "character_signature_colors_mapped"
+  ],
+  "failed_checks": [],
+  "warnings": [],
+  "next_action": "visual-style-tokens.json consumed by skeletal-animation and expression-set-generation sub-skills"
+}

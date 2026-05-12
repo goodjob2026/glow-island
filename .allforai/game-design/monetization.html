@@ -1,1005 +1,695 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glow Island (輝島) — 变现设计</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glow Island — 变现设计文档 v4.0</title>
   <style>
     :root {
-      --bg: #0f1117;
-      --surface: #1a1d26;
-      --border: #2a2d3a;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --accent: #7dd3fc;
-      --accent2: #86efac;
-      --accent3: #fbbf24;
-      --heading: #f8fafc;
-      --code-bg: #12141c;
-      --tag-bg: #1e3a5f;
-      --red: #f87171;
-      --green: #4ade80;
+      --bg: #fdf6ec;
+      --surface: #fff9f0;
+      --border: #e8d9c0;
+      --accent: #e8915a;
+      --accent2: #5b9e8a;
+      --accent3: #f2c94c;
+      --text: #3a2e22;
+      --text-muted: #7a6a54;
+      --tag-green: #d4edda;
+      --tag-green-text: #1e6e3c;
+      --tag-red: #fde8e8;
+      --tag-red-text: #a53030;
+      --tag-amber: #fff3cd;
+      --tag-amber-text: #856404;
+      --tag-blue: #e3f0ff;
+      --tag-blue-text: #1a4a8a;
+      --shadow: 0 2px 12px rgba(60,40,20,0.08);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.75;
-      padding: 0 1rem 4rem;
-    }
+    body { font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.65; }
 
-    /* 页头 */
-    .page-header {
-      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 2.5rem 2rem 2rem;
-      margin: 0 -1rem 2.5rem;
-      text-align: center;
-    }
-    .page-header .project-tag {
-      display: inline-block;
-      background: var(--tag-bg);
-      color: var(--accent);
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      border: 1px solid rgba(125,211,252,0.25);
-      margin-bottom: 0.9rem;
-    }
-    .page-header h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--heading);
-      text-shadow: 0 0 40px rgba(125,211,252,0.2);
-    }
-    .page-header .subtitle {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-top: 0.5rem;
-    }
+    header { background: linear-gradient(135deg, #e8915a 0%, #d4734a 100%); color: #fff; padding: 28px 32px 22px; }
+    header h1 { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+    header p { margin-top: 6px; opacity: 0.88; font-size: 13px; }
+    .header-meta { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+    .header-badge { background: rgba(255,255,255,0.18); border-radius: 20px; padding: 3px 12px; font-size: 12px; }
 
-    .container {
-      max-width: 920px;
-      margin: 0 auto;
-    }
+    .tab-bar { display: flex; background: var(--surface); border-bottom: 2px solid var(--border); overflow-x: auto; }
+    .tab-btn { padding: 13px 22px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; border: none; background: none; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.18s, border-color 0.18s; }
+    .tab-btn:hover { color: var(--accent); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
 
-    h1, h2, h3, h4, h5, h6 {
-      color: var(--heading);
-      margin-top: 2rem;
-      margin-bottom: 0.6rem;
-      font-weight: 600;
-      line-height: 1.35;
-    }
-    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
-    h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
-    h3 { font-size: 1.1rem; color: var(--accent2); }
-    h4 { font-size: 1rem; color: var(--muted); }
-    p { margin: 0.6rem 0 0.9rem; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    strong { color: var(--heading); font-weight: 600; }
-    em { color: var(--accent2); font-style: normal; }
+    .tab-pane { display: none; padding: 28px 32px 40px; max-width: 960px; }
+    .tab-pane.active { display: block; }
 
-    blockquote {
-      border-left: 3px solid var(--accent);
-      padding: 0.5rem 1rem;
-      background: var(--surface);
-      border-radius: 0 6px 6px 0;
-      margin: 1rem 0;
-      color: var(--muted);
-    }
+    h2 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+    h3 { font-size: 15px; font-weight: 700; color: var(--accent); margin: 22px 0 10px; }
+    h4 { font-size: 13px; font-weight: 600; color: var(--text); margin: 14px 0 6px; }
+    p { margin-bottom: 10px; }
 
-    code {
-      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
-      font-size: 0.87em;
-      background: var(--code-bg);
-      color: var(--accent2);
-      padding: 0.15em 0.4em;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-    }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-bottom: 18px; }
 
-    ul, ol { padding-left: 1.6rem; margin: 0.5rem 0 1rem; }
-    li { margin: 0.3rem 0; }
-    li > ul, li > ol { margin: 0.2rem 0; }
+    .badge { display: inline-block; border-radius: 12px; padding: 2px 10px; font-size: 11px; font-weight: 600; margin-left: 6px; vertical-align: middle; }
+    .badge-green { background: var(--tag-green); color: var(--tag-green-text); }
+    .badge-red { background: var(--tag-red); color: var(--tag-red-text); }
+    .badge-amber { background: var(--tag-amber); color: var(--tag-amber-text); }
+    .badge-blue { background: var(--tag-blue); color: var(--tag-blue-text); }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.2rem 0;
-      font-size: 0.9rem;
-    }
-    th {
-      background: var(--surface);
-      color: var(--accent);
-      font-weight: 600;
-      padding: 0.6rem 0.9rem;
-      text-align: left;
-      border: 1px solid var(--border);
-    }
-    td {
-      padding: 0.55rem 0.9rem;
-      border: 1px solid var(--border);
-      vertical-align: top;
-    }
-    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-    tr:hover td { background: rgba(125,211,252,0.04); }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+    th { background: #f5e9d8; color: var(--text); text-align: left; padding: 9px 12px; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fff5ea; }
 
-    hr {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 2rem 0;
-    }
+    .check-list { list-style: none; padding-left: 0; }
+    .check-list li { padding: 5px 0; display: flex; align-items: flex-start; gap: 8px; }
+    .check-list li::before { content: "✓"; color: var(--accent2); font-weight: 700; flex-shrink: 0; }
+    .cross-list { list-style: none; padding-left: 0; }
+    .cross-list li { padding: 5px 0; display: flex; align-items: flex-start; gap: 8px; }
+    .cross-list li::before { content: "✕"; color: #c0392b; font-weight: 700; flex-shrink: 0; }
 
-    /* 章节序号徽标 */
-    .section-num {
-      display: inline-block;
-      background: var(--tag-bg);
-      color: var(--accent);
-      border-radius: 50%;
-      width: 1.6rem;
-      height: 1.6rem;
-      line-height: 1.6rem;
-      text-align: center;
-      font-size: 0.78rem;
-      font-weight: 700;
-      margin-right: 0.5rem;
-      vertical-align: middle;
-    }
+    .stat-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin: 14px 0; }
+    .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; text-align: center; }
+    .stat-box .num { font-size: 22px; font-weight: 700; color: var(--accent); }
+    .stat-box .lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-    /* 徽章行 */
-    .badge-row {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin: 0.75rem 0 1.2rem;
-    }
-    .badge {
-      display: inline-block;
-      border-radius: 6px;
-      padding: 0.3rem 0.85rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-    .badge-green { background: rgba(74,222,128,0.12); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
-    .badge-blue { background: rgba(125,211,252,0.12); color: var(--accent); border: 1px solid rgba(125,211,252,0.25); }
-    .badge-red { background: rgba(248,113,113,0.12); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
-    .badge-yellow { background: rgba(251,191,36,0.12); color: var(--accent3); border: 1px solid rgba(251,191,36,0.25); }
+    .flow-row { display: flex; align-items: center; gap: 4px; margin: 8px 0; flex-wrap: wrap; }
+    .flow-node { border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 14px; text-align: center; font-size: 12px; font-weight: 600; }
+    .flow-node.source { border-color: var(--accent); background: #fff5ea; }
+    .flow-node.sink { border-color: var(--accent2); background: #eaf5f2; }
+    .flow-node.currency { border-color: var(--accent3); background: #fffbea; font-size: 14px; font-weight: 700; }
+    .flow-arrow { font-size: 18px; color: var(--text-muted); padding: 0 4px; flex-shrink: 0; }
 
-    /* 设计原则列表 */
-    .principle-list {
-      list-style: none;
-      padding: 0;
-    }
-    .principle-list li {
-      background: var(--surface);
-      border-left: 3px solid var(--accent2);
-      border-radius: 0 6px 6px 0;
-      padding: 0.55rem 1rem;
-      margin: 0.5rem 0;
-      font-size: 0.92rem;
-    }
-    .principle-list li strong { color: var(--accent2); }
+    .highlight-box { background: #fffbea; border-left: 4px solid var(--accent3); padding: 14px 16px; border-radius: 0 8px 8px 0; margin: 14px 0; font-size: 13px; }
+    .info-box { background: #e8f4f8; border-left: 4px solid #4a9ec0; padding: 14px 16px; border-radius: 0 8px 8px 0; margin: 14px 0; font-size: 13px; }
 
-    /* 设计哲学卡片 */
-    .philosophy-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin: 1.2rem 0;
-    }
-    .philosophy-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.2rem;
-      text-align: center;
-    }
-    .philosophy-card .icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
-    .philosophy-card .card-label {
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      color: var(--accent);
-      margin-bottom: 0.4rem;
-      font-weight: 600;
-    }
-    .philosophy-card h4 { margin-top: 0; color: var(--heading); font-size: 0.95rem; }
-    .philosophy-card p { font-size: 0.82rem; color: var(--muted); margin: 0.3rem 0 0; }
+    .sku-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin: 14px 0; }
+    .sku-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 16px; position: relative; }
+    .sku-card.featured { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(232,145,90,0.15); }
+    .sku-card.subscription { border-color: var(--accent2); }
+    .sku-price { font-size: 20px; font-weight: 800; color: var(--accent); }
+    .sku-name { font-size: 14px; font-weight: 700; margin: 4px 0 6px; }
+    .sku-coins { font-size: 13px; color: var(--text-muted); }
+    .sku-corner-tag { position: absolute; top: 10px; right: 10px; font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 600; }
 
-    /* 单货币展示卡 */
-    .currency-single {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-top: 3px solid var(--accent3);
-      border-radius: 10px;
-      padding: 1.4rem 1.6rem;
-      margin: 1.2rem 0;
-    }
-    .currency-single .currency-name {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--heading);
-      margin-bottom: 0.2rem;
-    }
-    .currency-single .currency-sub {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-    .currency-single .section-label {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin: 0.8rem 0 0.4rem;
-    }
-    .currency-single ul { padding-left: 1.2rem; margin: 0; }
-    .currency-single li { font-size: 0.88rem; margin: 0.25rem 0; }
+    .hg-states { display: flex; gap: 20px; align-items: flex-end; justify-content: center; padding: 20px 0; flex-wrap: wrap; }
+    .hg-state { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .hg-icon { width: 60px; height: 80px; position: relative; }
+    .hg-lbl { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .hg-arrow-right { font-size: 20px; color: var(--border); align-self: center; margin-bottom: 24px; }
 
-    /* 用途流向表格 */
-    .sink-row-obtain { color: var(--accent3); font-weight: 600; }
-    .sink-row-spend { color: var(--accent); font-weight: 600; }
-
-    /* IAP SKU 卡片 */
-    .sku-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      margin: 1.2rem 0;
-    }
-    .sku-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.2rem 1.3rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .sku-card.featured { border-color: var(--accent2); }
-    .sku-card.featured::before {
-      content: "主推";
-      position: absolute;
-      top: 0.55rem;
-      right: 0.7rem;
-      font-size: 0.65rem;
-      background: var(--accent2);
-      color: #0f1117;
-      padding: 0.1rem 0.45rem;
-      border-radius: 4px;
-      font-weight: 700;
-    }
-    .sku-card.subscription { border-color: var(--accent); }
-    .sku-card.subscription::before {
-      content: "订阅";
-      position: absolute;
-      top: 0.55rem;
-      right: 0.7rem;
-      font-size: 0.65rem;
-      background: var(--accent);
-      color: #0f1117;
-      padding: 0.1rem 0.45rem;
-      border-radius: 4px;
-      font-weight: 700;
-    }
-    .sku-card .sku-id { font-size: 0.7rem; color: var(--muted); margin-bottom: 0.3rem; }
-    .sku-card .sku-name { font-size: 1.05rem; font-weight: 700; color: var(--heading); margin-bottom: 0.1rem; }
-    .sku-card .sku-name-en { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.75rem; }
-    .sku-card .price-row {
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-    }
-    .sku-card .price-cny { font-size: 1.4rem; font-weight: 700; color: var(--accent3); }
-    .sku-card .price-usd { font-size: 0.8rem; color: var(--muted); }
-    .sku-card .coins-amount {
-      font-size: 0.9rem;
-      color: var(--accent3);
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
-    .sku-card .continue-equiv {
-      font-size: 0.78rem;
-      color: var(--accent2);
-      margin-bottom: 0.6rem;
-    }
-    .sku-card .positioning {
-      font-size: 0.76rem;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      padding-top: 0.5rem;
-      margin-top: 0.3rem;
-      line-height: 1.5;
-    }
-
-    /* 定价对比表 */
-    .pricing-note {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem 1.2rem;
-      font-size: 0.87rem;
-      color: var(--muted);
-      margin: 1rem 0;
-    }
-    .pricing-note strong { color: var(--text); }
-
-    /* 触发规则：禁止/允许 */
-    .forbidden-list, .safe-list {
-      list-style: none;
-      padding: 0;
-    }
-    .forbidden-list li {
-      background: rgba(248,113,113,0.07);
-      border-left: 3px solid var(--red);
-      border-radius: 0 6px 6px 0;
-      padding: 0.45rem 1rem;
-      margin: 0.4rem 0;
-      font-size: 0.86rem;
-      color: var(--text);
-    }
-    .safe-list li {
-      background: rgba(134,239,172,0.06);
-      border-left: 3px solid var(--accent2);
-      border-radius: 0 6px 6px 0;
-      padding: 0.45rem 1rem;
-      margin: 0.4rem 0;
-      font-size: 0.86rem;
-      color: var(--text);
-    }
-    .trigger-cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
-      margin: 1rem 0;
-    }
-    .trigger-col-label {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    .trigger-col-label.forbidden { color: var(--red); }
-    .trigger-col-label.allowed { color: var(--accent2); }
-
-    /* ARPU 指标卡 */
-    .arpu-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin: 1.2rem 0;
-    }
-    .arpu-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.1rem;
-      text-align: center;
-    }
-    .arpu-card .day-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-    }
-    .arpu-card .arpu-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1.2;
-    }
-    .arpu-card .arpu-sub {
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-top: 0.3rem;
-    }
-    .arpu-card .arpu-bar {
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin-top: 0.8rem;
-      overflow: hidden;
-    }
-    .arpu-card .arpu-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 2px;
-    }
-
-    /* 收入结构 */
-    .revenue-bar {
-      display: flex;
-      height: 2rem;
-      border-radius: 6px;
-      overflow: hidden;
-      margin: 1rem 0 0.4rem;
-      border: 1px solid var(--border);
-    }
-    .revenue-segment {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #0f1117;
-    }
-    .revenue-segment.subscription { background: var(--accent); width: 40%; }
-    .revenue-segment.one-time { background: var(--accent3); width: 45%; }
-    .revenue-segment.micro { background: var(--accent2); width: 15%; }
-    .revenue-legend {
-      display: flex;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-    .revenue-legend .dot {
-      display: inline-block;
-      width: 0.7rem;
-      height: 0.7rem;
-      border-radius: 50%;
-      margin-right: 0.3rem;
-      vertical-align: middle;
-    }
-
-    /* ERRC 格 */
-    .errc-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      margin: 1.2rem 0;
-    }
-    .errc-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.1rem 1.2rem;
-    }
-    .errc-card .errc-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-      display: inline-block;
-    }
-    .errc-card.eliminate .errc-label { background: rgba(248,113,113,0.15); color: var(--red); }
-    .errc-card.reduce .errc-label { background: rgba(251,191,36,0.12); color: var(--accent3); }
-    .errc-card.raise .errc-label { background: rgba(125,211,252,0.12); color: var(--accent); }
-    .errc-card.create .errc-label { background: rgba(134,239,172,0.12); color: var(--accent2); }
-    .errc-card ul { list-style: none; padding: 0; margin: 0; }
-    .errc-card li {
-      font-size: 0.84rem;
-      padding: 0.3rem 0;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-    }
-    .errc-card li:last-child { border-bottom: none; }
-    .errc-card.eliminate li::before { content: "✕ "; color: var(--red); font-weight: 700; }
-    .errc-card.reduce li::before { content: "↓ "; color: var(--accent3); font-weight: 700; }
-    .errc-card.raise li::before { content: "↑ "; color: var(--accent); font-weight: 700; }
-    .errc-card.create li::before { content: "+ "; color: var(--accent2); font-weight: 700; }
-
-    /* 验证清单 */
-    .checklist {
-      list-style: none;
-      padding: 0;
-      margin: 1rem 0;
-    }
-    .checklist li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-      padding: 0.45rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.88rem;
-    }
-    .checklist li:last-child { border-bottom: none; }
-    .checklist .check-icon { color: var(--green); font-weight: 700; flex-shrink: 0; }
-    .checklist .check-icon.warn { color: var(--accent3); }
-
-    /* 页脚 */
-    .footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.78rem;
-      margin-top: 4rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-    }
-
-    @media (max-width: 640px) {
-      .philosophy-grid { grid-template-columns: 1fr; }
-      .sku-grid { grid-template-columns: 1fr; }
-      .arpu-grid { grid-template-columns: repeat(2, 1fr); }
-      .errc-grid { grid-template-columns: 1fr; }
-      .trigger-cols { grid-template-columns: 1fr; }
+    @media (max-width: 600px) {
+      .tab-pane { padding: 18px 14px 32px; }
+      header { padding: 20px 14px 16px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="page-header">
-    <div class="project-tag">Glow Island · 游戏设计</div>
-    <h1>变现设计</h1>
-    <div class="subtitle">单货币模型（沙滩币）· IAP礼包目录 · 续关定价曲线 · ARPU预测 · ERRC承诺</div>
+<header>
+  <h1>Glow Island (輝島) — 变现设计文档</h1>
+  <p>单货币 IAP + 沙漏奖励系统 · 反侵入原则 · 无体力限制</p>
+  <div class="header-meta">
+    <span class="header-badge">v4.0</span>
+    <span class="header-badge">2026-05-13</span>
+    <span class="header-badge">节点: monetization-design</span>
+    <span class="header-badge">状态: 待审核</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('tab-currency', this)">货币体系</button>
+  <button class="tab-btn" onclick="showTab('tab-hourglass', this)">沙漏奖励系统</button>
+  <button class="tab-btn" onclick="showTab('tab-paywall', this)">付费点设计</button>
+  <button class="tab-btn" onclick="showTab('tab-iap', this)">IAP 产品线</button>
+  <button class="tab-btn" onclick="showTab('tab-balance', this)">平衡性分析</button>
+</div>
+
+<!-- ===================== 货币体系 ===================== -->
+<div id="tab-currency" class="tab-pane active">
+  <h2>货币体系</h2>
+
+  <div class="card">
+    <h3 style="margin-top:0;">核心模型</h3>
+    <p><strong>单货币模型</strong>：Glow Island 仅使用一种货币——<strong>沙滩币（Beach Coins）</strong>。无软货币/硬货币双轨制，经济模型简洁透明。</p>
+    <div class="stat-row">
+      <div class="stat-box"><div class="num">1</div><div class="lbl">货币种类</div></div>
+      <div class="stat-box"><div class="num">2</div><div class="lbl">获取途径</div></div>
+      <div class="stat-box"><div class="num">3</div><div class="lbl">消费场景</div></div>
+      <div class="stat-box"><div class="num">0</div><div class="lbl">体力限制</div></div>
+    </div>
   </div>
 
-  <div class="container">
+  <h3>货币流转</h3>
+  <div class="flow-row">
+    <div class="flow-node source">IAP 直购</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node currency">沙滩币</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node sink">续关 +5步 (30枚)</div>
+  </div>
+  <div class="flow-row">
+    <div class="flow-node source">沙漏奖励 (免费)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node currency">沙滩币</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node sink">重排 (30枚)</div>
+  </div>
+  <div class="flow-row">
+    <div style="width:120px;opacity:0;"></div>
+    <div style="width:20px;opacity:0;"></div>
+    <div class="flow-node currency">沙滩币</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node sink">预判 (10枚)</div>
+  </div>
 
-    <!-- ══════════════════════════════════════════════════════════════
-         第1节：设计哲学
-    ══════════════════════════════════════════════════════════════ -->
-    <h2><span class="section-num">1</span>设计哲学</h2>
+  <h3>沙滩币属性</h3>
+  <table>
+    <tr><th>属性</th><th>值</th><th>说明</th></tr>
+    <tr>
+      <td>名称</td><td>沙滩币</td><td>Beach Coins，贝壳造型金黄色硬币，暖橙色光晕</td>
+    </tr>
+    <tr>
+      <td>获取途径</td>
+      <td>
+        <span class="badge badge-blue">IAP购买</span>
+        <span class="badge badge-green">沙漏免费领取</span>
+      </td>
+      <td>两条路径，保障免费玩家基础体验</td>
+    </tr>
+    <tr>
+      <td>上限</td><td>无上限</td><td>储存不限量，付多少/领多少留多少</td>
+    </tr>
+    <tr>
+      <td>消费场景</td><td>续关 / 重排 / 预判</td><td>所有消费均为玩家主动触发</td>
+    </tr>
+    <tr>
+      <td>体力绑定</td><td>否</td><td>沙滩币不控制游玩次数，无体力系统</td>
+    </tr>
+  </table>
 
-    <blockquote>
-      <strong>核心命题：</strong>治愈感的底层是安全感。玩家只有在不被催付的前提下，才能真正沉浸进輝島修复的心流体验。
-    </blockquote>
-
-    <div class="philosophy-grid">
-      <div class="philosophy-card">
-        <div class="icon">&#9889;</div>
-        <div class="card-label">无体力系统</div>
-        <h4>随时游玩，不被打断</h4>
-        <p>彻底消除体力/生命值设计。玩家进入关卡不消耗任何资源，失败可立即重试，不存在"等回体力"或"花钱买体力"的焦虑触点。</p>
-      </div>
-      <div class="philosophy-card">
-        <div class="icon">&#128683;</div>
-        <div class="card-label">反侵入原则</div>
-        <h4>付费决策完全主动</h4>
-        <p>IAP提示仅在步数耗尽的自然失败时机出现。不主动弹出购买窗口，不全屏拦截，玩家关闭失败界面即可免费重试。</p>
-      </div>
-      <div class="philosophy-card">
-        <div class="icon">&#128218;</div>
-        <div class="card-label">信任优先</div>
-        <h4>透明 · 非欺骗 · 可持续</h4>
-        <p>价格结构清晰，不设虚假折扣，不频繁调价。叙事/章节/核心玩法永久免费，付费仅为续关辅助。</p>
-      </div>
+  <h3>设计原则（ERRC 承诺）</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h4>消除</h4>
+      <ul class="cross-list">
+        <li>体力/生命值系统</li>
+        <li>双货币复杂度</li>
+        <li>强制购买弹窗</li>
+        <li>进度付费墙</li>
+        <li>PvP/公会义务</li>
+      </ul>
     </div>
+    <div class="card">
+      <h4>减少</h4>
+      <ul class="check-list">
+        <li>人为难度墙</li>
+        <li>侵入式 IAP 提示</li>
+        <li>虚假折扣定价</li>
+        <li>SKU 选择困难</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>提升</h4>
+      <ul class="check-list">
+        <li>消除爽快感</li>
+        <li>美术精致度（动森风格）</li>
+        <li>叙事情感深度</li>
+        <li>免费玩家游玩体验</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>创造</h4>
+      <ul class="check-list">
+        <li>岛屿视觉修复（免费）</li>
+        <li>山田律×丸山ひなた情感线（免费）</li>
+        <li>灯台守记忆碎片（免费）</li>
+        <li>沙漏奖励系统（免费回访）</li>
+        <li>月卡日领 + 沙漏翻倍</li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-    <h3>五项信任承诺</h3>
-    <ul class="principle-list">
-      <li><strong>定价透明：</strong>IAP价格清晰展示，不设"原价×× 现价×"虚假折扣，不频繁调整</li>
-      <li><strong>进度不可购买加速：</strong>核心修复动画免费触发，关卡通关不依赖续关达成，付费不能跳过叙事内容</li>
-      <li><strong>广告真实：</strong>所有投放广告素材100%展示真实连连看玩法，无误导性截图或视频</li>
-      <li><strong>内容免费：</strong>6章叙事、NPC对话、情感线、灯台守日记碎片全部对所有玩家免费开放</li>
-      <li><strong>订阅可控：</strong>月卡支持随时取消，到期前3天提醒，权益说明清晰，无隐藏条款</li>
+<!-- ===================== 沙漏奖励系统 ===================== -->
+<div id="tab-hourglass" class="tab-pane">
+  <h2>沙漏奖励系统</h2>
+
+  <div class="highlight-box">
+    <strong>设计目标：</strong>为免费玩家提供定期回访即可获得沙滩币的方式，建立轻量但稳定的日常习惯。无需打卡签到压力，玩家按自己节奏来即可。月卡用户享受 2 倍奖励，强化订阅价值感知。
+  </div>
+
+  <h3>核心参数</h3>
+  <div class="stat-row">
+    <div class="stat-box"><div class="num">4小时</div><div class="lbl">填满时间（后台计时）</div></div>
+    <div class="stat-box"><div class="num">15枚</div><div class="lbl">基础领取奖励</div></div>
+    <div class="stat-box"><div class="num">30枚</div><div class="lbl">月卡用户领取奖励</div></div>
+    <div class="stat-box"><div class="num">×1</div><div class="lbl">叠加上限（不叠加）</div></div>
+  </div>
+
+  <h3>沙漏状态说明</h3>
+  <table>
+    <tr><th>状态</th><th>表现</th><th>玩家操作</th></tr>
+    <tr>
+      <td>空（刚领取后）</td>
+      <td>沙漏空置，沙粒极少，图标正常显示</td>
+      <td>等待计时，无需操作</td>
+    </tr>
+    <tr>
+      <td>填充中</td>
+      <td>沙粒缓慢下落，沙漏底部逐渐堆积，进度直观可见</td>
+      <td>可随时查看，无需操作</td>
+    </tr>
+    <tr>
+      <td>满载（4小时后）</td>
+      <td>沙漏边缘金色发光 + 轻微弹跳动画 + 图标显示红色感叹号徽章</td>
+      <td>点击图标领取沙滩币</td>
+    </tr>
+    <tr>
+      <td>领取动画</td>
+      <td>沙漏翻转倒出 → 沙滩币飞出 → 汇入 HUD 货币栏 + 音效</td>
+      <td>点击确认即完成</td>
+    </tr>
+  </table>
+
+  <h3>UI 规格</h3>
+  <table>
+    <tr><th>要素</th><th>设计规格</th></tr>
+    <tr>
+      <td>主界面位置</td>
+      <td>地图/主界面显眼位置（HUD 角落或岛屿地图中央附近），随时可见</td>
+    </tr>
+    <tr>
+      <td>图标风格</td>
+      <td>岛屿主题圆形沙漏，顶部小棕榈树装饰，底部珊瑚礁台座；暖黄色沙粒、圆润玻璃瓶造型</td>
+    </tr>
+    <tr>
+      <td>满载提示</td>
+      <td>沙漏边缘金色发光 + 轻微弹跳 + 贝壳音效；图标红色感叹号徽章</td>
+    </tr>
+    <tr>
+      <td>领取动画</td>
+      <td>沙漏翻转倒出，沙滩币从沙漏口飞出汇入 HUD 货币栏</td>
+    </tr>
+    <tr>
+      <td>月卡标识</td>
+      <td>月卡玩家沙漏图标显示小皇冠，领取提示标注「×2 月卡加成」</td>
+    </tr>
+    <tr>
+      <td>推送通知</td>
+      <td>不主动推送（沙漏满了仅在 App 内被动展示徽章）</td>
+    </tr>
+  </table>
+
+  <h3>不叠加设计说明</h3>
+  <div class="info-box">
+    沙漏满载后<strong>停止计时，不再叠加</strong>。玩家领取后，沙漏重新开始计时。
+    <ul style="margin-top:8px;padding-left:16px;">
+      <li>鼓励定期回来，但<strong>不惩罚忘记领取</strong>（满着等玩家，不扣除任何东西）</li>
+      <li>避免"补偿式大量奖励"破坏经济平衡</li>
+      <li>交互简单：满了就领，领了再等</li>
     </ul>
+  </div>
 
-    <div class="badge-row">
-      <span class="badge badge-red">✕ 无体力系统</span>
-      <span class="badge badge-red">✕ 无倒计时关卡</span>
-      <span class="badge badge-red">✕ 无强制弹窗</span>
-      <span class="badge badge-red">✕ 无P2W进度加速</span>
-      <span class="badge badge-red">✕ 无双货币</span>
-      <span class="badge badge-green">✓ 无限重试</span>
-      <span class="badge badge-green">✓ 透明定价</span>
-      <span class="badge badge-green">✓ 场景化IAP</span>
-      <span class="badge badge-blue">单货币模型</span>
-    </div>
+  <h3>免费玩家收益估算</h3>
+  <div class="stat-row">
+    <div class="stat-box"><div class="num">~4次</div><div class="lbl">预期每日领取次数</div></div>
+    <div class="stat-box"><div class="num">~60枚</div><div class="lbl">免费玩家日收益</div></div>
+    <div class="stat-box"><div class="num">~420枚</div><div class="lbl">免费玩家周收益</div></div>
+    <div class="stat-box"><div class="num">~14次</div><div class="lbl">可支持续关次数/周</div></div>
+    <div class="stat-box"><div class="num">~120枚</div><div class="lbl">月卡玩家日收益（含月卡30枚/天）</div></div>
+  </div>
+  <p style="color:var(--text-muted);font-size:12px;margin-top:4px;">* 假设每天领取约 4 次（每 6 小时一次，略大于 4 小时间隔模拟真实用户行为）。实际频率因人而异。</p>
 
-    <hr>
-
-    <!-- ══════════════════════════════════════════════════════════════
-         第2节：单货币体系
-    ══════════════════════════════════════════════════════════════ -->
-    <h2><span class="section-num">2</span>单货币体系</h2>
-
-    <p>Glow Island 采用<strong>单一货币「沙滩币」</strong>，彻底放弃双货币分层复杂度。货币来源唯一（IAP购买），用途简洁（续关 / 重排 / 预判三种辅助），玩家无需理解两种货币的换算关系。</p>
-
-    <div class="currency-single">
-      <div class="currency-name">🐚 沙滩币（Beach Coins）</div>
-      <div class="currency-sub">唯一游戏货币 · 仅IAP购买 · 无免费获取渠道</div>
-
-      <div class="section-label">获取途径</div>
-      <ul>
-        <li><strong>IAP购买</strong>——唯一来源。四档礼包（小/中/大 + 月卡），详见第3节</li>
-        <li><span style="color:var(--red)">无签到奖励</span>、<span style="color:var(--red)">无任务奖励</span>、<span style="color:var(--red)">无通关奖励</span>——保持单一路径，经济模型清晰</li>
-      </ul>
-
-      <div class="section-label">消费场景</div>
-      <ul>
-        <li><strong>续关（+5步）</strong>：步数耗尽 → 结算界面出现续关选项 → 消耗 <code>30 沙滩币</code>，立即补充5步，关卡继续。同一关卡可多次续关。</li>
-        <li><strong>重排</strong>：打乱棋盘所有图块位置，保证新布局存在合法配对 → <code>30 沙滩币</code>/次</li>
-        <li><strong>预判</strong>：高亮当前棋盘最优下一步，持续3秒 → <code>10 沙滩币</code>/次</li>
-      </ul>
-
-      <div class="section-label">余额上限</div>
-      <ul>
-        <li>无上限——玩家购入多少留多少，不强制消耗，不设溢出清算机制</li>
-      </ul>
-    </div>
-
-    <h3>货币流向总览</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>方向</th>
-          <th>场景</th>
-          <th>数量</th>
-          <th>设计定位</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="sink-row-obtain">流入（购买）</td>
-          <td>IAP礼包</td>
-          <td>60 / 280 / 820 沙滩币<br>月卡 30/天×30天</td>
-          <td>唯一来源，路径清晰</td>
-        </tr>
-        <tr>
-          <td class="sink-row-spend">流出（消费）</td>
-          <td>续关 +5步</td>
-          <td>30 沙滩币/次</td>
-          <td>唯一付费墙，自然触发</td>
-        </tr>
-        <tr>
-          <td class="sink-row-spend">流出（辅助）</td>
-          <td>重排棋盘</td>
-          <td>30 沙滩币/次</td>
-          <td>玩家主动求助，非被迫</td>
-        </tr>
-        <tr>
-          <td class="sink-row-spend">流出（辅助）</td>
-          <td>预判提示</td>
-          <td>10 沙滩币/次</td>
-          <td>低成本辅助，降低挫败感</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <hr>
-
-    <!-- ══════════════════════════════════════════════════════════════
-         第3节：IAP 礼包目录
-    ══════════════════════════════════════════════════════════════ -->
-    <h2><span class="section-num">3</span>IAP 礼包目录</h2>
-
-    <p>四档礼包覆盖完整付费漏斗，避免选择困难。SKU定位独立不冲突，定价参考天天爱消除 / Candy Crush 续关成本，采用本地化定价策略。</p>
-
-    <div class="sku-grid">
-
-      <!-- 小包 -->
-      <div class="sku-card">
-        <div class="sku-id">IAP-001 · pack_small</div>
-        <div class="sku-name">一抔沙</div>
-        <div class="sku-name-en">A Handful of Sand</div>
-        <div class="price-row">
-          <span class="price-cny">¥6</span>
-          <span class="price-usd">$0.99</span>
-        </div>
-        <div class="coins-amount">🐚 60 沙滩币</div>
-        <div class="continue-equiv">≈ 2次续关（含1次重排）</div>
-        <div class="positioning">低门槛入门包：降低首次付费心理门槛。触发：连续失败3次以上后，结算界面内嵌软推荐。</div>
-      </div>
-
-      <!-- 中包（主推） -->
-      <div class="sku-card featured">
-        <div class="sku-id">IAP-002 · pack_medium</div>
-        <div class="sku-name">一把贝壳</div>
-        <div class="sku-name-en">A Handful of Shells</div>
-        <div class="price-row">
-          <span class="price-cny">¥25</span>
-          <span class="price-usd">$3.99</span>
-        </div>
-        <div class="coins-amount">🐚 280 沙滩币</div>
-        <div class="continue-equiv">≈ 9次续关 或 28次预判</div>
-        <div class="positioning">主力单次购买包，性价比最优，商城主推展位。覆盖多次续关或重排消费需求。</div>
-      </div>
-
-      <!-- 大包 -->
-      <div class="sku-card">
-        <div class="sku-id">IAP-003 · pack_large</div>
-        <div class="sku-name">一篮珊瑚</div>
-        <div class="sku-name-en">A Basket of Coral</div>
-        <div class="price-row">
-          <span class="price-cny">¥68</span>
-          <span class="price-usd">$9.99</span>
-        </div>
-        <div class="coins-amount">🐚 820 沙滩币</div>
-        <div class="continue-equiv">≈ 27次续关，储粮首选</div>
-        <div class="positioning">高价值大额消费包：重度玩家储粮，单价最低（≈¥0.083/币），适合长期囤货。</div>
-      </div>
-
-      <!-- 月卡（订阅） -->
-      <div class="sku-card subscription">
-        <div class="sku-id">IAP-004 · pack_monthly_card</div>
-        <div class="sku-name">月卡（每日沙滩币）</div>
-        <div class="sku-name-en">Monthly Card</div>
-        <div class="price-row">
-          <span class="price-cny">¥30</span>
-          <span class="price-usd">$4.99</span>
-        </div>
-        <div class="coins-amount">🐚 30 沙滩币/天 × 30天 = 900 沙滩币</div>
-        <div class="continue-equiv">≈ 30次续关，鼓励规律游玩</div>
-        <div class="positioning">订阅留存锚点：每日登录领取30沙滩币，总价值优于中包，培养规律游玩习惯。到期前3天提醒，支持随时取消。</div>
-      </div>
-
-    </div>
-
-    <div class="pricing-note">
-      <strong>定价依据：</strong>续关成本约 <strong>¥2.49–¥3.00/次</strong>（通过各档礼包折算），对齐天天爱消除（约¥2–4/次续关）和 Candy Crush（约$0.99–$2.99/续关）的市场参考价位。月卡总价值900沙滩币（≈¥0.033/币）是最佳单价，为规律付费用户提供最大感知价值。
-    </div>
-
-    <h3>礼包单价对比</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>礼包</th>
-          <th>价格（CNY）</th>
-          <th>沙滩币总量</th>
-          <th>单位成本（¥/币）</th>
-          <th>续关等效次数</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>一抔沙（小）</td>
-          <td>¥6</td>
-          <td>60</td>
-          <td>¥0.100</td>
-          <td>≈ 2次</td>
-        </tr>
-        <tr style="background:rgba(134,239,172,0.05)">
-          <td><strong>一把贝壳（中）⭐ 主推</strong></td>
-          <td>¥25</td>
-          <td>280</td>
-          <td>¥0.089</td>
-          <td>≈ 9次</td>
-        </tr>
-        <tr>
-          <td>一篮珊瑚（大）</td>
-          <td>¥68</td>
-          <td>820</td>
-          <td>¥0.083</td>
-          <td>≈ 27次</td>
-        </tr>
-        <tr style="background:rgba(125,211,252,0.05)">
-          <td><strong>月卡（订阅）</strong></td>
-          <td>¥30/月</td>
-          <td>900（分30天）</td>
-          <td>¥0.033</td>
-          <td>≈ 30次</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <hr>
-
-    <!-- ══════════════════════════════════════════════════════════════
-         第4节：付费触发规则
-    ══════════════════════════════════════════════════════════════ -->
-    <h2><span class="section-num">4</span>付费触发规则</h2>
-
-    <blockquote>
-      <strong>反侵入原则：</strong>不主动弹出购买提示，只在自然失败时机（步数耗尽）展示续关选项。
-    </blockquote>
-
-    <div class="trigger-cols">
-      <div>
-        <div class="trigger-col-label forbidden">❌ 禁止行为</div>
-        <ul class="forbidden-list">
-          <li>游戏进行中弹出购买窗口</li>
-          <li>全屏强制购买拦截（无法跳过）</li>
-          <li>倒计时FOMO促销弹窗</li>
-          <li>叙事/过场场景中插入商业内容</li>
-          <li>连续失败少于3次就推送购买提示</li>
-          <li>登录时强制弹出商城窗口</li>
-          <li>通关动画中插入购买推荐</li>
-        </ul>
-      </div>
-      <div>
-        <div class="trigger-col-label allowed">✓ 允许行为</div>
-        <ul class="safe-list">
-          <li>步数耗尽结算界面：内嵌续关按钮（余额足则直接消费，余额不足则引导购买）</li>
-          <li>玩家主动打开商城</li>
-          <li>连续失败3次以上后：结算界面下方展示「小包」软提示（非全屏）</li>
-          <li>月卡到期前3天：设置界面内低调提醒</li>
-          <li>新玩家首次打开商城时展示礼包说明</li>
-        </ul>
-      </div>
-    </div>
-
-    <h3>续关UX流程</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>步骤</th>
-          <th>状态</th>
-          <th>界面行为</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>步数耗尽</td>
-          <td>弹出结算界面（非全屏阻断），展示"步数用完"说明</td>
-        </tr>
-        <tr>
-          <td>2A</td>
-          <td>余额 ≥ 30沙滩币</td>
-          <td>显示「续关 +5步（30沙滩币）」按钮，点击即扣款继续</td>
-        </tr>
-        <tr>
-          <td>2B</td>
-          <td>余额 &lt; 30沙滩币</td>
-          <td>显示「购买沙滩币」软提示，引导至礼包商城</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>玩家选择放弃</td>
-          <td>显示「放弃关卡」按钮，免费返回关卡选择，可随时重试</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <hr>
-
-    <!-- ══════════════════════════════════════════════════════════════
-         第5节：ARPU预测与收入结构
-    ══════════════════════════════════════════════════════════════ -->
-    <h2><span class="section-num">5</span>ARPU 预测与收入结构</h2>
-
-    <div class="arpu-grid">
-      <div class="arpu-card">
-        <div class="day-label">次日留存 ARPU</div>
-        <div class="arpu-value">$0.15</div>
-        <div class="arpu-sub">D1</div>
-        <div class="arpu-bar"><div class="arpu-fill" style="width:10%"></div></div>
-      </div>
-      <div class="arpu-card">
-        <div class="day-label">7日 ARPU</div>
-        <div class="arpu-value">$0.45</div>
-        <div class="arpu-sub">D7</div>
-        <div class="arpu-bar"><div class="arpu-fill" style="width:30%"></div></div>
-      </div>
-      <div class="arpu-card">
-        <div class="day-label">30日 ARPU</div>
-        <div class="arpu-value">$1.20</div>
-        <div class="arpu-sub">D30</div>
-        <div class="arpu-bar"><div class="arpu-fill" style="width:55%"></div></div>
-      </div>
-      <div class="arpu-card">
-        <div class="day-label">90日 ARPU</div>
-        <div class="arpu-value">$2.80</div>
-        <div class="arpu-sub">D90</div>
-        <div class="arpu-bar"><div class="arpu-fill" style="width:100%"></div></div>
-      </div>
-    </div>
-
-    <h3>收入结构预测</h3>
-    <div class="revenue-bar">
-      <div class="revenue-segment subscription">订阅 40%</div>
-      <div class="revenue-segment one-time">单次礼包 45%</div>
-      <div class="revenue-segment micro">续关微消费 15%</div>
-    </div>
-    <div class="revenue-legend">
-      <span><span class="dot" style="background:var(--accent)"></span>月卡订阅 40%</span>
-      <span><span class="dot" style="background:var(--accent3)"></span>单次礼包（小/中/大）45%</span>
-      <span><span class="dot" style="background:var(--accent2)"></span>即时续关/辅助微消费 15%</span>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>指标</th>
-          <th>目标值</th>
-          <th>说明</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>IAP转化率</td>
-          <td>2.5%</td>
-          <td>单货币模型决策路径更清晰，预期转化略低于双货币但质量更高</td>
-        </tr>
-        <tr>
-          <td>付费用户D30 ARPU</td>
-          <td>$12.00</td>
-          <td>单次购买+月卡混合消费</td>
-        </tr>
-        <tr>
-          <td>月卡续订率</td>
-          <td>55%</td>
-          <td>无硬性内容封锁，续订动机来自游玩习惯而非强制</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <hr>
-
-    <!-- ══════════════════════════════════════════════════════════════
-         第6节：ERRC承诺
-    ══════════════════════════════════════════════════════════════ -->
-    <h2><span class="section-num">6</span>ERRC 承诺</h2>
-
-    <div class="errc-grid">
-      <div class="errc-card eliminate">
-        <div class="errc-label">消除</div>
-        <ul>
-          <li>体力 / 生命值系统</li>
-          <li>倒计时关卡压力</li>
-          <li>强制购买弹窗</li>
-          <li>PvP竞技排行榜</li>
-          <li>强制社交 / 公会义务</li>
-          <li>进度付费墙（章节/叙事）</li>
-          <li>双货币复杂度（仅单一沙滩币）</li>
-        </ul>
-      </div>
-      <div class="errc-card reduce">
-        <div class="errc-label">减少</div>
-        <ul>
-          <li>人为难度墙</li>
-          <li>高密度限时活动压力</li>
-          <li>侵入式IAP提示频率</li>
-          <li>虚假折扣定价</li>
-          <li>SKU选择困难（精简为4档）</li>
-        </ul>
-      </div>
-      <div class="errc-card raise">
-        <div class="errc-label">提升</div>
-        <ul>
-          <li>消除爽快感（连击 / 特效 / 音效）</li>
-          <li>美术精致度（动物森友会風格）</li>
-          <li>叙事情感深度（山田律 × 丸山ひなた 情感线）</li>
-          <li>IAP感知价值（清晰定价，真实呈现）</li>
-          <li>玩家付费主动性（无被迫感）</li>
-        </ul>
-      </div>
-      <div class="errc-card create">
-        <div class="errc-label">创造</div>
-        <ul>
-          <li>渐进式岛屿视觉修复（免费，关卡进度→场景变化）</li>
-          <li>若有若无情感线（免费，山田律 × 丸山ひなた）</li>
-          <li>灯台守记忆碎片系统（免费，渉日记每章解锁）</li>
-          <li>月卡日领沙滩币（规律游玩激励，轻量订阅）</li>
-        </ul>
-      </div>
-    </div>
-
-    <hr>
-
-    <!-- ══════════════════════════════════════════════════════════════
-         第7节：审核清单
-    ══════════════════════════════════════════════════════════════ -->
-    <h2><span class="section-num">7</span>审核清单</h2>
-
-    <ul class="checklist">
-      <li>
-        <span class="check-icon">✓</span>
-        <span><strong>单货币模型（沙滩币）设计完整，无双货币遗留</strong>——丹青石/Glowstone已完全移除，仅保留沙滩币</span>
-      </li>
-      <li>
-        <span class="check-icon">✓</span>
-        <span><strong>步数续关的定价曲线合理</strong>——30沙滩币/次续关，等效¥2.49–3.00，对齐天天爱消除/Candy Crush参考区间</span>
-      </li>
-      <li>
-        <span class="check-icon">✓</span>
-        <span><strong>续关触发时机UX不侵入</strong>——步数耗尽后弹出结算界面，不在游戏进行中主动推送</span>
-      </li>
-      <li>
-        <span class="check-icon">✓</span>
-        <span><strong>无体力机制得到正确实现</strong>——玩家随时可开始新关卡，失败立即重试，不受付费限制</span>
-      </li>
-      <li>
-        <span class="check-icon">✓</span>
-        <span><strong>IAP产品线SKU简洁</strong>——4档（小/中/大 + 月卡），符合3–5档要求，避免选择困难</span>
-      </li>
+  <h3>月卡沙漏翻倍设计</h3>
+  <div class="card">
+    <h4>为什么月卡用户获得 2 倍沙漏奖励？</h4>
+    <ul class="check-list">
+      <li>增强月卡订阅价值的<strong>可感知性</strong>：每次领取时明确对比「15 vs 30」，价值差异直观</li>
+      <li>强化月卡用户的<strong>回访黏性</strong>：更高的单次奖励让月卡玩家更有动力定期打开 App</li>
+      <li>有助于<strong>月卡续费率</strong>：离开月卡意味着沙漏奖励减半，形成温和留存动机</li>
+      <li>不改变游戏公平性：沙漏奖励仅影响免费沙滩币获取，不涉及游戏进度或内容解锁</li>
     </ul>
+  </div>
 
-    <div class="footer">
-      Glow Island (輝島) · 变现设计文档 · v3.0 · 2026-05-13<br>
-      节点：monetization-design · 负责人：变现设计师 · 状态：待审核
+  <h3>防作弊设计</h3>
+  <table>
+    <tr><th>风险</th><th>严重程度</th><th>应对措施</th></tr>
+    <tr>
+      <td>修改设备时间伪造满载</td>
+      <td><span class="badge badge-amber">中</span></td>
+      <td>后端（Fastify + Prisma）存储每次领取的服务器时间戳；领取请求时后端校验距上次领取是否满 4 小时，以服务器时间为准，客户端仅做展示</td>
+    </tr>
+    <tr>
+      <td>免费产出稀释付费意愿</td>
+      <td><span class="badge badge-green">低</span></td>
+      <td>每日上限约 60 基础沙滩币 ≈ 2 次续关；重度游玩（高频续关、重排）仍有明确 IAP 需求</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ===================== 付费点设计 ===================== -->
+<div id="tab-paywall" class="tab-pane">
+  <h2>付费点设计</h2>
+
+  <div class="highlight-box">
+    <strong>反侵入原则：</strong>不主动弹出购买提示，只在自然失败时展示续关选项。沙漏满载仅以被动图标徽章提示，不弹窗打扰。
+  </div>
+
+  <h3>唯一付费点</h3>
+  <div class="card">
+    <h4>步数耗尽 → 续关 +5步（30 沙滩币/次）</h4>
+    <p>玩家步数耗尽时，<strong>关卡结算界面</strong>弹出续关选项。沙滩币余额充足时直接消费，不足时引导购买。</p>
+    <ul class="check-list" style="margin-top:8px;">
+      <li>同一关卡可多次续关（每次 +5 步，固定 30 沙滩币）</li>
+      <li>不设续关次数上限</li>
+      <li>失败无惩罚，随时可重试（不消耗沙滩币）</li>
+      <li>免费玩家可用沙漏领取的沙滩币续关</li>
+    </ul>
+  </div>
+
+  <h3>场外辅助道具（可选消费）</h3>
+  <table>
+    <tr><th>道具</th><th>费用</th><th>触发方式</th><th>说明</th></tr>
+    <tr>
+      <td>重排</td>
+      <td>30 沙滩币</td>
+      <td>玩家主动点击 / 引擎检测无合法配对时提示</td>
+      <td>打乱棋盘位置，保证新布局有合法配对</td>
+    </tr>
+    <tr>
+      <td>预判</td>
+      <td>10 沙滩币</td>
+      <td>玩家主动点击</td>
+      <td>高亮最优下一步，持续 3 秒</td>
+    </tr>
+  </table>
+
+  <h3>不付费项目（保证永久免费）</h3>
+  <ul class="check-list">
+    <li>全 6 章章节解锁（通关关卡即解锁）</li>
+    <li>NPC 对话与叙事内容</li>
+    <li>山田律 × 丸山ひなた 情感线</li>
+    <li>灯台守记忆碎片（渉日记）</li>
+    <li>岛屿视觉修复进度</li>
+    <li>所有特殊图块（由玩法连击生成，非付费道具）</li>
+    <li>外观/皮肤</li>
+    <li>进度加速</li>
+    <li>跳关</li>
+  </ul>
+
+  <h3>IAP 触发规则</h3>
+  <table>
+    <tr><th>情境</th><th>状态</th><th>说明</th></tr>
+    <tr>
+      <td>步数耗尽结算界面</td>
+      <td><span class="badge badge-green">允许</span></td>
+      <td>内嵌续关按钮，非全屏强制</td>
+    </tr>
+    <tr>
+      <td>连续失败 3+ 次后</td>
+      <td><span class="badge badge-green">允许</span></td>
+      <td>结算界面下方展示「小包」软提示（非强制弹窗）</td>
+    </tr>
+    <tr>
+      <td>玩家主动打开商城</td>
+      <td><span class="badge badge-green">允许</span></td>
+      <td>随时可访问</td>
+    </tr>
+    <tr>
+      <td>月卡到期前 3 天</td>
+      <td><span class="badge badge-green">允许</span></td>
+      <td>设置界面内温馨提醒</td>
+    </tr>
+    <tr>
+      <td>沙漏满载图标徽章</td>
+      <td><span class="badge badge-green">允许</span></td>
+      <td>被动展示，不弹窗</td>
+    </tr>
+    <tr>
+      <td>游戏进行中弹窗</td>
+      <td><span class="badge badge-red">禁止</span></td>
+      <td>打断游戏流</td>
+    </tr>
+    <tr>
+      <td>全屏强制购买拦截</td>
+      <td><span class="badge badge-red">禁止</span></td>
+      <td>侵入性体验</td>
+    </tr>
+    <tr>
+      <td>倒计时 FOMO 促销弹窗</td>
+      <td><span class="badge badge-red">禁止</span></td>
+      <td>与治愈调性冲突</td>
+    </tr>
+    <tr>
+      <td>叙事/过场场景插入商业内容</td>
+      <td><span class="badge badge-red">禁止</span></td>
+      <td>破坏情感体验</td>
+    </tr>
+    <tr>
+      <td>少于 3 次失败推送购买</td>
+      <td><span class="badge badge-red">禁止</span></td>
+      <td>过早打扰</td>
+    </tr>
+    <tr>
+      <td>沙漏满载主动推送通知</td>
+      <td><span class="badge badge-red">禁止</span></td>
+      <td>通知骚扰，与品牌调性不符</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ===================== IAP 产品线 ===================== -->
+<div id="tab-iap" class="tab-pane">
+  <h2>IAP 产品线</h2>
+
+  <div class="info-box">
+    4 个 SKU 覆盖完整转化漏斗，避免选择困难。月卡额外享有<strong>沙漏奖励 2 倍</strong>，使订阅价值感知更直观。
+  </div>
+
+  <div class="sku-grid">
+    <div class="sku-card">
+      <span class="sku-corner-tag badge-blue">入门</span>
+      <div class="sku-price">¥6</div>
+      <div class="sku-name">一抔沙</div>
+      <div class="sku-coins">60 沙滩币</div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">低门槛入门包，应急续关首选，降低首次付费心理门槛</p>
+      <p style="font-size:12px;margin-top:6px;">≈ 2 次续关 · $0.99</p>
     </div>
 
-  </div><!-- .container -->
+    <div class="sku-card featured">
+      <span class="sku-corner-tag badge-amber">主推</span>
+      <div class="sku-price">¥25</div>
+      <div class="sku-name">一把贝壳</div>
+      <div class="sku-coins">280 沙滩币</div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">主力单次购买包，性价比最优，商城主推位</p>
+      <p style="font-size:12px;margin-top:6px;">≈ 9 次续关 · $3.99</p>
+    </div>
+
+    <div class="sku-card">
+      <span class="sku-corner-tag badge-red">重度</span>
+      <div class="sku-price">¥68</div>
+      <div class="sku-name">一篮珊瑚</div>
+      <div class="sku-coins">820 沙滩币</div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">高价值大额消费包，重度玩家储粮首选</p>
+      <p style="font-size:12px;margin-top:6px;">≈ 27 次续关 · $9.99</p>
+    </div>
+
+    <div class="sku-card subscription">
+      <span class="sku-corner-tag badge-green">订阅</span>
+      <div class="sku-price" style="color:var(--accent2);">¥30<span style="font-size:13px;font-weight:400;color:var(--text-muted);">/月</span></div>
+      <div class="sku-name">月卡</div>
+      <div class="sku-coins">30 沙滩币/天 × 30天 = 900 枚</div>
+      <div style="margin-top:8px;background:var(--tag-amber);border-radius:6px;padding:5px 8px;font-size:12px;font-weight:600;color:var(--tag-amber-text);">
+        + 沙漏奖励 ×2（30枚/次）
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">每天登录领沙滩币 + 沙漏翻倍，双重激励 · $4.99/月</p>
+    </div>
+  </div>
+
+  <h3>定价与价值对比</h3>
+  <table>
+    <tr><th>SKU</th><th>价格(CNY)</th><th>价格(USD)</th><th>沙滩币</th><th>单价(分/枚)</th><th>续关次数</th></tr>
+    <tr>
+      <td>一抔沙</td><td>¥6</td><td>$0.99</td><td>60</td><td>10 分</td><td>2</td>
+    </tr>
+    <tr style="background:#fff5ea;">
+      <td><strong>一把贝壳</strong> <span class="badge badge-amber">主推</span></td><td>¥25</td><td>$3.99</td><td>280</td><td>8.93 分</td><td>9</td>
+    </tr>
+    <tr>
+      <td>一篮珊瑚</td><td>¥68</td><td>$9.99</td><td>820</td><td>8.29 分</td><td>27</td>
+    </tr>
+    <tr>
+      <td>月卡</td><td>¥30/月</td><td>$4.99/月</td><td>900（日领）</td><td>3.33 分</td><td>30</td>
+    </tr>
+  </table>
+  <p style="font-size:12px;color:var(--text-muted);">* 月卡单价最优，适合月活用户；小包入门门槛最低；大包适合重度储粮。定价参考天天爱消除 / Candy Crush 本地化定价。</p>
+
+  <h3>转化漏斗</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h4>入门 — 一抔沙（¥6）</h4>
+      <p>连续失败 3 次后软推荐，降低首次付费门槛，触发首充转化</p>
+    </div>
+    <div class="card">
+      <h4>主力 — 一把贝壳（¥25）</h4>
+      <p>商城主推展位，性价比锚点，复购主力 SKU</p>
+    </div>
+    <div class="card">
+      <h4>重度 — 一篮珊瑚（¥68）</h4>
+      <p>商城常驻，鲸鱼用户储粮选择</p>
+    </div>
+    <div class="card">
+      <h4>留存 — 月卡（¥30/月）</h4>
+      <p>日领沙滩币 + 沙漏 ×2，LTV 锚点，鼓励规律回访</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 平衡性分析 ===================== -->
+<div id="tab-balance" class="tab-pane">
+  <h2>平衡性分析</h2>
+
+  <h3>经济系统验证清单</h3>
+  <table>
+    <tr><th>验证项</th><th>结果</th><th>细节</th></tr>
+    <tr>
+      <td>沙滩币获取途径清晰</td>
+      <td><span class="badge badge-green">通过</span></td>
+      <td>IAP购买 + 沙漏免费领取，两条路径设计完整</td>
+    </tr>
+    <tr>
+      <td>沙滩币消费场景完整</td>
+      <td><span class="badge badge-green">通过</span></td>
+      <td>续关/重排/预判，全部场景有明确价格</td>
+    </tr>
+    <tr>
+      <td>沙漏免费产出不破坏付费意愿</td>
+      <td><span class="badge badge-green">通过</span></td>
+      <td>每日约 60 基础沙滩币 ≈ 2 次续关，不足以支撑重度游玩</td>
+    </tr>
+    <tr>
+      <td>无双货币遗留</td>
+      <td><span class="badge badge-green">通过</span></td>
+      <td>单一沙滩币，历史双货币方案已移除</td>
+    </tr>
+    <tr>
+      <td>无体力系统</td>
+      <td><span class="badge badge-green">通过</span></td>
+      <td>玩家随时开始新关卡，不受付费限制</td>
+    </tr>
+    <tr>
+      <td>IAP SKU 数量合理</td>
+      <td><span class="badge badge-green">通过</span></td>
+      <td>4 个 SKU，覆盖完整漏斗，避免选择困难</td>
+    </tr>
+    <tr>
+      <td>续关触发不侵入</td>
+      <td><span class="badge badge-green">通过</span></td>
+      <td>步数耗尽后弹出，不主动推送</td>
+    </tr>
+    <tr>
+      <td>续关定价合理</td>
+      <td><span class="badge badge-green">通过</span></td>
+      <td>30 沙滩币 ≈ ¥2.49-3.00/次，对齐市场参考</td>
+    </tr>
+    <tr>
+      <td>沙漏防作弊机制完整</td>
+      <td><span class="badge badge-green">通过</span></td>
+      <td>后端服务器时间戳验证，客户端仅展示</td>
+    </tr>
+    <tr>
+      <td>月卡沙漏翻倍与订阅价值一致</td>
+      <td><span class="badge badge-green">通过</span></td>
+      <td>月卡新增明确可感知特权，增强订阅吸引力</td>
+    </tr>
+  </table>
+
+  <h3>风险评估</h3>
+  <table>
+    <tr><th>风险</th><th>严重程度</th><th>应对措施</th></tr>
+    <tr>
+      <td>无限续关高消费（玩家自愿）</td>
+      <td><span class="badge badge-green">低</span></td>
+      <td>无强制消费，玩家可选择放弃重试；免费玩家可用沙漏沙滩币续关</td>
+    </tr>
+    <tr>
+      <td>重排辅助滥用</td>
+      <td><span class="badge badge-green">低</span></td>
+      <td>30 沙滩币成本约束；棋盘设计保证大多数情况不需重排</td>
+    </tr>
+    <tr>
+      <td>沙漏时间操控作弊</td>
+      <td><span class="badge badge-amber">中</span></td>
+      <td>Fastify+Prisma 后端存储领取时间戳，以服务器时间为准；客户端仅做展示</td>
+    </tr>
+    <tr>
+      <td>免费产出稀释付费意愿</td>
+      <td><span class="badge badge-green">低</span></td>
+      <td>4 小时间隔 + 单次 15 枚，每日上限约 60 枚 ≈ 2 次续关；重度玩家仍有明确 IAP 需求</td>
+    </tr>
+  </table>
+
+  <h3>ARPU 目标</h3>
+  <div class="stat-row">
+    <div class="stat-box"><div class="num">$0.45</div><div class="lbl">D7 ARPU</div></div>
+    <div class="stat-box"><div class="num">$1.20</div><div class="lbl">D30 ARPU</div></div>
+    <div class="stat-box"><div class="num">$2.80</div><div class="lbl">D90 ARPU</div></div>
+    <div class="stat-box"><div class="num">$12.00</div><div class="lbl">付费用户 D30 ARPU</div></div>
+    <div class="stat-box"><div class="num">2.5%</div><div class="lbl">IAP 转化率</div></div>
+    <div class="stat-box"><div class="num">55%</div><div class="lbl">月卡续费率</div></div>
+  </div>
+
+  <div class="info-box" style="margin-top:14px;">
+    <strong>沙漏系统对收入的间接影响：</strong>沙漏免费产出不直接产生收入，但预计将 DAU 提升 10-15%，通过更高的沙滩币消耗频率间接拉动付费转化率；月卡用户因沙漏翻倍感知价值提升，预计月卡续费率小幅改善。具体数据待上线后运营验证。
+  </div>
+
+  <h3>收入结构预测</h3>
+  <table>
+    <tr><th>收入来源</th><th>占比</th><th>说明</th></tr>
+    <tr><td>月卡订阅</td><td>40%</td><td>沙漏翻倍增强月卡吸引力，预期续费率稳定</td></tr>
+    <tr><td>一次性礼包（小/中/大）</td><td>45%</td><td>主力收入，续关需求驱动复购</td></tr>
+    <tr><td>碎片续关消费</td><td>15%</td><td>散单续关（部分可用沙漏沙滩币支付）</td></tr>
+  </table>
+
+  <h3>沙漏 vs 每日签到对比</h3>
+  <table>
+    <tr><th>维度</th><th>每日签到（未采用）</th><th>沙漏奖励（本设计）</th></tr>
+    <tr>
+      <td>领取压力</td>
+      <td>每天必须打卡，存在"断签"焦虑</td>
+      <td>随时可领，无连续天数概念，无压力</td>
+    </tr>
+    <tr>
+      <td>回访频率激励</td>
+      <td>每天 1 次</td>
+      <td>每 4 小时一次，日频率更高</td>
+    </tr>
+    <tr>
+      <td>与游戏调性匹配度</td>
+      <td>一般（打卡感强）</td>
+      <td>强（治愈放松，按自己节奏来）</td>
+    </tr>
+    <tr>
+      <td>月卡叠加效果</td>
+      <td>无直接联系</td>
+      <td>月卡 ×2 沙漏奖励，强化订阅感知价值</td>
+    </tr>
+    <tr>
+      <td>免费玩家日收益</td>
+      <td>固定（例如 10-30 枚）</td>
+      <td>可变（约 60 枚，取决于领取频率）</td>
+    </tr>
+  </table>
+</div>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-pane').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
 </body>
 </html>

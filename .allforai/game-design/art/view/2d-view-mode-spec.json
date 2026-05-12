@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "generated_by": "environment-art-gen",
+  "view_mode_id": "board_grid_with_visual_novel_staging",
+  "primary_view_mode": "board_grid",
+  "secondary_view_modes": ["visual_novel"],
+  "state": "validated",
+
+  "camera_model": {
+    "scroll_x": false,
+    "scroll_y": false,
+    "zoom_policy": "fixed",
+    "evidence": ["match-3 puzzle board occupies center of screen", "no camera movement during gameplay", "board is fixed frame"],
+    "camera_fov": "none",
+    "projection": "orthogonal_flat"
+  },
+
+  "movement_axes": ["none"],
+  "movement_notes": "No character locomotion on board. Tile matching via tap/swipe gestures only. Character animation (DragonBones) plays in fixed screen-space staging area outside the board.",
+
+  "depth_model": "screen_stack",
+  "depth_notes": "Layers ordered: background_environment (far) → parallax_mid → parallax_fore → board_grid → tile_icons → special_tile_glow → character_staging → dialogue_ui → hud → modal_overlay",
+
+  "sorting_policy": {
+    "primary_key": "layer_z",
+    "secondary_key": "y",
+    "board_grid_sort": "left_to_right_top_to_bottom",
+    "character_sort": "fixed_staging_slot"
+  },
+
+  "tile_projection": {
+    "kind": "orthogonal_flat",
+    "cell_size": [128, 128],
+    "cell_size_unit": "px",
+    "corner_radius_px": 24,
+    "bleed_px": 8,
+    "paper_texture_overlay_opacity": 0.06,
+    "grid_shape": "rectangle"
+  },
+
+  "character_facing_policy": {
+    "directions": ["front"],
+    "mirror_x": true,
+    "staging_location": "fixed_slot_left_or_right_of_board",
+    "notes": "Characters are visual-novel-style busts/full-bodies staged beside the puzzle board. DragonBones skeletal idle, emotion, and wave animations. No directional locomotion."
+  },
+
+  "background_layer_policy": {
+    "layer_count": 3,
+    "layers": [
+      {
+        "layer_id": "sky_far",
+        "index": 0,
+        "description": "远景天空与海平面，几乎不随视差移动",
+        "parallax_factor": 0.0,
+        "content": "sky, horizon, far mountains or sea, mood-setting color"
+      },
+      {
+        "layer_id": "midground",
+        "index": 1,
+        "description": "中景建筑、山坡、树木、场景特征元素",
+        "parallax_factor": 0.3,
+        "content": "buildings, hillside, chapter-specific architecture or nature elements"
+      },
+      {
+        "layer_id": "foreground_elements",
+        "index": 2,
+        "description": "前景装饰物：草丛、石板、道具摆件",
+        "parallax_factor": 0.6,
+        "content": "flora framing elements, props, atmospheric overlay"
+      }
+    ],
+    "parallax_transition": "crossfade_0.8s_per_stage",
+    "saturation_restoration_applied_to": "all_layers",
+    "format": "jpg",
+    "background_size_px": {"width": 1920, "height": 1080}
+  },
+
+  "collision_policy": {
+    "type": "grid_cell_occupancy",
+    "notes": "Board grid cells have boolean occupied/empty state. No physics-based collision. Character staging area has no collision.",
+    "board_legal_move_highlight": true
+  },
+
+  "ui_safe_regions": [
+    "top_hud",
+    "bottom_hud",
+    "left_character_staging",
+    "right_dialogue_panel"
+  ],
+  "ui_safe_region_notes": "HUD bar height=80px at top. Bottom touch controls clearance 80px. Left side reserved for character bust staging (up to 40% of screen width). Board occupies center 60% horizontally.",
+
+  "animation_requirements": {
+    "character_animations": ["idle", "happy", "surprised", "sad", "wave"],
+    "tile_animations": "static_with_vfx_only",
+    "special_tile_animations": "12_frame_loop",
+    "background_animations": "none_static_jpg",
+    "vfx_animations": "particle_and_frame",
+    "ui_animations": "cocos_tween"
+  },
+
+  "level_requirements": {
+    "board_shape_ch1_2": "standard_rectangle_8x8_or_9x9",
+    "board_shape_ch3_plus": "irregular_shaped_bay_island_outline",
+    "board_occupies_screen_pct": 60,
+    "tile_count_range": [20, 25]
+  },
+
+  "export_requirements": {
+    "engine": "cocos-creator-3.x",
+    "platform": "web-canvas-2d",
+    "coordinate_system": "top_left_origin_y_down",
+    "atlas_policy": "per_chapter_tiles_atlas_plus_shared_special_blocks_atlas",
+    "background_format": "jpg",
+    "tile_format": "png"
+  },
+
+  "fallback_policy": {
+    "if_parallax_unsupported": "collapse_to_single_static_background_layer",
+    "if_background_generation_fails": "solid_color_from_chapter_board_bg_gradient"
+  },
+
+  "view_rules": {
+    "primary_view_mode": "board_grid",
+    "camera_model": {"scroll_x": false, "scroll_y": false, "zoom_policy": "fixed"},
+    "movement_axes": ["none"],
+    "depth_model": "screen_stack",
+    "character_facing_policy": {"directions": ["front"], "mirror_x": true},
+    "tile_projection": {"kind": "orthogonal_flat", "cell_size": [128, 128]},
+    "sorting_policy": {"primary_key": "layer_z", "secondary_key": "y"},
+    "ui_safe_regions": ["top_hud", "bottom_hud", "left_character_staging", "right_dialogue_panel"],
+    "evidence": ["match-3 puzzle board", "fixed camera", "DragonBones character staging", "visual novel dialogue panels"]
+  },
+
+  "consumer_refs": [
+    "2d-animation-production-plan",
+    "background-generation",
+    "prop-generation",
+    "frame-animation-spec",
+    "character-layer-sheet",
+    "tileset-spec",
+    "engine-export-profile",
+    "environment-art-gen"
+  ]
+}

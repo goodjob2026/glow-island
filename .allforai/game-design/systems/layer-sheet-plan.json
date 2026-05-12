@@ -1,0 +1,307 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/character-layer-sheet",
+  "source": {
+    "asset_registry": ".allforai/game-design/asset-registry.json",
+    "art_style_guide": ".allforai/game-design/art-style-guide.json"
+  },
+  "characters": [
+    {
+      "asset_id": "char_ritsu",
+      "file_prefix": "char_ritsu",
+      "name": "山田律",
+      "role": "protagonist",
+      "state": "spec_ready",
+      "target_view": "front",
+      "layer_sheet": {
+        "path": ".allforai/game-design/art/layers/char_ritsu_layer_sheet.png",
+        "status": "spec_only",
+        "prompt": "Hand-drawn watercolor illustration. Front-facing character layer sheet for 山田律 (Yamada Ritsu), 29-year-old male protagonist. Chibi proportions 1:1.5 head-body ratio, circular head 40% of total height. Warm pastel watercolor, soft rounded organic shapes. All body parts separated with clear whitespace on neutral background. Parts arranged in rows: row 1: head, hair_front, hair_back; row 2: torso, neck, pelvis; row 3: upper_arm_l, forearm_l, hand_l, upper_arm_r, forearm_r, hand_r; row 4: upper_leg_l, lower_leg_l, foot_l, upper_leg_r, lower_leg_r, foot_r; row 5: accessory (rumpled dress shirt collar visible). No text labels. No drop shadows crossing parts. No motion blur. No cropped limbs. Consistent scale. 2048x2048px."
+      },
+      "parts": [
+        { "part_id": "head",         "display_name": "头部",   "z_order": 100, "pivot_hint": "base of skull / neck junction", "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave","react_jump"], "mirrored_from": null },
+        { "part_id": "hair_front",   "display_name": "前发",   "z_order": 110, "pivot_hint": "top of head center",            "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave","react_jump"], "mirrored_from": null },
+        { "part_id": "hair_back",    "display_name": "后发",   "z_order": 85,  "pivot_hint": "crown of head center",          "required": true,  "required_for_animations": ["idle"],                                              "mirrored_from": null },
+        { "part_id": "neck",         "display_name": "颈部",   "z_order": 90,  "pivot_hint": "cervical joint center",         "required": false, "required_for_animations": ["idle"],                                              "mirrored_from": null },
+        { "part_id": "torso",        "display_name": "躯干",   "z_order": 80,  "pivot_hint": "chest center",                  "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave","react_jump"], "mirrored_from": null },
+        { "part_id": "pelvis",       "display_name": "腰胯",   "z_order": 70,  "pivot_hint": "hip center",                    "required": true,  "required_for_animations": ["idle","wave","react_jump"],                          "mirrored_from": null },
+        { "part_id": "upper_arm_l",  "display_name": "左上臂", "z_order": 75,  "pivot_hint": "shoulder joint center",         "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave","react_jump"], "mirrored_from": null },
+        { "part_id": "forearm_l",    "display_name": "左前臂", "z_order": 74,  "pivot_hint": "elbow joint center",            "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave","react_jump"], "mirrored_from": null },
+        { "part_id": "hand_l",       "display_name": "左手",   "z_order": 73,  "pivot_hint": "wrist joint center",            "required": true,  "required_for_animations": ["wave","react_jump"],                                 "mirrored_from": null },
+        { "part_id": "upper_arm_r",  "display_name": "右上臂", "z_order": 75,  "pivot_hint": "shoulder joint center",         "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave","react_jump"], "mirrored_from": "upper_arm_l" },
+        { "part_id": "forearm_r",    "display_name": "右前臂", "z_order": 74,  "pivot_hint": "elbow joint center",            "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave","react_jump"], "mirrored_from": "forearm_l" },
+        { "part_id": "hand_r",       "display_name": "右手",   "z_order": 73,  "pivot_hint": "wrist joint center",            "required": true,  "required_for_animations": ["wave","react_jump"],                                 "mirrored_from": "hand_l" },
+        { "part_id": "upper_leg_l",  "display_name": "左大腿", "z_order": 60,  "pivot_hint": "hip socket center",             "required": true,  "required_for_animations": ["idle","react_jump"],                                 "mirrored_from": null },
+        { "part_id": "lower_leg_l",  "display_name": "左小腿", "z_order": 59,  "pivot_hint": "knee joint center",             "required": true,  "required_for_animations": ["idle","react_jump"],                                 "mirrored_from": null },
+        { "part_id": "foot_l",       "display_name": "左脚",   "z_order": 58,  "pivot_hint": "ankle joint center",            "required": true,  "required_for_animations": ["idle","react_jump"],                                 "mirrored_from": null },
+        { "part_id": "upper_leg_r",  "display_name": "右大腿", "z_order": 60,  "pivot_hint": "hip socket center",             "required": true,  "required_for_animations": ["idle","react_jump"],                                 "mirrored_from": "upper_leg_l" },
+        { "part_id": "lower_leg_r",  "display_name": "右小腿", "z_order": 59,  "pivot_hint": "knee joint center",             "required": true,  "required_for_animations": ["idle","react_jump"],                                 "mirrored_from": "lower_leg_l" },
+        { "part_id": "foot_r",       "display_name": "右脚",   "z_order": 58,  "pivot_hint": "ankle joint center",            "required": true,  "required_for_animations": ["idle","react_jump"],                                 "mirrored_from": "foot_l" },
+        { "part_id": "accessory",    "display_name": "配件(衣领)", "z_order": 82, "pivot_hint": "collar base",               "required": false, "required_for_animations": [],                                                    "mirrored_from": null }
+      ],
+      "merged_parts": [
+        { "parts": ["neck", "torso"], "merged_into": "torso", "reason": "chibi 1:1.5 proportions; neck too small to animate independently; torso pivots at chest carry head motion" }
+      ],
+      "visual_validation": {
+        "validator": "deterministic_only",
+        "verdict": "pass",
+        "issues": [],
+        "repair_attempts": 0
+      }
+    },
+    {
+      "asset_id": "char_hinata",
+      "file_prefix": "char_hinata",
+      "name": "丸山ひなた",
+      "role": "romantic_interest",
+      "state": "spec_ready",
+      "target_view": "front",
+      "layer_sheet": {
+        "path": ".allforai/game-design/art/layers/char_hinata_layer_sheet.png",
+        "status": "spec_only",
+        "prompt": "Hand-drawn watercolor illustration. Front-facing character layer sheet for 丸山ひなた (Maruyama Hinata), 24-year-old female romantic interest. Signature color #F0C4C4 (sakura pink). Chibi proportions 1:1.5 head-body ratio. Carrying a well-worn notebook. Soft watercolor, warm pastel. Parts separated with clear whitespace on neutral background. Parts arranged in rows: head, hair_front, hair_back; torso, pelvis; upper_arm_l, forearm_l, hand_l (holding notebook), upper_arm_r, forearm_r, hand_r; upper_leg_l, lower_leg_l, foot_l, upper_leg_r, lower_leg_r, foot_r; prop_notebook (as accessory). No text labels. 2048x2048px."
+      },
+      "parts": [
+        { "part_id": "head",         "display_name": "头部",   "z_order": 100, "pivot_hint": "base of skull / neck junction", "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hair_front",   "display_name": "前发",   "z_order": 110, "pivot_hint": "top of head center",            "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hair_back",    "display_name": "后发",   "z_order": 85,  "pivot_hint": "crown of head center",          "required": true,  "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "torso",        "display_name": "躯干",   "z_order": 80,  "pivot_hint": "chest center",                  "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "pelvis",       "display_name": "腰胯",   "z_order": 70,  "pivot_hint": "hip center",                    "required": true,  "required_for_animations": ["idle","wave"],                         "mirrored_from": null },
+        { "part_id": "upper_arm_l",  "display_name": "左上臂", "z_order": 75,  "pivot_hint": "shoulder joint center",         "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "forearm_l",    "display_name": "左前臂", "z_order": 74,  "pivot_hint": "elbow joint center",            "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hand_l",       "display_name": "左手(持手账)", "z_order": 73, "pivot_hint": "wrist joint center",       "required": true,  "required_for_animations": ["idle","wave"],                         "mirrored_from": null },
+        { "part_id": "upper_arm_r",  "display_name": "右上臂", "z_order": 75,  "pivot_hint": "shoulder joint center",         "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": "upper_arm_l" },
+        { "part_id": "forearm_r",    "display_name": "右前臂", "z_order": 74,  "pivot_hint": "elbow joint center",            "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": "forearm_l" },
+        { "part_id": "hand_r",       "display_name": "右手",   "z_order": 73,  "pivot_hint": "wrist joint center",            "required": true,  "required_for_animations": ["wave"],                                "mirrored_from": "hand_l" },
+        { "part_id": "upper_leg_l",  "display_name": "左大腿", "z_order": 60,  "pivot_hint": "hip socket center",             "required": true,  "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "lower_leg_l",  "display_name": "左小腿", "z_order": 59,  "pivot_hint": "knee joint center",             "required": true,  "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "foot_l",       "display_name": "左脚",   "z_order": 58,  "pivot_hint": "ankle joint center",            "required": true,  "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "upper_leg_r",  "display_name": "右大腿", "z_order": 60,  "pivot_hint": "hip socket center",             "required": true,  "required_for_animations": ["idle"],                               "mirrored_from": "upper_leg_l" },
+        { "part_id": "lower_leg_r",  "display_name": "右小腿", "z_order": 59,  "pivot_hint": "knee joint center",             "required": true,  "required_for_animations": ["idle"],                               "mirrored_from": "lower_leg_l" },
+        { "part_id": "foot_r",       "display_name": "右脚",   "z_order": 58,  "pivot_hint": "ankle joint center",            "required": true,  "required_for_animations": ["idle"],                               "mirrored_from": "foot_l" },
+        { "part_id": "accessory",    "display_name": "手账道具", "z_order": 72, "pivot_hint": "notebook lower edge center",   "required": true,  "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null }
+      ],
+      "merged_parts": [
+        { "parts": ["neck", "torso"], "merged_into": "torso", "reason": "chibi proportions; neck invisible behind hair" }
+      ],
+      "visual_validation": {
+        "validator": "deterministic_only",
+        "verdict": "pass",
+        "issues": [],
+        "repair_attempts": 0
+      }
+    },
+    {
+      "asset_id": "char_kenzo",
+      "file_prefix": "char_kenzo",
+      "name": "磯部健三",
+      "role": "npc",
+      "state": "spec_ready",
+      "target_view": "front",
+      "layer_sheet": {
+        "path": ".allforai/game-design/art/layers/char_kenzo_layer_sheet.png",
+        "status": "spec_only",
+        "prompt": "Hand-drawn watercolor illustration. Front-facing character layer sheet for 磯部健三 (Isobe Kenzo), approx 70-year-old male fisherman NPC. Signature color #4A6D9A (deep sea blue). Chibi proportions 1:1.5 head-body ratio, stocky build. Wearing fisherman gear. Parts separated with clear whitespace on neutral background. All body parts in rows: head with weathered face, hair (sparse/grey), torso (fisherman vest), pelvis, upper/forearm/hands x2, upper/lower legs/feet x2. No text labels. 2048x2048px."
+      },
+      "parts": [
+        { "part_id": "head",        "display_name": "头部",   "z_order": 100, "pivot_hint": "base of skull / neck junction", "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hair_front",  "display_name": "前发(稀疏灰发)", "z_order": 110, "pivot_hint": "top of head center",   "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "torso",       "display_name": "躯干(渔夫背心)", "z_order": 80, "pivot_hint": "chest center",          "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "pelvis",      "display_name": "腰胯",   "z_order": 70, "pivot_hint": "hip center",                    "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "upper_arm_l", "display_name": "左上臂", "z_order": 75, "pivot_hint": "shoulder joint center",         "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "forearm_l",   "display_name": "左前臂", "z_order": 74, "pivot_hint": "elbow joint center",            "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hand_l",      "display_name": "左手",   "z_order": 73, "pivot_hint": "wrist joint center",            "required": true, "required_for_animations": ["wave"],                                "mirrored_from": null },
+        { "part_id": "upper_arm_r", "display_name": "右上臂", "z_order": 75, "pivot_hint": "shoulder joint center",         "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": "upper_arm_l" },
+        { "part_id": "forearm_r",   "display_name": "右前臂", "z_order": 74, "pivot_hint": "elbow joint center",            "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": "forearm_l" },
+        { "part_id": "hand_r",      "display_name": "右手",   "z_order": 73, "pivot_hint": "wrist joint center",            "required": true, "required_for_animations": ["wave"],                                "mirrored_from": "hand_l" },
+        { "part_id": "upper_leg_l", "display_name": "左大腿", "z_order": 60, "pivot_hint": "hip socket center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "lower_leg_l", "display_name": "左小腿", "z_order": 59, "pivot_hint": "knee joint center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "foot_l",      "display_name": "左脚",   "z_order": 58, "pivot_hint": "ankle joint center",            "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "upper_leg_r", "display_name": "右大腿", "z_order": 60, "pivot_hint": "hip socket center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "upper_leg_l" },
+        { "part_id": "lower_leg_r", "display_name": "右小腿", "z_order": 59, "pivot_hint": "knee joint center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "lower_leg_l" },
+        { "part_id": "foot_r",      "display_name": "右脚",   "z_order": 58, "pivot_hint": "ankle joint center",            "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "foot_l" }
+      ],
+      "merged_parts": [
+        { "parts": ["neck", "torso"], "merged_into": "torso", "reason": "chibi proportions; NPC bust with thick fisherman collar; neck not independently animated" },
+        { "parts": ["hair_back"],    "merged_into": "hair_front", "reason": "sparse grey hair; no secondary hair motion needed for elderly NPC" }
+      ],
+      "visual_validation": {
+        "validator": "deterministic_only",
+        "verdict": "pass",
+        "issues": [],
+        "repair_attempts": 0
+      }
+    },
+    {
+      "asset_id": "char_umeko",
+      "file_prefix": "char_umeko",
+      "name": "桐島梅子",
+      "role": "npc",
+      "state": "spec_ready",
+      "target_view": "front",
+      "layer_sheet": {
+        "path": ".allforai/game-design/art/layers/char_umeko_layer_sheet.png",
+        "status": "spec_only",
+        "prompt": "Hand-drawn watercolor illustration. Front-facing character layer sheet for 桐島梅子 (Kirishima Umeko), approx 55-year-old female pottery artisan NPC. Signature color #7DBE77 (bamboo green). Chibi proportions 1:1.5 head-body ratio. Wearing pottery apron. Parts separated with clear whitespace on neutral background: head, hair_front (practical bun), hair_back, torso (apron over blouse), pelvis, upper/forearm/hands x2, upper/lower legs/feet x2. No text labels. 2048x2048px."
+      },
+      "parts": [
+        { "part_id": "head",        "display_name": "头部",   "z_order": 100, "pivot_hint": "base of skull / neck junction", "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hair_front",  "display_name": "前发(盘发)", "z_order": 110, "pivot_hint": "top of head center",       "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "torso",       "display_name": "躯干(陶艺围裙)", "z_order": 80, "pivot_hint": "chest center",          "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "pelvis",      "display_name": "腰胯",   "z_order": 70, "pivot_hint": "hip center",                    "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "upper_arm_l", "display_name": "左上臂", "z_order": 75, "pivot_hint": "shoulder joint center",         "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "forearm_l",   "display_name": "左前臂", "z_order": 74, "pivot_hint": "elbow joint center",            "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hand_l",      "display_name": "左手(陶土手迹)", "z_order": 73, "pivot_hint": "wrist joint center",    "required": true, "required_for_animations": ["wave"],                                "mirrored_from": null },
+        { "part_id": "upper_arm_r", "display_name": "右上臂", "z_order": 75, "pivot_hint": "shoulder joint center",         "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": "upper_arm_l" },
+        { "part_id": "forearm_r",   "display_name": "右前臂", "z_order": 74, "pivot_hint": "elbow joint center",            "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": "forearm_l" },
+        { "part_id": "hand_r",      "display_name": "右手",   "z_order": 73, "pivot_hint": "wrist joint center",            "required": true, "required_for_animations": ["wave"],                                "mirrored_from": "hand_l" },
+        { "part_id": "upper_leg_l", "display_name": "左大腿", "z_order": 60, "pivot_hint": "hip socket center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "lower_leg_l", "display_name": "左小腿", "z_order": 59, "pivot_hint": "knee joint center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "foot_l",      "display_name": "左脚",   "z_order": 58, "pivot_hint": "ankle joint center",            "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "upper_leg_r", "display_name": "右大腿", "z_order": 60, "pivot_hint": "hip socket center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "upper_leg_l" },
+        { "part_id": "lower_leg_r", "display_name": "右小腿", "z_order": 59, "pivot_hint": "knee joint center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "lower_leg_l" },
+        { "part_id": "foot_r",      "display_name": "右脚",   "z_order": 58, "pivot_hint": "ankle joint center",            "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "foot_l" }
+      ],
+      "merged_parts": [
+        { "parts": ["neck", "torso"], "merged_into": "torso", "reason": "chibi proportions; apron collar conceals neck" },
+        { "parts": ["hair_back"],    "merged_into": "hair_front", "reason": "practical bun; no secondary hair physics" }
+      ],
+      "visual_validation": {
+        "validator": "deterministic_only",
+        "verdict": "pass",
+        "issues": [],
+        "repair_attempts": 0
+      }
+    },
+    {
+      "asset_id": "char_natsuka",
+      "file_prefix": "char_natsuka",
+      "name": "海野夏帆",
+      "role": "npc",
+      "state": "spec_ready",
+      "target_view": "front",
+      "layer_sheet": {
+        "path": ".allforai/game-design/art/layers/char_natsuka_layer_sheet.png",
+        "status": "spec_only",
+        "prompt": "Hand-drawn watercolor illustration. Front-facing character layer sheet for 海野夏帆 (Umino Naho), 32-year-old female nature guide NPC. Signature color #3D6645 (deep forest green). Chibi proportions 1:1.5 head-body ratio. Outdoorsy attire. Parts separated with clear whitespace: head, hair_front (windswept), hair_back, torso (outdoor vest), pelvis, upper/forearm/hands x2, upper/lower legs/feet x2. No text labels. 2048x2048px."
+      },
+      "parts": [
+        { "part_id": "head",        "display_name": "头部",   "z_order": 100, "pivot_hint": "base of skull / neck junction", "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hair_front",  "display_name": "前发(风吹感)", "z_order": 110, "pivot_hint": "top of head center",     "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "hair_back",   "display_name": "后发",   "z_order": 85,  "pivot_hint": "crown of head center",         "required": false, "required_for_animations": ["idle"],                              "mirrored_from": null },
+        { "part_id": "torso",       "display_name": "躯干(户外背心)", "z_order": 80, "pivot_hint": "chest center",          "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "pelvis",      "display_name": "腰胯",   "z_order": 70, "pivot_hint": "hip center",                    "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "upper_arm_l", "display_name": "左上臂", "z_order": 75, "pivot_hint": "shoulder joint center",         "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "forearm_l",   "display_name": "左前臂", "z_order": 74, "pivot_hint": "elbow joint center",            "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hand_l",      "display_name": "左手",   "z_order": 73, "pivot_hint": "wrist joint center",            "required": true, "required_for_animations": ["wave"],                                "mirrored_from": null },
+        { "part_id": "upper_arm_r", "display_name": "右上臂", "z_order": 75, "pivot_hint": "shoulder joint center",         "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": "upper_arm_l" },
+        { "part_id": "forearm_r",   "display_name": "右前臂", "z_order": 74, "pivot_hint": "elbow joint center",            "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": "forearm_l" },
+        { "part_id": "hand_r",      "display_name": "右手",   "z_order": 73, "pivot_hint": "wrist joint center",            "required": true, "required_for_animations": ["wave"],                                "mirrored_from": "hand_l" },
+        { "part_id": "upper_leg_l", "display_name": "左大腿", "z_order": 60, "pivot_hint": "hip socket center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "lower_leg_l", "display_name": "左小腿", "z_order": 59, "pivot_hint": "knee joint center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "foot_l",      "display_name": "左脚",   "z_order": 58, "pivot_hint": "ankle joint center",            "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "upper_leg_r", "display_name": "右大腿", "z_order": 60, "pivot_hint": "hip socket center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "upper_leg_l" },
+        { "part_id": "lower_leg_r", "display_name": "右小腿", "z_order": 59, "pivot_hint": "knee joint center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "lower_leg_l" },
+        { "part_id": "foot_r",      "display_name": "右脚",   "z_order": 58, "pivot_hint": "ankle joint center",            "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "foot_l" }
+      ],
+      "merged_parts": [
+        { "parts": ["neck", "torso"], "merged_into": "torso", "reason": "chibi proportions" }
+      ],
+      "visual_validation": {
+        "validator": "deterministic_only",
+        "verdict": "pass",
+        "issues": [],
+        "repair_attempts": 0
+      }
+    },
+    {
+      "asset_id": "char_fuyuko",
+      "file_prefix": "char_fuyuko",
+      "name": "丸山冬子",
+      "role": "npc",
+      "state": "spec_ready",
+      "target_view": "front",
+      "layer_sheet": {
+        "path": ".allforai/game-design/art/layers/char_fuyuko_layer_sheet.png",
+        "status": "spec_only",
+        "prompt": "Hand-drawn watercolor illustration. Front-facing character layer sheet for 丸山冬子 (Maruyama Fuyuko), 65-year-old female lighthouse keeper's widow NPC. Signature color #2A4060 (deep night blue). Chibi proportions 1:1.5 head-body ratio. Dignified traditional Japanese attire. Parts separated with clear whitespace: head, hair_front (neat white/grey hair), hair_back, torso (kimono-style top), pelvis, upper/forearm/hands x2, upper/lower legs/feet x2. No text labels. 2048x2048px."
+      },
+      "parts": [
+        { "part_id": "head",        "display_name": "头部",   "z_order": 100, "pivot_hint": "base of skull / neck junction", "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hair_front",  "display_name": "前发(白发盘发)", "z_order": 110, "pivot_hint": "top of head center",   "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "torso",       "display_name": "躯干(和式上衣)", "z_order": 80, "pivot_hint": "chest center",          "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "pelvis",      "display_name": "腰胯",   "z_order": 70, "pivot_hint": "hip center",                    "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "upper_arm_l", "display_name": "左上臂", "z_order": 75, "pivot_hint": "shoulder joint center",         "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "forearm_l",   "display_name": "左前臂", "z_order": 74, "pivot_hint": "elbow joint center",            "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": null },
+        { "part_id": "hand_l",      "display_name": "左手",   "z_order": 73, "pivot_hint": "wrist joint center",            "required": true, "required_for_animations": ["wave"],                                "mirrored_from": null },
+        { "part_id": "upper_arm_r", "display_name": "右上臂", "z_order": 75, "pivot_hint": "shoulder joint center",         "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": "upper_arm_l" },
+        { "part_id": "forearm_r",   "display_name": "右前臂", "z_order": 74, "pivot_hint": "elbow joint center",            "required": true, "required_for_animations": ["idle","happy","surprised","sad","wave"], "mirrored_from": "forearm_l" },
+        { "part_id": "hand_r",      "display_name": "右手",   "z_order": 73, "pivot_hint": "wrist joint center",            "required": true, "required_for_animations": ["wave"],                                "mirrored_from": "hand_l" },
+        { "part_id": "upper_leg_l", "display_name": "左大腿", "z_order": 60, "pivot_hint": "hip socket center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "lower_leg_l", "display_name": "左小腿", "z_order": 59, "pivot_hint": "knee joint center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "foot_l",      "display_name": "左脚",   "z_order": 58, "pivot_hint": "ankle joint center",            "required": true, "required_for_animations": ["idle"],                               "mirrored_from": null },
+        { "part_id": "upper_leg_r", "display_name": "右大腿", "z_order": 60, "pivot_hint": "hip socket center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "upper_leg_l" },
+        { "part_id": "lower_leg_r", "display_name": "右小腿", "z_order": 59, "pivot_hint": "knee joint center",             "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "lower_leg_l" },
+        { "part_id": "foot_r",      "display_name": "右脚",   "z_order": 58, "pivot_hint": "ankle joint center",            "required": true, "required_for_animations": ["idle"],                               "mirrored_from": "foot_l" }
+      ],
+      "merged_parts": [
+        { "parts": ["neck", "torso"], "merged_into": "torso", "reason": "chibi proportions; kimono collar conceals neck" },
+        { "parts": ["hair_back"],    "merged_into": "hair_front", "reason": "neat updo; no secondary hair motion" }
+      ],
+      "visual_validation": {
+        "validator": "deterministic_only",
+        "verdict": "pass",
+        "issues": [],
+        "repair_attempts": 0
+      }
+    },
+    {
+      "asset_id": "char_gicho",
+      "file_prefix": "char_gicho",
+      "name": "议长·橘猫",
+      "role": "npc",
+      "state": "spec_ready",
+      "target_view": "front",
+      "animation_method": "frame_animation",
+      "canvas_size_px": { "width": 192, "height": 192 },
+      "layer_sheet": {
+        "path": ".allforai/game-design/art/layers/char_gicho_layer_sheet.png",
+        "status": "spec_only",
+        "prompt": "Hand-drawn watercolor illustration. Front-facing character layer sheet for 议长·橘猫 (Chairman, Orange Tabby Cat), the island's oldest resident NPC. Signature color #2A3650. A distinguished orange tabby cat in chibi style, 192x192px effective canvas. Cat body: head (round with tabby markings), ears_l, ears_r, torso (sitting cat body), tail. All parts separated with clear whitespace on neutral background. Dignified but warm expression. Watercolor soft lines. 1024x1024px sheet."
+      },
+      "parts": [
+        { "part_id": "head",       "display_name": "猫头",   "z_order": 100, "pivot_hint": "base of head at neck",    "required": true, "required_for_animations": ["idle","happy","surprised","wave"], "mirrored_from": null },
+        { "part_id": "ear_l",      "display_name": "左耳",   "z_order": 110, "pivot_hint": "ear base",                "required": true, "required_for_animations": ["idle","surprised"],               "mirrored_from": null },
+        { "part_id": "ear_r",      "display_name": "右耳",   "z_order": 110, "pivot_hint": "ear base",                "required": true, "required_for_animations": ["idle","surprised"],               "mirrored_from": "ear_l" },
+        { "part_id": "torso",      "display_name": "猫身",   "z_order": 80,  "pivot_hint": "cat body center",         "required": true, "required_for_animations": ["idle","happy","surprised","wave"], "mirrored_from": null },
+        { "part_id": "tail",       "display_name": "尾巴",   "z_order": 60,  "pivot_hint": "tail base at rump",       "required": true, "required_for_animations": ["idle","happy"],                   "mirrored_from": null }
+      ],
+      "merged_parts": [
+        { "parts": ["upper_leg_l","lower_leg_l","foot_l","upper_leg_r","lower_leg_r","foot_r","pelvis"], "merged_into": "torso", "reason": "cat sitting pose; legs not independently animated; 192x192px canvas is small; paws merge into torso for frame animation" },
+        { "parts": ["hair_front","hair_back"], "merged_into": "head", "reason": "cat fur integrated into head design" }
+      ],
+      "visual_validation": {
+        "validator": "deterministic_only",
+        "verdict": "pass",
+        "issues": [],
+        "repair_attempts": 0
+      }
+    }
+  ],
+  "acceptance": {
+    "verdict": "pass",
+    "checked_at": "2026-05-13T00:00:00Z",
+    "passed_checks": [
+      "all_selected_assets_have_asset_id_and_file_prefix",
+      "all_part_ids_unique_per_asset",
+      "all_parts_have_z_order_pivot_hint_required_flag",
+      "all_motion_focus_maps_to_at_least_one_part",
+      "all_layer_sheet_paths_start_with_file_prefix",
+      "all_merged_parts_have_reason",
+      "char_gicho_correctly_routed_to_frame_animation"
+    ],
+    "failed_checks": [],
+    "next_action": "Layer sheet image specs consumed by skeletal-animation (chars 1-6) and frame-animation-generation (char_gicho) sub-skills"
+  }
+}

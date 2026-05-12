@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "state": "validated",
+  "bindings": [
+    {
+      "template_id_or_kind": "level",
+      "source_refs": [
+        ".allforai/game-design/systems/level-design.json",
+        ".allforai/game-design/systems/puzzle-design.json",
+        ".allforai/game-design/systems/core-mechanics.json"
+      ],
+      "balance_refs": [
+        ".allforai/game-design/systems/progression-curve.json#step_count_curve_by_chapter"
+      ],
+      "art_refs": [
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json (runtime_id per chapter atlas)"
+      ],
+      "audio_refs": [
+        ".allforai/game-design/systems/audio-design.json#chapter_bgm"
+      ],
+      "ui_refs": [],
+      "level_refs": [
+        ".allforai/game-design/systems/level-design.json#chapters_detail"
+      ],
+      "runtime_consumers": ["implement-puzzle-core", "implement-game-session", "level-editor-tool"],
+      "required_refs": ["tile_type_ids", "chapter", "level_number", "step_count"],
+      "optional_refs": ["narrative_trigger", "special_tile_placements"],
+      "missing_refs": [],
+      "validation_probe": "node level-editor/validate.js --level all",
+      "state": "validated",
+      "repair_target": ".allforai/game-design/systems/level-design.json"
+    },
+    {
+      "template_id_or_kind": "tile_type",
+      "source_refs": [
+        ".allforai/game-design/systems/puzzle-design.json#tile_types"
+      ],
+      "balance_refs": [],
+      "art_refs": [
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json (runtime_id: art/tiles/tile_{name})"
+      ],
+      "audio_refs": [
+        ".allforai/game-design/systems/audio-design.json#sfx_tile_connect"
+      ],
+      "ui_refs": [],
+      "level_refs": [],
+      "runtime_consumers": ["implement-puzzle-core"],
+      "required_refs": ["tile_type_id", "color_hex", "unlock_chapter", "art_refs"],
+      "optional_refs": [],
+      "missing_refs": [],
+      "validation_probe": "cocos run --test TileLoadSmoke",
+      "state": "validated",
+      "repair_target": ".allforai/game-design/systems/puzzle-design.json"
+    },
+    {
+      "template_id_or_kind": "economy_sku",
+      "source_refs": [
+        ".allforai/game-design/systems/monetization-design.json#iap_skus"
+      ],
+      "balance_refs": [
+        ".allforai/game-design/systems/monetization-design.json#balance_targets"
+      ],
+      "art_refs": [
+        ".allforai/game-design/systems/ui-art-spec.json (SKU icons)"
+      ],
+      "audio_refs": [
+        ".allforai/game-design/systems/audio-design.json#sfx_beach_coin_gain"
+      ],
+      "ui_refs": [
+        ".allforai/game-design/systems/ui-art-spec.json#shop_screen"
+      ],
+      "level_refs": [],
+      "runtime_consumers": ["implement-shop-iap"],
+      "required_refs": ["sku_id", "price_usd", "beach_coins"],
+      "optional_refs": ["is_subscription", "bonus"],
+      "missing_refs": [],
+      "validation_probe": "cocos run --test IAPSandboxSmoke",
+      "state": "validated",
+      "repair_target": ".allforai/game-design/systems/monetization-design.json"
+    }
+  ],
+  "report_ref": ".allforai/game-templates/template-reference-binding-report.json"
+}

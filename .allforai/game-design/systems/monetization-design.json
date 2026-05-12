@@ -1,24 +1,24 @@
 {
-  "version": "3.0",
+  "version": "4.0",
   "product": "Glow Island (輝島)",
   "generated_at": "2026-05-13T00:00:00.000Z",
-  "revision_notes": "v3.0 — 单货币重构。移除双货币（沙滩币软货币 + 丹青石硬货币）旧设计，严格对齐 product-concept：单一沙滩币，仅IAP购买，唯一付费点为步数耗尽续关。移除材料合成体系、跳关、进度加速等变现点。",
+  "revision_notes": "v4.0 — 新增沙漏奖励系统（hourglass_reward_system）。沙滩币获取途径由「仅IAP」扩展为「IAP购买 + 沙漏免费领取」，免费玩家可通过定期回访领取沙滩币。月卡用户享有2倍沙漏奖励，增强月卡吸引力。其余已定设计（续关、反侵入、SKU产品线）全部保留。",
   "source_refs": [
     ".allforai/product-concept/concept-baseline.json",
     ".allforai/game-design/systems/core-mechanics.json"
   ],
 
-  "currency_model": "single_currency_iap_only",
-  "currency_model_note": "单货币模型：仅「沙滩币」一种货币，只通过IAP购买获得，无任何免费赚取渠道。无软货币/硬货币分层。",
+  "currency_model": "single_currency_iap_plus_hourglass",
+  "currency_model_note": "单货币模型：仅「沙滩币」一种货币。获取途径两条：(1) IAP直购；(2) 沙漏奖励免费领取。无软货币/硬货币分层，无体力系统。",
 
   "currency": {
     "id": "beach_coins",
     "name_cn": "沙滩币",
     "name_en": "Beach Coins",
     "icon_hint": "贝壳造型金黄色圆形硬币，带涟漪光晕，暖橙色",
-    "obtain_methods": ["iap_purchase_only"],
-    "free_earn": false,
-    "free_earn_note": "无签到奖励、无任务奖励、无通关奖励——沙滩币仅通过IAP购入，保持单一获取路径，经济模型清晰。",
+    "obtain_methods": ["iap_purchase", "hourglass_reward"],
+    "free_earn": true,
+    "free_earn_note": "沙漏奖励系统提供唯一免费获取渠道：每4小时满一次，打开App即可领取10-20沙滩币。鼓励规律回访，但不强迫留在游戏内。",
     "sinks": [
       {
         "sink_id": "continue_steps",
@@ -46,7 +46,72 @@
       }
     ],
     "no_cap": true,
-    "no_cap_note": "沙滩币无上限，付多少留多少"
+    "no_cap_note": "沙滩币无上限，付多少/领多少留多少"
+  },
+
+  "hourglass_reward_system": {
+    "system_id": "hourglass_reward",
+    "name_cn": "沙漏奖励",
+    "name_en": "Hourglass Reward",
+    "description": "岛屿主题沙漏，实时在后台倒计时填满。玩家打开App发现沙漏已满时，点击即可领取一定量沙滩币。满了不继续计时（不叠加），鼓励玩家定期回来但不强迫长时间留在游戏内。",
+
+    "fill_duration_hours": 4,
+    "fill_duration_note": "从空到满需4小时实时时间（后台计时，无需开启App）。满载后计时停止，不叠加为多次奖励。",
+
+    "reward": {
+      "base_coins": 15,
+      "base_range_min": 10,
+      "base_range_max": 20,
+      "base_range_note": "基础奖励区间10-20沙滩币，具体数值由数值设计节点调优（needs_tuning阶段），建议固定为15沙滩币以简化玩家预期。",
+      "monthly_card_multiplier": 2.0,
+      "monthly_card_coins": 30,
+      "monthly_card_note": "持有月卡的玩家领取时获得2倍沙漏奖励（即30沙滩币），增强月卡订阅价值感知。"
+    },
+
+    "cap_behavior": {
+      "overflow": false,
+      "overflow_note": "沙漏满载后不继续累积，也不叠加为多次奖励。玩家必须先领取，沙漏才会重新开始计时。",
+      "max_stacks": 1,
+      "missed_penalty": "无惩罚——不领也不扣除，下次回来沙漏依然满着等待领取。"
+    },
+
+    "ui_placement": {
+      "primary": "主界面/地图界面，显眼位置（靠近岛屿地图中心或HUD角落）",
+      "visual_style": "可爱岛屿主题沙漏：暖黄色沙粒、圆润玻璃瓶造型、满载时顶部沙粒闪烁金色光晕，底部堆满沙子",
+      "fill_animation": "沙粒缓慢落下，进度以沙漏填满程度直观呈现",
+      "full_state_cue": "沙漏完全填满后：沙漏边缘发光、轻微弹跳动画、贝壳音效提示",
+      "claim_animation": "点击领取：沙漏翻转倒出，沙滩币从沙漏口飞出并汇入HUD货币栏",
+      "icon_hint": "岛屿主题圆形沙漏图标，顶部有小棕榈树装饰，底部托着珊瑚礁台座",
+      "badge_when_full": "沙漏图标显示感叹号徽章，提醒玩家可领取"
+    },
+
+    "retention_function": "低频高意愿回访驱动——每4小时一次奖励，玩家建立『打开→领取→玩几关→离开』的轻量日常习惯。不强迫留存，无需每日任务或签到打卡。",
+
+    "free_player_impact": {
+      "daily_sessions": 4,
+      "daily_coins_base": 60,
+      "daily_coins_monthly_card": 120,
+      "weekly_coins_base": 420,
+      "continue_count_per_week": 14,
+      "note": "假设每天领取4次（每6小时一次，略大于4小时间隔以模拟真实用户行为）：免费玩家每天约获60沙滩币≈2次续关，每周约420沙滩币≈14次续关。月卡玩家每天额外通过月卡获30沙滩币，合计每天150沙滩币。"
+    },
+
+    "economy_balance_note": "沙漏每日免费产出约60沙滩币（基础），相当于每周2个小包（一抔沙）的价值。产出量不会破坏付费意愿——免费玩家可维持基础游玩，但高频续关仍需IAP补充。月卡用户因2倍奖励，沙漏回访黏性更高，提升订阅续费动机。",
+
+    "exploit_risks": [
+      {
+        "risk": "免费产出过高稀释付费",
+        "severity": "low",
+        "mitigation": "4小时间隔+单次15币产出，每日上限约60币（需6次登录），不足以支撑高频续关场景；重度玩家仍有明确IAP需求。"
+      },
+      {
+        "risk": "时间操控（修改手机时间领取）",
+        "severity": "medium",
+        "mitigation": "服务端计时验证：沙漏领取时间戳存储于后端，客户端仅做展示；后端以服务器时间为准。Fastify+Prisma后端天然支持此验证逻辑。"
+      }
+    ],
+
+    "state": "draft"
   },
 
   "iap_skus": [
@@ -98,11 +163,11 @@
       "beach_coins": 0,
       "beach_coins_delivery": "30_per_day_x30",
       "beach_coins_total": 900,
-      "bonus": null,
+      "bonus": "沙漏奖励2倍（每次领取30沙滩币而非15沙滩币）",
       "purchase_limit": null,
       "is_subscription": true,
       "renewal_reminder_days": 3,
-      "positioning": "订阅复购产品：每天登录领取30沙滩币，持续30天，总价值高于一次性中包，鼓励规律游玩",
+      "positioning": "订阅复购产品：每天登录领取30沙滩币 + 沙漏奖励翻倍，双重激励鼓励规律游玩",
       "continue_count_equiv": 30,
       "trigger_hint": "商城订阅区，月活留存锚点"
     }
@@ -115,13 +180,13 @@
     "continue_cost_cny_via_large_pack": 2.49,
     "reference_games": ["天天爱消除", "Candy Crush Saga"],
     "localization_note": "定价参考天天爱消除/Candy Crush续关成本，采用本地化定价（CNY:USD≠6.1直换，而是参考市场心理价位）",
-    "value_note": "月卡总价值900沙滩币（30颗/天×30天），单价等效≈3.33分/沙滩币，优于中包（≈8.93分），鼓励订阅。小包单价≈10分，大包≈8.29分。月卡最优，对重度玩家最有价值。"
+    "value_note": "月卡总价值900沙滩币（30颗/天×30天）+ 沙漏2倍加成（额外约900沙滩币/月），订阅综合价值远超一次性包。"
   },
 
   "paywall_design": {
     "only_paywall": "步数耗尽后续关（+5步，30沙滩币/次）",
     "no_paywalls": [
-      "道具/助攻器不强制付费（低成本沙滩币辅助）",
+      "道具/助攻器不强制付费（低成本沙滩币辅助，可用沙漏免费领取的沙滩币支付）",
       "章节解锁不付费",
       "外观皮肤不付费",
       "NPC对话/叙事内容不付费",
@@ -138,25 +203,27 @@
       "步数耗尽结算界面内嵌续关按钮（沙滩币余额≥30则直接消费，余额不足则引导购买）",
       "玩家主动打开商城",
       "连续失败3次以上后，结算界面下方展示「小包」软提示（非全屏强制）",
-      "月卡到期前3天，设置界面内提醒"
+      "月卡到期前3天，设置界面内提醒",
+      "沙漏满载时，主界面图标显示徽章提示（被动提醒，非强制弹窗）"
     ],
     "forbidden": [
       "游戏进行中弹出购买窗口",
       "全屏强制购买拦截",
       "倒计时FOMO促销弹窗",
       "叙事/过场场景中插入商业内容",
-      "少于3次连续失败就推送购买"
+      "少于3次连续失败就推送购买",
+      "沙漏相关推送通知骚扰（仅被动展示，不主动推送）"
     ]
   },
 
   "sku_count_rationale": {
     "target_sku_count": 4,
-    "note": "4个SKU（小/中/大 + 月卡）覆盖完整转化漏斗，避免选择困难。无需6+个复杂档位。",
+    "note": "4个SKU（小/中/大 + 月卡）覆盖完整转化漏斗，避免选择困难。月卡新增沙漏2倍加成，价值感知更清晰。",
     "funnel": {
       "entry": "pack_small（¥6）首充转化，降低心理门槛",
       "core": "pack_medium（¥25）主力复购，性价比锚点",
       "whale": "pack_large（¥68）重度消费，储粮包",
-      "ltv": "pack_monthly_card（¥30/月）留存锚点，提升LTV"
+      "ltv": "pack_monthly_card（¥30/月）留存锚点，提升LTV + 沙漏翻倍"
     }
   },
 
@@ -167,12 +234,13 @@
     "paying_user_d30_arpu": "$12.00",
     "iap_conversion_rate": "2.5%",
     "monthly_card_renewal_rate": "55%",
+    "hourglass_dau_boost_estimate": "10-15%（沙漏回访机制预计提升日活，需运营数据验证）",
     "revenue_mix": {
       "monthly_card_subscription": "40%",
       "one_time_packs": "45%",
       "micro_continue_spend": "15%"
     },
-    "note": "单货币模型预期转化率略低于双货币（无软货币推流），但付费用户ARPU更高（决策路径更清晰）"
+    "note": "沙漏免费产出不直接产生收入，但通过提升DAU和沙滩币消耗频率间接拉动付费转化率；月卡用户因沙漏翻倍感知价值提升，预计月卡续费率小幅改善。"
   },
 
   "economy_validation": {
@@ -180,7 +248,7 @@
     "resource_flow_closed": true,
     "checks": [
       {
-        "check": "沙滩币有且只有一种获取途径（IAP）",
+        "check": "沙滩币获取途径清晰（IAP购买 + 沙漏免费领取）",
         "pass": true
       },
       {
@@ -188,7 +256,11 @@
         "pass": true
       },
       {
-        "check": "无双货币遗留（丹青石已完全移除）",
+        "check": "沙漏免费产出不破坏付费意愿（每日约60基础沙滩币≈2次续关，不足以支撑重度游玩）",
+        "pass": true
+      },
+      {
+        "check": "无双货币遗留（单一沙滩币）",
         "pass": true
       },
       {
@@ -208,6 +280,15 @@
         "check": "续关定价合理（参考天天爱消除/Candy Crush）",
         "pass": true,
         "detail": "30沙滩币≈¥2.49-3.00/次，市场对齐"
+      },
+      {
+        "check": "沙漏计时防作弊机制设计完整（服务端时间验证）",
+        "pass": true,
+        "detail": "后端存储领取时间戳，以服务器时间为准"
+      },
+      {
+        "check": "月卡沙漏翻倍奖励与订阅价值定位一致",
+        "pass": true
       }
     ],
     "exploit_risks": [
@@ -220,6 +301,11 @@
         "risk": "重排辅助滥用",
         "severity": "low",
         "mitigation": "重排消耗30沙滩币，有成本约束；棋盘设计保证大多数情况无需重排"
+      },
+      {
+        "risk": "沙漏时间操控（修改设备时间）",
+        "severity": "medium",
+        "mitigation": "服务端验证领取时间戳，客户端仅展示，后端以服务器时间为准"
       }
     ]
   },
@@ -232,7 +318,7 @@
       "PvP竞技排行榜",
       "强制社交/公会义务",
       "进度付费墙",
-      "双货币复杂度（丹青石已完全移除）"
+      "双货币复杂度（单一沙滩币）"
     ],
     "reduce": [
       "人为难度墙",
@@ -246,13 +332,15 @@
       "美术精致度（动森风格）",
       "叙事情感深度",
       "IAP感知价值（清晰定价，真实呈现）",
-      "玩家付费主动性"
+      "玩家付费主动性",
+      "免费玩家游玩体验（沙漏提供自然回访激励）"
     ],
     "create": [
       "渐进式岛屿视觉修复（关卡进度→场景变化，免费）",
       "若有若无情感线（山田律×丸山ひなた，免费）",
       "灯台守记忆碎片系统（渉日记，免费）",
-      "月卡日领沙滩币（规律游玩激励，轻量订阅）"
+      "月卡日领沙滩币（规律游玩激励，轻量订阅）",
+      "沙漏奖励系统（免费玩家定期回访领取沙滩币，减少完全免费玩家的挫败感）"
     ]
   }
 }

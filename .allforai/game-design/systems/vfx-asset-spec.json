@@ -748,6 +748,834 @@
     }
   ],
 
+  "seasonal_vfx_assets": [
+    {
+      "asset_id": "fx_season_spring_sakura",
+      "name": "春·樱花飘落粒子",
+      "season": "spring",
+      "chapter_scope": "Ch1",
+      "type": "particle_system",
+      "source_strategy": "ai_generated",
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "trigger": "Ch1地图修复后自动激活，日间全屏背景层持续循环（loop=true），夜晚时segment密度降至40%",
+      "canvas": "1080x1920_fullscreen_overlay",
+      "duration_s": null,
+      "loop": true,
+      "stop_condition": "章节切换或进入夏季时渐出0.8s",
+      "color_palette": [
+        "#F0C4C4",
+        "#FFFDF5",
+        "#F2A98A",
+        "#F8E8E8"
+      ],
+      "particle": {
+        "emitter_shape": "line",
+        "emitter_position": "top_edge_full_width",
+        "spawn_behavior": "continuous",
+        "spawn_rate": 3.5,
+        "spawn_count_per_burst": null,
+        "particle_count_max": 80,
+        "lifetime_ms": { "min": 4000, "max": 7000 },
+        "velocity": {
+          "x": { "min": -18, "max": 18, "wind_drift": "sine_wave_amplitude_8px_period_2.5s" },
+          "y": { "min": 40, "max": 90 }
+        },
+        "rotation": {
+          "initial_range_deg": [-15, 15],
+          "angular_velocity_deg_s": { "min": -35, "max": 35 },
+          "wobble": "pendulum_oscillation_amplitude_12deg_period_1.2s"
+        },
+        "gravity": 0.15,
+        "drag": 0.08,
+        "texture": {
+          "shape": "ellipse_petal",
+          "size_px": { "min": 8, "max": 18 },
+          "aspect_ratio": 0.55,
+          "alpha_policy": "premultiplied_alpha",
+          "note": "单面椭圆花瓣，正面淡粉色，边缘微深，模拟手绘水彩花瓣感"
+        },
+        "size_over_life": "constant_until_80pct_then_fade_out",
+        "color_over_life": ["#F0C4C4 100%", "#F2A98A 60%", "#FFFDF5 0% — alpha fade"],
+        "blend_mode": "alpha",
+        "sea_surface_behavior": "于画布底部20%区域透明度渐出（模拟落入海面消散）",
+        "density_zones": {
+          "default": 1.0,
+          "near_cherry_tree_elements": 1.8,
+          "sea_surface_bottom_20pct": 0.3
+        }
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": null,
+        "phases": ["start", "loop"],
+        "event_sync": { "event": "ch1_restored", "time_ms": 800 },
+        "loop": true,
+        "interrupt_policy": "fade_out_0.8s_on_season_transition"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 8,
+        "max_simultaneous_particles": 80,
+        "attention": "ambient",
+        "accessibility_fallback": "reduced_motion_disable_particle_drift_keep_static_petal_overlay"
+      },
+      "sfx_pairing": {
+        "sfx_key": "sfx_season_spring_ambience",
+        "sync_point": "环境音持续循环，与粒子系统并行"
+      },
+      "files": [
+        "assets/effects/particles/fx_season_spring_sakura_particle.json",
+        "assets/effects/particles/textures/fx_sakura_petal@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "花瓣纹理：手绘水彩风格椭圆花瓣，#F0C4C4主体，边缘略深至#D4A4A4，保持与艺术风格手绘水彩感一致。粒子落地消散时使用alpha淡出而非突然消失。风向偏移采用正弦波模拟自然风感。禁止纯白或纯粉，须在art-style-guide全局色彩体系内。"
+    },
+
+    {
+      "asset_id": "fx_season_spring_petals_burst",
+      "name": "春·樱花爆散庆祝",
+      "season": "spring",
+      "chapter_scope": "Ch1",
+      "type": "particle_system",
+      "source_strategy": "ai_generated",
+      "presentation_layer": "screen_space",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "trigger": "Ch1章节全部修复完成时（章节完成庆祝演出，一次性触发非loop）",
+      "canvas": "1080x1920_fullscreen",
+      "duration_s": 3.0,
+      "loop": false,
+      "color_palette": [
+        "#F0C4C4",
+        "#F2A98A",
+        "#FFFDF5",
+        "#F5C842",
+        "#D4A8C8"
+      ],
+      "particle": {
+        "emitter_shape": "point",
+        "emitter_position": "screen_center",
+        "spawn_behavior": "burst",
+        "spawn_count": 180,
+        "lifetime_ms": { "min": 1800, "max": 3000 },
+        "velocity": {
+          "initial_burst": "radial_outward",
+          "speed": { "min": 200, "max": 520 },
+          "gravity": 0.35,
+          "drag": 0.12
+        },
+        "rotation": {
+          "initial_range_deg": [-180, 180],
+          "angular_velocity_deg_s": { "min": -80, "max": 80 }
+        },
+        "texture": {
+          "shape": "ellipse_petal",
+          "size_px": { "min": 10, "max": 22 },
+          "aspect_ratio": 0.5
+        },
+        "size_over_life": "fast_expand_0.1s_then_constant_then_fade_last_0.4s",
+        "color_over_life": ["#F0C4C4 100%", "#F2A98A 70%", "#FFFDF5 0%"],
+        "blend_mode": "alpha",
+        "additional_elements": {
+          "gold_sparkles": {
+            "count": 40,
+            "color": "#F5C842",
+            "size_px": 6,
+            "shape": "4_point_star",
+            "lifetime_ms": 800,
+            "blend_mode": "additive"
+          }
+        }
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 3000,
+        "phases": ["impact", "dissipate"],
+        "event_sync": { "event": "ch1_chapter_complete", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "cannot_interrupt"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 35,
+        "max_duration_ms": 3000,
+        "attention": "active",
+        "accessibility_fallback": "reduced_motion_single_center_flash_only"
+      },
+      "sfx_pairing": {
+        "sfx_key": "sfx_chapter_complete_spring",
+        "sync_point": "0.00s完全同步，庆祝音效与爆散同帧"
+      },
+      "files": [
+        "assets/effects/particles/fx_season_spring_petals_burst_particle.json",
+        "assets/effects/particles/textures/fx_sakura_petal@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "与fx_season_spring_sakura共享花瓣纹理资产。金色星光粒子使用加法混合，增加庆祝感。整体控制在3s内，不阻断后续UI弹窗出现（非阻断式）。"
+    },
+
+    {
+      "asset_id": "fx_season_summer_firefly",
+      "name": "夏·夜晚萤火虫粒子",
+      "season": "summer",
+      "chapter_scope": "Ch2",
+      "type": "particle_system",
+      "source_strategy": "ai_generated",
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "trigger": "Ch2夜晚时段（日夜系统 night_phase），自动激活loop粒子层",
+      "canvas": "1080x1920_fullscreen_overlay",
+      "duration_s": null,
+      "loop": true,
+      "stop_condition": "白天到来时渐出1.2s；章节切换时渐出0.8s",
+      "color_palette": [
+        "#FFFDF5",
+        "#D4F080",
+        "#B8E840",
+        "#F5C842"
+      ],
+      "particle": {
+        "emitter_shape": "box",
+        "emitter_position": "full_canvas_scattered",
+        "spawn_behavior": "continuous",
+        "spawn_rate": 1.2,
+        "particle_count_max": 30,
+        "lifetime_ms": { "min": 5000, "max": 9000 },
+        "velocity": {
+          "x": { "drift": "sine_wave_amplitude_15px_period_3s_individual_phase_offset" },
+          "y": { "drift": "sine_wave_amplitude_10px_period_2.5s_individual_phase_offset" },
+          "overall_direction": "gentle_float_no_gravity"
+        },
+        "gravity": 0,
+        "drag": 0.3,
+        "texture": {
+          "shape": "circle_soft_glow",
+          "core_size_px": 6,
+          "glow_radius_px": 14,
+          "alpha_policy": "premultiplied_alpha"
+        },
+        "glow_pulse": {
+          "period_s": { "min": 0.8, "max": 1.2 },
+          "brightness_range": [0.3, 1.0],
+          "curve": "ease-in-out",
+          "phase_offset": "random_per_particle",
+          "color_shift_on_peak": "#D4F080 → #FFFDF5"
+        },
+        "size_over_life": "fade_in_0.5s_constant_fade_out_1s",
+        "color_over_life": ["#D4F080 0%", "#FFFDF5 50%", "#D4F080 100%"],
+        "blend_mode": "additive",
+        "positional_density": {
+          "midground_zone_40pct_to_70pct_height": 2.0,
+          "near_foliage_elements": 1.5
+        }
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": null,
+        "phases": ["start", "loop"],
+        "event_sync": { "event": "night_phase_start", "time_ms": 1200 },
+        "loop": true,
+        "interrupt_policy": "fade_out_1.2s_on_day_phase"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 4,
+        "max_simultaneous_particles": 30,
+        "attention": "ambient",
+        "accessibility_fallback": "reduced_motion_static_glow_dots_no_drift"
+      },
+      "sfx_pairing": {
+        "sfx_key": "sfx_night_ambience_summer",
+        "sync_point": "夜晚环境音与粒子同步激活"
+      },
+      "files": [
+        "assets/effects/particles/fx_season_summer_firefly_particle.json",
+        "assets/effects/particles/textures/fx_firefly_glow@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "纹理为软圆形发光圆点，加法混合与深色夜晚背景自然融合。每颗萤火虫有独立的发光周期偏移（0-1.2s随机），避免同步闪烁感。粒子密度保持克制（最多30颗），治愈感而非噪点感。黄绿色系（#D4F080/#B8E840）与游戏整体暖色体系兼容。"
+    },
+
+    {
+      "asset_id": "fx_season_summer_seafoam",
+      "name": "夏·海浪泡沫粒子",
+      "season": "summer",
+      "chapter_scope": "Ch2",
+      "type": "particle_system",
+      "source_strategy": "ai_generated",
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "trigger": "Ch2场景修复后海岸线区域持续loop，日夜均激活",
+      "canvas": "1080x320_coastline_strip",
+      "duration_s": null,
+      "loop": true,
+      "stop_condition": "章节切换时渐出0.5s",
+      "color_palette": [
+        "#FFFDF5",
+        "#E8F8F8",
+        "#7EC8E3",
+        "#FFFFFF"
+      ],
+      "particle": {
+        "emitter_shape": "line",
+        "emitter_position": "coastline_wave_crest",
+        "spawn_behavior": "pulse",
+        "pulse_period_s": 2.2,
+        "spawn_count_per_pulse": 15,
+        "particle_count_max": 60,
+        "lifetime_ms": { "min": 600, "max": 1400 },
+        "velocity": {
+          "x": { "spread": "±30px_along_coastline" },
+          "y": { "initial": -20, "gravity_override": 0.25 }
+        },
+        "texture": {
+          "shape": "irregular_bubble_cluster",
+          "size_px": { "min": 4, "max": 12 },
+          "alpha_policy": "premultiplied_alpha",
+          "note": "不规则圆形泡沫群，半透明白色"
+        },
+        "size_over_life": "appear_fast_shrink_then_fade",
+        "color_over_life": ["#FFFDF5 100%", "#E8F8F8 50%", "transparent 0%"],
+        "blend_mode": "alpha",
+        "wave_sync": "每次pulse与背景波浪动画周期对齐"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": null,
+        "phases": ["start", "loop"],
+        "event_sync": { "event": "ch2_restored", "time_ms": 500 },
+        "loop": true,
+        "interrupt_policy": "fade_out_0.5s_on_chapter_exit"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 5,
+        "max_simultaneous_particles": 60,
+        "attention": "ambient",
+        "accessibility_fallback": "reduced_motion_static_foam_texture_only"
+      },
+      "sfx_pairing": {
+        "sfx_key": "sfx_ocean_wave_loop",
+        "sync_point": "pulse粒子与海浪音效周期对齐（2.2s）"
+      },
+      "files": [
+        "assets/effects/particles/fx_season_summer_seafoam_particle.json",
+        "assets/effects/particles/textures/fx_seafoam_bubble@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "泡沫纹理半透明白色，边缘略带海水蓝（#7EC8E3 10%），形状自然不规则。pulse与海浪动画节奏对齐（2.2s一次），确保视觉节奏感。仅出现在场景海岸线带状区域，不遮挡游戏棋盘。"
+    },
+
+    {
+      "asset_id": "fx_season_autumn_leaves",
+      "name": "秋·红叶金叶飘落",
+      "season": "autumn",
+      "chapter_scope": "Ch3",
+      "type": "particle_system",
+      "source_strategy": "ai_generated",
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "trigger": "Ch3地图修复后自动激活，全屏背景层持续循环",
+      "canvas": "1080x1920_fullscreen_overlay",
+      "duration_s": null,
+      "loop": true,
+      "stop_condition": "章节切换时渐出0.8s",
+      "color_palette": [
+        "#C8402A",
+        "#E8A050",
+        "#F5C842",
+        "#D46A30",
+        "#8B4020"
+      ],
+      "particle": {
+        "emitter_shape": "line",
+        "emitter_position": "top_edge_full_width",
+        "spawn_behavior": "continuous",
+        "spawn_rate": 2.8,
+        "particle_count_max": 60,
+        "lifetime_ms": { "min": 5000, "max": 9000 },
+        "velocity": {
+          "x": { "min": -22, "max": 22, "wind_drift": "sine_wave_amplitude_12px_period_3s" },
+          "y": { "min": 45, "max": 95 }
+        },
+        "rotation": {
+          "initial_range_deg": [-30, 30],
+          "angular_velocity_deg_s": { "min": -60, "max": 60 },
+          "tumble_pattern": "irregular_flip_every_1_to_2s",
+          "note": "椭圆叶片在下落过程中随机翻转，模拟真实叶片翻滚感"
+        },
+        "gravity": 0.18,
+        "drag": 0.1,
+        "texture": {
+          "shape": "ellipse_leaf",
+          "size_px": { "min": 10, "max": 20 },
+          "aspect_ratio": 0.6,
+          "variants": ["red_leaf", "gold_leaf", "orange_leaf"],
+          "variant_ratio": [0.5, 0.3, 0.2],
+          "alpha_policy": "premultiplied_alpha"
+        },
+        "ground_behavior": "落至画布底部20%区域时透明度渐出消散（非反弹）",
+        "size_over_life": "constant_until_80pct_then_fade",
+        "color_over_life": ["variant_color 100%", "variant_color 80%", "transparent 0%"],
+        "blend_mode": "alpha"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": null,
+        "phases": ["start", "loop"],
+        "event_sync": { "event": "ch3_restored", "time_ms": 800 },
+        "loop": true,
+        "interrupt_policy": "fade_out_0.8s_on_season_transition"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 8,
+        "max_simultaneous_particles": 60,
+        "attention": "ambient",
+        "accessibility_fallback": "reduced_motion_static_leaf_overlay_no_drift"
+      },
+      "sfx_pairing": {
+        "sfx_key": "sfx_autumn_wind_ambience",
+        "sync_point": "环境音持续循环"
+      },
+      "files": [
+        "assets/effects/particles/fx_season_autumn_leaves_particle.json",
+        "assets/effects/particles/textures/fx_autumn_leaf_red@2x.png",
+        "assets/effects/particles/textures/fx_autumn_leaf_gold@2x.png",
+        "assets/effects/particles/textures/fx_autumn_leaf_orange@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "三种叶片纹理（红/金/橙），运行时随机选择（比例5:3:2）。叶片翻滚使用texture旋转模拟，非骨骼动画。色彩选用温暖红橙金，与Ch3花田山坡的 #F0C4C4 樱粉主色形成季节对比（深秋感）。落地消散用alpha淡出，禁止反弹或堆积效果。"
+    },
+
+    {
+      "asset_id": "fx_season_winter_snow",
+      "name": "冬·雪花粒子（核心资产）",
+      "season": "winter",
+      "chapter_scope": "Ch4",
+      "type": "particle_system",
+      "source_strategy": "ai_generated",
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "hybrid",
+      "trigger": "Ch4场景激活时全屏持续loop；温泉水面上方区域密度×1.5；遇温泉热气时粒子偏转上升",
+      "canvas": "1080x1920_fullscreen_overlay",
+      "duration_s": null,
+      "loop": true,
+      "stop_condition": "章节切换时渐出1.5s",
+      "color_palette": [
+        "#F5F0E8",
+        "#FFFDF5",
+        "#E8F0F8",
+        "#D0E8F8"
+      ],
+      "implementation_note": "双层叠加粒子系统：大颗慢飘层（layer_A）+ 小颗快飘层（layer_B）。温泉热气偏转区域通过动态force_field实现粒子上升偏转。",
+      "particle_layers": {
+        "layer_A_large_slow": {
+          "role": "主视觉层 — 大颗慢飘雪花，近景感",
+          "spawn_rate": 1.5,
+          "particle_count_max": 35,
+          "lifetime_ms": { "min": 7000, "max": 12000 },
+          "size_px": { "min": 14, "max": 28 },
+          "velocity": {
+            "y": { "min": 25, "max": 55 },
+            "x": { "wind_drift": "sine_wave_amplitude_20px_period_4s_gentle_sway" }
+          },
+          "texture": {
+            "shape": "snowflake_6_branch",
+            "detail_level": "high",
+            "alpha": 0.85,
+            "note": "六角对称雪花，精细分支，半透明白色，核心亮度高，边缘渐淡——冬季温泉雪景核心诉求资产"
+          },
+          "rotation": {
+            "angular_velocity_deg_s": { "min": -8, "max": 8 },
+            "note": "极慢旋转，保持雪花庄重飘落感"
+          },
+          "glow_pulse": {
+            "period_s": 3.0,
+            "brightness_range": [0.7, 1.0],
+            "curve": "ease-in-out"
+          }
+        },
+        "layer_B_small_fast": {
+          "role": "背景补充层 — 小颗快飘，增加景深感",
+          "spawn_rate": 4.0,
+          "particle_count_max": 80,
+          "lifetime_ms": { "min": 3000, "max": 6000 },
+          "size_px": { "min": 3, "max": 8 },
+          "velocity": {
+            "y": { "min": 60, "max": 120 },
+            "x": { "wind_drift": "sine_wave_amplitude_10px_period_2.5s" }
+          },
+          "texture": {
+            "shape": "circle_soft",
+            "alpha": 0.55,
+            "note": "小圆点雪粒，半透明，营造远景雪花感"
+          },
+          "rotation": null
+        }
+      },
+      "hot_spring_interaction": {
+        "zone_definition": "温泉水面上方200px区域",
+        "density_multiplier": 1.5,
+        "thermal_deflection": {
+          "enabled": true,
+          "force_field_shape": "upward_cone",
+          "force_field_width_px": 280,
+          "upward_velocity_add": 35,
+          "x_scatter_add": 25,
+          "transition_zone_px": 40,
+          "note": "雪花进入热气区域时速度逐渐偏转向上，模拟热气流将雪花吹散上升的物理效果"
+        }
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": null,
+        "phases": ["start", "loop"],
+        "event_sync": { "event": "ch4_activated", "time_ms": 0 },
+        "loop": true,
+        "interrupt_policy": "fade_out_1.5s_on_chapter_exit"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 12,
+        "max_simultaneous_particles": 115,
+        "attention": "ambient",
+        "accessibility_fallback": "reduced_motion_layer_A_only_no_glow_pulse"
+      },
+      "sfx_pairing": {
+        "sfx_key": "sfx_winter_snow_ambience",
+        "sync_point": "轻柔雪声环境音，与粒子密度联动（密度高时音量微增5dB）"
+      },
+      "files": [
+        "assets/effects/particles/fx_season_winter_snow_particle.json",
+        "assets/effects/particles/textures/fx_snowflake_large@2x.png",
+        "assets/effects/particles/textures/fx_snowflake_small@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "【核心资产 — 最高优先级设计精度要求】雪花纹理需手绘水彩质感，六角对称，分支精细，与游戏hand-drawn风格一致。Layer_A大颗雪花是视觉焦点，需最高质量。温泉热气偏转区域的视觉效果（雪花在热气上方飘散上升）是冬季温泉雪景的核心魅力点，必须实现。颜色保持半透明暖白（#F5F0E8/#FFFDF5），禁止纯白（避免刺眼）。两层粒子总预算115颗，在性能允许范围内保持流畅。"
+    },
+
+    {
+      "asset_id": "fx_season_winter_steam_enhanced",
+      "name": "冬·温泉蒸汽加强版",
+      "season": "winter",
+      "chapter_scope": "Ch4",
+      "type": "particle_system",
+      "source_strategy": "ai_generated",
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "trigger": "Ch4温泉区域持续激活（替换或叠加普通蒸汽粒子），与雪花粒子层并行",
+      "canvas": "400x600_hotspring_area",
+      "duration_s": null,
+      "loop": true,
+      "stop_condition": "章节切换时渐出0.8s",
+      "design_intent": "与普通蒸汽相比：粒子量×2，扩散范围+50%，暖橙白色与冷蓝雪景形成色温对比",
+      "color_palette": [
+        "#FFFDF5",
+        "#F5D4A0",
+        "#F2A98A",
+        "#E8C89A"
+      ],
+      "particle": {
+        "emitter_shape": "line",
+        "emitter_position": "hotspring_water_surface",
+        "spawn_behavior": "continuous",
+        "spawn_rate": 8.0,
+        "particle_count_max": 60,
+        "lifetime_ms": { "min": 2000, "max": 4000 },
+        "velocity": {
+          "y": { "min": -80, "max": -30, "note": "向上运动（负Y方向）" },
+          "x": { "drift": "sine_wave_amplitude_25px_period_2s_lazy_drift" }
+        },
+        "gravity": -0.05,
+        "drag": 0.15,
+        "texture": {
+          "shape": "soft_puff_cloud",
+          "size_px": { "min": 20, "max": 55 },
+          "alpha_policy": "premultiplied_alpha",
+          "note": "柔软蓬松云雾状，边缘极软渐淡"
+        },
+        "color_temperature": {
+          "core_color": "#F5D4A0",
+          "edge_color": "#FFFDF5",
+          "note": "暖橙白色蒸汽，与冷蓝雪景（#D0E8F8）形成明显色温对比，强化温泉雪景视觉张力"
+        },
+        "size_over_life": "grow_from_20px_to_55px_then_fade",
+        "color_over_life": ["#F5D4A0 100%", "#F2A98A 60%", "#FFFDF5 30%", "transparent 0%"],
+        "blend_mode": "alpha",
+        "diffusion_expansion": "+50% vs standard_steam",
+        "density_vs_standard": "×2 particle count vs standard steam emitter"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": null,
+        "phases": ["start", "loop"],
+        "event_sync": { "event": "ch4_hotspring_zone_enter", "time_ms": 0 },
+        "loop": true,
+        "interrupt_policy": "fade_out_0.8s_on_zone_exit"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 15,
+        "max_simultaneous_particles": 60,
+        "attention": "ambient",
+        "accessibility_fallback": "reduced_motion_halve_particle_count"
+      },
+      "sfx_pairing": {
+        "sfx_key": "sfx_hotspring_steam_enhanced",
+        "sync_point": "蒸汽环境音加强版（音量比标准版+3dB，低频内容更丰富）"
+      },
+      "files": [
+        "assets/effects/particles/fx_season_winter_steam_enhanced_particle.json",
+        "assets/effects/particles/textures/fx_steam_puff@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "蒸汽颜色关键：暖橙白（#F5D4A0核心，#F2A98A次核心）而非纯白，确保与冷蓝调雪花形成可感知的色温对比。扩散范围+50%使蒸汽在空间上更有存在感，与降雪天气的视觉规模匹配。与fx_season_winter_snow并行运行时，两者共同营造冬日温泉雪景核心视觉效果。"
+    },
+
+    {
+      "asset_id": "fx_season_winter_snow_slide",
+      "name": "冬·屋顶积雪偶发滑落",
+      "season": "winter",
+      "chapter_scope": "Ch4",
+      "type": "particle_system",
+      "source_strategy": "ai_generated",
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "hybrid",
+      "trigger": "Ch4场景内，屋檐边缘随机触发（间隔15-30秒随机，非loop，每次触发一次性播放）",
+      "canvas": "160x280_eave_local",
+      "duration_s": 2.5,
+      "loop": false,
+      "random_trigger": {
+        "interval_s": { "min": 15, "max": 30 },
+        "trigger_points": ["eave_left", "eave_center", "eave_right"],
+        "note": "从若干预设屋檐触发点随机选一个触发，增加世界感"
+      },
+      "color_palette": [
+        "#F5F0E8",
+        "#FFFDF5",
+        "#E0E8F0",
+        "#C8D8E8"
+      ],
+      "particle": {
+        "phase_1_snow_chunk": {
+          "desc": "雪团主体从屋檐边缘滑落",
+          "spawn_count": 1,
+          "spawn_behavior": "burst",
+          "lifetime_ms": 1200,
+          "texture": {
+            "shape": "irregular_snow_blob",
+            "size_px": { "width": 40, "height": 28 },
+            "alpha": 0.9
+          },
+          "velocity": {
+            "initial_x": { "min": 5, "max": 15 },
+            "initial_y": { "min": 80, "max": 120 },
+            "gravity": 0.8,
+            "drag": 0.05
+          },
+          "rotation": {
+            "initial_deg": 0,
+            "angular_velocity_deg_s": { "min": 15, "max": 30 }
+          },
+          "color_over_life": ["#F5F0E8 100%", "#FFFDF5 50%", "transparent 0%"]
+        },
+        "phase_2_snow_particles": {
+          "desc": "雪团落下时散开的雪粒",
+          "spawn_count": 25,
+          "spawn_behavior": "burst",
+          "spawn_delay_ms": 400,
+          "lifetime_ms": { "min": 600, "max": 1200 },
+          "texture": {
+            "shape": "circle_soft",
+            "size_px": { "min": 3, "max": 10 },
+            "alpha": 0.7
+          },
+          "velocity": {
+            "spread": "radial_downward_fan_120deg",
+            "speed": { "min": 40, "max": 120 },
+            "gravity": 0.4
+          },
+          "color_over_life": ["#FFFDF5 100%", "transparent 0%"]
+        },
+        "blend_mode": "alpha"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 2500,
+        "phases": ["impact", "dissipate"],
+        "event_sync": { "event": "random_eave_trigger", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "cannot_interrupt"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 10,
+        "max_duration_ms": 2500,
+        "attention": "ambient",
+        "accessibility_fallback": "reduced_motion_disable_entirely"
+      },
+      "sfx_pairing": {
+        "sfx_key": "sfx_snow_slide",
+        "sync_point": "0.00s — 轻柔「シュ」雪滑声（约0.8s）与雪团滑落同步；0.4s轻「ポン」落地声与散雪粒子同步"
+      },
+      "files": [
+        "assets/effects/particles/fx_season_winter_snow_slide_particle.json",
+        "assets/effects/particles/textures/fx_snow_blob@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "雪团纹理：不规则圆角雪块，手绘水彩质感，轻微透明。两阶段粒子：phase_1雪团主体滑落（有形体感），phase_2散雪粒子（消散感）。随机触发间隔15-30s确保出现意外感而不是预期感，增强世界真实感。仅在Ch4冬季场景内有屋檐元素的位置触发。"
+    },
+
+    {
+      "asset_id": "fx_season_winter_lighthouse_glow",
+      "name": "冬·灯塔光柱雪雾光晕",
+      "season": "winter",
+      "chapter_scope": "Ch4",
+      "type": "particle_system",
+      "source_strategy": "ai_generated",
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "hybrid",
+      "trigger": "Ch4灯塔光柱扫过时触发（叠加在fx_lighthouse_beam行扫版之上），持续约0.8s后消散",
+      "canvas": "1080x1920_fullscreen_overlay",
+      "duration_s": 0.8,
+      "loop": false,
+      "color_palette": [
+        "#D0E8F8",
+        "#E8F4FC",
+        "#FFFDF5",
+        "#C8D8F0"
+      ],
+      "particle": {
+        "emitter_shape": "cone",
+        "emitter_position": "lighthouse_beam_path",
+        "spawn_behavior": "burst",
+        "spawn_count": 60,
+        "lifetime_ms": { "min": 400, "max": 800 },
+        "velocity": {
+          "direction": "along_and_scatter_from_beam_axis",
+          "speed": { "min": 15, "max": 45 }
+        },
+        "texture": {
+          "shape": "soft_sphere_mote",
+          "size_px": { "min": 4, "max": 16 },
+          "alpha": { "min": 0.3, "max": 0.7 }
+        },
+        "volumetric_light_effect": {
+          "desc": "模拟体积光：光柱路径上的雪雾粒子散射光，产生柔和蓝白光晕",
+          "color": "#D0E8F8",
+          "glow_radius_px": 30,
+          "blend_mode": "additive",
+          "intensity": 0.6
+        },
+        "size_over_life": "appear_fast_grow_fade",
+        "color_over_life": ["#D0E8F8 100%", "#E8F4FC 50%", "transparent 0%"],
+        "blend_mode": "additive"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 800,
+        "phases": ["impact", "dissipate"],
+        "event_sync": { "event": "lighthouse_beam_sweep_ch4", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "can_interrupt_new_sweep_cancels_old"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 20,
+        "max_duration_ms": 800,
+        "attention": "active",
+        "accessibility_fallback": "reduced_motion_simple_blue_white_flash_only"
+      },
+      "sfx_pairing": {
+        "sfx_key": "sfx_lighthouse_beam_snow",
+        "sync_point": "0.00s — 轻柔光晕扩散声（冬季特有，与普通行扫版音效差异化）"
+      },
+      "files": [
+        "assets/effects/particles/fx_season_winter_lighthouse_glow_particle.json",
+        "assets/effects/particles/textures/fx_snow_mote@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "体积光效果通过加法混合粒子群模拟（引擎无真实体积光时的最优替代方案）。蓝白色晕（#D0E8F8）与灯塔光束金色（#F5A623）形成冷暖对比，强化冬夜感。与fx_lighthouse_beam配合时，总视觉效果：金色光柱 + 蓝白雪雾光晕 = 冬季灯塔扫过雪天的完整视觉体验。"
+    },
+
+    {
+      "asset_id": "fx_season_transition",
+      "name": "季节切换过渡特效",
+      "season": "all",
+      "chapter_scope": "chapter_transition",
+      "type": "particle_system",
+      "source_strategy": "ai_generated",
+      "presentation_layer": "screen_space",
+      "dimension": "2d",
+      "implementation_mode": "hybrid",
+      "trigger": "章节季节切换时触发（Ch1→Ch2, Ch2→Ch3, Ch3→Ch4等），1.5s非阻断式过渡",
+      "canvas": "1080x1920_fullscreen",
+      "duration_s": 1.5,
+      "loop": false,
+      "non_blocking": true,
+      "color_palette_variants": {
+        "spring_to_summer": ["#F0C4C4", "#7EC8E3", "#D4F080"],
+        "summer_to_autumn": ["#D4F080", "#E8A050", "#C8402A"],
+        "autumn_to_winter": ["#E8A050", "#F5F0E8", "#D0E8F8"],
+        "winter_to_spring": ["#D0E8F8", "#F0C4C4", "#FFFDF5"]
+      },
+      "particle": {
+        "emitter_shape": "screen_edge_ring",
+        "emitter_position": "screen_perimeter_full",
+        "spawn_behavior": "burst",
+        "spawn_count": 120,
+        "lifetime_ms": { "min": 800, "max": 1500 },
+        "velocity": {
+          "direction": "inward_sweep_from_edge_to_center",
+          "speed": { "min": 150, "max": 380 }
+        },
+        "texture": {
+          "shape": "season_specific",
+          "variants": {
+            "spring": "ellipse_petal",
+            "summer": "circle_soft_glow",
+            "autumn": "ellipse_leaf",
+            "winter": "snowflake_simple"
+          },
+          "note": "粒子形状随目标季节变化：进入春季用花瓣，进入冬季用简化雪花等",
+          "size_px": { "min": 8, "max": 20 }
+        },
+        "sweep_pattern": "edge_to_center_in_1.5s_easing_ease-out",
+        "color_over_life": ["departure_season_color 100%", "arrival_season_color 0%"],
+        "blend_mode": "alpha",
+        "trail_enabled": false
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 1500,
+        "phases": ["start", "impact", "dissipate"],
+        "event_sync": { "event": "chapter_season_change", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "cannot_interrupt_complete_in_bg"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 30,
+        "max_duration_ms": 1500,
+        "attention": "active",
+        "accessibility_fallback": "reduced_motion_crossfade_only_no_particles"
+      },
+      "sfx_pairing": {
+        "sfx_key": "sfx_season_change",
+        "sync_point": "0.00s — 季节切换特有音效（1.2s，随季节类型变化音色：入春=暖鸟鸣，入夏=海浪声，入秋=风声，入冬=轻雪声）"
+      },
+      "files": [
+        "assets/effects/particles/fx_season_transition_particle.json",
+        "assets/effects/particles/textures/fx_sakura_petal@2x.png",
+        "assets/effects/particles/textures/fx_firefly_glow@2x.png",
+        "assets/effects/particles/textures/fx_autumn_leaf_red@2x.png",
+        "assets/effects/particles/textures/fx_snowflake_simple@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "此特效复用已生成的各季节粒子纹理，仅需新建snowflake_simple（简化六角雪花用于过渡动画，细节低于fx_season_winter_snow的高精度版本）。非阻断式：过渡动画在后台进行，不延迟下一章节章节UI的出现。边缘扫入方向：优先从屏幕左右两侧向内，营造帷幕感。"
+    }
+  ],
+
   "production_priority": [
     {
       "milestone": "alpha",
@@ -763,6 +1591,74 @@
       "milestone": "gold",
       "assets": ["fx_rainbow_burst", "fx_lighthouse_beam"],
       "notes": "fx_lighthouse_beam_island是游戏情感最高峰，gold发布前必须达到最高质量标准。fx_rainbow_burst配套T-Rainbow机制，同属gold阶段完善。"
+    },
+    {
+      "milestone": "seasonal_v1",
+      "assets": [
+        "fx_season_spring_sakura",
+        "fx_season_summer_firefly",
+        "fx_season_autumn_leaves",
+        "fx_season_winter_snow",
+        "fx_season_winter_steam_enhanced",
+        "fx_season_winter_snow_slide",
+        "fx_season_winter_lighthouse_glow",
+        "fx_season_spring_petals_burst",
+        "fx_season_summer_seafoam",
+        "fx_season_transition"
+      ],
+      "priority_within_seasonal": [
+        {
+          "rank": 1,
+          "asset": "fx_season_winter_snow",
+          "reason": "核心诉求 — 冬季温泉雪花粒子需特别精细设计，双层架构+热气偏转+密度×1.5，最高设计精度要求"
+        },
+        {
+          "rank": 2,
+          "asset": "fx_season_winter_steam_enhanced",
+          "reason": "与雪花并行形成冬季温泉雪景核心视觉效果，色温对比设计关键"
+        },
+        {
+          "rank": 3,
+          "asset": "fx_season_winter_snow_slide",
+          "reason": "屋顶积雪滑落增强冬季世界感，随机触发机制独特"
+        },
+        {
+          "rank": 4,
+          "asset": "fx_season_winter_lighthouse_glow",
+          "reason": "冬季灯塔体积光效果，叠加雪雾氛围"
+        },
+        {
+          "rank": 5,
+          "asset": "fx_season_spring_sakura",
+          "reason": "春季主视觉粒子，Ch1核心氛围"
+        },
+        {
+          "rank": 6,
+          "asset": "fx_season_autumn_leaves",
+          "reason": "秋季主视觉粒子，Ch3氛围"
+        },
+        {
+          "rank": 7,
+          "asset": "fx_season_summer_firefly",
+          "reason": "夜晚萤火虫，配合日夜系统"
+        },
+        {
+          "rank": 8,
+          "asset": "fx_season_transition",
+          "reason": "过渡特效，复用已有纹理，开发成本低"
+        },
+        {
+          "rank": 9,
+          "asset": "fx_season_spring_petals_burst",
+          "reason": "章节完成庆祝，复用春季花瓣纹理"
+        },
+        {
+          "rank": 10,
+          "asset": "fx_season_summer_seafoam",
+          "reason": "海岸泡沫，纯氛围增强，优先级最低"
+        }
+      ],
+      "notes": "冬季温泉雪景组合（fx_season_winter_snow + fx_season_winter_steam_enhanced + fx_season_winter_snow_slide + fx_season_winter_lighthouse_glow）是核心诉求，优先交付。季节粒子纹理尽量复用（sakura_petal、autumn_leaf、firefly_glow等在过渡特效中共享）。"
     }
   ],
 

@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/ui-mockup-generation",
+  "generation_mode": "spec_only",
+  "note": "图片生成需由 AI 图片工具（google-imagen-4 / openrouter-gpt-image）执行。当前阶段所有图片标记为 spec_ready / not_generated，等待 art-qa 节点批准后进入生成流程。",
+  "mockups": [
+    {
+      "target_id": "mockup_screen_gameplay",
+      "type": "screen",
+      "screen_id": "screen_gameplay",
+      "file_prefix": "ui_screen_gameplay",
+      "output_path": ".allforai/game-design/ui/mockups/ui_screen_gameplay.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_screen_gameplay"
+    },
+    {
+      "target_id": "mockup_screen_level_select",
+      "type": "screen",
+      "screen_id": "screen_level_select",
+      "file_prefix": "ui_screen_level_select",
+      "output_path": ".allforai/game-design/ui/mockups/ui_screen_level_select.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_screen_level_select"
+    },
+    {
+      "target_id": "mockup_screen_shop",
+      "type": "screen",
+      "screen_id": "screen_shop",
+      "file_prefix": "ui_panel_shop",
+      "output_path": ".allforai/game-design/ui/mockups/ui_panel_shop.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_screen_shop"
+    },
+    {
+      "target_id": "mockup_screen_dialogue",
+      "type": "screen",
+      "screen_id": "screen_dialogue",
+      "file_prefix": "ui_panel_npc_dialogue",
+      "output_path": ".allforai/game-design/ui/mockups/ui_panel_npc_dialogue.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_screen_dialogue"
+    },
+    {
+      "target_id": "mockup_cmp_hud_bar",
+      "type": "component",
+      "component_id": "cmp_hud_bar",
+      "file_prefix": "ui_hud_bar",
+      "output_path": ".allforai/game-design/ui/mockups/ui_hud_bar_normal.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_hud_bar"
+    },
+    {
+      "target_id": "mockup_cmp_btn_shuffle_states",
+      "type": "component",
+      "component_id": "cmp_btn_shuffle",
+      "file_prefix": "ui_btn_shuffle",
+      "output_path": ".allforai/game-design/ui/mockups/ui_btn_shuffle_states.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_btn_shuffle_states"
+    },
+    {
+      "target_id": "mockup_cmp_btn_hint_states",
+      "type": "component",
+      "component_id": "cmp_btn_hint",
+      "file_prefix": "ui_btn_hint",
+      "output_path": ".allforai/game-design/ui/mockups/ui_btn_hint_states.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_btn_hint_states"
+    },
+    {
+      "target_id": "mockup_cmp_btn_continue_states",
+      "type": "component",
+      "component_id": "cmp_btn_continue",
+      "file_prefix": "ui_btn_continue",
+      "output_path": ".allforai/game-design/ui/mockups/ui_btn_continue_states.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_btn_continue_states"
+    },
+    {
+      "target_id": "mockup_cmp_coin_icon",
+      "type": "component",
+      "component_id": "cmp_coin_display",
+      "file_prefix": "ui_coin_icon",
+      "output_path": ".allforai/game-design/ui/mockups/ui_coin_icon.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_coin_icon"
+    },
+    {
+      "target_id": "mockup_cmp_star_icon",
+      "type": "component",
+      "component_id": "cmp_star_icon",
+      "file_prefix": "ui_star_icon",
+      "output_path": ".allforai/game-design/ui/mockups/ui_star_icon_states.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_star_icon"
+    },
+    {
+      "target_id": "mockup_cmp_lighthouse_progress",
+      "type": "component",
+      "component_id": "cmp_lighthouse_progress",
+      "file_prefix": "ui_lighthouse_progress",
+      "output_path": ".allforai/game-design/ui/mockups/ui_lighthouse_progress_states.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_lighthouse_progress"
+    },
+    {
+      "target_id": "mockup_cmp_card_level",
+      "type": "component",
+      "component_id": "cmp_level_card",
+      "file_prefix": "ui_card_level",
+      "output_path": ".allforai/game-design/ui/mockups/ui_card_level_states.png",
+      "status": "not_generated",
+      "spec_path": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_card_level"
+    }
+  ],
+  "validation_status": "COMPLETED_WITH_LIMITS",
+  "limit_reason": "图片生成待执行；所有 spec 和 manifest 已完成并通过确定性校验"
+}

@@ -15,6 +15,9 @@ review_checklist:
   - 光源方向全场景统一（所有章节使用相同光照模型）
   - 6章节场景各有独特视觉特征（码头/渔村/森林/山顶/神社/灯塔各不相同）
   - 岛屿进度状态变化资产已区分（每章节前/后期场景状态两套）
+  - 四季变体规格已涵盖（春/夏/秋/冬各章节对应）
+  - 冬季温泉场景特殊规格完整（积雪/蒸汽/雪花层/灯塔光晕）
+  - 日夜三段色温变体已定义（白天/黄昏/夜晚）
 ---
 
 # Goal
@@ -81,8 +84,17 @@ Skip for assets that completed Step 0 and are already marked `adapted`.
 
 Skip for assets already marked `adapted`.
 
+### Step 3 — Seasonal Variant Spec
+
+After completing Steps 0-2, invoke the project-local seasonal art skill:
+
+- `.allforai/bootstrap/specialized-skills/glow-island-seasonal-art-generation/SKILL.md`
+  - Mode: `backgrounds_only`
+  - Generates `.allforai/game-design/art/seasonal/seasonal-background-variants-spec.json`
+  - Winter hot-spring scene MUST complete with full 4-element composition spec
+
 ## Completion Condition
 
-`.allforai/game-design/systems/environment-art-spec.json` exists AND `.allforai/game-design/environment-art-review.html` exists AND all `canonical_registry.environments[]` entries have `current_state != "placeholder"`.
+`.allforai/game-design/systems/environment-art-spec.json` exists AND `.allforai/game-design/environment-art-review.html` exists AND `.allforai/game-design/art/seasonal/seasonal-background-variants-spec.json` exists AND all `canonical_registry.environments[]` entries have `current_state != "placeholder"`.
 
 If any sub-skill returns `UPSTREAM_DEFECT` → halt and report the defect. Do not advance to `art-qa`.

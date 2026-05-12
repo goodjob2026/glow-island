@@ -1,0 +1,402 @@
+{
+  "handoff_id": "glow-island-program-dev-handoff-v1",
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "generated_by": "game-design-finalize / art-input-handoff-generation",
+  "state": "validated",
+
+  "source_refs": [
+    ".allforai/game-design/game-design-doc.json",
+    ".allforai/product-concept/concept-baseline.json",
+    ".allforai/game-design/systems/core-mechanics.json",
+    ".allforai/game-design/systems/monetization-design.json",
+    ".allforai/game-design/systems/meta-game.json",
+    ".allforai/game-design/systems/level-design.json",
+    ".allforai/game-design/systems/puzzle-design.json",
+    ".allforai/game-design/systems/progression-curve.json",
+    ".allforai/game-design/systems/audio-design.json",
+    ".allforai/game-design/systems/ftue.json",
+    ".allforai/game-runtime/art/engine-ready-art-manifest.json",
+    ".allforai/game-design/art/export/engine-ready-art-output-contract.json"
+  ],
+
+  "target_engine": "cocos-creator-3.x",
+
+  "runtime_assumptions": {
+    "platform": "web-canvas-2d (iOS + Android via Cocos)",
+    "backend": "fastify-prisma-postgresql",
+    "backend_deployment": "自建轻量后端，Cloud hosting (TBD)",
+    "auth": "Apple Sign-In (iOS) / Google Sign-In (Android) / Email+Password (cross-platform)",
+    "auth_primary_key": "email",
+    "no_game_center": true,
+    "no_google_play_games": true,
+    "no_china_region": true,
+    "min_resolution": "375×667px",
+    "target_fps": 60,
+    "save_strategy": "cloud_save_via_backend + local_cache",
+    "iap_provider": "Apple IAP (iOS) / Google Play Billing (Android)"
+  },
+
+  "data_contracts": {
+    "template_based_content": true,
+    "template_registry_path": ".allforai/game-templates/template-registry.json",
+    "template_schema_path": ".allforai/game-templates/schemas/",
+    "template_instances_path": ".allforai/game-templates/instances/",
+    "template_reference_map": ".allforai/game-templates/template-reference-map.json",
+    "template_runtime_load_qa": ".allforai/game-templates/qa/template-runtime-load-qa-report.json",
+    "note": "关卡数据、图块数据、经济数据均采用template实例化，不hardcode；runtime通过registry加载"
+  },
+
+  "asset_import_contracts": [
+    {
+      "contract_id": "art-import-main",
+      "source_requirements": ".allforai/game-design/design/art-input-handoff.json",
+      "required_art_manifest": ".allforai/game-runtime/art/engine-ready-art-manifest.json",
+      "runtime_manifest": ".allforai/game-runtime/art/engine-ready-art-manifest.json",
+      "runtime_import_report": ".allforai/game-design/art/qa/runtime-import-check-report.json",
+      "consumer_runtime_nodes": ["implement-puzzle-core", "implement-island-map", "implement-ui-systems"],
+      "accepted_states": ["engine_ready", "engine_ready_with_limits"],
+      "blocking_states": ["blocked", "failed_validation"],
+      "validation_required": true,
+      "repair_target": "art-qa → implement-puzzle-core (runtime import check)"
+    }
+  ],
+
+  "implementation_nodes": [
+    {
+      "node_id": "setup-runtime-env",
+      "node_type": "runtime_architecture",
+      "owner_hint": "tech-lead",
+      "source_requirements": [
+        ".allforai/game-design/game-design-doc.json#product_summary.engine",
+        ".allforai/game-design/game-design-doc.json#meta_game.account_system"
+      ],
+      "input_artifacts": [
+        ".allforai/game-design/game-design-doc.json",
+        ".allforai/game-design/art-pipeline-config.json"
+      ],
+      "output_artifacts": [
+        "cocos-creator project scaffold",
+        "fastify+prisma+postgresql backend scaffold",
+        "CI/CD pipeline"
+      ],
+      "dependencies": [],
+      "runtime_acceptance": "Cocos Creator project可构建web-mobile导出，backend健康检查通过",
+      "test_command_or_validation_path": "npm run build && curl /health",
+      "blocks": ["implement-puzzle-core", "implement-backend-api"],
+      "repair_target": ".allforai/game-design/game-design-doc.json#product_summary"
+    },
+    {
+      "node_id": "implement-puzzle-core",
+      "node_type": "core_loop_runtime",
+      "owner_hint": "gameplay-engineer",
+      "source_requirements": [
+        ".allforai/game-design/systems/core-mechanics.json",
+        ".allforai/game-design/systems/puzzle-design.json",
+        ".allforai/game-design/systems/progression-curve.json"
+      ],
+      "input_artifacts": [
+        ".allforai/game-design/systems/core-mechanics.json",
+        ".allforai/game-design/systems/puzzle-design.json",
+        ".allforai/game-design/systems/progression-curve.json",
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+      ],
+      "output_artifacts": [
+        "PuzzleBoard component (BFS path solver, parity check)",
+        "ComboSystem component (2000ms timer, multiplier curve)",
+        "TileRenderer (loads sprites from engine-ready-manifest runtime_id)",
+        "StepSystem (step tracking, continue flow)"
+      ],
+      "dependencies": ["setup-runtime-env"],
+      "runtime_acceptance": "6×6棋盘可完整运行一局（路径匹配+消除+combo计时+步数），FPS≥60",
+      "test_command_or_validation_path": "cocos run --test PuzzleCoreSmoke",
+      "blocks": ["implement-special-mechanics", "implement-game-session", "level-editor-tool"],
+      "repair_target": ".allforai/game-design/systems/core-mechanics.json + puzzle-design.json"
+    },
+    {
+      "node_id": "implement-special-mechanics",
+      "node_type": "core_loop_runtime",
+      "owner_hint": "gameplay-engineer",
+      "source_requirements": [
+        ".allforai/game-design/systems/core-mechanics.json#special_tiles",
+        ".allforai/game-design/systems/vfx-asset-spec.json"
+      ],
+      "input_artifacts": [
+        ".allforai/game-design/systems/core-mechanics.json",
+        ".allforai/game-design/systems/vfx-asset-spec.json",
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+      ],
+      "output_artifacts": [
+        "SpecialTileSystem: wave / light_chain / pierce / swap / cascade handlers",
+        "UIAssistSystem: reshuffle / hint / continue handlers"
+      ],
+      "dependencies": ["implement-puzzle-core"],
+      "runtime_acceptance": "5种特殊图块各自效果正确触发，奇偶安全验证通过（无孤立块），VFX播放正确",
+      "test_command_or_validation_path": "cocos run --test SpecialTileSmoke",
+      "blocks": ["implement-game-session"],
+      "repair_target": ".allforai/game-design/systems/core-mechanics.json#special_tiles"
+    },
+    {
+      "node_id": "implement-game-session",
+      "node_type": "level_runtime",
+      "owner_hint": "gameplay-engineer",
+      "source_requirements": [
+        ".allforai/game-design/systems/level-design.json",
+        ".allforai/game-design/systems/ftue.json",
+        ".allforai/game-design/systems/progression-curve.json"
+      ],
+      "input_artifacts": [
+        ".allforai/game-design/systems/level-design.json",
+        ".allforai/game-design/systems/ftue.json",
+        ".allforai/game-templates/instances/level.json"
+      ],
+      "output_artifacts": [
+        "LevelManager (180关卡加载/切换/重试/章节解锁)",
+        "ZenModeSystem (每章2-3个禅境关)",
+        "NarrativeTriggerSystem (剧情触发点)",
+        "RestorationProgressTracker (岛屿修复进度)"
+      ],
+      "dependencies": ["implement-puzzle-core", "implement-special-mechanics"],
+      "runtime_acceptance": "Ch1全30关可连续游玩，剧情触发正确，禅境关步数无限",
+      "test_command_or_validation_path": "cocos run --test GameSessionSmoke --chapter 1",
+      "blocks": ["implement-island-map", "implement-audio"],
+      "repair_target": ".allforai/game-design/systems/level-design.json"
+    },
+    {
+      "node_id": "implement-island-map",
+      "node_type": "level_runtime",
+      "owner_hint": "ui-engineer",
+      "source_requirements": [
+        ".allforai/game-design/systems/meta-game.json",
+        ".allforai/game-design/systems/retention-hook.json",
+        ".allforai/game-design/systems/worldbuilding.json"
+      ],
+      "input_artifacts": [
+        ".allforai/game-design/systems/meta-game.json",
+        ".allforai/game-design/systems/retention-hook.json",
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+      ],
+      "output_artifacts": [
+        "IslandMapScreen (6章节区域，章节解锁/视觉修复状态)",
+        "DayNightSystem (现实时钟→色温切换)",
+        "SeasonSystem (关卡进度→季节视觉映射)",
+        "HourglassUIComponent (沙漏倒计时+领取动画)"
+      ],
+      "dependencies": ["implement-game-session"],
+      "runtime_acceptance": "岛屿地图正确显示当前修复阶段，日夜色温实时切换，沙漏UI可见",
+      "test_command_or_validation_path": "cocos run --test IslandMapSmoke",
+      "blocks": [],
+      "repair_target": ".allforai/game-design/systems/meta-game.json + retention-hook.json"
+    },
+    {
+      "node_id": "implement-ui-systems",
+      "node_type": "ui_runtime",
+      "owner_hint": "ui-engineer",
+      "source_requirements": [
+        ".allforai/game-design/systems/ftue.json",
+        ".allforai/game-design/systems/meta-game.json",
+        ".allforai/game-design/systems/character-arc.json"
+      ],
+      "input_artifacts": [
+        ".allforai/game-design/systems/ftue.json",
+        ".allforai/game-design/systems/character-arc.json",
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+      ],
+      "output_artifacts": [
+        "HUDSystem (步数/combo计时器/沙滩币余额)",
+        "FTUESystem (10关教程视觉引导，无弹窗)",
+        "CharacterDialogueSystem (NPC对话气泡)",
+        "CutsceneSystem (3幕开场动画)"
+      ],
+      "dependencies": ["setup-runtime-env"],
+      "runtime_acceptance": "L1教程完成率≥85%，UI组件在375px宽屏下无遮挡",
+      "test_command_or_validation_path": "cocos run --test FTUESmoke && playwright screenshot --level 1",
+      "blocks": [],
+      "repair_target": ".allforai/game-design/systems/ftue.json"
+    },
+    {
+      "node_id": "implement-backend-api",
+      "node_type": "network_runtime",
+      "owner_hint": "backend-engineer",
+      "source_requirements": [
+        ".allforai/game-design/systems/meta-game.json#account_login_system",
+        ".allforai/game-design/systems/monetization-design.json#hourglass_reward_system"
+      ],
+      "input_artifacts": [
+        ".allforai/game-design/systems/meta-game.json",
+        ".allforai/game-design/systems/monetization-design.json",
+        ".allforai/game-design/backend-schema.json"
+      ],
+      "output_artifacts": [
+        "Auth API (Apple ID / Google / Email+Password, JWT)",
+        "SaveSync API (cloud save per user_id keyed by email)",
+        "HourglassAPI (server-side timer, anti-cheat timestamp validation)",
+        "LevelProgressAPI (180关进度持久化)"
+      ],
+      "dependencies": ["setup-runtime-env"],
+      "runtime_acceptance": "Apple Sign-In + Email login各自可完成auth flow，hourglass时间戳验证通过mock时间攻击",
+      "test_command_or_validation_path": "npm run test:backend && curl -X POST /api/auth/apple",
+      "blocks": ["implement-shop-iap"],
+      "repair_target": ".allforai/game-design/systems/meta-game.json#account_login_system"
+    },
+    {
+      "node_id": "implement-shop-iap",
+      "node_type": "economy_runtime",
+      "owner_hint": "backend-engineer",
+      "source_requirements": [
+        ".allforai/game-design/systems/monetization-design.json",
+        ".allforai/game-design/game-design-doc.json#economy"
+      ],
+      "input_artifacts": [
+        ".allforai/game-design/systems/monetization-design.json"
+      ],
+      "output_artifacts": [
+        "ShopScreen UI (4 SKUs: 一抔沙/一把贝壳/一篮珊瑚/月卡)",
+        "IAPService (Apple IAP + Google Billing receipts)",
+        "BeachCoinLedger (server-side, no client-side trust)",
+        "MonthlyCardSubscriptionSystem (30coins/day delivery + hourglass×2)"
+      ],
+      "dependencies": ["implement-backend-api"],
+      "runtime_acceptance": "sandbox IAP购买流程完整，沙滩币到账，月卡订阅daily delivery正确",
+      "test_command_or_validation_path": "cocos run --test IAPSandboxSmoke",
+      "blocks": [],
+      "repair_target": ".allforai/game-design/systems/monetization-design.json"
+    },
+    {
+      "node_id": "implement-audio",
+      "node_type": "audio_runtime",
+      "owner_hint": "audio-engineer",
+      "source_requirements": [
+        ".allforai/game-design/systems/audio-design.json"
+      ],
+      "input_artifacts": [
+        ".allforai/game-design/systems/audio-design.json",
+        ".allforai/game-design/game-design-doc.json#audio"
+      ],
+      "output_artifacts": [
+        "AudioManager (BGM章节切换, SFX事件总线)",
+        "DayNightBGMSystem (speed: day=1.0x, dusk=0.93x, night=0.88x)",
+        "SeasonBGMLayerSystem (春夏秋冬叠加层)",
+        "ComboAudioSystem (sfx_tile_connect + sfx_combo_lv1~lv5)",
+        "SpecialTileSFX (sfx_special_wave/light_chain/cascade/pierce/swap)"
+      ],
+      "dependencies": ["implement-game-session"],
+      "runtime_acceptance": "BGM日夜过渡无爆音，Combo音效与VFX延迟≤50ms",
+      "test_command_or_validation_path": "cocos run --test AudioSmoke --combo-test",
+      "blocks": [],
+      "repair_target": ".allforai/game-design/systems/audio-design.json"
+    },
+    {
+      "node_id": "level-editor-tool",
+      "node_type": "qa_runtime",
+      "owner_hint": "tools-engineer",
+      "source_requirements": [
+        ".allforai/game-design/systems/level-design.json",
+        ".allforai/game-design/systems/puzzle-design.json"
+      ],
+      "input_artifacts": [
+        ".allforai/game-design/systems/level-design.json",
+        ".allforai/game-design/systems/puzzle-design.json",
+        ".allforai/game-templates/instances/level.json"
+      ],
+      "output_artifacts": [
+        "LevelEditor tool (GUI或CSV-based) — 180关卡数据创作",
+        "ParityValidator (关卡生成时奇偶校验)",
+        "SolvabilityChecker (BFS验证关卡可解)"
+      ],
+      "dependencies": ["implement-puzzle-core"],
+      "runtime_acceptance": "能创建并导出合规level template instance，parity check通过",
+      "test_command_or_validation_path": "node level-editor/validate.js --level all",
+      "blocks": [],
+      "repair_target": ".allforai/game-design/systems/puzzle-design.json#solvability_guarantee"
+    }
+  ],
+
+  "ui_runtime_contracts": [
+    {
+      "ui_contract_id": "hud-beach-coins",
+      "source_requirements": ".allforai/game-design/systems/monetization-design.json#currency",
+      "runtime_binding": "HUD.beachCoinDisplay binds to BeachCoinLedger.balance (server-authoritative)",
+      "update_trigger": "on_coin_earn / on_coin_spend",
+      "state": "validated"
+    },
+    {
+      "ui_contract_id": "combo-timer-bar",
+      "source_requirements": ".allforai/game-design/systems/core-mechanics.json#combo_system",
+      "runtime_binding": "ComboTimerBar.progress binds to ComboSystem.remaining_ms",
+      "update_trigger": "every frame while combo active",
+      "state": "validated"
+    },
+    {
+      "ui_contract_id": "hourglass-ui",
+      "source_requirements": ".allforai/game-design/systems/monetization-design.json#hourglass_reward_system",
+      "runtime_binding": "HourglassUI.fillProgress queries backend /api/hourglass/status every app-foreground",
+      "update_trigger": "on_app_foreground / on_manual_refresh",
+      "state": "validated"
+    }
+  ],
+
+  "audio_runtime_contracts": [
+    {
+      "audio_contract_id": "combo-sfx-sync",
+      "source_requirements": ".allforai/game-design/systems/audio-design.json#combo_audio_system",
+      "runtime_binding": "ComboSystem.on_match → AudioManager.playSFX(sfx_combo_lv{level})",
+      "sync_tolerance_ms": 50,
+      "state": "validated"
+    },
+    {
+      "audio_contract_id": "day-night-bgm",
+      "source_requirements": ".allforai/game-design/systems/audio-design.json#day_night_bgm_system",
+      "runtime_binding": "DayNightSystem.segment_change → AudioManager.setBGMSpeed(speed, transition_ms)",
+      "state": "validated"
+    }
+  ],
+
+  "frontend_runtime_contracts": [
+    {
+      "frontend_contract_id": "puzzle-scene-assembly",
+      "source_requirements": ".allforai/game-design/systems/core-mechanics.json + puzzle-design.json",
+      "required_inputs": [
+        ".allforai/game-templates/instances/level.json",
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+      ],
+      "expected_output_artifacts": ["PuzzleScene prefab", "BoardComponent", "TileRenderer"],
+      "validation_command_or_surface": "cocos run --test PuzzleCoreSmoke",
+      "screenshot_or_probe_required": true,
+      "repair_target": "implement-puzzle-core",
+      "blocking_states": ["missing_template", "failed_validation"]
+    },
+    {
+      "frontend_contract_id": "ftue-tutorial-scene",
+      "source_requirements": ".allforai/game-design/systems/ftue.json",
+      "required_inputs": [
+        ".allforai/game-design/systems/ftue.json",
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+      ],
+      "expected_output_artifacts": ["TutorialOverlay component (no popup)", "GlowHighlight shader"],
+      "validation_command_or_surface": "playwright screenshot --level 1 --check-no-popups",
+      "screenshot_or_probe_required": true,
+      "repair_target": "implement-ui-systems",
+      "blocking_states": ["missing_template", "failed_validation"]
+    }
+  ],
+
+  "test_nodes": [
+    {
+      "node_id": "playable-smoke-test",
+      "node_type": "playable_smoke_test",
+      "description": "Ch1关1-10可完整游玩，no crash，FTUE完成",
+      "test_command": "cocos run --test PlayableSmokeTest --chapters 1",
+      "dependencies": ["implement-puzzle-core", "implement-ui-systems", "implement-audio"]
+    },
+    {
+      "node_id": "iap-sandbox-test",
+      "node_type": "playability_probe",
+      "description": "沙盒环境下完整IAP购买流程（4个SKU）",
+      "test_command": "cocos run --test IAPSandboxTest",
+      "dependencies": ["implement-shop-iap"]
+    }
+  ],
+
+  "blocked_nodes": []
+}

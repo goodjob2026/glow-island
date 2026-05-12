@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/component-state-spec",
+  "status": "COMPLETED",
+  "checks_passed": [
+    "所有 component 均在 ui-registry.json 中注册",
+    "每个 component 均有 canonical kind",
+    "cmp_btn_shuffle / cmp_btn_hint / cmp_btn_continue：包含 normal / pressed / disabled / locked 四态",
+    "cmp_panel_shop / cmp_npc_dialogue_panel：包含 entering / open / confirming / closing / blocked 五态",
+    "cmp_coin_display：包含 normal / gain / loss / low / empty / full / critical 七态（resource_bar 要求）",
+    "cmp_star_icon：包含 default / filled / half / selected / new 五态（status_badge 要求）",
+    "cmp_lighthouse_progress：包含 normal / low / gain / critical / full / loss / empty 七态（progress_bar 要求）",
+    "cmp_level_card：包含 default / selected / locked / disabled / new / upgradable 六态（card 要求）",
+    "cmp_hud_bar：包含 normal / low / critical / empty 四态（resource_bar 步数变体）",
+    "disabled/locked/loading 状态在视觉上与 default 明显区分（opacity 变化 + 填色变化）",
+    "所有按钮 tap_target ≥ 80px（超过 44px 最低要求）",
+    "对话框定义了 max_text_width_px 和 text_wrapping / text_truncation",
+    "所有 critical HUD 组件（cmp_hud_bar）定义了 low/critical 反馈状态"
+  ],
+  "checks_warned": [],
+  "checks_failed": [],
+  "missing_states": [],
+  "conflicts": []
+}

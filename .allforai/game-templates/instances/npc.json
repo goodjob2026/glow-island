@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "template_kind": "npc",
+  "schema_id": "npc-schema-v1",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "source_refs": [".allforai/game-design/systems/worldbuilding.json", ".allforai/game-design/systems/character-arc.json"],
+  "instances": [
+    {
+      "template_id": "npc_yamada_ritsu",
+      "character_id": "yamada_ritsu",
+      "name_jp": "山田律",
+      "role": "protagonist",
+      "chapter_first_appears": 1,
+      "art_refs": { "runtime_id": "art/characters/ritsu" },
+      "audio_refs": { "sfx_footstep": "sfx_footstep_ritsu" },
+      "state": "validated"
+    },
+    {
+      "template_id": "npc_maruyama_hinata",
+      "character_id": "maruyama_hinata",
+      "name_jp": "丸山ひなた",
+      "role": "romantic_interest",
+      "chapter_first_appears": 1,
+      "art_refs": { "runtime_id": "art/characters/hinata" },
+      "state": "validated"
+    },
+    {
+      "template_id": "npc_isobe_kenzo",
+      "character_id": "isobe_kenzo",
+      "name_jp": "磯部健三",
+      "role": "npc_guide_ch1",
+      "chapter_first_appears": 1,
+      "art_refs": { "runtime_id": "art/characters/kenzo" },
+      "state": "validated"
+    },
+    {
+      "template_id": "npc_kirishima_umeko",
+      "character_id": "kirishima_umeko",
+      "name_jp": "桐島梅子",
+      "role": "npc_guide_ch2",
+      "chapter_first_appears": 2,
+      "art_refs": { "runtime_id": "art/characters/umeko" },
+      "state": "validated"
+    },
+    {
+      "template_id": "npc_umino_naho",
+      "character_id": "umino_naho",
+      "name_jp": "海野夏帆",
+      "role": "npc_guide_ch3",
+      "chapter_first_appears": 3,
+      "art_refs": { "runtime_id": "art/characters/naho" },
+      "state": "validated"
+    },
+    {
+      "template_id": "npc_maruyama_fuyuko",
+      "character_id": "maruyama_fuyuko",
+      "name_jp": "丸山冬子",
+      "role": "npc_guide_ch6",
+      "chapter_first_appears": 6,
+      "art_refs": { "runtime_id": "art/characters/fuyuko" },
+      "state": "validated"
+    },
+    {
+      "template_id": "npc_gicho_cat",
+      "character_id": "gicho_cat",
+      "name_jp": "议长（猫）",
+      "role": "recurring_mascot",
+      "chapter_first_appears": 1,
+      "art_refs": { "runtime_id": "art/characters/gicho" },
+      "state": "validated"
+    }
+  ]
+}

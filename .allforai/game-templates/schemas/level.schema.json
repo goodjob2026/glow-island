@@ -1,0 +1,57 @@
+{
+  "schema_id": "level-schema-v1",
+  "template_kind": "level",
+  "schema_version": "1.0",
+  "state": "validated",
+  "required_fields": {
+    "template_id": "string",
+    "template_kind": "string:level",
+    "schema_id": "string",
+    "chapter": "integer:1-6",
+    "level_number": "integer:1-30",
+    "level_global_index": "integer:1-180",
+    "grid_width": "integer",
+    "grid_height": "integer",
+    "grid_shape": "enum:rectangular|irregular",
+    "step_count": "integer|null",
+    "zen_mode": "boolean",
+    "tile_type_ids": "array:string",
+    "obstacle_placements": "array",
+    "special_tile_placements": "array",
+    "narrative_trigger": "object|null"
+  },
+  "optional_fields": {
+    "boss_level": "boolean",
+    "story_level": "boolean",
+    "scene_unlock_trigger": "boolean",
+    "design_notes": "string"
+  },
+  "field_types": {
+    "template_id": "string",
+    "chapter": "integer",
+    "level_number": "integer",
+    "step_count": "integer|null",
+    "zen_mode": "boolean",
+    "tile_type_ids": "array<string>",
+    "obstacle_placements": "array<object>",
+    "special_tile_placements": "array<object>"
+  },
+  "source_ref_requirements": {
+    "tile_type_ids": ".allforai/game-design/systems/puzzle-design.json#tile_types",
+    "obstacle_placements.type": ".allforai/game-design/systems/puzzle-design.json#obstacles",
+    "special_tile_placements.type": ".allforai/game-design/systems/core-mechanics.json#special_tiles"
+  },
+  "art_ref_requirements": {
+    "background_art": ".allforai/game-runtime/art/engine-ready-art-manifest.json (runtime_id)",
+    "tile_sprites": ".allforai/game-runtime/art/engine-ready-art-manifest.json (runtime_id)"
+  },
+  "runtime_consumer_requirements": ["implement-puzzle-core", "implement-game-session", "level-editor-tool"],
+  "localization_fields": ["narrative_trigger.dialogue_key"],
+  "validation_rules": [
+    "每种tile_type_id在棋盘上的数量必须为偶数",
+    "grid_width×grid_height有效格数必须为偶数",
+    "zen_mode=true时step_count可为null",
+    "step_count≥20（非null时）",
+    "level_global_index = (chapter-1)*30 + level_number"
+  ]
+}

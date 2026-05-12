@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "skill": "game-art/atlas-packaging",
+  "mode": "pack_validate",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "status": "COMPLETED_WITH_LIMITS",
+  "summary": "Atlas打包规划完成（物理打包待图片生成后执行）。9个图集规划完整：6个章节图块图集（tiles_ch1~ch6_atlas）、1个特殊块图集（special_blocks_atlas）、1个UI元素图集（ui_elements_atlas）、1个VFX图集（vfx_atlas）、1个角色图集（characters_atlas）。所有图集参数符合Cocos Creator 3.x auto-atlas规格。",
+
+  "atlases_planned": [
+    {
+      "atlas_id": "tiles_ch1_atlas",
+      "chapter": 1,
+      "max_size_px": 2048,
+      "contents": "12种图块 × 1章节变体 = 12个128×128px PNG",
+      "estimated_area_px": "12 × 128 × 128 = 196,608 px²",
+      "packing_feasibility": "PASS — 12×128px图块可在2048×2048图集中完美打包（每行16图块）",
+      "state": "planned",
+      "validation": "PASS"
+    },
+    {
+      "atlas_id": "tiles_ch2_atlas",
+      "chapter": 2,
+      "max_size_px": 2048,
+      "contents": "14种图块 × 1章节变体 = 14个128×128px PNG",
+      "estimated_area_px": "14 × 128 × 128 = 229,376 px²",
+      "packing_feasibility": "PASS",
+      "state": "planned",
+      "validation": "PASS"
+    },
+    {
+      "atlas_id": "tiles_ch3_atlas",
+      "chapter": 3,
+      "max_size_px": 2048,
+      "contents": "16种图块 × 1章节变体 = 16个128×128px PNG",
+      "estimated_area_px": "16 × 128 × 128 = 262,144 px²",
+      "packing_feasibility": "PASS",
+      "state": "planned",
+      "validation": "PASS"
+    },
+    {
+      "atlas_id": "tiles_ch4_atlas",
+      "chapter": 4,
+      "max_size_px": 2048,
+      "contents": "17种图块 × 1章节变体 = 17个128×128px PNG",
+      "estimated_area_px": "17 × 128 × 128 = 278,528 px²",
+      "packing_feasibility": "PASS",
+      "state": "planned",
+      "validation": "PASS"
+    },
+    {
+      "atlas_id": "tiles_ch5_atlas",
+      "chapter": 5,
+      "max_size_px": 2048,
+      "contents": "19种图块 × 1章节变体 = 19个128×128px PNG",
+      "estimated_area_px": "19 × 128 × 128 = 311,296 px²",
+      "packing_feasibility": "PASS",
+      "state": "planned",
+      "validation": "PASS"
+    },
+    {
+      "atlas_id": "tiles_ch6_atlas",
+      "chapter": 6,
+      "max_size_px": 2048,
+      "contents": "20种图块 × 1章节变体 = 20个128×128px PNG",
+      "estimated_area_px": "20 × 128 × 128 = 327,680 px²",
+      "packing_feasibility": "PASS",
+      "state": "planned",
+      "validation": "PASS"
+    },
+    {
+      "atlas_id": "special_blocks_atlas",
+      "chapter": "all",
+      "max_size_px": 2048,
+      "contents": "5种特殊块 × 12帧 = 60个128×128px PNG",
+      "estimated_area_px": "60 × 128 × 128 = 983,040 px²",
+      "packing_feasibility": "PASS — 60个128×128px图块可在2048×2048图集中打包（每行16个图块，需4行，占用16×4×128=512×512区域；全图集足够）",
+      "state": "planned",
+      "validation": "PASS"
+    },
+    {
+      "atlas_id": "ui_elements_atlas",
+      "chapter": "all",
+      "max_size_px": 2048,
+      "contents": "10个UI组件（含多态变体）+ 图标",
+      "contents_detail": [
+        "ui_hud_bar: 720×80px (4态)",
+        "ui_card_level: 320×180px (6态)",
+        "ui_btn_shuffle: 80×80px (4态)",
+        "ui_btn_hint: 80×80px (4态)",
+        "ui_btn_continue: 80×80px (5态)",
+        "ui_panel_shop: 480×640px (5态)",
+        "ui_panel_npc_dialogue: 720×200px (5态)",
+        "ui_coin_icon: 64×64px (static)",
+        "ui_star_icon: 64×64px (3态)",
+        "ui_lighthouse_progress: 120×480px (7态)"
+      ],
+      "packing_note": "ui_panel_shop (480×640px)是最大单体，需2048px图集容纳。多态变体可能需要2张图集或使用Cocos Creator sprite atlas自动分割。",
+      "packing_feasibility": "PASS_WITH_SPLIT_RISK — 建议在Cocos Creator auto-atlas中配置为ui_elements_atlas（最大2048×2048），过大时自动生成ui_elements_atlas_1 + ui_elements_atlas_2",
+      "state": "planned",
+      "validation": "PASS"
+    },
+    {
+      "atlas_id": "characters_atlas",
+      "chapter": "all",
+      "max_size_px": 2048,
+      "contents": "7个角色的DragonBones图层集（图层分解PNGs） + 35个表情立绘（256×256px） + char_gicho帧动画（15帧192×192px）",
+      "packing_note": "角色图集由DragonBones Pro导出生成，格式为characters_atlas.json + characters_atlas.png。最大2048×2048px。",
+      "packing_feasibility": "PASS — DragonBones Pro自动处理图集打包",
+      "state": "planned",
+      "validation": "PASS"
+    },
+    {
+      "atlas_id": "vfx_atlas",
+      "chapter": "all",
+      "max_size_px": 1024,
+      "contents": "8个VFX资产帧序列",
+      "contents_detail": [
+        "vfx_combo_burst: 帧序列，4-6粒子/图块",
+        "vfx_match_disappear: 8帧@30fps",
+        "vfx_lighthouse_glow: 24帧@30fps (灯塔光束)",
+        "vfx_wave_clear: 波纹扩散序列",
+        "vfx_chapter_restore: 白色光波从中心扩散",
+        "vfx_combo_multiplier_x2/x3/x5: 连击倍率数字浮字帧"
+      ],
+      "packing_feasibility": "PASS — VFX帧尺寸较小（粒子），1024px图集足够",
+      "state": "planned",
+      "validation": "PASS"
+    }
+  ],
+
+  "validation_summary": {
+    "duplicate_ids_check": "PASS — 所有图集ID唯一",
+    "power_of_two_check": "PASS — 所有图集max_size_px为2的幂次（2048或1024）",
+    "alpha_bleed_check": "PASS — 图块规格含8px透明出血区，防止图集压缩时alpha渗漏",
+    "tile_bleed_policy": "8px transparent border on all sides",
+    "margin_spacing": "margin=2px, spacing=2px（Cocos Creator auto-atlas默认）",
+    "overflow_risk": "ui_elements_atlas有多态变体溢出风险，建议atlas_split策略",
+    "runtime_target_check": "PASS — 所有图集与Cocos Creator 3.x web-canvas-2d兼容"
+  },
+
+  "limitations": [
+    "图片文件尚未生成，实际物理打包（cocos-creator-auto-atlas）无法执行",
+    "ui_elements_atlas多态变体存在可能超出2048×2048px限制，建议配置自动分割",
+    "characters_atlas依赖DragonBones Pro导出，需手动操作"
+  ]
+}

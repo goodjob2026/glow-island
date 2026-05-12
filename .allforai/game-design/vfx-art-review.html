@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>特效美术评审 — Glow Island</title>
+  <title>特效美术评审 — Glow Island（含季节性粒子特效）</title>
   <style>
     :root {
       --bg-page: #1a1a2e;
@@ -557,6 +557,135 @@
       color: var(--accent);
     }
 
+    /* ── 季节标签样式 ── */
+    .season-tab-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .season-tab-btn {
+      padding: 8px 20px;
+      border-radius: 20px;
+      border: 1px solid var(--border-card);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .season-tab-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .season-tab-btn.active {
+      background: rgba(126,200,227,0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .season-tab-btn.spring  { --s-color: #F0C4C4; }
+    .season-tab-btn.summer  { --s-color: #D4F080; }
+    .season-tab-btn.autumn  { --s-color: #E8A050; }
+    .season-tab-btn.winter  { --s-color: #D0E8F8; }
+    .season-tab-btn.all     { --s-color: var(--accent); }
+    .season-tab-btn.active  { border-color: var(--s-color, var(--accent)); color: var(--s-color, var(--accent)); background: rgba(126,200,227,0.12); }
+
+    .season-panel { display: none; }
+    .season-panel.active { display: block; }
+
+    .season-header-banner {
+      padding: 14px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid;
+    }
+    .season-banner-spring { background: rgba(240,196,196,0.08); border-color: rgba(240,196,196,0.3); }
+    .season-banner-summer { background: rgba(212,240,128,0.07); border-color: rgba(212,240,128,0.25); }
+    .season-banner-autumn { background: rgba(232,160,80,0.09); border-color: rgba(232,160,80,0.3); }
+    .season-banner-winter { background: rgba(208,232,248,0.1); border-color: rgba(208,232,248,0.35); }
+    .season-banner-all    { background: rgba(126,200,227,0.08); border-color: var(--border-card); }
+
+    .season-icon { font-size: 26px; flex-shrink: 0; }
+    .season-banner-text h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+    .season-banner-text p  { font-size: 12px; color: var(--text-secondary); }
+
+    .type-particle { background: rgba(212,240,128,0.15); color: #B8D840; border: 1px solid rgba(212,240,128,0.35); }
+    .type-hybrid   { background: rgba(208,232,248,0.15); color: #8EC8E8; border: 1px solid rgba(208,232,248,0.35); }
+
+    .layer-chip {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-left: 6px;
+    }
+    .layer-world       { background: rgba(126,200,227,0.12); color: var(--accent); border: 1px solid rgba(126,200,227,0.3); }
+    .layer-screen      { background: rgba(245,166,35,0.1); color: var(--accent-gold); border: 1px solid rgba(245,166,35,0.3); }
+    .layer-screenspace { background: rgba(245,166,35,0.1); color: var(--accent-gold); border: 1px solid rgba(245,166,35,0.3); }
+
+    .particle-spec-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .particle-spec-box h4 {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .particle-row {
+      display: flex;
+      gap: 6px 18px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .particle-row .meta-item { min-width: 110px; }
+
+    .priority-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 2px 8px;
+      border-radius: 8px;
+      background: rgba(255,215,0,0.12);
+      color: #ffd700;
+      border: 1px solid rgba(255,215,0,0.3);
+    }
+    .priority-badge.core { background: rgba(200,64,42,0.15); color: #FF8A70; border-color: rgba(200,64,42,0.4); }
+
+    .interaction-box {
+      background: rgba(208,232,248,0.07);
+      border-left: 3px solid #8EC8E8;
+      border-radius: 0 6px 6px 0;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .interaction-box strong {
+      color: #8EC8E8;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 3px;
+    }
+
     /* ── 响应式 ── */
     @media (max-width: 700px) {
       .page-header { padding: 24px 20px; }
@@ -574,15 +703,16 @@
   <h1>特效美术评审 — Glow Island</h1>
   <p class="subtitle">
     项目：<span>glow-island（輝島 Kagayaki-jima）</span> &nbsp;|&nbsp;
-    规格版本：<span>1.0</span> &nbsp;|&nbsp;
+    规格版本：<span>1.1（季节性粒子特效修订）</span> &nbsp;|&nbsp;
     生成日期：<span>2026-05-13</span> &nbsp;|&nbsp;
-    特效总数：<span>8 个资产</span>
+    特效总数：<span>18 个资产（含 10 个季节性粒子特效）</span>
   </p>
   <div class="meta-pills">
-    <span class="pill">混合方案：PNG序列 + Spine骨骼</span>
+    <span class="pill">混合方案：PNG序列 + Spine骨骼 + 粒子系统</span>
     <span class="pill">动森弹跳曲线（ease-out cubic）</span>
     <span class="pill gold">光と水の日本小島 风格</span>
-    <span class="pill">Spine工具：待建立</span>
+    <span class="pill">日夜与四季系统 — 新增</span>
+    <span class="pill gold">冬季温泉雪景 — 核心诉求</span>
   </div>
 </header>
 
@@ -604,7 +734,7 @@
   <!-- 统计栏 -->
   <div class="stat-bar">
     <div class="stat-item">
-      <div class="stat-number">8</div>
+      <div class="stat-number">18</div>
       <div class="stat-label">特效资产总数</div>
     </div>
     <div class="stat-item">
@@ -616,11 +746,11 @@
       <div class="stat-label">Spine骨骼动画</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number">72</div>
-      <div class="stat-label">PNG帧（消除特效 × 6色变体）</div>
+      <div class="stat-number">10</div>
+      <div class="stat-label">季节性粒子特效</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number" style="color: var(--status-ready)">8/8</div>
+      <div class="stat-number" style="color: var(--status-ready)">18/18</div>
       <div class="stat-label">规格就绪</div>
     </div>
   </div>
@@ -1489,6 +1619,1205 @@
 
   </div><!-- /vfx-grid -->
 
+  <!-- ─────────────── 季节性粒子特效 ─────────────── -->
+  <p class="section-title" style="margin-top:24px">季节性粒子特效（日夜与四季系统扩展）</p>
+
+  <!-- 季节导航标签 -->
+  <div class="season-tab-nav">
+    <button class="season-tab-btn all active"   onclick="showSeason('all')">全部 (10)</button>
+    <button class="season-tab-btn spring"        onclick="showSeason('spring')">春 · Ch1 (2)</button>
+    <button class="season-tab-btn summer"        onclick="showSeason('summer')">夏 · Ch2 (2)</button>
+    <button class="season-tab-btn autumn"        onclick="showSeason('autumn')">秋 · Ch3 (1)</button>
+    <button class="season-tab-btn winter"        onclick="showSeason('winter')">冬 · Ch4 (4)</button>
+    <button class="season-tab-btn"              onclick="showSeason('transition')" style="--s-color:var(--accent)">过渡 (1)</button>
+  </div>
+
+  <!-- ═══ 春 Spring ═══ -->
+  <div class="season-panel active" data-season="spring">
+    <div class="season-header-banner season-banner-spring">
+      <div class="season-icon">🌸</div>
+      <div class="season-banner-text">
+        <h3>春（春 · はる）— Ch1 海边码头（海边の波止場）</h3>
+        <p>主色 #5BBFB5 · 樱花粉 #F0C4C4 · 修复阶段 s0→s1 · 情感：陌生感 · 第一次真正呼吸</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 夏 Summer ═══ -->
+  <div class="season-panel" data-season="summer">
+    <div class="season-header-banner season-banner-summer">
+      <div class="season-icon">✦</div>
+      <div class="season-banner-text">
+        <h3>夏（夏 · なつ）— Ch2 中央小镇（中央の町）</h3>
+        <p>主色 #7DBE77 · 夜晚萤火虫 · 海岸泡沫 · 修复阶段 s1→s2 · 情感：归属感初现</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 秋 Autumn ═══ -->
+  <div class="season-panel" data-season="autumn">
+    <div class="season-header-banner season-banner-autumn">
+      <div class="season-icon">🍂</div>
+      <div class="season-banner-text">
+        <h3>秋（秋 · あき）— Ch3 花田山坡（花畑の丘）</h3>
+        <p>主色 #F0C4C4 · 红叶金叶飘落 · 修复阶段 s2→s3 · 情感：情绪松动</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 冬 Winter ═══ -->
+  <div class="season-panel" data-season="winter">
+    <div class="season-header-banner season-banner-winter">
+      <div class="season-icon">❄</div>
+      <div class="season-banner-text">
+        <h3>冬（冬 · ふゆ）— Ch4 森林露营地（森のキャンプ地）</h3>
+        <p>主色 #4A7D55 · 冬季温泉雪景 · 修复阶段 s2→s3 · 情感：安静 · 独处 · 第一次不赶时间</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 全部季节卡片网格 -->
+  <div class="vfx-grid">
+
+    <!-- ═══ SF01: fx_season_spring_sakura ═══ -->
+    <div class="vfx-card" data-season="spring">
+      <div class="card-header" style="background: linear-gradient(135deg, #2a1a2a 0%, #16213e 100%);">
+        <div class="card-header-left">
+          <div class="asset-id" style="color:#F0C4C4">SF01 · fx_season_spring_sakura</div>
+          <div class="asset-name">春 · 樱花飘落粒子</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="type-badge type-particle">粒子系统</span>
+          <span class="layer-chip layer-world">world层</span>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row" style="border-left-color:#F0C4C4">
+          <strong style="color:#F0C4C4">触发条件</strong>
+          Ch1 地图修复后自动激活，全屏背景层持续循环（loop），夜晚密度降至40%
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">1080 × 1920 全屏叠加</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">循环</span>
+            <span class="meta-value">loop · 无限</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">最大粒子数</span>
+            <span class="meta-value">80 颗</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">混合模式</span>
+            <span class="meta-value">Alpha Blend</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#F0C4C4" title="#F0C4C4 樱粉（花瓣主色）"></div>
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白（透明过渡）"></div>
+            <div class="swatch" style="background:#F2A98A" title="#F2A98A 珊瑚粉（花瓣次色）"></div>
+            <div class="swatch" style="background:#F8E8E8" title="#F8E8E8 浅粉（边缘）"></div>
+          </div>
+        </div>
+
+        <div class="particle-spec-box">
+          <h4>粒子规格</h4>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">发射器形状</span>
+              <span class="meta-value">水平线（顶部边缘）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">发射方式</span>
+              <span class="meta-value">连续 · 3.5/s</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">粒子寿命</span>
+              <span class="meta-value">4–7 秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">粒子纹理</span>
+              <span class="meta-value">椭圆花瓣（0.55比例）</span>
+            </div>
+          </div>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">下落速度</span>
+              <span class="meta-value">Y: 40–90 px/s</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">风向漂移</span>
+              <span class="meta-value">正弦波 ±18px / 2.5s</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">旋转</span>
+              <span class="meta-value">钟摆摆动 ±12° / 1.2s</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">落水消散</span>
+              <span class="meta-value">底部20%区域渐出</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:6px">
+            温泉/樱花树元素附近密度 ×1.8；海面底部20%密度 ×0.3（模拟落入水面消散）
+          </div>
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          手绘水彩质感椭圆花瓣，#F0C4C4主体，边缘微深至#D4A4A4。风向漂移正弦波模拟自然风感，禁止机械匀速直线运动。落地α渐出而非突然消失。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_season_spring_sakura_particle.json</span>
+            <span class="file-chip">fx_sakura_petal@2x.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-beta" style="background:rgba(240,196,196,0.15);border-color:rgba(240,196,196,0.4);color:#F0C4C4">春 · Ch1</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ═══ SF02: fx_season_spring_petals_burst ═══ -->
+    <div class="vfx-card" data-season="spring">
+      <div class="card-header" style="background: linear-gradient(135deg, #2a1a2a 0%, #16213e 100%);">
+        <div class="card-header-left">
+          <div class="asset-id" style="color:#F0C4C4">SF02 · fx_season_spring_petals_burst</div>
+          <div class="asset-name">春 · 樱花爆散庆祝特效</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="type-badge type-particle">粒子系统</span>
+          <span class="layer-chip layer-screenspace">screen_space层</span>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row" style="border-left-color:#F0C4C4">
+          <strong style="color:#F0C4C4">触发条件</strong>
+          Ch1 章节全部修复完成时（一次性触发，非loop） —— 章节完成庆祝演出
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">1080 × 1920 全屏</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">3.0 秒</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">爆发粒子数</span>
+            <span class="meta-value">180 颗花瓣 + 40 颗金色星光</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#F0C4C4" title="#F0C4C4 樱粉花瓣"></div>
+            <div class="swatch" style="background:#F2A98A" title="#F2A98A 珊瑚粉次色"></div>
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白透明过渡"></div>
+            <div class="swatch" style="background:#F5C842" title="#F5C842 金色星光（加法混合）"></div>
+            <div class="swatch" style="background:#D4A8C8" title="#D4A8C8 薰衣草粉点缀"></div>
+          </div>
+        </div>
+
+        <div class="particle-spec-box">
+          <h4>粒子规格（爆发式）</h4>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">发射器</span>
+              <span class="meta-value">屏幕中心点</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">发射方式</span>
+              <span class="meta-value">burst · 180颗</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">寿命</span>
+              <span class="meta-value">1.8–3.0 秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">速度</span>
+              <span class="meta-value">200–520 px/s 径向扩散</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:6px">
+            40颗金色4角星（#F5C842，加法混合，寿命800ms）叠加在花瓣之上；花瓣与sf01共享纹理资产（fx_sakura_petal@2x.png）
+          </div>
+        </div>
+
+        <div class="sfx-row" style="border-left-color:#F0C4C4">
+          <strong style="color:#F0C4C4">音效配对</strong>
+          <span class="sfx-key" style="color:#F0C4C4;background:rgba(240,196,196,0.12)">sfx_chapter_complete_spring</span>
+          &nbsp;—— 0.00s 完全同步，庆祝音效与爆散同帧
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          非阻断式：3s庆祝动画在后台运行，不延迟后续UI弹窗。金色星光加法混合增强庆祝感。复用sf01花瓣纹理，节省资产。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_season_spring_petals_burst_particle.json</span>
+            <span class="file-chip">fx_sakura_petal@2x.png（复用）</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-beta" style="background:rgba(240,196,196,0.15);border-color:rgba(240,196,196,0.4);color:#F0C4C4">春 · Ch1</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ═══ SF03: fx_season_summer_firefly ═══ -->
+    <div class="vfx-card" data-season="summer">
+      <div class="card-header" style="background: linear-gradient(135deg, #0a1a0a 0%, #16213e 100%);">
+        <div class="card-header-left">
+          <div class="asset-id" style="color:#D4F080">SF03 · fx_season_summer_firefly</div>
+          <div class="asset-name">夏 · 夜晚萤火虫粒子</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="type-badge type-particle">粒子系统</span>
+          <span class="layer-chip layer-world">world层</span>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row" style="border-left-color:#D4F080">
+          <strong style="color:#D4F080">触发条件</strong>
+          Ch2 夜晚时段（日夜系统 night_phase），自动激活循环粒子层；白天时渐出1.2s
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">1080 × 1920 全屏叠加</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">循环</span>
+            <span class="meta-value">loop · 夜间激活</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">最大粒子数</span>
+            <span class="meta-value">30 颗（克制）</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">混合模式</span>
+            <span class="meta-value">加法混合（Additive）</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白（萤火核心）"></div>
+            <div class="swatch" style="background:#D4F080" title="#D4F080 黄绿（发光主色）"></div>
+            <div class="swatch" style="background:#B8E840" title="#B8E840 草绿（次色）"></div>
+            <div class="swatch" style="background:#F5C842" title="#F5C842 金色（发光峰值）"></div>
+          </div>
+        </div>
+
+        <div class="particle-spec-box">
+          <h4>粒子规格</h4>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">发射器</span>
+              <span class="meta-value">全屏散布（box型）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">发射速率</span>
+              <span class="meta-value">1.2 颗/秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">粒子寿命</span>
+              <span class="meta-value">5–9 秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">运动</span>
+              <span class="meta-value">双轴正弦漂浮（零重力）</span>
+            </div>
+          </div>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">发光周期</span>
+              <span class="meta-value">0.8–1.2 秒（个体随机）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">亮度范围</span>
+              <span class="meta-value">30%–100%（ease-in-out）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">核心尺寸</span>
+              <span class="meta-value">6px 核心 + 14px 光晕</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:6px">
+            中景区域（画面40%–70%高度处）密度×2；植被附近密度×1.5；每颗萤火虫有独立相位偏移，避免同步闪烁感
+          </div>
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          加法混合与深色夜晚背景自然融合。粒子保持克制（30颗），治愈感而非噪点感。黄绿色系（#D4F080）与游戏暖色体系兼容。此特效与日夜系统联动，仅在夜间激活。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_season_summer_firefly_particle.json</span>
+            <span class="file-chip">fx_firefly_glow@2x.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-beta" style="background:rgba(212,240,128,0.12);border-color:rgba(212,240,128,0.3);color:#B8D840">夏 · Ch2</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ═══ SF04: fx_season_summer_seafoam ═══ -->
+    <div class="vfx-card" data-season="summer">
+      <div class="card-header" style="background: linear-gradient(135deg, #0a1820 0%, #16213e 100%);">
+        <div class="card-header-left">
+          <div class="asset-id" style="color:#7EC8E3">SF04 · fx_season_summer_seafoam</div>
+          <div class="asset-name">夏 · 海浪泡沫粒子</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="type-badge type-particle">粒子系统</span>
+          <span class="layer-chip layer-world">world层</span>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row">
+          <strong>触发条件</strong>
+          Ch2 场景修复后海岸线区域持续 loop，日夜均激活；章节切换时渐出0.5s
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">1080 × 320（海岸线带状）</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">循环</span>
+            <span class="meta-value">loop · 脉冲式</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">脉冲周期</span>
+            <span class="meta-value">2.2 秒（与海浪音效对齐）</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白（泡沫主体）"></div>
+            <div class="swatch" style="background:#E8F8F8" title="#E8F8F8 浅蓝白（泡沫边缘）"></div>
+            <div class="swatch" style="background:#7EC8E3" title="#7EC8E3 暖青（水色调）"></div>
+          </div>
+        </div>
+
+        <div class="particle-spec-box">
+          <h4>粒子规格</h4>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">发射器</span>
+              <span class="meta-value">海岸线浪头（水平线）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">发射方式</span>
+              <span class="meta-value">pulse · 15颗/次</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">粒子寿命</span>
+              <span class="meta-value">0.6–1.4 秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">纹理</span>
+              <span class="meta-value">不规则泡沫团（4–12px）</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sfx-row">
+          <strong>音效配对</strong>
+          <span class="sfx-key">sfx_ocean_wave_loop</span> &nbsp;—— pulse粒子与海浪音效周期精确对齐（2.2s一次）
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          泡沫纹理半透明白色，边缘带10%海水蓝（#7EC8E3）。仅出现在场景海岸线带状区域（1080×320），不遮挡棋盘。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_season_summer_seafoam_particle.json</span>
+            <span class="file-chip">fx_seafoam_bubble@2x.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-beta" style="background:rgba(212,240,128,0.12);border-color:rgba(212,240,128,0.3);color:#B8D840">夏 · Ch2</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ═══ SF05: fx_season_autumn_leaves ═══ -->
+    <div class="vfx-card" data-season="autumn">
+      <div class="card-header" style="background: linear-gradient(135deg, #1a0a00 0%, #16213e 100%);">
+        <div class="card-header-left">
+          <div class="asset-id" style="color:#E8A050">SF05 · fx_season_autumn_leaves</div>
+          <div class="asset-name">秋 · 红叶金叶飘落</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="type-badge type-particle">粒子系统</span>
+          <span class="layer-chip layer-world">world层</span>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row" style="border-left-color:#E8A050">
+          <strong style="color:#E8A050">触发条件</strong>
+          Ch3 地图修复后自动激活，全屏背景层持续循环；章节切换时渐出0.8s
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">1080 × 1920 全屏叠加</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">循环</span>
+            <span class="meta-value">loop · 无限</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">最大粒子数</span>
+            <span class="meta-value">60 颗</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">叶片变体</span>
+            <span class="meta-value">红 50% · 金 30% · 橙 20%</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#C8402A" title="#C8402A 枫红（主色 50%）"></div>
+            <div class="swatch" style="background:#F5C842" title="#F5C842 金叶（30%）"></div>
+            <div class="swatch" style="background:#E8A050" title="#E8A050 橙叶（20%）"></div>
+            <div class="swatch" style="background:#D46A30" title="#D46A30 深橙边缘"></div>
+          </div>
+        </div>
+
+        <div class="particle-spec-box">
+          <h4>粒子规格（旋转下落叶片）</h4>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">发射器</span>
+              <span class="meta-value">顶部水平线</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">发射速率</span>
+              <span class="meta-value">2.8 颗/秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">粒子寿命</span>
+              <span class="meta-value">5–9 秒</span>
+            </div>
+          </div>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">下落速度</span>
+              <span class="meta-value">Y: 45–95 px/s</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">旋转</span>
+              <span class="meta-value">±60°/s + 1–2s随机翻转</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">纹理</span>
+              <span class="meta-value">椭圆叶片（0.6比例，10–20px）</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          三种叶片纹理（红/金/橙），运行时按比例随机选取。叶片翻转用纹理旋转模拟，非骨骼动画。落地α渐出（禁止反弹/堆积效果）。色彩使用温暖红橙金，与Ch3花田山坡 #F0C4C4 樱粉主色形成深秋对比。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_season_autumn_leaves_particle.json</span>
+            <span class="file-chip">fx_autumn_leaf_red@2x.png</span>
+            <span class="file-chip">fx_autumn_leaf_gold@2x.png</span>
+            <span class="file-chip">fx_autumn_leaf_orange@2x.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-beta" style="background:rgba(232,160,80,0.12);border-color:rgba(232,160,80,0.3);color:#E8A050">秋 · Ch3</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ═══ SF06: fx_season_winter_snow ═══ (核心资产) -->
+    <div class="vfx-card" style="border-color:rgba(208,232,248,0.5);" data-season="winter">
+      <div class="card-header" style="background: linear-gradient(135deg, #0a1820 0%, #0f1a30 100%); border-bottom-color:rgba(208,232,248,0.25);">
+        <div class="card-header-left">
+          <div class="asset-id" style="color:#D0E8F8">SF06 · fx_season_winter_snow</div>
+          <div class="asset-name">冬 · 雪花粒子
+            <span class="priority-badge core" style="margin-left:8px;font-size:10px">核心资产</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="type-badge type-hybrid" style="border-color:rgba(208,232,248,0.4);color:#D0E8F8">混合粒子</span>
+          <span class="layer-chip" style="background:rgba(208,232,248,0.12);border-color:rgba(208,232,248,0.3);color:#D0E8F8">world层</span>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row" style="border-left-color:#D0E8F8; background:rgba(208,232,248,0.06)">
+          <strong style="color:#D0E8F8">触发条件</strong>
+          Ch4 场景激活时全屏持续 loop；温泉水面上方区域密度 ×1.5；遇温泉热气时粒子偏转上升
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">1080 × 1920 全屏叠加</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">架构</span>
+            <span class="meta-value" style="color:#D0E8F8">双层叠加粒子系统</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">总粒子预算</span>
+            <span class="meta-value">35（大层）+ 80（小层）= 115</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#F5F0E8" title="#F5F0E8 暖白（主雪花）"></div>
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白高亮"></div>
+            <div class="swatch" style="background:#E8F0F8" title="#E8F0F8 冷白（背景层）"></div>
+            <div class="swatch" style="background:#D0E8F8" title="#D0E8F8 冰蓝（光晕）"></div>
+          </div>
+        </div>
+
+        <div class="particle-spec-box">
+          <h4>Layer A — 大颗慢飘（近景主视觉层）</h4>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">发射速率</span>
+              <span class="meta-value">1.5 颗/秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">最大粒子数</span>
+              <span class="meta-value">35 颗</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">粒子寿命</span>
+              <span class="meta-value">7–12 秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">尺寸</span>
+              <span class="meta-value">14–28 px</span>
+            </div>
+          </div>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">下落速度</span>
+              <span class="meta-value">Y: 25–55 px/s（极慢）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">旋转</span>
+              <span class="meta-value">±8°/s（庄重飘落）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">纹理</span>
+              <span class="meta-value">六角雪花（高精度，α=0.85）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">发光脉动</span>
+              <span class="meta-value">3s周期 · 70%–100%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="particle-spec-box">
+          <h4>Layer B — 小颗快飘（背景景深层）</h4>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">发射速率</span>
+              <span class="meta-value">4.0 颗/秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">最大粒子数</span>
+              <span class="meta-value">80 颗</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">粒子寿命</span>
+              <span class="meta-value">3–6 秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">尺寸</span>
+              <span class="meta-value">3–8 px（远景感）</span>
+            </div>
+          </div>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">下落速度</span>
+              <span class="meta-value">Y: 60–120 px/s（较快）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">纹理</span>
+              <span class="meta-value">软圆点（α=0.55）</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="interaction-box">
+          <strong>温泉热气偏转交互</strong>
+          温泉水面上方200px区域：密度 ×1.5，热气向上力场（宽280px）使雪花偏转上升（+35 px/s Y轴），X轴散射+25px ——
+          视觉效果：雪花在热气流上方轻微上升飘散，模拟温泉热气将雪花吹散的物理效果（冬季温泉雪景核心魅力）
+        </div>
+
+        <div class="sfx-row" style="border-left-color:#D0E8F8">
+          <strong style="color:#D0E8F8">音效配对</strong>
+          <span class="sfx-key" style="color:#D0E8F8;background:rgba(208,232,248,0.12)">sfx_winter_snow_ambience</span>
+          &nbsp;—— 轻柔雪声环境音，粒子密度高时音量微增5dB
+        </div>
+
+        <div class="notes-row" style="background:rgba(208,232,248,0.05);border:1px solid rgba(208,232,248,0.2)">
+          <strong style="color:#D0E8F8">制作备注 —— 最高精度要求</strong>
+          雪花纹理须手绘水彩质感，六角对称，分支精细，与游戏hand-drawn整体风格一致。Layer A大颗雪花是视觉焦点，须最高设计精度。颜色保持半透明暖白（#F5F0E8/#FFFDF5），禁止纯白（避免刺眼）。温泉热气偏转是本资产的核心魅力点，必须实现。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_season_winter_snow_particle.json</span>
+            <span class="file-chip">fx_snowflake_large@2x.png（Layer A，高精度）</span>
+            <span class="file-chip">fx_snowflake_small@2x.png（Layer B）</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge" style="background:rgba(208,232,248,0.15);border-color:rgba(208,232,248,0.4);color:#D0E8F8">冬 · Ch4 — 核心</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ═══ SF07: fx_season_winter_steam_enhanced ═══ -->
+    <div class="vfx-card" data-season="winter">
+      <div class="card-header" style="background: linear-gradient(135deg, #200a00 0%, #16213e 100%);">
+        <div class="card-header-left">
+          <div class="asset-id" style="color:#F5D4A0">SF07 · fx_season_winter_steam_enhanced</div>
+          <div class="asset-name">冬 · 温泉蒸汽加强版</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="type-badge type-particle">粒子系统</span>
+          <span class="layer-chip layer-world">world层</span>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row" style="border-left-color:#F5D4A0">
+          <strong style="color:#F5D4A0">触发条件</strong>
+          Ch4 温泉区域持续激活（替换或叠加普通蒸汽粒子），与 fx_season_winter_snow 并行运行
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">400 × 600（温泉区域）</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">循环</span>
+            <span class="meta-value">loop · 无限</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">粒子量</span>
+            <span class="meta-value">×2 vs 标准蒸汽</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">扩散范围</span>
+            <span class="meta-value">+50% vs 标准蒸汽</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#F5D4A0" title="#F5D4A0 暖橙白（蒸汽核心）"></div>
+            <div class="swatch" style="background:#F2A98A" title="#F2A98A 珊瑚橙（次色）"></div>
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白（扩散边缘）"></div>
+            <div class="swatch" style="background:#E8C89A" title="#E8C89A 米橙（过渡）"></div>
+          </div>
+        </div>
+
+        <div class="interaction-box" style="border-left-color:#F5D4A0">
+          <strong style="color:#F5D4A0">色温对比设计</strong>
+          暖橙白蒸汽（#F5D4A0核心）vs 冷蓝雪花（#D0E8F8）— 两者并行时形成明显色温对比，强化温泉雪景的视觉张力。
+          暖色源（温泉）vs 冷色降（雪花）= 冬日温泉雪景完整视觉叙事。
+        </div>
+
+        <div class="particle-spec-box">
+          <h4>粒子规格</h4>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">发射速率</span>
+              <span class="meta-value">8.0 颗/秒（标准4.0×2）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">最大粒子数</span>
+              <span class="meta-value">60 颗</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">粒子寿命</span>
+              <span class="meta-value">2–4 秒</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">尺寸成长</span>
+              <span class="meta-value">20px → 55px（扩散感）</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          与标准蒸汽的关键区别：颜色暖橙白（非纯白）+ 粒子量×2 + 扩散范围+50%。与雪花粒子并行运行时，共同营造冬日温泉雪景的核心视觉效果。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_season_winter_steam_enhanced_particle.json</span>
+            <span class="file-chip">fx_steam_puff@2x.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge" style="background:rgba(208,232,248,0.1);border-color:rgba(208,232,248,0.3);color:#D0E8F8">冬 · Ch4</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ═══ SF08: fx_season_winter_snow_slide ═══ -->
+    <div class="vfx-card" data-season="winter">
+      <div class="card-header" style="background: linear-gradient(135deg, #0a1820 0%, #16213e 100%);">
+        <div class="card-header-left">
+          <div class="asset-id" style="color:#E0E8F0">SF08 · fx_season_winter_snow_slide</div>
+          <div class="asset-name">冬 · 屋顶积雪偶发滑落</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="type-badge type-hybrid">混合粒子</span>
+          <span class="layer-chip layer-world">world层</span>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row" style="border-left-color:#E0E8F0">
+          <strong style="color:#E0E8F0">触发条件</strong>
+          Ch4 场景内屋檐边缘随机触发（间隔 15–30 秒随机），一次性播放非 loop；增强冬季世界真实感
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">160 × 280（屋檐局部）</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">2.5 秒（一次性）</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">随机间隔</span>
+            <span class="meta-value">15–30 秒</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">触发点</span>
+            <span class="meta-value">屋檐左 / 中 / 右（随机）</span>
+          </div>
+        </div>
+
+        <div class="particle-spec-box">
+          <h4>Phase 1 — 雪团主体滑落（0.0–1.2s）</h4>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">粒子数</span>
+              <span class="meta-value">1颗（雪团主体）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">纹理</span>
+              <span class="meta-value">不规则雪块（40×28px）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">速度</span>
+              <span class="meta-value">Y: 80–120px/s，微带重力</span>
+            </div>
+          </div>
+          <h4 style="margin-top:10px">Phase 2 — 散雪粒子（0.4–1.6s）</h4>
+          <div class="particle-row">
+            <div class="meta-item">
+              <span class="meta-label">粒子数</span>
+              <span class="meta-value">25颗散雪</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">纹理</span>
+              <span class="meta-value">软圆点（3–10px）</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">扩散</span>
+              <span class="meta-value">扇形 120° 向下散射</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sfx-row">
+          <strong>音效配对</strong>
+          <span class="sfx-key">sfx_snow_slide</span> &nbsp;—— 0.00s「シュ」雪滑声（0.8s）；0.40s「ポン」轻落地声与散雪同步
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          两阶段：phase1雪团主体（有形体感）→ phase2散雪粒子（消散感）。随机触发间隔15-30s确保意外感而非预期感，增强世界真实感。雪团纹理保持手绘水彩质感。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_season_winter_snow_slide_particle.json</span>
+            <span class="file-chip">fx_snow_blob@2x.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge" style="background:rgba(208,232,248,0.1);border-color:rgba(208,232,248,0.3);color:#D0E8F8">冬 · Ch4</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ═══ SF09: fx_season_winter_lighthouse_glow ═══ -->
+    <div class="vfx-card" data-season="winter">
+      <div class="card-header" style="background: linear-gradient(135deg, #040d1a 0%, #0f1a30 100%);">
+        <div class="card-header-left">
+          <div class="asset-id" style="color:#D0E8F8">SF09 · fx_season_winter_lighthouse_glow</div>
+          <div class="asset-name">冬 · 灯塔光柱雪雾光晕</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="type-badge type-hybrid">混合粒子</span>
+          <span class="layer-chip layer-world">world层</span>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row" style="border-left-color:#D0E8F8">
+          <strong style="color:#D0E8F8">触发条件</strong>
+          Ch4 灯塔光柱扫过时触发（叠加在 fx_lighthouse_beam 行扫版之上），0.8s 消散；体积光效果模拟
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">1080 × 1920 全屏叠加</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">0.8 秒（每次光柱扫过）</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">爆发粒子数</span>
+            <span class="meta-value">60 颗</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">混合模式</span>
+            <span class="meta-value">加法混合（Additive）</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#D0E8F8" title="#D0E8F8 冰蓝光晕（主色）"></div>
+            <div class="swatch" style="background:#E8F4FC" title="#E8F4FC 浅冰蓝（扩散）"></div>
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白（高亮核心）"></div>
+            <div class="swatch" style="background:#C8D8F0" title="#C8D8F0 深冰蓝（边缘）"></div>
+          </div>
+        </div>
+
+        <div class="interaction-box">
+          <strong>体积光效果原理</strong>
+          引擎无真实体积光时的最优替代：光柱路径上的雪雾粒子（加法混合）散射光，形成柔和蓝白光晕。
+          金色光柱（#F5A623，fx_lighthouse_beam）+ 蓝白雪雾光晕（#D0E8F8，本特效）= 冬季灯塔扫过雪天的完整视觉效果。
+          暖金 vs 冷蓝 — 光源色与雪雾散射色的冷暖对比强化冬夜感。
+        </div>
+
+        <div class="sfx-row" style="border-left-color:#D0E8F8">
+          <strong style="color:#D0E8F8">音效配对</strong>
+          <span class="sfx-key" style="color:#D0E8F8;background:rgba(208,232,248,0.12)">sfx_lighthouse_beam_snow</span>
+          &nbsp;—— 冬季特有音效，与普通行扫版区分，轻柔光晕扩散声
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          与 fx_lighthouse_beam（EF08）配合使用。粒子锥形发射沿光柱路径，加法混合确保与黑暗夜空背景自然融合。蓝白色晕与金色光柱形成冷暖色对比是设计关键。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_season_winter_lighthouse_glow_particle.json</span>
+            <span class="file-chip">fx_snow_mote@2x.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge" style="background:rgba(208,232,248,0.1);border-color:rgba(208,232,248,0.3);color:#D0E8F8">冬 · Ch4</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ═══ SF10: fx_season_transition ═══ -->
+    <div class="vfx-card" data-season="transition">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="asset-id">SF10 · fx_season_transition</div>
+          <div class="asset-name">季节切换过渡特效</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="type-badge type-hybrid">混合粒子</span>
+          <span class="layer-chip layer-screenspace">screen_space层</span>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row">
+          <strong>触发条件</strong>
+          章节季节切换时触发（Ch1→Ch2, Ch2→Ch3, Ch3→Ch4等），1.5s 非阻断式过渡动画
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">1080 × 1920 全屏</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">1.5 秒（非阻断）</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">爆发粒子数</span>
+            <span class="meta-value">120 颗</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">模式</span>
+            <span class="meta-value">屏幕边缘扫入中心</span>
+          </div>
+        </div>
+
+        <div class="particle-spec-box">
+          <h4>季节粒子形状变体</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;color:var(--text-secondary)">
+            <div><span style="color:#F0C4C4">→ 春季</span>：椭圆花瓣（复用 fx_sakura_petal）</div>
+            <div><span style="color:#D4F080">→ 夏季</span>：萤火圆点（复用 fx_firefly_glow）</div>
+            <div><span style="color:#E8A050">→ 秋季</span>：椭圆叶片（复用 fx_autumn_leaf_red）</div>
+            <div><span style="color:#D0E8F8">→ 冬季</span>：简化雪花（新增 fx_snowflake_simple）</div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:8px">
+            粒子形状随目标季节变化；颜色从「离开季节色」渐变至「到达季节色」；边缘扫入方向优先屏幕左右两侧向内（帷幕感）
+          </div>
+        </div>
+
+        <div class="sfx-row">
+          <strong>音效配对</strong>
+          <span class="sfx-key">sfx_season_change</span> &nbsp;—— 1.2s，随季节类型变化音色：入春=暖鸟鸣 / 入夏=海浪声 / 入秋=风声 / 入冬=轻雪声
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          非阻断式：1.5s过渡在后台进行，不延迟下一章节UI出现。此特效复用所有季节粒子纹理，仅需新建 fx_snowflake_simple（低精度简化版，用于过渡动画）。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_season_transition_particle.json</span>
+            <span class="file-chip">fx_snowflake_simple@2x.png（新增）</span>
+            <span class="file-chip">fx_sakura_petal@2x.png（复用）</span>
+            <span class="file-chip">fx_firefly_glow@2x.png（复用）</span>
+            <span class="file-chip">fx_autumn_leaf_red@2x.png（复用）</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-beta">Seasonal v1</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+  </div><!-- /seasonal vfx-grid -->
+
+  <!-- 冬季温泉雪景组合说明 -->
+  <div class="approach-banner" style="border-color:rgba(208,232,248,0.35);background:linear-gradient(135deg, rgba(8,20,40,0.9) 0%, rgba(15,26,48,0.95) 100%)">
+    <div class="approach-icon" style="font-size:24px">❄</div>
+    <div class="approach-text">
+      <h3 style="color:#D0E8F8">冬季温泉雪景核心视觉组合</h3>
+      <p>
+        <code>fx_season_winter_snow</code>（双层雪花·热气偏转）<br>
+        + <code>fx_season_winter_steam_enhanced</code>（暖橙白蒸汽×2·色温对比）<br>
+        + <code>fx_season_winter_snow_slide</code>（屋顶积雪偶发滑落·随机触发）<br>
+        + <code>fx_season_winter_lighthouse_glow</code>（灯塔扫过雪雾体积光晕）<br>
+        <span style="color:#D0E8F8;font-weight:600">= 完整冬季温泉雪景体验</span> — 冷色降雪 vs 暖色蒸汽 · 庄重飘落 · 随机世界感 · 冬夜灯塔
+      </p>
+    </div>
+  </div>
+
+  <!-- 季节性粒子纹理资产清单 -->
+  <p class="section-title" style="margin-top:24px">季节性粒子纹理资产汇总</p>
+  <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:10px;overflow:hidden;margin-bottom:32px">
+    <table class="priority-table">
+      <thead>
+        <tr>
+          <th>纹理文件</th>
+          <th>用途</th>
+          <th>被复用资产</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="file-chip">fx_sakura_petal@2x.png</span></td>
+          <td style="color:var(--text-secondary)">椭圆樱花花瓣，手绘水彩质感</td>
+          <td><span class="file-chip" style="color:#F0C4C4;border-color:rgba(240,196,196,0.3)">SF01</span> <span class="file-chip" style="color:#F0C4C4;border-color:rgba(240,196,196,0.3)">SF02</span> <span class="file-chip">SF10</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip">fx_firefly_glow@2x.png</span></td>
+          <td style="color:var(--text-secondary)">软圆形萤火发光圆点</td>
+          <td><span class="file-chip" style="color:#D4F080;border-color:rgba(212,240,128,0.3)">SF03</span> <span class="file-chip">SF10</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip">fx_seafoam_bubble@2x.png</span></td>
+          <td style="color:var(--text-secondary)">不规则泡沫团，半透明白色</td>
+          <td><span class="file-chip" style="color:#D4F080;border-color:rgba(212,240,128,0.3)">SF04</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip">fx_autumn_leaf_red@2x.png</span></td>
+          <td style="color:var(--text-secondary)">椭圆红叶（手绘水彩）</td>
+          <td><span class="file-chip" style="color:#E8A050;border-color:rgba(232,160,80,0.3)">SF05</span> <span class="file-chip">SF10</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip">fx_autumn_leaf_gold@2x.png</span></td>
+          <td style="color:var(--text-secondary)">椭圆金叶（手绘水彩）</td>
+          <td><span class="file-chip" style="color:#E8A050;border-color:rgba(232,160,80,0.3)">SF05</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip">fx_autumn_leaf_orange@2x.png</span></td>
+          <td style="color:var(--text-secondary)">椭圆橙叶（手绘水彩）</td>
+          <td><span class="file-chip" style="color:#E8A050;border-color:rgba(232,160,80,0.3)">SF05</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip" style="color:#D0E8F8;border-color:rgba(208,232,248,0.3)">fx_snowflake_large@2x.png</span></td>
+          <td style="color:var(--text-secondary)">六角雪花（高精度，手绘水彩，核心资产纹理）</td>
+          <td><span class="file-chip" style="color:#D0E8F8;border-color:rgba(208,232,248,0.3)">SF06 Layer A</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip" style="color:#D0E8F8;border-color:rgba(208,232,248,0.3)">fx_snowflake_small@2x.png</span></td>
+          <td style="color:var(--text-secondary)">软圆点雪粒（背景景深层）</td>
+          <td><span class="file-chip" style="color:#D0E8F8;border-color:rgba(208,232,248,0.3)">SF06 Layer B</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip">fx_steam_puff@2x.png</span></td>
+          <td style="color:var(--text-secondary)">柔软蓬松云雾状蒸汽</td>
+          <td><span class="file-chip" style="color:#D0E8F8;border-color:rgba(208,232,248,0.3)">SF07</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip">fx_snow_blob@2x.png</span></td>
+          <td style="color:var(--text-secondary)">不规则雪块（屋檐滑落主体）</td>
+          <td><span class="file-chip" style="color:#D0E8F8;border-color:rgba(208,232,248,0.3)">SF08</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip">fx_snow_mote@2x.png</span></td>
+          <td style="color:var(--text-secondary)">软球形雪雾粒子（体积光）</td>
+          <td><span class="file-chip" style="color:#D0E8F8;border-color:rgba(208,232,248,0.3)">SF09</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+        <tr>
+          <td><span class="file-chip" style="color:#D0E8F8;border-color:rgba(208,232,248,0.3)">fx_snowflake_simple@2x.png</span></td>
+          <td style="color:var(--text-secondary)">简化六角雪花（低精度，仅用于过渡动画）</td>
+          <td><span class="file-chip">SF10</span></td>
+          <td><span class="status-badge" style="font-size:10px">规格就绪</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 季节性VFX Tab切换脚本 -->
+  <script>
+    function showSeason(season) {
+      var cards = document.querySelectorAll('.vfx-grid [data-season]');
+      var panels = document.querySelectorAll('.season-panel');
+      var btns = document.querySelectorAll('.season-tab-btn');
+      btns.forEach(function(b) { b.classList.remove('active'); });
+      var clicked = event.currentTarget;
+      clicked.classList.add('active');
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      if (season !== 'all' && season !== 'transition') {
+        var panel = document.querySelector('.season-panel[data-season="' + season + '"]');
+        if (panel) panel.classList.add('active');
+      }
+      cards.forEach(function(c) {
+        if (season === 'all') {
+          c.style.display = '';
+        } else {
+          c.style.display = (c.getAttribute('data-season') === season) ? '' : 'none';
+        }
+      });
+    }
+  </script>
+
   <!-- ─────────────── 制作优先级里程碑 ─────────────── -->
   <p class="section-title">制作优先级里程碑</p>
   <div class="priority-section">
@@ -1545,6 +2874,28 @@
             <strong style="color:#ffd700">fx_lighthouse_beam_island</strong> 是游戏情感最高峰（一生仅触发一次），gold发布前必须达到最高质量标准。<strong style="color:#ffd700">fx_rainbow_burst</strong> 配套T-Rainbow彩虹鱼机制，彩虹饱和度与游戏整体柔和色调形成短暂视觉高潮对比。灯塔全岛版需预留最多制作时间和评审迭代轮次。
           </td>
         </tr>
+        <tr style="border-top:2px solid rgba(208,232,248,0.3)">
+          <td>
+            <span class="milestone-badge" style="display:inline-flex;background:rgba(208,232,248,0.15);border-color:rgba(208,232,248,0.4);color:#D0E8F8">季节 v1</span>
+          </td>
+          <td>
+            <div class="asset-chips">
+              <span class="asset-chip" style="border-color:rgba(208,232,248,0.4);color:#D0E8F8">fx_season_winter_snow ⭐</span>
+              <span class="asset-chip" style="border-color:rgba(208,232,248,0.3);color:#D0E8F8">fx_season_winter_steam_enhanced</span>
+              <span class="asset-chip" style="border-color:rgba(208,232,248,0.3);color:#D0E8F8">fx_season_winter_snow_slide</span>
+              <span class="asset-chip" style="border-color:rgba(208,232,248,0.3);color:#D0E8F8">fx_season_winter_lighthouse_glow</span>
+              <span class="asset-chip" style="border-color:rgba(240,196,196,0.4);color:#F0C4C4">fx_season_spring_sakura</span>
+              <span class="asset-chip" style="border-color:rgba(232,160,80,0.4);color:#E8A050">fx_season_autumn_leaves</span>
+              <span class="asset-chip" style="border-color:rgba(212,240,128,0.4);color:#B8D840">fx_season_summer_firefly</span>
+              <span class="asset-chip">fx_season_transition</span>
+              <span class="asset-chip" style="border-color:rgba(240,196,196,0.3);color:#F0C4C4">fx_season_spring_petals_burst</span>
+              <span class="asset-chip" style="border-color:rgba(212,240,128,0.3);color:#B8D840">fx_season_summer_seafoam</span>
+            </div>
+          </td>
+          <td class="notes-cell">
+            <strong style="color:#D0E8F8">冬季温泉雪景组合（优先级1-4）</strong>为核心诉求，优先交付：双层雪花+热气偏转 · 暖橙蒸汽色温对比 · 屋顶积雪随机滑落 · 体积光雪雾光晕。春秋主视觉粒子（优先级5-6）次之。过渡特效（优先级8）复用已有纹理、开发成本低。季节性粒子纹理共12个，其中8个跨多资产复用。
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1552,7 +2903,7 @@
   <!-- 页脚 -->
   <div style="margin-top:48px;padding:24px 0;border-top:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
     <div style="font-size:12px;color:var(--text-muted)">
-      Glow Island · 特效美术评审 · 规格版本 1.0 · 2026-05-13
+      Glow Island · 特效美术评审 · 规格版本 1.1（季节性粒子特效修订）· 2026-05-13
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <span class="pill">来源：vfx-asset-spec.json</span>

@@ -1,0 +1,41 @@
+{
+  "report_id": "glow-island-template-instance-generation-report-v1",
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "status": "validated",
+  "instances_generated": {
+    "level": {
+      "path": ".allforai/game-templates/instances/level.json",
+      "representative_count": 4,
+      "full_180_note": "完整180关实例由level-editor-tool在实现阶段生成；schema和representative instances已完备",
+      "state": "validated"
+    },
+    "tile_type": {
+      "path": ".allforai/game-templates/instances/tile_type.json",
+      "count": 20,
+      "state": "validated"
+    },
+    "economy_sku": {
+      "path": ".allforai/game-templates/instances/economy_sku.json",
+      "count": 4,
+      "state": "validated"
+    },
+    "npc": {
+      "path": ".allforai/game-templates/instances/npc.json",
+      "count": 7,
+      "state": "validated"
+    },
+    "chapter": {
+      "path": ".allforai/game-templates/instances/chapter.json",
+      "count": 6,
+      "state": "validated"
+    }
+  },
+  "validation_summary": {
+    "all_instances_schema_compliant": true,
+    "no_invented_values": true,
+    "all_refs_traceable": true,
+    "parity_rule_noted_in_schema": true
+  },
+  "conclusion": "所有template实例均符合schema，引用可追溯，无发明数值。完整关卡数据由level-editor-tool节点生成。"
+}

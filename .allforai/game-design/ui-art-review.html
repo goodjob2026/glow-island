@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Glow Island — UI 美术规格审查</title>
+  <style>
+    :root {
+      --island-sand: #F7EDD8;
+      --dialog-wood: #E8D8B4;
+      --border-brown: #8B6030;
+      --text-dark: #3A2810;
+      --text-medium: #8B6030;
+      --coral-warm: #E8866A;
+      --coral-soft: #F0997A;
+      --coin-gold: #F5C842;
+      --progress-green: #7DBE77;
+      --night-indigo: #1E2E50;
+      --ocean-teal: #5BBFB5;
+      --step-critical: #C85A40;
+      --bg-page: #F5EDE0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "思源圆体", "SF Pro Rounded", "Nunito", sans-serif;
+      background: var(--bg-page);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    header {
+      background: var(--night-indigo);
+      color: #F5F0E8;
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    header h1 { font-size: 24px; font-weight: 700; }
+    header .subtitle { font-size: 14px; opacity: 0.7; margin-top: 4px; }
+    header .badge {
+      background: var(--coral-warm);
+      color: #fff;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+
+    nav {
+      background: var(--dialog-wood);
+      border-bottom: 2px solid var(--border-brown);
+      display: flex;
+      gap: 0;
+      padding: 0 40px;
+      overflow-x: auto;
+    }
+    nav a {
+      display: block;
+      padding: 14px 20px;
+      text-decoration: none;
+      color: var(--text-medium);
+      font-size: 14px;
+      font-weight: 600;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    nav a:hover, nav a.active {
+      color: var(--coral-warm);
+      border-bottom-color: var(--coral-warm);
+    }
+
+    main { max-width: 1200px; margin: 0 auto; padding: 32px 40px; }
+
+    section { margin-bottom: 48px; scroll-margin-top: 80px; }
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-dark);
+      border-left: 4px solid var(--coral-warm);
+      padding-left: 12px;
+      margin-bottom: 20px;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-medium);
+      margin: 20px 0 12px;
+    }
+
+    .card {
+      background: var(--island-sand);
+      border: 2px solid var(--border-brown);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.08);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .asset-id {
+      font-family: monospace;
+      font-size: 13px;
+      background: var(--dialog-wood);
+      padding: 2px 8px;
+      border-radius: 6px;
+      color: var(--text-medium);
+    }
+    .state-badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      margin-left: auto;
+    }
+    .state-spec_ready { background: #7DBE77; color: #fff; }
+    .state-pending { background: #C8B8A0; color: #fff; }
+    .state-placeholder { background: #EE8C55; color: #fff; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    th {
+      background: var(--dialog-wood);
+      color: var(--text-medium);
+      font-weight: 700;
+      padding: 10px 12px;
+      text-align: left;
+      border: 1px solid var(--border-brown);
+    }
+    td {
+      padding: 9px 12px;
+      border: 1px solid #D4C0A0;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.4); }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .color-chip {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--border-brown);
+    }
+    .color-swatch {
+      height: 48px;
+    }
+    .color-info {
+      background: var(--island-sand);
+      padding: 6px 8px;
+      font-size: 11px;
+    }
+    .color-info .hex {
+      font-family: monospace;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .color-info .label {
+      color: var(--text-medium);
+      font-size: 10px;
+    }
+
+    .hud-diagram {
+      background: var(--night-indigo);
+      border-radius: 16px;
+      overflow: hidden;
+      max-width: 360px;
+      margin: 16px 0;
+    }
+    .hud-status-bar {
+      background: rgba(255,255,255,0.1);
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #F5F0E8;
+      font-size: 11px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .hud-board-area {
+      background: #A8DDD8;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #3A5050;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .hud-bottom {
+      background: var(--island-sand);
+      border-top: 2px solid var(--border-brown);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hud-coin { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-dark); }
+    .coin-dot { width: 18px; height: 18px; background: var(--coin-gold); border-radius: 50%; border: 2px solid #C4955A; }
+    .hud-step {
+      flex: 1;
+      text-align: center;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--text-dark);
+    }
+    .hud-buttons { display: flex; gap: 4px; }
+    .hud-btn {
+      width: 40px; height: 40px;
+      background: linear-gradient(#F0997A, #E8866A);
+      border-radius: 12px;
+      border: 2px solid var(--border-brown);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.10);
+    }
+    .hud-sidebar {
+      position: relative;
+      width: 30px;
+      background: rgba(255,255,255,0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 8px 0;
+      font-size: 10px;
+      color: var(--coin-gold);
+    }
+    .lighthouse-track {
+      width: 16px;
+      height: 120px;
+      background: #C8B8A0;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid var(--border-brown);
+    }
+    .lighthouse-fill {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: var(--progress-green);
+      height: 45%;
+      border-radius: 0 0 8px 8px;
+    }
+    .hud-demo-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .state-table { margin-top: 8px; }
+    .state-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #E8D8B4;
+    }
+    .state-name {
+      font-family: monospace;
+      font-size: 12px;
+      min-width: 100px;
+      color: var(--text-medium);
+      font-weight: 700;
+    }
+    .state-desc { font-size: 13px; color: var(--text-dark); }
+    .state-trigger { font-size: 11px; color: #999; margin-left: auto; }
+
+    .checklist { list-style: none; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #E8D8B4;
+      font-size: 14px;
+    }
+    .check-pass { color: var(--progress-green); font-size: 18px; flex-shrink: 0; }
+    .check-warn { color: var(--coin-gold); font-size: 18px; flex-shrink: 0; }
+    .check-pending { color: #C8B8A0; font-size: 18px; flex-shrink: 0; }
+
+    .layout-diagram {
+      background: var(--night-indigo);
+      border-radius: 12px;
+      padding: 16px;
+      max-width: 280px;
+      font-size: 11px;
+      color: #F5F0E8;
+    }
+    .layout-region {
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin-bottom: 4px;
+      font-size: 10px;
+    }
+    .region-status { font-family: monospace; color: var(--coin-gold); }
+    .region-playfield { background: rgba(91,191,181,0.2); }
+    .region-hud { background: rgba(232,134,106,0.2); }
+    .region-sidebar { background: rgba(125,190,119,0.2); }
+    .region-safe { background: rgba(255,255,255,0.05); }
+
+    .prompt-box {
+      background: var(--night-indigo);
+      color: #C8E8FF;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      margin: 8px 0;
+      white-space: pre-wrap;
+    }
+    .prompt-negative {
+      background: #2A1A1A;
+      color: #FFAAAA;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .summary-item {
+      background: var(--island-sand);
+      border: 2px solid var(--border-brown);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .summary-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--coral-warm);
+    }
+    .summary-label { font-size: 13px; color: var(--text-medium); margin-top: 4px; }
+
+    footer {
+      background: var(--night-indigo);
+      color: rgba(245,240,232,0.6);
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      margin-top: 64px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Glow Island — UI 美术规格审查</h1>
+    <div class="subtitle">节点: ui-art-gen &nbsp;|&nbsp; 生成时间: 2026-05-13 &nbsp;|&nbsp; 规格版本: 1.0</div>
+  </div>
+  <div class="badge">待审核 In Review</div>
+</header>
+
+<nav>
+  <a href="#overview" class="active">总览</a>
+  <a href="#hud-layout">HUD 布局</a>
+  <a href="#ui-assets">UI 资产规格</a>
+  <a href="#component-states">组件状态</a>
+  <a href="#mockup-prompts">生成提示词</a>
+  <a href="#other-assets">其他资产</a>
+  <a href="#checklist">审查清单</a>
+</nav>
+
+<main>
+
+  <!-- ===== 总览 ===== -->
+  <section id="overview">
+    <h2>总览</h2>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="summary-number">10</div>
+        <div class="summary-label">UI 资产（canonical_registry.ui）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-number">20</div>
+        <div class="summary-label">其他资产（canonical_registry.other）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-number">4</div>
+        <div class="summary-label">界面布局（screens）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-number">12</div>
+        <div class="summary-label">组件规格（components）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-number">12</div>
+        <div class="summary-label">Mockup 目标（待生成）</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-number">0</div>
+        <div class="summary-label">阻断缺陷（UPSTREAM_DEFECT）</div>
+      </div>
+    </div>
+
+    <h3>风格基础</h3>
+    <div class="card">
+      <table>
+        <tr><th>参数</th><th>值</th></tr>
+        <tr><td>UI 范式</td><td>flat_plus_soft_shadow_wood_sign_ui（扁平 + 柔和阴影木牌 UI）</td></tr>
+        <tr><td>基准分辨率</td><td>720 × 1280（9:16），安全区上 44px / 下 34px</td></tr>
+        <tr><td>引擎</td><td>Cocos Creator 3.x，web-canvas-2d</td></tr>
+        <tr><td>Atlas</td><td>ui_elements_atlas（全部 10 个 UI 资产）</td></tr>
+        <tr><td>字体主选</td><td>思源圆体（fallback: SF Pro Rounded / Nunito）</td></tr>
+        <tr><td>按钮圆角</td><td>24px</td></tr>
+        <tr><td>对话框圆角</td><td>20px</td></tr>
+        <tr><td>阴影</td><td>0 4px 0 rgba(0,0,0,0.10)</td></tr>
+        <tr><td>图片格式</td><td>PNG（UI），JPG（背景）</td></tr>
+        <tr><td>图片分辨率</td><td>2x 设计，1x 回退</td></tr>
+      </table>
+    </div>
+
+    <h3>UI 调色板</h3>
+    <div class="palette-grid">
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#F7EDD8;"></div>
+        <div class="color-info"><div class="hex">#F7EDD8</div><div class="label">island_sand（UI 底板）</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#E8D8B4;"></div>
+        <div class="color-info"><div class="hex">#E8D8B4</div><div class="label">dialog_wood（对话框背景）</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#8B6030;"></div>
+        <div class="color-info"><div class="hex">#8B6030</div><div class="label">border_brown（边框）</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#3A2810;"></div>
+        <div class="color-info"><div class="hex">#3A2810</div><div class="label">text_dark（正文）</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#F0997A;"></div>
+        <div class="color-info"><div class="hex">#F0997A</div><div class="label">button_primary_top</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#E8866A;"></div>
+        <div class="color-info"><div class="hex">#E8866A</div><div class="label">button_primary_bottom</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#F5C842;"></div>
+        <div class="color-info"><div class="hex">#F5C842</div><div class="label">coin_gold（沙滩币/进度满）</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#7DBE77;"></div>
+        <div class="color-info"><div class="hex">#7DBE77</div><div class="label">progress_fill（灯塔进度）</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#C85A40;"></div>
+        <div class="color-info"><div class="hex">#C85A40</div><div class="label">step_critical（步数危险）</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#C8B8A0;"></div>
+        <div class="color-info"><div class="hex">#C8B8A0</div><div class="label">button_disabled_fill</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#5BBFB5;"></div>
+        <div class="color-info"><div class="hex">#5BBFB5</div><div class="label">hard_currency_start</div></div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#1E2E50;"></div>
+        <div class="color-info"><div class="hex">#1E2E50</div><div class="label">night_indigo（遮罩/夜晚章节）</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HUD 布局 ===== -->
+  <section id="hud-layout">
+    <h2>HUD 信息布局</h2>
+    <p style="margin-bottom:16px;font-size:14px;">游戏主界面（720×1280）布局分区示意。棋盘主区域受保护，HUD 元素不得遮挡。</p>
+
+    <div class="hud-demo-row">
+      <div class="layout-diagram">
+        <div class="layout-region region-safe">安全区 (y=0–44) <span class="region-status">⬆ 刘海</span></div>
+        <div class="layout-region">状态栏 (y=44–100) — 步数 + 章节名</div>
+        <div style="display:flex;gap:4px;margin-bottom:4px;">
+          <div class="layout-region region-playfield" style="flex:11;">棋盘主区域 (y=100–1100, x=0–660)<br><br>受保护区域<br>禁止 HUD 遮挡<br><br><br><br><br></div>
+          <div class="layout-region region-sidebar" style="flex:1;text-align:center;font-size:9px;">灯<br>塔<br>进<br>度<br>条<br><br>x=660–720</div>
+        </div>
+        <div class="layout-region region-hud">HUD 底栏 (y=1100–1180, h=80px)<br>沙滩币 | 步数计数器 | 三按钮</div>
+        <div class="layout-region region-safe">安全区 (y=1246–1280) <span class="region-status">⬇ Home 条</span></div>
+      </div>
+
+      <div>
+        <div class="hud-diagram">
+          <div class="hud-status-bar">
+            <span>海辺の波止場 第一章</span>
+            <span>步数剩余</span>
+          </div>
+          <div style="display:flex;">
+            <div class="hud-board-area" style="flex:1;">
+              棋盘主区域<br>（连连看格子）
+            </div>
+            <div class="hud-sidebar">
+              <div style="font-size:10px;margin-bottom:4px;">🏮</div>
+              <div class="lighthouse-track">
+                <div class="lighthouse-fill"></div>
+              </div>
+            </div>
+          </div>
+          <div class="hud-bottom">
+            <div class="hud-coin"><div class="coin-dot"></div><span style="font-weight:700;">320</span></div>
+            <div class="hud-step">24</div>
+            <div class="hud-buttons">
+              <div class="hud-btn">↺</div>
+              <div class="hud-btn">🔍</div>
+              <div class="hud-btn" style="background:linear-gradient(#A0907A,#907060);opacity:0.7;">+</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:11px;color:var(--text-medium);margin-top:8px;">↑ HUD 结构示意（非最终美术）</p>
+      </div>
+    </div>
+
+    <h3>HUD 信号优先级</h3>
+    <table>
+      <tr><th>信号</th><th>优先级</th><th>可见性</th><th>资产引用</th><th>失败条件</th></tr>
+      <tr>
+        <td>步数计数器</td>
+        <td><span style="color:var(--step-critical);font-weight:700;">critical</span></td>
+        <td>always</td>
+        <td>ui_hud_bar（内嵌）</td>
+        <td>步数归零 = 关卡失败</td>
+      </tr>
+      <tr>
+        <td>连击计数器</td>
+        <td>active</td>
+        <td>contextual（Combo≥2 时）</td>
+        <td>vfx_combo_burst（VFX 层）</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>沙滩币余额</td>
+        <td>ambient</td>
+        <td>always</td>
+        <td>ui_coin_icon</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>灯塔修复进度</td>
+        <td>ambient</td>
+        <td>always</td>
+        <td>ui_lighthouse_progress</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>场外辅助按钮</td>
+        <td>active</td>
+        <td>always（余额不足时变 disabled）</td>
+        <td>ui_btn_shuffle / ui_btn_hint / ui_btn_continue</td>
+        <td>—</td>
+      </tr>
+    </table>
+
+    <h3>z-index 层级</h3>
+    <table>
+      <tr><th>层级 (z)</th><th>内容</th></tr>
+      <tr><td>0</td><td>bg_chapter（章节背景图）</td></tr>
+      <tr><td>1</td><td>board_tiles（棋盘图块）</td></tr>
+      <tr><td>2</td><td>combo_vfx_overlay（连击 VFX）</td></tr>
+      <tr><td>3</td><td>hud_bottom_bar / lighthouse_sidebar / status_bar</td></tr>
+      <tr><td>10</td><td>dialogue_panel_overlay / shop_modal_overlay</td></tr>
+    </table>
+  </section>
+
+  <!-- ===== UI 资产规格 ===== -->
+  <section id="ui-assets">
+    <h2>UI 资产规格（canonical_registry.ui）</h2>
+
+    <!-- ui_hud_bar -->
+    <div class="card">
+      <div class="card-header">
+        <strong>HUD底栏</strong>
+        <span class="asset-id">ui_hud_bar</span>
+        <span class="state-badge state-spec_ready">spec_ready</span>
+      </div>
+      <table>
+        <tr><th>属性</th><th>值</th></tr>
+        <tr><td>尺寸</td><td>720 × 80 px</td></tr>
+        <tr><td>格式</td><td>PNG</td></tr>
+        <tr><td>动画</td><td>ui_tween（步数脉动，续关按钮高亮）</td></tr>
+        <tr><td>Atlas</td><td>ui_elements_atlas</td></tr>
+        <tr><td>状态</td><td>normal / low（≤10步）/ critical（≤5步）/ empty（0步）</td></tr>
+        <tr><td>布局</td><td>左：沙滩币图标+数字 | 中：步数计数器（28sp 粗体）| 右：3个辅助按钮（各80px）</td></tr>
+        <tr><td>设计说明</td><td>Island sand 底色 #F7EDD8，木质边框 #8B6030，soft shadow。critical 态步数变 #C85A40 快速脉动。HUD 固定于棋盘下方，与棋盘底部保留 8px 间距。</td></tr>
+      </table>
+    </div>
+
+    <!-- ui_card_level -->
+    <div class="card">
+      <div class="card-header">
+        <strong>关卡卡片</strong>
+        <span class="asset-id">ui_card_level</span>
+        <span class="state-badge state-spec_ready">spec_ready</span>
+      </div>
+      <table>
+        <tr><th>属性</th><th>值</th></tr>
+        <tr><td>尺寸</td><td>320 × 180 px</td></tr>
+        <tr><td>格式</td><td>PNG</td></tr>
+        <tr><td>动画</td><td>ui_tween（选中放大，new 徽章入场）</td></tr>
+        <tr><td>状态</td><td>default / selected / locked / disabled / new / upgradable</td></tr>
+        <tr><td>布局</td><td>关卡编号（粗体深棕22sp）+ 3星评分 + 可选章节缩图</td></tr>
+        <tr><td>设计说明</td><td>Island sand 底色，木质边框，16px 圆角，soft shadow。关卡选择界面2列网格排布，卡片间距 16px。</td></tr>
+      </table>
+    </div>
+
+    <!-- 三个按钮合并表格 -->
+    <div class="card">
+      <div class="card-header">
+        <strong>场外辅助按钮组</strong>
+        <span class="asset-id">ui_btn_shuffle / ui_btn_hint / ui_btn_continue</span>
+        <span class="state-badge state-spec_ready">spec_ready</span>
+      </div>
+      <table>
+        <tr><th>资产</th><th>尺寸</th><th>费用</th><th>状态</th><th>特殊规则</th></tr>
+        <tr>
+          <td>重排 ui_btn_shuffle</td>
+          <td>80 × 80px</td>
+          <td>30 沙滩币</td>
+          <td>normal / pressed / disabled / locked</td>
+          <td>余额不足自动 disabled</td>
+        </tr>
+        <tr>
+          <td>预判 ui_btn_hint</td>
+          <td>80 × 80px</td>
+          <td>30 沙滩币</td>
+          <td>normal / pressed / disabled / locked</td>
+          <td>余额不足自动 disabled</td>
+        </tr>
+        <tr>
+          <td>续关 ui_btn_continue</td>
+          <td>80 × 80px</td>
+          <td>30 沙滩币 + 5步</td>
+          <td>normal / pressed / disabled / highlighted / locked</td>
+          <td>步数归零时自动激活 highlighted（金色脉动光晕）</td>
+        </tr>
+      </table>
+      <p style="font-size:13px;margin-top:8px;color:var(--text-medium);">
+        按钮共同规格：珊瑚渐变 #F0997A→#E8866A，24px 圆角，木质描边，soft shadow。pressed 态：加深色+Y+2px 位移+scale 0.97。disabled 态：沙色 #C8B8A0，opacity 0.6。
+      </p>
+    </div>
+
+    <!-- ui_panel_shop -->
+    <div class="card">
+      <div class="card-header">
+        <strong>商店面板</strong>
+        <span class="asset-id">ui_panel_shop</span>
+        <span class="state-badge state-spec_ready">spec_ready</span>
+      </div>
+      <table>
+        <tr><th>属性</th><th>值</th></tr>
+        <tr><td>尺寸</td><td>480 × 640 px（居中于深蓝遮罩上）</td></tr>
+        <tr><td>格式</td><td>PNG</td></tr>
+        <tr><td>动画</td><td>进入 scale_0.7→1.05→1.0 spring 0.4s；退出 0.25s</td></tr>
+        <tr><td>状态</td><td>entering / open / confirming / closing / blocked</td></tr>
+        <tr><td>设计说明</td><td>木质暖沙底色 #E8D8B4，边框3px #8B6030，20px 圆角，大软阴影。顶部标题'商店'+右上角关闭按钮。列表：重排/预判/续关三个辅助道具，每行显示图标+名称+说明+沙滩币价格。背景遮罩 #1E2E50 opacity 0.5。</td></tr>
+      </table>
+    </div>
+
+    <!-- ui_panel_npc_dialogue -->
+    <div class="card">
+      <div class="card-header">
+        <strong>NPC对话框</strong>
+        <span class="asset-id">ui_panel_npc_dialogue</span>
+        <span class="state-badge state-spec_ready">spec_ready</span>
+      </div>
+      <table>
+        <tr><th>属性</th><th>值</th></tr>
+        <tr><td>尺寸</td><td>720 × 200 px（固定在屏幕底部，y=1000–1200）</td></tr>
+        <tr><td>格式</td><td>PNG</td></tr>
+        <tr><td>动画</td><td>进入：从底部上滑40px+渐显 0.3s；退出：下滑0.25s</td></tr>
+        <tr><td>设计说明</td><td>木质暖沙底色，顶部边框2px #8B6030。NPC名字（16sp #8B6030）+对话文本（15sp #3A2810，行高1.6，max-width 640px，word-wrap）。右下角点击继续提示（漂木金 #C4955A）。上方留出角色立绘显示区。</td></tr>
+      </table>
+    </div>
+
+    <!-- 图标组 -->
+    <div class="card">
+      <div class="card-header">
+        <strong>图标资产组</strong>
+        <span class="state-badge state-spec_ready">spec_ready</span>
+      </div>
+      <table>
+        <tr><th>资产</th><th>ID</th><th>尺寸</th><th>变体</th><th>设计说明</th></tr>
+        <tr>
+          <td>沙滩币图标</td>
+          <td class="asset-id">ui_coin_icon</td>
+          <td>64 × 64px</td>
+          <td>单态</td>
+          <td>圆形金黄 #F5C842，贝壳/波纹浮雕，有机描边（暖棕非纯黑），透明背景。唯一货币符号。</td>
+        </tr>
+        <tr>
+          <td>星星图标</td>
+          <td class="asset-id">ui_star_icon</td>
+          <td>64 × 64px</td>
+          <td>empty / filled / half</td>
+          <td>五角星有机圆端。filled：金黄+软光晕；empty：沙灰 #C4B090；half：左金右灰。透明背景。</td>
+        </tr>
+        <tr>
+          <td>灯塔进度条</td>
+          <td class="asset-id">ui_lighthouse_progress</td>
+          <td>120 × 480px</td>
+          <td>empty / quarter / half / three_quarters / full</td>
+          <td>竖向进度条，圆角轨道，顶部灯塔图标（满时发光）。填充：空=沙灰，进行中=竹绿，满=金黄+光晕。位于棋盘右侧60px侧栏。</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 组件状态 ===== -->
+  <section id="component-states">
+    <h2>组件状态规格</h2>
+    <p style="margin-bottom:16px;font-size:14px;">以下为所有 UI 组件完整状态机，满足 Cocos Creator 2D UI 实现需求。</p>
+
+    <h3>重排/预判按钮（icon_button 共通状态）</h3>
+    <div class="state-table">
+      <div class="state-row">
+        <span class="state-name">normal</span>
+        <span class="state-desc">珊瑚渐变，白色图标，white 标签，soft shadow</span>
+        <span class="state-trigger">默认状态 &amp; 余额 ≥ 30</span>
+      </div>
+      <div class="state-row">
+        <span class="state-name">pressed</span>
+        <span class="state-desc">加深珊瑚色，Y轴+2px，scale 0.97，阴影减半</span>
+        <span class="state-trigger">pointer_down</span>
+      </div>
+      <div class="state-row">
+        <span class="state-name">disabled</span>
+        <span class="state-desc">沙色 #C8B8A0，图标/标签灰，opacity 0.6，无阴影</span>
+        <span class="state-trigger">coin_balance &lt; 30</span>
+      </div>
+      <div class="state-row">
+        <span class="state-name">locked</span>
+        <span class="state-desc">disabled + 锁图标叠加，opacity 0.5</span>
+        <span class="state-trigger">无合法目标（棋盘已清空等）</span>
+      </div>
+    </div>
+
+    <h3>续关按钮（额外 highlighted 态）</h3>
+    <div class="state-table">
+      <div class="state-row">
+        <span class="state-name">normal</span>
+        <span class="state-desc">沙色调，opacity 0.7（低亮度常驻）</span>
+        <span class="state-trigger">步数 &gt; 0</span>
+      </div>
+      <div class="state-row">
+        <span class="state-name">highlighted</span>
+        <span class="state-desc" style="color:var(--coin-gold);font-weight:600;">完整珊瑚渐变，金色边框 #F5C842，脉动光晕，opacity 1.0</span>
+        <span class="state-trigger">step_count == 0 AND balance ≥ 30</span>
+      </div>
+      <div class="state-row">
+        <span class="state-name">disabled</span>
+        <span class="state-desc">灰色 #C8B8A0，opacity 0.5</span>
+        <span class="state-trigger">coin_balance &lt; 30</span>
+      </div>
+      <div class="state-row">
+        <span class="state-name">locked</span>
+        <span class="state-desc">dim opacity 0.3，锁图标</span>
+        <span class="state-trigger">禅境关（zen_mode）或设计限制</span>
+      </div>
+    </div>
+
+    <h3>步数计数器告警颜色</h3>
+    <table>
+      <tr><th>状态</th><th>触发条件</th><th>颜色</th><th>动效</th></tr>
+      <tr><td>normal</td><td>步数 &gt; 10</td><td style="color:var(--text-dark);">#3A2810</td><td>无</td></tr>
+      <tr><td>low</td><td>步数 ≤ 10</td><td style="color:#EE8C55;font-weight:700;">#EE8C55</td><td>gentle_pulse 0.8s</td></tr>
+      <tr><td>critical</td><td>步数 ≤ 5</td><td style="color:var(--step-critical);font-weight:700;">#C85A40</td><td>fast_pulse 0.4s</td></tr>
+      <tr><td>empty</td><td>步数 = 0</td><td style="color:var(--step-critical);font-weight:700;">#C85A40</td><td>续关按钮高亮激活</td></tr>
+    </table>
+
+    <h3>灯塔进度条状态</h3>
+    <table>
+      <tr><th>状态</th><th>触发条件</th><th>填充色</th><th>动效</th></tr>
+      <tr><td>empty / critical</td><td>进度 0%（修复前）</td><td style="color:#C8B8A0;font-weight:700;">#C8B8A0（灰）灯塔图标暗淡</td><td>无</td></tr>
+      <tr><td>low</td><td>进度 &lt; 25%</td><td style="color:#C4B090;font-weight:700;">#C4B090</td><td>无</td></tr>
+      <tr><td>normal</td><td>进度 25%–99%</td><td style="color:var(--progress-green);font-weight:700;">#7DBE77（竹绿）</td><td>smooth expand + 金色闪光 0.3s（gain 时）</td></tr>
+      <tr><td>full</td><td>进度 100%</td><td style="color:var(--coin-gold);font-weight:700;">#F5C842（金黄）灯塔图标发光</td><td>golden_glow_pulse 1.0s 循环</td></tr>
+    </table>
+  </section>
+
+  <!-- ===== 生成提示词 ===== -->
+  <section id="mockup-prompts">
+    <h2>Mockup 生成提示词</h2>
+    <p style="margin-bottom:16px;font-size:14px;">以下提示词用于 google-imagen-4（主）/ openrouter-gpt-image（备用）生成 UI mockup。图片生成将在 art-qa 批准后执行。</p>
+
+    <h3>游戏主界面</h3>
+    <div class="prompt-box">Hand-drawn watercolor mobile game UI screenshot, 720×1280 portrait. Top status bar: step counter centered (white number, 28sp 思源圆体, coral #E8866A warm background). Bottom HUD bar (720×80px, island sand #F7EDD8, wood border #8B6030, soft drop shadow): beach coin icon (golden #F5C842, 32px) + number on left; three round icon buttons (80×80px each, coral gradient #F0997A→#E8866A, 24px corner radius, soft shadow) on right showing shuffle/hint/continue icons. Right sidebar (60px wide): vertical lighthouse progress bar with bamboo green fill #7DBE77, lighthouse silhouette at top. Center playfield area: 8×8 grid of cute marine tile icons. Background: desaturated coastal harbor scene. Style: Animal Crossing × Japanese healing island watercolor, soft warm pastel, round organic shapes.</div>
+    <div class="prompt-box prompt-negative">Negative: pixel art, hyper-realistic 3D, neon colors, metallic chrome, pure black #000000, sharp geometric UI, excessive debris particles, high contrast alert colors</div>
+
+    <h3>沙滩币图标</h3>
+    <div class="prompt-box">Hand-drawn watercolor beach coin icon, 64×64px, transparent background. Round coin shape, golden yellow #F5C842 fill, warm sand texture overlay, subtle shell or wave embossed pattern in driftwood #C4955A. Organic hand-drawn outline in warm brown. Soft drop shadow. Clean, simple, readable at 32px. No text. Healing Japanese island aesthetic.</div>
+
+    <h3>星星图标（满星）</h3>
+    <div class="prompt-box">Hand-drawn watercolor 5-point star icon, 64×64px, transparent background. Golden yellow #F5C842 fill, warm amber stroke #C4955A 2px, soft inner glow, organic round-tipped star shape. Healing Japanese island aesthetic. No text.</div>
+
+    <h3>灯塔进度条（全5态）</h3>
+    <div class="prompt-box">Hand-drawn watercolor mobile game vertical lighthouse progress bar, 120×480px, 5 fill states side by side: [empty: grey fill #C8B8A0, dim lighthouse icon at top] [quarter 25%: bamboo green #7DBE77 partial fill] [half 50%: half filled green] [three-quarters 75%: mostly filled] [full: golden #F5C842 fill with soft glow, lighthouse icon glowing at top]. Organic rounded track, wood border texture. Style: Japanese island watercolor UI.</div>
+  </section>
+
+  <!-- ===== 其他资产 ===== -->
+  <section id="other-assets">
+    <h2>其他资产（canonical_registry.other）</h2>
+    <p style="margin-bottom:16px;font-size:14px;">
+      other 分组包含 18 张章节背景（bg_*）和 2 个场景道具（prop_*），共 20 个资产。背景资产由 environment-art-gen 节点负责生成；ui-art-gen 节点记录其与 UI 层的接口约束。
+    </p>
+
+    <h3>章节背景（18 张，environment-art-gen 负责生成）</h3>
+    <table>
+      <tr><th>章节</th><th>场景名（日文）</th><th>主色调</th><th>亮度</th><th>三态变体</th></tr>
+      <tr><td>第一章</td><td>海辺の波止場</td><td style="color:#5BBFB5;">#5BBFB5（海洋青）</td><td>dim</td><td>修复前（s0）/ 修复中 / 修复后（s4）</td></tr>
+      <tr><td>第二章</td><td>中央の町</td><td style="color:#7DBE77;">#7DBE77（竹绿）</td><td>warm</td><td>×3 态</td></tr>
+      <tr><td>第三章</td><td>花畑の丘</td><td style="color:#F0C4C4;">#F0C4C4（樱花粉）</td><td>warm</td><td>×3 态</td></tr>
+      <tr><td>第四章</td><td>森のキャンプ場</td><td style="color:#4A7D55;">#4A7D55（森林苔绿）</td><td>dim</td><td>×3 态</td></tr>
+      <tr><td>第五章</td><td>温泉の谷</td><td style="color:#C4955A;">#C4955A（漂木金）</td><td>warm</td><td>×3 态</td></tr>
+      <tr><td>第六章</td><td>夜の灯台</td><td style="color:#1E2E50;">#1E2E50（夜靛蓝）</td><td>dim</td><td>×3 态</td></tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-medium);margin-top:8px;">
+      UI 接口约束：背景最大装饰叠加不透明度 ≤ 15%，不干扰棋盘图块可读性。棋盘区背景梯度色值已在 art-pipeline-config.json chapters[] 中定义。
+    </p>
+
+    <h3>场景道具（2 个，environment-art-gen 负责生成）</h3>
+    <div class="card">
+      <div class="card-header">
+        <strong>ひなた手账</strong>
+        <span class="asset-id">prop_notebook</span>
+        <span class="state-badge state-spec_ready">spec_ready</span>
+      </div>
+      <table>
+        <tr><td>尺寸</td><td>180 × 240 px，两态：closed（封面）/ open（展开内页）</td></tr>
+        <tr><td>设计说明</td><td>手绘水彩风格笔记本。封面：暖棕/奶油白配色，日文手写标题。展开态：ひなた的手写笔记+小插图。有机轮廓，非纯黑描边，透明背景。</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <strong>灯塔灯</strong>
+        <span class="asset-id">prop_lighthouse_lamp</span>
+        <span class="state-badge state-spec_ready">spec_ready</span>
+      </div>
+      <table>
+        <tr><td>尺寸</td><td>256 × 256 px，8 帧帧动画</td></tr>
+        <tr><td>设计说明</td><td>旋转金色光束（#F5C842），暖白光晕（#F5F0E8），手绘玻璃灯罩有机形态。8帧循环，每帧光束旋转 45°。透明背景。</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 审查清单 ===== -->
+  <section id="checklist">
+    <h2>审查清单（review_checklist）</h2>
+
+    <ul class="checklist">
+      <li>
+        <span class="check-pass">✓</span>
+        <div>
+          <strong>UI 组件状态完整（normal/pressed/disabled/locked）</strong>
+          <p style="font-size:13px;color:var(--text-medium);margin-top:4px;">重排/预判/续关按钮均有 4–5 态完整定义；HUD 底栏有 normal/low/critical/empty 4态；对话框和商店面板有 entering/open/confirming/closing/blocked 5态。详见 component-state-spec.json。</p>
+        </div>
+      </li>
+      <li>
+        <span class="check-pass">✓</span>
+        <div>
+          <strong>HUD 信息层级清晰，不遮挡关键棋盘区域（z-index 正确）</strong>
+          <p style="font-size:13px;color:var(--text-medium);margin-top:4px;">HUD 底栏（y=1100–1180）与棋盘（y=100–1100）无重叠。灯塔侧栏（x=660–720）不遮挡主棋盘（x=0–660）。z-index：背景0→棋盘1→VFX2→HUD3→弹窗10。详见 screen-layout-spec.json。</p>
+        </div>
+      </li>
+      <li>
+        <span class="check-pass">✓</span>
+        <div>
+          <strong>屏幕布局规格与 Cocos Creator 分辨率适配（9:16基准+安全区）</strong>
+          <p style="font-size:13px;color:var(--text-medium);margin-top:4px;">基准分辨率 720×1280（9:16），顶部安全区 44px（刘海），底部安全区 34px（Home 条）。screen-layout-spec.json 中所有 breakpoint 已按此规格定义。</p>
+        </div>
+      </li>
+      <li>
+        <span class="check-pass">✓</span>
+        <div>
+          <strong>图标与整体美术方向一致，Atlas 打包无越界</strong>
+          <p style="font-size:13px;color:var(--text-medium);margin-top:4px;">所有 UI 资产使用 hand-drawn watercolor + warm pastel 风格，禁止像素艺术/霓虹/金属铬渐变。全部10个 UI 资产打包至单一 ui_elements_atlas（max 2048px），已在 atlas_plan 中定义。</p>
+        </div>
+      </li>
+      <li>
+        <span class="check-warn">○</span>
+        <div>
+          <strong>UI mockup 通过可读性 QA</strong>
+          <p style="font-size:13px;color:var(--text-medium);margin-top:4px;">待执行：图片生成后在 art-qa 节点执行可读性验证。当前所有 mockup 为 spec_ready / not_generated 状态。提示词已定义（见 ui-mockup-spec.json），包含文字适配检查和布局保真度检查。</p>
+        </div>
+      </li>
+    </ul>
+
+    <h3 style="margin-top:32px;">子技能执行状态</h3>
+    <table>
+      <tr><th>子技能</th><th>输出文件</th><th>状态</th></tr>
+      <tr><td>game-ui/ui-registry</td><td>ui/ui-registry.json</td><td><span style="color:var(--progress-green);font-weight:700;">COMPLETED</span></td></tr>
+      <tr><td>game-ui/hud-information-design</td><td>ui/hud-information-design.json</td><td><span style="color:var(--progress-green);font-weight:700;">COMPLETED</span></td></tr>
+      <tr><td>game-ui/screen-layout-spec</td><td>ui/screen-layout-spec.json</td><td><span style="color:var(--progress-green);font-weight:700;">COMPLETED</span></td></tr>
+      <tr><td>game-ui/component-state-spec</td><td>ui/component-state-spec.json</td><td><span style="color:var(--progress-green);font-weight:700;">COMPLETED</span></td></tr>
+      <tr><td>game-art/visual-style-tokens</td><td>art/visual-style-tokens.json</td><td><span style="color:var(--progress-green);font-weight:700;">COMPLETED（已存在）</span></td></tr>
+      <tr><td>game-ui/ui-mockup-generation</td><td>ui/ui-mockup-spec.json、manifest.json</td><td><span style="color:var(--coin-gold);font-weight:700;">COMPLETED_WITH_LIMITS（图片待生成）</span></td></tr>
+      <tr><td>game-art/icon-generation</td><td>art/icons/icon-spec.json</td><td><span style="color:var(--coin-gold);font-weight:700;">COMPLETED_WITH_LIMITS（图片待生成）</span></td></tr>
+    </table>
+
+    <h3 style="margin-top:32px;">完成条件验证</h3>
+    <ul class="checklist">
+      <li>
+        <span class="check-pass">✓</span>
+        <div>
+          <strong>systems/ui-art-spec.json 已创建</strong>
+        </div>
+      </li>
+      <li>
+        <span class="check-pass">✓</span>
+        <div>
+          <strong>ui-art-review.html 已创建（本文件）</strong>
+        </div>
+      </li>
+      <li>
+        <span class="check-pass">✓</span>
+        <div>
+          <strong>所有 canonical_registry.ui[] 资产 current_state 已更新为 spec_ready（非 placeholder）</strong>
+          <p style="font-size:13px;color:var(--text-medium);margin-top:4px;">10 个 UI 资产全部在 art-asset-inventory.json 中标记为 spec_ready。</p>
+        </div>
+      </li>
+      <li>
+        <span class="check-pass">✓</span>
+        <div>
+          <strong>所有 canonical_registry.other[] 资产 current_state 已更新为 spec_ready（非 placeholder）</strong>
+          <p style="font-size:13px;color:var(--text-medium);margin-top:4px;">20 个 other 资产（18 背景 + 2 道具）全部在 art-asset-inventory.json 中标记为 spec_ready。</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div>Glow Island — UI 美术规格 &nbsp;|&nbsp; 节点: ui-art-gen &nbsp;|&nbsp; 生成时间: 2026-05-13T00:00:00Z</div>
+  <div style="margin-top:4px;">审查人员：ui-artist（主）/ art-director / ux-designer &nbsp;|&nbsp; 审查通过后更新 approval-records.json gate_status → "approved"</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "skill": "game-art/2d-style-consistency-qa",
+  "mode": "validate",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "report_state": "passed_with_warnings",
+  "overall_score": "4/5",
+  "summary": "2D风格一致性QA通过（含警告）。调色板、描边规则、剪影识别度、摄像角度、分辨率策略、VFX强度规则均与art-style-guide.json完全一致。警告：图片文件尚未生成，视觉轴验证依赖规格文档，待图像生成后补全像素级检查。",
+
+  "input_refs": {
+    "visual_style_tokens": ".allforai/game-design/art/visual-style-tokens.json",
+    "art_style_guide": ".allforai/game-design/art-style-guide.json",
+    "art_pipeline_config": ".allforai/game-design/art-pipeline-config.json",
+    "art_preview_report": ".allforai/game-design/art/qa/art-preview-qa-report.json"
+  },
+
+  "style_axes": {
+    "palette_saturation_drift": {
+      "verdict": "PASS",
+      "check": "调色板与视觉风格令牌一致。16色全局调色板已在visual-style-tokens.json中定义。5个饱和度阶段（s0→s4_full，8-88%）已在tile-art-spec.json和art-pipeline-config.json中对齐。",
+      "chapter_palette_check": "6章节主色调均在color_system.chapter_palette_progression中定义，与art-pipeline-config.json.environment.chapters一致",
+      "special_block_colors_check": "5种特殊块颜色徽章与art-pipeline-config.json.tileset.special_block_colors匹配：波浪=#7ECDE8，光链=#F0C4C4，穿透=#F5A840，置换=#F5C842，连锁=#4A7D55"
+    },
+    "outline_width_edge_treatment": {
+      "verdict": "PASS",
+      "check": "规格统一：所有图块2px描边，主色加深32%，禁止#000000。UI组件使用#8B6030木棕边框。角色轮廓遵循相同规则。",
+      "evidence": "tile-art-spec.json#outline_style, art-style-guide.json#silhouette_language, art-pipeline-config.json#tileset.outline_style均为primary_color_darkened_32pct"
+    },
+    "pixel_density_brush_detail": {
+      "verdict": "PASS",
+      "check": "手绘水彩风格关键词贯穿所有资产类型（图块/角色/背景/UI/VFX），paper_texture_overlay 6%不透明度统一应用于所有图块"
+    },
+    "camera_angle_projection": {
+      "verdict": "PASS",
+      "check": "维度=2D，正交投影。无透视/等轴测/3D视图混用风险。棋盘以俯视视角呈现，角色以正面/3/4侧面视角呈现（视觉小说呈现）。环境背景为水平地平线构图。"
+    },
+    "character_background_separation": {
+      "verdict": "PASS",
+      "check": "角色（PNG含alpha）叠加在背景（JPG全出血）之上，UI层次规范：VFX层 < HUD层不遮挡棋盘连接路径。透明背景规格确保角色与场景正确分离。"
+    },
+    "prop_tile_player_scale_consistency": {
+      "verdict": "PASS",
+      "check": "图块统一128×128px（2x）。角色画布256×512px（所有人类角色），char_gicho 192×192px（猫形角色）。道具尺寸：prop_notebook 180×240px，prop_lighthouse_lamp 256×256px。比例规格在art-pipeline-config.json中统一定义。"
+    },
+    "icon_item_art_visual_language": {
+      "verdict": "PASS",
+      "check": "UI图标使用相同手绘水彩语言。沙滩币图标#F5C842金黄贝壳图案，星星图标三态均使用有机圆角。UI图标与世界道具明确区分（UI在独立atlas）。",
+      "potential_risk": "warning — 图块（灯塔tile_lighthouse）与UI元素（ui_lighthouse_progress灯塔进度条）使用相同灯塔主题，视觉区分依赖尺寸差异（128px游戏图块 vs 120×480px UI进度条）。规格已区分，执行时需验证。"
+    },
+    "portrait_expression_identity": {
+      "verdict": "PASS",
+      "check": "7个角色均有独特剪影识别方案：律（略显疲惫的眼神+皱衬衫）、ひなた（手账+樱花粉）、健三（最宽体型+钓鱼装备）、梅子（围裙+丸子头）、夏帆（探险马甲+渔夫帽）、冬子（和服剪影+白发）、议长（橘猫圆形剪影）"
+    },
+    "animation_anchor_silhouette_stability": {
+      "verdict": "PASS",
+      "check": "DragonBones骨骼动画规格（30fps）定义呼吸幅度±2-3px，眨眼0.15s，随机动作8-12s间隔。规格参数保守，锚点抖动风险低。图块无动画（静态PNG），不存在帧锚点问题。"
+    },
+    "vfx_intensity_gameplay_importance": {
+      "verdict": "PASS",
+      "check": "VFX强度受控：匹配消除0.25s，combo气泡1.2s悬停，粒子4-6个/图块。明确禁止过度粒子碎片。特殊块激活12帧动画不遮挡棋盘路径（transparent background tile boundary规格）。"
+    },
+    "ui_game_art_contrast_separation": {
+      "verdict": "PASS",
+      "check": "UI使用独立图集（ui_elements_atlas），与游戏图块（tiles_ch{N}_atlas）分离。HUD固定在棋盘下方，灯塔进度条在棋盘右侧60px侧栏（≤棋盘宽度20%）。"
+    },
+    "small_size_readability": {
+      "verdict": "PASS",
+      "check": "图块在32×32px下轮廓仍清晰（art-style-guide.json#silhouette_language）。所有NPC单色剪影在任意分辨率下可识别（art-pipeline-config.json#character.silhouette_policy）"
+    },
+    "alpha_background_correctness": {
+      "verdict": "PASS",
+      "check": "图块：PNG含alpha，透明背景。角色：PNG含alpha，透明背景。UI：PNG含alpha，透明背景。背景：JPG全出血（无需alpha）。道具：PNG含alpha。规格正确区分JPG/PNG使用场景。"
+    }
+  },
+
+  "issues": [
+    {
+      "issue_id": "2dscqa-001",
+      "asset_id": "all_70_assets",
+      "asset_path": "待图片生成后确定",
+      "surface": "全资产类型",
+      "severity": "warning",
+      "style_axis": "pixel_density_brush_detail / palette_saturation_drift",
+      "expected": "手绘水彩风格，调色板严格符合visual-style-tokens.json",
+      "actual": "规格文档符合，PNG/JPG图片文件尚未生成",
+      "evidence": {
+        "manifest_ref": ".allforai/game-design/systems/tile-art-spec.json",
+        "visual_observation": "spec_complete/spec_ready状态确认规格完整；像素验证待图像生成"
+      },
+      "root_cause": "image_generation",
+      "repair_target": "待image generation API执行后补全像素级style consistency检查",
+      "consumer_refs": ["engine-ready-art-output-contract"],
+      "blocks_runtime": false
+    },
+    {
+      "issue_id": "2dscqa-002",
+      "asset_id": "tile_lighthouse / ui_lighthouse_progress",
+      "asset_path": "待生成",
+      "surface": "icon / ui",
+      "severity": "minor",
+      "style_axis": "icon_item_art_visual_language",
+      "expected": "游戏图块灯塔（tile_lighthouse）与UI灯塔进度条（ui_lighthouse_progress）视觉语言不混淆",
+      "actual": "两者同用灯塔主题；尺寸差异（128px vs 120×480px）为主要区分手段",
+      "evidence": {
+        "manifest_ref": ".allforai/game-design/systems/tile-art-spec.json / .allforai/game-design/systems/ui-art-spec.json",
+        "visual_observation": "规格层面已区分：tile_lighthouse为小型图标，ui_lighthouse_progress为竖向进度条；实际图像生成后需验证视觉区分度"
+      },
+      "root_cause": "asset_spec",
+      "repair_target": "图像生成后验证两者视觉区分度；如混淆则调整ui_lighthouse_progress图标样式至非灯塔图标替代物",
+      "consumer_refs": ["runtime-import-check"],
+      "blocks_runtime": false
+    }
+  ],
+
+  "completion": {
+    "status": "COMPLETED_WITH_WARNINGS",
+    "blockers": 0,
+    "major_issues": 0,
+    "minor_issues": 1,
+    "warnings": 1,
+    "note": "无blocker或major风格一致性问题。所有风格轴验证通过（基于规格文档）。2个minor/warning条目均不阻塞运行时使用。图像生成后建议补全像素级验证。"
+  }
+}

@@ -1,0 +1,627 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-ui/component-state-spec",
+  "style_basis": {
+    "paradigm": "flat_plus_soft_shadow_wood_sign_ui",
+    "corner_radius_button_px": 24,
+    "corner_radius_dialog_px": 20,
+    "shadow": "0 4px 0 rgba(0,0,0,0.10)",
+    "font_primary": "思源圆体",
+    "font_fallback": ["SF Pro Rounded", "Nunito"],
+    "tap_target_min_px": 44
+  },
+  "palette": {
+    "background_sand": "#F7EDD8",
+    "dialog_wood": "#E8D8B4",
+    "border_brown": "#8B6030",
+    "text_dark": "#3A2810",
+    "button_primary_top": "#F0997A",
+    "button_primary_bottom": "#E8866A",
+    "button_primary_pressed": "#D0705A",
+    "button_disabled_fill": "#C8B8A0",
+    "button_disabled_text": "#8A7860",
+    "coin_gold": "#F5C842",
+    "progress_fill": "#7DBE77",
+    "step_warning_color": "#C85A40",
+    "combo_bubble_bg": "#C85A40",
+    "combo_text": "#F5C842"
+  },
+  "components": [
+    {
+      "component_id": "cmp_hud_bar",
+      "kind": "resource_bar",
+      "art_asset": "ui_hud_bar",
+      "size_px": { "width": 720, "height": 80 },
+      "states": [
+        {
+          "state": "normal",
+          "visual": {
+            "fill": "#F7EDD8",
+            "border": "1px solid #8B6030",
+            "shadow": "0 4px 0 rgba(0,0,0,0.10)",
+            "step_counter_color": "#3A2810",
+            "step_counter_font_size": 28,
+            "coin_icon_opacity": 1.0
+          },
+          "interaction": { "enabled": true }
+        },
+        {
+          "state": "low",
+          "description": "剩余步数 ≤ 10",
+          "visual": {
+            "step_counter_color": "#EE8C55",
+            "step_counter_animation": "gentle_pulse_0.8s"
+          }
+        },
+        {
+          "state": "critical",
+          "description": "剩余步数 ≤ 5",
+          "visual": {
+            "step_counter_color": "#C85A40",
+            "step_counter_animation": "fast_pulse_0.4s"
+          }
+        },
+        {
+          "state": "empty",
+          "description": "步数归零",
+          "visual": {
+            "step_counter_color": "#C85A40",
+            "continue_button_highlight": true
+          }
+        }
+      ],
+      "transitions": [
+        { "from": "normal", "to": "low", "trigger": "step_count <= 10" },
+        { "from": "low", "to": "critical", "trigger": "step_count <= 5" },
+        { "from": "critical", "to": "empty", "trigger": "step_count == 0" }
+      ]
+    },
+    {
+      "component_id": "cmp_btn_shuffle",
+      "kind": "icon_button",
+      "art_asset": "ui_btn_shuffle",
+      "size_px": { "width": 80, "height": 80 },
+      "label": "重排",
+      "cost": "30 沙滩币",
+      "states": [
+        {
+          "state": "normal",
+          "visual": {
+            "bg_fill_top": "#F0997A",
+            "bg_fill_bottom": "#E8866A",
+            "border": "2px solid #8B6030",
+            "shadow": "0 4px 0 rgba(0,0,0,0.10)",
+            "icon_color": "#FFFFFF",
+            "label_color": "#FFFFFF",
+            "label_font_size": 11,
+            "corner_radius": 24
+          },
+          "interaction": { "enabled": true, "tap_target_min_px": 80 }
+        },
+        {
+          "state": "pressed",
+          "visual": {
+            "bg_fill_top": "#D07862",
+            "bg_fill_bottom": "#C86850",
+            "shadow": "0 2px 0 rgba(0,0,0,0.10)",
+            "translate_y_px": 2,
+            "scale": 0.97
+          },
+          "interaction": { "enabled": true }
+        },
+        {
+          "state": "disabled",
+          "description": "沙滩币余额 < 30",
+          "visual": {
+            "bg_fill_top": "#C8B8A0",
+            "bg_fill_bottom": "#B8A890",
+            "icon_color": "#8A7860",
+            "label_color": "#8A7860",
+            "shadow": "none",
+            "opacity": 0.6
+          },
+          "interaction": { "enabled": false }
+        },
+        {
+          "state": "locked",
+          "description": "当前无合法配对可重排（棋盘已无图块）",
+          "visual": {
+            "bg_fill_top": "#C8B8A0",
+            "bg_fill_bottom": "#B8A890",
+            "icon_overlay": "lock_icon",
+            "opacity": 0.5
+          },
+          "interaction": { "enabled": false }
+        }
+      ],
+      "transitions": [
+        { "from": "normal", "to": "pressed", "trigger": "pointer_down" },
+        { "from": "pressed", "to": "normal", "trigger": "pointer_up_success" },
+        { "from": "normal", "to": "disabled", "trigger": "coin_balance < 30" },
+        { "from": "disabled", "to": "normal", "trigger": "coin_balance >= 30" }
+      ]
+    },
+    {
+      "component_id": "cmp_btn_hint",
+      "kind": "icon_button",
+      "art_asset": "ui_btn_hint",
+      "size_px": { "width": 80, "height": 80 },
+      "label": "预判",
+      "cost": "30 沙滩币",
+      "states": [
+        {
+          "state": "normal",
+          "visual": {
+            "bg_fill_top": "#F0997A",
+            "bg_fill_bottom": "#E8866A",
+            "border": "2px solid #8B6030",
+            "shadow": "0 4px 0 rgba(0,0,0,0.10)",
+            "icon_color": "#FFFFFF",
+            "label_color": "#FFFFFF",
+            "label_font_size": 11,
+            "corner_radius": 24
+          },
+          "interaction": { "enabled": true, "tap_target_min_px": 80 }
+        },
+        {
+          "state": "pressed",
+          "visual": {
+            "bg_fill_top": "#D07862",
+            "bg_fill_bottom": "#C86850",
+            "shadow": "0 2px 0 rgba(0,0,0,0.10)",
+            "translate_y_px": 2,
+            "scale": 0.97
+          },
+          "interaction": { "enabled": true }
+        },
+        {
+          "state": "disabled",
+          "description": "沙滩币余额 < 30",
+          "visual": {
+            "bg_fill_top": "#C8B8A0",
+            "bg_fill_bottom": "#B8A890",
+            "icon_color": "#8A7860",
+            "label_color": "#8A7860",
+            "shadow": "none",
+            "opacity": 0.6
+          },
+          "interaction": { "enabled": false }
+        },
+        {
+          "state": "locked",
+          "description": "当前无合法配对可预判",
+          "visual": {
+            "bg_fill_top": "#C8B8A0",
+            "bg_fill_bottom": "#B8A890",
+            "icon_overlay": "lock_icon",
+            "opacity": 0.5
+          },
+          "interaction": { "enabled": false }
+        }
+      ],
+      "transitions": [
+        { "from": "normal", "to": "pressed", "trigger": "pointer_down" },
+        { "from": "pressed", "to": "normal", "trigger": "pointer_up_success" },
+        { "from": "normal", "to": "disabled", "trigger": "coin_balance < 30" },
+        { "from": "disabled", "to": "normal", "trigger": "coin_balance >= 30" }
+      ]
+    },
+    {
+      "component_id": "cmp_btn_continue",
+      "kind": "icon_button",
+      "art_asset": "ui_btn_continue",
+      "size_px": { "width": 80, "height": 80 },
+      "label": "续关",
+      "cost": "30 沙滩币 + 5步",
+      "states": [
+        {
+          "state": "normal",
+          "description": "步数 > 0，按钮常驻但视觉较暗",
+          "visual": {
+            "bg_fill_top": "#C4B090",
+            "bg_fill_bottom": "#B89870",
+            "border": "2px solid #8B6030",
+            "shadow": "0 4px 0 rgba(0,0,0,0.10)",
+            "icon_color": "#E8D8B4",
+            "label_color": "#E8D8B4",
+            "label_font_size": 11,
+            "corner_radius": 24,
+            "opacity": 0.7
+          },
+          "interaction": { "enabled": true, "tap_target_min_px": 80 }
+        },
+        {
+          "state": "pressed",
+          "visual": {
+            "bg_fill_top": "#A09070",
+            "bg_fill_bottom": "#907860",
+            "shadow": "0 2px 0 rgba(0,0,0,0.10)",
+            "translate_y_px": 2,
+            "scale": 0.97
+          },
+          "interaction": { "enabled": true }
+        },
+        {
+          "state": "disabled",
+          "description": "沙滩币余额 < 30",
+          "visual": {
+            "bg_fill_top": "#C8B8A0",
+            "bg_fill_bottom": "#B8A890",
+            "icon_color": "#8A7860",
+            "label_color": "#8A7860",
+            "shadow": "none",
+            "opacity": 0.5
+          },
+          "interaction": { "enabled": false }
+        },
+        {
+          "state": "highlighted",
+          "description": "步数归零时，续关按钮高亮激活，提示玩家",
+          "visual": {
+            "bg_fill_top": "#F0997A",
+            "bg_fill_bottom": "#E8866A",
+            "border": "3px solid #F5C842",
+            "shadow": "0 0 12px rgba(245,200,66,0.6)",
+            "icon_color": "#FFFFFF",
+            "label_color": "#F5C842",
+            "animation": "golden_pulse_1.5s_ease-in-out",
+            "opacity": 1.0
+          },
+          "interaction": { "enabled": true, "tap_target_min_px": 80 }
+        },
+        {
+          "state": "locked",
+          "description": "该关不支持续关（禅境关或设计限制）",
+          "visual": {
+            "opacity": 0.3,
+            "icon_overlay": "lock_icon"
+          },
+          "interaction": { "enabled": false }
+        }
+      ],
+      "transitions": [
+        { "from": "normal", "to": "highlighted", "trigger": "step_count == 0 AND coin_balance >= 30" },
+        { "from": "normal", "to": "disabled", "trigger": "coin_balance < 30" },
+        { "from": "highlighted", "to": "normal", "trigger": "continue_purchased" }
+      ]
+    },
+    {
+      "component_id": "cmp_panel_shop",
+      "kind": "modal",
+      "art_asset": "ui_panel_shop",
+      "size_px": { "width": 480, "height": 640 },
+      "states": [
+        {
+          "state": "entering",
+          "visual": {
+            "animation": "scale_0.7→1.05→1.0_spring",
+            "duration_s": 0.4,
+            "scrim_opacity_start": 0,
+            "scrim_opacity_end": 0.5
+          }
+        },
+        {
+          "state": "open",
+          "visual": {
+            "bg_fill": "#E8D8B4",
+            "border": "3px solid #8B6030",
+            "corner_radius": 20,
+            "shadow": "0 8px 24px rgba(0,0,0,0.20)",
+            "title_font_size": 20,
+            "title_color": "#3A2810",
+            "item_row_separator": "1px solid #C4B090"
+          }
+        },
+        {
+          "state": "confirming",
+          "description": "点击购买后出现确认弹窗",
+          "visual": {
+            "confirm_button_fill": "#E8866A",
+            "cancel_button_fill": "#C4B090"
+          }
+        },
+        {
+          "state": "closing",
+          "visual": {
+            "animation": "scale_1.0→0.85_opacity_fade",
+            "duration_s": 0.25
+          }
+        },
+        {
+          "state": "blocked",
+          "description": "余额不足时，购买按钮变 disabled",
+          "visual": {
+            "purchase_button_opacity": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "component_id": "cmp_npc_dialogue_panel",
+      "kind": "modal",
+      "art_asset": "ui_panel_npc_dialogue",
+      "size_px": { "width": 720, "height": 200 },
+      "states": [
+        {
+          "state": "entering",
+          "visual": {
+            "animation": "slide_up_from_bottom_40px + fade_in",
+            "duration_s": 0.3
+          }
+        },
+        {
+          "state": "open",
+          "visual": {
+            "bg_fill": "#E8D8B4",
+            "border_top": "2px solid #8B6030",
+            "npc_name_color": "#8B6030",
+            "npc_name_font_size": 16,
+            "dialogue_text_color": "#3A2810",
+            "dialogue_text_font_size": 15,
+            "line_height": 1.6,
+            "continue_hint_icon": "tap_to_continue",
+            "continue_hint_color": "#C4955A",
+            "max_text_width_px": 640,
+            "text_wrapping": "word_wrap",
+            "text_truncation": "scroll_if_overflow"
+          }
+        },
+        {
+          "state": "confirming",
+          "description": "点击后进入下一段对话（tap_to_continue）"
+        },
+        {
+          "state": "closing",
+          "visual": {
+            "animation": "slide_down_to_bottom_40px + fade_out",
+            "duration_s": 0.25
+          }
+        },
+        {
+          "state": "blocked",
+          "description": "对话结束，面板自动消失"
+        }
+      ]
+    },
+    {
+      "component_id": "cmp_coin_display",
+      "kind": "currency_display",
+      "art_asset": "ui_coin_icon",
+      "size_px": { "width": 64, "height": 64 },
+      "states": [
+        {
+          "state": "normal",
+          "visual": {
+            "icon_size_px": 32,
+            "amount_font_size": 18,
+            "amount_color": "#3A2810",
+            "icon_coin_color": "#F5C842"
+          }
+        },
+        {
+          "state": "gain",
+          "visual": {
+            "animation": "coin_icon_scale_1.0→1.3→1.0 + amount_counter_increment",
+            "duration_s": 0.4,
+            "amount_color": "#4A7D55"
+          }
+        },
+        {
+          "state": "loss",
+          "visual": {
+            "animation": "amount_counter_decrement",
+            "duration_s": 0.3,
+            "amount_color": "#C85A40"
+          }
+        },
+        {
+          "state": "low",
+          "description": "余额 < 30（不够购买任何辅助）",
+          "visual": {
+            "amount_color": "#EE8C55"
+          }
+        },
+        {
+          "state": "empty",
+          "visual": {
+            "amount_color": "#C85A40",
+            "icon_opacity": 0.6
+          }
+        },
+        {
+          "state": "full",
+          "description": "余额达到上限（如有）",
+          "visual": {
+            "amount_color": "#F5C842"
+          }
+        },
+        {
+          "state": "critical",
+          "description": "余额为 0",
+          "visual": {
+            "amount_color": "#C85A40",
+            "icon_opacity": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "component_id": "cmp_star_icon",
+      "kind": "status_badge",
+      "art_asset": "ui_star_icon",
+      "size_px": { "width": 64, "height": 64 },
+      "states": [
+        {
+          "state": "default",
+          "description": "关卡未完成星星（空心）",
+          "visual": {
+            "fill": "#C4B090",
+            "stroke": "#8B6030",
+            "stroke_width_px": 2
+          }
+        },
+        {
+          "state": "filled",
+          "description": "已获得星星",
+          "visual": {
+            "fill": "#F5C842",
+            "stroke": "#C4955A",
+            "stroke_width_px": 2,
+            "glow": "0 0 8px rgba(245,200,66,0.5)"
+          }
+        },
+        {
+          "state": "half",
+          "description": "半星（保留字段，当前规则未启用）",
+          "visual": {
+            "fill_left": "#F5C842",
+            "fill_right": "#C4B090"
+          }
+        },
+        {
+          "state": "selected",
+          "description": "关卡卡片悬浮高亮时",
+          "visual": {
+            "scale": 1.1,
+            "transition": "scale_0.15s_ease-out"
+          }
+        },
+        {
+          "state": "new",
+          "description": "首次解锁关卡时，星星有入场动画",
+          "visual": {
+            "animation": "star_burst_0.5s"
+          }
+        }
+      ]
+    },
+    {
+      "component_id": "cmp_lighthouse_progress",
+      "kind": "progress_bar",
+      "art_asset": "ui_lighthouse_progress",
+      "size_px": { "width": 60, "height": 480 },
+      "states": [
+        {
+          "state": "normal",
+          "visual": {
+            "track_fill": "#E8D8B4",
+            "track_border": "1px solid #8B6030",
+            "progress_fill": "#7DBE77",
+            "lighthouse_icon_at_top": true,
+            "corner_radius": 8
+          }
+        },
+        {
+          "state": "low",
+          "description": "进度 < 25%",
+          "visual": {
+            "progress_fill": "#C4B090"
+          }
+        },
+        {
+          "state": "gain",
+          "visual": {
+            "animation": "progress_fill_smooth_expand + golden_flash_0.3s"
+          }
+        },
+        {
+          "state": "critical",
+          "description": "进度 = 0（修复前）",
+          "visual": {
+            "progress_fill": "#C8B8A0",
+            "lighthouse_icon_dim": true
+          }
+        },
+        {
+          "state": "full",
+          "description": "章节修复完成",
+          "visual": {
+            "progress_fill": "#F5C842",
+            "animation": "golden_glow_pulse_1.0s",
+            "lighthouse_icon_glow": true
+          }
+        },
+        {
+          "state": "loss",
+          "description": "（保留，不应在正常玩法中出现）",
+          "visual": {
+            "progress_fill": "#C85A40"
+          }
+        },
+        {
+          "state": "empty",
+          "description": "同 critical",
+          "visual": {
+            "progress_fill": "#C8B8A0"
+          }
+        }
+      ]
+    },
+    {
+      "component_id": "cmp_level_card",
+      "kind": "item_card",
+      "art_asset": "ui_card_level",
+      "size_px": { "width": 320, "height": 180 },
+      "states": [
+        {
+          "state": "default",
+          "visual": {
+            "bg_fill": "#F7EDD8",
+            "border": "2px solid #8B6030",
+            "corner_radius": 16,
+            "shadow": "0 4px 0 rgba(0,0,0,0.08)",
+            "level_number_color": "#3A2810",
+            "level_number_font_size": 22,
+            "star_row": "3 stars, empty state"
+          },
+          "interaction": { "enabled": true, "tap_target_min_px": 44 }
+        },
+        {
+          "state": "selected",
+          "visual": {
+            "border": "3px solid #E8866A",
+            "shadow": "0 6px 0 rgba(0,0,0,0.12)",
+            "scale": 1.03
+          }
+        },
+        {
+          "state": "locked",
+          "visual": {
+            "bg_fill": "#C8B8A0",
+            "opacity": 0.7,
+            "lock_icon_overlay": true,
+            "level_number_color": "#8A7860"
+          },
+          "interaction": { "enabled": false }
+        },
+        {
+          "state": "disabled",
+          "visual": {
+            "opacity": 0.5
+          },
+          "interaction": { "enabled": false }
+        },
+        {
+          "state": "new",
+          "description": "首次解锁",
+          "visual": {
+            "border": "3px solid #F5C842",
+            "badge": "NEW",
+            "badge_fill": "#E8866A",
+            "animation": "slide_in_0.3s"
+          }
+        },
+        {
+          "state": "upgradable",
+          "description": "3星完成但有隐藏目标未达成（保留）",
+          "visual": {
+            "badge": "★",
+            "badge_fill": "#F5C842"
+          }
+        }
+      ]
+    }
+  ],
+  "validation_status": "COMPLETED"
+}

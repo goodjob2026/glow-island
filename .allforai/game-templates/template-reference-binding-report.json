@@ -1,0 +1,9 @@
+{
+  "report_id": "glow-island-template-reference-binding-report-v1",
+  "status": "validated",
+  "all_required_refs_resolved": true,
+  "no_hardcoded_raw_paths": true,
+  "runtime_manifest_referenced": true,
+  "consumer_aware": true,
+  "conclusion": "所有template reference均可追溯到上游artifact，runtime_id源自engine-ready-manifest，无hardcode路径。"
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "generated_by": "environment-art-gen",
+  "result": "COMPLETED_WITH_LIMITS",
+  "result_notes": "Both props fully specified with complete generation prompts. prop_notebook has 2 variants (closed/open). prop_lighthouse_lamp has 8-frame rotation animation spec. State is spec_ready — image generation pending execution.",
+
+  "summary": {
+    "total_props": 2,
+    "total_variants": 10,
+    "spec_ready": 2,
+    "generated": 0,
+    "approved": 0
+  },
+
+  "checks": [
+    {"check": "all_props_specced", "result": "pass", "count": 2},
+    {"check": "prop_notebook_variants_complete", "result": "pass", "note": "2 variants: closed (封面) + open (内页展开). Both with transparent PNG, 180x240px, hand-drawn watercolor style"},
+    {"check": "prop_lighthouse_lamp_animation_complete", "result": "pass", "note": "8-frame clockwise rotation animation, 12fps, 256x256px. Multi-frame consistency constraint set. Consistent anchor point required."},
+    {"check": "alpha_required_set", "result": "pass", "note": "Both props require transparent background (alpha=true) for correct overlay on scene backgrounds"},
+    {"check": "scale_class_defined", "result": "pass", "note": "prop_notebook: small (180x240px), prop_lighthouse_lamp: medium (256x256px)"},
+    {"check": "collision_metadata_defined", "result": "pass", "note": "Both props: collision_hint=none (display/narrative only, not gameplay interactive)"},
+    {"check": "anchor_defined", "result": "pass", "note": "Both props: anchor=center_bottom"},
+    {"check": "prohibited_styles_excluded", "result": "pass", "note": "All prompts include negative constraints: no pixel art, no 3D render, no neon, no pure black, no background"},
+    {"check": "style_consistency_with_backgrounds", "result": "pass", "note": "Same hand_drawn_watercolor style as backgrounds, same prohibited styles list, same art direction source"}
+  ],
+
+  "warnings": [
+    "Images not yet generated — spec_ready state pending execution via google-imagen-4 (primary)",
+    "prop_lighthouse_lamp requires frame_animation generation mode — multi_frame_consistency=true ensures 8 frames maintain consistent scale and anchor",
+    "Actual generation requires art-qa node approval before advancing to generated state"
+  ],
+  "errors": [],
+
+  "downstream_consumers": ["art-qa", "runtime-npc-dialogue", "runtime-chapter-6-scene", "vfx-lighthouse-glow", "environment-art-review"]
+}

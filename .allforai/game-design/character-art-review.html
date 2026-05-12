@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>角色美术评审 — Glow Island</title>
+<style>
+  :root {
+    --sand:    #F7EDD8;
+    --coral:   #E8866A;
+    --teal:    #5BBFB5;
+    --green:   #7DBE77;
+    --pink:    #F0C4C4;
+    --gold:    #F5C842;
+    --night:   #1E2E50;
+    --brown:   #8B6030;
+    --text:    #3A2810;
+    --btn-top: #F0997A;
+    --wood:    #E8D8B4;
+    --moss:    #4A7D55;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--sand); color: var(--text); font-family: 'Helvetica Neue', 'PingFang SC', '思源圆体', sans-serif; font-size: 14px; line-height: 1.6; }
+  header { background: var(--night); color: #F5F0E8; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
+  header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.05em; }
+  header .badge { background: var(--gold); color: var(--text); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 700; }
+  .tabs { background: var(--wood); border-bottom: 2px solid var(--brown); display: flex; overflow-x: auto; padding: 0 24px; gap: 4px; }
+  .tab { padding: 12px 20px; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 600; font-size: 13px; white-space: nowrap; transition: background 0.15s; border: none; background: transparent; color: var(--text); }
+  .tab:hover { background: rgba(0,0,0,0.06); }
+  .tab.active { background: var(--sand); border-top: 3px solid var(--coral); }
+  .content { display: none; padding: 28px 32px; max-width: 1200px; margin: 0 auto; }
+  .content.active { display: block; }
+
+  /* 概览 */
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .stat-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 0 rgba(0,0,0,0.08); text-align: center; }
+  .stat-card .num { font-size: 36px; font-weight: 800; color: var(--coral); }
+  .stat-card .label { font-size: 12px; color: #666; margin-top: 4px; }
+
+  .checklist { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 0 rgba(0,0,0,0.08); margin-bottom: 20px; }
+  .checklist h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--text); border-bottom: 1px solid #eee; padding-bottom: 8px; }
+  .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+  .check-item:last-child { border-bottom: none; }
+  .check-ok   { width: 20px; height: 20px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; flex-shrink: 0; margin-top: 2px; }
+  .check-pend { width: 20px; height: 20px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text); font-size: 11px; flex-shrink: 0; margin-top: 2px; }
+
+  /* 角色卡 */
+  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+  .char-card { background: white; border-radius: 20px; box-shadow: 0 4px 0 rgba(0,0,0,0.08); overflow: hidden; }
+  .char-header { padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+  .color-dot { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.1); flex-shrink: 0; }
+  .char-header .info h3 { font-size: 15px; font-weight: 700; }
+  .char-header .info .sub { font-size: 11px; color: #888; }
+  .milestone { font-size: 10px; font-weight: 700; border-radius: 10px; padding: 2px 8px; }
+  .mvp { background: var(--coral); color: white; }
+  .beta { background: var(--teal); color: white; }
+  .release { background: #888; color: white; }
+  .char-body { padding: 0 20px 16px; }
+  .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #aaa; margin: 12px 0 6px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .tag { background: var(--sand); border-radius: 10px; padding: 3px 10px; font-size: 11px; font-weight: 600; color: var(--text); }
+  .tag.anim { background: #E8F0FF; color: #3366CC; }
+  .tag.expr { background: #F0F8EE; color: var(--moss); }
+  .tag.spec-ready { background: #FFFBEA; color: #B86000; }
+  .identity-box { background: var(--sand); border-radius: 12px; padding: 10px 12px; font-size: 12px; line-height: 1.7; }
+  .identity-row { display: flex; gap: 6px; }
+  .identity-row .key { color: #888; font-size: 11px; width: 52px; flex-shrink: 0; }
+  .identity-row .val { font-size: 11px; }
+  .rig-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .rig-badge { background: var(--night); color: var(--gold); border-radius: 8px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+  .fps-badge { background: var(--teal); color: white; border-radius: 8px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+
+  /* 骨骼规格 */
+  .anim-table-wrap { overflow-x: auto; margin-bottom: 20px; }
+  .anim-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .anim-table th { background: var(--night); color: #F5F0E8; padding: 10px 12px; text-align: left; font-weight: 700; }
+  .anim-table td { padding: 9px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  .anim-table tr:nth-child(even) td { background: #FAFAFA; }
+  .mode-badge { border-radius: 6px; padding: 2px 8px; font-size: 10px; font-weight: 700; }
+  .ai-json { background: #E8F0FF; color: #3366CC; }
+  .frame-anim { background: var(--pink); color: #6B2060; }
+
+  /* 表情集 */
+  .expr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .expr-char-card { background: white; border-radius: 16px; box-shadow: 0 4px 0 rgba(0,0,0,0.08); padding: 16px 20px; }
+  .expr-char-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; border-bottom: 2px solid var(--sand); padding-bottom: 8px; }
+  .expr-list { display: flex; flex-direction: column; gap: 8px; }
+  .expr-row { display: flex; align-items: flex-start; gap: 10px; }
+  .expr-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--sand); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .expr-info .name { font-size: 12px; font-weight: 700; }
+  .expr-info .emo { font-size: 11px; color: #888; }
+  .expr-info .ctx { font-size: 10px; color: var(--coral); }
+
+  /* 制作说明 */
+  .pipeline-steps { display: flex; flex-direction: column; gap: 16px; }
+  .pipeline-step { background: white; border-radius: 16px; box-shadow: 0 4px 0 rgba(0,0,0,0.08); padding: 16px 20px; display: flex; gap: 16px; }
+  .step-num { width: 36px; height: 36px; background: var(--coral); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; flex-shrink: 0; }
+  .step-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .step-body p { font-size: 12px; color: #555; line-height: 1.7; }
+  .step-body ul { font-size: 12px; color: #555; line-height: 1.8; padding-left: 16px; }
+  .file-chip { display: inline-block; background: var(--sand); border: 1px solid var(--brown); border-radius: 6px; padding: 2px 8px; font-size: 11px; font-family: monospace; margin: 2px; }
+
+  .footer { background: var(--night); color: #F5F0E8; padding: 16px 32px; font-size: 11px; text-align: center; margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>角色美术评审 — Glow Island</h1>
+    <div style="font-size:12px; color:#aaa; margin-top:4px;">character-art-gen node — 2026-05-13</div>
+  </div>
+  <div class="badge">待评审</div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('overview')">概览</button>
+  <button class="tab" onclick="showTab('characters')">七位角色</button>
+  <button class="tab" onclick="showTab('skeleton')">骨骼动画规格</button>
+  <button class="tab" onclick="showTab('expressions')">表情集</button>
+  <button class="tab" onclick="showTab('pipeline')">制作流程</button>
+  <button class="tab" onclick="showTab('checklist')">评审清单</button>
+</div>
+
+<!-- ========== 概览 ========== -->
+<div id="overview" class="content active">
+  <div class="summary-grid">
+    <div class="stat-card"><div class="num">7</div><div class="label">角色总数</div></div>
+    <div class="stat-card"><div class="num">6</div><div class="label">DragonBones骨骼角色</div></div>
+    <div class="stat-card"><div class="num">1</div><div class="label">帧动画角色（议长·橘猫）</div></div>
+    <div class="stat-card"><div class="num">31</div><div class="label">动画集总计（含react_jump）</div></div>
+    <div class="stat-card"><div class="num">35</div><div class="label">表情图（7角色×5种）</div></div>
+    <div class="stat-card"><div class="num">2000ms</div><div class="label">idle循环时长（呼吸感）</div></div>
+    <div class="stat-card"><div class="num">256×512</div><div class="label">主要角色画布（px）</div></div>
+    <div class="stat-card"><div class="num">192×192</div><div class="label">议长·橘猫画布（px）</div></div>
+  </div>
+
+  <div class="checklist">
+    <h3>节点规格完成条件</h3>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div><strong>character-art-spec.json</strong> 已生成 — 全量角色美术规格文档</div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div><strong>character-art-review.html</strong> 已生成 — 本文件</div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div>全部 7 个 <code>canonical_registry.characters[]</code> 条目 <strong>current_state = spec_ready</strong>（非 placeholder）</div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h3>子技能执行摘要</h3>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div><strong>Step 0 源策略解析</strong>：全部 7 个角色 source_strategy = llm_image_generation，跳过 Step 0，直接进入 Step 1</div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div><strong>Step 1a character-layer-sheet</strong>：layer-sheet-plan.json + layer-sheet-report.json — 7 个角色完整分层规格，verdict=pass</div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div><strong>Step 1b visual-style-tokens</strong>：visual-style-tokens.json + report — 色彩/线条/形状/材质/视角/光照/排版/UI/VFX 全令牌，verdict=pass</div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div><strong>Step 2a skeletal-animation (6角色)</strong>：skeletal-animation-plan.json + layered-character-reference.json + animation-preview-spec.json — verdict=approved_with_automation_limits</div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div><strong>Step 2b frame-animation (议长·橘猫)</strong>：char-gicho-frame-animation-spec.json — 4 组动画，12fps，4×192×192px</div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div><strong>Step 2c expression-set (全角色)</strong>：expression-set-spec.json + expression-set-manifest.json + expression-set-report.json — 35 张表情图规格，status=COMPLETED_WITH_LIMITS</div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h3>自动化限制说明</h3>
+    <div class="check-item">
+      <div class="check-pend">⚠</div>
+      <div><strong>DragonBones 渲染预览</strong>：DragonBones Pro 已检测到（detected_capabilities.dragonbones_pro=true），但需要在 IDE 中创建 .dbproj 工程文件后方可渲染动画预览。所有动画关键帧规格已完整提供，无需创意决策。</div>
+    </div>
+    <div class="check-item">
+      <div class="check-pend">⚠</div>
+      <div><strong>图片尚未生成</strong>：分层图、表情图、议长帧动画图的 AI 生图 prompt 已全部就绪，需要执行 google-imagen-4 / openrouter-gpt-image 生成后进入 art-qa 视觉验证。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 七位角色 ========== -->
+<div id="characters" class="content">
+  <div class="char-grid">
+
+    <!-- 山田律 -->
+    <div class="char-card">
+      <div class="char-header" style="background: linear-gradient(135deg, #E8EEF5, #F7EDD8);">
+        <div class="color-dot" style="background:#7A95B0;"></div>
+        <div class="info">
+          <h3>山田律 <span style="font-size:12px; font-weight:400; color:#888;">Yamada Ritsu</span></h3>
+          <div class="sub">主角 · 东京上班族 · 29岁</div>
+        </div>
+        <span class="milestone mvp">MVP</span>
+      </div>
+      <div class="char-body">
+        <div class="section-label">动画集</div>
+        <div class="tag-row">
+          <span class="tag anim">idle</span><span class="tag anim">happy</span><span class="tag anim">surprised</span>
+          <span class="tag anim">sad</span><span class="tag anim">wave</span><span class="tag anim">react_jump ★</span>
+        </div>
+        <div class="section-label">表情类型</div>
+        <div class="tag-row">
+          <span class="tag expr">默认</span><span class="tag expr">开心</span><span class="tag expr">困惑</span><span class="tag expr">惊讶</span><span class="tag expr">感动跳跃</span>
+        </div>
+        <div class="section-label">视觉识别特征</div>
+        <div class="identity-box">
+          <div class="identity-row"><span class="key">发型</span><span class="val">深色微乱；东京感正在松动</span></div>
+          <div class="identity-row"><span class="key">服装</span><span class="val">皱褶衬衫卷袖；办公室与岛屿之间</span></div>
+          <div class="identity-row"><span class="key">体型</span><span class="val">chibi中偏高挑；无特定标识色</span></div>
+          <div class="identity-row"><span class="key">识别点</span><span class="val">唯一有 react_jump 动作的角色；最高挑</span></div>
+        </div>
+        <div class="rig-row">
+          <span class="rig-badge">DragonBones</span>
+          <span class="fps-badge">30fps</span>
+          <span class="tag spec-ready">spec_ready</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 丸山ひなた -->
+    <div class="char-card">
+      <div class="char-header" style="background: linear-gradient(135deg, #F8EEF0, #FFF5F5);">
+        <div class="color-dot" style="background:#F0C4C4;"></div>
+        <div class="info">
+          <h3>丸山ひなた <span style="font-size:12px; font-weight:400; color:#888;">Maruyama Hinata</span></h3>
+          <div class="sub">女主角 · 灯台守孙女 · 24岁</div>
+        </div>
+        <span class="milestone mvp">MVP</span>
+      </div>
+      <div class="char-body">
+        <div class="section-label">动画集</div>
+        <div class="tag-row">
+          <span class="tag anim">idle</span><span class="tag anim">happy</span><span class="tag anim">surprised</span>
+          <span class="tag anim">sad</span><span class="tag anim">wave</span>
+        </div>
+        <div class="section-label">表情类型</div>
+        <div class="tag-row">
+          <span class="tag expr">默认</span><span class="tag expr">开心</span><span class="tag expr">困惑</span><span class="tag expr">惊讶</span><span class="tag expr">感动跳跃</span>
+        </div>
+        <div class="section-label">视觉识别特征</div>
+        <div class="identity-box">
+          <div class="identity-row"><span class="key">标识色</span><span class="val">#F0C4C4 樱粉 — 服装点缀</span></div>
+          <div class="identity-row"><span class="key">道具</span><span class="val">手账（左手持，随时可见）</span></div>
+          <div class="identity-row"><span class="key">发型</span><span class="val">实用扎发；轻微被海风吹动</span></div>
+          <div class="identity-row"><span class="key">识别点</span><span class="val">手账是最强剪影识别符</span></div>
+        </div>
+        <div class="rig-row">
+          <span class="rig-badge">DragonBones</span>
+          <span class="fps-badge">30fps</span>
+          <span class="tag spec-ready">spec_ready</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 磯部健三 -->
+    <div class="char-card">
+      <div class="char-header" style="background: linear-gradient(135deg, #E8EEF5, #D8E8F0);">
+        <div class="color-dot" style="background:#4A6D9A;"></div>
+        <div class="info">
+          <h3>磯部健三 <span style="font-size:12px; font-weight:400; color:#888;">Isobe Kenzo</span></h3>
+          <div class="sub">NPC · 老渔夫 · 约70岁 · 第1章</div>
+        </div>
+        <span class="milestone mvp">MVP</span>
+      </div>
+      <div class="char-body">
+        <div class="section-label">动画集</div>
+        <div class="tag-row">
+          <span class="tag anim">idle</span><span class="tag anim">happy</span><span class="tag anim">surprised</span>
+          <span class="tag anim">sad</span><span class="tag anim">wave</span>
+        </div>
+        <div class="section-label">表情类型</div>
+        <div class="tag-row">
+          <span class="tag expr">默认</span><span class="tag expr">开心</span><span class="tag expr">困惑</span><span class="tag expr">惊讶</span><span class="tag expr">感动跳跃</span>
+        </div>
+        <div class="section-label">视觉识别特征</div>
+        <div class="identity-box">
+          <div class="identity-row"><span class="key">标识色</span><span class="val">#4A6D9A 深海蓝 — 渔夫背心</span></div>
+          <div class="identity-row"><span class="key">体型</span><span class="val">最壮实；宽肩；稀疏灰发</span></div>
+          <div class="identity-row"><span class="key">服装</span><span class="val">渔夫背心 + 挽裤腿</span></div>
+          <div class="identity-row"><span class="key">识别点</span><span class="val">剪影最宽；体型不同于所有其他角色</span></div>
+        </div>
+        <div class="rig-row">
+          <span class="rig-badge">DragonBones</span>
+          <span class="fps-badge">30fps</span>
+          <span class="tag spec-ready">spec_ready</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 桐島梅子 -->
+    <div class="char-card">
+      <div class="char-header" style="background: linear-gradient(135deg, #EEF5EC, #E0F0D8);">
+        <div class="color-dot" style="background:#7DBE77;"></div>
+        <div class="info">
+          <h3>桐島梅子 <span style="font-size:12px; font-weight:400; color:#888;">Kirishima Umeko</span></h3>
+          <div class="sub">NPC · 陶艺师 · 约55岁 · 第2章</div>
+        </div>
+        <span class="milestone mvp">MVP</span>
+      </div>
+      <div class="char-body">
+        <div class="section-label">动画集</div>
+        <div class="tag-row">
+          <span class="tag anim">idle</span><span class="tag anim">happy</span><span class="tag anim">surprised</span>
+          <span class="tag anim">sad</span><span class="tag anim">wave</span>
+        </div>
+        <div class="section-label">表情类型</div>
+        <div class="tag-row">
+          <span class="tag expr">默认</span><span class="tag expr">开心</span><span class="tag expr">困惑</span><span class="tag expr">惊讶</span><span class="tag expr">感动跳跃</span>
+        </div>
+        <div class="section-label">视觉识别特征</div>
+        <div class="identity-box">
+          <div class="identity-row"><span class="key">标识色</span><span class="val">#7DBE77 竹绿 — 陶艺围裙</span></div>
+          <div class="identity-row"><span class="key">发型</span><span class="val">实用发髻；微乱的工作发</span></div>
+          <div class="identity-row"><span class="key">姿态</span><span class="val">轻微前倾（三十年陶艺积累）</span></div>
+          <div class="identity-row"><span class="key">识别点</span><span class="val">围裙形状 + 发髻 = 独特剪影</span></div>
+        </div>
+        <div class="rig-row">
+          <span class="rig-badge">DragonBones</span>
+          <span class="fps-badge">30fps</span>
+          <span class="tag spec-ready">spec_ready</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 海野夏帆 -->
+    <div class="char-card">
+      <div class="char-header" style="background: linear-gradient(135deg, #E8F0EA, #D8EED8);">
+        <div class="color-dot" style="background:#3D6645;"></div>
+        <div class="info">
+          <h3>海野夏帆 <span style="font-size:12px; font-weight:400; color:#888;">Umino Naho</span></h3>
+          <div class="sub">NPC · 自然向导 · 32岁 · 第3章</div>
+        </div>
+        <span class="milestone beta">Beta</span>
+      </div>
+      <div class="char-body">
+        <div class="section-label">动画集</div>
+        <div class="tag-row">
+          <span class="tag anim">idle</span><span class="tag anim">happy</span><span class="tag anim">surprised</span>
+          <span class="tag anim">sad</span><span class="tag anim">wave</span>
+        </div>
+        <div class="section-label">表情类型</div>
+        <div class="tag-row">
+          <span class="tag expr">默认</span><span class="tag expr">开心</span><span class="tag expr">困惑</span><span class="tag expr">惊讶</span><span class="tag expr">感动跳跃</span>
+        </div>
+        <div class="section-label">视觉识别特征</div>
+        <div class="identity-box">
+          <div class="identity-row"><span class="key">标识色</span><span class="val">#3D6645 深森绿 — 户外背心</span></div>
+          <div class="identity-row"><span class="key">发型</span><span class="val">随风散落；自由</span></div>
+          <div class="identity-row"><span class="key">姿态</span><span class="val">轻微头部侧倾（倾听状态）</span></div>
+          <div class="identity-row"><span class="key">识别点</span><span class="val">飘散发 + 多口袋背心 = 野外侧影</span></div>
+        </div>
+        <div class="rig-row">
+          <span class="rig-badge">DragonBones</span>
+          <span class="fps-badge">30fps</span>
+          <span class="tag spec-ready">spec_ready</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 丸山冬子 -->
+    <div class="char-card">
+      <div class="char-header" style="background: linear-gradient(135deg, #E8EBF2, #D8DCF0);">
+        <div class="color-dot" style="background:#2A4060;"></div>
+        <div class="info">
+          <h3>丸山冬子 <span style="font-size:12px; font-weight:400; color:#888;">Maruyama Fuyuko</span></h3>
+          <div class="sub">NPC · 灯台守遗孀 · 65岁 · 第6章</div>
+        </div>
+        <span class="milestone beta">Beta</span>
+      </div>
+      <div class="char-body">
+        <div class="section-label">动画集</div>
+        <div class="tag-row">
+          <span class="tag anim">idle</span><span class="tag anim">happy</span><span class="tag anim">surprised</span>
+          <span class="tag anim">sad</span><span class="tag anim">wave</span>
+        </div>
+        <div class="section-label">表情类型</div>
+        <div class="tag-row">
+          <span class="tag expr">默认</span><span class="tag expr">开心</span><span class="tag expr">困惑</span><span class="tag expr">惊讶</span><span class="tag expr">感动跳跃</span>
+        </div>
+        <div class="section-label">视觉识别特征</div>
+        <div class="identity-box">
+          <div class="identity-row"><span class="key">标识色</span><span class="val">#2A4060 夜深蓝 — 和式上衣</span></div>
+          <div class="identity-row"><span class="key">发型</span><span class="val">白/灰盘发；整齐优雅</span></div>
+          <div class="identity-row"><span class="key">姿态</span><span class="val">挺拔安详；灯台守的尊严</span></div>
+          <div class="identity-row"><span class="key">识别点</span><span class="val">盘发 + 和式剪影 = 所有角色中最正式</span></div>
+        </div>
+        <div class="rig-row">
+          <span class="rig-badge">DragonBones</span>
+          <span class="fps-badge">30fps</span>
+          <span class="tag spec-ready">spec_ready</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 议长·橘猫 -->
+    <div class="char-card">
+      <div class="char-header" style="background: linear-gradient(135deg, #2A3650, #3A4870);">
+        <div class="color-dot" style="background:#F5A840; border-color:#F5C842;"></div>
+        <div class="info" style="color:#F5F0E8;">
+          <h3 style="color:#F5F0E8;">议长·橘猫 <span style="font-size:12px; font-weight:400; color:#aaa;">Chairman · Orange Tabby</span></h3>
+          <div class="sub" style="color:#aaa;">NPC · 岛上最老居民 · 贯穿全章</div>
+        </div>
+        <span class="milestone release">Release</span>
+      </div>
+      <div class="char-body">
+        <div class="section-label">动画集</div>
+        <div class="tag-row">
+          <span class="tag anim">idle</span><span class="tag anim">happy</span><span class="tag anim">surprised</span>
+          <span class="tag anim">wave</span>
+          <span class="tag" style="background:#FFE8D8; color:#8B4000;">帧动画</span>
+        </div>
+        <div class="section-label">表情类型</div>
+        <div class="tag-row">
+          <span class="tag expr">默认</span><span class="tag expr">开心</span><span class="tag expr">困惑</span><span class="tag expr">惊讶</span><span class="tag expr">感动跳跃</span>
+        </div>
+        <div class="section-label">视觉识别特征</div>
+        <div class="identity-box">
+          <div class="identity-row"><span class="key">物种</span><span class="val">橘色虎斑猫；深海蓝 #2A3650 领标</span></div>
+          <div class="identity-row"><span class="key">画布</span><span class="val">192×192px（专属尺寸，非 256×512）</span></div>
+          <div class="identity-row"><span class="key">姿态</span><span class="val">坐姿端正；尾巴可见；肥猫威严感</span></div>
+          <div class="identity-row"><span class="key">识别点</span><span class="val">唯一非人类角色；坐猫剪影完全独特</span></div>
+        </div>
+        <div class="rig-row">
+          <span class="rig-badge" style="background:#F5C842; color:#2A3650;">帧动画 12fps</span>
+          <span class="tag spec-ready">spec_ready</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== 骨骼动画规格 ========== -->
+<div id="skeleton" class="content">
+  <p style="color:#666; margin-bottom:20px;">6 位骨骼角色（char_ritsu、char_hinata、char_kenzo、char_umeko、char_natsuka、char_fuyuko）使用 DragonBones 骨骼动画。议长·橘猫使用帧动画。以下展示主角（山田律）完整动画时间线规格。</p>
+
+  <div class="anim-table-wrap">
+    <table class="anim-table">
+      <thead>
+        <tr>
+          <th>动画ID</th>
+          <th>游戏状态</th>
+          <th>时长(ms)</th>
+          <th>循环</th>
+          <th>优先级</th>
+          <th>制作模式</th>
+          <th>关键姿势</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>idle</strong></td>
+          <td>谜题中静止或对话中</td>
+          <td>2000</td>
+          <td>✓</td>
+          <td>0</td>
+          <td><span class="mode-badge ai-json">ai_transform_json</span></td>
+          <td>中立 → 吸气(+2px) → 呼气</td>
+        </tr>
+        <tr>
+          <td><strong>happy</strong></td>
+          <td>正向谜题结果 / NPC 羁绊时刻</td>
+          <td>800</td>
+          <td>✗</td>
+          <td>2</td>
+          <td><span class="mode-badge ai-json">ai_transform_json</span></td>
+          <td>中立→跳跃峰→落地→恢复</td>
+        </tr>
+        <tr>
+          <td><strong>surprised</strong></td>
+          <td>意外发现 / 剧情揭示</td>
+          <td>600</td>
+          <td>✗</td>
+          <td>3</td>
+          <td><span class="mode-badge ai-json">ai_transform_json</span></td>
+          <td>中立→后仰→保持→恢复</td>
+        </tr>
+        <tr>
+          <td><strong>sad</strong></td>
+          <td>NPC 记忆时刻 / 岛屿哀愁</td>
+          <td>1200</td>
+          <td>✗</td>
+          <td>2</td>
+          <td><span class="mode-badge ai-json">ai_transform_json</span></td>
+          <td>中立→低垂→保持→恢复</td>
+        </tr>
+        <tr>
+          <td><strong>wave</strong></td>
+          <td>NPC 场景问候 / 告别</td>
+          <td>1000</td>
+          <td>✗</td>
+          <td>1</td>
+          <td><span class="mode-badge ai-json">ai_transform_json</span></td>
+          <td>中立→抬手→挥手峰→回落</td>
+        </tr>
+        <tr style="background:#FFF8E8;">
+          <td><strong>react_jump ★</strong></td>
+          <td>律专属：第3章花田美感觉醒</td>
+          <td>600</td>
+          <td>✗</td>
+          <td>3</td>
+          <td><span class="mode-badge ai-json">ai_transform_json</span></td>
+          <td>中立→惊跳→退缩→开放→安定</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="background:white; border-radius:16px; padding:20px; box-shadow:0 4px 0 rgba(0,0,0,0.08); margin-bottom:20px;">
+    <h3 style="font-size:14px; font-weight:700; margin-bottom:12px;">骨骼层级（humanoid 标准，6角色统一）</h3>
+    <pre style="font-size:12px; line-height:1.8; color:#444; background:#f8f8f8; padding:14px; border-radius:10px; overflow-x:auto;">root
+  └─ pelvis
+       ├─ torso（含neck合并）
+       │    ├─ head（含hair_front/hair_back）
+       │    ├─ upper_arm_l → forearm_l → hand_l
+       │    └─ upper_arm_r → forearm_r → hand_r
+       ├─ upper_leg_l → lower_leg_l → foot_l
+       └─ upper_leg_r → lower_leg_r → foot_r</pre>
+    <p style="font-size:12px; color:#666; margin-top:10px;">
+      所有骨骼 pivot_hint 已在 <span class="file-chip">skeletal-animation-plan.json</span> 中标注。
+      DragonBones Pro 导入 layer sheet PNG → 切割部位 → 按骨骼层级绑定 → 套用 timeline 规格。
+    </p>
+  </div>
+
+  <div style="background:white; border-radius:16px; padding:20px; box-shadow:0 4px 0 rgba(0,0,0,0.08);">
+    <h3 style="font-size:14px; font-weight:700; margin-bottom:12px;">议长·橘猫 — 帧动画规格</h3>
+    <div class="anim-table-wrap">
+      <table class="anim-table">
+        <thead>
+          <tr><th>动画ID</th><th>帧数</th><th>时长(ms)</th><th>循环</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>idle</td><td>4</td><td>2000</td><td>✓</td><td>微弱呼吸感；尾尖轻卷</td></tr>
+          <tr><td>happy</td><td>4</td><td>600</td><td>✗</td><td>眯眼满足；尾巴弧形上扬</td></tr>
+          <tr><td>surprised</td><td>3</td><td>500</td><td>✗</td><td>耳朵直立；眼睛变圆</td></tr>
+          <tr><td>wave</td><td>4</td><td>800</td><td>✗</td><td>一只爪子礼仪性抬起致意</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 表情集 ========== -->
+<div id="expressions" class="content">
+  <p style="color:#666; margin-bottom:20px;">全部 7 位角色各有 5 种表情图（256×256px PNG），共 35 张。表情图用于对话框、NPC 弹出面板、过场缩略图。所有表情规格已写入 <span class="file-chip">expression-set-spec.json</span>。</p>
+
+  <div class="expr-grid">
+
+    <div class="expr-char-card">
+      <div class="expr-char-title" style="border-color:#7A95B0;">山田律</div>
+      <div class="expr-list">
+        <div class="expr-row"><div class="expr-icon">😐</div><div class="expr-info"><div class="name">默认</div><div class="emo">疲惫但松动中的紧绷</div><div class="ctx">谜题中静止 / 对话</div></div></div>
+        <div class="expr-row"><div class="expr-icon">😊</div><div class="expr-info"><div class="name">开心</div><div class="emo">真实的惊喜感欣喜</div><div class="ctx">正向谜题 / NPC 温暖</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🤔</div><div class="expr-info"><div class="name">困惑</div><div class="emo">专注的新好奇心</div><div class="ctx">谜题思考 / NPC 洞察</div></div></div>
+        <div class="expr-row"><div class="expr-icon">😲</div><div class="expr-info"><div class="name">惊讶</div><div class="emo">真实的突然惊吓</div><div class="ctx">意外揭示 / 剧情转折</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🥺</div><div class="expr-info"><div class="name">感动跳跃 ★</div><div class="emo">开放的情绪反应（律专属）</div><div class="ctx">第3章花田觉醒瞬间</div></div></div>
+      </div>
+    </div>
+
+    <div class="expr-char-card">
+      <div class="expr-char-title" style="border-color:#F0C4C4;">丸山ひなた</div>
+      <div class="expr-list">
+        <div class="expr-row"><div class="expr-icon">📓</div><div class="expr-info"><div class="name">默认</div><div class="emo">观察力专注、内敛</div><div class="ctx">手账记录 / 巡视</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🌸</div><div class="expr-info"><div class="name">开心</div><div class="emo">极其克制的温热漏出</div><div class="ctx">「还行」时刻</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🔢</div><div class="expr-info"><div class="name">困惑</div><div class="emo">分析的冷静</div><div class="ctx">添加手账条目 / 计算</div></div></div>
+        <div class="expr-row"><div class="expr-icon">❓</div><div class="expr-info"><div class="name">惊讶</div><div class="emo">意料外变量检测</div><div class="ctx">律偏差37%的时刻</div></div></div>
+        <div class="expr-row"><div class="expr-icon">💡</div><div class="expr-info"><div class="name">感动跳跃</div><div class="emo">系统被覆盖的一瞬</div><div class="ctx">第5章 / 灯塔点亮</div></div></div>
+      </div>
+    </div>
+
+    <div class="expr-char-card">
+      <div class="expr-char-title" style="border-color:#4A6D9A;">磯部健三</div>
+      <div class="expr-list">
+        <div class="expr-row"><div class="expr-icon">⚓</div><div class="expr-info"><div class="name">默认</div><div class="emo">稳定的注视</div><div class="ctx">码头 / 收网</div></div></div>
+        <div class="expr-row"><div class="expr-icon">😌</div><div class="expr-info"><div class="name">开心</div><div class="emo">极微的满足（对他而言就是大笑）</div><div class="ctx">律的成长</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🌊</div><div class="expr-info"><div class="name">困惑</div><div class="emo">读海的眯眼</div><div class="ctx">检查潮汐 / 天气</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🎣</div><div class="expr-info"><div class="name">惊讶</div><div class="emo">罕见的干扰</div><div class="ctx">意外渔获 / 岛上事件</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🌅</div><div class="expr-info"><div class="name">感动跳跃</div><div class="emo">深层的认出</div><div class="ctx">第1章「能走就行」</div></div></div>
+      </div>
+    </div>
+
+    <div class="expr-char-card">
+      <div class="expr-char-title" style="border-color:#7DBE77;">桐島梅子</div>
+      <div class="expr-list">
+        <div class="expr-row"><div class="expr-icon">🏺</div><div class="expr-info"><div class="name">默认</div><div class="emo">直接审视（像看陶土一样看人）</div><div class="ctx">观察 / 形成评判</div></div></div>
+        <div class="expr-row"><div class="expr-icon">😄</div><div class="expr-info"><div class="name">开心</div><div class="emo">工匠的满足——充分而真实</div><div class="ctx">律的碗 / 手工时刻</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🤲</div><div class="expr-info"><div class="name">困惑</div><div class="emo">正在形成问题</div><div class="ctx">准备问那句关键问题</div></div></div>
+        <div class="expr-row"><div class="expr-icon">✨</div><div class="expr-info"><div class="name">惊讶</div><div class="emo">意料外的诚实</div><div class="ctx">律给出真实答案</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🍵</div><div class="expr-info"><div class="name">感动跳跃</div><div class="emo">不平整的东西被验证了</div><div class="ctx">第2章 律的碗上展示台</div></div></div>
+      </div>
+    </div>
+
+    <div class="expr-char-card">
+      <div class="expr-char-title" style="border-color:#3D6645;">海野夏帆</div>
+      <div class="expr-list">
+        <div class="expr-row"><div class="expr-icon">🌿</div><div class="expr-info"><div class="name">默认</div><div class="emo">安静的专注（在聆听什么）</div><div class="ctx">观察自然 / 律的脚步</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🌺</div><div class="expr-info"><div class="name">开心</div><div class="emo">花一样的温柔；羞涩但真实</div><div class="ctx">递出那束半开的花</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🍃</div><div class="expr-info"><div class="name">困惑</div><div class="emo">读地形的专注</div><div class="ctx">评估植物状态 / 路况</div></div></div>
+        <div class="expr-row"><div class="expr-icon">💬</div><div class="expr-info"><div class="name">惊讶</div><div class="emo">猛然直接说话的自我暴露</div><div class="ctx">第一次对律说真心话</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🌼</div><div class="expr-info"><div class="name">感动跳跃</div><div class="emo">「半开的花已经是花了」的瞬间</div><div class="ctx">第3章关键台词时刻</div></div></div>
+      </div>
+    </div>
+
+    <div class="expr-char-card">
+      <div class="expr-char-title" style="border-color:#2A4060;">丸山冬子</div>
+      <div class="expr-list">
+        <div class="expr-row"><div class="expr-icon">🏮</div><div class="expr-info"><div class="name">默认</div><div class="emo">安详的守望（等待是尊严）</div><div class="ctx">灯台旁 / 独处</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🙏</div><div class="expr-info"><div class="name">开心</div><div class="emo">托付完成的温暖</div><div class="ctx">保管物归还主人</div></div></div>
+        <div class="expr-row"><div class="expr-icon">⏳</div><div class="expr-info"><div class="name">困惑</div><div class="emo">衡量正确时机</div><div class="ctx">决定何时给律渉留下的东西</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🌟</div><div class="expr-info"><div class="name">惊讶</div><div class="emo">不期而遇的汇聚</div><div class="ctx">认出渉的预言成真</div></div></div>
+        <div class="expr-row"><div class="expr-icon">💛</div><div class="expr-info"><div class="name">感动跳跃</div><div class="emo">灯亮了 — 「渉さん、見えてますよ」</div><div class="ctx">第6章灯塔点亮</div></div></div>
+      </div>
+    </div>
+
+    <div class="expr-char-card">
+      <div class="expr-char-title" style="border-color:#F5A840; background:#2A3650; color:#F5F0E8;">议长·橘猫</div>
+      <div class="expr-list">
+        <div class="expr-row"><div class="expr-icon">😼</div><div class="expr-info"><div class="name">默认</div><div class="emo">王者的凝视（我管着这个岛）</div><div class="ctx">随处坐着</div></div></div>
+        <div class="expr-row"><div class="expr-icon">😸</div><div class="expr-info"><div class="name">开心</div><div class="emo">裁决通过（眯缝眼）</div><div class="ctx">批准律的留岛申请</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🐱</div><div class="expr-info"><div class="name">困惑</div><div class="emo">审核中（那12秒的样子）</div><div class="ctx">在律身边坐下判断</div></div></div>
+        <div class="expr-row"><div class="expr-icon">🙀</div><div class="expr-info"><div class="name">惊讶</div><div class="emo">发现异常（这岛上以前没有的东西）</div><div class="ctx">真正新事物出现</div></div></div>
+        <div class="expr-row"><div class="expr-icon">😻</div><div class="expr-info"><div class="name">感动跳跃</div><div class="emo">猫咪的呼噜振动（最高满足态）</div><div class="ctx">陪冬子守灯台夜晚</div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== 制作流程 ========== -->
+<div id="pipeline" class="content">
+  <div class="pipeline-steps">
+
+    <div class="pipeline-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>源策略解析（Step 0）</h4>
+        <p>全部 7 个角色 source_strategy = <strong>llm_image_generation</strong>，跳过 Step 0，直接进入 Pre-Spec。无需搜索外部资产包或许可证验证。</p>
+      </div>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>视觉风格令牌 (Step 1b)</h4>
+        <p>已生成 <span class="file-chip">visual-style-tokens.json</span>，覆盖：颜色系统、线条/形状/材质规范、角色标识色映射、图片生成正向/负向约束词。</p>
+      </div>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>分层规格 (Step 1a)</h4>
+        <p>已生成 <span class="file-chip">layer-sheet-plan.json</span> + <span class="file-chip">layer-sheet-report.json</span>。包含：</p>
+        <ul>
+          <li>7 个角色完整 parts[] 列表（pivot_hint + z_order + required）</li>
+          <li>DragonBones 合并规则（neck 合并到 torso；议长爪脚合并到 torso）</li>
+          <li>每个角色的 layer sheet PNG 生成 prompt（2048×2048px）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>骨骼动画规格 (Step 2 — 6角色)</h4>
+        <p>已生成 <span class="file-chip">skeletal-animation-plan.json</span> + <span class="file-chip">layered-character-reference.json</span> + <span class="file-chip">animation-preview-spec.json</span>。包含：</p>
+        <ul>
+          <li>每个角色的 animation_intent（动作设计意图）</li>
+          <li>完整骨骼层级（root → pelvis → torso → head/arms/legs）</li>
+          <li>所有动画的 ai_transform_json 时间线（关键帧 + 缓动）</li>
+          <li>DragonBones Pro 导入说明</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>帧动画规格 (Step 2 — 议长·橘猫)</h4>
+        <p>已生成 <span class="file-chip">char-gicho-frame-animation-spec.json</span>。192×192px，12fps，4 组动画（idle/happy/surprised/wave），共 15 帧图片。每帧含 AI 生图 prompt。</p>
+      </div>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h4>表情集规格 (Step 2 append — 全角色)</h4>
+        <p>已生成 <span class="file-chip">expression-set-spec.json</span> + <span class="file-chip">expression-set-manifest.json</span> + <span class="file-chip">expression-set-report.json</span>。35 张表情图规格（7角色 × 5种），每张含生图 prompt、emotion、dialogue_state 映射。</p>
+      </div>
+    </div>
+
+    <div class="pipeline-step" style="border: 2px solid var(--gold); border-radius: 16px;">
+      <div class="step-num" style="background:var(--gold); color:var(--text);">7</div>
+      <div class="step-body">
+        <h4>待执行：图片生成 + DragonBones 工程</h4>
+        <ul>
+          <li>使用 <code>google-imagen-4</code> 或 <code>openrouter-gpt-image</code> 生成 7 个分层图（2048×2048px）</li>
+          <li>在 DragonBones Pro 中创建 .dbproj → 导入 layer sheet → 绑定骨骼 → 套用时间线</li>
+          <li>导出 <code>characters_atlas.png + characters_atlas.json</code>（2048×2048px）</li>
+          <li>生成 35 张表情图（256×256px）+ 议长 15 帧图（192×192px）</li>
+          <li>验证 Cocos Creator 3.x 导入</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== 评审清单 ========== -->
+<div id="checklist" class="content">
+  <div class="checklist">
+    <h3>节点规格评审清单（来源：node-spec review_checklist）</h3>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div>
+        <strong>主角（律）有完整表情图（至少：默认/困惑/开心/疲惫/感动）</strong><br>
+        <span style="font-size:12px; color:#666;">山田律已有 5 种表情：default（疲惫紧绷中的松动）/ happy（裂缝中的开心）/ thinking（新好奇心的专注）/ surprised（真实惊吓）/ react_jump（感动跳跃·律专属）。情绪覆盖节点清单。</span>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div>
+        <strong>骨骼绑定点位标注清楚（DragonBones 已确定）</strong><br>
+        <span style="font-size:12px; color:#666;">skeletal-animation-plan.json 中，全部 6 位骨骼角色的每个 bone 均有 pivot_hint（如 "shoulder joint center"、"elbow joint center"）。DragonBones Pro 工作流已说明（导入 layer sheet → 切割 → 绑定 → 套用时间线）。</span>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div>
+        <strong>角色比例在同一参考系下统一（律/ひなた/健三/梅子/夏帆/冬子）</strong><br>
+        <span style="font-size:12px; color:#666;">全部 6 位人类角色使用相同 canvas_size_px（256×512px）和 proportion（head_body_ratio_1:1.5_chibi）。骨骼层级标准化。议长另有专用 192×192px 画布，已注明。</span>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div>
+        <strong>各NPC的视觉识别特征明显（服装标识色/独特道具/发型）</strong><br>
+        <span style="font-size:12px; color:#666;">
+          ひなた：手账道具 + 樱粉#F0C4C4 ／
+          健三：渔夫背心+最宽体型 + 深海蓝#4A6D9A ／
+          梅子：围裙+盘发 + 竹绿#7DBE77 ／
+          夏帆：飘散发+多口袋背心 + 深森绿#3D6645 ／
+          冬子：盘发+和式剪影 + 夜深蓝#2A4060 ／
+          议长：唯一非人类·坐猫剪影
+        </span>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-ok">✓</div>
+      <div>
+        <strong>角色有idle动效规格（轻微呼吸感动画帧描述）</strong><br>
+        <span style="font-size:12px; color:#666;">全部角色 idle 动画规格：2000ms 循环，torso.y ±2px，sine_in_out 缓动，制作模式 ai_transform_json。ひなた 额外有 hand_l（手账）微倾斜。DragonBones FPS=30。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h3>待人工评审项目</h3>
+    <div class="check-item">
+      <div class="check-pend">⏳</div>
+      <div>
+        <strong>Layer Sheet 图片生成并视觉检查</strong>
+        <br><span style="font-size:12px; color:#666;">生成 7 个 2048×2048px 分层 PNG 后，验证：各部位分离清晰 / 无阴影跨部位 / 比例正确 / 风格一致。</span>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-pend">⏳</div>
+      <div>
+        <strong>DragonBones Pro 动画播放测试</strong>
+        <br><span style="font-size:12px; color:#666;">创建 .dbproj → 绑定骨骼 → 套用时间线 → 预览 idle/happy/wave → 确认 pivot 位置正确、无穿模、循环无跳跃。</span>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-pend">⏳</div>
+      <div>
+        <strong>35 张表情图生成并身份一致性检查</strong>
+        <br><span style="font-size:12px; color:#666;">同一角色的 5 张表情需保持脸型/服装/发型一致；表情之间需有明显情绪区分度；256×256px 剪裁无误。</span>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-pend">⏳</div>
+      <div>
+        <strong>Cocos Creator 3.x 图集导入验证</strong>
+        <br><span style="font-size:12px; color:#666;">characters_atlas.png + characters_atlas.json 导入引擎；角色在 NPC 对话框（ui_panel_npc_dialogue）中正确显示。</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:white; border-radius:16px; padding:20px; box-shadow:0 4px 0 rgba(0,0,0,0.08);">
+    <h3 style="font-size:14px; font-weight:700; margin-bottom:12px;">输出文件索引</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:12px;">
+      <div><span class="file-chip">visual-style-tokens.json</span></div>
+      <div>视觉风格令牌（Step 1b）</div>
+      <div><span class="file-chip">layer-sheet-plan.json</span></div>
+      <div>分层规格计划（Step 1a）</div>
+      <div><span class="file-chip">layer-sheet-report.json</span></div>
+      <div>分层规格报告</div>
+      <div><span class="file-chip">skeletal-animation-plan.json</span></div>
+      <div>骨骼动画规格（Step 2a）</div>
+      <div><span class="file-chip">layered-character-reference.json</span></div>
+      <div>分层参考（含生图 prompt）</div>
+      <div><span class="file-chip">animation-preview-spec.json</span></div>
+      <div>动画预览规格</div>
+      <div><span class="file-chip">char-gicho-frame-animation-spec.json</span></div>
+      <div>议长帧动画规格（Step 2b）</div>
+      <div><span class="file-chip">expression-set-spec.json</span></div>
+      <div>表情集规格（Step 2c）</div>
+      <div><span class="file-chip">expression-set-manifest.json</span></div>
+      <div>表情集清单</div>
+      <div><span class="file-chip">expression-set-report.json</span></div>
+      <div>表情集报告</div>
+      <div><span class="file-chip">character-art-spec.json</span></div>
+      <div>主规格文档（exit artifact）</div>
+      <div><span class="file-chip">character-art-review.html</span></div>
+      <div>本评审文件（exit artifact）</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Glow Island · character-art-gen node · 2026-05-13 · 待人工评审 (in-review)
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

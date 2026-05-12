@@ -1,0 +1,247 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "output_root": ".allforai/game-design/ui",
+  "style_sources": {
+    "concept_contract": ".allforai/concept-contract.json",
+    "art_style_guide": ".allforai/game-design/art-style-guide.json",
+    "asset_registry": ".allforai/game-design/asset-registry.json"
+  },
+  "platform": {
+    "target": "mobile",
+    "orientation": "portrait",
+    "base_resolution": "720x1280",
+    "safe_area_note": "9:16 基准，上下安全区各留 44px（刘海/Home 条预留）"
+  },
+  "screens": [
+    {
+      "screen_id": "screen_gameplay",
+      "name": "游戏主界面",
+      "file_prefix": "ui_screen_gameplay",
+      "state": "spec_ready",
+      "paths": {
+        "flow": ".allforai/game-design/ui/flows/ui_screen_gameplay.json",
+        "layout": ".allforai/game-design/ui/screens/ui_screen_gameplay.json",
+        "mockup": ".allforai/game-design/ui/mockups/ui_screen_gameplay.png"
+      },
+      "components": [
+        "cmp_hud_bar",
+        "cmp_lighthouse_progress",
+        "cmp_btn_shuffle",
+        "cmp_btn_hint",
+        "cmp_btn_continue",
+        "cmp_coin_display",
+        "cmp_step_counter"
+      ],
+      "referenced_assets": [
+        "ui_hud_bar",
+        "ui_lighthouse_progress",
+        "ui_btn_shuffle",
+        "ui_btn_hint",
+        "ui_btn_continue",
+        "ui_coin_icon",
+        "ui_star_icon"
+      ]
+    },
+    {
+      "screen_id": "screen_level_select",
+      "name": "关卡选择",
+      "file_prefix": "ui_screen_level_select",
+      "state": "spec_ready",
+      "paths": {
+        "flow": ".allforai/game-design/ui/flows/ui_screen_level_select.json",
+        "layout": ".allforai/game-design/ui/screens/ui_screen_level_select.json",
+        "mockup": ".allforai/game-design/ui/mockups/ui_screen_level_select.png"
+      },
+      "components": ["cmp_level_card", "cmp_star_icon", "cmp_coin_display"],
+      "referenced_assets": ["ui_card_level", "ui_star_icon", "ui_coin_icon"]
+    },
+    {
+      "screen_id": "screen_shop",
+      "name": "商店",
+      "file_prefix": "ui_screen_shop",
+      "state": "spec_ready",
+      "paths": {
+        "flow": ".allforai/game-design/ui/flows/ui_screen_shop.json",
+        "layout": ".allforai/game-design/ui/screens/ui_screen_shop.json",
+        "mockup": ".allforai/game-design/ui/mockups/ui_screen_shop.png"
+      },
+      "components": ["cmp_panel_shop", "cmp_coin_display", "cmp_btn_close"],
+      "referenced_assets": ["ui_panel_shop", "ui_coin_icon"]
+    },
+    {
+      "screen_id": "screen_dialogue",
+      "name": "NPC 对话",
+      "file_prefix": "ui_screen_dialogue",
+      "state": "spec_ready",
+      "paths": {
+        "flow": ".allforai/game-design/ui/flows/ui_screen_dialogue.json",
+        "layout": ".allforai/game-design/ui/screens/ui_screen_dialogue.json",
+        "mockup": ".allforai/game-design/ui/mockups/ui_screen_dialogue.png"
+      },
+      "components": ["cmp_npc_dialogue_panel"],
+      "referenced_assets": ["ui_panel_npc_dialogue"]
+    }
+  ],
+  "components": [
+    {
+      "component_id": "cmp_hud_bar",
+      "role": "resource_bar",
+      "name": "HUD底栏",
+      "file_prefix": "ui_hud_bar",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_hud_bar.json",
+        "art": ".allforai/game-design/ui/art/ui_hud_bar.png"
+      },
+      "art_asset_ref": "ui_hud_bar"
+    },
+    {
+      "component_id": "cmp_level_card",
+      "role": "item_card",
+      "name": "关卡卡片",
+      "file_prefix": "ui_card_level",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_card_level.json",
+        "art": ".allforai/game-design/ui/art/ui_card_level.png"
+      },
+      "art_asset_ref": "ui_card_level"
+    },
+    {
+      "component_id": "cmp_btn_shuffle",
+      "role": "icon_button",
+      "name": "重排按钮",
+      "file_prefix": "ui_btn_shuffle",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_btn_shuffle.json",
+        "art": ".allforai/game-design/ui/art/ui_btn_shuffle.png"
+      },
+      "art_asset_ref": "ui_btn_shuffle"
+    },
+    {
+      "component_id": "cmp_btn_hint",
+      "role": "icon_button",
+      "name": "预判按钮",
+      "file_prefix": "ui_btn_hint",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_btn_hint.json",
+        "art": ".allforai/game-design/ui/art/ui_btn_hint.png"
+      },
+      "art_asset_ref": "ui_btn_hint"
+    },
+    {
+      "component_id": "cmp_btn_continue",
+      "role": "icon_button",
+      "name": "续关按钮",
+      "file_prefix": "ui_btn_continue",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_btn_continue.json",
+        "art": ".allforai/game-design/ui/art/ui_btn_continue.png"
+      },
+      "art_asset_ref": "ui_btn_continue"
+    },
+    {
+      "component_id": "cmp_panel_shop",
+      "role": "modal",
+      "name": "商店面板",
+      "file_prefix": "ui_panel_shop",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_panel_shop.json",
+        "art": ".allforai/game-design/ui/art/ui_panel_shop.png"
+      },
+      "art_asset_ref": "ui_panel_shop"
+    },
+    {
+      "component_id": "cmp_npc_dialogue_panel",
+      "role": "modal",
+      "name": "NPC对话框",
+      "file_prefix": "ui_panel_npc_dialogue",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_panel_npc_dialogue.json",
+        "art": ".allforai/game-design/ui/art/ui_panel_npc_dialogue.png"
+      },
+      "art_asset_ref": "ui_panel_npc_dialogue"
+    },
+    {
+      "component_id": "cmp_coin_display",
+      "role": "currency_display",
+      "name": "沙滩币显示",
+      "file_prefix": "ui_coin_icon",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_coin_display.json",
+        "art": ".allforai/game-design/ui/art/ui_coin_icon.png"
+      },
+      "art_asset_ref": "ui_coin_icon"
+    },
+    {
+      "component_id": "cmp_star_icon",
+      "role": "status_badge",
+      "name": "星星图标",
+      "file_prefix": "ui_star_icon",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_star_icon.json",
+        "art": ".allforai/game-design/ui/art/ui_star_icon.png"
+      },
+      "art_asset_ref": "ui_star_icon"
+    },
+    {
+      "component_id": "cmp_lighthouse_progress",
+      "role": "progress_bar",
+      "name": "灯塔进度条",
+      "file_prefix": "ui_lighthouse_progress",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_lighthouse_progress.json",
+        "art": ".allforai/game-design/ui/art/ui_lighthouse_progress.png"
+      },
+      "art_asset_ref": "ui_lighthouse_progress"
+    },
+    {
+      "component_id": "cmp_step_counter",
+      "role": "resource_bar",
+      "name": "步数计数器",
+      "file_prefix": "ui_cmp_step_counter",
+      "state": "spec_ready",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_step_counter.json",
+        "art": null
+      },
+      "art_asset_ref": null,
+      "note": "由 ui_hud_bar 内文字+图标实现，无独立图片资产"
+    },
+    {
+      "component_id": "cmp_btn_close",
+      "role": "secondary_button",
+      "name": "关闭按钮",
+      "file_prefix": "ui_cmp_btn_close",
+      "state": "planned",
+      "paths": {
+        "spec": ".allforai/game-design/ui/components/ui_cmp_btn_close.json",
+        "art": null
+      },
+      "art_asset_ref": null,
+      "note": "通用关闭/返回按钮，复用 ui_hud_bar 底板纹理，无独立资产"
+    }
+  ],
+  "ui_assets": [
+    { "asset_id": "ui_hud_bar",             "file_prefix": "ui_hud_bar",             "component_ref": "cmp_hud_bar" },
+    { "asset_id": "ui_card_level",           "file_prefix": "ui_card_level",           "component_ref": "cmp_level_card" },
+    { "asset_id": "ui_btn_shuffle",          "file_prefix": "ui_btn_shuffle",          "component_ref": "cmp_btn_shuffle" },
+    { "asset_id": "ui_btn_hint",             "file_prefix": "ui_btn_hint",             "component_ref": "cmp_btn_hint" },
+    { "asset_id": "ui_btn_continue",         "file_prefix": "ui_btn_continue",         "component_ref": "cmp_btn_continue" },
+    { "asset_id": "ui_panel_shop",           "file_prefix": "ui_panel_shop",           "component_ref": "cmp_panel_shop" },
+    { "asset_id": "ui_panel_npc_dialogue",   "file_prefix": "ui_panel_npc_dialogue",   "component_ref": "cmp_npc_dialogue_panel" },
+    { "asset_id": "ui_coin_icon",            "file_prefix": "ui_coin_icon",            "component_ref": "cmp_coin_display" },
+    { "asset_id": "ui_star_icon",            "file_prefix": "ui_star_icon",            "component_ref": "cmp_star_icon" },
+    { "asset_id": "ui_lighthouse_progress",  "file_prefix": "ui_lighthouse_progress",  "component_ref": "cmp_lighthouse_progress" }
+  ],
+  "validation_status": "COMPLETED"
+}

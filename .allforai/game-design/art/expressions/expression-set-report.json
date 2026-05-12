@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/expression-set-generation",
+  "verdict": "pass_with_limits",
+  "status": "COMPLETED_WITH_LIMITS",
+  "summary": {
+    "character_count": 7,
+    "expression_count_per_character": 5,
+    "total_expressions": 35,
+    "generated_count": 0,
+    "spec_ready_count": 35,
+    "approved_count": 0,
+    "automation_limited_count": 0
+  },
+  "passed_checks": [
+    "all_7_characters_have_5_expressions",
+    "expression_types_match_pipeline_config",
+    "emotion_mapping_covers_all_dialogue_states_per_character_arc",
+    "file_prefix_consistent_with_concept_contract",
+    "style_tokens_referenced",
+    "no_text_in_spec",
+    "consumers_declared"
+  ],
+  "failed_checks": [],
+  "limits": [
+    "expression_images_not_yet_generated",
+    "identity_consistency_visual_validation_pending_image_generation",
+    "downstream_dialogue_emotion_mapping_not_yet_validated"
+  ],
+  "next_actions": [
+    "Generate 35 expression portrait PNGs using google-imagen-4 or openrouter-gpt-image with prompts in expression-set-spec.json",
+    "Run validate_existing mode after generation to confirm identity consistency, expression distinction, and crop",
+    "Wire expression paths into dialogue system (ui_panel_npc_dialogue asset)"
+  ]
+}

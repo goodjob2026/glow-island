@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "generated_by": "environment-art-gen",
+  "result": "COMPLETED_WITH_LIMITS",
+  "result_notes": "All 18 background assets fully specified with complete prompts, parallax layer definitions, saturation profiles, and chapter-specific visual signatures. State is spec_ready — actual image generation pending art-qa review gate approval and image generation execution.",
+
+  "summary": {
+    "total_backgrounds": 18,
+    "chapters_covered": 6,
+    "states_per_chapter": ["before", "in_progress", "restored"],
+    "spec_ready": 18,
+    "generated": 0,
+    "approved": 0
+  },
+
+  "checks": [
+    {"check": "all_assets_specced", "result": "pass", "count": 18},
+    {"check": "parallax_layers_defined", "result": "pass", "note": "3 layers per background: sky_far / midground / foreground_elements — matches art-pipeline-config parallax_layers=3"},
+    {"check": "light_source_unified", "result": "pass", "note": "All 6 chapters use upper-right soft diffuse lighting. Chapter 6 night uses same direction with moonlight+lighthouse beam secondary — consistent model across all scenes"},
+    {"check": "chapter_visual_distinctiveness", "result": "pass", "notes": [
+      "Ch1 海边码头: 木制码头 + 渔船 + 灯塔远景 — 海洋茶青 #5BBFB5 dominant",
+      "Ch2 中央小镇: 石板路 + 木店铺 + 竹林 + 暖绿 #7DBE77 dominant",
+      "Ch3 花田山坡: 樱花花田 + 观景台 + 粉色 #F0C4C4 dominant",
+      "Ch4 森林露营地: 营地篝火 + 大树 + 苔藓 + 森林绿 #4A7D55 dominant",
+      "Ch5 温泉山谷: 露天温泉 + 竹篱笆 + 红叶/雪 + 土黄 #C4955A dominant",
+      "Ch6 夜晚灯塔: 灯塔光束 + 星空 + 深海夜色 + 夜靛 #1E2E50 dominant"
+    ]},
+    {"check": "restoration_states_distinct", "result": "pass", "note": "Each chapter has 3 states (before/in_progress/restored) with measurably different saturation profiles (8-15% / 28-52% / 55-82%) ensuring visual progression clarity"},
+    {"check": "ui_safe_zone_compliance", "result": "pass", "note": "All prompts specify center 60% of screen kept free from busy foreground elements — board overlay safe zone preserved"},
+    {"check": "board_shape_evolution_noted", "result": "pass", "note": "Ch1-2 use standard rectangle boards (8x8/9x9), Ch3+ use irregular island-outline shapes. Background compositions designed to not interfere with either board shape."},
+    {"check": "prohibited_styles_excluded", "result": "pass", "note": "All prompts include negative constraints: no pixel art, no 3D render, no neon, no pure black, no text, no people, no high contrast, no sharp geometry, no photorealism"}
+  ],
+
+  "warnings": [
+    "Images not yet generated — spec_ready state pending execution via google-imagen-4 (primary) or openrouter-gpt-image (fallback)",
+    "Actual generation requires art-qa node approval before asset state advances to 'generated'",
+    "Ch5 restored state includes dual seasonal elements (autumn leaves + snow) as design decision for four-season preview — review for scope alignment at art-qa"
+  ],
+  "errors": [],
+
+  "downstream_consumers": ["art-qa", "runtime-puzzle-scene", "environment-art-review"]
+}

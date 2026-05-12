@@ -1,0 +1,11 @@
+{
+  "report_id": "glow-island-template-schema-report-v1",
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "status": "validated",
+  "schemas_generated": ["level.schema.json", "tile_type.schema.json", "economy_sku.schema.json", "npc.schema.json", "chapter.schema.json"],
+  "all_required_fields_typed": true,
+  "all_source_refs_explicit": true,
+  "no_hardcoded_balance_values": true,
+  "conclusion": "所有5个schema均有required_fields、field_types、source_ref_requirements、validation_rules。无hardcode数值。"
+}

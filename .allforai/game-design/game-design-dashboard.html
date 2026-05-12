@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glow Island — 游戏设计综合仪表板</title>
+<style>
+  :root {
+    --coral: #E8866A;
+    --sand: #F7EDD8;
+    --gold: #F5C842;
+    --night: #1E2E50;
+    --teal: #5BBFB5;
+    --green: #7BC67A;
+    --approved: #4CAF50;
+    --warning: #FF9800;
+    --pending: #9E9E9E;
+    --bg: #FFF9F2;
+    --card: #FFFFFF;
+    --border: #E8D5B8;
+    --text: #3A2810;
+    --text-muted: #7A6050;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+  header { background: var(--night); color: white; padding: 24px 32px; }
+  header h1 { font-size: 24px; font-weight: 700; }
+  header .subtitle { color: #9DAFD0; font-size: 14px; margin-top: 4px; }
+  header .meta { font-size: 12px; color: #7A90B0; margin-top: 8px; }
+  .tab-nav { display: flex; gap: 0; background: var(--night); padding: 0 32px; border-bottom: 1px solid #334466; overflow-x: auto; }
+  .tab-btn { padding: 12px 20px; color: #9DAFD0; cursor: pointer; font-size: 13px; white-space: nowrap; border-bottom: 3px solid transparent; background: none; border-top: none; border-left: none; border-right: none; }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .tab-btn:hover { color: white; }
+  .tab-content { display: none; padding: 28px 32px; max-width: 1200px; }
+  .tab-content.active { display: block; }
+  .section-title { font-size: 18px; font-weight: 700; color: var(--night); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .card-value { font-size: 28px; font-weight: 700; color: var(--night); }
+  .card-note { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+  .badge-approved { background: #E8F5E9; color: #2E7D32; }
+  .badge-warning { background: #FFF3E0; color: #E65100; }
+  .badge-pending { background: #F5F5F5; color: #616161; }
+  .badge-info { background: #E3F2FD; color: #1565C0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 10px 12px; background: var(--sand); color: var(--text-muted); font-weight: 700; font-size: 11px; text-transform: uppercase; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #FAFAFA; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .dot-approved { background: var(--approved); }
+  .dot-warning { background: var(--warning); }
+  .dot-pending { background: var(--pending); }
+  .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; background: var(--coral); }
+  .node-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+  .node-card { border-radius: 10px; padding: 12px 14px; border: 1px solid; }
+  .node-card.approved { background: #E8F5E9; border-color: #C8E6C9; }
+  .node-card.pending { background: #F5F5F5; border-color: #E0E0E0; }
+  .node-card.in-review { background: #FFF3E0; border-color: #FFE0B2; }
+  .node-name { font-size: 13px; font-weight: 700; color: var(--night); }
+  .node-owner { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .node-status { font-size: 11px; font-weight: 700; margin-top: 6px; }
+  .node-card.approved .node-status { color: #2E7D32; }
+  .node-card.pending .node-status { color: #616161; }
+  .node-card.in-review .node-status { color: #E65100; }
+  .warning-item { background: #FFF3E0; border: 1px solid #FFE0B2; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }
+  .warning-item .warning-id { font-size: 11px; font-weight: 700; color: #E65100; }
+  .warning-item .warning-desc { font-size: 13px; color: var(--text); margin-top: 4px; }
+  .warning-item .warning-repair { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .path-link { font-family: monospace; font-size: 11px; color: var(--teal); word-break: break-all; }
+  .summary-hero { background: linear-gradient(135deg, var(--night) 0%, #2A3F70 100%); color: white; border-radius: 16px; padding: 28px; margin-bottom: 24px; }
+  .summary-hero h2 { font-size: 22px; margin-bottom: 4px; }
+  .summary-hero .tagline { color: #9DAFD0; font-size: 14px; }
+  .hero-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 16px; margin-top: 20px; }
+  .hero-stat { text-align: center; }
+  .hero-stat .val { font-size: 32px; font-weight: 700; color: var(--gold); }
+  .hero-stat .lbl { font-size: 12px; color: #9DAFD0; margin-top: 2px; }
+  .chapter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .chapter-chip { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: white; }
+  .ch1 { background: #F48FB1; }
+  .ch2 { background: #80CBC4; }
+  .ch3 { background: #FFCC80; }
+  .ch4 { background: #90CAF9; }
+  .ch5 { background: #CE93D8; }
+  .ch6 { background: #FFB74D; }
+  .season-tag { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .spring { background: #FCE4EC; color: #C2185B; }
+  .summer { background: #E0F2F1; color: #00695C; }
+  .autumn { background: #FFF3E0; color: #E65100; }
+  .winter { background: #E3F2FD; color: #1565C0; }
+  .readiness-bar { margin-bottom: 12px; }
+  .readiness-bar .label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏝 Glow Island (輝島) — 游戏设计综合仪表板</h1>
+  <div class="subtitle">game-design-finalize · 所有设计节点状态与系统摘要</div>
+  <div class="meta">生成时间：2026-05-13 · 节点版本：game-design-finalize v1.0 · 所有19个设计节点 ✓ 已批准</div>
+</header>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('overview')">总览</button>
+  <button class="tab-btn" onclick="showTab('nodes')">节点状态</button>
+  <button class="tab-btn" onclick="showTab('systems')">系统摘要</button>
+  <button class="tab-btn" onclick="showTab('art')">美术&音频就绪度</button>
+  <button class="tab-btn" onclick="showTab('economy')">经济系统</button>
+  <button class="tab-btn" onclick="showTab('handoff')">移交清单</button>
+  <button class="tab-btn" onclick="showTab('warnings')">警告&风险</button>
+</div>
+
+<!-- 总览 -->
+<div id="tab-overview" class="tab-content active">
+  <div class="summary-hero">
+    <h2>Glow Island (輝島) — 游戏设计阶段完成</h2>
+    <div class="tagline">休闲连连看 × 叙事治愈 × 节奏爽快感 · iOS + Android · Cocos Creator 3.x</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val">19</div><div class="lbl">已批准节点</div></div>
+      <div class="hero-stat"><div class="val">0</div><div class="lbl">阻断问题</div></div>
+      <div class="hero-stat"><div class="val">180</div><div class="lbl">总关卡数</div></div>
+      <div class="hero-stat"><div class="val">6</div><div class="lbl">章节</div></div>
+      <div class="hero-stat"><div class="val">92</div><div class="lbl">美术资产</div></div>
+      <div class="hero-stat"><div class="val">67</div><div class="lbl">音频资产</div></div>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="card-title">核心玩法</div>
+      <div class="card-value" style="font-size:16px;">连连看路径匹配</div>
+      <div class="card-note">≤2次转弯 · BFS算法 · 节奏连击系统</div>
+      <div class="card-note" style="margin-top:6px;">5种战术特殊图块 + 3种场外辅助</div>
+    </div>
+    <div class="card">
+      <div class="card-title">货币模型</div>
+      <div class="card-value" style="font-size:16px;">单货币 + 沙漏</div>
+      <div class="card-note">沙滩币（IAP + 沙漏免费领取）</div>
+      <div class="card-note" style="margin-top:6px;">4小时满 · 月卡×2 · 无体力系统</div>
+    </div>
+    <div class="card">
+      <div class="card-title">叙事主轴</div>
+      <div class="card-value" style="font-size:16px;">点亮灯塔</div>
+      <div class="card-note">山田律 × 丸山ひなた情感线</div>
+      <div class="card-note" style="margin-top:6px;">灯台守日记碎片 · 5位NPC · 6章</div>
+    </div>
+    <div class="card">
+      <div class="card-title">平台&登录</div>
+      <div class="card-value" style="font-size:16px;">iOS + Android</div>
+      <div class="card-note">Apple ID / Google / 邮箱（主键）</div>
+      <div class="card-note" style="margin-top:6px;">自建后端 · 不上架中国区</div>
+    </div>
+    <div class="card">
+      <div class="card-title">美术风格</div>
+      <div class="card-value" style="font-size:16px;">2D手绘水彩</div>
+      <div class="card-note">动物森友会美学 · 日式离岛</div>
+      <div class="card-note" style="margin-top:6px;">dragonbones + frame + tween</div>
+    </div>
+    <div class="card">
+      <div class="card-title">时间系统</div>
+      <div class="card-value" style="font-size:16px;">双轨驱动</div>
+      <div class="card-note">现实时钟（日夜三段）+ 关卡进度（四季）</div>
+      <div class="card-note" style="margin-top:6px;">Ch1春→Ch2夏→Ch3秋→Ch4冬→Ch5春②→Ch6夏②</div>
+    </div>
+  </div>
+
+  <div class="section-title">章节概览</div>
+  <table>
+    <thead>
+      <tr><th>章节</th><th>主题</th><th>季节</th><th>棋盘</th><th>新机制</th><th>新特殊图块</th><th>NPC向导</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="chapter-chip ch1">Ch1</span></td>
+        <td>海边码头</td>
+        <td><span class="season-tag spring">春</span></td>
+        <td>8×8矩形</td>
+        <td>基础消除 + Combo系统</td>
+        <td>cascade（连锁）</td>
+        <td>磯部健三</td>
+      </tr>
+      <tr>
+        <td><span class="chapter-chip ch2">Ch2</span></td>
+        <td>中央小镇</td>
+        <td><span class="season-tag summer">夏</span></td>
+        <td>8×8→9×9矩形</td>
+        <td>冰封块 + 杂草</td>
+        <td>light_chain（光链）</td>
+        <td>桐島梅子</td>
+      </tr>
+      <tr>
+        <td><span class="chapter-chip ch3">Ch3</span></td>
+        <td>花田山坡</td>
+        <td><span class="season-tag autumn">秋</span></td>
+        <td>8×8异形</td>
+        <td>锁链 + 传送门</td>
+        <td>wave（光波）</td>
+        <td>海野夏帆</td>
+      </tr>
+      <tr>
+        <td><span class="chapter-chip ch4">Ch4</span></td>
+        <td>森林露营地</td>
+        <td><span class="season-tag winter">冬</span></td>
+        <td>8×8异形</td>
+        <td>单路径通道 + 木箱</td>
+        <td>pierce（穿透）</td>
+        <td>议长（猫）</td>
+      </tr>
+      <tr>
+        <td><span class="chapter-chip ch5">Ch5</span></td>
+        <td>温泉山谷</td>
+        <td><span class="season-tag spring">春②</span></td>
+        <td>9×9异形</td>
+        <td>重力下落 + 水流</td>
+        <td>swap（置换）</td>
+        <td>丸山ひなた</td>
+      </tr>
+      <tr>
+        <td><span class="chapter-chip ch6">Ch6</span></td>
+        <td>夜晚灯塔</td>
+        <td><span class="season-tag summer">夏②</span></td>
+        <td>10×10异形</td>
+        <td>扩散藤蔓/苔藓 + 全机制</td>
+        <td>—</td>
+        <td>丸山冬子</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 节点状态 -->
+<div id="tab-nodes" class="tab-content">
+  <div class="section-title">所有游戏设计节点审批状态</div>
+  <div class="node-grid">
+    <div class="node-card approved">
+      <div class="node-name">worldbuilding</div>
+      <div class="node-owner">narrative-designer</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">core-loop-design</div>
+      <div class="node-owner">lead-designer</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">character-arc-design</div>
+      <div class="node-owner">narrative-designer</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">ftue-design</div>
+      <div class="node-owner">ux-designer</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">monetization-design</div>
+      <div class="node-owner">monetization-designer</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">retention-hook-design</div>
+      <div class="node-owner">systems-designer</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">meta-game-design</div>
+      <div class="node-owner">systems-designer</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">level-design</div>
+      <div class="node-owner">level-designer</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">puzzle-design</div>
+      <div class="node-owner">level-designer</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">progression-curve-design</div>
+      <div class="node-owner">numeric-designer</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">audio-design</div>
+      <div class="node-owner">audio-director</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">art-direction</div>
+      <div class="node-owner">art-director</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">art-spec-design</div>
+      <div class="node-owner">concept-artist</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">tile-art-gen</div>
+      <div class="node-owner">concept-artist</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">character-art-gen</div>
+      <div class="node-owner">character-modeler</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">environment-art-gen</div>
+      <div class="node-owner">environment-artist</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">ui-art-gen</div>
+      <div class="node-owner">ui-artist</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">vfx-art-gen</div>
+      <div class="node-owner">vfx-artist</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card approved">
+      <div class="node-name">art-qa</div>
+      <div class="node-owner">art-director</div>
+      <div class="node-status">✓ 已批准 · 2026-05-12</div>
+    </div>
+    <div class="node-card in-review">
+      <div class="node-name">game-design-finalize</div>
+      <div class="node-owner">lead-designer</div>
+      <div class="node-status">⏳ 审核中 · 2026-05-13</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;" class="section-title">解锁的实现节点</div>
+  <div class="node-grid">
+    <div class="node-card pending"><div class="node-name">setup-runtime-env</div><div class="node-owner">tech-lead</div></div>
+    <div class="node-card pending"><div class="node-name">implement-puzzle-core</div><div class="node-owner">gameplay-engineer</div></div>
+    <div class="node-card pending"><div class="node-name">implement-special-mechanics</div><div class="node-owner">gameplay-engineer</div></div>
+    <div class="node-card pending"><div class="node-name">implement-game-session</div><div class="node-owner">gameplay-engineer</div></div>
+    <div class="node-card pending"><div class="node-name">implement-island-map</div><div class="node-owner">ui-engineer</div></div>
+    <div class="node-card pending"><div class="node-name">implement-ui-systems</div><div class="node-owner">ui-engineer</div></div>
+    <div class="node-card pending"><div class="node-name">implement-backend-api</div><div class="node-owner">backend-engineer</div></div>
+    <div class="node-card pending"><div class="node-name">implement-shop-iap</div><div class="node-owner">backend-engineer</div></div>
+    <div class="node-card pending"><div class="node-name">implement-audio</div><div class="node-owner">audio-engineer</div></div>
+    <div class="node-card pending"><div class="node-name">level-editor-tool</div><div class="node-owner">tools-engineer</div></div>
+  </div>
+</div>
+
+<!-- 系统摘要 -->
+<div id="tab-systems" class="tab-content">
+  <div class="section-title">核心机制系统</div>
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="card-title">特殊图块（5种）</div>
+      <table>
+        <tr><th>图块</th><th>触发条件</th><th>效果</th></tr>
+        <tr><td>🌊 光波 (wave)</td><td>Combo=6生成</td><td>清除3×3障碍层 + 5s自由路径</td></tr>
+        <tr><td>🔗 光链 (light_chain)</td><td>Combo=4生成</td><td>全棋盘最多类型批量消除</td></tr>
+        <tr><td>💙 穿透 (pierce)</td><td>关卡预置</td><td>8s穿透模式</td></tr>
+        <tr><td>🔄 置换 (swap)</td><td>关卡预置</td><td>任意两格内容互换</td></tr>
+        <tr><td>🔶 连锁 (cascade)</td><td>Combo=3生成</td><td>自动链消最多5次</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Combo倍率曲线</div>
+      <table>
+        <tr><th>Combo</th><th>倍率</th><th>标签</th><th>关联特殊块</th></tr>
+        <tr><td>×1</td><td>1.0×</td><td>起步</td><td>—</td></tr>
+        <tr><td>×2</td><td>1.3×</td><td>热身</td><td>—</td></tr>
+        <tr><td>×3</td><td>1.8×</td><td>加速</td><td>cascade生成</td></tr>
+        <tr><td>×4</td><td>2.5×</td><td>燃起来</td><td>light_chain生成</td></tr>
+        <tr><td>×5</td><td>3.5×</td><td>狂热</td><td>—</td></tr>
+        <tr><td>×6</td><td>5.0×</td><td>极限</td><td>wave生成</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-title">叙事系统</div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">主角弧线</div>
+      <div style="font-size:13px;">
+        <strong>山田律</strong> 正向成长弧<br>
+        <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:4px;">
+          <span class="badge badge-info">逃离·着陆</span>
+          <span class="badge badge-info">温暖·归属</span>
+          <span class="badge badge-info">情绪解冻</span>
+          <span class="badge badge-info">栖息</span>
+          <span class="badge badge-info">接受</span>
+          <span class="badge badge-info">点亮</span>
+        </div>
+        <div style="margin-top:8px; font-size:12px; color:var(--text-muted);">核心真相：「活在当下本身就已足够」</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">情感线</div>
+      <div style="font-size:13px;">
+        <strong>律 × ひなた</strong> 镜像关系<br>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:8px;">律害怕回东京（离开）<br>ひなた害怕外界进入（被找到）<br>两人各自守护同一份安静，从未说破</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">神秘谜题</div>
+      <div style="font-size:13px;">三块风化石刻</div>
+      <div style="font-size:12px; color:var(--text-muted); margin-top:6px;">
+        「りつ」（Ch1码头）<br>
+        「二〇二六」（Ch3山坡）<br>
+        「灯を見る人」（Ch5灯台基石）<br>
+        <em>游戏永远不确认</em>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 美术&音频就绪度 -->
+<div id="tab-art" class="tab-content">
+  <div class="section-title">美术资产就绪度</div>
+  <div style="max-width:600px;">
+    <div class="readiness-bar">
+      <div class="label"><span>图块美术（120 PNG规格）</span><span class="badge badge-warning">规格完成 · 待生成</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:70%; background:var(--gold);"></div></div>
+    </div>
+    <div class="readiness-bar">
+      <div class="label"><span>角色美术（7角色 dragonbones）</span><span class="badge badge-warning">规格完成 · 待生成</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:65%; background:var(--gold);"></div></div>
+    </div>
+    <div class="readiness-bar">
+      <div class="label"><span>环境背景（18场景 parallax）</span><span class="badge badge-warning">规格完成 · 待生成</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:65%; background:var(--gold);"></div></div>
+    </div>
+    <div class="readiness-bar">
+      <div class="label"><span>UI美术（30资产）</span><span class="badge badge-warning">规格完成 · 待生成</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:65%; background:var(--gold);"></div></div>
+    </div>
+    <div class="readiness-bar">
+      <div class="label"><span>VFX（37资产 含10个季节粒子）</span><span class="badge badge-warning">规格完成 · 待生成</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:65%; background:var(--gold);"></div></div>
+    </div>
+    <div class="readiness-bar">
+      <div class="label"><span>Engine-ready manifest（runtime_id链路）</span><span class="badge badge-approved">已完成</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:24px;">美术QA综合评分</div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">QA总评分</div>
+      <div class="card-value">4/5</div>
+      <div class="card-note">通过（含警告）· 无blocker</div>
+    </div>
+    <div class="card">
+      <div class="card-title">美术资产总数</div>
+      <div class="card-value">92</div>
+      <div class="card-note">图集：10个 · atlas策略：per_chapter</div>
+    </div>
+    <div class="card">
+      <div class="card-title">音频资产总数</div>
+      <div class="card-value">67</div>
+      <div class="card-note">含日夜BGM + 四季变奏 + 季节SFX</div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:24px;">音频系统就绪度</div>
+  <table>
+    <thead><tr><th>系统</th><th>规格</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td>Combo音频系统</td><td>6档SFX (sfx_tile_connect + lv1~lv5)，VFX同步±50ms</td><td><span class="badge badge-approved">规格完成</span></td></tr>
+      <tr><td>日夜BGM系统</td><td>白天1.0x → 黄昏0.93x(8s) → 夜晚0.88x-2dB(12s)</td><td><span class="badge badge-approved">规格完成</span></td></tr>
+      <tr><td>四季BGM变奏</td><td>春(Ch1/5) / 夏(Ch2/6) / 秋(Ch3) / 冬(Ch4)</td><td><span class="badge badge-approved">规格完成</span></td></tr>
+      <tr><td>冬季温泉专属SFX</td><td>sfx_winter_snow_fall + sfx_onsen_steam_winter</td><td><span class="badge badge-approved">规格完成</span></td></tr>
+      <tr><td>特殊图块SFX</td><td>5种各有独立SFX (wave/light_chain/cascade/pierce/swap)</td><td><span class="badge badge-approved">规格完成</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 经济系统 -->
+<div id="tab-economy" class="tab-content">
+  <div class="section-title">经济系统摘要</div>
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="card-title">货币模型</div>
+      <div class="card-value" style="font-size:16px;">single_currency</div>
+      <div class="card-note">仅沙滩币 · 无双货币 · 无体力</div>
+    </div>
+    <div class="card">
+      <div class="card-title">沙漏奖励</div>
+      <div class="card-value" style="font-size:16px;">每4小时15币</div>
+      <div class="card-note">月卡×2=30币 · 服务端计时防作弊</div>
+    </div>
+    <div class="card">
+      <div class="card-title">唯一付费墙</div>
+      <div class="card-value" style="font-size:16px;">步数续关</div>
+      <div class="card-note">30沙滩币/次 · +5步 · 无次数上限</div>
+    </div>
+  </div>
+
+  <div class="section-title">IAP SKU产品线</div>
+  <table>
+    <thead><tr><th>SKU</th><th>名称</th><th>价格(USD)</th><th>沙滩币</th><th>定位</th></tr></thead>
+    <tbody>
+      <tr><td>pack_small</td><td>一抔沙</td><td>$0.99</td><td>60</td><td>低门槛入门包，首充转化</td></tr>
+      <tr><td>pack_medium</td><td>一把贝壳</td><td>$3.99</td><td>280</td><td>主力单次购买，性价比锚点</td></tr>
+      <tr><td>pack_large</td><td>一篮珊瑚</td><td>$9.99</td><td>820</td><td>重度玩家储粮包</td></tr>
+      <tr><td>pack_monthly_card</td><td>月卡</td><td>$4.99/月</td><td>900总计</td><td>订阅留存锚点 · 沙漏×2</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:24px;">收入目标</div>
+  <div class="grid-3">
+    <div class="card"><div class="card-title">D7 ARPU</div><div class="card-value">$0.45</div></div>
+    <div class="card"><div class="card-title">D30 ARPU</div><div class="card-value">$1.20</div></div>
+    <div class="card"><div class="card-title">IAP转化率</div><div class="card-value">2.5%</div></div>
+    <div class="card"><div class="card-title">月卡续费率</div><div class="card-value">55%</div></div>
+    <div class="card"><div class="card-title">免费玩家日产出</div><div class="card-value">60币</div><div class="card-note">约2次续关 · 不破坏付费意愿</div></div>
+    <div class="card"><div class="card-title">收入结构</div><div class="card-value" style="font-size:14px;">40%月卡 / 45%单包 / 15%续关</div></div>
+  </div>
+</div>
+
+<!-- 移交清单 -->
+<div id="tab-handoff" class="tab-content">
+  <div class="section-title">退出产物（Exit Artifacts）</div>
+  <table>
+    <thead><tr><th>产物</th><th>路径</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>综合设计文档</td>
+        <td class="path-link">.allforai/game-design/game-design-doc.json</td>
+        <td><span class="badge badge-approved">已生成</span></td>
+      </tr>
+      <tr>
+        <td>综合仪表板（本页）</td>
+        <td class="path-link">.allforai/game-design/game-design-dashboard.html</td>
+        <td><span class="badge badge-approved">已生成</span></td>
+      </tr>
+      <tr>
+        <td>美术移交包</td>
+        <td class="path-link">.allforai/game-design/design/art-input-handoff.json</td>
+        <td><span class="badge badge-approved">已生成</span></td>
+      </tr>
+      <tr>
+        <td>美术移交报告</td>
+        <td class="path-link">.allforai/game-design/design/art-input-handoff-report.json</td>
+        <td><span class="badge badge-approved">已生成</span></td>
+      </tr>
+      <tr>
+        <td>项目规划移交文档</td>
+        <td class="path-link">.allforai/game-design/design/game-planning-handoff.md</td>
+        <td><span class="badge badge-approved">已生成</span></td>
+      </tr>
+      <tr>
+        <td>程序开发接口定义</td>
+        <td class="path-link">.allforai/game-design/design/program-development-node-handoff.json</td>
+        <td><span class="badge badge-approved">已生成</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:24px;">补充产物（Template系统 + QA报告）</div>
+  <table>
+    <thead><tr><th>产物</th><th>路径</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td>Template注册表</td><td class="path-link">.allforai/game-templates/template-registry.json</td><td><span class="badge badge-approved">已生成</span></td></tr>
+      <tr><td>Template Schema（level等）</td><td class="path-link">.allforai/game-templates/schemas/</td><td><span class="badge badge-approved">已生成</span></td></tr>
+      <tr><td>Template实例（关卡/图块/SKU/NPC/章节）</td><td class="path-link">.allforai/game-templates/instances/</td><td><span class="badge badge-approved">已生成</span></td></tr>
+      <tr><td>Template Reference Closure QA</td><td class="path-link">.allforai/game-templates/qa/template-reference-closure-qa-report.json</td><td><span class="badge badge-warning">通过含警告</span></td></tr>
+      <tr><td>Template Runtime Load QA</td><td class="path-link">.allforai/game-templates/qa/template-runtime-load-qa-report.json</td><td><span class="badge badge-warning">loader_unavailable</span></td></tr>
+      <tr><td>数据表Manifest</td><td class="path-link">.allforai/game-design/data/game-data-table-manifest.json</td><td><span class="badge badge-approved">已生成</span></td></tr>
+      <tr><td>核心循环Closure QA</td><td class="path-link">.allforai/game-design/design/core-loop-closure-qa-report.json</td><td><span class="badge badge-approved">通过</span></td></tr>
+      <tr><td>Contract Wiring QA</td><td class="path-link">.allforai/game-design/design/contract-wiring-qa-report.json</td><td><span class="badge badge-warning">通过含警告</span></td></tr>
+      <tr><td>Game Design Final Closure QA</td><td class="path-link">.allforai/game-design/design/game-design-final-closure-qa-report.json</td><td><span class="badge badge-warning">通过含警告</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:24px;">程序开发接口（10个实现节点）</div>
+  <table>
+    <thead><tr><th>节点</th><th>类型</th><th>负责人</th><th>关键输出</th></tr></thead>
+    <tbody>
+      <tr><td>setup-runtime-env</td><td>runtime_architecture</td><td>tech-lead</td><td>Cocos + Fastify脚手架 + CI/CD</td></tr>
+      <tr><td>implement-puzzle-core</td><td>core_loop_runtime</td><td>gameplay-engineer</td><td>BFS路径匹配 + Combo系统 + 图块渲染</td></tr>
+      <tr><td>implement-special-mechanics</td><td>core_loop_runtime</td><td>gameplay-engineer</td><td>5种特殊图块 + 3种场外辅助</td></tr>
+      <tr><td>implement-game-session</td><td>level_runtime</td><td>gameplay-engineer</td><td>180关管理 + 叙事触发 + 修复进度</td></tr>
+      <tr><td>implement-island-map</td><td>level_runtime</td><td>ui-engineer</td><td>岛屿地图 + 日夜系统 + 季节系统 + 沙漏UI</td></tr>
+      <tr><td>implement-ui-systems</td><td>ui_runtime</td><td>ui-engineer</td><td>HUD + FTUE + 对话系统 + 过场动画</td></tr>
+      <tr><td>implement-backend-api</td><td>network_runtime</td><td>backend-engineer</td><td>Auth API + SaveSync + HourglassAPI</td></tr>
+      <tr><td>implement-shop-iap</td><td>economy_runtime</td><td>backend-engineer</td><td>商店UI + IAP服务 + 沙滩币账本</td></tr>
+      <tr><td>implement-audio</td><td>audio_runtime</td><td>audio-engineer</td><td>BGM管理 + Combo音效 + 日夜/季节音频</td></tr>
+      <tr><td>level-editor-tool</td><td>qa_runtime</td><td>tools-engineer</td><td>关卡编辑器 + 奇偶校验 + 可解性检查</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 警告&风险 -->
+<div id="tab-warnings" class="tab-content">
+  <div class="section-title">非阻断警告（Non-Blocking Warnings）</div>
+  <div class="warning-item">
+    <div class="warning-id">W001 · template-runtime-load-qa</div>
+    <div class="warning-desc">Cocos Creator runtime loader test尚未执行（implement-puzzle-core节点未实现）</div>
+    <div class="warning-repair">修复路径：implement-puzzle-core完成后执行headless template load test</div>
+  </div>
+  <div class="warning-item">
+    <div class="warning-id">W002 · art-qa</div>
+    <div class="warning-desc">所有92个美术资产图片待image generation API执行后生成（规格已完整）</div>
+    <div class="warning-repair">修复路径：art-gen nodes执行图片生成 → art-qa人工审核 → implement-puzzle-core执行engine import验证</div>
+  </div>
+
+  <div class="section-title" style="margin-top:24px;">运营风险</div>
+  <table>
+    <thead><tr><th>风险</th><th>影响</th><th>严重度</th><th>缓解措施</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>图片生成质量不达标</td>
+        <td>美术阻塞</td>
+        <td><span class="badge badge-warning">medium</span></td>
+        <td>art-qa节点人工审核；低分资产重生成</td>
+      </tr>
+      <tr>
+        <td>沙漏时间作弊</td>
+        <td>经济平衡</td>
+        <td><span class="badge badge-warning">medium</span></td>
+        <td>服务端时间戳验证（Fastify+Prisma）</td>
+      </tr>
+      <tr>
+        <td>Ch6 10×10棋盘FPS</td>
+        <td>体验</td>
+        <td><span class="badge badge-info">low</span></td>
+        <td>VFX粒子预算控制；目标设备60fps测试</td>
+      </tr>
+      <tr>
+        <td>IAP收据合规</td>
+        <td>法律/商业</td>
+        <td><span class="badge badge-info">low</span></td>
+        <td>服务端验证Apple/Google最新收据API</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:24px;">关键设计完整性承诺</div>
+  <div class="card">
+    <table>
+      <tr><td>✓</td><td>单货币（沙滩币），无双货币遗留</td></tr>
+      <tr><td>✓</td><td>无体力系统遗留</td></tr>
+      <tr><td>✓</td><td>无Game Center / Google Play Games引用</td></tr>
+      <tr><td>✓</td><td>不上架中国区</td></tr>
+      <tr><td>✓</td><td>5种特殊图块奇偶安全保证（设计层面，非运行时修正）</td></tr>
+      <tr><td>✓</td><td>所有runtime_id来自engine-ready-art-manifest，无hardcode路径</td></tr>
+      <tr><td>✓</td><td>反侵入原则：无强制购买弹窗，无倒计时FOMO</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>輝島 · 世界观设计文档 v6.0</title>
+  <title>輝島 · 世界观设计文档 v7.0</title>
   <style>
     :root {
       --bg: #faf7f2;
@@ -596,14 +596,146 @@
       font-style: italic;
       color: var(--text-secondary);
     }
+
+    /* ── 季节标签 ── */
+    .season-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.72rem;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid;
+      margin-left: 0.3rem;
+    }
+    .season-spring  { background: rgba(255,182,193,0.18); border-color: rgba(255,105,135,0.30); color: #d04070; }
+    .season-summer  { background: rgba(90,200,100,0.12); border-color: rgba(60,170,80,0.30); color: #2a7a40; }
+    .season-autumn  { background: rgba(200,130,40,0.13); border-color: rgba(200,100,30,0.32); color: #a05010; }
+    .season-winter  { background: rgba(100,160,220,0.13); border-color: rgba(70,130,200,0.30); color: #2a5a9e; }
+
+    /* ── 日夜四季系统 ── */
+    .time-season-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 640px) { .time-season-grid { grid-template-columns: 1fr; } }
+    .time-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+    }
+    .time-card-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin-bottom: 0.4rem;
+    }
+    .time-card-label.day   { color: var(--amber); }
+    .time-card-label.dusk  { color: var(--warm); }
+    .time-card-label.night { color: var(--sea); }
+    .time-card-text {
+      font-size: 0.84rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .season-chapter-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+    }
+    .season-chapter-table th {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.55rem 0.8rem;
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+    }
+    .season-chapter-table td {
+      border: 1px solid var(--border-soft);
+      padding: 0.6rem 0.8rem;
+      color: var(--text);
+      vertical-align: top;
+      line-height: 1.65;
+    }
+    .season-chapter-table tr:hover td { background: var(--surface2); }
+    .winter-highlight {
+      background: linear-gradient(135deg, rgba(100,160,220,0.10) 0%, rgba(200,131,74,0.08) 100%);
+      border: 1px solid rgba(70,130,200,0.28);
+      border-left: 3px solid var(--sea);
+      border-radius: 0 10px 10px 0;
+      padding: 1.3rem 1.5rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .winter-highlight h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--sea);
+      margin-bottom: 0.8rem;
+    }
+    .winter-highlight ul {
+      padding-left: 1.2rem;
+      font-size: 0.87rem;
+      color: var(--text);
+      line-height: 1.8;
+    }
+    .season-prose-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1.3rem;
+      margin-bottom: 0.8rem;
+    }
+    .season-prose-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.7rem;
+    }
+    .season-prose-ch {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+    }
+    .season-prose-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--heading);
+    }
+    .season-prose-text {
+      font-size: 0.87rem;
+      color: var(--text);
+      line-height: 1.78;
+      margin-bottom: 0.5rem;
+    }
+    .season-prose-text:last-child { margin-bottom: 0; }
+    .season-emotion-link {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      line-height: 1.7;
+      border-top: 1px solid var(--border-soft);
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
   <div class="page-header">
-    <div class="标签">輝島 · 世界观设计文档 · v6.0</div>
+    <div class="标签">輝島 · 世界观设计文档 · v7.0</div>
     <h1>輝島 · Kagayaki-jima</h1>
     <div class="副标题">辉之岛 — 一座不催你的地方</div>
-    <div class="元信息">治愈系重写版 · 2026-05-13 · 叙事设计参考文档 · 语言：zh-CN</div>
+    <div class="元信息">四季&日夜系统增补版 · 2026-05-13 · 叙事设计参考文档 · 语言：zh-CN</div>
   </div>
 
   <div class="container">
@@ -684,6 +816,7 @@
             <div class="chapter-keyword">逃离 · 着陆</div>
           </div>
           <div class="chapter-area">海边码头</div>
+          <span class="season-tag season-spring">春</span>
         </div>
         <div class="chapter-card-body">
           <div class="arc-row">
@@ -708,6 +841,10 @@
             <div class="warmth-beat-label">ひなた 情感伏笔</div>
             渡轮靠岸，律的行李箱轮子卡进木栈道缝里。ひなた 从他身边经过，弯腰轻轻抬起卡住的箱轮，只说：「这块木头退潮后会翘。」说完就走。律回头时没记清她的脸，只记得铃声还在晃，海水味里混着一点碳粉墨水。
           </div>
+          <div class="warmth-beat" style="margin-top:0.5rem; border-left-color: var(--sea);">
+            <div class="warmth-beat-label" style="color:var(--sea);">季节氛围 · 春</div>
+            律下船时，輝島正是樱花初开的时节。粉色花瓣随港口海风飘落，一些落在海面漂了一会儿，然后沉下去。木栈道潮湿而温润，春泥气息混着海盐。律第一次深吸一口气——空气里有花粉的甜和盐的咸，他的身体比脑子先感觉到了一点什么。<span style="color:var(--muted);font-style:italic;">樱花落入海面，美且不留。和律自己一样，只是在这里，漂着。</span>
+          </div>
         </div>
       </div>
 
@@ -720,6 +857,7 @@
             <div class="chapter-keyword">温暖 · 归属萌芽</div>
           </div>
           <div class="chapter-area">中央小镇</div>
+          <span class="season-tag season-summer">夏</span>
         </div>
         <div class="chapter-card-body">
           <div class="arc-row">
@@ -744,6 +882,10 @@
             <div class="warmth-beat-label">ひなた 情感伏笔</div>
             律按修复清单准备换掉风化木牌，ひなた 摸了摸旧牌，说：「渉每天出海前都会摸这块牌，测风向。」律把工具放下了。那块牌还在原处，没有被换。他第一次意识到：修复不是把旧东西变新。
           </div>
+          <div class="warmth-beat" style="margin-top:0.5rem; border-left-color: var(--sea);">
+            <div class="warmth-beat-label" style="color:var(--sea);">季节氛围 · 夏</div>
+            阳光直射，石板路晒得发白，海浪声格外响亮。喷泉修好后第一个夜晚，萤火虫从井边草丛飞出，在水柱周围漂浮——是修复完成后岛送出的第一份回应。律那晚站在喷泉边，看了很久，没有记录，没有汇报，只是看。<span style="color:var(--muted);font-style:italic;">夏天是用身体而不是计划表来感受进度的季节。</span>
+          </div>
         </div>
       </div>
 
@@ -756,6 +898,7 @@
             <div class="chapter-keyword">情绪解冻 · 第一次被看见</div>
           </div>
           <div class="chapter-area">花田山坡</div>
+          <span class="season-tag season-autumn">秋</span>
         </div>
         <div class="chapter-card-body">
           <div class="arc-row">
@@ -780,6 +923,10 @@
             <div class="warmth-beat-label">ひなた 情感伏笔</div>
             "松树说律今天走路比昨天轻了一点。"——夏帆说的，ひなた 记在手账里的，律不知道。两个人各自通过间接的方式，在律完全不知情的情况下，在岛上编织着一张轻轻的网。
           </div>
+          <div class="warmth-beat" style="margin-top:0.5rem; border-left-color: var(--sea);">
+            <div class="warmth-beat-label" style="color:var(--sea);">季节氛围 · 秋</div>
+            枫叶渐红，银杏泛黄，花田野花收尾成淡褐边缘。午后阳光角度低，色温暖橙，从松树延伸出长长的阴影。光线柔和到让人觉得时间走慢了。夏帆递来的那束花是半开的秋野花，颜色略有些枯黄边缘——律接过来闻了一下，眼睛就酸了。<span style="color:var(--muted);font-style:italic;">枯黄不是凋零，是另一种真实。暖橙光线穿过花田，玻璃感从那一刻开始裂缝。</span>
+          </div>
         </div>
       </div>
 
@@ -792,6 +939,7 @@
             <div class="chapter-keyword">安静 · 独处 · 第一次不需要做任何事</div>
           </div>
           <div class="chapter-area">森林露营地</div>
+          <span class="season-tag season-winter">冬</span>
         </div>
         <div class="chapter-card-body">
           <div class="arc-row">
@@ -816,6 +964,10 @@
             <div class="warmth-beat-label">ひなた 情感伏笔（不在场的在场）</div>
             营地山路岔路口有一块 ひなた 留下的木板，上面是她自创的符号——律完全看不懂，但他莫名其妙地跟着符号走，绕开了一段很陡的坡路。他后来意识到：她没有解释，但她在照顾他。
           </div>
+          <div class="warmth-beat" style="margin-top:0.5rem; border-left-color: var(--sea);">
+            <div class="warmth-beat-label" style="color:var(--sea);">季节氛围 · 冬（核心视觉章节）</div>
+            初雪。山顶积雪，松树树枝压着白，营地小径留有律自己的脚印。从高处能看见下方渔村被雪覆盖的屋顶，一排一排整齐的白。温泉区蒸汽在冷空气中浓密延伸，雪花飘落温泉水面即刻融化。冬夜篝火旁，星星清晰，雪地里灯台光柱扫过雪雾产生朦胧体积光晕。暖金（温泉/篝火）与冷蓝（雪地/夜空）同时存在——<strong>这是全游戏最治愈的视觉时刻之一。</strong><span style="color:var(--muted);font-style:italic;">雪覆盖一切噪声，只剩篝火和他自己。</span>
+          </div>
         </div>
       </div>
 
@@ -828,6 +980,7 @@
             <div class="chapter-keyword">放下 · 和解 · 第一次被"还行"说得心里暖</div>
           </div>
           <div class="chapter-area">温泉山谷</div>
+          <span class="season-tag season-spring">春②</span>
         </div>
         <div class="chapter-card-body">
           <div class="arc-row">
@@ -848,6 +1001,10 @@
             <div class="warmth-beat-label">ひなた × 律 临界时刻</div>
             "还行"落下时，他几乎想说：我想留下来的理由里，好像有你。但温泉水滴从竹管落下，手账合上的声音轻得像把门留了一条缝。他没有把那句话推到她面前。——律×ひなた 感情弧线：Ch5 临界。
           </div>
+          <div class="warmth-beat" style="margin-top:0.5rem; border-left-color: var(--sea);">
+            <div class="warmth-beat-label" style="color:var(--sea);">季节氛围 · 春②</div>
+            梅花盛开。神社石阶两侧白梅粉梅交替，花瓣落入温泉池面漂浮。冬子说渉最喜欢梅花季节——这句话让律第一次把渉从「故事里的人」变成「真实的人」。山谷里春雾与热气混合，一种柔软的朦胧感。<span style="color:var(--muted);font-style:italic;">春②是带着冬天记忆的更温柔的开始。梅花比樱花更内敛，香气更沉，像告别比到来更重要的东西。</span>
+          </div>
         </div>
       </div>
 
@@ -860,6 +1017,7 @@
             <div class="chapter-keyword">孤独中的温暖 · 觉醒</div>
           </div>
           <div class="chapter-area">夜晚灯塔</div>
+          <span class="season-tag season-summer">夏②</span>
         </div>
         <div class="chapter-card-body">
           <div class="arc-row">
@@ -884,15 +1042,117 @@
             <div class="warmth-beat-label">ひなた 内在矛盾 · 点灯那一秒</div>
             ひなた 握住点火装置停了一下——她想点灯，也害怕点灯后岛重新被世界找到。渉留下的安静可能就此结束。这个矛盾在这一秒最真实。然后她点亮了。律×ひなた 感情弧线：Ch6 收容，以沉默和行动收尾，不破。
           </div>
+          <div class="warmth-beat" style="margin-top:0.5rem; border-left-color: var(--sea);">
+            <div class="warmth-beat-label" style="color:var(--sea);">季节氛围 · 夏②</div>
+            盛夏之夜。灯塔点亮瞬间，大海被光照出一道金色水线延伸至夜海尽头。海风温热带着湿气。萤火虫从草丛飞出，在灯台光柱边缘漂浮聚集，像光的碎片——Ch2夏天首次出现，此刻回归。律走过了一整圈：春天到来，夏夜点亮，站的地方不一样了。<span style="color:var(--muted);font-style:italic;">夏夜的灯台是整个世界在这一刻最完整的样子——所有东西都在，没有一件在解释自己。</span>
+          </div>
         </div>
       </div>
 
     </div>
 
 
-    <!-- 三、NPC 档案 -->
+    <!-- 三、日夜四季系统 -->
     <div class="section-header">
       <div class="section-number">三</div>
+      <h2>日夜与四季系统</h2>
+    </div>
+
+    <p style="margin-bottom:1.2rem;">日夜切换与四季循环是輝島的时间诗意——不制造任何紧迫感，不影响游戏机制，只影响色温与氛围。季节是叙事节奏的视觉隐喻：律在岛上走完了一个完整循环加半圈，春→夏→秋→冬→春②→夏②。</p>
+
+    <div class="time-season-grid">
+      <div class="time-card">
+        <div class="time-card-label day">白天 · 06:00–18:00</div>
+        <p class="time-card-text">暖白自然光，饱和度标准。海风里有鸟鸣和远处风铃声。大部分修复工事在白天进行，阳光下一切都更真实。</p>
+      </div>
+      <div class="time-card">
+        <div class="time-card-label dusk">黄昏 · 18:00–21:00</div>
+        <p class="time-card-text">暖橙色调，阳光低角度斜射，阴影拉长。海浪声渐强，蝉声开始淡出。Ch3秋季黄昏光线是叙事关键时刻。NPC们往往停下手里的事，朝灯塔方向看一眼。</p>
+      </div>
+      <div class="time-card">
+        <div class="time-card-label night">夜晚 · 21:00–06:00</div>
+        <p class="time-card-text">深蓝靛蓝调，低饱和度。<strong>灯台光柱是情感锚点</strong>——每章修复后亮度递增，Ch6点灯后永久全亮。夏季章节有萤火虫虫鸣轻响。</p>
+      </div>
+    </div>
+
+    <table class="season-chapter-table">
+      <thead>
+        <tr>
+          <th>章</th>
+          <th>标题</th>
+          <th>区域</th>
+          <th>季节</th>
+          <th>景观特征</th>
+          <th>叙事情感关联</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ch1</td>
+          <td>到来</td>
+          <td>海边码头</td>
+          <td><span class="season-tag season-spring">春</span></td>
+          <td>樱花初开，粉色花瓣飘落港口海面；木栈道潮湿温润；海风带花粉与盐分</td>
+          <td>春之初开 × 着陆。一切都是第一次，包括不赶时间地站在码头。</td>
+        </tr>
+        <tr>
+          <td>Ch2</td>
+          <td>扎根</td>
+          <td>中央小镇</td>
+          <td><span class="season-tag season-summer">夏</span></td>
+          <td>海浪声响亮，阳光直射，石板路发白；夜晚萤火虫在喷泉周围漂浮</td>
+          <td>夏之生长 × 扎根。萤火虫是修复完成后岛的第一份回应。</td>
+        </tr>
+        <tr>
+          <td>Ch3</td>
+          <td>感受</td>
+          <td>花田山坡</td>
+          <td><span class="season-tag season-autumn">秋</span></td>
+          <td>枫叶/银杏转色，花田野花收尾成淡褐边缘；午后暖橙低角度光，阴影拉长</td>
+          <td>秋之转色 × 情绪松动。枯黄不是凋零，是另一种真实。暖橙光穿花田，玻璃感裂缝。</td>
+        </tr>
+        <tr>
+          <td>Ch4</td>
+          <td>栖息</td>
+          <td>森林露营地</td>
+          <td><span class="season-tag season-winter">冬 ★</span></td>
+          <td>初雪积盖，温泉蒸汽×2密度，雪花触水即融；冬夜灯台光柱穿雪雾体积光晕</td>
+          <td>冬之静寂 × 独处。全游戏最治愈视觉时刻。雪覆盖一切噪声，只剩篝火和他自己。</td>
+        </tr>
+        <tr>
+          <td>Ch5</td>
+          <td>接受</td>
+          <td>神社·温泉山谷</td>
+          <td><span class="season-tag season-spring">春②</span></td>
+          <td>梅花盛开（白梅粉梅），花瓣落入温泉池漂浮；山谷春雾与热气混合</td>
+          <td>春②之重开 × 和解。冬子说渉最喜欢梅花季节，律第一次把渉变成「真实的人」。</td>
+        </tr>
+        <tr>
+          <td>Ch6</td>
+          <td>点亮</td>
+          <td>夜晚灯塔</td>
+          <td><span class="season-tag season-summer">夏②</span></td>
+          <td>盛夏之夜，灯塔点亮照出金色水线；萤火虫在光柱边缘聚集；海风温热</td>
+          <td>夏②之盛放 × 点亮。萤火虫回归（Ch2首现），律走过一整圈，站的地方不同了。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="winter-highlight">
+      <h3>冬季温泉场景设计重点（Ch4 · 全游戏最治愈视觉时刻之一）</h3>
+      <ul>
+        <li><strong>屋顶积雪</strong>——温泉小屋木瓦上均匀白雪，边缘悬挂细冰凌</li>
+        <li><strong>雪花粒子</strong>——在浓密蒸汽中若隐若现，落入温泉水面即刻融化，水面产生细小涟漪；轻盈治愈感而非暴风雪</li>
+        <li><strong>温泉蒸汽×2密度</strong>——冬季冷空气使蒸汽可视距离大幅延长，乳白色蒸汽柱向上漫散</li>
+        <li><strong>冬夜组合</strong>——黑暗雪地 + 温泉暖金光 + 灯台光柱扫过雪雾 = 朦胧体积光晕，全章最强情感画面</li>
+        <li><strong>色调对比</strong>——暖金（温泉/篝火）vs 冷蓝（雪地/夜空），饱和度整体低但色彩张力全游戏最高</li>
+      </ul>
+    </div>
+
+
+    <!-- 四、NPC 档案 -->
+    <div class="section-header">
+      <div class="section-number">四</div>
       <h2>NPC 档案</h2>
     </div>
 
@@ -1047,9 +1307,9 @@
     </div>
 
 
-    <!-- 四、角色羁绊网 -->
+    <!-- 五、角色羁绊网 -->
     <div class="section-header">
-      <div class="section-number">四</div>
+      <div class="section-number">五</div>
       <h2>角色羁绊网</h2>
     </div>
 
@@ -1088,9 +1348,9 @@
     </div>
 
 
-    <!-- 五、隐藏谜题结构 -->
+    <!-- 六、隐藏谜题结构 -->
     <div class="section-header">
-      <div class="section-number">五</div>
+      <div class="section-number">六</div>
       <h2>隐藏谜题结构</h2>
     </div>
 
@@ -1168,10 +1428,11 @@
   </div><!-- /container -->
 
   <div class="page-footer">
-    輝島 · 世界观设计文档 v6.0 · 2026-05-13<br>
+    輝島 · 世界观设计文档 v7.0 · 2026-05-13<br>
     叙事设计原则：温暖先于一切，无声而持续。NPC各自有自己安静的在世方式。治愈是一种在岛上慢慢发生的状态，不是一个目的地。<br>
+    四季映射：春（Ch1码头）→ 夏（Ch2小镇）→ 秋（Ch3花田）→ 冬（Ch4营地/温泉）→ 春②（Ch5神社）→ 夏②（Ch6灯塔）<br>
     输出语言：zh-CN（游戏内专有名词保留日文，JSON字段名保留英文snake_case）<br>
-    数据来源：.allforai/game-design/systems/worldbuilding.json v6.0 &amp; worldbuilding-bible.md v3.0
+    数据来源：.allforai/game-design/systems/worldbuilding.json v7.0 &amp; worldbuilding-bible.md v6.0
   </div>
 </body>
 </html>

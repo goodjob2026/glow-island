@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "generated_by": "environment-art-gen",
+  "view_mode_ref": ".allforai/game-design/art/view/2d-view-mode-spec.json",
+  "style_guide_ref": ".allforai/game-design/art-style-guide.json",
+  "asset_registry_ref": ".allforai/game-design/asset-registry.json",
+
+  "global_prop_spec": {
+    "art_style": "hand_drawn_watercolor",
+    "style_keywords": ["japanese-healing-island", "hand-drawn-watercolor", "soft-rounded-organic", "warm-pastel-palette"],
+    "prohibited_styles": ["pixel_art", "hyper_realistic_3d", "neon_cyberpunk_palette", "metallic_chrome_gradients", "pure_black_000000"],
+    "format": "png",
+    "alpha_required": true,
+    "anchor": "center_bottom",
+    "scale_policy": "designed_for_actual_gameplay_size",
+    "outline_style": "primary_color_darkened_32pct_no_pure_black"
+  },
+
+  "props": [
+    {
+      "asset_id": "prop_notebook",
+      "file_prefix": "prop_notebook",
+      "prop_kind": "story_prop",
+      "name": "ひなた手账",
+      "gameplay_role": "narrative_item — ひなた（丸山ひなた）の手帳，用于NPC对话场景和章节解锁叙事。静态展示道具，无交互功能。",
+      "chapter_affinity": "all",
+      "scale_class": "small",
+      "dimensions_px": {"width": 180, "height": 240},
+      "animation_method": "static",
+      "variants": [
+        {
+          "variant_id": "closed",
+          "file_prefix": "prop_notebook_closed",
+          "description": "手帐合上状态，正面封面可见——粉色系（#F0C4C4）布质封面，日文标题手写体，小蝴蝶结装饰，轻微做旧感"
+        },
+        {
+          "variant_id": "open",
+          "file_prefix": "prop_notebook_open",
+          "description": "手帐翻开状态，展示两页内页——左页手绘小图（岛屿简图或角色素描），右页竖排日文手写文字，淡黄色纸质，温暖治愈"
+        }
+      ],
+      "collision_hint": "none",
+      "image_generation_requests": [
+        {
+          "request_id": "prop_notebook_closed_gen",
+          "asset_id": "prop_notebook",
+          "variant_id": "closed",
+          "file_prefix": "prop_notebook_closed",
+          "generation_profile": {
+            "task_type": "prop",
+            "model_class": "image_generation",
+            "recommended_model": "google-imagen-4",
+            "prompt_template": "prop_prompt",
+            "output_constraints": {"alpha": true, "exact_size": true, "style_lock": true, "small_size_readability": true}
+          },
+          "prompt_contract": {
+            "positive_prompt": "Hand-drawn watercolor style. Cute Japanese pocket notebook (techo), closed, viewed from slight angle. Pink cloth cover (#F0C4C4), hand-lettered Japanese title '輝島日記', small bow ribbon decoration on corner, slight worn edges giving vintage warmth. Soft rounded corners, organic hand-drawn quality. Isolated on transparent background.",
+            "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no text cropping, no metallic sheen, no sharp geometric shapes, no photorealism, no background",
+            "composition": "Centered prop, slight 3/4 view angle, 180x240px canvas, subject fills 80% of canvas",
+            "background": "transparent",
+            "size": {"width": 180, "height": 240},
+            "variants": []
+          },
+          "output_contract": {
+            "path": ".allforai/game-design/art/props/prop_notebook_closed.png",
+            "format": "png",
+            "alpha_required": true,
+            "file_prefix_required": "prop_notebook_closed"
+          }
+        },
+        {
+          "request_id": "prop_notebook_open_gen",
+          "asset_id": "prop_notebook",
+          "variant_id": "open",
+          "file_prefix": "prop_notebook_open",
+          "generation_profile": {
+            "task_type": "prop",
+            "model_class": "image_generation",
+            "recommended_model": "google-imagen-4",
+            "prompt_template": "prop_prompt",
+            "output_constraints": {"alpha": true, "exact_size": true, "style_lock": true, "small_size_readability": true}
+          },
+          "prompt_contract": {
+            "positive_prompt": "Hand-drawn watercolor style. Open Japanese techo notebook, two-page spread viewed from above. Left page has small watercolor sketch of island/coastline. Right page has vertical Japanese handwriting in warm ink, slightly imperfect lines. Warm cream/ivory paper (#F7EDD8), pages have natural slight curl. Soft pencil margin lines. Isolated on transparent background.",
+            "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no printed/digital typography, no metallic sheen, no sharp geometric shapes, no photorealism, no background",
+            "composition": "Centered open book spread, overhead view, 180x240px canvas, subject fills 85% of canvas",
+            "background": "transparent",
+            "size": {"width": 180, "height": 240},
+            "variants": []
+          },
+          "output_contract": {
+            "path": ".allforai/game-design/art/props/prop_notebook_open.png",
+            "format": "png",
+            "alpha_required": true,
+            "file_prefix_required": "prop_notebook_open"
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "prop_lighthouse_lamp",
+      "file_prefix": "prop_lighthouse_lamp",
+      "prop_kind": "animated_environment_prop",
+      "name": "灯塔灯",
+      "gameplay_role": "chapter_6_restoration_centerpiece — 灯塔灯芯，章节6修复核心道具。作为UI进度展示元素和章节修复VFX的中心视觉锚点。8帧循环动画（旋转发光）。",
+      "chapter_affinity": 6,
+      "scale_class": "medium",
+      "dimensions_px": {"width": 256, "height": 256},
+      "animation_method": "frame_animation",
+      "frame_count": 8,
+      "frame_rate_fps": 12,
+      "loop": true,
+      "variants": [
+        {"variant_id": "prop_lighthouse_lamp_frame_01", "file_prefix": "prop_lighthouse_lamp_frame_01", "description": "帧1：灯芯正面，光束朝右上45度，金色光晕最强"},
+        {"variant_id": "prop_lighthouse_lamp_frame_02", "file_prefix": "prop_lighthouse_lamp_frame_02", "description": "帧2：旋转22.5度，光束朝右"},
+        {"variant_id": "prop_lighthouse_lamp_frame_03", "file_prefix": "prop_lighthouse_lamp_frame_03", "description": "帧3：旋转45度，光束朝右下45度"},
+        {"variant_id": "prop_lighthouse_lamp_frame_04", "file_prefix": "prop_lighthouse_lamp_frame_04", "description": "帧4：旋转90度，光束朝下，光晕最弱"},
+        {"variant_id": "prop_lighthouse_lamp_frame_05", "file_prefix": "prop_lighthouse_lamp_frame_05", "description": "帧5：旋转135度，光束朝左下45度"},
+        {"variant_id": "prop_lighthouse_lamp_frame_06", "file_prefix": "prop_lighthouse_lamp_frame_06", "description": "帧6：旋转180度，光束朝左"},
+        {"variant_id": "prop_lighthouse_lamp_frame_07", "file_prefix": "prop_lighthouse_lamp_frame_07", "description": "帧7：旋转225度，光束朝左上45度，光晕回升"},
+        {"variant_id": "prop_lighthouse_lamp_frame_08", "file_prefix": "prop_lighthouse_lamp_frame_08", "description": "帧8：旋转270度，回到近初始位置，完成360度循环"}
+      ],
+      "collision_hint": "none",
+      "image_generation_requests": [
+        {
+          "request_id": "prop_lighthouse_lamp_framesheet_gen",
+          "asset_id": "prop_lighthouse_lamp",
+          "file_prefix": "prop_lighthouse_lamp",
+          "generation_profile": {
+            "task_type": "frame_animation",
+            "model_class": "image_generation",
+            "recommended_model": "google-imagen-4",
+            "prompt_template": "frame_animation_prompt",
+            "output_constraints": {"alpha": true, "exact_size": true, "style_lock": true, "multi_frame_consistency": true}
+          },
+          "prompt_contract": {
+            "positive_prompt": "Hand-drawn watercolor style. Lighthouse lamp housing, 8-frame rotation animation sequence. Fresnel lens assembly with golden rotating beam (#F5C842), warm glow emanating from center, glass panels with warm light refraction. Each frame rotates ~45 degrees. Frames show: rotating light beam sweeping clockwise, golden warm glow (#F5C842) as primary light, subtle soft radial halo. Isolated on transparent background, consistent scale across all 8 frames.",
+            "negative_prompt": "No pixel art, no 3D rendering, no neon, no pure black, no metallic chrome, no sharp geometric shapes, no photorealism, no background, no mismatched scale between frames",
+            "composition": "Each frame 256x256px, subject centered, beam clearly directional per frame, consistent anchor point across all 8 frames",
+            "background": "transparent",
+            "size": {"width": 256, "height": 256},
+            "variants": ["frame_01_right_up", "frame_02_right", "frame_03_right_down", "frame_04_down", "frame_05_left_down", "frame_06_left", "frame_07_left_up", "frame_08_up"]
+          },
+          "output_contract": {
+            "path": ".allforai/game-design/art/props/prop_lighthouse_lamp_frames/",
+            "format": "png",
+            "alpha_required": true,
+            "file_prefix_required": "prop_lighthouse_lamp_frame_"
+          }
+        }
+      ]
+    }
+  ]
+}

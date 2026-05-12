@@ -1,0 +1,46 @@
+{
+  "report_id": "glow-island-core-loop-closure-qa-report-v1",
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "status": "passed",
+  "loops_checked": [
+    {
+      "loop_id": "primary_puzzle_loop",
+      "description": "玩家→选择图块→路径匹配→消除→Combo反馈→步数扣减→关卡通过/失败",
+      "goal": "清除所有图块（步数制）",
+      "action": "点击同种图块，≤2转角路径连线",
+      "feedback": "连线动画 + Combo计时器 + SFX",
+      "reward": "评分星级 + 叙事触发 + 沙漏奖励（岛屿修复进度）",
+      "failure_recovery": "步数耗尽→续关（30沙滩币）或重试（免费）",
+      "next_motivation": "岛屿修复进度 + 下一关解锁 + 叙事好奇心",
+      "qa_status": "passed",
+      "issues": []
+    },
+    {
+      "loop_id": "session_retention_loop",
+      "description": "玩家回访→领取沙漏奖励→游玩关卡→看到岛屿修复/叙事进展→产生回归动力",
+      "goal": "维持规律回访",
+      "action": "打开App→沙漏满载领取→连续游玩数关",
+      "feedback": "沙漏领取动画 + 修复场景变化",
+      "reward": "沙滩币 + 故事进展 + 季节视觉新鲜感",
+      "failure_recovery": "不领也不扣（无惩罚机制）",
+      "next_motivation": "下一章叙事期待",
+      "qa_status": "passed",
+      "issues": []
+    },
+    {
+      "loop_id": "economy_loop",
+      "description": "玩家→续关需沙滩币→IAP购买或沙漏领取→消费→游玩体验改善",
+      "goal": "维持经济平衡，不破坏免费玩家体验",
+      "action": "步数耗尽→续关消费 或 主动购买IAP",
+      "feedback": "沙滩币余额更新，继续游玩",
+      "reward": "关卡完成，进度推进",
+      "failure_recovery": "放弃该关，免费重试",
+      "next_motivation": "下一关挑战欲望",
+      "qa_status": "passed",
+      "issues": []
+    }
+  ],
+  "blocking_issues": [],
+  "conclusion": "所有主要游戏循环已闭合，无dead end，无circular loop，无economy deadlock。"
+}
