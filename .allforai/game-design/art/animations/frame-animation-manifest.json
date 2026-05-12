@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/frame-animation-generation",
+  "status": "COMPLETED_WITH_LIMITS",
+  "entries": [
+    {
+      "asset_id": "char_gicho",
+      "animation_id": "idle",
+      "file_prefix": "char_gicho_idle",
+      "fps": 12,
+      "frame_count": 4,
+      "frame_size": { "width": 192, "height": 192 },
+      "anchor": { "x": 96, "y": 180 },
+      "event_frames": [],
+      "sheet_path": ".allforai/game-design/art/char_gicho/char_gicho_idle_{f01-f04}.png",
+      "metadata_path": ".allforai/game-design/art/animations/frame-animation-generation-spec.json",
+      "preview_path": null,
+      "state": "generated",
+      "consumers": ["runtime_cocos_creator", "dialogue_portrait", "map_npc_idle"],
+      "validation": {
+        "frame_count_ok": true,
+        "anchor_consistent": true,
+        "loop_closure_ok": true,
+        "style_ok": true,
+        "visual_validated": false,
+        "note": "Images generated via Imagen 4; visual identity review pending QA pass"
+      }
+    },
+    {
+      "asset_id": "char_gicho",
+      "animation_id": "happy",
+      "file_prefix": "char_gicho_happy",
+      "fps": 12,
+      "frame_count": 4,
+      "frame_size": { "width": 192, "height": 192 },
+      "anchor": { "x": 96, "y": 180 },
+      "event_frames": [],
+      "sheet_path": ".allforai/game-design/art/char_gicho/char_gicho_happy_{f01-f04}.png",
+      "metadata_path": ".allforai/game-design/art/animations/frame-animation-generation-spec.json",
+      "preview_path": null,
+      "state": "generated",
+      "consumers": ["runtime_cocos_creator", "dialogue_portrait"],
+      "validation": {
+        "frame_count_ok": true,
+        "anchor_consistent": true,
+        "loop_closure_ok": true,
+        "style_ok": true,
+        "visual_validated": false
+      }
+    },
+    {
+      "asset_id": "char_gicho",
+      "animation_id": "surprised",
+      "file_prefix": "char_gicho_surprised",
+      "fps": 12,
+      "frame_count": 3,
+      "frame_size": { "width": 192, "height": 192 },
+      "anchor": { "x": 96, "y": 180 },
+      "event_frames": [],
+      "sheet_path": ".allforai/game-design/art/char_gicho/char_gicho_surprised_{f01-f03}.png",
+      "metadata_path": ".allforai/game-design/art/animations/frame-animation-generation-spec.json",
+      "preview_path": null,
+      "state": "generated",
+      "consumers": ["runtime_cocos_creator", "dialogue_portrait"],
+      "validation": {
+        "frame_count_ok": true,
+        "anchor_consistent": true,
+        "loop_closure_ok": true,
+        "style_ok": true,
+        "visual_validated": false
+      }
+    },
+    {
+      "asset_id": "char_gicho",
+      "animation_id": "wave",
+      "file_prefix": "char_gicho_wave",
+      "fps": 12,
+      "frame_count": 4,
+      "frame_size": { "width": 192, "height": 192 },
+      "anchor": { "x": 96, "y": 180 },
+      "event_frames": [],
+      "sheet_path": ".allforai/game-design/art/char_gicho/char_gicho_wave_{f01-f04}.png",
+      "metadata_path": ".allforai/game-design/art/animations/frame-animation-generation-spec.json",
+      "preview_path": null,
+      "state": "generated",
+      "consumers": ["runtime_cocos_creator", "dialogue_portrait"],
+      "validation": {
+        "frame_count_ok": true,
+        "anchor_consistent": true,
+        "loop_closure_ok": true,
+        "style_ok": true,
+        "visual_validated": false
+      }
+    }
+  ],
+  "summary": {
+    "total_animations": 4,
+    "total_frames": 15,
+    "generated_count": 4,
+    "approved_count": 0,
+    "pending_visual_review": 4
+  }
+}

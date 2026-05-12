@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/vfx-spec",
+  "node": "vfx-art-gen",
+
+  "status": "COMPLETED",
+
+  "event_inventory": {
+    "gameplay_events": [
+      "tile_pair_matched → vfx_match_disappear",
+      "combo_multiplier_2x → vfx_combo_multiplier_x2",
+      "combo_multiplier_3x → vfx_combo_multiplier_x3",
+      "combo_multiplier_5x_plus → vfx_combo_multiplier_x5",
+      "combo_threshold_reached → vfx_combo_burst",
+      "special_tile_wave_activated → vfx_wave_clear + vfx_special_wave_activation",
+      "special_tile_light_chain_activated → vfx_special_light_chain_activation",
+      "special_tile_pierce_activated → vfx_special_pierce_activation",
+      "special_tile_swap_activated → vfx_special_swap_activation",
+      "special_tile_cascade_activated → vfx_special_cascade_activation",
+      "combo_active → vfx_combo_glow_ring"
+    ],
+    "progression_events": [
+      "lighthouse_progress_full → vfx_lighthouse_glow",
+      "chapter_restoration_complete → vfx_chapter_restore"
+    ],
+    "environment_ambient_events": [
+      "chapter_season_active_spring → vfx_season_spring_sakura",
+      "chapter_season_active_summer_night → vfx_season_summer_firefly",
+      "chapter_season_active_winter → vfx_season_winter_snow"
+    ],
+    "ui_events": [
+      "hourglass_claim_tapped → vfx_hourglass_claim_coins"
+    ]
+  },
+
+  "inferred_defaults": [
+    "combo_glow_ring: 从art-pipeline-config.json#combo_bubble_vfx和combo_bubble_bg推断",
+    "seasonal particle VFX: 从seasonal-art-generation SKILL.md规格推断三季粒子参数",
+    "hourglass_claim: 从monetization-design.json#hourglass_reward_system.ui_placement.claim_animation推断"
+  ],
+
+  "validation_checks": [
+    { "check": "all_vfx_have_required_fields", "result": "PASSED", "count": "18/18" },
+    { "check": "layer_anchor_compatibility", "result": "PASSED" },
+    { "check": "dimension_implementation_mode_compatibility", "result": "PASSED" },
+    { "check": "particle_fields_complete", "result": "PASSED", "detail": "13 particle branches all have emitter/lifetime/velocity/color/size/blend" },
+    { "check": "sprite_sheet_fields_complete", "result": "PASSED" },
+    { "check": "screen_effects_have_accessibility_fallback", "result": "PASSED" },
+    { "check": "world_hit_effects_sync_with_gameplay_events", "result": "PASSED" },
+    { "check": "ui_effects_reference_registered_components", "result": "PASSED" },
+    { "check": "looping_effects_have_stop_conditions", "result": "PASSED", "looping": 5, "all_have_stop_conditions": true },
+    { "check": "file_prefix_collision_check", "result": "PASSED", "unique_prefixes": 18 }
+  ],
+
+  "layer_checks": {
+    "world": {
+      "count": 13,
+      "occlusion_defined": true,
+      "event_alignment_defined": true
+    },
+    "ui": {
+      "count": 2,
+      "text_readability_defined": true,
+      "component_state_refs": ["ui_lighthouse_progress", "ui_hourglass_widget"]
+    },
+    "screen_space": {
+      "count": 3,
+      "accessibility_fallbacks_defined": true,
+      "intensity_caps_defined": true
+    }
+  },
+
+  "missing_events": [],
+  "fallback_decisions": [
+    "vfx_special_pierce_activation → screen_space (edge glow) rather than world layer to avoid occlusion",
+    "vfx_season_summer_firefly → night-only trigger, no day/dusk variant needed"
+  ]
+}

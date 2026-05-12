@@ -1670,5 +1670,38 @@
     "atlas_packing": "每个Spine asset的atlas图集建议不超过2048×2048，多图块效果尽量合并到同一atlas",
     "max_simultaneous_vfx": "同时播放VFX上限：fx_tile_disappear可8个并发，特殊块VFX最多3个并发，fx_lighthouse_beam_island最多1个（全局唯一）",
     "spine_not_available": "当前Spine工具不可用，所有Spine类型资产状态均为spec_ready_pending_production，等待工具环境建立后进入生产阶段"
+  },
+
+  "pipeline_v2_extension": {
+    "generated_at": "2026-05-13T00:00:00Z",
+    "note": "以下为 vfx-art-gen Part B 管线运行产出的规范化扩展。canonical_registry.vfx[] 的8个资产已在 vfx-spec.json 中按 game-art/vfx-spec skill 规范完整定义，此处记录桥接索引。",
+    "canonical_vfx_spec_ref": ".allforai/game-design/art/vfx/vfx-spec.json",
+    "canonical_vfx_manifest_ref": ".allforai/game-design/art/vfx/vfx-manifest.json",
+    "canonical_vfx_spec_report_ref": ".allforai/game-design/art/vfx/vfx-spec-report.json",
+    "canonical_registry_vfx_ids": [
+      "vfx_combo_burst",
+      "vfx_match_disappear",
+      "vfx_lighthouse_glow",
+      "vfx_wave_clear",
+      "vfx_chapter_restore",
+      "vfx_combo_multiplier_x2",
+      "vfx_combo_multiplier_x3",
+      "vfx_combo_multiplier_x5"
+    ],
+    "additional_vfx_ids": [
+      "vfx_special_wave_activation",
+      "vfx_special_light_chain_activation",
+      "vfx_special_pierce_activation",
+      "vfx_special_swap_activation",
+      "vfx_special_cascade_activation",
+      "vfx_season_spring_sakura",
+      "vfx_season_summer_firefly",
+      "vfx_season_winter_snow",
+      "vfx_combo_glow_ring",
+      "vfx_hourglass_claim_coins"
+    ],
+    "total_vfx_in_pipeline_v2": 18,
+    "status": "COMPLETED_WITH_LIMITS",
+    "limit_reason": "spec完成，图片/粒子纹理资产待生成"
   }
 }

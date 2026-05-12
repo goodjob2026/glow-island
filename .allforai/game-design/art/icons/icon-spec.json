@@ -1,15 +1,19 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "generated_at": "2026-05-13T00:00:00Z",
   "skill": "game-art/icon-generation",
+  "mode": "spec_generate_validate",
   "node": "ui-art-gen",
+  "pipeline_stage": "Part A — Full icon spec (10 ui + 6 hourglass states + 3 shop items)",
+
   "style_basis": {
     "dimension": "2d",
     "render_style": "hand_drawn",
     "background_policy": "transparent",
-    "sizes": [64],
+    "sizes": [64, 96],
     "atlas_target": "ui_elements_atlas"
   },
+
   "icon_style_tokens": {
     "outline_weight_px": 2,
     "outline_color_rule": "主色加深32%，禁止纯黑 #000000",
@@ -20,13 +24,14 @@
     "positive_style_keywords": ["hand-drawn watercolor", "soft warm pastel", "round organic shapes", "healing Japanese island"],
     "negative_style_keywords": ["pixel art", "neon", "metallic chrome", "pure black", "sharp geometric", "hyper-realistic 3D"]
   },
+
   "icons": [
     {
       "asset_id": "ui_coin_icon",
       "name": "沙滩币图标",
       "file_prefix": "ui_coin_icon",
       "category": "currency",
-      "semantic": "沙滩币（beach_coin），游戏唯一软货币，用于购买场外辅助道具",
+      "semantic": "沙滩币（beach_coin），游戏唯一软货币，贝壳造型金黄色圆形硬币，暖橙色",
       "consumer_refs": ["cmp_coin_display", "screen_gameplay", "screen_level_select", "screen_shop"],
       "size_px": 64,
       "background_policy": "transparent",
@@ -55,8 +60,143 @@
       "prompt_half": "Hand-drawn watercolor 5-point star icon, 64×64px, transparent background. Left half golden #F5C842, right half grey-sand #C4B090, split cleanly at center vertical axis. Organic round-tipped star shape. No text.",
       "negative_prompt": "pixel art, neon, metallic, pure black, sharp geometric star, text overlay",
       "validation_checks": ["三个变体形状完全一致", "满星与空星视觉对比明显", "64px 下轮廓清晰"]
+    },
+    {
+      "asset_id": "ui_hourglass_empty",
+      "name": "沙漏—空态",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件空态，沙子全在底部，顶部腔空，等待计时开始",
+      "consumer_refs": ["widget_hourglass_reward", "screen_island_map"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "hourglass_state": "empty",
+      "output_path": ".allforai/game-design/art/icons/ui_hourglass_empty.png",
+      "prompt": "Cute island-themed hourglass widget, 160×200px, transparent background. Glass hourglass body with warm amber sand #F0A830 at BOTTOM chamber only, top chamber completely empty and clear glass. Rounded organic glass frame with warm brown borders #8B6030, small palm tree decoration on top of hourglass, coral reef decorative base. No glow effects — muted waiting state. Hand-drawn watercolor style. No text.",
+      "negative_prompt": "pixel art, neon, pure black, sharp corners, hyper-realistic 3D, glowing effects, text"
+    },
+    {
+      "asset_id": "ui_hourglass_filling_25pct",
+      "name": "沙漏—填充25%",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件25%填充状态，沙粒从顶部缓缓落下",
+      "consumer_refs": ["widget_hourglass_reward"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "hourglass_state": "filling",
+      "sand_fill_pct": 25,
+      "output_path": ".allforai/game-design/art/icons/ui_hourglass_filling_25pct.png",
+      "prompt": "Island-themed hourglass, 160×200px, transparent background. 25% filled — warm amber sand #F0A830 fills 25% of bottom chamber, 75% remaining in top chamber. Tiny sand particles visible at neck (falling). Organic glass frame with warm wood borders, small palm tree top decoration, coral reef base. Subtle warm edge glow. Hand-drawn watercolor style. No text.",
+      "negative_prompt": "pixel art, neon, pure black, sharp corners, hyper-realistic 3D, text"
+    },
+    {
+      "asset_id": "ui_hourglass_filling_50pct",
+      "name": "沙漏—填充50%",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件50%填充状态，沙粒均分两腔",
+      "consumer_refs": ["widget_hourglass_reward"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "hourglass_state": "filling",
+      "sand_fill_pct": 50,
+      "output_path": ".allforai/game-design/art/icons/ui_hourglass_filling_50pct.png",
+      "prompt": "Island-themed hourglass, 160×200px, transparent background. Exactly 50% filled — warm amber sand #F0A830 evenly split, half in bottom, half in top. Sand particles flowing through narrow neck. Organic glass frame, palm tree top, coral base. Warm gentle glow on glass edges. Hand-drawn watercolor style. No text.",
+      "negative_prompt": "pixel art, neon, pure black, sharp corners, hyper-realistic 3D, text"
+    },
+    {
+      "asset_id": "ui_hourglass_filling_75pct",
+      "name": "沙漏—填充75%",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件75%填充状态，底部腔接近满载",
+      "consumer_refs": ["widget_hourglass_reward"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "hourglass_state": "filling",
+      "sand_fill_pct": 75,
+      "output_path": ".allforai/game-design/art/icons/ui_hourglass_filling_75pct.png",
+      "prompt": "Island-themed hourglass, 160×200px, transparent background. 75% filled — warm amber sand #F0A830 fills 75% of bottom chamber, only small amount remaining in top. Light trickle at neck. Organic glass frame, palm tree top, coral base. Growing warm golden glow on lower chamber. Hand-drawn watercolor style. No text.",
+      "negative_prompt": "pixel art, neon, pure black, sharp corners, hyper-realistic 3D, text"
+    },
+    {
+      "asset_id": "ui_hourglass_full",
+      "name": "沙漏—满载",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件满载态，沙子全在底部，金色脉动光晕，感叹号徽章",
+      "consumer_refs": ["widget_hourglass_reward", "screen_island_map"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "hourglass_state": "full",
+      "sand_fill_pct": 100,
+      "has_badge": true,
+      "output_path": ".allforai/game-design/art/icons/ui_hourglass_full.png",
+      "prompt": "Island-themed hourglass FULL state, 160×200px, transparent background. All warm amber sand #F0A830 at BOTTOM chamber — completely full. Top chamber completely empty and clear. Glass frame glowing with warm golden aura #F5C842 pulsing around edges. Small palm tree decoration at top now highlighted golden. Coral reef base. Exclamation mark badge in upper-right corner (red circle white !). Magical celebration feeling. Hand-drawn watercolor style. No text in main art.",
+      "negative_prompt": "pixel art, neon, pure black, sharp corners, hyper-realistic 3D",
+      "validation_checks": ["满态与空态视觉差异明显", "光晕清晰可见", "徽章在缩略图下可见"]
+    },
+    {
+      "asset_id": "ui_hourglass_claimed",
+      "name": "沙漏—领取中",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件领取动画态，翻转倒出沙币粒子飞向HUD",
+      "consumer_refs": ["widget_hourglass_reward"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "hourglass_state": "claimed",
+      "output_path": ".allforai/game-design/art/icons/ui_hourglass_claimed.png",
+      "prompt": "Island-themed hourglass CLAIMED state, 160×200px, transparent background. Hourglass shown tipped at angle as if being poured. Warm amber sand pouring out from opening as golden coin sparkle particles flying upward. Bright golden-white sparkle flash effect around hourglass opening. Multiple small coin particle dots trajectory visible. Dynamic action pose. Celebration energy. Hand-drawn watercolor style. No text.",
+      "negative_prompt": "pixel art, neon, pure black, sharp corners, hyper-realistic 3D, text"
+    },
+    {
+      "asset_id": "ico_item_reshuffle",
+      "name": "重排道具图标",
+      "file_prefix": "ico_item_reshuffle",
+      "category": "item",
+      "semantic": "重排道具，旋涡/波浪按钮，用于商店面板和HUD",
+      "consumer_refs": ["screen_shop", "ui_btn_shuffle"],
+      "size_px": 96,
+      "background_policy": "transparent",
+      "output_path": ".allforai/game-design/art/icons/ico_item_reshuffle.png",
+      "prompt": "Hand-drawn watercolor game item icon, 96×96px, transparent background. Swirling ocean wave vortex shuffle icon. Warm teal-ocean color #5BBFB5, white foam highlights at wave tips, organic rounded swirl shape. Island beach theme. Clear readable silhouette at 48px. No text, no letters.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners, text, numbers",
+      "validation_checks": ["48px下旋涡轮廓可识别", "无文字", "透明背景"]
+    },
+    {
+      "asset_id": "ico_item_hint",
+      "name": "预判道具图标",
+      "file_prefix": "ico_item_hint",
+      "category": "item",
+      "semantic": "预判道具，眼睛/灯泡/灯塔光束图标，用于商店面板和HUD",
+      "consumer_refs": ["screen_shop", "ui_btn_hint"],
+      "size_px": 96,
+      "background_policy": "transparent",
+      "output_path": ".allforai/game-design/art/icons/ico_item_hint.png",
+      "prompt": "Hand-drawn watercolor game item icon, 96×96px, transparent background. Glowing eye with lighthouse beam rays shooting from iris — hint/vision icon. Warm golden #F5C842 light ray beams, soft teal-blue eye shape #5BBFB5. Organic hand-drawn outlines. Island theme. Clear readable silhouette at 48px. No text.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners, text",
+      "validation_checks": ["48px下眼睛/光束轮廓可识别", "无文字", "透明背景"]
+    },
+    {
+      "asset_id": "ico_item_continue",
+      "name": "续关道具图标",
+      "file_prefix": "ico_item_continue",
+      "category": "item",
+      "semantic": "续关道具，+5步图标，用于商店面板和HUD",
+      "consumer_refs": ["screen_shop", "ui_btn_continue"],
+      "size_px": 96,
+      "background_policy": "transparent",
+      "output_path": ".allforai/game-design/art/icons/ico_item_continue.png",
+      "prompt": "Hand-drawn watercolor game item icon, 96×96px, transparent background. Footstep track or sandal footprints icon with upward arrow continuation symbol — steps bonus. Warm coral color #E8866A footprints on sandy background. Organic rounded shapes. Island beach theme. Clear readable at 48px. No text, no numbers baked in.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners, text, numbers",
+      "validation_checks": ["48px下足迹/箭头轮廓可识别", "无文字", "透明背景"]
     }
   ],
+
   "validation_status": "COMPLETED_WITH_LIMITS",
-  "limit_reason": "图片生成待执行"
+  "limit_reason": "图片生成待执行（14张图片文件规格已就绪）",
+  "total_icons": 11,
+  "total_image_files_planned": 14
 }

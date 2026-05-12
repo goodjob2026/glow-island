@@ -1,0 +1,419 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "glow-island-seasonal-art-generation",
+  "mode": "ui_only",
+  "node": "ui-art-gen",
+  "pipeline_stage": "Part C — Seasonal UI Variants (island map UI per season)",
+
+  "scope": {
+    "mode": "ui_only",
+    "target": "island_map_ui_seasonal_states",
+    "seasons_covered": ["spring", "summer", "autumn", "winter"],
+    "time_of_day_variants": ["day", "dusk", "night"],
+    "total_states": 12,
+    "ui_asset_target": "ui_island_map_seasonal",
+    "note": "本规格仅覆盖 UI 层的岛屿地图季节变体。磁贴变体(seasonal-tile-variants-spec.json)和背景变体(seasonal-background-variants-spec.json)由 full_seasonal 模式或独立的 tiles_only/backgrounds_only 运行生成。"
+  },
+
+  "island_map_ui_base": {
+    "asset_id": "ui_island_map",
+    "name": "岛屿地图主界面",
+    "file_prefix": "ui_island_map",
+    "size_px": { "width": 720, "height": 1280 },
+    "format": "png",
+    "atlas": "ui_elements_atlas",
+    "base_palette": {
+      "sky_base": "#A8DDD8",
+      "ocean_base": "#5BBFB5",
+      "island_base": "#E2C48A",
+      "foliage_base": "#7DBE77",
+      "lighthouse_gold": "#F5C842",
+      "sand_beach": "#F7EDD8"
+    },
+    "seasonal_layers": [
+      "sky_color_overlay",
+      "ambient_particles",
+      "foliage_color_shift",
+      "lighting_temperature"
+    ],
+    "hourglass_widget_anchor": {
+      "position": "upper_right_island_map",
+      "x_px": 560,
+      "y_px": 200,
+      "size_px": { "width": 80, "height": 100 },
+      "asset_ref": "ui_hourglass_widget",
+      "note": "沙漏小组件放置于岛屿地图右上角，缩放至80×100px显示尺寸，保留其4个状态动画"
+    }
+  },
+
+  "seasonal_ui_variants": {
+    "spring": {
+      "season_id": "spring",
+      "name_cn": "春季",
+      "chapters": [1, 5],
+      "palette_spec": {
+        "hue_shift_deg": 5,
+        "hue_shift_direction": "warm_toward_30deg",
+        "saturation_delta_pct": 8,
+        "brightness_delta_pct": 5,
+        "sky_color": "#B8E8E0",
+        "ocean_color": "#6BC8BF",
+        "foliage_color": "#A8D5A2",
+        "accent_color": "#FFB7C5",
+        "lighthouse_color": "#F5C842"
+      },
+      "ui_overlay_elements": {
+        "ambient_particle_vfx_ref": "vfx_season_spring_sakura",
+        "ambient_particle_opacity": 0.8,
+        "sky_gradient": "soft_blue_to_pink_sakura_horizon",
+        "foliage_texture": "cherry_blossom_pink_tips",
+        "hourglass_frame_seasonal_tint": "#FFB7C5",
+        "seasonal_decoration": "falling_sakura_petals_ui_overlay"
+      },
+      "lighthouse_seasonal": {
+        "beam_color": "#F5C842",
+        "halo_color": "#FFF0D8",
+        "prominence_level": "ch1_subtle_ch5_medium"
+      },
+      "time_of_day_variants": {
+        "day": {
+          "color_temperature_k": 6500,
+          "brightness_multiplier": 1.0,
+          "sky_top_color": "#B8E8E0",
+          "sky_bottom_color": "#FFB7C5",
+          "ocean_shimmer": "light_sparkle",
+          "lighthouse_visible": false,
+          "ui_brightness": 1.0
+        },
+        "dusk": {
+          "color_temperature_k": 3200,
+          "brightness_multiplier": 0.95,
+          "sky_top_color": "#F0C4A0",
+          "sky_bottom_color": "#EE8C55",
+          "ocean_shimmer": "golden_ripple",
+          "lighthouse_visible": true,
+          "lighthouse_rim_light": "warm_golden",
+          "ui_brightness": 0.95
+        },
+        "night": {
+          "color_temperature_k": 7500,
+          "brightness_multiplier": 0.80,
+          "sky_top_color": "#1E2E50",
+          "sky_bottom_color": "#2E4870",
+          "ocean_shimmer": "moonlight_reflection",
+          "lighthouse_visible": true,
+          "lighthouse_beam_active": true,
+          "stars_visible": true,
+          "ui_brightness": 0.80
+        }
+      },
+      "output_paths": {
+        "day": ".allforai/game-design/art/seasonal/ui_island_map_spring_day.png",
+        "dusk": ".allforai/game-design/art/seasonal/ui_island_map_spring_dusk.png",
+        "night": ".allforai/game-design/art/seasonal/ui_island_map_spring_night.png"
+      },
+      "generation_prompts": {
+        "day": "Glow Island map UI, spring season, daytime. Warm pastel palette. Cherry blossom pink #FFB7C5 accents on trees and foliage. Fresh green #A8D5A2 island vegetation. Clear soft blue sky. Bright golden lighthouse #F5C842 tower. Beach sand #F7EDD8. Hand-drawn watercolor style, healing Japanese island aesthetic, no text, transparent overlay elements.",
+        "dusk": "Glow Island map UI, spring season, dusk. Golden hour palette 3200K. Cherry blossom trees with warm orange rim light. Golden sky gradient coral to amber. Lighthouse beginning to glow with warm golden beam. Gentle pink sakura petals. Hand-drawn watercolor style.",
+        "night": "Glow Island map UI, spring season, night. Cool blue night palette 7500K. Dark indigo sky #1E2E50 with soft stars. Lighthouse beam fully active, golden sweep visible. Cherry blossoms faintly visible in moonlight. Ocean has moonlight reflection. Hand-drawn watercolor, healing Japanese island."
+      },
+      "state": "spec_ready"
+    },
+
+    "summer": {
+      "season_id": "summer",
+      "name_cn": "夏季",
+      "chapters": [2, 6],
+      "palette_spec": {
+        "hue_shift_deg": 0,
+        "hue_shift_direction": "baseline",
+        "saturation_delta_pct": 12,
+        "brightness_delta_pct": 8,
+        "sky_color": "#87CEEA",
+        "ocean_color": "#00B4D8",
+        "foliage_color": "#7DBE77",
+        "accent_color": "#F4E1C1",
+        "lighthouse_color": "#F5C842"
+      },
+      "ui_overlay_elements": {
+        "ambient_particle_vfx_ref": "vfx_season_summer_firefly",
+        "ambient_particle_applies_to": ["night_only"],
+        "ambient_particle_opacity": 0.9,
+        "sky_gradient": "vivid_blue_sunny",
+        "foliage_texture": "lush_full_green_coconut_palms",
+        "seafoam_edge": true,
+        "seafoam_color": "#E0F5F0",
+        "hourglass_frame_seasonal_tint": "#87CEEA",
+        "seasonal_decoration": "seafoam_wave_edge_ui"
+      },
+      "lighthouse_seasonal": {
+        "beam_color": "#F5C842",
+        "halo_color": "#FFF5D8",
+        "prominence_level": "ch2_medium_ch6_high"
+      },
+      "time_of_day_variants": {
+        "day": {
+          "color_temperature_k": 6500,
+          "brightness_multiplier": 1.08,
+          "sky_top_color": "#87CEEA",
+          "sky_bottom_color": "#B8EAF8",
+          "ocean_shimmer": "vivid_sparkle_bright",
+          "lighthouse_visible": false,
+          "seafoam_active": true,
+          "ui_brightness": 1.08
+        },
+        "dusk": {
+          "color_temperature_k": 3200,
+          "brightness_multiplier": 1.03,
+          "sky_top_color": "#FF8C42",
+          "sky_bottom_color": "#F5C842",
+          "ocean_shimmer": "golden_hour_shimmer",
+          "lighthouse_visible": true,
+          "lighthouse_rim_light": "warm_amber",
+          "ui_brightness": 1.03
+        },
+        "night": {
+          "color_temperature_k": 7500,
+          "brightness_multiplier": 0.80,
+          "sky_top_color": "#1E2E50",
+          "sky_bottom_color": "#263B6A",
+          "ocean_shimmer": "moonlight_reflection",
+          "lighthouse_visible": true,
+          "lighthouse_beam_active": true,
+          "firefly_vfx_active": true,
+          "stars_visible": true,
+          "ui_brightness": 0.80
+        }
+      },
+      "output_paths": {
+        "day": ".allforai/game-design/art/seasonal/ui_island_map_summer_day.png",
+        "dusk": ".allforai/game-design/art/seasonal/ui_island_map_summer_dusk.png",
+        "night": ".allforai/game-design/art/seasonal/ui_island_map_summer_night.png"
+      },
+      "generation_prompts": {
+        "day": "Glow Island map UI, summer season, daytime. Vivid saturated palette. Bright teal ocean #00B4D8, warm sand beach #F4E1C1, lush green coconut palms. Clear bright blue sky. Seafoam edges on shore. No lighthouse beam. Hand-drawn watercolor style, healing Japanese island aesthetic, no text.",
+        "dusk": "Glow Island map UI, summer season, dusk. Warm golden orange sky. Vivid ocean reflecting warm tones. Coconut palms lit from the right with amber rim light. Lighthouse starting to glow. Seafoam at water edges. Hand-drawn watercolor style.",
+        "night": "Glow Island map UI, summer season, night. Dark indigo sky with clear bright stars. Ocean with moonlight ripple. Lighthouse golden beam fully active and prominent. Firefly green glow points floating near foliage. Hand-drawn watercolor style, healing Japanese island."
+      },
+      "state": "spec_ready"
+    },
+
+    "autumn": {
+      "season_id": "autumn",
+      "name_cn": "秋季",
+      "chapters": [3],
+      "palette_spec": {
+        "hue_shift_deg": -10,
+        "hue_shift_direction": "warm_toward_20deg_orange_range",
+        "saturation_delta_pct": 5,
+        "brightness_delta_pct": -5,
+        "sky_color": "#D4B896",
+        "ocean_color": "#5BBFB5",
+        "foliage_color": "#D48B3A",
+        "accent_color": "#F0C14B",
+        "russet_accent": "#B03A2E",
+        "lighthouse_color": "#F5C842"
+      },
+      "ui_overlay_elements": {
+        "ambient_particle_vfx_ref": "vfx_season_autumn_leaves",
+        "ambient_particle_vfx_note": "vfx_season_autumn_leaves is not in vfx-spec (not in task scope) — placeholder reference only. Spec will be added in full_seasonal run.",
+        "ambient_particle_opacity": 0.85,
+        "sky_gradient": "warm_amber_orange_haze",
+        "foliage_texture": "maple_amber_golden_leaves",
+        "hourglass_frame_seasonal_tint": "#D48B3A",
+        "seasonal_decoration": "falling_autumn_leaves_ui_overlay"
+      },
+      "lighthouse_seasonal": {
+        "beam_color": "#F5C842",
+        "halo_color": "#F5D4A0",
+        "prominence_level": "ch3_medium"
+      },
+      "time_of_day_variants": {
+        "day": {
+          "color_temperature_k": 5500,
+          "brightness_multiplier": 0.95,
+          "sky_top_color": "#D4B896",
+          "sky_bottom_color": "#E8C878",
+          "ocean_shimmer": "warm_gentle",
+          "lighthouse_visible": false,
+          "foliage_density": "autumn_sparse",
+          "ui_brightness": 0.95
+        },
+        "dusk": {
+          "color_temperature_k": 2800,
+          "brightness_multiplier": 0.90,
+          "sky_top_color": "#B03A2E",
+          "sky_bottom_color": "#D48B3A",
+          "ocean_shimmer": "rust_amber_shimmer",
+          "lighthouse_visible": true,
+          "lighthouse_rim_light": "deep_amber",
+          "ui_brightness": 0.90
+        },
+        "night": {
+          "color_temperature_k": 7200,
+          "brightness_multiplier": 0.78,
+          "sky_top_color": "#2E2010",
+          "sky_bottom_color": "#1E2E50",
+          "ocean_shimmer": "dark_shimmer",
+          "lighthouse_visible": true,
+          "lighthouse_beam_active": true,
+          "stars_visible": true,
+          "ui_brightness": 0.78
+        }
+      },
+      "output_paths": {
+        "day": ".allforai/game-design/art/seasonal/ui_island_map_autumn_day.png",
+        "dusk": ".allforai/game-design/art/seasonal/ui_island_map_autumn_dusk.png",
+        "night": ".allforai/game-design/art/seasonal/ui_island_map_autumn_night.png"
+      },
+      "generation_prompts": {
+        "day": "Glow Island map UI, autumn season, daytime. Warm amber palette. Foliage turning orange #D48B3A and russet #B03A2E. Warm hazy sky. Ocean maintains cool teal contrast. Golden maple-like leaves on island trees. Slightly dimmer warm atmosphere. Hand-drawn watercolor style, healing Japanese island aesthetic, no text.",
+        "dusk": "Glow Island map UI, autumn season, dusk. Deep warm red-orange sky. Amber island foliage glowing in last light. Lighthouse starting to glow with amber halo. Rich autumn color harvest atmosphere. Hand-drawn watercolor style.",
+        "night": "Glow Island map UI, autumn season, night. Deep dark warm-tinged night sky with stars. Lighthouse prominent golden beam. Autumn foliage barely visible in darkness. Ocean dark with lighthouse reflection. Hand-drawn watercolor style."
+      },
+      "state": "spec_ready"
+    },
+
+    "winter": {
+      "season_id": "winter",
+      "name_cn": "冬季",
+      "chapters": [4],
+      "priority": "HIGH",
+      "palette_spec": {
+        "hue_shift_deg": 15,
+        "hue_shift_direction": "cool_toward_200deg_blue_range",
+        "saturation_delta_pct": -10,
+        "brightness_delta_pct": -8,
+        "sky_color": "#D0E8F8",
+        "ocean_color": "#3A9E94",
+        "foliage_color": "#7A9A80",
+        "snow_white": "#F5F5F5",
+        "cold_blue": "#D0E8F8",
+        "steam_warm": "#F5D4A0",
+        "lighthouse_color": "#F5C842"
+      },
+      "ui_overlay_elements": {
+        "ambient_particle_vfx_ref": "vfx_season_winter_snow",
+        "ambient_particle_opacity": 0.9,
+        "sky_gradient": "pale_cold_blue_white",
+        "foliage_texture": "snow_covered_branches_sparse",
+        "hourglass_frame_seasonal_tint": "#D0E8F8",
+        "seasonal_decoration": "snow_accumulation_rooftops_ui",
+        "hot_spring_steam_enhanced": {
+          "enabled": true,
+          "vfx_ref": "vfx_season_winter_steam_enhanced",
+          "volume_multiplier": 2.0,
+          "spread_increase_pct": 50,
+          "steam_color": "#F5D4A0",
+          "steam_opacity": 0.7,
+          "note": "温泉区域蒸汽量×2，温暖琥珀色与冷蓝天空形成颜色对比温度对比"
+        },
+        "lighthouse_volume_halo": {
+          "enabled": true,
+          "halo_color": "#F5D4A0",
+          "halo_opacity": 0.5,
+          "halo_radius_px": 120,
+          "note": "冬季夜晚灯塔光束穿透雪雾产生体积光光晕"
+        }
+      },
+      "lighthouse_seasonal": {
+        "beam_color": "#F5C842",
+        "halo_color": "#F5D4A0",
+        "prominence_level": "ch4_high",
+        "snow_fog_volumetric": true
+      },
+      "hot_spring_special_treatment": {
+        "asset_ref": "bg_ch5_before / bg_ch5_progress / bg_ch5_restored",
+        "note": "ch4为森林露营地，ch5为温泉山谷。冬季UI地图中，温泉山谷区域（若可见）需应用特殊处理。",
+        "rooftop_snow": true,
+        "snow_particle_deflection_over_hotspring": true,
+        "enhanced_steam": true,
+        "cold_warm_color_contrast": true,
+        "detail_spec_ref": ".allforai/game-design/art/seasonal/winter-hotspring-spec.json"
+      },
+      "time_of_day_variants": {
+        "day": {
+          "color_temperature_k": 6500,
+          "brightness_multiplier": 0.92,
+          "sky_top_color": "#D0E8F8",
+          "sky_bottom_color": "#EEF5FC",
+          "ocean_shimmer": "cold_grey_shimmer",
+          "lighthouse_visible": false,
+          "snow_on_ground": true,
+          "snow_accumulation": "medium",
+          "ui_brightness": 0.92
+        },
+        "dusk": {
+          "color_temperature_k": 3400,
+          "brightness_multiplier": 0.87,
+          "sky_top_color": "#C08080",
+          "sky_bottom_color": "#D0A890",
+          "ocean_shimmer": "cold_with_warm_tint",
+          "lighthouse_visible": true,
+          "lighthouse_rim_light": "warm_amber_contrast_cold_sky",
+          "snow_on_ground": true,
+          "ui_brightness": 0.87
+        },
+        "night": {
+          "color_temperature_k": 7500,
+          "brightness_multiplier": 0.75,
+          "sky_top_color": "#0E1830",
+          "sky_bottom_color": "#1E2E50",
+          "ocean_shimmer": "cold_night_shimmer",
+          "lighthouse_visible": true,
+          "lighthouse_beam_active": true,
+          "lighthouse_volumetric_halo": true,
+          "snow_particles_falling": true,
+          "stars_visible": true,
+          "ui_brightness": 0.75,
+          "lighthouse_prominence": "maximum"
+        }
+      },
+      "output_paths": {
+        "day": ".allforai/game-design/art/seasonal/ui_island_map_winter_day.png",
+        "dusk": ".allforai/game-design/art/seasonal/ui_island_map_winter_dusk.png",
+        "night": ".allforai/game-design/art/seasonal/ui_island_map_winter_night.png"
+      },
+      "generation_prompts": {
+        "day": "Glow Island map UI, winter season, daytime. Cold blue-white palette. Snow-covered island #F5F5F5, pale cold blue sky #D0E8F8. Trees bare or snow-dusted. Ocean grey-teal. Warm amber steam rising from hot spring area (color temperature contrast warm vs cold). Hand-drawn watercolor style, healing Japanese island aesthetic, no text.",
+        "dusk": "Glow Island map UI, winter season, dusk. Cold blue-purple twilight sky. Snow on ground reflecting warm dusk tones. Lighthouse beginning to glow, warm amber against cold blue background. Hot spring steam visible with warm glow. Strong color temperature contrast. Hand-drawn watercolor style.",
+        "night": "Glow Island map UI, winter season, night. Deep dark cold night #0E1830. Snow falling gently on island. Lighthouse with prominent golden beam #F5C842 with warm volumetric halo through snow fog #F5D4A0. Hot spring steam glowing warm amber contrast against cold darkness. Stars visible. Maximum lighthouse prominence. Hand-drawn watercolor style, healing Japanese island."
+      },
+      "state": "spec_ready"
+    }
+  },
+
+  "island_map_seasonal_ui_spec_summary": {
+    "total_output_files_planned": 12,
+    "files_by_season": {
+      "spring": 3,
+      "summer": 3,
+      "autumn": 3,
+      "winter": 3
+    },
+    "all_paths_under": ".allforai/game-design/art/seasonal/",
+    "atlas_integration": "ui_elements_atlas (seasonal overlays as separate layer)",
+    "lighthouse_visibility_rule": "灯塔光束在所有夜晚场景中可见，亮度随章节进度（Ch1→Ch6）增强",
+    "night_brightness_delta": "≥15% darker than day (满足validation规则)"
+  },
+
+  "validation_results": {
+    "status": "COMPLETED",
+    "checks": [
+      { "check": "four_seasons_covered", "result": "PASSED", "seasons": ["spring", "summer", "autumn", "winter"] },
+      { "check": "three_time_variants_per_season", "result": "PASSED", "count": "12 total states" },
+      { "check": "lighthouse_visible_in_all_night_scenes", "result": "PASSED" },
+      { "check": "night_brightness_delta_min_15pct", "result": "PASSED", "values": { "spring": "20%", "summer": "20%", "autumn": "22%", "winter": "25%" } },
+      { "check": "winter_hotspring_special_treatment_included", "result": "PASSED", "elements": ["rooftop_snow", "enhanced_steam", "snow_particle_deflection", "lighthouse_volumetric_halo"] },
+      { "check": "seasonal_vfx_referenced_in_variants", "result": "PASSED", "refs": ["vfx_season_spring_sakura", "vfx_season_summer_firefly", "vfx_season_winter_snow"] },
+      { "check": "hourglass_widget_anchored_on_map", "result": "PASSED", "position": "upper_right_island_map" }
+    ],
+    "warnings": [
+      "vfx_season_autumn_leaves 未在本轮 vfx-spec 中生成（任务范围未包含）— 已添加placeholder参考。需在 full_seasonal 模式运行时补充。"
+    ]
+  },
+
+  "completion_status": "COMPLETED_WITH_WARNINGS",
+  "warning_detail": "autumn_leaves VFX placeholder仅，完整seasonal run时补充"
+}

@@ -1,15 +1,18 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "project": "glow-island",
   "generated_at": "2026-05-13T00:00:00Z",
   "node": "ui-art-gen",
   "status": "spec_complete",
+  "pipeline_stage": "Part A — UI Art (icon-generation + portrait-generation) + hourglass priority",
   "language_policy": "HTML输出语言: zh-CN；游戏内专有名词保留日文；JSON字段名保持英文snake_case",
 
   "scope": {
     "canonical_registry_ui_count": 10,
     "canonical_registry_other_count": 20,
     "total_assets_in_scope": 30,
+    "hourglass_widget_added": true,
+    "hourglass_states": 4,
     "source_strategy_all": "llm_image_generation（ai_generated）"
   },
 
@@ -44,7 +47,10 @@
     "combo_bubble_bg": "#C85A40",
     "combo_text": "#F5C842",
     "hard_currency_start": "#5BBFB5",
-    "hard_currency_end": "#3A9E94"
+    "hard_currency_end": "#3A9E94",
+    "hourglass_sand_warm": "#F0A830",
+    "hourglass_glass_frame": "#D4B896",
+    "hourglass_glow_full": "#F5C842"
   },
 
   "ui_assets": [
@@ -59,6 +65,9 @@
       "current_state": "spec_ready",
       "states": ["normal", "low", "critical", "empty"],
       "spec_summary": "Island sand fill #F7EDD8，木质边框 #8B6030，软阴影。左：沙滩币图标+数字；中：步数计数器（critical 状态变为 #C85A40 快速脉动）；右：3个辅助按钮（重排/预判/续关，各 80×80px，珊瑚渐变，24px 圆角）。HUD 固定在棋盘下方，高度 80px。",
+      "prompt": "Game UI HUD bar, 720×80px, transparent background. Island sand color #F7EDD8 fill, warm wood border #8B6030 2px. Left zone: round coin icon slot + numeric counter. Center: step counter text area. Right: 3 button slots 80×80px each with coral gradient. Hand-drawn watercolor style, rounded corners, soft shadow. No text baked in. Healing Japanese island aesthetic.",
+      "negative_prompt": "pixel art, neon, metallic chrome, pure black, sharp corners, hyper-realistic 3D",
+      "generation_profile": { "task_type": "ui_panel", "provider": "google-imagen-4", "fallback": "openrouter-gpt-image" },
       "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_hud_bar"
     },
     {
@@ -72,6 +81,9 @@
       "current_state": "spec_ready",
       "states": ["default", "selected", "locked", "disabled", "new", "upgradable"],
       "spec_summary": "320×180px 关卡卡片。Island sand 底色，木质边框，16px 圆角，软阴影。显示：关卡编号（粗体深棕），3颗星（空/满），章节缩略图（若有）。locked 态：灰底+锁图标；new 态：金色边框+NEW 徽章；selected 态：珊瑚边框+放大阴影。",
+      "prompt": "Game level selection card, 320×180px, transparent background. Warm sand background #F7EDD8, wood border frame #8B6030 2px, 16px corner radius. Card shows 3-star rating area and chapter thumbnail space. Hand-drawn watercolor style, soft drop shadow. No text. Healing Japanese island aesthetic.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners, hyper-realistic",
+      "generation_profile": { "task_type": "ui_panel", "provider": "google-imagen-4", "fallback": "openrouter-gpt-image" },
       "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_card_level"
     },
     {
@@ -86,6 +98,9 @@
       "states": ["normal", "pressed", "disabled", "locked"],
       "cost": "30 沙滩币",
       "spec_summary": "80×80px 圆角（24px）按钮。normal：珊瑚渐变 #F0997A→#E8866A，重排旋转箭头图标（白），'重排' 标签（11sp 白），木质描边，软阴影。pressed：加深色+Y轴+2px 位移，缩放 0.97。disabled（余额<30）：沙色 #C8B8A0，图标灰，opacity 0.6。locked：disabled + 锁叠加。",
+      "prompt": "Square game button 80×80px, transparent background. Coral gradient fill #F0997A to #E8866A top-to-bottom, rounded corners 24px, white circular shuffle/rotation arrow icon centered, warm wood border outline #8B6030 1.5px, soft drop shadow. Hand-drawn watercolor style. No text baked in.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners",
+      "generation_profile": { "task_type": "ui_icon", "provider": "google-imagen-4", "fallback": "openrouter-gpt-image" },
       "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_btn_shuffle_states"
     },
     {
@@ -98,8 +113,11 @@
       "atlas": "ui_elements_atlas",
       "current_state": "spec_ready",
       "states": ["normal", "pressed", "disabled", "locked"],
-      "cost": "30 沙滩币",
+      "cost": "10 沙滩币",
       "spec_summary": "80×80px 圆角（24px）按钮。same palette 同重排按钮，图标改为放大镜/眼睛（预判路径高亮），'预判' 标签（11sp 白）。状态机与重排按钮相同。",
+      "prompt": "Square game button 80×80px, transparent background. Coral gradient fill #F0997A to #E8866A, rounded corners 24px, white magnifying glass eye icon centered, warm wood border #8B6030 1.5px, soft drop shadow. Hand-drawn watercolor style. No text.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners",
+      "generation_profile": { "task_type": "ui_icon", "provider": "google-imagen-4", "fallback": "openrouter-gpt-image" },
       "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_btn_hint_states"
     },
     {
@@ -114,6 +132,9 @@
       "states": ["normal", "pressed", "disabled", "highlighted", "locked"],
       "cost": "30 沙滩币 + 5步",
       "spec_summary": "80×80px 圆角（24px）按钮。normal：沙色调（opacity 0.7，常驻低亮度）。highlighted（步数归零时激活）：完整珊瑚渐变+金色边框 #F5C842+金色脉动光晕。disabled（余额<30）：灰色 opacity 0.5。locked（禅境关）：dim opacity 0.3+锁图标。",
+      "prompt": "Square game button 80×80px, transparent background. Sand-muted color #F7EDD8 at 70% opacity (normal state), rounded corners 24px, white +5 steps icon centered, warm border outline, soft shadow. Hand-drawn watercolor style. No text.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners",
+      "generation_profile": { "task_type": "ui_icon", "provider": "google-imagen-4", "fallback": "openrouter-gpt-image" },
       "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_btn_continue_states"
     },
     {
@@ -127,6 +148,9 @@
       "current_state": "spec_ready",
       "states": ["entering", "open", "confirming", "closing", "blocked"],
       "spec_summary": "480×640px 弹窗面板（居中显示于深海蓝遮罩 50% 之上）。木质暖沙底色 #E8D8B4，木质边框 3px #8B6030，20px 圆角，大软阴影。顶部：标题'商店'+关闭按钮。内容区：道具行列表（重排/预判/续关）。每行：图标+名称+说明+沙滩币价格（金色硬币图标+数字）。进入动画：scale_0.7→1.05→1.0 spring 0.4s。",
+      "prompt": "Game shop panel popup, 480×640px, transparent background. Warm wood-sand background #E8D8B4, decorative wood border frame #8B6030 3px, 20px corner radius, large soft drop shadow. Panel has header zone and content rows area. Hand-drawn watercolor style, island-themed wooden sign aesthetic. No text. Healing Japanese island.",
+      "negative_prompt": "pixel art, neon, metallic chrome, pure black, sharp corners, hyper-realistic",
+      "generation_profile": { "task_type": "ui_panel", "provider": "google-imagen-4", "fallback": "openrouter-gpt-image" },
       "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_screen_shop"
     },
     {
@@ -139,7 +163,10 @@
       "atlas": "ui_elements_atlas",
       "current_state": "spec_ready",
       "states": ["entering", "open", "confirming", "closing", "blocked"],
-      "spec_summary": "720×200px 底部对话框。木质暖沙底色 #E8D8B4，顶部边框 2px #8B6030。NPC名称（16sp #8B6030）+对话文本（15sp #3A2810，行高 1.6，最大宽度 640px，超出滚动）。右下角点击继续提示（小图标，漂木金 #C4955A）。进入：从底部上滑 40px+渐显 0.3s。退出：下滑 0.25s。",
+      "spec_summary": "720×200px 底部对话框。木质暖沙底色 #E8D8B4，顶部边框 2px #8B6030。NPC名称（16sp #8B6030）+对话文本（15sp #3A2810）。右下角点击继续提示（漂木金 #C4955A）。",
+      "prompt": "Game dialogue box, 720×200px, transparent background. Warm sand-wood background #E8D8B4, top border accent line #8B6030 2px, subtle corner decoration elements, right-aligned continue arrow area. Hand-drawn watercolor style. No text. Bottom-anchored UI panel, healing Japanese island aesthetic.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners",
+      "generation_profile": { "task_type": "ui_panel", "provider": "google-imagen-4", "fallback": "openrouter-gpt-image" },
       "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_screen_dialogue"
     },
     {
@@ -151,7 +178,10 @@
       "animation_method": "static",
       "atlas": "ui_elements_atlas",
       "current_state": "spec_ready",
-      "spec_summary": "64×64px 圆形沙滩币图标。金黄色 #F5C842 填充，漂木金内嵌贝壳/波纹纹样，有机手绘轮廓（暖棕色非纯黑），软投影。透明背景。唯一货币符号，HUD 和商店均引用此图标。",
+      "spec_summary": "64×64px 圆形沙滩币图标。贝壳造型金黄色圆形硬币，带涟漪光晕，暖橙色 #F5C842。填充：漂木金内嵌贝壳/波纹纹样，有机手绘轮廓（暖棕色非纯黑），软投影。透明背景。唯一货币符号，HUD 和商店均引用此图标。",
+      "prompt": "Hand-drawn watercolor beach coin icon, 64×64px, transparent background. Round coin shape, golden yellow #F5C842 fill, warm sand texture overlay, shell or ripple wave embossed pattern in driftwood #C4955A. Organic hand-drawn outline in warm brown. Soft drop shadow. Clean readable at 32px. No text. Healing Japanese island aesthetic.",
+      "negative_prompt": "pixel art, neon, metallic chrome, pure black outline, sharp edges, text overlay",
+      "generation_profile": { "task_type": "icon", "prompt_template": "icon_prompt", "provider": "google-imagen-4", "fallback": "openrouter-gpt-image" },
       "prompt_ref": ".allforai/game-design/art/icons/icon-spec.json#ui_coin_icon"
     },
     {
@@ -165,6 +195,11 @@
       "current_state": "spec_ready",
       "variants": ["empty", "filled", "half"],
       "spec_summary": "64×64px 五角星图标，三态：[空心：沙灰 #C4B090 填充，棕色描边] [满星：金黄 #F5C842，琥珀描边，软光晕] [半星：左金右灰]。有机圆端角，手绘水彩风格。透明背景。",
+      "prompt_filled": "Hand-drawn watercolor 5-point star icon, 64×64px, transparent background. Golden yellow #F5C842 fill, warm amber stroke #C4955A 2px, soft inner glow, organic round-tipped star shape. Healing Japanese island aesthetic. No text.",
+      "prompt_empty": "Hand-drawn watercolor 5-point star icon outline, 64×64px, transparent background. Grey-sand #C4B090 fill, brown outline #8B6030 2px. Same organic shape as filled variant. No text.",
+      "prompt_half": "Hand-drawn watercolor 5-point star icon, 64×64px, transparent background. Left half golden #F5C842, right half grey-sand #C4B090, split at center vertical axis. Organic round-tipped star shape. No text.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp geometric star, text overlay",
+      "generation_profile": { "task_type": "icon", "prompt_template": "icon_prompt", "provider": "google-imagen-4", "fallback": "openrouter-gpt-image" },
       "prompt_ref": ".allforai/game-design/art/icons/icon-spec.json#ui_star_icon"
     },
     {
@@ -178,10 +213,161 @@
       "current_state": "spec_ready",
       "states": ["normal", "low", "gain", "critical", "full", "loss", "empty"],
       "variants": ["empty", "quarter", "half", "three_quarters", "full"],
-      "spec_summary": "120×480px 竖向灯塔进度条。圆角轨道（8px），木质边框，顶部灯塔小图标（chapter 进度满后发光）。填充色：空=沙灰 #C8B8A0，低=竹绿 #7DBE77（25-100%），满=金黄 #F5C842+光晕。进度变化：smooth expand + 金色闪光 0.3s。章节修复完成：灯塔图标发光脉动。位于棋盘右侧 60px 侧栏。",
+      "spec_summary": "120×480px 竖向灯塔进度条。圆角轨道（8px），木质边框，顶部灯塔小图标（chapter 进度满后发光）。填充色：空=沙灰 #C8B8A0，低=竹绿 #7DBE77（25-100%），满=金黄 #F5C842+光晕。进度变化：smooth expand + 金色闪光 0.3s。章节修复完成：灯塔图标发光脉动。",
+      "prompt": "Vertical lighthouse progress bar widget, 120×480px, transparent background. Rounded track 8px radius, warm wood border, small lighthouse icon at top. Track fill color bamboo green #7DBE77. Background sand grey #C8B8A0 unfilled. Hand-drawn watercolor style, organic forms. Healing Japanese island aesthetic. No text.",
+      "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners",
+      "generation_profile": { "task_type": "ui_panel", "provider": "google-imagen-4", "fallback": "openrouter-gpt-image" },
       "prompt_ref": ".allforai/game-design/ui/ui-mockup-spec.json#mockup_cmp_lighthouse_progress"
     }
   ],
+
+  "hourglass_widget": {
+    "asset_id": "ui_hourglass_widget",
+    "name": "沙漏奖励组件",
+    "file_prefix": "ui_hourglass",
+    "priority": "PRIORITY",
+    "placement": "主界面/地图界面显眼位置（靠近岛屿地图中心或HUD角落）",
+    "size_px": { "width": 160, "height": 200 },
+    "format": "png",
+    "atlas": "ui_elements_atlas",
+    "animation_method": "frame_animation + ui_tween",
+    "fill_duration_hours": 4,
+    "reward_coins_base": 15,
+    "reward_coins_monthly_card": 30,
+    "state_machine": {
+      "states": ["empty", "filling", "full", "claimed"],
+      "transitions": {
+        "empty_to_filling": "timer_started",
+        "filling_to_full": "4_hours_elapsed",
+        "full_to_claimed": "player_tap",
+        "claimed_to_empty": "claim_animation_complete"
+      }
+    },
+    "states": [
+      {
+        "state_id": "empty",
+        "name_cn": "沙漏—空",
+        "description": "沙子全在底部，顶部玻璃腔为空，静止无动画",
+        "sand_level": "bottom_only",
+        "sand_fill_pct": 0,
+        "visual": "沙粒堆积在底部腔，顶部腔完全透明，玻璃无光晕，椰树装饰稍暗",
+        "animation": "static — 轻微idle呼吸 scale 0.99-1.01, 周期4s",
+        "badge": null,
+        "prompt": "Cute island-themed hourglass widget, 160×200px, transparent background. Glass hourglass body with warm amber sand at BOTTOM only, top chamber empty and clear. Rounded glass frame with warm brown borders #8B6030, small palm tree decoration on top, coral reef base at bottom. No glow effects. Muted, waiting state. Hand-drawn watercolor style. No text.",
+        "negative_prompt": "pixel art, neon, pure black, sharp corners, hyper-realistic 3D, glowing"
+      },
+      {
+        "state_id": "filling",
+        "name_cn": "沙漏—填充中",
+        "description": "沙粒从顶部腔缓缓落下，底部沙堆增高中，三个子态（25%/50%/75%填充）",
+        "sand_level": "variable",
+        "sand_fill_pct": [25, 50, 75],
+        "visual": "顶部腔沙粒逐渐减少，底部腔沙堆增高。中间颈部有流沙颗粒动画。玻璃边缘有微弱暖色光晕",
+        "animation": "particle_fall — 沙粒以 2-3px 圆点从颈部落下，速度60px/s，偶尔随机左右偏移±3px。底部沙堆高度每帧微增",
+        "sub_states": [
+          {
+            "fill_pct": 25,
+            "file_suffix": "_25pct",
+            "prompt": "Island-themed hourglass, 160×200px, transparent background. 25% filled — sand 25% in bottom chamber, 75% remaining in top. Warm amber sand #F0A830, tiny sand particles falling through narrow neck. Glass frame with organic warm borders, palm tree top decoration, coral reef base. Soft warm glow on glass edges. Hand-drawn watercolor style."
+          },
+          {
+            "fill_pct": 50,
+            "file_suffix": "_50pct",
+            "prompt": "Island-themed hourglass, 160×200px, transparent background. 50% filled — sand evenly split between top and bottom chambers. Warm amber sand #F0A830, flowing particles at neck. Glass frame warm borders, palm tree top, coral base. Gentle warm glow. Hand-drawn watercolor style."
+          },
+          {
+            "fill_pct": 75,
+            "file_suffix": "_75pct",
+            "prompt": "Island-themed hourglass, 160×200px, transparent background. 75% filled — mostly full, 75% sand in bottom chamber, small amount remaining in top. Warm amber sand #F0A830, light trickle at neck. Glass frame, palm tree top, coral base. Warm golden glow on lower chamber. Hand-drawn watercolor style."
+          }
+        ],
+        "badge": null,
+        "negative_prompt": "pixel art, neon, pure black, sharp corners, hyper-realistic 3D"
+      },
+      {
+        "state_id": "full",
+        "name_cn": "沙漏—满载",
+        "description": "沙子全部在底部，顶部腔完全空，边缘金色脉动发光，轻微弹跳动画",
+        "sand_level": "full_bottom",
+        "sand_fill_pct": 100,
+        "visual": "底部腔满沙堆积，顶部腔完全透明，玻璃边缘发出暖金色 #F5C842 脉动光晕，椰树装饰金色高亮",
+        "animation": "glow_pulse — 光晕 0.6s周期脉动，scale 0.98-1.04弹跳，每3s一次轻跳。徽章感叹号持续显示",
+        "badge": "感叹号徽章 — 右上角红底白感叹号 24×24px",
+        "prompt": "Island-themed hourglass FULL state, 160×200px, transparent background. All sand at BOTTOM chamber, top chamber completely empty and clear. Warm amber sand #F0A830 in full bottom. Glass frame glowing with warm golden light #F5C842 pulsing aura on edges. Palm tree decoration at top glowing golden. Coral reef base. Exclamation badge upper-right. Hand-drawn watercolor style, magical glow effect.",
+        "negative_prompt": "pixel art, neon, pure black, sharp corners, hyper-realistic 3D"
+      },
+      {
+        "state_id": "claimed",
+        "name_cn": "沙漏—领取中",
+        "description": "玩家点击后：沙漏翻转→沙粒倒出飞向HUD货币栏→金色闪光+星星粒子→翻回空态",
+        "sand_level": "claiming",
+        "sand_fill_pct": 0,
+        "visual": "翻转动画：沙漏旋转180°（0.4s），沙粒从瓶口飞出为金色圆点粒子向HUD方向飞去（0.6s），白色+金色闪光（0.2s）",
+        "animation": "claim_sequence: 1) rotate_180deg 0.4s ease-in-out → 2) particle_burst 金币粒子飞向HUD 0.6s → 3) flash_sparkle 白金闪 0.2s → 4) fade_to_empty 0.3s",
+        "badge": null,
+        "vfx_companion": "vfx_hourglass_claim_coins",
+        "prompt": "Island-themed hourglass CLAIMED state, 160×200px, transparent background. Hourglass tipped/rotated, warm amber sand pouring out as golden coin particles. Bright white-gold sparkle flash effect. Multiple small coin particle dots flying upward. Pure celebration moment. Hand-drawn watercolor style, dynamic action pose.",
+        "negative_prompt": "pixel art, neon, pure black, sharp corners, hyper-realistic 3D"
+      }
+    ],
+    "output_paths": {
+      "empty": ".allforai/game-design/art/icons/ui_hourglass_empty.png",
+      "filling_25pct": ".allforai/game-design/art/icons/ui_hourglass_filling_25pct.png",
+      "filling_50pct": ".allforai/game-design/art/icons/ui_hourglass_filling_50pct.png",
+      "filling_75pct": ".allforai/game-design/art/icons/ui_hourglass_filling_75pct.png",
+      "full": ".allforai/game-design/art/icons/ui_hourglass_full.png",
+      "claimed": ".allforai/game-design/art/icons/ui_hourglass_claimed.png"
+    },
+    "validation_checks": [
+      "空态与满态在视觉上差异明显（沙粒位置+光晕有无）",
+      "满态徽章在64px缩略图下仍可见",
+      "四个状态风格一致（同一玻璃瓶形态）",
+      "claimed态粒子方向清晰（向上飞向HUD）",
+      "温暖琥珀色与岛屿风格UI调色板协调"
+    ]
+  },
+
+  "shop_item_icons": {
+    "note": "商店道具图标：重排/预判/续关三件道具需要独立大图标（用于商店面板列表行）",
+    "items": [
+      {
+        "asset_id": "ico_item_reshuffle",
+        "name": "重排道具图标",
+        "file_prefix": "ico_item_reshuffle",
+        "size_px": 96,
+        "format": "png",
+        "background_policy": "transparent",
+        "output_path": ".allforai/game-design/art/icons/ico_item_reshuffle.png",
+        "prompt": "Hand-drawn watercolor game item icon, 96×96px, transparent background. Swirling ocean wave / vortex shuffle icon. Warm teal-ocean color #5BBFB5, white foam highlights, organic rounded swirl shape. Island theme. Readable at 48px. No text.",
+        "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners, text",
+        "generation_profile": { "task_type": "icon", "provider": "google-imagen-4" }
+      },
+      {
+        "asset_id": "ico_item_hint",
+        "name": "预判道具图标",
+        "file_prefix": "ico_item_hint",
+        "size_px": 96,
+        "format": "png",
+        "background_policy": "transparent",
+        "output_path": ".allforai/game-design/art/icons/ico_item_hint.png",
+        "prompt": "Hand-drawn watercolor game item icon, 96×96px, transparent background. Glowing eye or lighthouse beam icon for hint. Warm golden #F5C842 light ray, soft teal eye shape or lamp. Organic hand-drawn outlines. Island theme. Readable at 48px. No text.",
+        "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners, text",
+        "generation_profile": { "task_type": "icon", "provider": "google-imagen-4" }
+      },
+      {
+        "asset_id": "ico_item_continue",
+        "name": "续关道具图标",
+        "file_prefix": "ico_item_continue",
+        "size_px": 96,
+        "format": "png",
+        "background_policy": "transparent",
+        "output_path": ".allforai/game-design/art/icons/ico_item_continue.png",
+        "prompt": "Hand-drawn watercolor game item icon, 96×96px, transparent background. +5 steps bonus icon — sandal footprints or footstep track with +5 indicator area, warm coral color #E8866A. Organic rounded shape. Island beach theme. Readable at 48px. No text or numbers baked in.",
+        "negative_prompt": "pixel art, neon, metallic, pure black, sharp corners, text",
+        "generation_profile": { "task_type": "icon", "provider": "google-imagen-4" }
+      }
+    ]
+  },
 
   "other_assets": {
     "note": "canonical_registry.other[] 包含 18 张章节背景（bg_*）和 2 个道具（prop_*）。背景由 environment-art-gen 节点负责生成，此处仅记录规格约束以供 ui-art-gen HUD 层级对接使用。",
@@ -236,10 +422,41 @@
         "ui_hud_bar", "ui_card_level",
         "ui_btn_shuffle", "ui_btn_hint", "ui_btn_continue",
         "ui_panel_shop", "ui_panel_npc_dialogue",
-        "ui_coin_icon", "ui_star_icon", "ui_lighthouse_progress"
+        "ui_coin_icon", "ui_star_icon", "ui_lighthouse_progress",
+        "ui_hourglass_widget",
+        "ico_item_reshuffle", "ico_item_hint", "ico_item_continue"
       ],
       "note": "所有 UI 资产打包至单一 ui_elements_atlas，2x 设计尺寸，1x 回退；章节背景单独分章节 atlas（environment-art-gen 负责）"
     }
+  },
+
+  "visual_style_token_validation": {
+    "status": "COMPLETED",
+    "tokens_file": ".allforai/game-design/art/visual-style-tokens.json",
+    "checks_passed": [
+      "color: 主色板已定义（island_sand / coral / ocean_teal / golden_hour / night_indigo）",
+      "line: outline_style=primary_color_darkened_32pct，pure_black_prohibited=true",
+      "shape: corner_radius_policy=min_16px，geometric_sharp_prohibited=true",
+      "material: render_style=hand_drawn_watercolor，paper_texture_6pct",
+      "camera_view: 2d front/top-down，dimension=2d",
+      "lighting: warm_natural_daylight，neon_prohibited=true",
+      "typography: 思源圆体，pixel_font_prohibited=true",
+      "ui_compatibility: shared_language=soft_wood_sign_flat_shadow",
+      "vfx_intensity: healing_warm，excessive_debris_prohibited=true",
+      "image_generation_constraints: positive + negative 均已定义"
+    ],
+    "warnings": []
+  },
+
+  "portrait_generation_scope": {
+    "skill_applied": "game-art/portrait-generation",
+    "note": "UI中涉及角色头像的场景：NPC对话框角色立绘区（左侧头像/半身像）。具体肖像规格在 portrait-spec.json 中定义，此处仅标注 UI 对接锚点。",
+    "ui_anchor": "ui_panel_npc_dialogue — 左侧 160×160px 头像区域",
+    "portrait_output": ".allforai/game-design/art/portraits/portrait-spec.json",
+    "portrait_manifest": ".allforai/game-design/art/portraits/portrait-manifest.json",
+    "characters_needed": ["char_ritsu", "char_hinata", "char_kenzo", "char_umeko", "char_natsuka", "char_fuyuko", "char_gicho"],
+    "crop": "bust_160x160",
+    "background_policy": "transparent"
   },
 
   "motion_design_refs": {
@@ -249,27 +466,38 @@
     "dialog_dismiss_s": 0.25,
     "ui_card_slide_s": 0.3,
     "hud_toggle_fade_s": 0.2,
-    "currency_pulse_hz": 0.8
+    "currency_pulse_hz": 0.8,
+    "hourglass_fill_animation": "particle_fall, 2-3px drops, 60px/s, 4h total duration (backend timer)",
+    "hourglass_full_glow_period_s": 0.6,
+    "hourglass_claim_sequence_s": 1.5
   },
 
-  "review_checklist": {
-    "ui_component_states": "UI 组件状态完整（normal/pressed/disabled/locked）— 已在 component-state-spec.json 定义",
-    "hud_hierarchy": "HUD 信息层级清晰，不遮挡关键棋盘区域（HUD 底栏 y=1100–1180，灯塔侧栏 x=660–720，棋盘 y=100–1100/x=0–660）— 已在 screen-layout-spec.json 定义",
-    "resolution_adaptation": "屏幕布局规格与 Cocos Creator 分辨率适配（9:16基准720×1280+安全区）— 已在 screen-layout-spec.json 定义",
-    "icon_atlas": "图标与整体美术方向一致（watercolor/pastel/organic），Atlas 打包至 ui_elements_atlas — 已在 atlas_plan 定义",
-    "readability_qa": "UI mockup 通过可读性QA — 待图片生成后在 art-qa 节点执行"
+  "generation_plan": {
+    "batch": "ui_batch",
+    "batch_size": 30,
+    "provider_primary": "google-imagen-4",
+    "provider_fallback": "openrouter-gpt-image",
+    "max_repair_attempts": 3,
+    "assets_to_generate": [
+      "ui_hud_bar", "ui_card_level",
+      "ui_btn_shuffle", "ui_btn_hint", "ui_btn_continue",
+      "ui_panel_shop", "ui_panel_npc_dialogue",
+      "ui_coin_icon",
+      "ui_star_icon_empty", "ui_star_icon_filled", "ui_star_icon_half",
+      "ui_lighthouse_progress",
+      "ui_hourglass_empty", "ui_hourglass_filling_25pct", "ui_hourglass_filling_50pct",
+      "ui_hourglass_filling_75pct", "ui_hourglass_full", "ui_hourglass_claimed",
+      "ico_item_reshuffle", "ico_item_hint", "ico_item_continue"
+    ],
+    "total_generation_targets": 21
   },
 
   "sub_skill_outputs": {
     "ui_registry": ".allforai/game-design/ui/ui-registry.json",
-    "hud_information_design": ".allforai/game-design/ui/hud-information-design.json",
-    "component_state_spec": ".allforai/game-design/ui/component-state-spec.json",
-    "screen_layout_spec": ".allforai/game-design/ui/screen-layout-spec.json",
     "visual_style_tokens": ".allforai/game-design/art/visual-style-tokens.json",
-    "ui_style_tokens": ".allforai/game-design/ui/ui-style-tokens.json",
-    "ui_mockup_spec": ".allforai/game-design/ui/ui-mockup-spec.json",
-    "ui_mockup_manifest": ".allforai/game-design/ui/ui-mockup-manifest.json",
     "icon_spec": ".allforai/game-design/art/icons/icon-spec.json",
-    "icon_manifest": ".allforai/game-design/art/icons/icon-manifest.json"
+    "icon_manifest": ".allforai/game-design/art/icons/icon-manifest.json",
+    "portrait_spec": ".allforai/game-design/art/portraits/portrait-spec.json",
+    "portrait_manifest": ".allforai/game-design/art/portraits/portrait-manifest.json"
   }
 }

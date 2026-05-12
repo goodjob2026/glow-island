@@ -3,7 +3,7 @@
   "generated_at": "2026-05-13T00:00:00Z",
   "project": "glow-island",
   "node": "tile-art-gen",
-  "status": "COMPLETED_WITH_LIMITS",
+  "status": "GENERATION_IN_PROGRESS",
 
   "overview": {
     "total_tile_assets": 25,
@@ -303,9 +303,14 @@
   },
 
   "asset_states": {
-    "note": "All 25 canonical_registry.tiles[] assets advanced from placeholder to spec_complete. Actual PNG generation (completing to 'generated' state) requires image API execution documented in tileset-generation-spec.json.",
-    "assets_in_spec_complete_state": 25,
-    "assets_still_placeholder": 0,
-    "completion_condition_met": "tile-art-spec.json EXISTS and tile-art-review.html EXISTS and all 25 tiles have current_state != placeholder (state = spec_complete)"
+    "note": "All 25 canonical_registry.tiles[] ch1 base variants generated as PNG via google-imagen-4 (tiles 1-5) and fal-ai/flux-2-pro (tiles 6-25). Ch2-ch6 chapter saturation variants (100 files) and special block animation frames 02-12 (55 files) remain automation_limited pending additional generation runs.",
+    "assets_in_spec_complete_state": 0,
+    "assets_in_generated_state": 25,
+    "assets_still_automation_limited": 155,
+    "ch1_base_generated_at": "2026-05-13T00:00:00Z",
+    "generation_apis_used": ["google-imagen-4", "fal-ai/flux-2-pro"],
+    "completion_condition_met": "tile-art-spec.json EXISTS and 25 ch1 base PNGs exist in .allforai/game-design/art/tilesets/. Full completion requires ch2-ch6 variants and animation frames.",
+    "mvp_ready": true,
+    "mvp_note": "Ch1 atlas (20 regular tiles) and special_blocks_atlas frame_01 ready for MVP prototype board rendering."
   }
 }

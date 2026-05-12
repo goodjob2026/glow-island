@@ -1,0 +1,944 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/vfx-spec",
+  "mode": "spec_validate",
+  "node": "vfx-art-gen",
+  "pipeline_stage": "Part B — VFX Spec (8 canonical_registry.vfx + 5 special tile VFX + 3 seasonal particles + 1 combo glow ring + 1 hourglass claim)",
+
+  "style_context": {
+    "dimension": "2d",
+    "platform": "cocos-creator web-canvas-2d",
+    "art_style": "hand_drawn_watercolor",
+    "particle_budget_max": 200,
+    "vfx_intensity": "healing_warm_not_aggressive",
+    "prohibited": ["excessive_particle_debris", "high_contrast_alert_tones", "neon_cyberpunk"],
+    "accessibility_fallback": "reduced_motion_simplified_version"
+  },
+
+  "vfx": [
+    {
+      "vfx_id": "vfx_combo_burst",
+      "file_prefix": "vfx_combo_burst",
+      "name_cn": "连击爆炸特效",
+      "semantic": "连击达到高级别（×3/×4/×5+）时在消除位置上方弹出的气泡爆炸特效，正向反馈强化",
+      "canonical_registry_ref": true,
+      "trigger": {
+        "event": "combo_threshold_reached",
+        "source": "gameplay",
+        "combo_levels": [3, 4, 5]
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "hybrid",
+      "anchor": {
+        "kind": "tile",
+        "id": "last_matched_tile_position"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 900,
+        "phases": ["burst_in", "idle_float", "fade_out"],
+        "event_sync": { "event": "combo_threshold_crossed", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "complete_then_interrupt"
+      },
+      "hybrid": {
+        "branches": ["particle", "sprite_sheet"],
+        "sprite_sheet": {
+          "frame_count": 8,
+          "fps": 24,
+          "frame_size_px": { "width": 220, "height": 110 },
+          "loop": false,
+          "alpha_policy": "transparent"
+        },
+        "particle": {
+          "emitter_shape": "point",
+          "spawn_behavior": "burst",
+          "particle_count": [8, 16],
+          "lifetime_ms": 600,
+          "velocity": "outward_burst_upward_bias",
+          "color_over_life": ["#F5C842", "#EE8C55", "#F0997A", "transparent"],
+          "size_over_life": "expand_then_fade",
+          "blend_mode": "additive"
+        }
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 15,
+        "max_duration_ms": 900,
+        "attention": "active",
+        "accessibility_fallback": "reduced_motion_scale_flash_only"
+      },
+      "vfx_hint_source": "combo_bubble_vfx in art-pipeline-config.json"
+    },
+
+    {
+      "vfx_id": "vfx_match_disappear",
+      "file_prefix": "vfx_match_disappear",
+      "name_cn": "消除特效",
+      "semantic": "任意图块成功匹配消除时播放的消失特效，基于章节主色调变体，Animal Crossing弹跳曲线",
+      "canonical_registry_ref": true,
+      "trigger": {
+        "event": "tile_pair_matched",
+        "source": "gameplay"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "sprite_sheet",
+      "anchor": {
+        "kind": "tile",
+        "id": "matched_tile_position"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 400,
+        "phases": ["impact", "burst", "dissipate"],
+        "event_sync": { "event": "tile_disappear_start", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "non_interruptible"
+      },
+      "sprite_sheet": {
+        "frame_count": 12,
+        "fps": 30,
+        "frame_size_px": { "width": 160, "height": 160 },
+        "loop": false,
+        "alpha_policy": "transparent",
+        "color_variants": ["teal", "pink", "gold", "green", "red", "navy"],
+        "animation_curve": "ease_out_cubic_10pct_overshoot",
+        "key_keyframes": {
+          "frame_3": "peak_scale_1.15x_squash",
+          "frame_4_12": "collapse_and_particle_scatter"
+        }
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 10,
+        "max_duration_ms": 400,
+        "attention": "ambient",
+        "accessibility_fallback": "simple_fade_no_scale"
+      },
+      "vfx_hint_source": "fx_tile_disappear in vfx-asset-spec.json"
+    },
+
+    {
+      "vfx_id": "vfx_lighthouse_glow",
+      "file_prefix": "vfx_lighthouse_glow",
+      "name_cn": "灯塔光晕特效",
+      "semantic": "灯塔进度条满载或章节修复完成时灯塔发出的金色旋转光束和光晕，里程碑反馈",
+      "canonical_registry_ref": true,
+      "trigger": {
+        "event": "lighthouse_progress_full",
+        "source": "progression"
+      },
+      "presentation_layer": "ui",
+      "dimension": "2d",
+      "implementation_mode": "hybrid",
+      "anchor": {
+        "kind": "ui_component",
+        "id": "ui_lighthouse_progress"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 2400,
+        "phases": ["glow_build", "beam_sweep", "sustain_glow"],
+        "event_sync": { "event": "chapter_restore_complete", "time_ms": 200 },
+        "loop": true,
+        "loop_start_ms": 800,
+        "interrupt_policy": "fade_on_interrupt"
+      },
+      "hybrid": {
+        "branches": ["sprite_sheet", "light_pulse"],
+        "sprite_sheet": {
+          "frame_count": 24,
+          "fps": 24,
+          "frame_size_px": { "width": 256, "height": 256 },
+          "loop": true,
+          "alpha_policy": "transparent",
+          "color": "#F5C842",
+          "animation_style": "rotating_golden_beam_with_saturation_spike"
+        },
+        "light_pulse": {
+          "light_type": "radial_2d_glow",
+          "color": "#F5C842",
+          "intensity_peak": 0.85,
+          "radius_px": 80,
+          "falloff": "soft_quadratic",
+          "timing_curve": "sine_wave",
+          "period_ms": 2000,
+          "reduced_intensity_fallback": { "intensity_peak": 0.4, "radius_px": 40 }
+        }
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 25,
+        "max_duration_ms": 0,
+        "attention": "active",
+        "accessibility_fallback": "static_glow_no_animation"
+      }
+    },
+
+    {
+      "vfx_id": "vfx_wave_clear",
+      "file_prefix": "vfx_wave_clear",
+      "name_cn": "光波清除特效",
+      "semantic": "光波特殊块激活时向外扩散的暖白涟漪光环，清除3×3障碍层并赋予5秒自由路径增益区",
+      "canonical_registry_ref": true,
+      "trigger": {
+        "event": "special_tile_wave_activated",
+        "source": "gameplay_special_tile"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "hybrid",
+      "anchor": {
+        "kind": "tile",
+        "id": "wave_tile_midpoint"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 5500,
+        "phases": ["impact_ring", "obstacle_shatter", "free_zone_glow_sustain"],
+        "event_sync": { "event": "wave_activation", "time_ms": 0 },
+        "loop": false,
+        "loop_aura_start_ms": 500,
+        "loop_aura_end_ms": 5500,
+        "interrupt_policy": "complete_initial_phase"
+      },
+      "hybrid": {
+        "branches": ["particle", "screen_effect"],
+        "particle": {
+          "emitter_shape": "ring",
+          "spawn_behavior": "burst_then_sustain",
+          "particle_count": [30, 50],
+          "lifetime_ms": 800,
+          "velocity": "outward_expanding_ring",
+          "color_over_life": ["#FFFFFF", "#F5F0E8", "transparent"],
+          "size_over_life": "fast_expand_fade",
+          "blend_mode": "additive",
+          "ring_radius_start_px": 20,
+          "ring_radius_end_px": 180
+        },
+        "screen_effect": {
+          "kind": "area_glow",
+          "affected_region": "3x3_tile_grid_from_anchor",
+          "color": "#FFFDF5",
+          "opacity": 0.35,
+          "duration_ms": 5000,
+          "fade_in_ms": 200,
+          "fade_out_ms": 500,
+          "accessibility_fallback": "reduced_opacity_0.15"
+        }
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 20,
+        "max_duration_ms": 5500,
+        "attention": "critical",
+        "accessibility_fallback": "reduced_motion_ring_only"
+      },
+      "special_block_color": "#7ECDE8",
+      "vfx_style_ref": "warm_white_ripple_expanding_ring"
+    },
+
+    {
+      "vfx_id": "vfx_chapter_restore",
+      "file_prefix": "vfx_chapter_restore",
+      "name_cn": "章节修复特效",
+      "semantic": "章节修复完成时全屏幕白色圆形扩展+饱和度提升+黄金粒子雨，里程碑庆典效果",
+      "canonical_registry_ref": true,
+      "trigger": {
+        "event": "chapter_restoration_complete",
+        "source": "progression"
+      },
+      "presentation_layer": "screen_space",
+      "dimension": "screen_space",
+      "implementation_mode": "hybrid",
+      "anchor": {
+        "kind": "screen_region",
+        "id": "screen_center"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 4100,
+        "phases": ["white_expand", "crossfade_saturation", "gold_rain"],
+        "event_sync": { "event": "restoration_complete_trigger", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "non_interruptible"
+      },
+      "hybrid": {
+        "branches": ["screen_effect", "particle"],
+        "screen_effect": {
+          "kind": "white_circle_expand",
+          "duration_ms": 500,
+          "cover_duration_ms": 500,
+          "reveal_duration_ms": 500,
+          "intensity_cap": 1.0,
+          "accessibility_fallback": "crossfade_without_flash"
+        },
+        "particle": {
+          "emitter_shape": "screen_top",
+          "spawn_behavior": "sustained_rain",
+          "particle_count": [80, 120],
+          "lifetime_ms": 2500,
+          "velocity": "downward_with_drift",
+          "color_over_life": ["#F5C842", "#F5F0E8", "transparent"],
+          "size_over_life": "constant_then_fade",
+          "blend_mode": "normal",
+          "duration_ms": 2500,
+          "start_ms": 1600
+        }
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 100,
+        "max_duration_ms": 4100,
+        "attention": "critical",
+        "intensity_cap": "full_screen",
+        "accessibility_fallback": "crossfade_only_no_particles_no_flash"
+      }
+    },
+
+    {
+      "vfx_id": "vfx_combo_multiplier_x2",
+      "file_prefix": "vfx_combo_multiplier_x2",
+      "name_cn": "连击倍率×2",
+      "semantic": "Combo×2时得分倍率视觉标识，强化节奏感，金色气泡×2文字标识",
+      "canonical_registry_ref": true,
+      "trigger": {
+        "event": "combo_multiplier_2x",
+        "source": "gameplay_combo"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "sprite_sheet",
+      "anchor": {
+        "kind": "tile",
+        "id": "last_matched_tile_position"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 700,
+        "phases": ["pop_in", "float", "fade"],
+        "event_sync": { "event": "combo_2x_threshold", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "interrupt_allowed_after_pop_in"
+      },
+      "sprite_sheet": {
+        "frame_count": 8,
+        "fps": 24,
+        "frame_size_px": { "width": 120, "height": 60 },
+        "loop": false,
+        "alpha_policy": "transparent",
+        "color": "#F5C842",
+        "animation_curve": "spring_pop_ease_out"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 8,
+        "max_duration_ms": 700,
+        "attention": "active",
+        "accessibility_fallback": "simple_fade_text_indicator"
+      }
+    },
+
+    {
+      "vfx_id": "vfx_combo_multiplier_x3",
+      "file_prefix": "vfx_combo_multiplier_x3",
+      "name_cn": "连击倍率×3",
+      "semantic": "Combo×3时得分倍率视觉标识，强化节奏感，珊瑚色气泡×3文字标识，粒子更多",
+      "canonical_registry_ref": true,
+      "trigger": {
+        "event": "combo_multiplier_3x",
+        "source": "gameplay_combo"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "sprite_sheet",
+      "anchor": {
+        "kind": "tile",
+        "id": "last_matched_tile_position"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 800,
+        "phases": ["pop_in", "float", "fade"],
+        "event_sync": { "event": "combo_3x_threshold", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "interrupt_allowed_after_pop_in"
+      },
+      "sprite_sheet": {
+        "frame_count": 10,
+        "fps": 24,
+        "frame_size_px": { "width": 140, "height": 70 },
+        "loop": false,
+        "alpha_policy": "transparent",
+        "color": "#EE8C55",
+        "animation_curve": "spring_pop_larger_overshoot"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 10,
+        "max_duration_ms": 800,
+        "attention": "active",
+        "accessibility_fallback": "simple_fade_text_indicator"
+      }
+    },
+
+    {
+      "vfx_id": "vfx_combo_multiplier_x5",
+      "file_prefix": "vfx_combo_multiplier_x5",
+      "name_cn": "连击倍率×5",
+      "semantic": "Combo×5+时得分倍率视觉标识，最强正向反馈，金色大爆炸气泡+彩虹粒子",
+      "canonical_registry_ref": true,
+      "trigger": {
+        "event": "combo_multiplier_5x_plus",
+        "source": "gameplay_combo"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "hybrid",
+      "anchor": {
+        "kind": "tile",
+        "id": "last_matched_tile_position"
+      },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 1000,
+        "phases": ["pop_in", "sustain_glow", "float", "fade"],
+        "event_sync": { "event": "combo_5x_threshold", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "complete_pop_in_then_interrupt"
+      },
+      "hybrid": {
+        "branches": ["sprite_sheet", "particle"],
+        "sprite_sheet": {
+          "frame_count": 12,
+          "fps": 24,
+          "frame_size_px": { "width": 180, "height": 90 },
+          "loop": false,
+          "alpha_policy": "transparent",
+          "color": "#F5C842",
+          "animation_curve": "spring_pop_large_overshoot_with_glow"
+        },
+        "particle": {
+          "emitter_shape": "point",
+          "spawn_behavior": "burst",
+          "particle_count": [20, 30],
+          "lifetime_ms": 700,
+          "velocity": "outward_burst_upward",
+          "color_over_life": ["#F5C842", "#EE8C55", "#F0C4C4", "transparent"],
+          "size_over_life": "expand_fade",
+          "blend_mode": "additive"
+        }
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 18,
+        "max_duration_ms": 1000,
+        "attention": "critical",
+        "accessibility_fallback": "sprite_sheet_only_no_particles"
+      }
+    },
+
+    {
+      "vfx_id": "vfx_special_wave_activation",
+      "file_prefix": "vfx_special_wave",
+      "name_cn": "光波特殊块激活VFX",
+      "semantic": "光波图块激活 — 暖白涟漪光环扩散，5秒增益区光晕",
+      "canonical_registry_ref": false,
+      "trigger": {
+        "event": "special_tile_wave_pair_matched",
+        "source": "gameplay_special_tile",
+        "special_tile_id": "wave"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "anchor": { "kind": "tile", "id": "wave_activation_midpoint" },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 5500,
+        "phases": ["ring_burst_0.5s", "obstacle_shatter_0.5s", "free_zone_aura_5s"],
+        "event_sync": { "event": "wave_pair_connected", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "allow_after_shatter"
+      },
+      "particle": {
+        "emitter_shape": "ring",
+        "spawn_behavior": "burst",
+        "particle_count": [40, 60],
+        "lifetime_ms": 800,
+        "velocity": "radial_outward",
+        "color_over_life": ["#FFFFFF", "#F5F0E8", "transparent"],
+        "size_over_life": "large_fast_fade",
+        "blend_mode": "additive",
+        "gravity": 0
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 25,
+        "max_duration_ms": 5500,
+        "attention": "critical",
+        "accessibility_fallback": "reduced_motion_static_ring"
+      },
+      "special_block_color": "#7ECDE8",
+      "aura_color": "#FFFDF5",
+      "aura_opacity": 0.3,
+      "aura_duration_s": 5
+    },
+
+    {
+      "vfx_id": "vfx_special_light_chain_activation",
+      "file_prefix": "vfx_special_light_chain",
+      "name_cn": "光链特殊块激活VFX",
+      "semantic": "光链图块激活 — 金色扫描波横扫棋盘，目标图块高亮，链式消除连线",
+      "canonical_registry_ref": false,
+      "trigger": {
+        "event": "special_tile_light_chain_pair_matched",
+        "source": "gameplay_special_tile",
+        "special_tile_id": "light_chain"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "hybrid",
+      "anchor": { "kind": "tile", "id": "light_chain_activation_midpoint" },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 800,
+        "phases": ["pulse_ring_0.2s", "scan_wave_0.3s", "chain_eliminate_0.3s"],
+        "event_sync": { "event": "light_chain_pair_connected", "time_ms": 0 },
+        "loop": false,
+        "interrupt_policy": "non_interruptible"
+      },
+      "hybrid": {
+        "branches": ["particle", "screen_effect"],
+        "particle": {
+          "emitter_shape": "point",
+          "spawn_behavior": "burst_then_trail",
+          "particle_count": [15, 25],
+          "lifetime_ms": 400,
+          "velocity": "radial_outward_moderate",
+          "color_over_life": ["#F5C842", "#F0A830", "transparent"],
+          "size_over_life": "constant_then_fade",
+          "blend_mode": "additive"
+        },
+        "screen_effect": {
+          "kind": "scan_wave",
+          "color": "#F5C842",
+          "opacity": 0.4,
+          "direction": "left_to_right",
+          "duration_ms": 300,
+          "accessibility_fallback": "skip_scan_wave"
+        }
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 30,
+        "max_duration_ms": 800,
+        "attention": "critical",
+        "accessibility_fallback": "particle_burst_only"
+      },
+      "special_block_color": "#F5C842"
+    },
+
+    {
+      "vfx_id": "vfx_special_pierce_activation",
+      "file_prefix": "vfx_special_pierce",
+      "name_cn": "穿透特殊块激活VFX",
+      "semantic": "穿透图块激活 — 蓝白光箭爆发，8秒穿透模式期间四角持续蓝色边缘光晕",
+      "canonical_registry_ref": false,
+      "trigger": {
+        "event": "special_tile_pierce_pair_matched",
+        "source": "gameplay_special_tile",
+        "special_tile_id": "pierce"
+      },
+      "presentation_layer": "screen_space",
+      "dimension": "screen_space",
+      "implementation_mode": "hybrid",
+      "anchor": { "kind": "screen_region", "id": "screen_corners" },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 8000,
+        "phases": ["arrow_burst_0.5s", "edge_glow_sustain_8s"],
+        "event_sync": { "event": "pierce_pair_connected", "time_ms": 0 },
+        "loop": false,
+        "stop_condition": "pierce_mode_expired_or_interrupted",
+        "interrupt_policy": "fade_glow_on_interrupt"
+      },
+      "hybrid": {
+        "branches": ["particle", "screen_effect"],
+        "particle": {
+          "emitter_shape": "point",
+          "spawn_behavior": "directional_burst",
+          "particle_count": [20, 35],
+          "lifetime_ms": 500,
+          "velocity": "arrow_outward_burst",
+          "color_over_life": ["#7ECDE8", "#FFFFFF", "transparent"],
+          "size_over_life": "fast_expand_fade",
+          "blend_mode": "additive"
+        },
+        "screen_effect": {
+          "kind": "corner_edge_glow",
+          "color": "#7ECDE8",
+          "opacity": 0.3,
+          "duration_ms": 8000,
+          "fade_in_ms": 300,
+          "fade_out_ms": 500,
+          "intensity_cap": 0.35,
+          "accessibility_fallback": "opacity_0.15_only"
+        }
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 8,
+        "max_duration_ms": 8000,
+        "attention": "ambient",
+        "intensity_cap": 0.35,
+        "accessibility_fallback": "reduced_motion_edge_only_static"
+      },
+      "special_block_color": "#F5A840"
+    },
+
+    {
+      "vfx_id": "vfx_special_swap_activation",
+      "file_prefix": "vfx_special_swap",
+      "name_cn": "置换特殊块激活VFX",
+      "semantic": "置换图块激活 — 绿色旋转螺旋，图块交换时弹性咔哒特效，10秒选择计时条",
+      "canonical_registry_ref": false,
+      "trigger": {
+        "event": "special_tile_swap_pair_matched",
+        "source": "gameplay_special_tile",
+        "special_tile_id": "swap"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "anchor": { "kind": "tile", "id": "swap_selected_tiles" },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 10000,
+        "phases": ["spiral_appear_0.3s", "selection_wait_10s", "swap_elastic_0.4s"],
+        "event_sync": { "event": "swap_pair_connected", "time_ms": 0 },
+        "loop": false,
+        "stop_condition": "player_selection_complete_or_timeout",
+        "interrupt_policy": "cancel_on_selection"
+      },
+      "particle": {
+        "emitter_shape": "spiral",
+        "spawn_behavior": "sustained_spiral",
+        "particle_count": [10, 20],
+        "lifetime_ms": 600,
+        "velocity": "spiral_inward_then_outward",
+        "color_over_life": ["#4A7D55", "#7DBE77", "transparent"],
+        "size_over_life": "steady_then_fade",
+        "blend_mode": "normal",
+        "gravity": 0
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 12,
+        "max_duration_ms": 10000,
+        "attention": "active",
+        "accessibility_fallback": "highlight_glow_only"
+      },
+      "special_block_color": "#F5C842"
+    },
+
+    {
+      "vfx_id": "vfx_special_cascade_activation",
+      "file_prefix": "vfx_special_cascade",
+      "name_cn": "连锁特殊块激活VFX",
+      "semantic": "连锁图块激活 — 橙红波纹扩展，自动连锁消除时节奏递进高亮和音效序列",
+      "canonical_registry_ref": false,
+      "trigger": {
+        "event": "special_tile_cascade_pair_matched",
+        "source": "gameplay_special_tile",
+        "special_tile_id": "cascade"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "anchor": { "kind": "tile", "id": "cascade_activation_position" },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 2000,
+        "phases": ["ripple_burst_0.3s", "auto_chain_5_pairs_with_300ms_delay"],
+        "event_sync": { "event": "cascade_pair_connected", "time_ms": 0 },
+        "loop": false,
+        "chain_pair_delay_ms": 300,
+        "interrupt_policy": "complete_chain"
+      },
+      "particle": {
+        "emitter_shape": "ring",
+        "spawn_behavior": "burst_per_auto_match",
+        "particle_count": [12, 20],
+        "lifetime_ms": 400,
+        "velocity": "outward_ripple_expanding",
+        "color_over_life": ["#C85A40", "#EE8C55", "#F5C842", "transparent"],
+        "size_over_life": "fast_expand_fade",
+        "blend_mode": "additive",
+        "gravity": 0,
+        "repeat_on_chain": true
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 15,
+        "max_duration_ms": 2000,
+        "attention": "active",
+        "accessibility_fallback": "highlight_targets_only_no_particles"
+      },
+      "special_block_color": "#4A7D55"
+    },
+
+    {
+      "vfx_id": "vfx_season_spring_sakura",
+      "file_prefix": "vfx_season_spring_sakura",
+      "name_cn": "春季樱花粒子特效",
+      "semantic": "春季（第1章/第5章）背景层飘落的樱花花瓣粒子，营造春日治愈氛围",
+      "canonical_registry_ref": false,
+      "seasonal": true,
+      "season": "spring",
+      "chapters": [1, 5],
+      "trigger": {
+        "event": "chapter_season_active",
+        "source": "environment_ambient"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "anchor": { "kind": "screen_region", "id": "screen_top_ambient" },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 0,
+        "phases": ["sustained_ambient"],
+        "event_sync": { "event": "chapter_enter", "time_ms": 500 },
+        "loop": true,
+        "stop_condition": "chapter_exit",
+        "interrupt_policy": "fade_out_2s"
+      },
+      "particle": {
+        "emitter_shape": "screen_top_line",
+        "spawn_behavior": "sustained_gentle",
+        "particle_count_active": [8, 15],
+        "spawn_rate_per_second": 3,
+        "lifetime_ms": 4000,
+        "velocity": "gentle_downward_with_lateral_drift",
+        "velocity_px_per_s": { "y": [40, 80], "x": [-20, 20] },
+        "color_over_life": ["#FFB7C5", "#F0C4C4", "transparent"],
+        "size_px": [6, 14],
+        "size_over_life": "constant_then_fade",
+        "blend_mode": "normal",
+        "rotation": "slow_tumble",
+        "gravity": 20,
+        "texture_hint": "sakura_petal_organic_5point"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 5,
+        "max_duration_ms": 0,
+        "attention": "ambient",
+        "accessibility_fallback": "disable_particles_background_tint_only"
+      }
+    },
+
+    {
+      "vfx_id": "vfx_season_summer_firefly",
+      "file_prefix": "vfx_season_summer_firefly",
+      "name_cn": "夏季萤火虫特效",
+      "semantic": "夏季（第2章/第6章）夜晚时段漂浮的萤火虫光点，营造夜晚温柔治愈感",
+      "canonical_registry_ref": false,
+      "seasonal": true,
+      "season": "summer",
+      "chapters": [2, 6],
+      "time_of_day": "night",
+      "trigger": {
+        "event": "chapter_season_active_night",
+        "source": "environment_ambient"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "anchor": { "kind": "screen_region", "id": "screen_midground_ambient" },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 0,
+        "phases": ["sustained_ambient"],
+        "event_sync": { "event": "time_of_day_night", "time_ms": 1000 },
+        "loop": true,
+        "stop_condition": "time_of_day_change_or_chapter_exit",
+        "interrupt_policy": "fade_out_3s"
+      },
+      "particle": {
+        "emitter_shape": "screen_scatter",
+        "spawn_behavior": "sustained_gentle",
+        "particle_count_active": [10, 20],
+        "spawn_rate_per_second": 2,
+        "lifetime_ms": 6000,
+        "velocity": "slow_float_drift",
+        "velocity_px_per_s": { "y": [-15, 15], "x": [-20, 20] },
+        "color_over_life": ["#7DBE77", "#A8D89A", "#FFFDF5", "#7DBE77"],
+        "size_px": [4, 10],
+        "size_over_life": "pulse_glow_then_fade",
+        "blend_mode": "additive",
+        "glow_pulse_period_ms": 1500,
+        "gravity": 0
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 3,
+        "max_duration_ms": 0,
+        "attention": "ambient",
+        "accessibility_fallback": "disable_particles"
+      }
+    },
+
+    {
+      "vfx_id": "vfx_season_winter_snow",
+      "file_prefix": "vfx_season_winter_snow",
+      "name_cn": "冬季雪花粒子特效",
+      "semantic": "冬季（第4章）飘落的雪花粒子，营造寒冷治愈冬日岛屿氛围，在温泉区域雪花偏转",
+      "canonical_registry_ref": false,
+      "seasonal": true,
+      "season": "winter",
+      "chapters": [4],
+      "priority": "HIGH",
+      "trigger": {
+        "event": "chapter_season_active",
+        "source": "environment_ambient"
+      },
+      "presentation_layer": "world",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "anchor": { "kind": "screen_region", "id": "screen_top_ambient" },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 0,
+        "phases": ["sustained_ambient"],
+        "event_sync": { "event": "chapter_4_enter", "time_ms": 800 },
+        "loop": true,
+        "stop_condition": "chapter_exit",
+        "interrupt_policy": "fade_out_2s"
+      },
+      "particle": {
+        "emitter_shape": "screen_top_line",
+        "spawn_behavior": "sustained_moderate",
+        "particle_count_active": [15, 30],
+        "spawn_rate_per_second": 8,
+        "lifetime_ms": 5000,
+        "velocity": "downward_gentle_drift",
+        "velocity_px_per_s": { "y": [50, 100], "x": [-30, 30] },
+        "color_over_life": ["#D0E8F8", "#F5F5F5", "transparent"],
+        "size_px": [3, 10],
+        "size_over_life": "constant_then_fade",
+        "blend_mode": "normal",
+        "rotation": "slow_spin",
+        "gravity": 30,
+        "texture_hint": "snowflake_6point_soft",
+        "hot_spring_deflection": {
+          "enabled": true,
+          "deflection_zone": "hot_spring_area_radius_80px",
+          "deflection_direction": "outward_upward",
+          "deflection_strength": 0.6
+        }
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 6,
+        "max_duration_ms": 0,
+        "attention": "ambient",
+        "accessibility_fallback": "disable_particles_cool_tint_only"
+      }
+    },
+
+    {
+      "vfx_id": "vfx_combo_glow_ring",
+      "file_prefix": "vfx_combo_glow_ring",
+      "name_cn": "连击光晕环特效",
+      "semantic": "连击进行中时棋盘边缘的持续金色光晕环，渐进随连击级别增强",
+      "canonical_registry_ref": false,
+      "trigger": {
+        "event": "combo_active",
+        "source": "gameplay_combo"
+      },
+      "presentation_layer": "screen_space",
+      "dimension": "screen_space",
+      "implementation_mode": "screen_effect",
+      "anchor": { "kind": "screen_region", "id": "board_perimeter" },
+      "lifecycle": {
+        "start_ms": 0,
+        "duration_ms": 0,
+        "phases": ["fade_in_0.2s", "sustain_while_combo_active"],
+        "event_sync": { "event": "combo_start", "time_ms": 0 },
+        "loop": true,
+        "stop_condition": "combo_timer_expired",
+        "stop_fade_ms": 400,
+        "interrupt_policy": "fade_out_on_reset"
+      },
+      "screen_effect": {
+        "kind": "board_edge_vignette_glow",
+        "color": "#F5C842",
+        "base_opacity": 0.12,
+        "max_opacity": 0.35,
+        "opacity_by_combo_level": {
+          "combo_2": 0.12,
+          "combo_3": 0.20,
+          "combo_4": 0.28,
+          "combo_5plus": 0.35
+        },
+        "pulse_period_ms": 800,
+        "pulse_amplitude": 0.05,
+        "intensity_cap": 0.40,
+        "affected_region": "board_perimeter_vignette",
+        "accessibility_fallback": "disable_vignette"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 5,
+        "max_duration_ms": 0,
+        "attention": "ambient",
+        "intensity_cap": 0.40,
+        "accessibility_fallback": "disable_ring_effect"
+      }
+    },
+
+    {
+      "vfx_id": "vfx_hourglass_claim_coins",
+      "file_prefix": "vfx_hourglass_claim",
+      "name_cn": "沙漏领取金币粒子特效",
+      "semantic": "玩家点击满载沙漏领取时，金币粒子从沙漏飞向HUD货币栏",
+      "canonical_registry_ref": false,
+      "trigger": {
+        "event": "hourglass_claim_tapped",
+        "source": "ui_interaction"
+      },
+      "presentation_layer": "ui",
+      "dimension": "2d",
+      "implementation_mode": "particle",
+      "anchor": { "kind": "ui_component", "id": "ui_hourglass_widget" },
+      "lifecycle": {
+        "start_ms": 400,
+        "duration_ms": 600,
+        "phases": ["coin_burst_out", "fly_to_hud"],
+        "event_sync": { "event": "hourglass_flip_complete", "time_ms": 400 },
+        "loop": false,
+        "interrupt_policy": "non_interruptible"
+      },
+      "particle": {
+        "emitter_shape": "point",
+        "spawn_behavior": "burst",
+        "particle_count": [8, 15],
+        "lifetime_ms": 600,
+        "velocity": "toward_hud_coin_counter",
+        "velocity_strategy": "arc_trajectory_to_target",
+        "color_over_life": ["#F5C842", "#F0A830", "transparent"],
+        "size_px": [8, 14],
+        "size_over_life": "constant_then_shrink_at_target",
+        "blend_mode": "normal",
+        "gravity": 0,
+        "texture_hint": "coin_sparkle_dot"
+      },
+      "readability_budget": {
+        "max_occlusion_percent": 10,
+        "max_duration_ms": 1000,
+        "attention": "active",
+        "accessibility_fallback": "instant_coin_count_increment_no_particles"
+      }
+    }
+  ],
+
+  "validation_status": "COMPLETED",
+  "validation_checks_passed": [
+    "每个VFX都有vfx_id / file_prefix / semantic / trigger / presentation_layer / dimension / implementation_mode / anchor / lifecycle / readability_budget",
+    "layer与anchor兼容性：world=tile/world_position, ui=ui_component, screen_space=screen_region",
+    "dimension与implementation_mode兼容",
+    "particle模式均包含emitter/lifetime/velocity/color/size/blend",
+    "sprite_sheet模式均包含frame_count/fps/frame_size/loop",
+    "screen_effect均包含duration/intensity_cap/accessibility_fallback",
+    "所有looping VFX均有stop_condition",
+    "file_prefix无冲突"
+  ]
+}

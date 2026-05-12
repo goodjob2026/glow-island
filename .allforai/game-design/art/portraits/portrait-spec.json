@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/portrait-generation",
+  "mode": "spec_generate_validate",
+  "source": {
+    "concept_contract": ".allforai/concept-contract.json",
+    "art_pipeline_config": ".allforai/game-design/art-pipeline-config.json",
+    "character_arc": ".allforai/game-design/systems/character-arc.json",
+    "style_tokens": ".allforai/game-design/art/visual-style-tokens.json",
+    "expression_set_spec": ".allforai/game-design/art/expressions/expression-set-spec.json",
+    "layer_sheet_plan": ".allforai/game-design/systems/layer-sheet-plan.json"
+  },
+  "portrait_config": {
+    "default_size_px": { "width": 256, "height": 256 },
+    "portrait_kind": "dialogue_bust",
+    "crop": "head_and_upper_shoulders",
+    "background": "transparent",
+    "format": "png",
+    "style": "hand_drawn_watercolor_chibi",
+    "atlas": ".allforai/game-design/atlases/characters_atlas.json"
+  },
+  "characters": [
+    {
+      "asset_id": "char_ritsu",
+      "name": "山田律",
+      "file_prefix": "char_ritsu",
+      "role": "protagonist",
+      "signature_color": null,
+      "visual_identity_summary": "Dark slightly disheveled hair, light blue-grey rumpled dress shirt with rolled sleeves. Slightly tired eyes that gradually warm over 6 chapters.",
+      "required_expressions": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "portrait_kinds": ["dialogue_bust"],
+      "consumers": ["dialogue_system", "ui_panel_npc_dialogue", "quest_ui"],
+      "portraits": [
+        { "expression_id": "default",    "portrait_kind": "dialogue_bust", "path": ".allforai/game-design/art/portraits/char_ritsu_portrait_default.png",    "size_px": {"width":256,"height":256}, "state": "generated", "source_api": "google-imagen-4" },
+        { "expression_id": "happy",      "portrait_kind": "dialogue_bust", "path": ".allforai/game-design/art/portraits/char_ritsu_portrait_happy.png",      "size_px": {"width":256,"height":256}, "state": "generated", "source_api": "google-imagen-4" }
+      ]
+    },
+    {
+      "asset_id": "char_hinata",
+      "name": "丸山ひなた",
+      "file_prefix": "char_hinata",
+      "role": "romantic_interest",
+      "signature_color": "#F0C4C4",
+      "visual_identity_summary": "Practical windswept tied-back hair, sakura pink #F0C4C4 clothing accents, always carrying worn notebook at left hand.",
+      "required_expressions": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "portrait_kinds": ["dialogue_bust"],
+      "consumers": ["dialogue_system", "ui_panel_npc_dialogue"],
+      "portraits": [
+        { "expression_id": "default",    "portrait_kind": "dialogue_bust", "path": ".allforai/game-design/art/portraits/char_hinata_portrait_default.png",    "size_px": {"width":256,"height":256}, "state": "generated", "source_api": "google-imagen-4" },
+        { "expression_id": "happy",      "portrait_kind": "dialogue_bust", "path": ".allforai/game-design/art/portraits/char_hinata_portrait_happy.png",      "size_px": {"width":512,"height":512}, "state": "generated", "source_api": "fal-ai/flux-2-pro" }
+      ]
+    },
+    {
+      "asset_id": "char_kenzo",
+      "name": "磯部健三",
+      "file_prefix": "char_kenzo",
+      "role": "npc",
+      "signature_color": "#4A6D9A",
+      "visual_identity_summary": "Sparse grey hair, deep sea blue #4A6D9A fisherman vest, stocky weathered build, strong hands. Weather-lined face.",
+      "required_expressions": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "portrait_kinds": ["dialogue_bust"],
+      "consumers": ["dialogue_system", "ui_panel_npc_dialogue"],
+      "portraits": [
+        { "expression_id": "default",    "portrait_kind": "dialogue_bust", "path": ".allforai/game-design/art/portraits/char_kenzo_portrait_default.png",    "size_px": {"width":256,"height":256}, "state": "generated", "source_api": "google-imagen-4" }
+      ]
+    },
+    {
+      "asset_id": "char_umeko",
+      "name": "桐島梅子",
+      "file_prefix": "char_umeko",
+      "role": "npc",
+      "signature_color": "#7DBE77",
+      "visual_identity_summary": "Practical updo bun with loose strands, bamboo green #7DBE77 pottery apron, clay-stained hands, forward posture from decades of pottery.",
+      "required_expressions": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "portrait_kinds": ["dialogue_bust"],
+      "consumers": ["dialogue_system", "ui_panel_npc_dialogue"],
+      "portraits": [
+        { "expression_id": "default",    "portrait_kind": "dialogue_bust", "path": ".allforai/game-design/art/portraits/char_umeko_portrait_default.png",    "size_px": {"width":256,"height":256}, "state": "generated", "source_api": "google-imagen-4" }
+      ]
+    },
+    {
+      "asset_id": "char_natsuka",
+      "name": "海野夏帆",
+      "file_prefix": "char_natsuka",
+      "role": "npc",
+      "signature_color": "#3D6645",
+      "visual_identity_summary": "Windswept free hair, deep forest green #3D6645 outdoor vest with many pockets, attentive head tilt, always listening.",
+      "required_expressions": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "portrait_kinds": ["dialogue_bust"],
+      "consumers": ["dialogue_system", "ui_panel_npc_dialogue"],
+      "portraits": [
+        { "expression_id": "default",    "portrait_kind": "dialogue_bust", "path": ".allforai/game-design/art/portraits/char_natsuka_portrait_default.png",  "size_px": {"width":256,"height":256}, "state": "generated", "source_api": "google-imagen-4" }
+      ]
+    },
+    {
+      "asset_id": "char_fuyuko",
+      "name": "丸山冬子",
+      "file_prefix": "char_fuyuko",
+      "role": "npc",
+      "signature_color": "#2A4060",
+      "visual_identity_summary": "Neat white-grey upswept hair, deep night blue #2A4060 kimono-style top, upright and serene lighthouse-keeper dignity.",
+      "required_expressions": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "portrait_kinds": ["dialogue_bust"],
+      "consumers": ["dialogue_system", "ui_panel_npc_dialogue"],
+      "portraits": [
+        { "expression_id": "default",    "portrait_kind": "dialogue_bust", "path": ".allforai/game-design/art/portraits/char_fuyuko_portrait_default.png",    "size_px": {"width":256,"height":256}, "state": "generated", "source_api": "google-imagen-4" },
+        { "expression_id": "react_jump", "portrait_kind": "dialogue_bust", "path": ".allforai/game-design/art/portraits/char_fuyuko_portrait_react_jump.png", "size_px": {"width":512,"height":512}, "state": "generated", "source_api": "fal-ai/flux-2-pro" }
+      ]
+    },
+    {
+      "asset_id": "char_gicho",
+      "name": "议长·橘猫",
+      "file_prefix": "char_gicho",
+      "role": "npc",
+      "signature_color": "#2A3650",
+      "visual_identity_summary": "Warm orange tabby cat, dignified sitting posture, dark navy #2A3650 collar marking. Unmistakably a cat.",
+      "required_expressions": ["default", "happy", "thinking", "surprised", "react_jump"],
+      "portrait_kinds": ["dialogue_bust"],
+      "consumers": ["dialogue_system", "ui_panel_npc_dialogue"],
+      "portraits": [
+        { "expression_id": "default",    "portrait_kind": "dialogue_bust", "path": ".allforai/game-design/art/portraits/char_gicho_portrait_default.png",    "size_px": {"width":256,"height":256}, "state": "generated", "source_api": "google-imagen-4" }
+      ]
+    }
+  ]
+}

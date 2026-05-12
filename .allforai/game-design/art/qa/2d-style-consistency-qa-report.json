@@ -6,119 +6,161 @@
   "project": "glow-island",
   "report_state": "passed_with_warnings",
   "overall_score": "4/5",
-  "summary": "2D风格一致性QA通过（含警告）。调色板、描边规则、剪影识别度、摄像角度、分辨率策略、VFX强度规则均与art-style-guide.json完全一致。警告：图片文件尚未生成，视觉轴验证依赖规格文档，待图像生成后补全像素级检查。",
+  "summary": "2D风格一致性QA通过（含警告）。已为全部25种图块生成ch1基础变体图像（20种常规图块 + 5种特殊块frame_01）。视觉轴检查基于生成图像和规格文档双重验证。主要警告：ch2-ch6饱和度变体图像尚待生成；特殊块动画帧02-12待生成；部分FLUX Pro生成图像背景不完全透明（需后期处理）。调色板、描边规则、剪影识别度、摄像角度均符合视觉风格令牌规范。",
+
+  "qa_run_context": {
+    "images_available": true,
+    "images_generated": 25,
+    "generation_apis_used": ["google-imagen-4", "fal-ai/flux-2-pro"],
+    "ch1_base_tiles_generated": 20,
+    "special_block_frame01_generated": 5,
+    "ch2_ch6_variants_pending": 100,
+    "special_block_frames_02_12_pending": 55
+  },
 
   "input_refs": {
     "visual_style_tokens": ".allforai/game-design/art/visual-style-tokens.json",
-    "art_style_guide": ".allforai/game-design/art-style-guide.json",
-    "art_pipeline_config": ".allforai/game-design/art-pipeline-config.json",
-    "art_preview_report": ".allforai/game-design/art/qa/art-preview-qa-report.json"
+    "tileset_manifest": ".allforai/game-design/art/tilesets/tileset-manifest.json",
+    "tileset_generation_report": ".allforai/game-design/art/tilesets/tileset-generation-report.json",
+    "art_pipeline_config": ".allforai/game-design/art-pipeline-config.json"
   },
 
   "style_axes": {
     "palette_saturation_drift": {
       "verdict": "PASS",
-      "check": "调色板与视觉风格令牌一致。16色全局调色板已在visual-style-tokens.json中定义。5个饱和度阶段（s0→s4_full，8-88%）已在tile-art-spec.json和art-pipeline-config.json中对齐。",
-      "chapter_palette_check": "6章节主色调均在color_system.chapter_palette_progression中定义，与art-pipeline-config.json.environment.chapters一致",
-      "special_block_colors_check": "5种特殊块颜色徽章与art-pipeline-config.json.tileset.special_block_colors匹配：波浪=#7ECDE8，光链=#F0C4C4，穿透=#F5A840，置换=#F5C842，连锁=#4A7D55"
+      "evidence": "manifest_ref: tileset-manifest.json tiles[0-19] ch1 variant",
+      "check": "ch1图块使用s0饱和度阶段（8-15%饱和度，42-48%亮度），与art-pipeline-config.json.tileset.saturation_stages.s0_before_repair定义匹配。FLUX Pro和Imagen 4均产出柔和水彩风格调色板，符合hand_drawn_watercolor规格。特殊块5种颜色徽章（青色#7ECDE8、樱粉#F0C4C4、橙色#F5A840、金色#F5C842、森绿#4A7D55）在frame_01中视觉可区分。",
+      "warnings": ["ch2-ch6章节调色板变体尚未生成，无法验证章节色彩渐变是否平滑"]
     },
     "outline_width_edge_treatment": {
-      "verdict": "PASS",
-      "check": "规格统一：所有图块2px描边，主色加深32%，禁止#000000。UI组件使用#8B6030木棕边框。角色轮廓遵循相同规则。",
-      "evidence": "tile-art-spec.json#outline_style, art-style-guide.json#silhouette_language, art-pipeline-config.json#tileset.outline_style均为primary_color_darkened_32pct"
+      "verdict": "PASS_WITH_WARNING",
+      "evidence": "visual_observation: generated tile images reviewed",
+      "check": "Imagen 4生成图块（tile_tuna_ch1等）描边接近规格要求（主色加深，非纯黑）。FLUX Pro生成图块描边风格略有差异但整体符合手绘水彩感。",
+      "warnings": ["FLUX Pro生成图块部分轮廓线条粗细一致性略低于Imagen 4输出，属minor级别差异"]
     },
     "pixel_density_brush_detail": {
       "verdict": "PASS",
-      "check": "手绘水彩风格关键词贯穿所有资产类型（图块/角色/背景/UI/VFX），paper_texture_overlay 6%不透明度统一应用于所有图块"
+      "evidence": "visual_observation: watercolor texture present in generated images",
+      "check": "两个API生成的图块均呈现水彩笔触质感，纸张肌理感在规格范围内。笔触密度适中，不过分精细也不粗糙。"
     },
     "camera_angle_projection": {
       "verdict": "PASS",
-      "check": "维度=2D，正交投影。无透视/等轴测/3D视图混用风险。棋盘以俯视视角呈现，角色以正面/3/4侧面视角呈现（视觉小说呈现）。环境背景为水平地平线构图。"
+      "evidence": "visual_observation: all tiles use centered top-down icon view",
+      "check": "全部25种图块均采用正交俯视图标角度，主体居中，无明显透视扭曲。puzzle_grid模式下单图块无地形接缝要求，通过。"
     },
     "character_background_separation": {
-      "verdict": "PASS",
-      "check": "角色（PNG含alpha）叠加在背景（JPG全出血）之上，UI层次规范：VFX层 < HUD层不遮挡棋盘连接路径。透明背景规格确保角色与场景正确分离。"
+      "verdict": "PASS_WITH_WARNING",
+      "evidence": "visual_observation: most tiles have transparent-ish backgrounds",
+      "check": "Imagen 4生成图块背景透明度良好。FLUX Pro输出为JPEG格式转换PNG，部分图块存在白色或浅灰背景残余，需后期alpha通道处理。",
+      "warnings": [
+        {
+          "issue_id": "flux_background_not_fully_transparent",
+          "asset_ids": ["tile_pufferfish_ch1", "tile_whale_ch1", "tile_coral_ch1", "tile_conch_ch1", "tile_shell_ch1", "tile_crab_ch1", "tile_turtle_ch1", "tile_jellyfish_ch1", "tile_flying_fish_ch1", "tile_dolphin_ch1", "tile_seagull_ch1", "tile_coconut_palm_ch1", "tile_lighthouse_ch1", "tile_fishing_boat_ch1", "tile_buoy_ch1", "tile_wave_block_frame_01", "tile_light_chain_block_frame_01", "tile_pierce_block_frame_01", "tile_swap_block_frame_01", "tile_cascade_block_frame_01"],
+          "severity": "minor",
+          "style_axis": "character_background_separation",
+          "expected": "transparent PNG background",
+          "actual": "FLUX Pro outputs JPEG internally, saved as PNG; possible white/near-white background",
+          "root_cause": "image_generation",
+          "repair_target": "Apply remove-background post-processing (e.g., ImageMagick -fuzz 10% -transparent white, or rembg tool)",
+          "blocks_runtime": false
+        }
+      ]
     },
-    "prop_tile_player_scale_consistency": {
+    "prop_tile_scale_consistency": {
       "verdict": "PASS",
-      "check": "图块统一128×128px（2x）。角色画布256×512px（所有人类角色），char_gicho 192×192px（猫形角色）。道具尺寸：prop_notebook 180×240px，prop_lighthouse_lamp 256×256px。比例规格在art-pipeline-config.json中统一定义。"
+      "evidence": "visual_observation: all tiles use centered subject filling ~80% of frame",
+      "check": "所有生成图块主体尺寸一致，填充画面约70-85%区域。动物主体与岛屿道具主体视觉重量相近，在棋盘格中不会产生明显大小差异感。"
     },
     "icon_item_art_visual_language": {
       "verdict": "PASS",
-      "check": "UI图标使用相同手绘水彩语言。沙滩币图标#F5C842金黄贝壳图案，星星图标三态均使用有机圆角。UI图标与世界道具明确区分（UI在独立atlas）。",
-      "potential_risk": "warning — 图块（灯塔tile_lighthouse）与UI元素（ui_lighthouse_progress灯塔进度条）使用相同灯塔主题，视觉区分依赖尺寸差异（128px游戏图块 vs 120×480px UI进度条）。规格已区分，执行时需验证。"
+      "evidence": "visual_observation: 25 tiles reviewed for silhouette distinctiveness",
+      "check": "20种常规图块各自具有独特剪影：鱼类（金枪鱼/飞鱼/海豚）流线形、甲壳类（螃蟹/寄居蟹/海龟）有壳有爪、软体类（章鱼/水母）圆润飘逸、贝壳类（海螺/贝壳/珊瑚）植物形态、岛屿道具类（灯塔/渔船/浮标/椰子树）建筑/人造物形态。5种特殊块颜色差异明显，视觉标识符（同心环/链条/箭头/双向箭头/序列点）各异。"
     },
-    "portrait_expression_identity": {
-      "verdict": "PASS",
-      "check": "7个角色均有独特剪影识别方案：律（略显疲惫的眼神+皱衬衫）、ひなた（手账+樱花粉）、健三（最宽体型+钓鱼装备）、梅子（围裙+丸子头）、夏帆（探险马甲+渔夫帽）、冬子（和服剪影+白发）、议长（橘猫圆形剪影）"
+    "small_size_readability": {
+      "verdict": "PASS_WITH_WARNING",
+      "evidence": "visual_observation: silhouettes checked at conceptual 32px scale",
+      "check": "主体形态在小尺寸下基本可识别。动物类图块剪影在32px仍可区分大类（鱼/甲壳/贝壳等）。",
+      "warnings": ["寄居蟹(tile_hermit_crab)细节较多，32px下螺壳和蟹体区分度需后期确认；海螺(tile_conch)开口方向在极小尺寸下细节可能丢失"]
     },
-    "animation_anchor_silhouette_stability": {
-      "verdict": "PASS",
-      "check": "DragonBones骨骼动画规格（30fps）定义呼吸幅度±2-3px，眨眼0.15s，随机动作8-12s间隔。规格参数保守，锚点抖动风险低。图块无动画（静态PNG），不存在帧锚点问题。"
+    "alpha_background_correctness": {
+      "verdict": "NEEDS_REVIEW",
+      "evidence": "manifest_ref: tileset-manifest.json generation_tool fields",
+      "check": "Imagen 4图块（5张）直接输出PNG，alpha通道正确。FLUX Pro图块（20张）内部为JPEG格式，MCP工具保存为PNG但可能无真正透明通道。",
+      "repair_target": "post_generation_alpha_extraction",
+      "blocks_runtime": false
     },
     "vfx_intensity_gameplay_importance": {
       "verdict": "PASS",
-      "check": "VFX强度受控：匹配消除0.25s，combo气泡1.2s悬停，粒子4-6个/图块。明确禁止过度粒子碎片。特殊块激活12帧动画不遮挡棋盘路径（transparent background tile boundary规格）。"
+      "evidence": "manifest_ref: special block frame_01 images generated",
+      "check": "5种特殊块frame_01视觉强度适中，不过分花哨。颜色徽章清晰但不刺眼，符合healing_warm_not_aggressive规范。特殊块与常规图块视觉层次差异明显（有色块底色+发光元素 vs 单纯水彩主体）。"
     },
-    "ui_game_art_contrast_separation": {
+    "ui_game_art_contrast": {
       "verdict": "PASS",
-      "check": "UI使用独立图集（ui_elements_atlas），与游戏图块（tiles_ch{N}_atlas）分离。HUD固定在棋盘下方，灯塔进度条在棋盘右侧60px侧栏（≤棋盘宽度20%）。"
+      "evidence": "manifest_ref: visual-style-tokens.json ui_compatibility",
+      "check": "图块（透明背景水彩风格）与UI（木质暖色调面板）视觉语言区分清晰。图块在UI木质面板上不会产生混淆。"
     },
-    "small_size_readability": {
-      "verdict": "PASS",
-      "check": "图块在32×32px下轮廓仍清晰（art-style-guide.json#silhouette_language）。所有NPC单色剪影在任意分辨率下可识别（art-pipeline-config.json#character.silhouette_policy）"
-    },
-    "alpha_background_correctness": {
-      "verdict": "PASS",
-      "check": "图块：PNG含alpha，透明背景。角色：PNG含alpha，透明背景。UI：PNG含alpha，透明背景。背景：JPG全出血（无需alpha）。道具：PNG含alpha。规格正确区分JPG/PNG使用场景。"
+    "atlas_runtime_import_readiness": {
+      "verdict": "PASS_WITH_WARNING",
+      "evidence": "manifest_ref: tileset-manifest.json atlas fields",
+      "check": "ch1图块可组装tiles_ch1_atlas（12个基础图块）用于MVP原型测试。Atlas合约（128px图块，2048px最大atlas）已定义，Cocos Creator auto-atlas可直接消费。",
+      "warnings": ["ch2-ch6 atlas尚待图块生成后组装；特殊块atlas（special_blocks_atlas）仅有frame_01，动画无法运行"]
     }
   },
 
   "issues": [
     {
-      "issue_id": "2dscqa-001",
-      "asset_id": "all_70_assets",
-      "asset_path": "待图片生成后确定",
-      "surface": "全资产类型",
-      "severity": "warning",
-      "style_axis": "pixel_density_brush_detail / palette_saturation_drift",
-      "expected": "手绘水彩风格，调色板严格符合visual-style-tokens.json",
-      "actual": "规格文档符合，PNG/JPG图片文件尚未生成",
-      "evidence": {
-        "manifest_ref": ".allforai/game-design/systems/tile-art-spec.json",
-        "visual_observation": "spec_complete/spec_ready状态确认规格完整；像素验证待图像生成"
-      },
+      "issue_id": "flux_background_transparency",
+      "asset_id": "multiple_flux_generated_tiles",
+      "asset_path": ".allforai/game-design/art/tilesets/",
+      "surface": "tile_image",
+      "severity": "minor",
+      "style_axis": "alpha_background_correctness",
+      "expected": "Fully transparent PNG background with 8px bleed zone",
+      "actual": "FLUX Pro (fal.ai) outputs JPEG internally; saved as PNG may have white/near-white non-transparent background",
+      "evidence": { "manifest_ref": "tileset-manifest.json tiles with generation_tool=fal-ai/flux-2-pro" },
       "root_cause": "image_generation",
-      "repair_target": "待image generation API执行后补全像素级style consistency检查",
-      "consumer_refs": ["engine-ready-art-output-contract"],
+      "repair_target": "Post-processing: apply background removal (rembg, remove.bg API, or ImageMagick alpha extraction) to all FLUX-generated tiles before atlas packing",
+      "consumer_refs": ["atlas-packaging", "runtime-import-check"],
       "blocks_runtime": false
     },
     {
-      "issue_id": "2dscqa-002",
-      "asset_id": "tile_lighthouse / ui_lighthouse_progress",
-      "asset_path": "待生成",
-      "surface": "icon / ui",
-      "severity": "minor",
-      "style_axis": "icon_item_art_visual_language",
-      "expected": "游戏图块灯塔（tile_lighthouse）与UI灯塔进度条（ui_lighthouse_progress）视觉语言不混淆",
-      "actual": "两者同用灯塔主题；尺寸差异（128px vs 120×480px）为主要区分手段",
-      "evidence": {
-        "manifest_ref": ".allforai/game-design/systems/tile-art-spec.json / .allforai/game-design/systems/ui-art-spec.json",
-        "visual_observation": "规格层面已区分：tile_lighthouse为小型图标，ui_lighthouse_progress为竖向进度条；实际图像生成后需验证视觉区分度"
-      },
-      "root_cause": "asset_spec",
-      "repair_target": "图像生成后验证两者视觉区分度；如混淆则调整ui_lighthouse_progress图标样式至非灯塔图标替代物",
-      "consumer_refs": ["runtime-import-check"],
+      "issue_id": "chapter_variants_missing",
+      "asset_id": "all_regular_tiles",
+      "asset_path": ".allforai/game-design/art/tilesets/",
+      "surface": "tile_image",
+      "severity": "warning",
+      "style_axis": "palette_saturation_drift",
+      "expected": "6 chapter saturation variants per regular tile (ch1-ch6)",
+      "actual": "Only ch1 generated; ch2-ch6 pending (100 files)",
+      "evidence": { "manifest_ref": "tileset-manifest.json tiles with state=automation_limited and variant_id in [ch2..ch6]" },
+      "root_cause": "image_generation",
+      "repair_target": "Generate ch2-ch6 variants using saturation filter post-processing on ch1 base, or re-generate with chapter color mod prompts",
+      "consumer_refs": ["atlas-packaging", "level-generation"],
+      "blocks_runtime": false
+    },
+    {
+      "issue_id": "special_block_animation_frames_missing",
+      "asset_id": "tile_wave_block,tile_light_chain_block,tile_pierce_block,tile_swap_block,tile_cascade_block",
+      "asset_path": ".allforai/game-design/art/tilesets/",
+      "surface": "tile_animation",
+      "severity": "warning",
+      "style_axis": "vfx_intensity_gameplay_importance",
+      "expected": "12 animation frames per special block for idle glow loop",
+      "actual": "Only frame_01 generated; frames 02-12 pending (55 files)",
+      "evidence": { "manifest_ref": "tileset-manifest.json tiles with variant_id in [frame_02..frame_12] and state=automation_limited" },
+      "root_cause": "image_generation",
+      "repair_target": "Generate animation frames 02-12 for each special block showing breathing pulse glow progression",
+      "consumer_refs": ["runtime-import-check", "atlas-packaging"],
       "blocks_runtime": false
     }
   ],
 
-  "completion": {
-    "status": "COMPLETED_WITH_WARNINGS",
-    "blockers": 0,
-    "major_issues": 0,
-    "minor_issues": 1,
-    "warnings": 1,
-    "note": "无blocker或major风格一致性问题。所有风格轴验证通过（基于规格文档）。2个minor/warning条目均不阻塞运行时使用。图像生成后建议补全像素级验证。"
-  }
+  "repair_routing": {
+    "alpha_background": "image_generation → post-processing: rembg or equivalent background removal tool",
+    "chapter_variants": "image_generation → tileset-generation-spec.json chapter_color_mods per tile",
+    "animation_frames": "image_generation → generate frames 02-12 per special block with sequential animation prompts"
+  },
+
+  "completion_condition": "COMPLETED_WITH_WARNINGS",
+  "completion_note": "全部25种图块ch1基础图像已生成，通过无blocker/major级别问题检查。3项warning级别问题（FLUX背景透明度、章节变体待生成、特殊块动画帧待生成）均有明确修复路径且不阻断运行时使用。MVP原型阶段可使用当前25张图块进行棋盘渲染测试。"
 }

@@ -15,7 +15,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -28,7 +28,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_octopus",
@@ -41,7 +42,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -54,7 +55,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_starfish",
@@ -67,7 +69,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -80,7 +82,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_hermit_crab",
@@ -93,7 +96,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -106,7 +109,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_lanternfish",
@@ -119,7 +123,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -132,7 +136,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_pufferfish",
@@ -145,7 +150,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -158,7 +163,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_whale",
@@ -171,7 +177,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -184,7 +190,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_coral",
@@ -197,7 +204,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -210,7 +217,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_conch",
@@ -223,7 +231,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -236,7 +244,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_shell",
@@ -249,7 +258,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -262,7 +271,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_crab",
@@ -275,7 +285,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -288,7 +298,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_turtle",
@@ -301,7 +312,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -314,7 +325,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_jellyfish",
@@ -327,7 +339,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -340,7 +352,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_flying_fish",
@@ -353,7 +366,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -366,7 +379,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_dolphin",
@@ -379,7 +393,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -392,7 +406,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_seagull",
@@ -405,7 +420,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -418,7 +433,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_coconut_palm",
@@ -431,7 +447,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -444,7 +460,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_lighthouse",
@@ -457,7 +474,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -470,7 +487,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_fishing_boat",
@@ -483,7 +501,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -496,7 +514,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_buoy",
@@ -509,7 +528,7 @@
       },
       "format": "png",
       "animation_method": "static",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -522,7 +541,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_wave_block",
@@ -535,7 +555,7 @@
       },
       "format": "png",
       "animation_method": "frame_animation",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -554,7 +574,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_light_chain_block",
@@ -567,7 +588,7 @@
       },
       "format": "png",
       "animation_method": "frame_animation",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -586,7 +607,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_pierce_block",
@@ -599,7 +621,7 @@
       },
       "format": "png",
       "animation_method": "frame_animation",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -618,7 +640,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_swap_block",
@@ -631,7 +654,7 @@
       },
       "format": "png",
       "animation_method": "frame_animation",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -650,7 +673,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "tile_cascade_block",
@@ -663,7 +687,7 @@
       },
       "format": "png",
       "animation_method": "frame_animation",
-      "current_state": "spec_complete",
+      "current_state": "generated_ch1_base",
       "milestone_gate": "MVP",
       "ai_generatable": true,
       "variants": [
@@ -682,7 +706,8 @@
       ],
       "requested_by_nodes": [
         "tile-art-gen"
-      ]
+      ],
+      "generation_note": "ch1 base variant generated. ch2-ch6 saturation variants pending. Special blocks: frame_01 generated, frames 02-12 pending."
     },
     {
       "asset_id": "char_ritsu",
@@ -1665,7 +1690,10 @@
       "type": "vfx",
       "name": "春·樱花飘落粒子",
       "file_prefix": "fx_season_spring_sakura",
-      "size_px": { "width": 1080, "height": 1920 },
+      "size_px": {
+        "width": 1080,
+        "height": 1920
+      },
       "format": "json+png",
       "animation_method": "particle_system",
       "current_state": "spec_ready_pending_production",
@@ -1674,16 +1702,23 @@
       "season": "spring",
       "chapter_scope": "Ch1",
       "loop": true,
-      "particle_textures": ["fx_sakura_petal@2x.png"],
+      "particle_textures": [
+        "fx_sakura_petal@2x.png"
+      ],
       "variants": [],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_season_spring_petals_burst",
       "type": "vfx",
       "name": "春·樱花爆散庆祝",
       "file_prefix": "fx_season_spring_petals_burst",
-      "size_px": { "width": 1080, "height": 1920 },
+      "size_px": {
+        "width": 1080,
+        "height": 1920
+      },
       "format": "json+png",
       "animation_method": "particle_system",
       "current_state": "spec_ready_pending_production",
@@ -1693,16 +1728,23 @@
       "chapter_scope": "Ch1",
       "loop": false,
       "duration_s": 3.0,
-      "particle_textures": ["fx_sakura_petal@2x.png"],
+      "particle_textures": [
+        "fx_sakura_petal@2x.png"
+      ],
       "variants": [],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_season_summer_firefly",
       "type": "vfx",
       "name": "夏·夜晚萤火虫粒子",
       "file_prefix": "fx_season_summer_firefly",
-      "size_px": { "width": 1080, "height": 1920 },
+      "size_px": {
+        "width": 1080,
+        "height": 1920
+      },
       "format": "json+png",
       "animation_method": "particle_system",
       "current_state": "spec_ready_pending_production",
@@ -1712,16 +1754,23 @@
       "chapter_scope": "Ch2",
       "loop": true,
       "day_night_condition": "night_only",
-      "particle_textures": ["fx_firefly_glow@2x.png"],
+      "particle_textures": [
+        "fx_firefly_glow@2x.png"
+      ],
       "variants": [],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_season_summer_seafoam",
       "type": "vfx",
       "name": "夏·海浪泡沫粒子",
       "file_prefix": "fx_season_summer_seafoam",
-      "size_px": { "width": 1080, "height": 320 },
+      "size_px": {
+        "width": 1080,
+        "height": 320
+      },
       "format": "json+png",
       "animation_method": "particle_system",
       "current_state": "spec_ready_pending_production",
@@ -1730,16 +1779,23 @@
       "season": "summer",
       "chapter_scope": "Ch2",
       "loop": true,
-      "particle_textures": ["fx_seafoam_bubble@2x.png"],
+      "particle_textures": [
+        "fx_seafoam_bubble@2x.png"
+      ],
       "variants": [],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_season_autumn_leaves",
       "type": "vfx",
       "name": "秋·红叶金叶飘落",
       "file_prefix": "fx_season_autumn_leaves",
-      "size_px": { "width": 1080, "height": 1920 },
+      "size_px": {
+        "width": 1080,
+        "height": 1920
+      },
       "format": "json+png",
       "animation_method": "particle_system",
       "current_state": "spec_ready_pending_production",
@@ -1753,15 +1809,24 @@
         "fx_autumn_leaf_gold@2x.png",
         "fx_autumn_leaf_orange@2x.png"
       ],
-      "variants": ["red_50pct", "gold_30pct", "orange_20pct"],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "variants": [
+        "red_50pct",
+        "gold_30pct",
+        "orange_20pct"
+      ],
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_season_winter_snow",
       "type": "vfx",
       "name": "冬·雪花粒子（核心资产）",
       "file_prefix": "fx_season_winter_snow",
-      "size_px": { "width": 1080, "height": 1920 },
+      "size_px": {
+        "width": 1080,
+        "height": 1920
+      },
       "format": "json+png",
       "animation_method": "particle_system_dual_layer",
       "current_state": "spec_ready_pending_production",
@@ -1775,16 +1840,24 @@
         "fx_snowflake_large@2x.png",
         "fx_snowflake_small@2x.png"
       ],
-      "variants": ["layer_a_large_slow", "layer_b_small_fast"],
+      "variants": [
+        "layer_a_large_slow",
+        "layer_b_small_fast"
+      ],
       "special_behavior": "hot_spring_thermal_deflection + density_x1.5_above_hotspring",
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_season_winter_steam_enhanced",
       "type": "vfx",
       "name": "冬·温泉蒸汽加强版",
       "file_prefix": "fx_season_winter_steam_enhanced",
-      "size_px": { "width": 400, "height": 600 },
+      "size_px": {
+        "width": 400,
+        "height": 600
+      },
       "format": "json+png",
       "animation_method": "particle_system",
       "current_state": "spec_ready_pending_production",
@@ -1793,17 +1866,24 @@
       "season": "winter",
       "chapter_scope": "Ch4",
       "loop": true,
-      "particle_textures": ["fx_steam_puff@2x.png"],
+      "particle_textures": [
+        "fx_steam_puff@2x.png"
+      ],
       "variants": [],
       "design_key": "warm_orange_white_color_temperature_contrast_vs_cold_snow",
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_season_winter_snow_slide",
       "type": "vfx",
       "name": "冬·屋顶积雪偶发滑落",
       "file_prefix": "fx_season_winter_snow_slide",
-      "size_px": { "width": 160, "height": 280 },
+      "size_px": {
+        "width": 160,
+        "height": 280
+      },
       "format": "json+png",
       "animation_method": "particle_system_two_phase",
       "current_state": "spec_ready_pending_production",
@@ -1813,17 +1893,31 @@
       "chapter_scope": "Ch4",
       "loop": false,
       "duration_s": 2.5,
-      "random_trigger_interval_s": { "min": 15, "max": 30 },
-      "particle_textures": ["fx_snow_blob@2x.png"],
-      "variants": ["eave_left", "eave_center", "eave_right"],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "random_trigger_interval_s": {
+        "min": 15,
+        "max": 30
+      },
+      "particle_textures": [
+        "fx_snow_blob@2x.png"
+      ],
+      "variants": [
+        "eave_left",
+        "eave_center",
+        "eave_right"
+      ],
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_season_winter_lighthouse_glow",
       "type": "vfx",
       "name": "冬·灯塔光柱雪雾光晕",
       "file_prefix": "fx_season_winter_lighthouse_glow",
-      "size_px": { "width": 1080, "height": 1920 },
+      "size_px": {
+        "width": 1080,
+        "height": 1920
+      },
       "format": "json+png",
       "animation_method": "particle_system",
       "current_state": "spec_ready_pending_production",
@@ -1833,17 +1927,24 @@
       "chapter_scope": "Ch4",
       "loop": false,
       "duration_s": 0.8,
-      "particle_textures": ["fx_snow_mote@2x.png"],
+      "particle_textures": [
+        "fx_snow_mote@2x.png"
+      ],
       "variants": [],
       "depends_on": "fx_lighthouse_beam",
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_season_transition",
       "type": "vfx",
       "name": "季节切换过渡特效",
       "file_prefix": "fx_season_transition",
-      "size_px": { "width": 1080, "height": 1920 },
+      "size_px": {
+        "width": 1080,
+        "height": 1920
+      },
       "format": "json+png",
       "animation_method": "particle_system",
       "current_state": "spec_ready_pending_production",
@@ -1866,68 +1967,101 @@
         "autumn_to_winter",
         "winter_to_spring"
       ],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_particle_tex_sakura_petal",
       "type": "vfx_texture",
       "name": "粒子纹理·樱花花瓣",
       "file_prefix": "fx_sakura_petal",
-      "size_px": { "width": 64, "height": 36 },
+      "size_px": {
+        "width": 64,
+        "height": 36
+      },
       "format": "png",
       "animation_method": "static",
       "current_state": "spec_ready_pending_production",
       "milestone_gate": "Seasonal_v1",
       "ai_generatable": true,
-      "shared_by": ["fx_season_spring_sakura", "fx_season_spring_petals_burst", "fx_season_transition"],
+      "shared_by": [
+        "fx_season_spring_sakura",
+        "fx_season_spring_petals_burst",
+        "fx_season_transition"
+      ],
       "variants": [],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_particle_tex_firefly_glow",
       "type": "vfx_texture",
       "name": "粒子纹理·萤火发光圆点",
       "file_prefix": "fx_firefly_glow",
-      "size_px": { "width": 48, "height": 48 },
+      "size_px": {
+        "width": 48,
+        "height": 48
+      },
       "format": "png",
       "animation_method": "static",
       "current_state": "spec_ready_pending_production",
       "milestone_gate": "Seasonal_v1",
       "ai_generatable": true,
-      "shared_by": ["fx_season_summer_firefly", "fx_season_transition"],
+      "shared_by": [
+        "fx_season_summer_firefly",
+        "fx_season_transition"
+      ],
       "variants": [],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_particle_tex_snowflake_large",
       "type": "vfx_texture",
       "name": "粒子纹理·六角雪花（高精度）",
       "file_prefix": "fx_snowflake_large",
-      "size_px": { "width": 56, "height": 56 },
+      "size_px": {
+        "width": 56,
+        "height": 56
+      },
       "format": "png",
       "animation_method": "static",
       "current_state": "spec_ready_pending_production",
       "milestone_gate": "Seasonal_v1",
       "ai_generatable": true,
       "priority": "core_asset_highest_design_precision",
-      "shared_by": ["fx_season_winter_snow"],
+      "shared_by": [
+        "fx_season_winter_snow"
+      ],
       "variants": [],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     },
     {
       "asset_id": "fx_particle_tex_snowflake_simple",
       "type": "vfx_texture",
       "name": "粒子纹理·简化雪花（过渡用）",
       "file_prefix": "fx_snowflake_simple",
-      "size_px": { "width": 32, "height": 32 },
+      "size_px": {
+        "width": 32,
+        "height": 32
+      },
       "format": "png",
       "animation_method": "static",
       "current_state": "spec_ready_pending_production",
       "milestone_gate": "Seasonal_v1",
       "ai_generatable": true,
-      "shared_by": ["fx_season_transition"],
+      "shared_by": [
+        "fx_season_transition"
+      ],
       "variants": [],
-      "requested_by_nodes": ["vfx-art-gen"]
+      "requested_by_nodes": [
+        "vfx-art-gen"
+      ]
     }
   ]
 }

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/portrait-generation",
+  "verdict": "pass_with_limits",
+  "status": "COMPLETED_WITH_LIMITS",
+  "generation_run": {
+    "api_primary": "google-imagen-4",
+    "api_fallback": "fal-ai/flux-2-pro",
+    "quota_note": "Imagen 4 daily quota (70) exhausted during batch; remaining portraits used FLUX 2 Pro successfully"
+  },
+  "summary": {
+    "character_count": 7,
+    "portraits_generated": 10,
+    "portraits_approved": 0,
+    "portraits_pending_visual_review": 10,
+    "automation_limited_count": 0
+  },
+  "coverage": {
+    "default_portrait_all_7_chars": true,
+    "emotional_variant_coverage": {
+      "char_ritsu":  ["default","happy"],
+      "char_hinata": ["default","happy"],
+      "char_kenzo":  ["default"],
+      "char_umeko":  ["default"],
+      "char_natsuka":["default"],
+      "char_fuyuko": ["default","react_jump"],
+      "char_gicho":  ["default"]
+    },
+    "remaining_portrait_variants_to_generate": [
+      "char_ritsu: thinking, surprised, react_jump",
+      "char_hinata: thinking, surprised, react_jump",
+      "char_kenzo: happy, thinking, surprised, react_jump",
+      "char_umeko: happy, thinking, surprised, react_jump",
+      "char_natsuka: happy, thinking, surprised, react_jump",
+      "char_fuyuko: happy, thinking, surprised",
+      "char_gicho: happy, thinking, surprised, react_jump"
+    ],
+    "note": "All 35 expression PNGs in .allforai/game-design/art/expressions/ serve as dialogue portrait source. The portrait-manifest.json tracks dedicated portrait crops. Expression images double as portraits — complete coverage is already achieved via expression-set."
+  },
+  "passed_checks": [
+    "all_7_characters_have_at_least_one_generated_default_portrait",
+    "style_tokens_applied",
+    "portrait_size_256x256_or_512x512_acceptable",
+    "transparent_background_requested",
+    "no_text_labels_in_prompts",
+    "character_identity_defined_in_each_prompt",
+    "dialogue_refs_assigned_in_manifest"
+  ],
+  "failed_checks": [],
+  "limits": [
+    "not_all_5_expression_variants_generated_as_dedicated_portrait_crops",
+    "visual_identity_consistency_pending_human_qa",
+    "atlas_packing_not_yet_complete",
+    "imagen4_daily_quota_exhausted_during_session"
+  ],
+  "repair_log": [
+    {
+      "issue": "Imagen 4 quota exceeded at 70 requests",
+      "action": "Switched to FLUX 2 Pro (fal-ai/flux-2-pro) for remaining images",
+      "result": "All requested remaining images generated successfully"
+    }
+  ],
+  "next_actions": [
+    "Human QA: review all generated portraits and expression PNGs for identity consistency",
+    "Use expression PNGs (.allforai/game-design/art/expressions/) as portrait sources where dedicated portrait crops not yet generated",
+    "Generate remaining portrait expression variants when Imagen 4 quota resets (daily)",
+    "Pack all portrait and expression PNGs into characters_atlas",
+    "Wire portrait paths into dialogue system asset (ui_panel_npc_dialogue)"
+  ]
+}

@@ -1,15 +1,23 @@
 {
   "schema_version": "1.0",
   "generated_at": "2026-05-13T00:00:00Z",
+  "images_generated_at": "2026-05-13T00:00:00Z",
   "skill": "game-art/expression-set-generation",
   "verdict": "pass_with_limits",
   "status": "COMPLETED_WITH_LIMITS",
+  "generation_run": {
+    "api_primary": "google-imagen-4",
+    "api_fallback": "fal-ai/flux-2-pro",
+    "images_generated": 35,
+    "images_requested": 35,
+    "success_rate": "100%"
+  },
   "summary": {
     "character_count": 7,
     "expression_count_per_character": 5,
     "total_expressions": 35,
-    "generated_count": 0,
-    "spec_ready_count": 35,
+    "generated_count": 35,
+    "spec_ready_count": 0,
     "approved_count": 0,
     "automation_limited_count": 0
   },
@@ -20,17 +28,21 @@
     "file_prefix_consistent_with_concept_contract",
     "style_tokens_referenced",
     "no_text_in_spec",
-    "consumers_declared"
+    "consumers_declared",
+    "all_35_expression_png_files_generated"
   ],
   "failed_checks": [],
   "limits": [
-    "expression_images_not_yet_generated",
-    "identity_consistency_visual_validation_pending_image_generation",
+    "identity_consistency_visual_validation_pending_human_review",
+    "cross_expression_style_drift_not_yet_validated",
     "downstream_dialogue_emotion_mapping_not_yet_validated"
   ],
+  "repair_log": [],
   "next_actions": [
-    "Generate 35 expression portrait PNGs using google-imagen-4 or openrouter-gpt-image with prompts in expression-set-spec.json",
-    "Run validate_existing mode after generation to confirm identity consistency, expression distinction, and crop",
-    "Wire expression paths into dialogue system (ui_panel_npc_dialogue asset)"
+    "Human QA: review all 35 expression PNGs in .allforai/game-design/art/expressions/ for identity consistency, expression distinction, and style adherence",
+    "Flag any that need regeneration and rerun with revised prompts",
+    "Run validate_existing mode after QA to confirm identity consistency, expression distinction, and crop",
+    "Wire expression paths into dialogue system (ui_panel_npc_dialogue asset)",
+    "Pack expressions into characters_atlas"
   ]
 }

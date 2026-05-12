@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/frame-animation-generation",
+  "verdict": "pass_with_limits",
+  "status": "COMPLETED_WITH_LIMITS",
+  "scope": "char_gicho (orange tabby cat) — all other characters use DragonBones skeletal animation",
+  "summary": {
+    "character_count": 1,
+    "animation_count": 4,
+    "total_frames": 15,
+    "generated_count": 15,
+    "approved_count": 0,
+    "automation_limited_count": 0
+  },
+  "passed_checks": [
+    "char_gicho_4_animations_defined_idle_happy_surprised_wave",
+    "frame_counts_match_spec_4_4_3_4",
+    "canvas_size_192x192_consistent",
+    "fps_12_correct",
+    "anchor_defined_for_all_animations",
+    "all_15_frames_generated_via_imagen4",
+    "style_tokens_applied",
+    "transparent_background_requested",
+    "no_text_in_prompts"
+  ],
+  "failed_checks": [],
+  "limits": [
+    "visual_identity_consistency_not_yet_validated_across_15_frames",
+    "loop_closure_visual_check_pending",
+    "cocos_creator_import_test_pending",
+    "atlas_strip_not_yet_packed"
+  ],
+  "repair_log": [],
+  "next_actions": [
+    "Visual QA: verify 15 frames maintain consistent char_gicho identity and style across animations",
+    "Pack frames into characters_atlas using Cocos Creator auto-atlas",
+    "Test loop closure: char_gicho_idle_f04.png should visually match f01.png",
+    "Validate import in Cocos Creator 3.x runtime"
+  ]
+}

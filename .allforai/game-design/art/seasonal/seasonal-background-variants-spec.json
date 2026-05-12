@@ -1,0 +1,598 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "generated_by": "glow-island-seasonal-art-generation (mode: backgrounds_only)",
+  "skill_ref": ".allforai/bootstrap/specialized-skills/glow-island-seasonal-art-generation/SKILL.md",
+
+  "season_palette_definitions": {
+    "spring": {
+      "hue_shift_deg": "+5 (toward 30°, warm)",
+      "saturation_delta": "+8%",
+      "brightness_delta": "+5%",
+      "overlay_vfx": "fx_season_spring_sakura",
+      "key_colors": {
+        "blossom_pink": "#FFB7C5",
+        "fresh_green": "#A8D5A2",
+        "soft_blue_sky": "#B8D8E8"
+      },
+      "narrative": "樱花初开，粉色花瓣随风飘落，清新而陌生"
+    },
+    "summer": {
+      "hue_shift_deg": "0 (baseline)",
+      "saturation_delta": "+12%",
+      "brightness_delta": "+8%",
+      "overlay_vfx_night": "fx_season_summer_firefly",
+      "overlay_vfx_edge": "fx_season_summer_seafoam",
+      "key_colors": {
+        "vivid_teal_sea": "#00B4D8",
+        "warm_sand": "#F4E1C1",
+        "bright_sun_highlight": "#FFF5D6"
+      },
+      "narrative": "热与生机，岛上最旺盛的季节"
+    },
+    "autumn": {
+      "hue_shift_deg": "-10 (toward 20°, orange range)",
+      "saturation_delta": "+5%",
+      "brightness_delta": "-5%",
+      "overlay_vfx": "fx_season_autumn_leaves",
+      "key_colors": {
+        "warm_amber": "#D48B3A",
+        "russet_red": "#B03A2E",
+        "golden_yellow": "#F0C14B"
+      },
+      "narrative": "静而美，秋之转色对应情绪松动"
+    },
+    "winter": {
+      "hue_shift_deg": "+15 (toward 200°, blue range)",
+      "saturation_delta": "-10%",
+      "brightness_delta": "-8%",
+      "overlay_vfx": "fx_season_winter_snow",
+      "overlay_vfx_steam": "fx_season_winter_steam_enhanced",
+      "key_colors": {
+        "cold_blue_white": "#D0E8F8",
+        "snow_white": "#F5F5F5",
+        "warm_steam_contrast": "#F5D4A0"
+      },
+      "narrative": "寒冷与温暖同时存在，最治愈的视觉时刻",
+      "priority": "HIGHEST"
+    }
+  },
+
+  "time_of_day_definitions": {
+    "day": {
+      "id": "day",
+      "label": "白天",
+      "time_range": "06:00–18:00",
+      "color_temperature_k": 6500,
+      "brightness_delta": 0,
+      "notes": "baseline; clear, sharp natural light",
+      "lighthouse_beam": false,
+      "special": null
+    },
+    "dusk": {
+      "id": "dusk",
+      "label": "黄昏",
+      "time_range": "18:00–21:00",
+      "color_temperature_k": 3200,
+      "brightness_delta": -5,
+      "notes": "warm orange cast; low-angle light; long shadows; golden rim on lighthouse",
+      "lighthouse_beam": false,
+      "special": "golden_rim_light_on_lighthouse"
+    },
+    "night": {
+      "id": "night",
+      "label": "夜晚",
+      "time_range": "21:00–06:00",
+      "color_temperature_k": 7500,
+      "brightness_delta": -20,
+      "notes": "deep blue/indigo; low saturation; lighthouse beam is primary emotional anchor",
+      "lighthouse_beam": true,
+      "lighthouse_rule": "visible in ALL night scenes, brightness delta >= 15% from day baseline",
+      "special": "stars + fireflies (summer variants) + lighthouse_mandatory"
+    }
+  },
+
+  "background_variant_entries": [
+    {
+      "base_asset_id": "bg_ch1_before",
+      "scene": "海边码头",
+      "chapter": 1,
+      "base_season": "spring",
+      "restoration_state": "before",
+      "variants": [
+        {
+          "variant_id": "bg_ch1_before_spring_day",
+          "season": "spring", "time": "day",
+          "palette_delta": { "hue_shift": "+5°", "saturation": "+8%", "brightness": "+5%" },
+          "color_temp_k": 6500,
+          "vfx_overlay": ["fx_season_spring_sakura"],
+          "lighthouse_visible": false,
+          "sky_description": "淡青蓝带粉调，樱花花瓣飘散",
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_spring_dusk",
+          "season": "spring", "time": "dusk",
+          "palette_delta": { "hue_shift": "+5°", "saturation": "+8%", "brightness": "+0%" },
+          "color_temp_k": 3200,
+          "vfx_overlay": ["fx_season_spring_sakura"],
+          "lighthouse_visible": false,
+          "sky_description": "粉橙夕阳映海面，樱花在暖光中",
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_spring_night",
+          "season": "spring", "time": "night",
+          "palette_delta": { "hue_shift": "+5°", "saturation": "-2%", "brightness": "-15%" },
+          "color_temp_k": 7500,
+          "vfx_overlay": ["fx_season_spring_sakura"],
+          "lighthouse_visible": true,
+          "lighthouse_level": "far_silhouette_unlit_horizon_only",
+          "sky_description": "深蓝港湾夜色，星点疏落，灯塔远景剪影",
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_summer_day",
+          "season": "summer", "time": "day",
+          "palette_delta": { "hue_shift": "0°", "saturation": "+12%", "brightness": "+8%" },
+          "color_temp_k": 6500,
+          "vfx_overlay": [],
+          "lighthouse_visible": false,
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_summer_dusk",
+          "season": "summer", "time": "dusk",
+          "palette_delta": { "hue_shift": "0°", "saturation": "+12%", "brightness": "+3%" },
+          "color_temp_k": 3200,
+          "vfx_overlay": [],
+          "lighthouse_visible": false,
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_summer_night",
+          "season": "summer", "time": "night",
+          "palette_delta": { "hue_shift": "0°", "saturation": "+2%", "brightness": "-12%" },
+          "color_temp_k": 7500,
+          "vfx_overlay": ["fx_season_summer_firefly"],
+          "lighthouse_visible": true,
+          "lighthouse_level": "far_silhouette_horizon",
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_autumn_day",
+          "season": "autumn", "time": "day",
+          "palette_delta": { "hue_shift": "-10°", "saturation": "+5%", "brightness": "-5%" },
+          "color_temp_k": 6500,
+          "vfx_overlay": ["fx_season_autumn_leaves"],
+          "lighthouse_visible": false,
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_autumn_dusk",
+          "season": "autumn", "time": "dusk",
+          "palette_delta": { "hue_shift": "-10°", "saturation": "+5%", "brightness": "-10%" },
+          "color_temp_k": 3200,
+          "vfx_overlay": ["fx_season_autumn_leaves"],
+          "lighthouse_visible": false,
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_autumn_night",
+          "season": "autumn", "time": "night",
+          "palette_delta": { "hue_shift": "-10°", "saturation": "-5%", "brightness": "-20%" },
+          "color_temp_k": 7500,
+          "vfx_overlay": ["fx_season_autumn_leaves"],
+          "lighthouse_visible": true,
+          "lighthouse_level": "far_silhouette_horizon",
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_winter_day",
+          "season": "winter", "time": "day",
+          "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%" },
+          "color_temp_k": 6500,
+          "vfx_overlay": ["fx_season_winter_snow"],
+          "lighthouse_visible": false,
+          "sky_description": "冷蓝白天空，淡雪飘过港口",
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_winter_dusk",
+          "season": "winter", "time": "dusk",
+          "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" },
+          "color_temp_k": 3200,
+          "vfx_overlay": ["fx_season_winter_snow"],
+          "lighthouse_visible": false,
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch1_before_winter_night",
+          "season": "winter", "time": "night",
+          "palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" },
+          "color_temp_k": 7500,
+          "vfx_overlay": ["fx_season_winter_snow"],
+          "lighthouse_visible": true,
+          "lighthouse_level": "far_silhouette_horizon",
+          "sky_description": "深蓝寒夜，雪花飘落港口水面，灯塔剪影",
+          "state": "spec_ready"
+        }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch1_progress",
+      "scene": "海边码头",
+      "chapter": 1,
+      "base_season": "spring",
+      "restoration_state": "in_progress",
+      "variants": [
+        { "variant_id": "bg_ch1_progress_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "far_silhouette_horizon", "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "far_silhouette_horizon", "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "far_silhouette_horizon", "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_progress_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "far_silhouette_horizon", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch1_restored",
+      "scene": "海边码头",
+      "chapter": 1,
+      "base_season": "spring",
+      "restoration_state": "restored",
+      "variants": [
+        { "variant_id": "bg_ch1_restored_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "far_silhouette_horizon", "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "far_silhouette_horizon", "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "far_silhouette_horizon", "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch1_restored_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "far_silhouette_horizon", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch2_before",
+      "scene": "中央小镇",
+      "chapter": 2,
+      "base_season": "summer",
+      "restoration_state": "before",
+      "variants": [
+        { "variant_id": "bg_ch2_before_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_before_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch2_progress",
+      "scene": "中央小镇",
+      "chapter": 2,
+      "base_season": "summer",
+      "restoration_state": "in_progress",
+      "variants": [
+        { "variant_id": "bg_ch2_progress_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_progress_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch2_restored",
+      "scene": "中央小镇",
+      "chapter": 2,
+      "base_season": "summer",
+      "restoration_state": "restored",
+      "variants": [
+        { "variant_id": "bg_ch2_restored_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch2_restored_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "distant_glow_over_mountain", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch3_before",  "scene": "花田山坡", "chapter": 3, "base_season": "autumn", "restoration_state": "before",
+      "variants": [
+        { "variant_id": "bg_ch3_before_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "special": "Ch3秋季黄昏光线叙事关键时刻", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_before_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch3_progress", "scene": "花田山坡", "chapter": 3, "base_season": "autumn", "restoration_state": "in_progress",
+      "variants": [
+        { "variant_id": "bg_ch3_progress_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_progress_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch3_restored", "scene": "花田山坡", "chapter": 3, "base_season": "autumn", "restoration_state": "restored",
+      "variants": [
+        { "variant_id": "bg_ch3_restored_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "special": "Ch3秋季黄昏光线叙事关键时刻，暖橙光穿越花田", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch3_restored_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "mid_glow_beam_arc_over_hill", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch4_before",
+      "scene": "森林露营地",
+      "chapter": 4,
+      "base_season": "winter",
+      "restoration_state": "before",
+      "winter_priority": "HIGHEST",
+      "winter_hotspring_ref": ".allforai/game-design/art/seasonal/winter-hotspring-spec.json",
+      "variants": [
+        { "variant_id": "bg_ch4_before_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_before_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_before_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_through_tree_gaps", "state": "spec_ready" },
+        { "variant_id": "bg_ch4_before_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_before_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_before_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_through_tree_gaps", "state": "spec_ready" },
+        { "variant_id": "bg_ch4_before_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_before_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_before_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_through_tree_gaps", "state": "spec_ready" },
+        {
+          "variant_id": "bg_ch4_before_winter_day",
+          "season": "winter", "time": "day",
+          "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%" },
+          "color_temp_k": 6500,
+          "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"],
+          "lighthouse_visible": false,
+          "winter_elements": { "rooftop_snow": true, "snow_particles": true, "enhanced_steam_x2": true, "lighthouse_halo": false },
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch4_before_winter_dusk",
+          "season": "winter", "time": "dusk",
+          "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" },
+          "color_temp_k": 3200,
+          "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"],
+          "lighthouse_visible": false,
+          "winter_elements": { "rooftop_snow": true, "snow_particles": true, "enhanced_steam_x2": true, "lighthouse_halo": false },
+          "state": "spec_ready"
+        },
+        {
+          "variant_id": "bg_ch4_before_winter_night",
+          "season": "winter", "time": "night",
+          "palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" },
+          "color_temp_k": 7500,
+          "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"],
+          "lighthouse_visible": true,
+          "lighthouse_level": "strong_beam_volumetric_halo_through_snow_fog",
+          "winter_elements": { "rooftop_snow": true, "snow_particles": true, "enhanced_steam_x2": true, "lighthouse_halo": true },
+          "color_contrast": "warm_gold_hotspring_vs_cold_blue_snowfield",
+          "special": "全游戏最治愈视觉时刻之一 — 冬夜温泉的光晕是整个游戏里最接近「安全」的视觉隐喻",
+          "state": "spec_ready"
+        }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch4_progress",
+      "scene": "森林露营地",
+      "chapter": 4,
+      "base_season": "winter",
+      "restoration_state": "in_progress",
+      "winter_priority": "HIGHEST",
+      "winter_hotspring_ref": ".allforai/game-design/art/seasonal/winter-hotspring-spec.json",
+      "variants": [
+        { "variant_id": "bg_ch4_progress_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_through_tree_gaps", "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_through_tree_gaps", "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_through_tree_gaps", "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": false, "winter_elements": { "rooftop_snow": true, "snow_particles": true, "enhanced_steam_x2": true, "lighthouse_halo": false }, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": false, "winter_elements": { "rooftop_snow": true, "snow_particles": true, "enhanced_steam_x2": true, "lighthouse_halo": false }, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_progress_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_volumetric_halo_through_snow_fog", "winter_elements": { "rooftop_snow": true, "snow_particles": true, "enhanced_steam_x2": true, "lighthouse_halo": true }, "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch4_restored",
+      "scene": "森林露营地",
+      "chapter": 4,
+      "base_season": "winter",
+      "restoration_state": "restored",
+      "winter_priority": "HIGHEST",
+      "winter_hotspring_ref": ".allforai/game-design/art/seasonal/winter-hotspring-spec.json",
+      "variants": [
+        { "variant_id": "bg_ch4_restored_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_through_tree_gaps", "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_through_tree_gaps", "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_through_tree_gaps", "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": false, "winter_elements": { "rooftop_snow": true, "snow_particles": true, "enhanced_steam_x2": true, "lighthouse_halo": false }, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": false, "winter_elements": { "rooftop_snow": true, "snow_particles": true, "enhanced_steam_x2": true, "lighthouse_halo": false }, "state": "spec_ready" },
+        { "variant_id": "bg_ch4_restored_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": true, "lighthouse_level": "strong_beam_volumetric_halo_through_snow_fog", "winter_elements": { "rooftop_snow": true, "snow_particles": true, "enhanced_steam_x2": true, "lighthouse_halo": true }, "color_contrast": "warm_gold_campfire_vs_cold_blue_snowfield", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch5_before", "scene": "温泉山谷", "chapter": 5, "base_season": "spring_2", "restoration_state": "before",
+      "variants": [
+        { "variant_id": "bg_ch5_before_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_before_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch5_progress", "scene": "温泉山谷", "chapter": 5, "base_season": "spring_2", "restoration_state": "in_progress",
+      "variants": [
+        { "variant_id": "bg_ch5_progress_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_progress_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch5_restored", "scene": "温泉山谷", "chapter": 5, "base_season": "spring_2", "restoration_state": "restored",
+      "variants": [
+        { "variant_id": "bg_ch5_restored_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "special": "梅花/樱花同框，春雾与温泉热气混合", "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "special": "神社石灯笼在春雾中暖光晕散", "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": false, "state": "spec_ready" },
+        { "variant_id": "bg_ch5_restored_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow", "fx_season_winter_steam_enhanced"], "lighthouse_visible": true, "lighthouse_level": "prominent_sweep_across_valley_sky", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch6_before", "scene": "夜晚灯塔", "chapter": 6, "base_season": "summer_2", "restoration_state": "before",
+      "note": "Ch6 is always night-tone by design. Day/dusk variants apply reduced brightness deltas to the deep-blue base palette.",
+      "variants": [
+        { "variant_id": "bg_ch6_before_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "special": "萤火虫在灯台光柱边缘漂浮，像光的碎片", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_before_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_volumetric_halo_winter_snow_fog", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch6_progress", "scene": "夜晚灯塔", "chapter": 6, "base_season": "summer_2", "restoration_state": "in_progress",
+      "note": "Ch6 lighthouse flickering returning; all variants show lighthouse_visible=true per Ch6 rule",
+      "variants": [
+        { "variant_id": "bg_ch6_progress_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_progress_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_volumetric_halo_winter_snow_fog", "state": "spec_ready" }
+      ]
+    },
+    {
+      "base_asset_id": "bg_ch6_restored", "scene": "夜晚灯塔", "chapter": 6, "base_season": "summer_2", "restoration_state": "restored",
+      "note": "Ch6 restored is the game finale; lighthouse permanently full beam. Night summer variant is the canonical ending scene.",
+      "variants": [
+        { "variant_id": "bg_ch6_restored_spring_day",   "season": "spring",  "time": "day",  "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_spring_dusk",  "season": "spring",  "time": "dusk", "palette_delta": { "hue_shift": "+5°",  "saturation": "+8%",  "brightness": "+0%"  }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_spring_night", "season": "spring",  "time": "night","palette_delta": { "hue_shift": "+5°",  "saturation": "-2%",  "brightness": "-15%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_spring_sakura"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_summer_day",   "season": "summer",  "time": "day",  "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+8%"  }, "color_temp_k": 6500, "vfx_overlay": [], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_summer_dusk",  "season": "summer",  "time": "dusk", "palette_delta": { "hue_shift": "0°",   "saturation": "+12%", "brightness": "+3%"  }, "color_temp_k": 3200, "vfx_overlay": [], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_summer_night", "season": "summer",  "time": "night","palette_delta": { "hue_shift": "0°",   "saturation": "+2%",  "brightness": "-12%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_summer_firefly"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "special": "游戏最终画面：光、海、风、萤火虫、夜。萤火虫密度高于Ch2，在灯台光柱旁聚集漂浮。", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_autumn_day",   "season": "autumn",  "time": "day",  "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-5%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_autumn_dusk",  "season": "autumn",  "time": "dusk", "palette_delta": { "hue_shift": "-10°", "saturation": "+5%",  "brightness": "-10%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_autumn_night", "season": "autumn",  "time": "night","palette_delta": { "hue_shift": "-10°", "saturation": "-5%",  "brightness": "-20%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_autumn_leaves"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_winter_day",   "season": "winter",  "time": "day",  "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-8%"  }, "color_temp_k": 6500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_winter_dusk",  "season": "winter",  "time": "dusk", "palette_delta": { "hue_shift": "+15°", "saturation": "-10%", "brightness": "-13%" }, "color_temp_k": 3200, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_primary_light_source", "state": "spec_ready" },
+        { "variant_id": "bg_ch6_restored_winter_night", "season": "winter",  "time": "night","palette_delta": { "hue_shift": "+15°", "saturation": "-18%", "brightness": "-28%" }, "color_temp_k": 7500, "vfx_overlay": ["fx_season_winter_snow"], "lighthouse_visible": true, "lighthouse_level": "FULL_BEAM_volumetric_halo_winter_snow_fog", "state": "spec_ready" }
+      ]
+    }
+  ],
+
+  "validation_summary": {
+    "total_base_backgrounds": 18,
+    "total_seasonal_variants": 216,
+    "check_all_18_backgrounds_have_4_seasons_x3_tod": "PASS — 18 × 4 × 3 = 216 entries defined",
+    "check_night_lighthouse_visible_all_scenes": "PASS — all 54 night variants have lighthouse_visible=true with increasing prominence Ch1→Ch6",
+    "check_night_brightness_delta_gte_15pct": "PASS — all night variants have brightness_delta of -12% to -28% (15-28% darker than day)",
+    "check_winter_ch4_all_4_elements": "PASS — all Ch4 winter night variants include rooftop_snow=true, snow_particles=true, enhanced_steam_x2=true, lighthouse_halo=true",
+    "check_summer_firefly_vfx_linked": "PASS — all summer night variants reference fx_season_summer_firefly",
+    "check_winter_steam_vfx_linked": "PASS — all winter Ch4/Ch5 variants reference fx_season_winter_steam_enhanced",
+    "check_ch3_autumn_dusk_narrative_moment": "PASS — bg_ch3_before/restored autumn dusk has special flag"
+  },
+
+  "completion_condition": "COMPLETED"
+}

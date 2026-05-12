@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/frame-animation-generation",
+  "mode": "spec_generate_validate",
+  "status": "COMPLETED_WITH_LIMITS",
+  "scope": "char_gicho only — all other characters use DragonBones skeletal animation",
+  "source": {
+    "frame_animation_spec": ".allforai/game-design/systems/char-gicho-frame-animation-spec.json",
+    "concept_contract": ".allforai/concept-contract.json",
+    "art_pipeline_config": ".allforai/game-design/art-pipeline-config.json",
+    "visual_style_tokens": ".allforai/game-design/art/visual-style-tokens.json"
+  },
+  "characters_in_scope": ["char_gicho"],
+  "generation_profile": {
+    "task_type": "frame_animation",
+    "model_used": "google-imagen-4",
+    "canvas_size": "192x192px",
+    "background": "transparent",
+    "format": "png",
+    "style": "hand_drawn_watercolor_chibi"
+  },
+  "animations": [
+    {
+      "animation_id": "idle",
+      "asset_id": "char_gicho",
+      "loop": true,
+      "fps": 12,
+      "duration_ms": 2000,
+      "frame_count": 4,
+      "frame_size": { "width": 192, "height": 192 },
+      "anchor": { "x": 96, "y": 180 },
+      "event_frames": [],
+      "frames": [
+        { "frame": 1, "file": "char_gicho_idle_f01.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_idle_f01.png", "description": "sitting upright, half-closed dignified eyes, neutral resting" },
+        { "frame": 2, "file": "char_gicho_idle_f02.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_idle_f02.png", "description": "chest rises slightly on breath, body slightly higher" },
+        { "frame": 3, "file": "char_gicho_idle_f03.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_idle_f03.png", "description": "tail tip curls slightly, breath holds at peak" },
+        { "frame": 4, "file": "char_gicho_idle_f04.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_idle_f04.png", "description": "settles back to rest, tail returns neutral, loops to f01" }
+      ],
+      "validation": {
+        "frame_count_ok": true,
+        "loop_closure_ok": true,
+        "style_ok": true,
+        "visual_validation": "generated_pending_review"
+      }
+    },
+    {
+      "animation_id": "happy",
+      "asset_id": "char_gicho",
+      "loop": false,
+      "fps": 12,
+      "duration_ms": 600,
+      "frame_count": 4,
+      "frame_size": { "width": 192, "height": 192 },
+      "anchor": { "x": 96, "y": 180 },
+      "event_frames": [],
+      "frames": [
+        { "frame": 1, "file": "char_gicho_happy_f01.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_happy_f01.png", "description": "neutral starting position" },
+        { "frame": 2, "file": "char_gicho_happy_f02.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_happy_f02.png", "description": "eyes beginning to narrow, tail starting to rise" },
+        { "frame": 3, "file": "char_gicho_happy_f03.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_happy_f03.png", "description": "full happy squint, tail raised in half-circle — peak approval" },
+        { "frame": 4, "file": "char_gicho_happy_f04.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_happy_f04.png", "description": "settling back to dignified resting position" }
+      ],
+      "validation": {
+        "frame_count_ok": true,
+        "loop_closure_ok": true,
+        "style_ok": true,
+        "visual_validation": "generated_pending_review"
+      }
+    },
+    {
+      "animation_id": "surprised",
+      "asset_id": "char_gicho",
+      "loop": false,
+      "fps": 12,
+      "duration_ms": 500,
+      "frame_count": 3,
+      "frame_size": { "width": 192, "height": 192 },
+      "anchor": { "x": 96, "y": 180 },
+      "event_frames": [],
+      "frames": [
+        { "frame": 1, "file": "char_gicho_surprised_f01.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_surprised_f01.png", "description": "neutral sitting before reaction" },
+        { "frame": 2, "file": "char_gicho_surprised_f02.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_surprised_f02.png", "description": "ears fully perked up, eyes wide — peak alert" },
+        { "frame": 3, "file": "char_gicho_surprised_f03.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_surprised_f03.png", "description": "ears relaxing, eyes settling, processing" }
+      ],
+      "validation": {
+        "frame_count_ok": true,
+        "loop_closure_ok": true,
+        "style_ok": true,
+        "visual_validation": "generated_pending_review"
+      }
+    },
+    {
+      "animation_id": "wave",
+      "asset_id": "char_gicho",
+      "loop": false,
+      "fps": 12,
+      "duration_ms": 800,
+      "frame_count": 4,
+      "frame_size": { "width": 192, "height": 192 },
+      "anchor": { "x": 96, "y": 180 },
+      "event_frames": [],
+      "frames": [
+        { "frame": 1, "file": "char_gicho_wave_f01.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_wave_f01.png", "description": "neutral sitting, paw about to raise" },
+        { "frame": 2, "file": "char_gicho_wave_f02.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_wave_f02.png", "description": "paw raised upward, beginning greeting" },
+        { "frame": 3, "file": "char_gicho_wave_f03.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_wave_f03.png", "description": "paw at full peak of greeting gesture" },
+        { "frame": 4, "file": "char_gicho_wave_f04.png", "path": ".allforai/game-design/art/char_gicho/char_gicho_wave_f04.png", "description": "paw lowering back to sitting position" }
+      ],
+      "validation": {
+        "frame_count_ok": true,
+        "loop_closure_ok": true,
+        "style_ok": true,
+        "visual_validation": "generated_pending_review"
+      }
+    }
+  ],
+  "total_frames": 15,
+  "output_paths": {
+    "frames_dir": ".allforai/game-design/art/char_gicho/",
+    "atlas_strip_path": ".allforai/game-design/art/char_gicho_frames_strip.png"
+  }
+}

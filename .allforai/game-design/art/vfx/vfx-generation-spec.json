@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/vfx-generation",
+  "mode": "spec_generate_validate",
+  "node": "vfx-art-gen",
+  "vfx_spec_ref": ".allforai/game-design/art/vfx/vfx-spec.json",
+
+  "branch_plan": [
+    {
+      "vfx_id": "vfx_combo_burst",
+      "branches": ["sprite_sheet", "particle"],
+      "sprite_sheet_generator": "game-art/sprite-vfx-generation",
+      "particle_generator": "game-art/particle-system",
+      "texture_generation_required": false,
+      "config_files_to_write": [
+        ".allforai/game-design/art/vfx/world/vfx_combo_burst_particles.json"
+      ]
+    },
+    {
+      "vfx_id": "vfx_match_disappear",
+      "branches": ["sprite_sheet"],
+      "sprite_sheet_generator": "game-art/sprite-vfx-generation",
+      "texture_generation_required": true,
+      "texture_variants": 6,
+      "prompt_per_variant": {
+        "teal": "Sprite sheet VFX, 12 frames, 160×160px each, transparent background. Tile disappear effect. Teal color #7EC8E3 burst: frame 1-3 expand to 1.15x with squash deform, frame 4 collapse and shoot 4-6 small teal round particles outward at 45°/135°/225°/315°, frames 5-12 particles scatter and fade. Animal Crossing bounce curve. Hand-drawn watercolor style.",
+        "pink": "Sprite sheet VFX, 12 frames, 160×160px each, transparent background. Tile disappear effect. Pink color #FF8A80 burst with same animation. Particles are pink-coral dots.",
+        "gold": "Sprite sheet VFX, 12 frames, 160×160px each, transparent background. Golden #F5A623 tile disappear burst, same animation pattern, golden star-dot particles.",
+        "green": "Sprite sheet VFX, 12 frames, 160×160px each, transparent background. Green #7DBE77 tile disappear burst, leaf-like particle dots.",
+        "red": "Sprite sheet VFX, 12 frames, 160×160px each, transparent background. Red #E05050 tile disappear burst, same animation.",
+        "navy": "Sprite sheet VFX, 12 frames, 160×160px each, transparent background. Navy #2A3650 tile disappear burst, cooler particle dots."
+      }
+    },
+    {
+      "vfx_id": "vfx_lighthouse_glow",
+      "branches": ["sprite_sheet", "light_pulse"],
+      "sprite_sheet_generator": "game-art/sprite-vfx-generation",
+      "light_pulse_generator": "game-art/light-pulse-generation",
+      "texture_generation_required": true,
+      "prompt": "Sprite sheet VFX, 24 frames, 256×256px each, transparent background. Rotating golden lighthouse beam effect #F5C842. Each frame rotates beam 15°. Warm white-gold glow halo around center lighthouse point. Watercolor style soft golden light. Frames loop seamlessly."
+    },
+    {
+      "vfx_id": "vfx_wave_clear",
+      "branches": ["particle", "screen_effect"],
+      "particle_generator": "game-art/particle-system",
+      "screen_effect_generator": "game-art/screen-effect-generation",
+      "texture_generation_required": false,
+      "config_files_to_write": [
+        ".allforai/game-design/art/vfx/world/vfx_wave_clear_particles.json",
+        ".allforai/game-design/art/vfx/world/vfx_wave_clear_aura.json"
+      ]
+    },
+    {
+      "vfx_id": "vfx_chapter_restore",
+      "branches": ["screen_effect", "particle"],
+      "screen_effect_generator": "game-art/screen-effect-generation",
+      "particle_generator": "game-art/particle-system",
+      "texture_generation_required": false,
+      "config_files_to_write": [
+        ".allforai/game-design/art/vfx/screen/vfx_chapter_restore_flash.json",
+        ".allforai/game-design/art/vfx/screen/vfx_chapter_restore_gold_rain.json"
+      ]
+    },
+    {
+      "vfx_id": "vfx_combo_multiplier_x2",
+      "branches": ["sprite_sheet"],
+      "sprite_sheet_generator": "game-art/sprite-vfx-generation",
+      "texture_generation_required": true,
+      "prompt": "Sprite sheet VFX, 8 frames, 120×60px each, transparent background. Golden combo x2 bubble pop: frame 1 bubble at scale 0, frame 2-3 spring pop to 1.1x, frame 4 settle 1.0x, frames 5-8 float upward and fade. Golden yellow #F5C842. No text baked in. Watercolor style bubble shape."
+    },
+    {
+      "vfx_id": "vfx_combo_multiplier_x3",
+      "branches": ["sprite_sheet"],
+      "sprite_sheet_generator": "game-art/sprite-vfx-generation",
+      "texture_generation_required": true,
+      "prompt": "Sprite sheet VFX, 10 frames, 140×70px each, transparent background. Coral orange combo x3 bubble pop, larger than x2. Warm orange #EE8C55 bubble with spring pop animation. Frame 1 scale 0, frames 2-4 spring pop 1.15x overshoot, settle, float and fade. No text."
+    },
+    {
+      "vfx_id": "vfx_combo_multiplier_x5",
+      "branches": ["sprite_sheet", "particle"],
+      "sprite_sheet_generator": "game-art/sprite-vfx-generation",
+      "particle_generator": "game-art/particle-system",
+      "texture_generation_required": true,
+      "prompt": "Sprite sheet VFX, 12 frames, 180×90px each, transparent background. Large golden combo x5+ celebration bubble. Bright gold #F5C842 with multi-color shimmer. Big spring pop with glow ring around bubble edge. Frames 1-12 full animation sequence. No text."
+    },
+    {
+      "vfx_id": "vfx_season_spring_sakura",
+      "branches": ["particle"],
+      "particle_generator": "game-art/particle-system",
+      "texture_generation_required": true,
+      "particle_texture_prompt": "Sakura petal shape, 32×32px, transparent background. 5-petal cherry blossom pink #FFB7C5, organic slightly asymmetric shape, soft watercolor style, no outline. Single petal for particle texture."
+    },
+    {
+      "vfx_id": "vfx_season_winter_snow",
+      "branches": ["particle"],
+      "particle_generator": "game-art/particle-system",
+      "texture_generation_required": true,
+      "particle_texture_prompt": "Snowflake shape, 24×24px, transparent background. 6-point soft snowflake, cold white-blue #D0E8F8, organic slightly irregular shape. Watercolor style soft snowflake for particle texture."
+    },
+    {
+      "vfx_id": "vfx_season_summer_firefly",
+      "branches": ["particle"],
+      "particle_generator": "game-art/particle-system",
+      "texture_generation_required": false,
+      "note": "萤火虫使用程序化发光圆点，无需专用纹理图片"
+    },
+    {
+      "vfx_id": "vfx_special_wave_activation",
+      "branches": ["particle"],
+      "particle_generator": "game-art/particle-system",
+      "texture_generation_required": false,
+      "config_files_to_write": [".allforai/game-design/art/vfx/world/vfx_special_wave_particles.json"]
+    },
+    {
+      "vfx_id": "vfx_special_light_chain_activation",
+      "branches": ["particle", "screen_effect"],
+      "particle_generator": "game-art/particle-system",
+      "screen_effect_generator": "game-art/screen-effect-generation",
+      "texture_generation_required": false
+    },
+    {
+      "vfx_id": "vfx_special_pierce_activation",
+      "branches": ["particle", "screen_effect"],
+      "particle_generator": "game-art/particle-system",
+      "screen_effect_generator": "game-art/screen-effect-generation",
+      "texture_generation_required": false
+    },
+    {
+      "vfx_id": "vfx_special_swap_activation",
+      "branches": ["particle"],
+      "particle_generator": "game-art/particle-system",
+      "texture_generation_required": false
+    },
+    {
+      "vfx_id": "vfx_special_cascade_activation",
+      "branches": ["particle"],
+      "particle_generator": "game-art/particle-system",
+      "texture_generation_required": false
+    },
+    {
+      "vfx_id": "vfx_combo_glow_ring",
+      "branches": ["screen_effect"],
+      "screen_effect_generator": "game-art/screen-effect-generation",
+      "texture_generation_required": false,
+      "config_files_to_write": [".allforai/game-design/art/vfx/screen/vfx_combo_glow_ring.json"]
+    },
+    {
+      "vfx_id": "vfx_hourglass_claim_coins",
+      "branches": ["particle"],
+      "particle_generator": "game-art/particle-system",
+      "texture_generation_required": false,
+      "config_files_to_write": [".allforai/game-design/ui/vfx/vfx_hourglass_claim_coins.json"]
+    }
+  ],
+
+  "generation_summary": {
+    "total_vfx": 18,
+    "branches_requiring_image_generation": 7,
+    "branches_config_only": 11,
+    "image_generation_provider": "google-imagen-4",
+    "estimated_images_to_generate": 12
+  },
+
+  "validation_status": "COMPLETED_WITH_LIMITS",
+  "limit_reason": "Branch plan complete. Image generation for sprite-sheet textures and particle textures pending provider execution."
+}

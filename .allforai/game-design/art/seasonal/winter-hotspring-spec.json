@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "generated_by": "glow-island-seasonal-art-generation (mode: backgrounds_only)",
+  "priority": "HIGHEST",
+  "narrative_note": "全游戏最治愈的视觉时刻之一。冬夜温泉的光晕是整个游戏里最接近「安全」的视觉隐喻。——worldbuilding.json Ch4 winter_hotspring_highlight",
+
+  "scene_scope": {
+    "chapter": 4,
+    "area": "森林露营地 · 山顶温泉区",
+    "season": "winter",
+    "applies_to_base_assets": ["bg_ch4_before", "bg_ch4_progress", "bg_ch4_restored"],
+    "applies_to_variants": [
+      "bg_ch4_*_winter_day",
+      "bg_ch4_*_winter_dusk",
+      "bg_ch4_*_winter_night"
+    ],
+    "peak_visual_moment": "bg_ch4_restored_winter_night — 全章最强情感画面"
+  },
+
+  "required_elements": {
+    "element_count": 4,
+    "validation_rule": "All 4 elements must be present in all Ch4 winter variants. Missing any element = FAILED_VALIDATION."
+  },
+
+  "element_1_rooftop_snow": {
+    "element_id": "rooftop_snow",
+    "name": "屋顶积雪",
+    "description": "温泉小屋木瓦上一层均匀白雪，边缘悬挂细冰凌",
+    "visual_spec": {
+      "snow_coverage": "均匀覆盖温泉小屋整个屋顶面，雪层厚度视觉约5-8cm",
+      "snow_color": "#F5F5F5 (snow_white) with slight blue tint #EEF3F8 in shadow areas",
+      "icicle_edges": "屋檐边缘悬挂3-5cm细冰凌，透明蓝白色(#D0E8F8)",
+      "snow_texture": "非纯白平面；有轻微粗糙质感和顶部柔软凸起感（watercolor笔触表现）",
+      "layer_placement": "midground — 温泉小屋是中景元素",
+      "contrast_note": "积雪白色与木瓦暗棕色(#4A3020)形成对比，增强冬季感"
+    },
+    "vfx_ref": null,
+    "static_texture": true,
+    "state": "spec_ready"
+  },
+
+  "element_2_snow_particles": {
+    "element_id": "snow_particles",
+    "name": "雪花粒子",
+    "description": "在浓密蒸汽中若隐若现，落入温泉水面即刻融化，水面产生细小涟漪",
+    "visual_spec": {
+      "particle_system": "fx_season_winter_snow",
+      "density": "轻盈不密集，治愈感而非暴风雪 — 每帧屏幕内约20-40粒",
+      "particle_size_px": "3-8px (at 1920x1080)",
+      "particle_color": "#F5F5F5 to #D0E8F8 (slight blue-white)",
+      "motion": "缓慢飘落，速度30-50px/s，略带随机横向漂移(±8px/s)",
+      "steam_interaction": "雪花进入蒸汽区域时透明度降低至30-50%，若隐若现效果",
+      "water_interaction": {
+        "trigger": "雪花触碰温泉水面时",
+        "effect": "即刻消失，水面产生直径8-12px的细小涟漪（2帧动画）",
+        "color": "涟漪使用温泉水面暖色#C4955A lighten 30%"
+      },
+      "fallback": "如不支持蒸汽交互，雪花在水面边界直接淡出",
+      "particle_budget_max": 40,
+      "layer_placement": "foreground_elements — 最前层"
+    },
+    "vfx_ref": "fx_season_winter_snow",
+    "static_texture": false,
+    "state": "spec_ready"
+  },
+
+  "element_3_enhanced_steam": {
+    "element_id": "enhanced_steam_x2",
+    "name": "温泉蒸汽×2密度",
+    "description": "冬季冷空气使蒸汽可视距离大幅延长，乳白色蒸汽柱向上漂散",
+    "visual_spec": {
+      "particle_system": "fx_season_winter_steam_enhanced",
+      "base_vfx_ref": "standard hot spring steam (defined in vfx-asset-spec.json)",
+      "enhancement_factor": "×2 volume density vs non-winter steam",
+      "spread_increase": "+50% horizontal spread vs non-winter steam",
+      "steam_color": "乳白色 #F5F0E8 with very slight warm tint (temperature: ~2700K feel)",
+      "steam_opacity_peak": "65% at emission source, fading to 0% at 80% of height",
+      "steam_height_px": "约300-400px from pool surface (at 1920x1080)",
+      "steam_drift": "极缓慢向上并轻微左右漂移，速度15-25px/s",
+      "column_structure": "2-3条主要蒸汽柱，柱间距约120-180px，各柱有轻微相位差",
+      "color_temperature_contrast": {
+        "steam_color": "#F5D4A0 (warm amber steam, 2700K)",
+        "sky_color": "#D0E8F8 (cold blue winter sky, 6500K+)",
+        "contrast_note": "暖金蒸汽 vs 冷蓝天空形成强烈色温对比；饱和度低但色彩张力最高"
+      },
+      "layer_placement": "foreground_elements — 前景蒸汽最明显；midground pool面蒸汽作补充"
+    },
+    "vfx_ref": "fx_season_winter_steam_enhanced",
+    "static_texture": false,
+    "state": "spec_ready"
+  },
+
+  "element_4_lighthouse_halo": {
+    "element_id": "lighthouse_halo",
+    "name": "冬夜灯塔体积光晕",
+    "description": "冬夜灯台光柱扫过雪雾，产生朦胧体积光晕",
+    "activation_condition": "night variant only (time=night)",
+    "visual_spec": {
+      "light_beam_color": "#F5C842 (golden_hour — lighthouse beam standard color)",
+      "volumetric_effect": "光柱穿过雪雾时产生体积光晕效果（God ray / fog scatter）",
+      "halo_color": "#F5C842 at 20-35% opacity, feathered soft edge",
+      "halo_width_px": "约200-280px at beam passage zone (at 1920x1080)",
+      "halo_motion": "随灯台光柱旋转节奏缓慢扫过场景（与prop_lighthouse_lamp 8帧动画同步）",
+      "sweep_duration": "完整一圈约3-4秒（对应prop_lighthouse_lamp 8帧@12fps=0.67s循环，但背景halo扫过需3-4s低频版本）",
+      "snow_fog_base": "雪雾基础：雪粒子在光束区密度略增（光照雪花），增加光晕真实感",
+      "positioning": "灯台位置Ch4：从山顶方向照下，光柱自右上方角度穿过营地上方",
+      "color_contrast_peak": "暖金光晕(#F5C842) vs 深蓝黑暗雪地(#1E2E50) = 全章最强情感对比",
+      "narrative_significance": "是整个游戏里最接近「安全」的视觉隐喻。雪覆盖一切噪声，只剩篝火/温泉和他自己，灯塔告诉他这里有灯。"
+    },
+    "vfx_ref": "vfx_lighthouse_glow",
+    "static_texture": false,
+    "state": "spec_ready"
+  },
+
+  "composition_spec": {
+    "color_palette_winter_night": {
+      "cold_zone_sky": "#1E2E50 (night_indigo)",
+      "cold_zone_snow": "#D0E8F8 (cold_blue_white)",
+      "warm_zone_steam": "#F5D4A0 (warm_steam_contrast)",
+      "warm_zone_hotspring_water": "#C4955A (driftwood) lightened",
+      "lighthouse_halo": "#F5C842 (golden_hour)",
+      "campfire_glow": "#EE8C55 (dusk_orange)",
+      "icicle": "#D0E8F8 (cold_blue_white)",
+      "overall_saturation_note": "低整体饱和度(-10%)但色彩张力最高 — 冷暖对比是主要视觉张力来源，非饱和度"
+    },
+    "depth_stack_winter_night": [
+      { "layer": "sky_far",            "content": "深蓝冬夜天空，星点，远山雪顶剪影，灯塔光柱远景" },
+      { "layer": "midground",          "content": "松树树干（压雪树枝），帐篷群，温泉小屋（积雪屋顶+木瓦），温泉池（水面涟漪），竹篱笆" },
+      { "layer": "foreground_elements","content": "苔藓岩石（积雪），蕨草（压雪），雪花粒子，蒸汽前景柱，篝火台光晕（修复后）" },
+      { "layer": "vfx_overlay",        "content": "灯塔体积光晕halo（从右上角扫过），雪花触水涟漪，蒸汽漂散尾" }
+    ],
+    "restoration_state_differences": {
+      "before": "温泉区废弃，无明显蒸汽（蒸汽减少30%），无篝火，积雪略厚（更显荒废）",
+      "in_progress": "温泉水面开始出现，蒸汽×1.5（恢复中），篝火台已设置，积雪部分被打扫",
+      "restored": "完整蒸汽×2，篝火燃烧橙光与蒸汽混合，积雪屋顶完整，温泉水面粼粼（最治愈状态）"
+    }
+  },
+
+  "prompt_enhancement_for_winter_night": {
+    "for_use_with": ["bg_ch4_before_winter_night", "bg_ch4_progress_winter_night", "bg_ch4_restored_winter_night"],
+    "winter_night_prompt_additions": [
+      "Winter night scene with snow-covered roof on the hot spring bathhouse, thin icicles hanging from eaves",
+      "Gentle snowflakes drifting through dense white steam rising from the hot spring pool",
+      "Enhanced double-density steam columns (#F5D4A0 warm amber) against cold blue night sky (#1E2E50)",
+      "Snowflakes dissolve on contact with hot spring water surface, creating tiny ripple rings",
+      "Volumetric golden lighthouse beam (#F5C842) sweeping through snow fog from upper right, creating soft radiant halo",
+      "Strong color temperature contrast: warm golden steam and campfire glow vs cold blue-white snow and night sky",
+      "Healing aesthetic: the warmth and cold coexisting, soft and therapeutic not dramatic"
+    ],
+    "negative_prompt_additions": [
+      "No blizzard or storm feeling, no dense snowstorm",
+      "No harsh cold aesthetic, the scene must feel warm despite snow",
+      "No pure white snow (always slight blue tint in shadows)",
+      "No lighthouse beam that is too bright/harsh (must be soft volumetric)"
+    ]
+  },
+
+  "implementation_notes": {
+    "engine": "Cocos Creator 3.x",
+    "platform": "web-canvas-2d",
+    "steam_implementation": "Particle system with additive blend mode for soft steam. Two layers: pool-level emission (midground) + rising column (foreground).",
+    "snow_implementation": "Gravity particle with slight wind drift. Separate collision zone over hot spring pool triggers ripple spawn.",
+    "lighthouse_halo_implementation": "Sprite with additive blend, UV scroll or rotation matching prop_lighthouse_lamp animation cycle. Opacity 20-35% max.",
+    "rooftop_snow_implementation": "Static texture overlay on bathhouse midground sprite. No animation. JPG with alpha channel for transparency edges.",
+    "performance_note": "Total particle budget for winter night Ch4: snow(40) + steam(60) = 100 particles. Within 200 particle budget. Lighthouse halo is sprite, not particles."
+  },
+
+  "validation_checklist": {
+    "rooftop_snow_present": "PASS — element_1 spec defined for all Ch4 winter variants",
+    "snow_particles_present": "PASS — element_2 spec defined, fx_season_winter_snow linked, water interaction specified",
+    "enhanced_steam_x2_present": "PASS — element_3 spec defined, fx_season_winter_steam_enhanced linked, spread+50% spec defined",
+    "lighthouse_halo_present": "PASS — element_4 spec defined for night variants, vfx_lighthouse_glow cross-referenced",
+    "all_3_restoration_states_covered": "PASS — before/in_progress/restored all specified with state differences",
+    "color_temperature_contrast": "PASS — warm gold steam (#F5D4A0) vs cold blue sky (#1E2E50) explicitly specified",
+    "healing_aesthetic_maintained": "PASS — density is 'gentle not blizzard', scene is warm despite cold elements",
+    "within_particle_budget": "PASS — 40 snow + 60 steam = 100 < 200 budget"
+  },
+
+  "completion_condition": "COMPLETED",
+  "completion_notes": "All 4 required winter hot-spring elements fully specified. Color palette, VFX references, depth stack, prompt enhancements, and implementation notes documented. Cross-referenced with seasonal-background-variants-spec.json Ch4 winter entries."
+}

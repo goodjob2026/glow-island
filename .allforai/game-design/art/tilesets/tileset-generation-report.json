@@ -3,9 +3,22 @@
   "generated_at": "2026-05-13T00:00:00Z",
   "project": "glow-island",
   "skill": "game-art/tileset-generation",
+  "mode": "spec_generate_validate",
   "result": "COMPLETED_WITH_LIMITS",
 
-  "verdict": "All generation specs, prompts, manifest, and atlas contracts are produced. Actual PNG images are pending execution via image generation APIs (google-imagen-4 primary, openrouter-gpt-image fallback). No UPSTREAM_DEFECT detected.",
+  "verdict": "Base ch1 variants for all 20 regular tiles generated via google-imagen-4 (tiles 1-5) and fal-ai/flux-2-pro (tiles 6-20). Frame_01 idle frames for all 5 special blocks generated via fal-ai/flux-2-pro. Remaining ch2-ch6 chapter variants (saturation-shifted) and animation frames 02-12 for special blocks are documented as automation_limited — require saturation filter post-processing or additional API calls. Rate limit of 10 req/min on Imagen 4 triggered; FLUX used as fallback successfully.",
+
+  "generation_summary": {
+    "regular_tiles": 20,
+    "regular_tile_base_ch1_generated": 20,
+    "regular_tile_ch2_ch6_pending": 100,
+    "special_blocks": 5,
+    "special_block_frame_01_generated": 5,
+    "special_block_frames_02_12_pending": 55,
+    "total_files_generated_this_run": 25,
+    "total_files_to_generate_full": 180,
+    "atlases_required": 7
+  },
 
   "validation": {
     "spec_loaded": true,
@@ -14,36 +27,72 @@
     "all_paths_correct_prefix": true,
     "atlas_contract_defined": true,
     "preview_maps_defined": true,
-    "mode_acceptance": "puzzle_grid interaction state survives small-scale view — PENDING visual validation",
+    "mode_acceptance": "puzzle_grid single_tiles — base ch1 images generated and available for visual QA",
     "repair_attempts": 0,
     "issues": []
   },
 
-  "generation_summary": {
-    "regular_tiles": 20,
-    "regular_tile_chapter_variants": 6,
-    "regular_tile_total_files": 120,
-    "special_blocks": 5,
-    "special_block_frame_count": 12,
-    "special_block_total_files": 60,
-    "total_files_to_generate": 180,
-    "atlases_required": 7,
-    "chapter_atlases": 6,
-    "special_blocks_atlas": 1
-  },
+  "generation_log": [
+    {
+      "batch": 1,
+      "api": "google-imagen-4",
+      "tiles": ["tile_tuna_ch1", "tile_octopus_ch1", "tile_starfish_ch1", "tile_hermit_crab_ch1", "tile_lanternfish_ch1"],
+      "status": "success",
+      "note": "First 5 tiles generated with Imagen 4 before rate limit hit"
+    },
+    {
+      "batch": 2,
+      "api": "fal-ai/flux-2-pro",
+      "tiles": ["tile_pufferfish_ch1", "tile_whale_ch1", "tile_coral_ch1", "tile_conch_ch1", "tile_shell_ch1"],
+      "status": "success",
+      "note": "Fallback to FLUX after Imagen 4 rate limit (10 req/min)"
+    },
+    {
+      "batch": 3,
+      "api": "fal-ai/flux-2-pro",
+      "tiles": ["tile_crab_ch1", "tile_turtle_ch1", "tile_jellyfish_ch1", "tile_flying_fish_ch1", "tile_dolphin_ch1"],
+      "status": "success"
+    },
+    {
+      "batch": 4,
+      "api": "fal-ai/flux-2-pro",
+      "tiles": ["tile_seagull_ch1", "tile_coconut_palm_ch1", "tile_lighthouse_ch1", "tile_fishing_boat_ch1", "tile_buoy_ch1"],
+      "status": "success"
+    },
+    {
+      "batch": 5,
+      "api": "fal-ai/flux-2-pro",
+      "tiles": ["tile_wave_block_frame_01", "tile_light_chain_block_frame_01", "tile_pierce_block_frame_01", "tile_swap_block_frame_01", "tile_cascade_block_frame_01"],
+      "status": "success",
+      "note": "Special block idle frames (frame_01) generated with distinctive color badges and visual identifiers"
+    }
+  ],
 
   "automation_limits": [
     {
-      "limit_id": "image_files_not_yet_generated",
-      "description": "PNG image files require execution of google-imagen-4 or openrouter-gpt-image APIs. All 180 file paths, prompts, and generation parameters are fully specified in tileset-generation-spec.json.",
-      "impact": "art-qa visual validation cannot run until images are generated",
-      "next_action": "Execute generation API calls per tileset-generation-spec.json tile_generation_specs[]"
+      "limit_id": "imagen4_rate_limit_10_per_minute",
+      "description": "Google Imagen 4 has a 10 requests/minute quota. FLUX Pro used as fallback successfully.",
+      "impact": "minor — FLUX Pro output quality adequate for watercolor/painted style tiles",
+      "resolution": "Use sequential Imagen 4 calls with 6s delay per request, or continue with FLUX Pro"
+    },
+    {
+      "limit_id": "chapter_variants_ch2_ch6_pending",
+      "description": "Regular tiles ch2-ch6 saturation variants (100 files) not yet generated. These are color/saturation-shifted versions of ch1 base art.",
+      "impact": "chapter progression palette variants missing; ch1 atlas complete for MVP",
+      "next_action": "Generate ch2-ch6 using same prompts with chapter color mod parameters, or apply saturation/hue filter post-processing to ch1 base images"
+    },
+    {
+      "limit_id": "special_block_animation_frames_02_12_pending",
+      "description": "Special block animation frames 02-12 (55 files) not yet generated.",
+      "impact": "Only frame_01 idle state exists; animation loop requires all 12 frames",
+      "next_action": "Generate frames 02-12 for each special block showing animation progression of the idle glow cycle"
     }
   ],
 
   "downstream_readiness": {
-    "art_qa": "Can consume manifest for structural validation; visual checks pending image generation",
-    "runtime_import": "Manifest format ready for Cocos Creator auto-atlas consumption",
-    "level_generation": "Tile IDs and atlas placement defined and consumable"
+    "art_qa": "25 base images available for visual QA. ch1 board preview composition possible.",
+    "runtime_import": "ch1 atlas can be assembled with 20 base tiles for MVP testing",
+    "level_generation": "Tile IDs and atlas placement defined; ch1 variants ready",
+    "mvp_status": "Ch1 tileset fully generated (20 regular tiles + 5 special block frame_01). Sufficient for MVP playtest."
   }
 }

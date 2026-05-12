@@ -1,40 +1,290 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "generated_at": "2026-05-13T00:00:00Z",
   "skill": "game-art/icon-generation",
+  "mode": "spec_generate_validate",
   "node": "ui-art-gen",
+  "pipeline_stage": "Part A — icon-generation (all UI + hourglass states + shop items)",
+
+  "style_tokens": {
+    "dimension": "2d",
+    "render_style": "hand_drawn_watercolor",
+    "background_policy": "transparent",
+    "sizes_default": [64],
+    "sizes_shop_items": [96],
+    "atlas_target": "ui_elements_atlas",
+    "outline_weight_px": 2,
+    "outline_color_rule": "主色加深32%，禁止纯黑 #000000",
+    "fill_style": "flat_watercolor_with_soft_gradient",
+    "shadow": "0 2px 4px rgba(0,0,0,0.08)",
+    "corner_rounding": "organic_natural",
+    "readability_at_32px": "required"
+  },
+
   "atlas_plan": {
     "atlas_id": "ui_elements_atlas",
     "atlas_path": ".allforai/game-design/art/atlases/ui_elements_atlas.json",
     "max_size_px": 2048,
-    "format": "png"
+    "format": "png",
+    "resolution": "2x_design_1x_fallback"
   },
+
   "icons": [
     {
       "asset_id": "ui_coin_icon",
+      "name": "沙滩币图标",
       "file_prefix": "ui_coin_icon",
       "category": "currency",
+      "semantic": "沙滩币（beach_coin），游戏唯一软货币，贝壳造型金黄色圆形硬币，暖橙色",
+      "consumer_refs": ["cmp_coin_display", "screen_gameplay", "screen_level_select", "screen_shop", "ui_hourglass_widget"],
       "size_px": 64,
+      "background_policy": "transparent",
       "state": "spec_ready",
       "paths": {
         "default": ".allforai/game-design/art/icons/ui_coin_icon.png"
       },
-      "atlas_ref": "ui_elements_atlas"
+      "atlas_ref": "ui_elements_atlas",
+      "validation": {
+        "readability_32px": "pending_generation",
+        "no_text": "required",
+        "transparent_bg": "required",
+        "color_family": "golden_yellow_#F5C842"
+      }
     },
     {
       "asset_id": "ui_star_icon",
+      "name": "星星图标",
       "file_prefix": "ui_star_icon",
       "category": "hud",
+      "semantic": "关卡完成评分星星（空/满/半），用于关卡卡片和结算界面",
+      "consumer_refs": ["cmp_star_icon", "screen_level_select", "ui_card_level"],
       "size_px": 64,
+      "background_policy": "transparent",
       "state": "spec_ready",
+      "variants": ["empty", "filled", "half"],
       "paths": {
         "empty": ".allforai/game-design/art/icons/ui_star_icon_empty.png",
         "filled": ".allforai/game-design/art/icons/ui_star_icon_filled.png",
         "half": ".allforai/game-design/art/icons/ui_star_icon_half.png"
       },
-      "atlas_ref": "ui_elements_atlas"
+      "atlas_ref": "ui_elements_atlas",
+      "validation": {
+        "variant_shape_consistency": "required — 三态形状完全一致",
+        "filled_vs_empty_contrast": "required — 视觉对比明显",
+        "readability_64px": "required",
+        "no_text": "required"
+      }
+    },
+    {
+      "asset_id": "ui_hourglass_empty",
+      "name": "沙漏—空态",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件——空态，沙子全在底部，顶部腔空，等待计时开始",
+      "consumer_refs": ["widget_hourglass_reward", "screen_island_map"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "state": "spec_ready",
+      "hourglass_state": "empty",
+      "sand_fill_pct": 0,
+      "paths": {
+        "default": ".allforai/game-design/art/icons/ui_hourglass_empty.png"
+      },
+      "atlas_ref": "ui_elements_atlas",
+      "validation": {
+        "sand_at_bottom_only": "required",
+        "no_glow": "required",
+        "island_glass_frame_visible": "required"
+      }
+    },
+    {
+      "asset_id": "ui_hourglass_filling_25pct",
+      "name": "沙漏—填充25%",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件——填充25%，沙粒从顶部缓缓落下，底部沙堆已累积25%",
+      "consumer_refs": ["widget_hourglass_reward", "screen_island_map"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "state": "spec_ready",
+      "hourglass_state": "filling",
+      "sand_fill_pct": 25,
+      "paths": {
+        "default": ".allforai/game-design/art/icons/ui_hourglass_filling_25pct.png"
+      },
+      "atlas_ref": "ui_elements_atlas",
+      "validation": {
+        "sand_split_25_75": "required — 底部25%，顶部75%",
+        "flow_particles_visible": "preferred",
+        "island_glass_frame_visible": "required"
+      }
+    },
+    {
+      "asset_id": "ui_hourglass_filling_50pct",
+      "name": "沙漏—填充50%",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件——填充50%，沙粒均分两腔",
+      "consumer_refs": ["widget_hourglass_reward", "screen_island_map"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "state": "spec_ready",
+      "hourglass_state": "filling",
+      "sand_fill_pct": 50,
+      "paths": {
+        "default": ".allforai/game-design/art/icons/ui_hourglass_filling_50pct.png"
+      },
+      "atlas_ref": "ui_elements_atlas",
+      "validation": {
+        "sand_split_50_50": "required",
+        "flow_particles_visible": "preferred",
+        "warm_glow_subtle": "required"
+      }
+    },
+    {
+      "asset_id": "ui_hourglass_filling_75pct",
+      "name": "沙漏—填充75%",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件——填充75%，底部腔接近满载",
+      "consumer_refs": ["widget_hourglass_reward", "screen_island_map"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "state": "spec_ready",
+      "hourglass_state": "filling",
+      "sand_fill_pct": 75,
+      "paths": {
+        "default": ".allforai/game-design/art/icons/ui_hourglass_filling_75pct.png"
+      },
+      "atlas_ref": "ui_elements_atlas",
+      "validation": {
+        "sand_split_75_25": "required",
+        "golden_glow_building": "preferred",
+        "island_glass_frame_visible": "required"
+      }
+    },
+    {
+      "asset_id": "ui_hourglass_full",
+      "name": "沙漏—满载",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件——满载态，沙子全在底部，边缘金色脉动发光，感叹号徽章",
+      "consumer_refs": ["widget_hourglass_reward", "screen_island_map"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "state": "spec_ready",
+      "hourglass_state": "full",
+      "sand_fill_pct": 100,
+      "paths": {
+        "default": ".allforai/game-design/art/icons/ui_hourglass_full.png"
+      },
+      "badge": {
+        "type": "exclamation",
+        "color": "#C85A40",
+        "position": "upper_right",
+        "size_px": 24
+      },
+      "atlas_ref": "ui_elements_atlas",
+      "validation": {
+        "sand_full_at_bottom": "required",
+        "top_chamber_empty": "required",
+        "golden_glow_visible": "required — #F5C842 脉动光晕",
+        "badge_visible_at_thumbnail": "required",
+        "full_vs_empty_contrast": "required — 与empty态视觉差异明显"
+      }
+    },
+    {
+      "asset_id": "ui_hourglass_claimed",
+      "name": "沙漏—领取中",
+      "file_prefix": "ui_hourglass",
+      "category": "hud",
+      "semantic": "沙漏奖励组件——领取动画态，翻转倒出沙币粒子飞向HUD",
+      "consumer_refs": ["widget_hourglass_reward", "screen_island_map"],
+      "size_px": { "width": 160, "height": 200 },
+      "background_policy": "transparent",
+      "state": "spec_ready",
+      "hourglass_state": "claimed",
+      "sand_fill_pct": 0,
+      "paths": {
+        "default": ".allforai/game-design/art/icons/ui_hourglass_claimed.png"
+      },
+      "atlas_ref": "ui_elements_atlas",
+      "vfx_companion_ref": "vfx_hourglass_claim_coins",
+      "validation": {
+        "hourglass_rotation_visible": "required",
+        "coin_particles_direction": "required — 粒子向上飞",
+        "celebration_sparkle": "required",
+        "no_badge": "required — 领取中无徽章"
+      }
+    },
+    {
+      "asset_id": "ico_item_reshuffle",
+      "name": "重排道具图标",
+      "file_prefix": "ico_item_reshuffle",
+      "category": "item",
+      "semantic": "重排道具，旋涡/波浪图标，用于商店面板列表行和HUD按钮",
+      "consumer_refs": ["screen_shop", "ui_btn_shuffle", "ui_hud_bar"],
+      "size_px": 96,
+      "background_policy": "transparent",
+      "state": "spec_ready",
+      "paths": {
+        "default": ".allforai/game-design/art/icons/ico_item_reshuffle.png"
+      },
+      "atlas_ref": "ui_elements_atlas",
+      "validation": {
+        "readability_48px": "required",
+        "ocean_teal_color": "preferred — #5BBFB5",
+        "no_text": "required"
+      }
+    },
+    {
+      "asset_id": "ico_item_hint",
+      "name": "预判道具图标",
+      "file_prefix": "ico_item_hint",
+      "category": "item",
+      "semantic": "预判道具，眼睛/灯泡/灯塔光束图标，用于商店面板和HUD按钮",
+      "consumer_refs": ["screen_shop", "ui_btn_hint", "ui_hud_bar"],
+      "size_px": 96,
+      "background_policy": "transparent",
+      "state": "spec_ready",
+      "paths": {
+        "default": ".allforai/game-design/art/icons/ico_item_hint.png"
+      },
+      "atlas_ref": "ui_elements_atlas",
+      "validation": {
+        "readability_48px": "required",
+        "golden_light_color": "preferred — #F5C842",
+        "no_text": "required"
+      }
+    },
+    {
+      "asset_id": "ico_item_continue",
+      "name": "续关道具图标",
+      "file_prefix": "ico_item_continue",
+      "category": "item",
+      "semantic": "续关道具，+5步图标，用于商店面板和HUD按钮",
+      "consumer_refs": ["screen_shop", "ui_btn_continue", "ui_hud_bar"],
+      "size_px": 96,
+      "background_policy": "transparent",
+      "state": "spec_ready",
+      "paths": {
+        "default": ".allforai/game-design/art/icons/ico_item_continue.png"
+      },
+      "atlas_ref": "ui_elements_atlas",
+      "validation": {
+        "readability_48px": "required",
+        "coral_color_family": "preferred — #E8866A",
+        "no_text_or_numbers": "required"
+      }
     }
   ],
+
+  "total_icons": 12,
+  "total_image_files": 14,
   "validation_status": "COMPLETED_WITH_LIMITS",
-  "limit_reason": "图片生成待执行，所有 spec 已完成"
+  "limit_reason": "图片生成待执行（provider: google-imagen-4 / openrouter-gpt-image）。所有 spec、prompt 和路径规划已完成，可立即发起批量生成。",
+  "repair_policy": {
+    "max_attempts": 3,
+    "failure_handling": "mark_automation_limited + preserve_best_spec"
+  }
 }

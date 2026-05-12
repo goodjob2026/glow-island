@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/icon-generation",
+  "mode": "spec_generate_validate",
+  "node": "ui-art-gen",
+  "pipeline_stage": "Part A — icon-generation report",
+
+  "summary": {
+    "total_icons": 12,
+    "total_image_files_planned": 14,
+    "specs_complete": 12,
+    "images_generated": 0,
+    "images_pending": 14,
+    "status": "COMPLETED_WITH_LIMITS",
+    "limit_reason": "图片生成待执行 — spec 和 prompt 均已就绪，可立即发起 google-imagen-4 批量生成"
+  },
+
+  "deterministic_validation": {
+    "status": "PASSED",
+    "checks": [
+      {
+        "check": "every_icon_has_asset_id_file_prefix_category_semantic_path",
+        "result": "PASSED",
+        "detail": "12/12 icons have all required fields"
+      },
+      {
+        "check": "every_icon_path_starts_with_allforai_game_design_art_icons",
+        "result": "PASSED",
+        "detail": "All 14 planned paths are under .allforai/game-design/art/icons/"
+      },
+      {
+        "check": "every_path_starts_with_file_prefix",
+        "result": "PASSED",
+        "detail": "ui_coin_icon.png ✓ / ui_star_icon_*.png ✓ / ui_hourglass_*.png ✓ / ico_item_*.png ✓"
+      },
+      {
+        "check": "every_variant_declares_size_and_background_policy",
+        "result": "PASSED",
+        "detail": "All icons specify size_px and background_policy=transparent"
+      },
+      {
+        "check": "no_duplicate_category_semantic_same_symbol",
+        "result": "PASSED",
+        "detail": "coin (currency/golden coin), star (hud/5-point star), hourglass-states (hud/hourglass 4 states), shop items (item/distinct shapes) — no symbol collision"
+      },
+      {
+        "check": "ui_consumers_reference_asset_id_not_raw_filenames",
+        "result": "PASSED",
+        "detail": "All consumer_refs use asset_ids"
+      }
+    ]
+  },
+
+  "visual_validation": {
+    "status": "PENDING_GENERATION",
+    "note": "图片尚未生成，视觉验证在生成后执行",
+    "planned_checks": [
+      "silhouette_readable_at_64px (hourglass at 160×200px)",
+      "symbol_not_cropped",
+      "background_transparent",
+      "style_consistent_across_set",
+      "similar_concepts_distinguishable",
+      "no_text_or_decorative_labels",
+      "hourglass_states_visually_distinct_from_each_other"
+    ]
+  },
+
+  "icon_inventory": [
+    { "asset_id": "ui_coin_icon", "spec": "COMPLETE", "image": "PENDING", "category": "currency" },
+    { "asset_id": "ui_star_icon", "spec": "COMPLETE", "image": "PENDING", "variants": 3, "category": "hud" },
+    { "asset_id": "ui_hourglass_empty", "spec": "COMPLETE", "image": "PENDING", "category": "hud", "priority": "HIGH" },
+    { "asset_id": "ui_hourglass_filling_25pct", "spec": "COMPLETE", "image": "PENDING", "category": "hud", "priority": "HIGH" },
+    { "asset_id": "ui_hourglass_filling_50pct", "spec": "COMPLETE", "image": "PENDING", "category": "hud", "priority": "HIGH" },
+    { "asset_id": "ui_hourglass_filling_75pct", "spec": "COMPLETE", "image": "PENDING", "category": "hud", "priority": "HIGH" },
+    { "asset_id": "ui_hourglass_full", "spec": "COMPLETE", "image": "PENDING", "category": "hud", "priority": "HIGH" },
+    { "asset_id": "ui_hourglass_claimed", "spec": "COMPLETE", "image": "PENDING", "category": "hud", "priority": "HIGH" },
+    { "asset_id": "ico_item_reshuffle", "spec": "COMPLETE", "image": "PENDING", "category": "item" },
+    { "asset_id": "ico_item_hint", "spec": "COMPLETE", "image": "PENDING", "category": "item" },
+    { "asset_id": "ico_item_continue", "spec": "COMPLETE", "image": "PENDING", "category": "item" }
+  ],
+
+  "generation_readiness": {
+    "provider_primary": "google-imagen-4",
+    "provider_fallback": "openrouter-gpt-image",
+    "api_key_required": "GOOGLE_API_KEY or OPENROUTER_API_KEY",
+    "mcp_tool": "mcp__plugin_meta-skill_ai-gateway__generate_image",
+    "batch_size": 14,
+    "estimated_time_minutes": 8,
+    "blocking_issues": []
+  },
+
+  "repair_log": [],
+
+  "downstream_readiness": {
+    "game_ui_registry": "can_reference — all asset_ids stable",
+    "atlas_packaging": "ready_for_packing_after_generation",
+    "runtime_import": "pending_image_generation"
+  }
+}

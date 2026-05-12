@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "skill": "game-art/expression-set-generation",
+  "mode": "spec_generate_validate",
+  "verdict": "pass_with_limits",
+  "status": "COMPLETED_WITH_LIMITS",
+  "generation_run": {
+    "api_primary": "google-imagen-4",
+    "api_fallback": "fal-ai/flux-2-pro",
+    "quota_status": "imagen4_daily_quota_70_exhausted_after_expression_batch",
+    "images_generated": 35,
+    "images_requested": 35,
+    "success_rate": "100%"
+  },
+  "summary": {
+    "character_count": 7,
+    "expression_types": ["default", "happy", "thinking", "surprised", "react_jump"],
+    "total_expressions": 35,
+    "generated_count": 35,
+    "approved_count": 0,
+    "automation_limited_count": 0,
+    "spec_ready_count": 0
+  },
+  "characters": [
+    { "asset_id": "char_ritsu",  "name": "山田律",     "expressions_generated": 5, "files": ["char_ritsu_expr_default.png","char_ritsu_expr_happy.png","char_ritsu_expr_thinking.png","char_ritsu_expr_surprised.png","char_ritsu_expr_react_jump.png"] },
+    { "asset_id": "char_hinata", "name": "丸山ひなた", "expressions_generated": 5, "files": ["char_hinata_expr_default.png","char_hinata_expr_happy.png","char_hinata_expr_thinking.png","char_hinata_expr_surprised.png","char_hinata_expr_react_jump.png"] },
+    { "asset_id": "char_kenzo",  "name": "磯部健三",   "expressions_generated": 5, "files": ["char_kenzo_expr_default.png","char_kenzo_expr_happy.png","char_kenzo_expr_thinking.png","char_kenzo_expr_surprised.png","char_kenzo_expr_react_jump.png"] },
+    { "asset_id": "char_umeko", "name": "桐島梅子",   "expressions_generated": 5, "files": ["char_umeko_expr_default.png","char_umeko_expr_happy.png","char_umeko_expr_thinking.png","char_umeko_expr_surprised.png","char_umeko_expr_react_jump.png"] },
+    { "asset_id": "char_natsuka","name": "海野夏帆",   "expressions_generated": 5, "files": ["char_natsuka_expr_default.png","char_natsuka_expr_happy.png","char_natsuka_expr_thinking.png","char_natsuka_expr_surprised.png","char_natsuka_expr_react_jump.png"] },
+    { "asset_id": "char_fuyuko", "name": "丸山冬子",   "expressions_generated": 5, "files": ["char_fuyuko_expr_default.png","char_fuyuko_expr_happy.png","char_fuyuko_expr_thinking.png","char_fuyuko_expr_surprised.png","char_fuyuko_expr_react_jump.png"] },
+    { "asset_id": "char_gicho",  "name": "议长·橘猫",  "expressions_generated": 5, "files": ["char_gicho_expr_default.png","char_gicho_expr_happy.png","char_gicho_expr_thinking.png","char_gicho_expr_surprised.png","char_gicho_expr_react_jump.png"] }
+  ],
+  "passed_checks": [
+    "all_35_expression_images_generated",
+    "all_7_characters_have_5_expressions",
+    "all_files_saved_to_expressions_dir",
+    "style_tokens_applied_to_all_prompts",
+    "no_text_labels_in_prompts",
+    "transparent_background_requested",
+    "chibi_proportions_specified",
+    "character_visual_identity_specified_per_prompt"
+  ],
+  "failed_checks": [],
+  "limits": [
+    "identity_consistency_visual_qa_pending_human_review",
+    "cross_expression_style_drift_not_yet_validated",
+    "downstream_dialogue_emotion_mapping_not_yet_tested"
+  ],
+  "repair_log": [],
+  "next_actions": [
+    "Human QA: review all 35 expression PNGs for identity consistency and expression distinction per character",
+    "Flag any that need regeneration and rerun with revised prompts",
+    "Wire expression paths into dialogue system (ui_panel_npc_dialogue)",
+    "Pack expressions into characters_atlas"
+  ]
+}
