@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Glow Island — Retention Hook Design</title>
+<title>Glow Island — 留存钩子设计</title>
 <style>
   :root {
     --bg: #0f0f1a;
@@ -27,7 +27,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', system-ui, sans-serif;
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans SC', 'Noto Sans JP', 'Yu Gothic', system-ui, sans-serif;
     font-size: 14px;
     line-height: 1.7;
     min-height: 100vh;
@@ -607,6 +607,32 @@
   .constraint-pill.ok { border-color: var(--accent3); color: var(--accent2); }
   .constraint-pill.no { border-color: rgba(239,83,80,0.4); color: #ef9a9a; }
   .constraint-pill .pill-icon { font-size: 12px; }
+  /* ===== NPC IDLE LINES ===== */
+  .npc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .npc-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .npc-name {
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .npc-line {
+    font-size: 12px;
+    color: var(--text);
+    font-style: italic;
+    line-height: 1.6;
+  }
   /* ===== FOOTER ===== */
   .footer {
     background: var(--bg2);
@@ -626,93 +652,94 @@
     .notif-rules { grid-template-columns: repeat(2, 1fr); }
     .stages-row { flex-wrap: wrap; }
     .fragment-grid { grid-template-columns: repeat(6, 1fr); }
+    .npc-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<!-- ===== HERO ===== -->
+<!-- ===== 页头 ===== -->
 <div class="hero">
-  <div class="hero-badge">Retention Hook Design · Systems Design</div>
-  <h1>Glow Island — <span>Retention Hook</span></h1>
-  <div class="hero-sub">光辉岛 リテンション設計書 · v1.0 · 2026-05-08</div>
+  <div class="hero-badge">留存钩子设计 · 系统设计</div>
+  <h1>Glow Island — <span>留存钩子</span></h1>
+  <div class="hero-sub">輝島（Kagayaki-jima） 留存设计文档 · v2.0 · 2026-05-13</div>
   <div class="hero-meta">
-    <div class="hero-meta-item"><strong>Project</strong>Glow Island</div>
-    <div class="hero-meta-item"><strong>Owner</strong>Systems Designer</div>
-    <div class="hero-meta-item"><strong>Gate</strong>in-review</div>
-    <div class="hero-meta-item"><strong>Energy System</strong>なし (No Stamina)</div>
-    <div class="hero-meta-item"><strong>Timers</strong>なし (No Countdown)</div>
-    <div class="hero-meta-item"><strong>Notifications</strong>Max 1/day</div>
+    <div class="hero-meta-item"><strong>项目</strong>Glow Island</div>
+    <div class="hero-meta-item"><strong>负责人</strong>系统设计师</div>
+    <div class="hero-meta-item"><strong>状态</strong>审核中</div>
+    <div class="hero-meta-item"><strong>体力系统</strong>无（なし）</div>
+    <div class="hero-meta-item"><strong>倒计时</strong>无（なし）</div>
+    <div class="hero-meta-item"><strong>推送通知</strong>最多 1次/天</div>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- ===== DESIGN CONSTRAINTS ===== -->
+  <!-- ===== 0. 设计约束 ===== -->
   <div class="section">
     <div class="section-header">
       <div class="section-num">0</div>
       <div>
-        <div class="section-title">Design Constraints — HARD RULES</div>
-        <div class="section-desc">これらの制約は変更不可。すべてのシステムはこの枠内で設計される。</div>
+        <div class="section-title">设计约束 — 硬性规则</div>
+        <div class="section-desc">以下约束不可更改。所有系统均在此框架内设计，符合治愈调性。</div>
       </div>
     </div>
     <div class="constraint-row">
-      <span class="constraint-pill no"><span class="pill-icon">✗</span>スタミナゲートなし</span>
-      <span class="constraint-pill no"><span class="pill-icon">✗</span>カウントダウンタイマーなし</span>
-      <span class="constraint-pill no"><span class="pill-icon">✗</span>PvP/ランキングなし</span>
-      <span class="constraint-pill no"><span class="pill-icon">✗</span>強制ソーシャルなし</span>
-      <span class="constraint-pill ok"><span class="pill-icon">✓</span>通知オプトイン必須</span>
-      <span class="constraint-pill ok"><span class="pill-icon">✓</span>通知最大1回/日</span>
-      <span class="constraint-pill ok"><span class="pill-icon">✓</span>D30以降通知なし（不在3日以上を除く）</span>
-      <span class="constraint-pill ok"><span class="pill-icon">✓</span>ストリーク切れはウェルカムバックギフト（罰なし）</span>
-      <span class="constraint-pill ok"><span class="pill-icon">✓</span>内発的動機優先（ナラティブ + 視覚的進捗）</span>
+      <span class="constraint-pill no"><span class="pill-icon">✗</span>不设体力门槛</span>
+      <span class="constraint-pill no"><span class="pill-icon">✗</span>不设进度倒计时</span>
+      <span class="constraint-pill no"><span class="pill-icon">✗</span>不设PvP/排行榜</span>
+      <span class="constraint-pill no"><span class="pill-icon">✗</span>不设强制社交义务</span>
+      <span class="constraint-pill ok"><span class="pill-icon">✓</span>推送通知须玩家主动开启</span>
+      <span class="constraint-pill ok"><span class="pill-icon">✓</span>每日通知最多1次</span>
+      <span class="constraint-pill ok"><span class="pill-icon">✓</span>第30天后停止推送（离线3天以上除外）</span>
+      <span class="constraint-pill ok"><span class="pill-icon">✓</span>连签断链不惩罚，改为欢迎回来礼物</span>
+      <span class="constraint-pill ok"><span class="pill-icon">✓</span>内在动机优先（叙事 + 视觉进度）</span>
     </div>
     <div class="errc-grid" style="margin-top:16px;">
       <div class="errc-card errc-eliminate">
-        <div class="errc-label">Eliminate</div>
+        <div class="errc-label">消除</div>
         <ul class="errc-items">
-          <li>エネルギー/スタミナゲート</li>
-          <li>進行を妨げるカウントダウンタイマー</li>
-          <li>PvP・ランキング</li>
-          <li>強制ソーシャル義務</li>
+          <li>体力/耐力门槛</li>
+          <li>阻断进度的倒计时</li>
+          <li>PvP竞技排行榜</li>
+          <li>强制社交义务</li>
         </ul>
       </div>
       <div class="errc-card errc-reduce">
-        <div class="errc-label">Reduce</div>
+        <div class="errc-label">减少</div>
         <ul class="errc-items">
-          <li>難易度の壁（ハードウォール）</li>
-          <li>時間限定イベントの密度</li>
-          <li>押しつけがましい課金誘導ポップアップ</li>
+          <li>人为难度墙</li>
+          <li>限时活动密度</li>
+          <li>侵入式付费引导弹窗</li>
         </ul>
       </div>
       <div class="errc-card errc-raise">
-        <div class="errc-label">Raise</div>
+        <div class="errc-label">提升</div>
         <ul class="errc-items">
-          <li>コンボ演出の満足感</li>
-          <li>アート品質（Animal Crossing水準）</li>
-          <li>ナラティブの深度</li>
+          <li>连击消除的爽快感</li>
+          <li>美术品质（动物森友会水准）</li>
+          <li>叙事情感深度</li>
         </ul>
       </div>
       <div class="errc-card errc-create">
-        <div class="errc-label">Create</div>
+        <div class="errc-label">创造</div>
         <ul class="errc-items">
-          <li>島の視覚的修復体験</li>
-          <li>山田律×丸山ひなた暗示的ロマンス</li>
-          <li>丸山渉の記憶断片システム</li>
-          <li>チャプター進行メカニクス</li>
+          <li>岛屿渐进视觉修复体验</li>
+          <li>山田律×丸山ひなた若有若无情感线</li>
+          <li>丸山渉记忆碎片系统</li>
+          <li>章节机制逐步解锁</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- ===== HOOK LOOP DIAGRAM ===== -->
+  <!-- ===== 1. 留存钩子循环图 ===== -->
   <div class="section">
     <div class="section-header">
       <div class="section-num">1</div>
       <div>
-        <div class="section-title">Retention Hook Loop — 律の一日の循環</div>
-        <div class="section-desc">Trigger → Action → Reward → Investment の4ステップサイクル。外発的ではなく内発的に回る。</div>
+        <div class="section-title">留存钩子循环 — 山田律的每日循环</div>
+        <div class="section-desc">触发 → 行动 → 奖励 → 投入，四步循环。由内在动机驱动，而非外在压力。</div>
       </div>
     </div>
     <div class="hook-loop-wrapper">
@@ -727,85 +754,85 @@
           </filter>
         </defs>
 
-        <!-- Center island -->
+        <!-- 中心岛屿 -->
         <ellipse cx="400" cy="210" rx="55" ry="38" fill="#1a2e1a" stroke="#4caf50" stroke-width="1.5" opacity="0.7"/>
-        <text x="400" y="205" text-anchor="middle" fill="#81c784" font-size="11" font-family="system-ui">光輝島</text>
-        <text x="400" y="220" text-anchor="middle" fill="#4caf50" font-size="10" font-family="system-ui">Glow Island</text>
+        <text x="400" y="205" text-anchor="middle" fill="#81c784" font-size="11" font-family="system-ui">輝島</text>
+        <text x="400" y="220" text-anchor="middle" fill="#4caf50" font-size="10" font-family="system-ui">Kagayaki-jima</text>
 
-        <!-- Node: TRIGGER (top) -->
+        <!-- 节点：触发（顶部） -->
         <rect x="290" y="30" width="220" height="70" rx="12" fill="#1e1e30" stroke="#4caf50" stroke-width="1.5" filter="url(#glow)"/>
-        <text x="400" y="58" text-anchor="middle" fill="#4caf50" font-size="14" font-weight="bold" font-family="system-ui">TRIGGER</text>
-        <text x="400" y="76" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">港に何かが打ち上げられた</text>
-        <text x="400" y="91" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">Morning curiosity · Narrative cliffhanger</text>
+        <text x="400" y="56" text-anchor="middle" fill="#4caf50" font-size="13" font-weight="bold" font-family="system-ui">触发</text>
+        <text x="400" y="73" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">港口漂来了什么东西</text>
+        <text x="400" y="89" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">好奇心 · 叙事悬念</text>
 
-        <!-- Node: ACTION (right) -->
+        <!-- 节点：行动（右侧） -->
         <rect x="610" y="160" width="180" height="100" rx="12" fill="#1e1e30" stroke="#81c784" stroke-width="1.5"/>
-        <text x="700" y="188" text-anchor="middle" fill="#81c784" font-size="14" font-weight="bold" font-family="system-ui">ACTION</text>
-        <text x="700" y="206" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">パズルをプレイ</text>
-        <text x="700" y="222" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">Match-connect · Combo joy</text>
-        <text x="700" y="238" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">No timer · No energy gate</text>
+        <text x="700" y="187" text-anchor="middle" fill="#81c784" font-size="13" font-weight="bold" font-family="system-ui">行动</text>
+        <text x="700" y="204" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">进行关卡消除</text>
+        <text x="700" y="220" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">连击爽快感</text>
+        <text x="700" y="236" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">无体力门槛 · 无倒计时</text>
 
-        <!-- Node: REWARD (bottom) -->
+        <!-- 节点：奖励（底部） -->
         <rect x="285" y="320" width="230" height="75" rx="12" fill="#1e1e30" stroke="#f5c842" stroke-width="1.5"/>
-        <text x="400" y="348" text-anchor="middle" fill="#f5c842" font-size="14" font-weight="bold" font-family="system-ui">REWARD</text>
-        <text x="400" y="366" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">素材 · ひなたの断片 · 修復の光</text>
-        <text x="400" y="382" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">Narrative gift · Visual restoration</text>
+        <text x="400" y="347" text-anchor="middle" fill="#f5c842" font-size="13" font-weight="bold" font-family="system-ui">奖励</text>
+        <text x="400" y="364" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">素材 · ひなた碎片 · 修复之光</text>
+        <text x="400" y="381" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">叙事礼物 · 视觉修复</text>
 
-        <!-- Node: INVESTMENT (left) -->
+        <!-- 节点：投入（左侧） -->
         <rect x="10" y="160" width="195" height="100" rx="12" fill="#1e1e30" stroke="#e07fa0" stroke-width="1.5"/>
-        <text x="107" y="188" text-anchor="middle" fill="#e07fa0" font-size="14" font-weight="bold" font-family="system-ui">INVESTMENT</text>
-        <text x="107" y="206" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">島に愛着が生まれる</text>
-        <text x="107" y="222" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">渉の記憶 · ひなたとの関係</text>
-        <text x="107" y="238" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">Identity: 律の島になる</text>
+        <text x="107" y="187" text-anchor="middle" fill="#e07fa0" font-size="13" font-weight="bold" font-family="system-ui">投入</text>
+        <text x="107" y="204" text-anchor="middle" fill="#e8d5b0" font-size="11" font-family="system-ui">对岛屿产生情感依附</text>
+        <text x="107" y="220" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">渉的记忆 · ひなた的关系</text>
+        <text x="107" y="236" text-anchor="middle" fill="#7a6e58" font-size="10" font-family="system-ui">认同感：律的岛</text>
 
-        <!-- Arrows: TRIGGER → ACTION -->
+        <!-- 箭头：触发 → 行动 -->
         <path d="M510,85 Q620,90 638,158" stroke="#4caf50" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
-        <text x="595" y="118" fill="#4caf50" font-size="10" font-family="system-ui">Session start</text>
+        <text x="595" y="118" fill="#4caf50" font-size="10" font-family="system-ui">开始游戏</text>
 
-        <!-- Arrows: ACTION → REWARD -->
+        <!-- 箭头：行动 → 奖励 -->
         <path d="M672,262 Q670,310 523,328" stroke="#81c784" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
-        <text x="635" y="310" fill="#81c784" font-size="10" font-family="system-ui">Post-session</text>
+        <text x="635" y="310" fill="#81c784" font-size="10" font-family="system-ui">通关结算</text>
 
-        <!-- Arrows: REWARD → INVESTMENT -->
+        <!-- 箭头：奖励 → 投入 -->
         <path d="M283,355 Q190,365 167,262" stroke="#f5c842" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
-        <text x="175" y="330" fill="#f5c842" font-size="10" font-family="system-ui">Narrative depth</text>
+        <text x="175" y="330" fill="#f5c842" font-size="10" font-family="system-ui">叙事深度</text>
 
-        <!-- Arrows: INVESTMENT → TRIGGER -->
+        <!-- 箭头：投入 → 触发 -->
         <path d="M130,158 Q150,80 288,65" stroke="#e07fa0" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
-        <text x="148" y="108" fill="#e07fa0" font-size="10" font-family="system-ui">Tomorrow's curiosity</text>
+        <text x="148" y="108" fill="#e07fa0" font-size="10" font-family="system-ui">明日的好奇心</text>
 
-        <!-- Center small loop labels -->
-        <text x="400" y="172" text-anchor="middle" fill="#4caf50" font-size="9" font-family="system-ui" opacity="0.7">内発的動機</text>
+        <!-- 中心标签 -->
+        <text x="400" y="172" text-anchor="middle" fill="#4caf50" font-size="9" font-family="system-ui" opacity="0.7">内在动机</text>
         <text x="400" y="184" text-anchor="middle" fill="#4caf50" font-size="9" font-family="system-ui" opacity="0.7">Intrinsic Loop</text>
       </svg>
 
       <div style="margin-top:16px; font-size:12px; color:var(--text2); text-align:left; background:var(--bg3); border-radius:8px; padding:14px 16px; border:1px solid var(--border);">
-        <strong style="color:var(--text); display:block; margin-bottom:8px;">ループ設計思想</strong>
-        律のゲームは逃避地（escape）であり、義務（obligation）ではない。
-        トリガーは謎と好奇心から生まれ、アクションはコンボの快楽で満たされ、報酬は視覚とナラティブで届く。
-        投資は「島への愛着」という最も強い感情的紐帯として蓄積される。
-        エネルギーゲートなし・タイマーなし — このループは、いつでも、何周でも回せる。
+        <strong style="color:var(--text); display:block; margin-bottom:8px;">循环设计思想</strong>
+        律的游戏是逃避地（escape），而非义务（obligation）。
+        触发来自谜题与好奇心，行动填满连击快感，奖励以视觉和叙事传递。
+        投入以「对岛屿的情感依附」积累——这是最强的内在纽带。
+        无体力门槛 · 无倒计时——这个循环随时可以启动，多少圈都可以。
       </div>
     </div>
   </div>
 
-  <!-- ===== DAILY REWARD CALENDAR ===== -->
+  <!-- ===== 2. 每日签到奖励日历 ===== -->
   <div class="section">
     <div class="section-header">
       <div class="section-num">2</div>
       <div>
-        <div class="section-title">Daily Visit Reward Calendar — 律が島で見つけるもの</div>
-        <div class="section-desc">毎朝、桟橋に何かが置いてある。それは贈り物ではなく、島が用意してくれたもの。</div>
+        <div class="section-title">每日签到奖励日历 — 律在岛上发现的东西</div>
+        <div class="section-desc">每天早晨，码头边总有些什么。不是礼物，是岛为你准备的东西。</div>
       </div>
     </div>
 
     <div style="margin-bottom:16px;">
-      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">Week 1 — D1〜D7 / エスカレーション報酬フェーズ</div>
+      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">第一周 — 第1天至第7天 / 阶梯式奖励阶段</div>
       <div class="calendar-grid">
         <div class="cal-day milestone">
           <div class="cal-day-num">1</div>
           <div class="cal-day-item">浮木×3</div>
-          <div class="cal-day-item" style="color:var(--pink); font-size:9px; margin-top:2px;">ひなたのメモ</div>
+          <div class="cal-day-item" style="color:var(--pink); font-size:9px; margin-top:2px;">ひなた的便条</div>
           <div class="cal-day-special"></div>
         </div>
         <div class="cal-day">
@@ -814,199 +841,250 @@
         </div>
         <div class="cal-day">
           <div class="cal-day-num">3</div>
-          <div class="cal-day-item">苔と種×3</div>
-          <div class="cal-day-item" style="color:var(--blue); font-size:9px; margin-top:2px;">記憶断片ヒント</div>
+          <div class="cal-day-item">苔藓与种子×3</div>
+          <div class="cal-day-item" style="color:var(--blue); font-size:9px; margin-top:2px;">记忆碎片线索</div>
         </div>
         <div class="cal-day">
           <div class="cal-day-num">4</div>
-          <div class="cal-day-item">石畳石×3</div>
+          <div class="cal-day-item">石板×3</div>
         </div>
         <div class="cal-day">
           <div class="cal-day-num">5</div>
-          <div class="cal-day-item">崖の石英×3</div>
-          <div class="cal-day-item" style="color:var(--gold); font-size:9px; margin-top:2px;">希少素材</div>
+          <div class="cal-day-item">崖石英×3</div>
+          <div class="cal-day-item" style="color:var(--gold); font-size:9px; margin-top:2px;">稀有素材</div>
         </div>
         <div class="cal-day">
           <div class="cal-day-num">6</div>
-          <div class="cal-day-item">レア素材×1</div>
-          <div class="cal-day-item" style="color:var(--gold); font-size:9px; margin-top:2px;">律の日記解放</div>
+          <div class="cal-day-item">稀有素材×1</div>
+          <div class="cal-day-item" style="color:var(--gold); font-size:9px; margin-top:2px;">律的日记解锁</div>
         </div>
         <div class="cal-day milestone">
           <div class="cal-day-num">7</div>
-          <div class="cal-day-item">章素材×5</div>
-          <div class="cal-day-item" style="color:var(--pink); font-size:9px; margin-top:2px;">ひなたの瞬間</div>
+          <div class="cal-day-item">章节素材×5</div>
+          <div class="cal-day-item" style="color:var(--pink); font-size:9px; margin-top:2px;">ひなた时刻</div>
           <div class="cal-day-special"></div>
         </div>
       </div>
     </div>
 
     <div style="margin-bottom:20px;">
-      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">Week 2–4 — D8〜D30 / 維持報酬フェーズ</div>
+      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">第2至4周 — 第8天至第30天 / 维持奖励阶段</div>
       <div class="calendar-grid">
-        <div class="cal-day"><div class="cal-day-num" style="font-size:12px;">D8–13</div><div class="cal-day-item">希少素材<br>ローテーション</div></div>
-        <div class="cal-day milestone"><div class="cal-day-num">14</div><div class="cal-day-item">記憶断片#2</div><div class="cal-day-special"></div></div>
-        <div class="cal-day"><div class="cal-day-num" style="font-size:12px;">D15–20</div><div class="cal-day-item">素材+<br>断片ヒント</div></div>
-        <div class="cal-day milestone"><div class="cal-day-num">21</div><div class="cal-day-item">律の日記#2</div><div class="cal-day-special"></div></div>
-        <div class="cal-day"><div class="cal-day-num" style="font-size:12px;">D22–27</div><div class="cal-day-item">希少素材<br>ローテーション</div></div>
-        <div class="cal-day milestone"><div class="cal-day-num">28</div><div class="cal-day-item">ひなたの手紙</div><div class="cal-day-special"></div></div>
-        <div class="cal-day milestone"><div class="cal-day-num">30</div><div class="cal-day-item">ひなた個人的な話<br>+ 灯台新視点</div><div class="cal-day-special"></div></div>
+        <div class="cal-day"><div class="cal-day-num" style="font-size:12px;">D8–13</div><div class="cal-day-item">稀有素材<br>轮换</div></div>
+        <div class="cal-day milestone"><div class="cal-day-num">14</div><div class="cal-day-item">记忆碎片#2</div><div class="cal-day-special"></div></div>
+        <div class="cal-day"><div class="cal-day-num" style="font-size:12px;">D15–20</div><div class="cal-day-item">素材 +<br>碎片线索</div></div>
+        <div class="cal-day milestone"><div class="cal-day-num">21</div><div class="cal-day-item">律的日记#2</div><div class="cal-day-special"></div></div>
+        <div class="cal-day"><div class="cal-day-num" style="font-size:12px;">D22–27</div><div class="cal-day-item">稀有素材<br>轮换</div></div>
+        <div class="cal-day milestone"><div class="cal-day-num">28</div><div class="cal-day-item">ひなた的信</div><div class="cal-day-special"></div></div>
+        <div class="cal-day milestone"><div class="cal-day-num">30</div><div class="cal-day-item">ひなた私人谈话<br>+ 灯台新视角</div><div class="cal-day-special"></div></div>
       </div>
     </div>
 
     <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
-      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">D30以降 — 季節サイクル / Seasonal Variation</div>
+      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">第30天以后 — 季节循环</div>
       <div class="stages-row">
         <div class="stage-pill stage-1">
           <span class="stage-num">春</span>
-          <div class="stage-label">桜の花びら</div>
+          <div class="stage-label">樱花花瓣</div>
           <div class="stage-ja">「今年も桜が咲きましたね」</div>
         </div>
         <div class="stage-pill stage-2">
           <span class="stage-num">夏</span>
-          <div class="stage-label">夏蛍の光石</div>
+          <div class="stage-label">夏萤光石</div>
           <div class="stage-ja">「夕暮れに蛍が出ます」</div>
         </div>
         <div class="stage-pill stage-3">
           <span class="stage-num">秋</span>
-          <div class="stage-label">紅葉の枝</div>
+          <div class="stage-label">红叶枝条</div>
           <div class="stage-ja">「葉っぱが落ちると…」</div>
         </div>
         <div class="stage-pill stage-4">
           <span class="stage-num">冬</span>
-          <div class="stage-label">冬の霜草</div>
+          <div class="stage-label">冬霜草</div>
           <div class="stage-ja">「冬の島は静かです」</div>
         </div>
       </div>
-      <div class="info-box gold">各季節に限定素材・限定ひなたセリフ・視覚エフェクトが付加される。季節は自然に移ろい、プレイヤーはリアルタイムで島の表情の変化を体験する。</div>
+      <div class="info-box gold">每个季节附带限定素材、限定ひなた台词和视觉特效。季节自然流转，玩家实时感受輝島（Kagayaki-jima）表情变化。</div>
     </div>
 
     <div class="cal-legend" style="margin-top:12px;">
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--gold);"></div>マイルストーン日</div>
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--pink);"></div>ひなたイベント</div>
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--blue);"></div>記憶断片</div>
-      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--accent);"></div>通常素材報酬</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--gold);"></div>里程碑日</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--pink);"></div>ひなた事件</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--blue);"></div>记忆碎片</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--accent);"></div>常规素材奖励</div>
     </div>
   </div>
 
-  <!-- ===== CHAPTER RESTORATION ===== -->
+  <!-- ===== 3. 叙事触发节奏 ===== -->
   <div class="section">
     <div class="section-header">
       <div class="section-num">3</div>
       <div>
-        <div class="section-title">Chapter Restoration — 内発的フックとしての島の修復</div>
-        <div class="section-desc">各章は4段階で「荒廃→輝き」へ。次の章の霧越し予告が常にある。灯台はCh1から地平線に見える。</div>
+        <div class="section-title">叙事触发节奏 — 每章30关内的剧情分布</div>
+        <div class="section-desc">每章30关内分布3-5个剧情触发点，章末必有情感高潮 + 视觉大变化。不设时间门控，由关卡通关驱动。</div>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-bottom:20px;">
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--accent2); font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">触发机制</div>
+        <div style="font-size:12px; color:var(--text2); line-height:1.6;">由关卡通关驱动，而非登录时间驱动。玩得快，剧情推进快；玩得慢，不会错失内容。</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--gold); font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">每章节奏</div>
+        <div style="font-size:12px; color:var(--text2); line-height:1.6;">30关内 3-5 个剧情触发点。章末（第28-30关）必含情感高潮过场 + 视觉大变化。</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--pink); font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">NPC闲置台词</div>
+        <div style="font-size:12px; color:var(--text2); line-height:1.6;">关卡间隙随机弹出NPC日常气泡（非剧情推进）。轻量文字，温暖但不打断游戏节奏。</div>
+      </div>
+    </div>
+
+    <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">NPC随机闲置台词示例</div>
+    <div class="npc-grid">
+      <div class="npc-card">
+        <div class="npc-name">磯部健三（Isobe Kenzo）</div>
+        <div class="npc-line">「今日は海から、宛名のない手紙を拾ってきた。差出人のところに、ただ『島』と書いてあった。」<br><span style="font-size:11px; color:var(--text3);">（今天从海里捞上来一封没有地址的信。发件人那栏只写了"岛"。）</span></div>
+      </div>
+      <div class="npc-card">
+        <div class="npc-name">桐島梅子（Kirishima Umeko）</div>
+        <div class="npc-line">「この碗、昨夜ひとりでに形になってたんだよね。わたしが考えてた形じゃなかったけど、こっちのほうがいい気がする。」<br><span style="font-size:11px; color:var(--text3);">（这只碗，昨晚自己就定型了。不是我想的那个形状，但这个更对。）</span></div>
+      </div>
+      <div class="npc-card">
+        <div class="npc-name">海野夏帆（Umino Naho）</div>
+        <div class="npc-line">「波止場の松の木、今日また少し枝が伸びていた。律さんが通るたびに、ちょっと背伸びするみたい。」<br><span style="font-size:11px; color:var(--text3);">（码头那棵松树今天又长了一截新枝。像是每次律经过，它就努力往上伸。）</span></div>
+      </div>
+      <div class="npc-card">
+        <div class="npc-name">丸山冬子（Maruyama Fuyuko）</div>
+        <div class="npc-line">「律さん、今日もよく頑張りましたね。灯台、ちゃんと見ていましたよ。」<br><span style="font-size:11px; color:var(--text3);">（律今天也很努力呢。灯台，一直看着你的。）</span></div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>叙事设计原则：</strong>玩法进度与叙事进度严格对齐。关卡设计阶段需在每关标注剧情触发状态。
+      NPC闲置台词为轻量氛围补充，不推进主线剧情，随机出现在关卡间隙界面。
+    </div>
+  </div>
+
+  <!-- ===== 4. 章节场景修复进度 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div>
+        <div class="section-title">章节场景修复进度 — 视觉进度作为内在钩子</div>
+        <div class="section-desc">每章分4个阶段从「废墟→光辉」。下一章的雾中预览始终存在。灯台从第1章起就在地平线上可见。</div>
       </div>
     </div>
 
     <div style="margin-bottom:20px;">
-      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">修復の4ステージ</div>
+      <div style="font-size:12px; color:var(--text2); margin-bottom:12px; font-weight:600;">修复的四个阶段</div>
       <div class="stages-row">
         <div class="stage-pill stage-1">
           <span class="stage-num">1</span>
-          <div class="stage-label">荒廃</div>
-          <div class="stage-ja">Desolate</div>
+          <div class="stage-label">废墟</div>
+          <div class="stage-ja">荒廃 / Desolate</div>
         </div>
         <div class="stage-pill stage-2">
           <span class="stage-num">2</span>
-          <div class="stage-label">兆し</div>
-          <div class="stage-ja">Stirring</div>
+          <div class="stage-label">苏醒</div>
+          <div class="stage-ja">兆し / Stirring</div>
         </div>
         <div class="stage-pill stage-3">
           <span class="stage-num">3</span>
           <div class="stage-label">萌芽</div>
-          <div class="stage-ja">Blooming</div>
+          <div class="stage-ja">萌芽 / Blooming</div>
         </div>
         <div class="stage-pill stage-4">
           <span class="stage-num">4</span>
-          <div class="stage-label">輝き</div>
-          <div class="stage-ja">Radiant</div>
+          <div class="stage-label">光辉</div>
+          <div class="stage-ja">輝き / Radiant</div>
         </div>
       </div>
     </div>
 
     <div class="chapter-timeline">
       <div class="ch-row">
-        <div class="ch-badge">Ch1 港</div>
+        <div class="ch-badge">第1章 码头</div>
         <div class="ch-bar-wrap">
           <div class="ch-bar" style="width:85%; background:linear-gradient(to right,#2e7d32,#4caf50);">
-            <span style="color:#fff; font-size:10px;">海边码头 — 浮木・桟橋修復</span>
+            <span style="color:#fff; font-size:10px;">海边码头 — 浮木·栈桥修复</span>
           </div>
-          <div class="ch-fog">完了済み</div>
+          <div class="ch-fog">已完成</div>
         </div>
-        <div class="ch-teaser">→ 霧の向こうに窯の煙</div>
+        <div class="ch-teaser">→ 雾中隐现窑烟</div>
       </div>
       <div class="ch-row">
-        <div class="ch-badge">Ch2 陶芸</div>
+        <div class="ch-badge">第2章 陶艺</div>
         <div class="ch-bar-wrap">
           <div class="ch-bar" style="width:70%; background:linear-gradient(to right,#558b2f,#8bc34a);">
-            <span style="color:#fff; font-size:10px;">陶芸工房 — 轆轤・窯修復</span>
+            <span style="color:#fff; font-size:10px;">陶艺工坊 — 陶轮·窑炉修复</span>
           </div>
-          <div class="ch-fog">先が見える</div>
+          <div class="ch-fog">前方可见</div>
         </div>
-        <div class="ch-teaser">→ 石畳の先に緑の影</div>
+        <div class="ch-teaser">→ 石板路尽头的绿影</div>
       </div>
       <div class="ch-row">
-        <div class="ch-badge">Ch3 森</div>
+        <div class="ch-badge">第3章 山坡</div>
         <div class="ch-bar-wrap">
           <div class="ch-bar" style="width:55%; background:linear-gradient(to right,#388e3c,#66bb6a);">
-            <span style="color:#fff; font-size:10px;">森の小径 — 苔・木道修復</span>
+            <span style="color:#fff; font-size:10px;">花田山坡 — 苔藓·木道修复</span>
           </div>
-          <div class="ch-fog">霧が薄い</div>
+          <div class="ch-fog">雾稍薄</div>
         </div>
-        <div class="ch-teaser">→ 木々の間、灰色の石</div>
+        <div class="ch-teaser">→ 树间灰色石块</div>
       </div>
       <div class="ch-row">
-        <div class="ch-badge">Ch4 石畳</div>
+        <div class="ch-badge">第4章 营地</div>
         <div class="ch-bar-wrap">
           <div class="ch-bar" style="width:40%; background:linear-gradient(to right,#455a64,#78909c);">
-            <span style="color:#fff; font-size:10px;">石畳の道 — 石板修復</span>
+            <span style="color:#fff; font-size:10px;">森林露营地 — 石板道修复</span>
           </div>
-          <div class="ch-fog">霧の中</div>
+          <div class="ch-fog">雾中深处</div>
         </div>
-        <div class="ch-teaser">→ 崖の縁、その向こう海</div>
+        <div class="ch-teaser">→ 崖边，远处是海</div>
       </div>
       <div class="ch-row">
-        <div class="ch-badge">Ch5 崖</div>
+        <div class="ch-badge">第5章 温泉</div>
         <div class="ch-bar-wrap">
           <div class="ch-bar" style="width:25%; background:linear-gradient(to right,#4e342e,#795548);">
-            <span style="color:#fff; font-size:10px;">断崖の見晴らし台</span>
+            <span style="color:#fff; font-size:10px;">温泉山谷 — 断崖瞭望台</span>
           </div>
-          <div class="ch-fog">まだ遠い</div>
+          <div class="ch-fog">尚远</div>
         </div>
-        <div class="ch-teaser">→ 霧が晴れ、灯台の輪郭</div>
+        <div class="ch-teaser">→ 雾散，灯台轮廓</div>
       </div>
       <div class="ch-row">
-        <div class="ch-badge" style="color:var(--gold); border-color:var(--gold);">Ch6 灯台</div>
+        <div class="ch-badge" style="color:var(--gold); border-color:var(--gold);">第6章 灯台</div>
         <div class="ch-bar-wrap" style="border-color:rgba(245,200,66,0.3);">
           <div class="ch-bar" style="width:15%; background:linear-gradient(to right,#f57f17,#f5c842);">
-            <span style="color:#fff; font-size:10px;">灯台</span>
+            <span style="color:#fff; font-size:10px;">夜晚灯塔</span>
           </div>
-          <div class="ch-fog" style="color:var(--gold);">最終目標</div>
+          <div class="ch-fog" style="color:var(--gold);">终极目标</div>
         </div>
-        <div class="ch-teaser" style="color:var(--gold);">灯台の光が島を照らす</div>
+        <div class="ch-teaser" style="color:var(--gold);">灯台之光照亮岛屿</div>
       </div>
     </div>
 
     <div class="info-box gold" style="margin-top:16px;">
-      <strong>灯台メタゴール：</strong>Ch1の桟橋から、常に地平線上に灯台のシルエットが薄く見える。
-      章を進むごとに解像度が上がり、光が強くなる。Ch6完了まで到達不可能だが、常に視界に入ることで
-      プレイヤーの潜在的な目標として機能する。言葉で説明する必要はない — 見えているだけで十分。
+      <strong>灯台元目标：</strong>从第1章栈桥起，地平线上就隐约可见灯台的轮廓。
+      随着章节推进，分辨率不断提高，光芒愈发清晰。第6章完成前永远无法抵达——
+      但它始终在视野里，成为玩家潜意识中的牵引力。无需文字说明，看见即足够。
     </div>
   </div>
 
-  <!-- ===== HINATA STORY BEATS ===== -->
+  <!-- ===== 5. ひなた故事节拍 ===== -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">4</div>
+      <div class="section-num">5</div>
       <div>
-        <div class="section-title">ひなたストーリービート — 12の micro-event</div>
-        <div class="section-desc">セッション後に届く。ゲームプレイを中断しない。告白も宣言もない — ただ「存在する」関係性。</div>
+        <div class="section-title">ひなた故事节拍 — 12个微型事件</div>
+        <div class="section-desc">在通关结算后送达。不打断游戏过程。没有告白，没有宣言——只有「在这里」的关系的积累。</div>
       </div>
     </div>
 
     <div class="info-box" style="margin-bottom:20px;">
-      すべてのビートは<strong>ポスト・セッション</strong>で届く。プレイ中の中断はゼロ。
-      ひなたの行動は常に「言葉より先に来る」。告白に向かうのではなく、「そこにいる」ことへの確信が積み重なる。
+      所有节拍均在<strong>通关后结算界面</strong>送达。游戏过程中零中断。
+      ひなた的行动总是「先于言语」。不是走向告白，而是「她在这里」的确信在积累。
     </div>
 
     <div class="beats-grid">
@@ -1014,225 +1092,225 @@
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch1-a</span>
-          <span class="beat-chapter">Chapter 1 · 海边码头</span>
+          <span class="beat-chapter">第1章 · 海边码头</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>港の桟橋が完全に修復された後（Ch1全修復達成）</div>
-        <div class="beat-content">「玄関に、見慣れない釣り竿が立てかけてあった。竿は古いが、丁寧に手入れされている。誰が置いたのか、わかっていた。」</div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>温かな驚きと、見守られている感覚。言葉ではなく行動で示すひなたの初めての存在感。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>码头栈桥完全修复后（第1章全修复里程碑达成）</div>
+        <div class="beat-content">「玄関に、見慣れない釣り竿が立てかけてあった。竿は古いが、丁寧に手入れされている。誰が置いたのか、わかっていた。」<br><span style="font-size:11px; color:var(--text3);">（门口靠着一根陌生的钓竿。竿身很旧，但保养得细致。是谁放在这里的，他知道。）</span></div>
+        <div class="beat-emotion"><strong>情感目标</strong>温暖的惊喜与被守护的感觉。ひなた用行动而非言语展示的首次存在感。</div>
       </div>
 
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch1-b</span>
-          <span class="beat-chapter">Chapter 1 · 海边码头</span>
+          <span class="beat-chapter">第1章 · 海边码头</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>Level 1-10 クリア（Ch1の10番目のレベル通過）</div>
-        <div class="beat-content">「朝、窓から光が差し込んだ。昨日まで割れていたガラスが、きれいに嵌め直されていた。道具箱の端に、木くずが一つ残っていた。」</div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>静かな存在感。ひなたは説明せず見返りを求めない。律の生活空間が回復していく中に彼女の姿がある。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>通过第1-10关（第1章第10个关卡）</div>
+        <div class="beat-content">「朝、窓から光が差し込んだ。昨日まで割れていたガラスが、きれいに嵌め直されていた。道具箱の端に、木くずが一つ残っていた。」<br><span style="font-size:11px; color:var(--text3);">（早晨，光透窗而入。昨天还破损的玻璃，被嵌得干干净净。工具箱边角残留一片木屑。）</span></div>
+        <div class="beat-emotion"><strong>情感目标</strong>静默的存在感。ひなた不解释，不求回报。律的生活空间在悄悄复原，她是其中的一部分。</div>
       </div>
 
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch2-a</span>
-          <span class="beat-chapter">Chapter 2 · 陶芸工房</span>
+          <span class="beat-chapter">第2章 · 陶艺工坊</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>Ch2 最初の陶芸工房レベルクリア</div>
-        <div class="beat-content">「ポストに、麻布に包まれた小さな欠片。ひびが入っていて、器としては使えない。でも、土の色が美しかった。裏に、小さな文字で名前だけが書いてあった。」</div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>ひなたが自分のものを律に分け与えた初めての瞬間。「完全でないもの」を贈ることで、飾らない関係性が芽生え始める。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>通过第2章第一个陶艺关卡</div>
+        <div class="beat-content">「ポストに、麻布に包まれた小さな欠片。ひびが入っていて、器としては使えない。でも、土の色が美しかった。裏に、小さな文字で名前だけが書いてあった。」<br><span style="font-size:11px; color:var(--text3);">（信箱里有个麻布包的小碎片。有裂纹，不能用作器皿。但土色很美。背面只有小小的名字。）</span></div>
+        <div class="beat-emotion"><strong>情感目标</strong>ひなた把自己的东西分给律的第一次。以「不完整之物」为礼，朴素关系的萌芽。</div>
       </div>
 
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch2-b</span>
-          <span class="beat-chapter">Chapter 2 · 陶芸工房</span>
+          <span class="beat-chapter">第2章 · 陶艺工坊</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>Ch2 前半修復完了（50%マイルストーン）</div>
-        <div class="beat-content">「『こう、持って』と言うかわりに、ひなたはただ律の手を動かした。轆轤が回る音だけが、工房に満ちていた。」</div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>身体的接触による親密さの初めての萌芽。言葉よりも手の動きで語る。プレイヤーは理屈でなく感覚で距離の縮まりを感じる。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>第2章前半修复完成（50%里程碑）</div>
+        <div class="beat-content">「『こう、持って』と言うかわりに、ひなたはただ律の手を動かした。轆轤が回る音だけが、工房に満ちていた。」<br><span style="font-size:11px; color:var(--text3);">（她没有说「这样拿」，只是移动了律的手。陶轮转动的声音充满了工坊。）</span></div>
+        <div class="beat-emotion"><strong>情感目标</strong>肢体接触带来的亲密感初次萌发。以动作代替语言。玩家凭感觉而非逻辑感受到距离的拉近。</div>
       </div>
 
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch3-a</span>
-          <span class="beat-chapter">Chapter 3 · 森の小径</span>
+          <span class="beat-chapter">第3章 · 花田山坡</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>Ch3 エリア（森）に初めて入る</div>
-        <div class="beat-content">「薄暗くなりかけた森の入口に、ひなたがいた。何を待っているのかは聞かなかった。律も、ただそこに立っていた。日が完全に沈むまで。」</div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>言葉のない共存。孤独ではないが距離はある。「一人でいたい」気持ちと「ここにいる」存在が静かに交差する。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>首次进入第3章区域（山坡）</div>
+        <div class="beat-content">「薄暗くなりかけた森の入口に、ひなたがいた。何を待っているのかは聞かなかった。律も、ただそこに立っていた。日が完全に沈むまで。」<br><span style="font-size:11px; color:var(--text3);">（暮色中，ひなた一人坐在山坡入口。律没有问她在等什么。两人就那样站着，直到日落。）</span></div>
+        <div class="beat-emotion"><strong>情感目标</strong>无语言的共存。不孤独，但距离犹在。「想独处」与「我在这里」在静默中交汇。</div>
       </div>
 
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch3-b</span>
-          <span class="beat-chapter">Chapter 3 · 森の小径</span>
+          <span class="beat-chapter">第3章 · 花田山坡</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>Ch3 修復マイルストーン達成（森の最終ステージ）</div>
-        <div class="beat-content">「鉛筆で丁寧に描かれた森の絵。木の根、苔、光の入り方。それから、遠くにいる人の後ろ姿。律だとわかった。」</div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>自分が他者の目に映っていることへの静かな驚き。孤独感からの最初の小さな離脱。誰かに「見られていた」感覚。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>第3章修复里程碑达成（山坡最终阶段）</div>
+        <div class="beat-content">「鉛筆で丁寧に描かれた森の絵。木の根、苔、光の入り方。それから、遠くにいる人の後ろ姿。律だとわかった。」<br><span style="font-size:11px; color:var(--text3);">（铅笔细细描绘的山坡图。树根、苔藓、光的角度。还有远处一个人的背影——是律。）</span></div>
+        <div class="beat-emotion"><strong>情感目标</strong>被他人注视的静默惊喜。孤独感第一次细小的松动：有人「看见了」我。</div>
       </div>
 
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch4-a</span>
-          <span class="beat-chapter">Chapter 4 · 石畳の道</span>
+          <span class="beat-chapter">第4章 · 森林露营地</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>Ch4 石畳エリアに初めて到達</div>
-        <div class="beat-content">「石畳の上に、二種類の足跡があった。一つは自分のもの。もう一つは、途中で右に折れている。どこへ続いているのか、道は藪の中に消えていた。」</div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>ひなたの「見えない部分」への好奇心。彼女が律の知らない場所を持っていることを示す。謎と距離感の維持。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>首次到达第4章区域（营地）</div>
+        <div class="beat-content">「石畳の上に、二種類の足跡があった。一つは自分のもの。もう一つは、途中で右に折れている。どこへ続いているのか、道は藪の中に消えていた。」<br><span style="font-size:11px; color:var(--text3);">（石板路上两种脚印。一种是自己的。另一种中途向右拐去——消失在灌木丛里。）</span></div>
+        <div class="beat-emotion"><strong>情感目标</strong>对ひなた「看不见那一面」的好奇心。她有律所不知道的地方，谜与距离被维持着。</div>
       </div>
 
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch4-b</span>
-          <span class="beat-chapter">Chapter 4 · 石畳の道</span>
+          <span class="beat-chapter">第4章 · 森林露营地</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>Ch4 前半完了（石畳50%修復）</div>
-        <div class="beat-content">「封筒を開けると、手描きの地図だった。島の北側、点線の先に灯台の小さなシルエット。差出人の名前は、どこにもなかった。」</div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>ひなたへの疑念と親密さの両立。名前を書かない理由をプレイヤーが自分なりに解釈する。灯台への伏線を感情的に強化。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>第4章前半完成（营地50%修复）</div>
+        <div class="beat-content">「封筒を開けると、手描きの地図だった。島の北側、点線の先に灯台の小さなシルエット。差出人の名前は、どこにもなかった。」<br><span style="font-size:11px; color:var(--text3);">（打开信封，是一张手绘地图。岛的北侧，虚线尽头是小小的灯台轮廓。发件人的名字，无处可找。）</span></div>
+        <div class="beat-emotion"><strong>情感目标</strong>对ひなた的疑惑与亲密并存。不写名字的原因由玩家自行解读。灯台伏线以情感方式强化。</div>
       </div>
 
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch5-a</span>
-          <span class="beat-chapter">Chapter 5 · 断崖の見晴らし台</span>
+          <span class="beat-chapter">第5章 · 温泉山谷</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>Ch5 最初の崖レベルクリア</div>
-        <div class="beat-content">「『竿は、海に任せるんです』とひなたが言った。三匹目が釣れたとき、彼女は黙って律の桶に魚を一匹入れた。」</div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>ひなたの優しさは憐れみでなく共有の精神。笑わないことで律の尊厳を守る。「できなくてもいい」空間としての島の体現。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>通过第5章第一个关卡</div>
+        <div class="beat-content">「『竿は、海に任せるんです』とひなたが言った。三匹目が釣れたとき、彼女は黙って律の桶に魚を一匹入れた。」<br><span style="font-size:11px; color:var(--text3);">（「把竿交给海就好了，」ひなた说。钓到第三条时，她默默把鱼放进律的桶里。）</span></div>
+        <div class="beat-emotion"><strong>情感目标</strong>ひなた的善意不是怜悯，而是分享精神。不笑，保护律的自尊。「在这里可以做不到」的空间。</div>
       </div>
 
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch5-b</span>
-          <span class="beat-chapter">Chapter 5 · 断崖の見晴らし台</span>
+          <span class="beat-chapter">第5章 · 温泉山谷</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>Ch5 修復50%達成</div>
-        <div class="beat-content">「『十月、嵐の後。島に誰も来なくなって、三年が経つ。それでも灯台は消していない。光は、待っているものだと思うから。——渉』」<br><small style="color:var(--text3);">ひなたが読み上げる丸山渉の日誌より</small></div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>渉の記憶断片システムと感情的に繋がる転換点。祖父の孤独と灯台を守る理由が輪郭を持つ。律は渉と自分の孤独が重なることを感じる。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>第5章修复50%达成</div>
+        <div class="beat-content">「『十月、嵐の後。島に誰も来なくなって、三年が経つ。それでも灯台は消していない。光は、待っているものだと思うから。——渉』」<br><small style="color:var(--text3);">（ひなた朗读丸山渉的日记）</small></div>
+        <div class="beat-emotion"><strong>情感目标</strong>与丸山渉记忆碎片系统情感共鸣的转折点。祖父的孤独与守灯原因开始有了轮廓。律感到渉的孤独与自己重叠。</div>
       </div>
 
       <div class="beat-card">
         <div class="beat-header">
           <span class="beat-id">Ch6-a</span>
-          <span class="beat-chapter">Chapter 6 · 灯台</span>
+          <span class="beat-chapter">第6章 · 夜晚灯塔</span>
         </div>
-        <div class="beat-trigger"><strong>Trigger</strong>Ch6 最初のレベルクリア</div>
-        <div class="beat-content">「灯台の石の壁に、ひなたの手のひらが触れていた。冬の朝の光の中で、彼女は上を見上げていた。何かを待っているような、何かを確かめているような。」</div>
-        <div class="beat-emotion"><strong>Emotional Goal</strong>ひなたにとって灯台が単なる建物でないことを体感させる。律も観察者として、初めて彼女の孤独の片鱗に触れる。</div>
+        <div class="beat-trigger"><strong>触发条件</strong>通过第6章第一个关卡</div>
+        <div class="beat-content">「灯台の石の壁に、ひなたの手のひらが触れていた。冬の朝の光の中で、彼女は上を見上げていた。何かを待っているような、何かを確かめているような。」<br><span style="font-size:11px; color:var(--text3);">（ひなた的手掌贴着灯台石墙。冬晨的光里，她抬头望着上方——像在等什么，又像在确认什么。）</span></div>
+        <div class="beat-emotion"><strong>情感目标</strong>让玩家感受到灯台对ひなた不只是建筑。律作为旁观者，第一次触碰她孤独的一角。</div>
       </div>
 
       <div class="beat-card" style="border-left-color: var(--gold);">
         <div class="beat-header">
           <span class="beat-id" style="background:rgba(245,200,66,0.2); color:var(--gold); border:1px solid var(--gold);">Ch6-b</span>
-          <span class="beat-chapter">Chapter 6 · 灯台 — Final</span>
+          <span class="beat-chapter">第6章 · 夜晚灯塔 — 结局</span>
         </div>
-        <div class="beat-trigger" style="border-left-color:var(--gold);"><strong>Trigger</strong>灯台の修復完了（Ch6全修復達成・エンディング直前）</div>
-        <div class="beat-content" style="font-style:normal; color:var(--text);">「階段を上る音が、石に響いた。頂上に出ると、风が強かった。ひなたは海を見ていた。律も、海を見た。灯台の光が、円を描いて沖へ伸びていた。」<br><br><em style="color:var(--text2); font-style:italic;">セリフなし。二人の足音だけが螺旋階段に響く。</em></div>
-        <div class="beat-emotion" style="border-left-color:var(--gold); background:rgba(245,200,66,0.07);"><strong>Emotional Goal</strong>言葉を超えた完結。告白でも別れでもなく、「そこにいる」という確かさ。島の治癒と律の治癒が重なるオープンエンド。</div>
+        <div class="beat-trigger" style="border-left-color:var(--gold);"><strong>触发条件</strong>灯台修复完成（第6章全修复里程碑达成·结局前）</div>
+        <div class="beat-content" style="font-style:normal; color:var(--text);">「階段を上る音が、石に響いた。頂上に出ると、风が強かった。ひなたは海を見ていた。律も、海を見た。灯台の光が、円を描いて沖へ伸びていた。」<br><br><em style="color:var(--text2); font-style:italic;">无对白。只有两人的脚步声在螺旋楼梯上回响。</em></div>
+        <div class="beat-emotion" style="border-left-color:var(--gold); background:rgba(245,200,66,0.07);"><strong>情感目标</strong>超越语言的完结。没有告白，没有离别，只有「在这里」的确实。岛的治愈与律的治愈重合的开放式结局。</div>
       </div>
 
     </div>
   </div>
 
-  <!-- ===== D1/D7/D30 HOOK MATRIX ===== -->
+  <!-- ===== 6. 留存里程碑矩阵 ===== -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">5</div>
+      <div class="section-num">6</div>
       <div>
-        <div class="section-title">D1 / D7 / D30 Hook Matrix — 3つの決定的な日</div>
-        <div class="section-desc">最初の日・最初の週・最初の月。それぞれに固有のフックと感情的な山場がある。</div>
+        <div class="section-title">第1天/第7天/第30天留存里程碑矩阵</div>
+        <div class="section-desc">第一天·第一周·第一个月，三个决定性节点，各有专属钩子与情感高潮。</div>
       </div>
     </div>
 
     <div class="milestone-cards">
       <div class="milestone-card m-d1">
         <div class="milestone-day">D1</div>
-        <div class="milestone-label">First Day Hook</div>
-        <div class="milestone-hook">What happened to the harbor overnight?</div>
+        <div class="milestone-label">第一天钩子</div>
+        <div class="milestone-hook">港口一夜之间发生了什么？</div>
         <div class="milestone-hook-ja">「一晩で、港が少し変わっていた。なぜだろう。」</div>
         <div class="milestone-rows">
           <div class="milestone-row">
-            <strong>Hook</strong>
-            港に何かが打ち上げられている — オープンループが翌日を引き寄せる
+            <strong>钩子</strong>
+            码头漂来了什么——开放式悬念牵引玩家次日回归
           </div>
           <div class="milestone-row">
-            <strong>Visual</strong>
-            修復アニメーション — 桟橋板が一枚ずつ光りながら元の位置に戻る（3秒、スキップ可）
+            <strong>视觉</strong>
+            修复动画——栈桥板逐块发光归位（3秒，可跳过）
           </div>
           <div class="milestone-row">
-            <strong>Reward</strong>
-            桟橋のギフトボックス：浮木×3 + ひなたのウェルカムメモ
+            <strong>奖励</strong>
+            码头礼盒：浮木×3 + ひなた的欢迎便条
           </div>
           <div class="milestone-row">
-            <strong>Session Goal</strong>
-            初回で最初の修復を「完成」させる満足感を必ず提供する
+            <strong>会话目标</strong>
+            首次游玩必须提供完成首次修复的满足感
           </div>
         </div>
       </div>
 
       <div class="milestone-card m-d7">
         <div class="milestone-day">D7</div>
-        <div class="milestone-label">First Week Hook</div>
-        <div class="milestone-hook">律が夢を見る — 島の記憶とひなたの声のかけら</div>
+        <div class="milestone-label">第一周钩子</div>
+        <div class="milestone-hook">律做了一个梦——岛的记忆与ひなた声音的碎片</div>
         <div class="milestone-hook-ja">「律の夢の中に、島の音がした。ひなたの声だったかもしれない。」</div>
         <div class="milestone-rows">
           <div class="milestone-row">
-            <strong>Hook</strong>
-            水彩タッチの夢シーケンス — ひなたのシルエットと海の音。モノクロームで余白がある。
+            <strong>钩子</strong>
+            水彩风梦境序列——ひなた的剪影与海浪声。单色调，留有余白。
           </div>
           <div class="milestone-row">
-            <strong>Mechanical</strong>
-            Ch2エリアが霧越しに初めて見える。陶芸工房の輪郭が浮かぶ。
+            <strong>玩法</strong>
+            第2章区域首次在雾中现身。陶艺工坊的轮廓浮现。
           </div>
           <div class="milestone-row">
-            <strong>Social</strong>
-            任意加入ソフトリーダーボード（復元材料総量）。ランキング競争なし。仲間の島の進捗確認のみ。
+            <strong>轻社交</strong>
+            可选加入的软排行榜（修复素材总量）。无名次竞争，只看同伴的岛屿进度。
           </div>
           <div class="milestone-row">
-            <strong>Emotional</strong>
-            1週間の達成感と新章への好奇心が重なる。夢が律の内的変化を初めて示す。
+            <strong>情感</strong>
+            一周成就感与新章好奇心交叠。梦境首次呈现律的内在变化。
           </div>
         </div>
       </div>
 
       <div class="milestone-card m-d30">
         <div class="milestone-day">D30</div>
-        <div class="milestone-label">First Month Hook</div>
-        <div class="milestone-hook">記憶断片システムが本格稼働 — 渉の日誌が語り始める</div>
+        <div class="milestone-label">第一个月钩子</div>
+        <div class="milestone-hook">记忆碎片系统全面激活 — 渉的日记开口说话</div>
         <div class="milestone-hook-ja">「断片が集まり始めると、渉という人の輪郭が見えてきた。」</div>
         <div class="milestone-rows">
           <div class="milestone-row">
-            <strong>Hook</strong>
-            記憶断片24枚のうち10枚以上が揃い始める。渉の声が文字で蘇る。
+            <strong>钩子</strong>
+            24枚碎片中超过10枚已聚集。渉的声音以文字复活。
           </div>
           <div class="milestone-row">
-            <strong>Emotional</strong>
-            「祖父は、光は待つものだと言っていました。誰かが帰ってくるのを、光は知っているって。」 — ひなたが初めて個人的な話をする。
+            <strong>情感</strong>
+            「祖父は、光は待つものだと言っていました。誰かが帰ってくるのを、光は知っているって。」——ひなた首次讲述私人故事。
           </div>
           <div class="milestone-row">
-            <strong>Mechanical</strong>
-            島Ch3まで全景 + 崖の上からの灯台俯瞰視点が初めて解放される
+            <strong>玩法</strong>
+            岛屿第1-3章全景 + 崖顶灯台俯视视角首次解锁
           </div>
           <div class="milestone-row">
-            <strong>Visual</strong>
-            晴れた夜の島パノラマ — Ch1〜Ch3の修復結果がすべて光の中に見える全景ショット
+            <strong>视觉</strong>
+            晴夜岛屿全景——第1至3章修复成果同时呈现于光中
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ===== MEMORY FRAGMENT SYSTEM ===== -->
+  <!-- ===== 7. 丸山渉记忆碎片系统 ===== -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">6</div>
+      <div class="section-num">7</div>
       <div>
-        <div class="section-title">丸山渉の記憶断片システム</div>
-        <div class="section-desc">24枚の断片。収集を強制しない — 島にいれば、自然と集まる。</div>
+        <div class="section-title">丸山渉（Maruyama Wataru）记忆碎片系统</div>
+        <div class="section-desc">共24枚碎片。不强制收集——在岛上生活，碎片自然聚来。</div>
       </div>
     </div>
     <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px;">
-      <div style="font-size:12px; color:var(--text2); margin-bottom:12px;">断片の可視化 — 24枚 / 日誌コレクション</div>
+      <div style="font-size:12px; color:var(--text2); margin-bottom:12px;">碎片可视化 — 共24枚 / 日记收藏系统</div>
       <div class="fragment-grid">
         <div class="fragment-cell unlocked">1</div>
         <div class="fragment-cell unlocked">2</div>
@@ -1260,52 +1338,67 @@
         <div class="fragment-cell">24</div>
       </div>
       <div class="cal-legend">
-        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--accent);"></div>解放済み</div>
-        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--gold);"></div>ヒントあり（解放待ち）</div>
-        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--bg3); border:1px solid var(--border);"></div>未発見</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--accent);"></div>已解锁</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--gold);"></div>有线索（待解锁）</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--bg3); border:1px solid var(--border);"></div>未发现</div>
       </div>
       <div class="info-box" style="margin-top:14px;">
-        <strong>収集方針：</strong>断片はデイリー報酬・ひなたビート・章修復マイルストーン・季節限定から自然に届く。
-        「あと○個」といったプレッシャー表示は一切しない。
-        全24枚を集めると、エピローグシーン「ひなたが渉のことを語る」が解放される。
+        <strong>收集原则：</strong>碎片通过每日奖励、ひなた故事节拍、章节修复里程碑、季节礼物自然送达。
+        不展示「还差×枚」的收集压力提示。
+        集齐24枚解锁尾声场景「ひなた讲述渉的故事」。
+      </div>
+
+      <div style="margin-top:16px; display:grid; grid-template-columns:repeat(3,1fr); gap:10px;">
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:12px;">
+          <div style="font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">来源一</div>
+          <div style="font-size:12px; color:var(--text2);">每日签到奖励<br>（第3天、第14天等特殊日）</div>
+        </div>
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:12px;">
+          <div style="font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">来源二</div>
+          <div style="font-size:12px; color:var(--text2);">ひなた故事节拍<br>（Ch2-a、Ch5-b等）</div>
+        </div>
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:12px;">
+          <div style="font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">来源三</div>
+          <div style="font-size:12px; color:var(--text2);">章节修复里程碑<br>+ 第30天后季节礼物</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ===== PUSH NOTIFICATIONS ===== -->
+  <!-- ===== 8. 推送通知策略 ===== -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">7</div>
+      <div class="section-num">8</div>
       <div>
-        <div class="section-title">Push Notification Strategy — 島の声</div>
-        <div class="section-desc">オプトイン必須。最大1回/日。義務感なし、罪悪感なし。島が生きているかのような声で届く。</div>
+        <div class="section-title">推送通知策略 — 岛屿的声音</div>
+        <div class="section-desc">须玩家主动开启。每日最多1次。无义务感，无愧疚感。以岛屿视角传递的温暖邀请。</div>
       </div>
     </div>
 
     <div class="notif-rules" style="margin-bottom:20px;">
       <div class="notif-rule">
         <span class="rule-val">1</span>
-        <span class="rule-label">最大通知回数 / 日</span>
+        <span class="rule-label">每日最大推送次数</span>
       </div>
       <div class="notif-rule">
         <span class="rule-val">D30</span>
-        <span class="rule-label">自動停止日<br>(不在3日以上を除く)</span>
+        <span class="rule-label">自动停推日<br>（离线3天以上除外）</span>
       </div>
       <div class="notif-rule">
-        <span class="rule-val">1 tap</span>
-        <span class="rule-label">オプトアウトの手数</span>
+        <span class="rule-val">1步</span>
+        <span class="rule-label">关闭推送的步骤数</span>
       </div>
       <div class="notif-rule">
         <span class="rule-val">D3</span>
-        <span class="rule-label">オプトイン提案タイミング</span>
+        <span class="rule-label">开启推送建议时机</span>
       </div>
       <div class="notif-rule">
-        <span class="rule-val">3日</span>
-        <span class="rule-label">不在後の再アクティブ通知閾値</span>
+        <span class="rule-val">3天</span>
+        <span class="rule-label">离线后重新激活阈值</span>
       </div>
       <div class="notif-rule">
-        <span class="rule-val">ゼロ</span>
-        <span class="rule-label">オプトアウト時のペナルティ</span>
+        <span class="rule-val">零</span>
+        <span class="rule-label">关闭通知的惩罚</span>
       </div>
     </div>
 
@@ -1313,209 +1406,294 @@
       <div class="notif-card">
         <div class="notif-icon">🌊</div>
         <div>
-          <div class="notif-trigger">Morning Regular — 09:00</div>
+          <div class="notif-trigger">每日早晨推送 — 09:00</div>
           <div class="notif-copy">律さん、今日の潮目は穏やかです。<br>島が待っています。</div>
-          <div class="notif-note">穏やかな招待。プレッシャーゼロ。</div>
+          <div class="notif-note">温和的邀请。零压力。</div>
         </div>
       </div>
       <div class="notif-card">
         <div class="notif-icon">🌿</div>
         <div>
-          <div class="notif-trigger">2-Day Absence — 11:00</div>
+          <div class="notif-trigger">离线2天 — 11:00</div>
           <div class="notif-copy">律さん、海辺に何か<br>落ちていますよ。</div>
-          <div class="notif-note">謎かけ式。何が落ちているか気になる。義務感なし。</div>
+          <div class="notif-note">谜语式。让人好奇落了什么。无义务感。</div>
         </div>
       </div>
       <div class="notif-card">
         <div class="notif-icon">🏮</div>
         <div>
-          <div class="notif-trigger">7-Day Absence — Welcome Back</div>
+          <div class="notif-trigger">离线7天 — 欢迎回来</div>
           <div class="notif-copy">おかえりなさい。<br>島も、喜んでいます。</div>
-          <div class="notif-note">ウェルカムバック。罰なし、ただ温かさだけ。</div>
+          <div class="notif-note">欢迎回来。无惩罚，只有温暖。</div>
         </div>
       </div>
       <div class="notif-card">
         <div class="notif-icon">✨</div>
         <div>
-          <div class="notif-trigger">Chapter Milestone — Next Morning</div>
+          <div class="notif-trigger">章节里程碑达成 — 次日早晨</div>
           <div class="notif-copy">昨日の修復が、島を<br>少し変えたみたいです。</div>
-          <div class="notif-note">昨日の達成を今日の楽しみに変える。</div>
+          <div class="notif-note">把昨日的成就变成今日的期待。</div>
         </div>
       </div>
       <div class="notif-card">
         <div class="notif-icon">🌸</div>
         <div>
-          <div class="notif-trigger">Season Change — Morning</div>
+          <div class="notif-trigger">季节更替 — 早晨</div>
           <div class="notif-copy">律さん、島に<br>新しい季節が来ました。</div>
-          <div class="notif-note">季節の変わり目。好奇心を呼ぶ。</div>
+          <div class="notif-note">季节交替。唤起好奇心。</div>
         </div>
       </div>
       <div class="notif-card">
         <div class="notif-icon">🔦</div>
         <div>
-          <div class="notif-trigger">Hinata Story Beat Ready</div>
+          <div class="notif-trigger">ひなた故事节拍就绪</div>
           <div class="notif-copy">ひなたさんが、島のどこかに<br>何かを置いていったようです。</div>
-          <div class="notif-note">ひなたビートの予告。過度な演出なし。</div>
+          <div class="notif-note">ひなた节拍预告。不过度渲染。</div>
         </div>
       </div>
     </div>
 
     <div class="info-box warn" style="margin-top:12px;">
-      <strong>Do Not Send：</strong>
-      当日すでにプレイ済み / オプトアウト済み / D30以降かつ不在3日未満 / 現地時間23:00〜08:00の間。
-      いずれかに該当する場合、通知は完全にスキップされる。
+      <strong>不发送条件：</strong>
+      当天已游玩 / 已关闭通知 / 第30天后且离线不足3天 / 当地时间23:00至08:00之间。
+      满足以上任一条件，通知完全跳过。
     </div>
 
     <div class="info-box" style="margin-top:8px;">
-      <strong>オプトイン提案コピー（D3セッション後）：</strong>
+      <strong>开启通知建议文案（第3天游玩结束后）：</strong>
       「島から、ときどき便りが届きます。受け取りますか？」
-      — 受け取る / 今はいい（どちらを選んでも罰なし・再提案あり）
+      — 接受 / 现在不用（两个选项均无惩罚，后续可再次提示）
     </div>
   </div>
 
-  <!-- ===== SOFT STREAK ===== -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num">8</div>
-      <div>
-        <div class="section-title">Soft Streak System — ウェルカムバックの設計</div>
-        <div class="section-desc">連続ログインを祝うが、途切れても罰しない。帰ってきた日が、いつも良い日になるように。</div>
-      </div>
-    </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
-      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
-        <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">不在 1〜3日</div>
-        <div style="font-size:13px; color:var(--text); margin-bottom:6px;">通常デイリー + ボーナス素材</div>
-        <div style="font-size:12px; color:var(--text2); font-style:italic;">「少し雨が続いていましたよ。」</div>
-      </div>
-      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
-        <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">不在 4〜7日</div>
-        <div style="font-size:13px; color:var(--text); margin-bottom:6px;">レア素材 + 記憶断片ヒント</div>
-        <div style="font-size:12px; color:var(--text2); font-style:italic;">「島は変わらず、ここにいます。」</div>
-      </div>
-      <div style="background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:10px; padding:16px;">
-        <div style="font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">不在 8日以上</div>
-        <div style="font-size:13px; color:var(--text); margin-bottom:6px;">章素材セット + ひなたのウェルカムバックメモ</div>
-        <div style="font-size:12px; color:var(--text2); font-style:italic;">「おかえりなさい。島も、喜んでいます。」</div>
-      </div>
-    </div>
-    <div class="info-box" style="margin-top:14px;">
-      ストリークカウンターはリセットされるが、ペナルティは一切ない。
-      むしろ不在が長いほど、帰ってきたときの贈り物が温かくなる。
-      <strong>義務でなく、帰りたい場所として設計する。</strong>
-    </div>
-  </div>
-
-  <!-- ===== COMPETITOR ANALYSIS ===== -->
+  <!-- ===== 9. 软性连签系统 ===== -->
   <div class="section">
     <div class="section-header">
       <div class="section-num">9</div>
       <div>
-        <div class="section-title">Competitor Analysis</div>
+        <div class="section-title">软性连签系统 — 欢迎回来的设计</div>
+        <div class="section-desc">连续登录值得庆祝，但中断不受惩罚。每次回来的那天，都是好日子。</div>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">离线 1-3 天</div>
+        <div style="font-size:13px; color:var(--text); margin-bottom:6px;">常规每日奖励 + 额外素材</div>
+        <div style="font-size:12px; color:var(--text2); font-style:italic;">「少し雨が続いていましたよ。」</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">离线 4-7 天</div>
+        <div style="font-size:13px; color:var(--text); margin-bottom:6px;">稀有素材 + 记忆碎片线索</div>
+        <div style="font-size:12px; color:var(--text2); font-style:italic;">「島は変わらず、ここにいます。」</div>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">离线 8 天以上</div>
+        <div style="font-size:13px; color:var(--text); margin-bottom:6px;">章节素材大礼包 + ひなた欢迎回来便条</div>
+        <div style="font-size:12px; color:var(--text2); font-style:italic;">「おかえりなさい。島も、喜んでいます。」</div>
+      </div>
+    </div>
+    <div class="info-box" style="margin-top:14px;">
+      连签计数器重置，但完全无惩罚。
+      反而是离线越久，回来时的礼物越温暖。
+      <strong>设计意图：义务的对立面——是想回去的地方。</strong>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;">
+      <div style="background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center;">
+        <div style="font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">第7天里程碑</div>
+        <div style="font-size:12px; color:var(--text2);">ひなた码头时刻 + 章节素材礼包</div>
+      </div>
+      <div style="background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center;">
+        <div style="font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">第14天里程碑</div>
+        <div style="font-size:12px; color:var(--text2);">渉记忆碎片#2 + 稀有素材×2</div>
+      </div>
+      <div style="background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center;">
+        <div style="font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">第30天里程碑</div>
+        <div style="font-size:12px; color:var(--text2);">ひなた私人告白 + 灯台新视角解锁</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 10. 好友进度展示（Phase 2预留）===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div>
+        <div class="section-title">好友进度展示 — Phase 2 数据结构预留</div>
+        <div class="section-desc">Phase 1 暂不实现；Phase 2 接入 Game Center / Google Play。数据结构在 retention-hook.json 中已预留。</div>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--accent2); font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">Phase 1（当前）</div>
+        <ul style="list-style:none; font-size:12px; color:var(--text2);">
+          <li style="padding:4px 0; border-bottom:1px solid var(--border);">· 无好友系统</li>
+          <li style="padding:4px 0; border-bottom:1px solid var(--border);">· 可选软排行榜（D7解锁，仅看进度不竞争）</li>
+          <li style="padding:4px 0;">· 数据结构 friend_progress 字段已在 JSON 中预留</li>
+        </ul>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:11px; color:var(--gold); font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">Phase 2（后续）</div>
+        <ul style="list-style:none; font-size:12px; color:var(--text2);">
+          <li style="padding:4px 0; border-bottom:1px solid var(--border);">· 接入 Game Center / Google Play Friends API</li>
+          <li style="padding:4px 0; border-bottom:1px solid var(--border);">· 展示朋友打到第几章（轻社交，无竞技压力）</li>
+          <li style="padding:4px 0;">· 可选：互送「岛屿明信片」（叙事文化道具）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top:12px;">
+      <strong>设计原则：</strong>好友功能是「看见朋友的岛」，不是「比较谁更好」。
+      轻社交、无竞技压力，符合治愈调性。
+    </div>
+  </div>
+
+  <!-- ===== 11. 竞品分析 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <div>
+        <div class="section-title">竞品分析</div>
         <div class="section-desc">Gardenscapes · Township · Fishdom vs Glow Island</div>
       </div>
     </div>
     <details>
-      <summary>競合分析テーブルを表示 (折りたたみ)</summary>
+      <summary>展开竞品分析表（可折叠）</summary>
       <div class="details-body">
         <table class="comp-table">
           <thead>
             <tr>
-              <th>ゲーム</th>
-              <th>デイリーギフト</th>
-              <th>エネルギー補充</th>
-              <th>ストーリーイベント頻度</th>
-              <th>プッシュ通知頻度</th>
-              <th>感情トーン</th>
+              <th>游戏</th>
+              <th>每日礼物</th>
+              <th>体力补充</th>
+              <th>剧情事件频率</th>
+              <th>推送通知频率</th>
+              <th>情感基调</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>Gardenscapes</strong></td>
-              <td>スター・パワーアップ（機能的）</td>
-              <td>ライフ制（5回制限、リフィル待機または課金）</td>
-              <td>レベルクリアごとに進行（高頻度だが浅い）</td>
-              <td>複数回/日（エネルギー補充通知含む）</td>
-              <td>明るく賑やかだが、エネルギー不足時のフラストレーション誘発あり</td>
+              <td>星星·道具（功能性）</td>
+              <td>生命制（5次上限，等待或付费补充）</td>
+              <td>每关通关推进（频繁但浅层）</td>
+              <td>多次/天（含体力补充通知）</td>
+              <td>明快热闹，但体力耗尽时易引发挫败感</td>
             </tr>
             <tr>
               <td><strong>Township</strong></td>
-              <td>硬貨・素材（生産系に必要）</td>
-              <td>生産時間待機（建物ごとのタイマー）</td>
-              <td>イベント期間限定中心（常設ストーリーは薄い）</td>
-              <td>生産完了通知が複数回/日</td>
-              <td>コミュニティ達成感中心、個人的感情曲線は弱い</td>
+              <td>金币·素材（生产系必需）</td>
+              <td>生产计时等待（每建筑单独计时）</td>
+              <td>以限时活动为主（常驻剧情薄弱）</td>
+              <td>生产完成通知多次/天</td>
+              <td>社区成就感为主，个人情感曲线弱</td>
             </tr>
             <tr>
               <td><strong>Fishdom</strong></td>
-              <td>コイン・水族館デコアイテム</td>
-              <td>ライフ制（Gardenscapesと同類）</td>
-              <td>フィッシュキャラのダイアログあり、ストーリー性は低い</td>
-              <td>ライフ補充・セール通知が頻繁</td>
-              <td>可愛らしいが浅い。感情的投資は水族館ビジュアルに依存</td>
+              <td>金币·水族馆装饰道具</td>
+              <td>生命制（同 Gardenscapes）</td>
+              <td>鱼角色对话，故事性弱</td>
+              <td>生命补充·促销通知频繁</td>
+              <td>可爱但浅层，情感投入依赖水族馆视觉</td>
             </tr>
             <tr class="glow-row">
-              <td><strong>Glow Island</strong> <span class="our-badge">OUR GAME</span></td>
-              <td>島の素材（ナラティブ文脈付き）<br>律が島で「見つける」体験</td>
-              <td>エネルギー制なし<br>いつでもプレイ可能</td>
-              <td>セッション後に届く12のひなたビート<br>中断ゼロ</td>
-              <td>最大1回/日、D30以降は不在3日以上のみ<br>オプトイン必須</td>
-              <td>静かで深い。治癒感・関係性の温かさ・渉の記憶による物語の厚み</td>
+              <td><strong>Glow Island</strong> <span class="our-badge">我们的游戏</span></td>
+              <td>岛屿素材（附叙事语境）<br>律「发现」岛上之物的体验</td>
+              <td>无体力系统<br>随时可玩</td>
+              <td>通关后送达的12个ひなた节拍<br>零中断</td>
+              <td>最多1次/天，D30后仅离线3天以上发送<br>须主动开启</td>
+              <td>静谧而深厚。治愈感·关系温度·渉记忆带来的故事厚度</td>
             </tr>
           </tbody>
         </table>
         <div class="info-box" style="margin-top:16px;">
-          <strong>差別化の核心：</strong>
-          競合3タイトルはいずれも「戻らせる」ために外発的プレッシャー（エネルギー切れ・タイマー・頻繁な通知）を使う。
-          Glow Islandは「帰りたくなる」場所を作ることで、義務感なきリテンションを実現する。
+          <strong>差异化核心：</strong>
+          竞品三款均以外在压力（体力耗尽·计时器·频繁通知）驱动玩家回归。
+          Glow Island 打造「想回去的地方」，以无义务感实现留存。
         </div>
       </div>
     </details>
   </div>
 
-  <!-- ===== SUMMARY PRINCIPLES ===== -->
+  <!-- ===== 12. 设计原则总结 ===== -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">10</div>
+      <div class="section-num">12</div>
       <div>
-        <div class="section-title">Design Principles Summary — 設計思想の核</div>
-        <div class="section-desc">このドキュメントに込められた意思決定の原則</div>
+        <div class="section-title">设计原则总结 — 核心思想</div>
+        <div class="section-desc">本文档所有决策的底层原则</div>
       </div>
     </div>
     <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
       <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid var(--accent); border-radius:10px; padding:16px;">
-        <div style="font-size:13px; font-weight:700; color:var(--accent); margin-bottom:8px;">義務でなく、帰りたい場所</div>
-        <div style="font-size:12px; color:var(--text2);">律のゲームは逃避地（escape）。押し付けでなく、選んで戻る場所として設計する。</div>
+        <div style="font-size:13px; font-weight:700; color:var(--accent); margin-bottom:8px;">义务的对立面——想回去的地方</div>
+        <div style="font-size:12px; color:var(--text2);">律的游戏是逃避地（escape）。不强迫，而是选择回来的地方。</div>
       </div>
       <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid var(--pink); border-radius:10px; padding:16px;">
-        <div style="font-size:13px; font-weight:700; color:var(--pink); margin-bottom:8px;">言葉より、存在が語る</div>
-        <div style="font-size:12px; color:var(--text2);">ひなたは説明しない。釣り竿を置き、窓を直し、スケッチを残す。行動が感情を運ぶ。</div>
+        <div style="font-size:13px; font-weight:700; color:var(--pink); margin-bottom:8px;">言语之前，存在先到</div>
+        <div style="font-size:12px; color:var(--text2);">ひなた不解释。放下钓竿，修好窗，留下素描。行动承载情感。</div>
       </div>
       <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid var(--gold); border-radius:10px; padding:16px;">
-        <div style="font-size:13px; font-weight:700; color:var(--gold); margin-bottom:8px;">修復が自分になる</div>
-        <div style="font-size:12px; color:var(--text2);">島の変化は律の変化。視覚的修復が最も強い内発的報酬であり、言葉による説明を必要としない。</div>
+        <div style="font-size:13px; font-weight:700; color:var(--gold); margin-bottom:8px;">修复变成自己的一部分</div>
+        <div style="font-size:12px; color:var(--text2);">岛的变化就是律的变化。视觉修复是最强的内在奖励，无需文字解释。</div>
       </div>
       <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid var(--blue); border-radius:10px; padding:16px;">
-        <div style="font-size:13px; font-weight:700; color:var(--blue); margin-bottom:8px;">渉の記憶は積み重なる</div>
-        <div style="font-size:12px; color:var(--text2);">24枚の断片は強制されない。ただ、集まっていく。物語の深さがゲームを引き留める。</div>
+        <div style="font-size:13px; font-weight:700; color:var(--blue); margin-bottom:8px;">渉的记忆在积累</div>
+        <div style="font-size:12px; color:var(--text2);">24枚碎片不被强迫。只是，它们在聚集。故事的深度让游戏留住人。</div>
       </div>
       <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid var(--accent2); border-radius:10px; padding:16px;">
-        <div style="font-size:13px; font-weight:700; color:var(--accent2); margin-bottom:8px;">通知は便りであって要求ではない</div>
-        <div style="font-size:12px; color:var(--text2);">島からの声は穏やかで、短く、余白がある。罪悪感を誘発するコピーは一切使わない。</div>
+        <div style="font-size:13px; font-weight:700; color:var(--accent2); margin-bottom:8px;">通知是便信，不是要求</div>
+        <div style="font-size:12px; color:var(--text2);">岛屿的声音温和、简短、留有余白。任何引发愧疚感的文案均不使用。</div>
       </div>
       <div style="background:var(--card); border:1px solid var(--border); border-top:3px solid #9c27b0; border-radius:10px; padding:16px;">
-        <div style="font-size:13px; font-weight:700; color:#ce93d8; margin-bottom:8px;">灯台はいつもそこにある</div>
-        <div style="font-size:12px; color:var(--text2);">Ch1から見える灯台は、島の治癒と律の治癒の両方の象徴。目標を言葉で説明する必要はない。</div>
+        <div style="font-size:13px; font-weight:700; color:#ce93d8; margin-bottom:8px;">灯台始终在那里</div>
+        <div style="font-size:12px; color:var(--text2);">第1章就能看见的灯台，是岛的治愈与律的治愈的双重象征。无需言说，看见即足够。</div>
       </div>
+    </div>
+  </div>
+
+  <!-- ===== 审核清单 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">✓</div>
+      <div>
+        <div class="section-title">审核清单</div>
+        <div class="section-desc">本节点人工审核要点</div>
+      </div>
+    </div>
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px;">
+      <ul style="list-style:none; font-size:13px; color:var(--text2);">
+        <li style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; gap:10px; align-items:flex-start;">
+          <span style="color:var(--accent); flex-shrink:0;">✓</span>
+          <span>留存钩子不依赖体力/强制通知，符合治愈调性</span>
+        </li>
+        <li style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; gap:10px; align-items:flex-start;">
+          <span style="color:var(--accent); flex-shrink:0;">✓</span>
+          <span>叙事驱动（日记碎片解锁）的触发节奏合理：每章30关内分布3-5个剧情触发点，章末必有情感高潮+视觉大变化</span>
+        </li>
+        <li style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; gap:10px; align-items:flex-start;">
+          <span style="color:var(--accent); flex-shrink:0;">✓</span>
+          <span>岛屿视觉变化频率（每章4阶段，约每7-8关一次明显变化）与关卡通关速度匹配</span>
+        </li>
+        <li style="padding:8px 0; border-bottom:1px solid var(--border); display:flex; gap:10px; align-items:flex-start;">
+          <span style="color:var(--accent); flex-shrink:0;">✓</span>
+          <span>每日签到奖励量合理：第1周素材类，第2-4周加入稀有素材+记忆碎片，不影响付费平衡且有吸引力</span>
+        </li>
+        <li style="padding:8px 0; display:flex; gap:10px; align-items:flex-start;">
+          <span style="color:var(--accent); flex-shrink:0;">✓</span>
+          <span>好友进度展示（Phase 2）的数据结构已在 retention-hook.json 中预留 <code style="background:var(--bg3); padding:1px 5px; border-radius:3px; font-size:11px;">friend_progress</code> 字段</span>
+        </li>
+      </ul>
     </div>
   </div>
 
 </div>
 
-<!-- ===== FOOTER ===== -->
+<!-- ===== 页脚 ===== -->
 <div class="footer">
-  <div style="margin-bottom:6px;">Glow Island — Retention Hook Design Document · v1.0</div>
-  <div>Generated 2026-05-08 · Systems Designer · Gate: <span style="color:var(--accent);">in-review</span> · Unlocks: meta-game-design</div>
+  <div style="margin-bottom:6px;">Glow Island — 留存钩子设计文档 · v2.0</div>
+  <div>生成于 2026-05-13 · 系统设计师 · 状态：<span style="color:var(--accent);">审核中</span> · 解锁节点：meta-game-design</div>
   <div style="margin-top:8px; color:var(--text3);">「島は変わらず、ここにいます。」</div>
 </div>
 

@@ -1,77 +1,82 @@
 ---
 node: environment-art-gen
+capability: game-design
 discipline_owner: environment-artist
-discipline_reviewers: [art-director]
 human_gate: true
-blocked_by: [art-spec-design]
+hard_blocked_by: [concept-freeze]
 unlocks: [art-qa]
+approval_record_path: .allforai/game-design/approval-records.json
 exit_artifacts:
-  - game-client/assets/resources/sprites/backgrounds/ch01_harbor_after.png
-  - game-client/assets/resources/sprites/island/island_base.png
+  - path: .allforai/game-design/environment-art-review.html
+  - path: .allforai/game-design/systems/environment-art-spec.json
+review_checklist:
+  - 地砖可无缝拼接（边缘像素匹配）
+  - 视差层数与 art-pipeline-config 一致（背景/中景/前景层分离）
+  - 光源方向全场景统一（所有章节使用相同光照模型）
+  - 6章节场景各有独特视觉特征（码头/渔村/森林/山顶/神社/灯塔各不相同）
+  - 岛屿进度状态变化资产已区分（每章节前/后期场景状态两套）
 ---
 
-# Task: 场景美术生成（Environment Art Generation）
+# Goal
 
-## Context Pull
-- 读取 `.allforai/game-design/art-pipeline-config.json`（若存在且 status=final）：
-  - `environment.parallax_layers`：视差层数（1=单层无视差，2-3=主流手游，5+=精细多层）
-    - ≥2 层时：生成图时构图须预留前景/中景/背景分层空间（避免满构图）
-    - 1 层时：正常满构图生图
-  - 缺失 → 默认 2 层
-- 读取 `art-asset-inventory.json` — category=background + island_zone 条目
-- 读取 `systems/meta-game.json` — 岛屿区域描述、修复前/后情感弧线
-- 读取 `art-direction-v2.html` — 章节环境美术方案
+Generate environment art assets for all entries in `.allforai/concept-contract.json` `canonical_registry.environments[]`.
 
-## 样本策略（Sample Strategy）
+> **Non-interactive execution.** All design decisions are recorded in `.allforai/`.
+> Do NOT use AskUserQuestion or request user input.
 
-**分两个子任务：章节背景（Backgrounds）和岛屿地图（Island Zones）。**
+> **Output language (mandatory):** All HTML navigation tabs, section headings, labels, captions,
+> and descriptive text MUST be in Chinese (zh-CN). In-game proper nouns (place/character/item names)
+> keep the game world's native language (Japanese). JSON field keys stay English snake_case.
 
-### 背景（Backgrounds）— 必须生成
-- 第 1 章 harbor **before + after** × 2（验证修复前灰暗 → 修复后温暖的色彩转变）
-- 第 6 章 lighthouse **after** × 1（验证最终章氛围）
+## Inputs
 
-共 **3 张**，验证修复弧线和章节差异。
+- `.allforai/concept-contract.json` — `canonical_registry.environments[]` (authoritative asset IDs and `file_prefix` values; do not invent your own names)
+- `.allforai/game-design/art-pipeline-config.json` — `environment` configuration and `toolchain.detected_capabilities`
+- `.allforai/game-design/art-asset-inventory.json` — current asset states (skip assets with `current_state == "locked"`)
+- `.allforai/game-design/asset-registry.json` — canonical registry built by concept-freeze
 
-### 背景（Backgrounds）— 可选生成（审批后）
-- 第 2–5 章各 before + after（+8）
-- 特殊变体（sunset、overview）
+## Sub-Skill Invocation
 
-### 岛屿地图（Island Zones）— 必须生成
-- **island_base.png** 全岛总览 × 1
-- 任意 1 个区域的 **s1（desolate）+ s4（radiant）** × 2（验证恢复弧线两端）
+Read and follow each sub-skill SKILL.md in order. Each sub-skill defines its own output contract — follow it exactly.
 
-共 **3 张**（base + 2 zone states）
+### Step 0 — Source Resolution (per asset, before Pre-Spec)
 
-### 岛屿地图 — 可选生成（审批后）
-- 剩余 5 个区域的 s0–s4（+25，但 s0 fog 可程序化，优先生成 s1/s4）
+For each asset in `canonical_registry.environments[]`, check its `source_strategy` from `asset-registry.json`:
 
-## Prompt 构造规则
+- **`existing_asset_pack`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/asset-pack-search-spec/SKILL.md` — search and select candidate pack
+  2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → fall back to `ai_generated` and proceed to Step 1
+  3. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/existing-asset-adaptation-spec/SKILL.md` — adapt to spec
+  4. Mark asset `current_state: adapted`; skip Step 1 and Step 2 for this asset.
 
-**背景：**
-```
-final_prompt = style_prompt_prefix + ", " + chapter.environment_description
-             + ", " + state_suffix[state] + ", 9:16 portrait, cinematic"
+- **`adapt_existing_asset`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → fall back to `ai_generated` and proceed to Step 1
+  2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/existing-asset-adaptation-spec/SKILL.md` — adapt to spec
+  3. Mark asset `current_state: adapted`; skip Step 1 and Step 2 for this asset.
 
-state_suffix:
-  before → "desolate abandoned grey atmosphere, no color, neglected"
-  after  → "vibrant restored warm colors, golden light, flourishing"
-```
+- **`existing_3d_source_asset` / `user_provided_asset`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → halt with UPSTREAM_DEFECT
+  2. Proceed to Step 1 (pre-spec for rendering/conversion pipeline).
 
-**岛屿区域：**
-```
-final_prompt = style_prompt_prefix + ", top-down view, " + zone.description
-             + ", " + restoration_state[s_index] + ", square tile, mobile game map"
+- **`ai_generated` / `hybrid` / `placeholder_only`:** skip Step 0, proceed directly to Step 1.
 
-restoration_state: s0=fog, s1=desolate, s2=stirring, s3=blooming, s4=radiant
-```
+### Step 1 — Pre-Spec
 
-## 工具优先级
-- 背景：`generate_image` (Imagen 4, 9:16) → `flux_generate_image` (portrait_16_9)
-- 岛屿：`generate_image` (1:1) → `flux_generate_image` (square)
+1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/2d-view-mode-spec/SKILL.md` — always
+2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/3d-source-asset-spec/SKILL.md` — when `dimension=3d` or `2.5d`
 
-## 状态回写
-更新 art-asset-inventory.json 中 background + island_zone 条目。
-island_zone 条目的 `ai_generated.all_states` 字段记录已生成的状态列表。
+Skip for assets that completed Step 0 and are already marked `adapted`.
 
-## HTML 输出
-`environment-art-review.html` — before/after 对比展示 + 岛屿地图状态矩阵
+### Step 2 — Generate
+
+1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/background-generation/SKILL.md` — always
+2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/prop-generation/SKILL.md` — always
+3. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/render-to-2d-asset-generation/SKILL.md` — when `dimension=3d` or `2.5d`
+
+Skip for assets already marked `adapted`.
+
+## Completion Condition
+
+`.allforai/game-design/systems/environment-art-spec.json` exists AND `.allforai/game-design/environment-art-review.html` exists AND all `canonical_registry.environments[]` entries have `current_state != "placeholder"`.
+
+If any sub-skill returns `UPSTREAM_DEFECT` → halt and report the defect. Do not advance to `art-qa`.

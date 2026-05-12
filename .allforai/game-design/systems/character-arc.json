@@ -1,494 +1,527 @@
 {
-  "schema": "character-arc-v1",
-  "generated_at": "2026-05-08T12:00:00Z",
+  "schema": "character-arc-v3",
+  "generated_at": "2026-05-13T00:00:00+08:00",
   "project": "glow-island",
-  "setting": "輝島 (Kagayaki-jima)",
-  "characters": [
-    {
-      "character_id": "yamada-ritsu",
-      "name_jp": "山田律",
-      "name_en": "Yamada Ritsu",
-      "age": 29,
-      "gender": "male",
-      "role": "protagonist",
-      "arc_type": "positive",
-      "occupation": "東京の広告クリエイティブ・ディレクター (Tokyo advertising creative director)",
-      "wound": "5年間の燃え尽き症候群。意味と美しさへの繋がりを失った。数字と成果だけを追い続け、自分が何のために働いているかを忘れた。",
-      "lie": "「成功こそが唯一重要なことだ。美しさは無駄なものだ。」",
-      "truth": "「手仕事には本質的な価値がある。今この瞬間にいることで十分だ。」",
-      "signature_object": "worn leather notebook (worn but still carried)",
-      "chapter_beats": [
+  "language": "zh-CN",
+  "setting": "輝島（Kagayaki-jima）",
+  "tone_note": "治愈优先。温暖从不宣告，只是发生。参考《小森林》的节奏 + 《夏日时光》的静谧 + 《花束般的恋爱》的生活质感。",
+  "protagonist": {
+    "name": "山田律",
+    "age": 29,
+    "gender": "男",
+    "role": "主角",
+    "occupation": "东京上班族",
+    "arc_type": "正向成长弧",
+    "arc_summary": "五年职场高压燃尽，在凌晨三点收到一封发件人是「Kagayaki-jima」的垃圾邮件，内容是「休假申请表」，附了一张船票。律当时觉得这就是垃圾邮件，却鬼使神差地填了表、买了船票，来到了輝島。岛上的NPC们以各自安静的方式接纳了他——温暖从不宣告，只是发生。从抵触到松动，从松动到感受，从感受到栖息，再到接受，最终在第6章亲手点亮灯塔——点亮的不只是灯，也是他自己。",
+    "core_wound": "五年燃尽，与意义和美感的连接彻底断裂。只追数字和成果，忘记了为什么开始。",
+    "core_lie": "「成功是唯一重要的事。对美的感知是奢侈和浪费。」",
+    "core_truth": "「活在当下本身就已足够。」",
+    "face_memory_quirk": "律认不住脸，只记气味和声音。认出ひなた靠「海水加碳粉墨水」的气味——她做记录用的那种墨，渗进了她的指节缝里，混着岛上的海风。",
+    "chapter_states": [
+      {
+        "chapter": 1,
+        "chapter_name": "到来",
+        "location": "海边码头",
+        "arc_keyword": "逃离·着陆",
+        "emotional_state": "抵触与紧绷。行李箱轮卡在木栈道缝里。后悔来这里，觉得一切都在浪费时间。身体还绷着，习惯性地找截止日期，但找不到了。",
+        "trigger_event": "磯部健三路过，看了一眼行李箱，说：「能走就行。」然后继续去收网。律第一次在没有 deadline 的情况下深吸了一口气——不是因为要做什么，只是因为想。",
+        "growth": "一丝松动。身体记住了某种感觉，心还是关着的。",
+        "signature_moment": "「海风里有一种不急的味道。我不知道那是什么。但我想待久一点。」",
+        "npc_idle_line": "「律在码头反复调整行李箱的摆放角度，健三路过看了一眼，说：『能走就行。』然后继续去收网。」",
+        "okfine_setup": "健三说「能走就行」——这是他认可一件事的最高表达，不用「很好」，只说「行」。律当时听不懂这句话的重量。",
+        "ambiguous_beat": {
+          "scene": "第1章·海边码头。渡轮靠岸，渡轮铃和潮声叠在一起，律的行李箱卡进木栈道缝里。ひなた从他身边经过，手里夹着一本边角起毛、被海风吹得微微翻页的手账。",
+          "action": "ひなた弯腰把卡住的箱轮轻轻抬了一下，只说：「这块木头退潮后会翘。」说完就走。律回头时没记清她的脸，只记得铃声还在晃，海水味里混着一点碳粉墨水。",
+          "ritsu_inner": "那道声音很低，像怕惊动码头上刚落稳的什么东西。他不知道她是在帮他，还是只是不想让箱轮继续刮坏木板；这两种可能都让他把手从行李杆上松开了一点。",
+          "hinata_notebook": "手账「来访者」栏多了一个未命名符号：短竖线旁贴着退潮线。她又在旁边补上渡轮铃的小点，停笔两秒，把铃点擦淡，只留下那条退潮线。",
+          "temperature": "初识"
+        }
+      },
+      {
+        "chapter": 2,
+        "chapter_name": "扎根",
+        "location": "中央小镇",
+        "arc_keyword": "温暖·归属萌芽",
+        "emotional_state": "用工作的方式修复小镇：每件事要有目标、有进度、有可汇报的成果。高效，疲惫，用公司的壳填满岛上的空白。",
+        "trigger_event": "桐島梅子问：「你工作这些年，有没有一次，是真的想做的？」他答不上来。梅子没有追问，只是继续揉陶土，让那个问题在房间里晾着。",
+        "growth": "完美主义的盔甲裂了一条缝。第一次隐约想到：不为任何人看到而做，是什么感觉。",
+        "signature_moment": "「不是高兴，是像某件一直搁着的事突然不需要搁了。我不知道这个类比准不准确，但这就是我想到的第一个说法。我没有改它。」",
+        "npc_idle_line": "「梅子把律第一次来时随手捏的小泥块烧好了——歪歪的，一边厚一边薄。她把它放到律的碗旁边，只说：『不平的东西，有时候比较稳。』」",
+        "okfine_setup": "梅子说「不平的东西，有时候比较稳」——这句话的底层是「不完美也是够了」，是她三十年做碗的经验，没有直接说，但意思在那里。",
+        "ambiguous_beat": {
+          "scene": "第2章·中央小镇旧木牌前。律按修复清单准备换掉风化木牌，ひなた路过，看见他手里的新木板和已经拧开的螺丝。",
+          "action": "ひなた摸了摸旧木牌，说：「渉每天出海前都会摸这块牌，测风向。」律说旧木头已经没用了。她看着他手里的工具，轻声回：「没用的东西，也可能是在保护什么。」",
+          "ritsu_inner": "螺丝刀碰到石阶，发出很轻的一声。律闻到旧木牌被潮气泡出的咸味，也闻到她指尖停过处的淡淡墨味；他第一次明白，她不是反对修复，她是在替某个不能替换的位置挡风。",
+          "hinata_notebook": "她先画下「旧木牌」符号，又在律的情绪符号旁标了「替换冲动」。写完后，她把自己的小三角标记盖掉，把「替换」改成「挡风」，最后只留下木牌和风向线。",
+          "temperature": "摩擦"
+        }
+      },
+      {
+        "chapter": 3,
+        "chapter_name": "感受",
+        "location": "花田山坡",
+        "arc_keyword": "情绪解冻·第一次被看见",
+        "emotional_state": "开始有一点好奇心。还是防御，但会被风景拉着走。他和花之间有什么东西像玻璃一样——他知道那是花，但感受不到。在东京五年，他已经很久没有感受过什么了。",
+        "trigger_event": "海野夏帆递来一束半开的花，律接过来闻了一下，没什么特别的理由，眼睛就酸了。那种玻璃的感觉裂开了一条缝——不大，但是有了。",
+        "growth": "五年来第一次闻到有气味的下午。童年对「美」的感知，在胸腔深处重新点了一下火。",
+        "signature_moment": "「在东京五年，我没有闻过任何有气味的下午。」",
+        "npc_idle_line": "「夏帆带律走花田，律注意到一株还没开完的野花，说是不是该等它开完？夏帆说：『半开的花，已经是花了。』」",
+        "okfine_setup": "夏帆说「半开的花，已经是花了」——给「还行」打了一个注脚：不需要完成才算完成，当下的状态本身就是够的。",
+        "ambiguous_beat": {
+          "scene": "第3章·花田山坡黄昏。两人一起修山坡石阶，夏帆先离开后，只剩花粉、湿土味和风吹过花梗的细响。",
+          "action": "律扶着石阶，ひなた蹲在另一侧校正高度。她没有抬头，只说：「这里不要踩，根在下面。」律换了位置。之后很长一段时间，只有铲子碰到石头的声音，谁也没有先走。",
+          "ritsu_inner": "他开始能从脚步声认出她：停半拍，确认花和路都没被打扰，再继续走。那半拍后来也落进他的动作里，他发现自己不需要找话说，也没有想逃。",
+          "hinata_notebook": "手账摊在工具箱上，被风翻到「律」那页。她写下「步幅变慢」，又把自己的「巡路」符号挪近一格；两格之间留着一条没画线的空白，像一段允许并排走的距离。",
+          "temperature": "并行"
+        }
+      },
+      {
+        "chapter": 4,
+        "chapter_name": "栖息",
+        "location": "森林露营地",
+        "arc_keyword": "安静·独处·第一次不需要做任何事",
+        "emotional_state": "安静里有不安。没有人，不需要做任何事，这种自由反而让他慌。空着的时间是一种危险——空着就会想，想就会发现一些最好不要发现的事。",
+        "trigger_event": "营地修复完成的第一个晚上，律坐在篝火旁仰头看星星。脑子就是安静了下来——不是刻意的。那种安静不是空白，是许久不在的一种清醒。",
+        "growth": "开始与沉默和解。意识到内心还剩下一些东西。",
+        "signature_moment": "「我不知道什么叫够了。也不知道从什么时候起，开始觉得这样也行。」",
+        "npc_idle_line": "律独行的夜里在营地写日记，画面闪一行字：「我不知道什么叫够了。也不知道从什么时候起，开始觉得这样也行。」",
+        "okfine_setup": "律自己在日记里第一次说出「这样也行」——不是降低标准，是开始感受到够了是什么感觉。这是第5章「还行」的内在土壤。",
+        "warmth_note": "独处章节，但律不是真的独处——那晚冬子的厨房飘来了饭香，议长在营地边上绕了一圈。ひなた留下的符号木板替他绕开了最陡的坡。他们都没来，但他们都在。",
+        "ambiguous_beat": {
+          "scene": "第4章·森林露营地清晨。ひなた整章不出现，律沿着山路独行，在岔路口发现一块带符号的小木板，木板下压着一束半干的野花。",
+          "action": "律看不懂符号，却按它指的方向走，绕开了最陡的坡。雾气里有湿叶和旧木头的味道，他到营地后，把那束野花插进空杯子里，没有找人确认它是谁留下的。",
+          "ritsu_inner": "他第一次意识到自己在找她：不是找人影，是找海水和墨水混在一起的痕迹，找她翻手账时纸页贴着指腹响起的那一下。她不在场，却把最安静的路留给了他。",
+          "hinata_notebook": "她前一晚在营地页画好避坡符号，写到「律可能会迷路」时停住；「迷路」被划掉，改成「可绕行」。她没有画终点，只在最陡的坡旁贴了一朵小小的野花标。",
+          "temperature": "缺席在场"
+        }
+      },
+      {
+        "chapter": 5,
+        "chapter_name": "接受",
+        "location": "温泉山谷",
+        "arc_keyword": "放下·和解·第一次被「还行」说得心里暖",
+        "emotional_state": "肢体放松带动内心松开。律一直是那种把所有事情都往前推的人——他不太知道怎么接受「还行」，也不知道怎么让自己「还行」就好了。那种驱动他的东西，有一部分是认真，但有一部分是——他不知道不往前推的话，他是谁。",
+        "trigger_event": "ひなた教他钓鱼。律第一次钓到鱼，ひなた侧过脸说了两个字：「还行。」当客户说「还行」，律不高兴了三天。她说了同样两个字，他想记住很久。",
+        "growth": "第一次主动选择留下来。不是因为必须，是因为想。",
+        "signature_moment": "「东京发来了紧急消息。我看着海，没有回复。第一次，不是做不到，是选择不做。」",
+        "hinata_reveal": "第5章揭晓ひなた手账防御机制来源。同章渉日记第三册展示，「不寄出的信」与三块石刻开始互相照亮。",
+        "ambiguous_beat": {
+          "scene": "第5章·温泉山谷。钓鱼课后，热气从石缝漫上来，渉的第三册日记摊在两人中间，纸边被水汽卷起。",
+          "action": "律第一次钓到鱼，ひなた侧过脸说：「还行。」后来她把手账翻开一角，又立刻合上。律看见那页密密麻麻全是关于自己的符号，差点问出口。ひなた也像要说什么，最后只说：「有些事，不写也会在。」",
+          "ritsu_inner": "「还行」两个字落下来时，他几乎想说：我想留下来的理由里，好像有你。但温泉水滴从竹管落下，手账合上的声音轻得像把门留了一条缝，墨水被雾气泡开的味道贴在空气里；他没有把那句话推到她面前。",
+          "hinata_notebook": "她第一次让律看见手账的一角。当天「律」栏写到一半停住，「还行」旁边没有评分，只有一个差点闭合的圆；最下面一行被涂黑，隐约只剩「如果灯亮了」几个字。",
+          "temperature": "临界"
+        }
+      },
+      {
+        "chapter": 6,
+        "chapter_name": "点亮",
+        "location": "夜晚灯塔",
+        "arc_keyword": "孤独中的温暖·觉醒",
+        "emotional_state": "平静的笃定。修复快完成了，那种静静的责任感。来这里本来是逃，现在这里有了另一种重量——第一次真正感受到离开意味着什么。",
+        "trigger_event": "律把点火装置递给ひなた，她握住，停了一下，点亮了灯塔。暖黄光柱从塔顶扫出，照过所有修复过的地方，落在夜海上，拉出一条长长的金色水线。冬子在塔底说：「渉さん、見えてますよ。」",
+        "growth": "第一次用身体明白：不是成功，是「存在着」这件事本身有价值。",
+        "signature_moment": "「灯塔的光照出去了。渉知道的。他知道那个我以为丢掉了的东西，其实还在。」",
+        "morning_after": "灯亮后第二天早上，一切照常。律在码头醒来，健三已经在倒茶，说「坐吧」，什么都没提。梅子工作室的碗还在最显眼处，律的那只没有被撤走。岛没有因为昨夜的高潮，今天就收回了那份位置。这才是最深的治愈。",
+        "ambiguous_beat": {
+          "scene": "第6章·灯亮后的第二天早上。码头一切照常，健三倒茶，远处灯塔在白昼里安静地站着，灯室偶尔传来很低的金属余响。",
+          "action": "律把洗净的点火装置交还给ひなた。她接过去，没有道谢，只把手账往旁边挪了挪，给他的茶杯腾出一个位置。两人并排看海，谁也没提昨晚。",
+          "ritsu_inner": "他闻到熟悉的海水和碳粉墨水，也闻到热茶的米香。外面的世界会来，船也会来；可此刻杯底贴着桌面的轻响停在她手账旁边，他没有再确认什么。",
+          "hinata_notebook": "灯亮那天和第二天早上的「律」栏都空着。她没有补数值，只在两页交界处画了一条很短的光线；那条光线没有箭头，不指向外面，也不指向岛内，只停在两只杯子的距离之间。",
+          "temperature": "沉默即答案"
+        }
+      }
+    ]
+  },
+  "romantic_interest": {
+    "name": "丸山ひなた",
+    "age": 24,
+    "gender": "女",
+    "role": "女主角",
+    "background": "灯台守丸山渉的孙女。律到来这一年首次知道祖父去世后返回岛上，与律同日抵岛。",
+    "arc_type": "平行揭晓弧",
+    "arc_summary": "她用手账管理一切——天气、每个人今天的状态、律的情绪变化——连自己的情绪也被符号化纳入「岛况观测」体系。这套精密的控制系统是她的防御机制，根源在童年某次失控事件（第5章揭晓）：她发现「只要把一切数值化和符号化，就不会再被情绪打倒」。被「误差37%」的律打乱之后，她慢慢从「控制误差」走向「允许误差存在就是成长」。",
+    "core_wound": "祖父去世与离岛之间的撕裂感。想点灯完成祖父遗愿，又害怕点灯后岛重新被世界找到，渉留下的安静就此结束。",
+    "core_lie": "「要把一切管控住，失控就是失败。」",
+    "core_truth": "「允许误差存在，本身就是成长。」",
+    "inner_conflict": "想点灯，也害怕点灯后岛重新被世界找到——渉留下的安静可能就此结束。这个矛盾在Ch5最深，在Ch6ひなた握住点火装置停了一下的那一秒里，最真实。",
+    "mirror_with_ritsu": "律害怕回东京，害怕失去岛上的安静；ひなた害怕灯亮后岛被世界重新找到，害怕渉留下的安静就此结束。两人的恐惧方向相反，守护的东西相同，从未对彼此说过。",
+    "notebook_system": {
+      "description": "随身手账，用自己发明的符号体系记录，旁人看不懂。记录对象包括天气、每个人今天的状态、律的情绪变化。她叫这套系统「岛况观测」。",
+      "symbols": [
         {
-          "chapter": 1,
-          "location": "港／磯辺の波止場 (Harbor / Isobe's pier)",
-          "emotional_state_entry": "抵抗と強張り。島に来たことを後悔している。渉の手紙の意味が理解できない。すべてが非効率に見える。",
-          "turning_point": "磯部健三に網の結び方を教わる中で、手が動き始め、考えることをやめる瞬間がある。初めて数時間、仕事のことを忘れた。",
-          "emotional_state_exit": "わずかな緩み。まだ心を閉じているが、体が覚えた感覚が残っている。",
-          "key_dialogue": "「これは……仕事と関係ないですよね」「関係ある必要がどこにある」",
-          "internal_monologue": "手が勝手に動いていた。頭が静かになるのは、いつぶりだろう。"
+          "name": "来访者栏符号",
+          "description": "短竖线旁贴退潮线 = 律初次出现（Ch1）"
         },
         {
-          "chapter": 2,
-          "location": "陶芸工房 (Pottery studio)",
-          "emotional_state_entry": "緊張した完璧主義。土を触りながら「上手くやらなければ」という衝動に駆られる。",
-          "turning_point": "桐島梅子に「本当に書きたかった広告は一本でもあったか」と問われ、答えられない自分に気づく。壊れた壷を眺めながら、観客のいない美しさというものを初めて考える。",
-          "emotional_state_exit": "完璧主義の鎧にひびが入る。何かを「誰かに見せるため」ではなく作ることへの、遠い記憶が蘇る。",
-          "key_dialogue": "「本当に書きたかった広告が、一本でもありましたか」「……思い出せません」「それが答えですよ」",
-          "internal_monologue": "壊れた壷を誰も捨てていなかった。ここでは、壊れたものにも居場所がある。"
+          "name": "退潮线",
+          "description": "表示「某种临时存在」，可随潮水消退"
         },
         {
-          "chapter": 3,
-          "location": "森と花野 (Forest and flower fields)",
-          "emotional_state_entry": "少しだけ開いた好奇心。まだ防衛的だが、島の景色に引き寄せられ始めている。",
-          "turning_point": "海野夏帆に案内された花野で、突然スケッチしたくなる衝動を感じる。5年ぶりに手帳を取り出す。描く理由も、見せる相手もいない。それでも描く。",
-          "emotional_state_exit": "本物の驚きと柔らかな喜び。子どもの頃に感じた「美しい」という感覚が、胸の奥で灯り始める。",
-          "key_dialogue": "「名前、全部知ってるんですか」「名前を知ると、ちゃんと見えるようになるから」",
-          "internal_monologue": "誰にも見せない絵を描いた。それなのに、手が震えていた。なぜだろう。"
+          "name": "巡路符号挪近一格",
+          "description": "Ch3 = 两格之间留没画线的空白，像允许并排走的距离"
         },
         {
-          "chapter": 4,
-          "location": "石畳の小道 (Stone path, solo)",
-          "emotional_state_entry": "静けさの中の不安。誰もいない。何もしなくていい。その自由が怖い。",
-          "turning_point": "道の途中で座り込み、誰にも送らない手紙を書く。東京の自分へ、あるいは5年前の自分へ。書き終えて、破らずにポケットにしまう。",
-          "emotional_state_exit": "沈黙と和解しつつある。自分の内側に、まだ何かが残っていることに気づく。",
-          "key_dialogue": "（内心）「親愛なる律へ。君はずっと走っていた。でも何から逃げていたんだろう。」",
-          "internal_monologue": "石畳の隙間に、小さな草が生えていた。誰も植えていないのに、そこに生きていた。"
+          "name": "可绕行替换迷路",
+          "description": "Ch4 = 在照顾而不解释，不画终点只贴野花标"
         },
         {
-          "chapter": 5,
-          "location": "崖の展望台 (Cliff lookout)",
-          "emotional_state_entry": "身体的な緊張と、それに伴う内面の覚醒。崖を登ることへの不安が、内面の試練と重なる。",
-          "turning_point": "崖の頂上に立ち、海を見渡す。予定より長く滞在することを選ぶ。帰らなければいけない理由が、思い浮かばない。",
-          "emotional_state_exit": "静かな決意。島にいることを能動的に選んだ、初めての瞬間。",
-          "key_dialogue": "「もう少し、ここにいます」（誰に言うわけでもなく、ただ声に出した）",
-          "internal_monologue": "東京から緊急の連絡が来ていた。でも海を見ながら、返信しなかった。初めて、できなかったのではなく、しなかった。"
+          "name": "差点闭合的圆",
+          "description": "Ch5·「还行」旁边 = 未说出口的评分"
         },
         {
-          "chapter": 6,
-          "location": "灯台 (Lighthouse)",
-          "emotional_state_entry": "穏やかな覚悟。修復を完了させることへの、静かな責任感。渉の手紙の意味を、もうすぐ理解できる気がしている。",
-          "turning_point": "灯台の明かりが灯る。丸山冬子から渉の最後の日記を受け取り、なぜ自分が選ばれたかを知る。「美しいものを見る目を、まだ持っている人間に頼みたかった」という言葉に、崩れる。",
-          "emotional_state_exit": "解放と受容。成功ではなく「在ること」に価値があると、初めて身体で理解する。",
-          "key_dialogue": "「なぜ、私を選んだんですか」「渉さんの日記に書いてありました——『あの人はまだ、美しいものに驚ける』と」",
-          "internal_monologue": "灯台の光が海を照らした。渉さんは知っていたんだ。私が忘れたと思っていたものを、まだ持っていることを。"
+          "name": "涂黑行",
+          "description": "Ch5 = 隐约只剩「如果灯亮了」几个字"
+        },
+        {
+          "name": "无箭头光线",
+          "description": "Ch6·两页交界处 = 只停在两只杯子的距离之间，不指向外面也不指向岛内"
+        },
+        {
+          "name": "空白两页",
+          "description": "Ch6 = 第一次不评分、不记录、不管理，只是让它发生"
         }
       ]
     },
+    "scent_recognition": "律认出ひなた靠气味：「海水加碳粉墨水」——她每天做记录，墨水渗进她的指节缝里，混着岛上的海风气味，他只在一个人身上闻过。",
+    "reveal_chapter": 5,
+    "reveal_content": "第5章揭晓：ひなた用手账管理情绪的防御机制，根源是童年某次失控事件——她发现「只要把一切数值化和符号化，就不会再被情绪打倒」。ひなた第一次让律看见手账里的某一页。",
+    "climax": "第6章情感高潮：灯亮，ひなた手账那一天「律」栏空白，没有补填任何数值——第一次对某件事不评分、不记录、不管理，只是让它发生。",
+    "chapter_states": [
+      {
+        "chapter": 1,
+        "emotional_state": "在渡轮上短暂意识到同行者（律）的存在。心里装着的是：要回到祖父去世的那座岛，复杂。",
+        "shared_moment_with_ritsu": "ひなた弯腰把律卡住的箱轮轻轻抬了一下，只说「这块木头退潮后会翘」，说完就走。律回头时没记清她的脸，只记得海水味里混着一点碳粉墨水。",
+        "presence_level": "短暂"
+      },
+      {
+        "chapter": 2,
+        "emotional_state": "开始整理祖父的工坊。偶然知道律在修复小镇，路过。",
+        "shared_moment_with_ritsu": "ひなた摸了摸旧木牌，说「渉每天出海前都会摸这块牌，测风向。没用的东西，也可能是在保护什么。」律把螺丝刀放下来了，旧木牌没有被换。",
+        "presence_level": "短暂"
+      },
+      {
+        "chapter": 3,
+        "emotional_state": "花田是她和祖父一起走过的地方。律在这里让她有点复杂，也有点小小的安心。",
+        "shared_moment_with_ritsu": "两人一起修山坡石阶，夏帆先离开后，只剩花粉、湿土味和铲子碰石头的声音。谁也没有先走。",
+        "presence_level": "完整陪伴"
+      },
+      {
+        "chapter": 4,
+        "emotional_state": "本章不出现，但痕迹留在山路上。",
+        "shared_moment_with_ritsu": "ひなた前夜留下符号木板——「律可能会迷路」改成「可绕行」；木板下压着一束半干的野花。律按符号走，绕开了最陡的坡，把野花插进空杯子里。",
+        "presence_level": "间接痕迹"
+      },
+      {
+        "chapter": 5,
+        "emotional_state": "带着祖父日记来温泉山谷，有点是故意安排的。第5章揭晓手账体系来源。",
+        "shared_moment_with_ritsu": "手把手教律钓鱼。律第一次钓到鱼，ひなた侧过脸说「还行」。她把手账翻开一角，又立刻合上，最后只说：「有些事，不写也会在。」",
+        "presence_level": "完整·情感核心"
+      },
+      {
+        "chapter": 6,
+        "emotional_state": "祖父的事即将画上句号。悲伤和骄傲混在一起，静静的。想点灯，也害怕点灯——这个矛盾在握住点火装置停了一下的那一秒里，最真实。",
+        "shared_moment_with_ritsu": "两人默默走到灯塔前，一句话都没说。律把点火装置递过来，她握住，停了一下，点了。手账那天「律」栏空白，没有补填数值。",
+        "presence_level": "完整·情感高潮"
+      }
+    ]
+  },
+  "couple_arc": {
+    "summary": "两个人同一天坐渡轮到达輝島，各自带着不同的重量。六章里没有说破任何东西。没有表白，没有接吻。感情通过行动、间距、气味、沉默表达。没有说破的，比说出来的更真实。",
+    "tone": "若有若无。第5-6章才有明确情感高潮。全程无表白，无接吻。",
+    "scent_note": "律认出ひなた靠气味——「海水加碳粉墨水」",
+    "mirror_structure": "律害怕回东京（失去岛上的安静）；ひなた害怕岛被世界找到（失去渉留下的安静）。两人各自守护同一份安静，出发点不同，方向相反，从未对彼此说过。",
+    "chapter_milestones": [
+      {
+        "chapter": 1,
+        "milestone": "码头箱轮卡住，ひなた弯腰抬了一下就走。律记不清她的脸，只记住低声、渡轮铃、海水和碳粉墨水的气味。",
+        "presence_level": "短暂",
+        "temperature": "初识"
+      },
+      {
+        "chapter": 2,
+        "milestone": "旧木牌前第一次分歧。律想换新，ひなた替渉的风向位置挡风；律听见螺丝刀落地，意识到她在保护不能替换的东西。",
+        "presence_level": "短暂",
+        "temperature": "摩擦"
+      },
+      {
+        "chapter": 3,
+        "milestone": "花田石阶并肩修复，只有花粉、湿土和工具声。律开始从脚步停半拍认出她，也学会在沉默里不逃。",
+        "presence_level": "完整",
+        "temperature": "并行"
+      },
+      {
+        "chapter": 4,
+        "milestone": "ひなた不在，符号木板和半干野花在。律第一次承认自己在找她的气味、纸页声，以及她替他留下的安静路径。",
+        "presence_level": "间接",
+        "temperature": "缺席在场"
+      },
+      {
+        "chapter": 5,
+        "milestone": "温泉山谷，ひなた说「还行」并合上手账。律几乎说出留下来的理由里有她，但只把话停在雾气和纸页声里。",
+        "presence_level": "完整·核心",
+        "temperature": "临界"
+      },
+      {
+        "chapter": 6,
+        "milestone": "灯亮后的早晨，ひなた给他的茶杯腾出位置。律不再确认，杯底贴着桌面的轻响就是回答。两人站在光里，什么都没说，什么都说了。",
+        "presence_level": "完整·高潮",
+        "temperature": "沉默即答案"
+      }
+    ],
+    "climax_note": "第6章以沉默/行动收尾不破：律把点火装置递给ひなた，她握住，停了一下，点亮了灯塔。手账那一天「律」栏空白，没有补填数值——ひなた第一次对某件事不评分、不记录、不管理，只是让它发生。"
+  },
+  "npcs": [
     {
-      "character_id": "maruyama-hinata",
-      "name_jp": "丸山ひなた",
-      "name_en": "Maruyama Hinata",
-      "age": 24,
-      "gender": "female",
-      "role": "romantic_interest",
-      "arc_type": "parallel-revelation",
-      "occupation": "大阪のデザイン学校から帰郷 (Returned from Osaka design school)",
-      "wound": "祖父の死と帰郷の間で引き裂かれた自分。島を愛しながらも、島にいることへの罪悪感と未来への不安を抱えている。",
-      "lie": "「祖父の記憶は大切にしまっておくべきだ。他人と共有するものではない。」",
-      "truth": "「記憶は分かち合うことで、初めて生き続ける。」",
-      "signature_object": "祖父の形見の指輪をコードに通したもの (grandfather's fisherman ring on a cord)",
-      "romantic_thread_note": "恋愛は暗示のみ。告白なし、キスなし。律への感情は行動と間合いで表現される。",
-      "chapter_beats": [
-        {
-          "chapter": 1,
-          "emotional_state": "フェリーの中で同乗者（律）を一瞬だけ意識する。祖父が死んだ島へ帰ることへの、複雑な感情を抱えている。",
-          "shared_moment": "波止場で荷物を降ろすとき、律と一瞬目が合う。ひなたは振り返らずに歩いて行く。",
-          "reveals_about_wataru": null,
-          "what_she_does": "フェリーの甲板から島を見つめ、指輪のコードを握りしめる。波止場に降りて、律の横を通り過ぎる。振り返らない。",
-          "what_she_says": null,
-          "presence_note": "brief — 1回の視線交差のみ"
-        },
-        {
-          "chapter": 2,
-          "emotional_state": "祖父の工房の整理を始めている。律が陶芸工房にいることを偶然知り、通りかかる。",
-          "shared_moment": "工房で律が土をこねているのを見て、少し立ち止まる。梅子に挨拶してから去る際、律に一言だけ言う。",
-          "reveals_about_wataru": "「おじいちゃんも、ここで何か作っていたみたいで」（梅子に向けた言葉として）",
-          "what_she_does": "工房の入口で立ち止まり、律の手元を2秒ほど見てから、梅子に短く声をかけて去る。",
-          "what_she_says": "「……うまくいってますか」（律に向けて、小声で）",
-          "presence_note": "brief — 立ち寄り2分程度"
-        },
-        {
-          "chapter": 3,
-          "emotional_state": "花野は祖父と一緒に歩いた場所。ここに律がいることに、複雑な気持ちと小さな安堵を感じる。",
-          "shared_moment": "夏帆の案内で律が花野にいるのを見かけ、少し先を歩きながらガイド役を引き継ぐ瞬間がある。軽い笑いが漏れる。",
-          "reveals_about_wataru": "「祖父がよくここで絵を描いていたって、夏帆さんに聞いたんです。私は知らなかった」",
-          "what_she_does": "花野の中を少し先を歩き、振り返りながら植物の名前を言う。律がスケッチしているのを見て、小さく笑う。",
-          "what_she_says": "「それ、ヤマブキソウ。描けましたか」",
-          "presence_note": "full — 花野の場面を共に過ごす"
-        },
-        {
-          "chapter": 4,
-          "emotional_state": "石畳の道に、ひなたの痕跡が残っている。最近通ったことが分かる。",
-          "shared_moment": "律は一人でいる。しかしベンチに忘れられた花束と、石に書かれた文字（「また来る」）がひなたの存在を示す。",
-          "reveals_about_wataru": "石畳のそばの木に、渉が昔つけた小さなマークが残っている。ひなたが同じマークの下に、小さな石を置いていた。",
-          "what_she_does": "この章には登場しないが、痕跡を残している。ベンチに野花を一束置き、石に「また来る」と書いた。",
-          "what_she_says": null,
-          "presence_note": "indirect — 痕跡のみ"
-        },
-        {
-          "chapter": 5,
-          "emotional_state": "崖の展望台で律と会うことを、半ば意図していた。祖父の日記を持ってきている。",
-          "shared_moment": "釣りを教えながら、渉の日記の一節を声に出して読む。この章の感情的な核心。",
-          "reveals_about_wataru": "「『夜、星を見ていると、自分がとても小さいことが分かる。でもそれが、怖くない。むしろ軽くなる』——おじいちゃんの日記。この場所で書いたみたい」",
-          "what_she_does": "釣り竿の持ち方を律の後ろから教える。しばらく沈黙が続いた後、ポケットから日記を出して読む。読み終えて、また沈黙。",
-          "what_she_says": "「おじいちゃんが、あなたに手紙を書いた理由——少し分かる気がしてきた」",
-          "presence_note": "full — 感情的に最も重要な共有場面"
-        },
-        {
-          "chapter": 6,
-          "emotional_state": "祖父の仕事が完成する日。悲しみと誇りが混ざった、静かな気持ち。",
-          "shared_moment": "灯台まで、二人で黙ったまま歩く。言葉はない。",
-          "reveals_about_wataru": "（冬子から渡された最後の日記により、渉がひなたのことも律のことも、同じ愛情で思っていたことが分かる）",
-          "what_she_does": "律の少し後ろを歩き、灯台の前で横に並ぶ。灯台の光が点いた瞬間、指輪のコードを胸に当てる。",
-          "what_she_says": null,
-          "presence_note": "full — 無言の同行"
-        }
-      ]
+      "id": "kenzo",
+      "name": "磯部健三",
+      "age": "约70岁",
+      "role": "老渔夫，Ch1向导",
+      "chapter_focus": 1,
+      "character": "出海几十年，话不多，但心里装着整片海。每次出航都会带回一些海上漂来的东西——不是鱼，是各种被海留下的物件。小屋里每件都贴有手写标签，写着发现的日期和他觉得「可能的来处」。渉最老的朋友。渉病逝后每天早上去敲冬子的门，把当天打捞物带过去，一起看灯塔两分钟，说「先走了」，走了。五十年，从没间断。雨天膝盖疼，也来。",
+      "warmth_with_ritsu": "律到岛第1天，健三在记录册里写：「宇宙意图推测：宇宙把他送过来了。」把记录册合上，倒了杯热茶放到律旁边，说「坐吧，铃声一会儿会停的」。铃声没有停，但律坐下来了。那杯茶是热的。",
+      "turning_point": "交出那封信时，健三说了一句「终于等到你了」——说的是对着大海，不是对律。",
+      "turning_point_chapter": 1,
+      "hidden_mystery_role": "健三钓上来的那封信，收件人是律——这根本不是意外。",
+      "okfine_line": "「能走就行。」——第1章，律反复调整行李箱角度，健三路过说完就走。这是他认可一件事的最高表达。"
     },
     {
-      "character_id": "maruyama-wataru",
-      "name_jp": "丸山渉",
-      "name_en": "Maruyama Wataru",
-      "age_at_death": "~72 (estimated)",
-      "gender": "male",
-      "role": "absent_catalyst",
-      "arc_type": "absent-revealed",
-      "occupation": "元灯台守・輝島の守り人 (Former lighthouse keeper, guardian of Kagayaki-jima)",
-      "wound": "島の衰退を止められなかった悲しみ。しかし孤独を恐れず、静かに守り続けた。",
-      "lie": "（渉には嘘はない。彼は既に真実に到達した人間として描かれる）",
-      "truth": "「美しいものは、ただそこにあることで人を救う。それを守ることが、自分の仕事だった。」",
-      "signature_object": "手書きの日記 (handwritten journal)",
-      "note": "物語開始前に死去。6つの日記エントリを通じてのみ登場する。",
-      "journal_entries": [
-        {
-          "chapter": 1,
-          "theme": "harbor_mornings",
-          "title": "港の朝について",
-          "prose": "夜明けの港は、いつも私だけのものだった。波が木の桟橋を叩く音、遠くで健三が網を干す気配。島が静かに目を覚ます、その最初の息吹を聞けるのは、早起きした者だけの特権だと思っていた。美しいものは、いつも少し早起きしないと見られない。",
-          "unlock_trigger": "chapter_1_restoration_complete",
-          "character_count": 110
-        },
-        {
-          "chapter": 2,
-          "theme": "craft_patience",
-          "title": "手仕事の辛抱について",
-          "prose": "梅子さんの窯を直したとき、彼女は三日間、私に何も言わなかった。四日目に、焼き上がった器を黙って差し出した。それで全部わかった。手仕事というのは、急かすことができない。時間をかけることが、それ自体の意味なのだから。誰かに見せるために作るのではない。",
-          "unlock_trigger": "chapter_2_restoration_complete",
-          "character_count": 112
-        },
-        {
-          "chapter": 3,
-          "theme": "hinata_child_memory",
-          "title": "ひなたのことを思い出す",
-          "prose": "ひなたが三歳のとき、花野の中を走り回って転んだ。泥だらけで笑っていた。冬子がため息をついて、私が笑った。あの子は島のものだと、そのとき確信した。大阪へ行っても、きっと帰ってくる。美しいものは、生まれた場所を忘れない。",
-          "unlock_trigger": "chapter_3_restoration_complete",
-          "character_count": 107
-        },
-        {
-          "chapter": 4,
-          "theme": "solitary_walk",
-          "title": "一人で歩いた午後",
-          "prose": "島が静かになり始めた頃、私はよくこの石畳を一人で歩いた。若者が島を離れ、灯台の仕事も減っていた。寂しいかと問われれば、そうではない。静けさの中には、雑音が消えた後にしか聞こえない声がある。その声を聞くために、人は時々一人になる必要がある。",
-          "unlock_trigger": "chapter_4_restoration_complete",
-          "character_count": 118
-        },
-        {
-          "chapter": 5,
-          "theme": "stars_smallness",
-          "title": "星と小ささについて",
-          "prose": "崖の上で星を数えることは、できない。でも数えようとしながら、自分がとても小さいことに気づく。不思議なことに、それは怖くない。むしろ軽くなる。背負っていたものが、宇宙の前では塵ほどの重さしかないと分かったとき、初めて深く息ができる気がした。",
-          "unlock_trigger": "chapter_5_restoration_complete",
-          "character_count": 113
-        },
-        {
-          "chapter": 6,
-          "theme": "the_letter_reason",
-          "title": "律に手紙を書いた理由",
-          "prose": "あの人に頼んだのは、理由がある。何年か前、彼の仕事を雑誌で見た。広告の中に、一枚だけ、本物の美しさが宿っている絵があった。きっと本人は、もうそれを忘れている。でも忘れた人間は、まだ持っている人間だ。輝島は、そういう人間に灯台を直してほしかった。",
-          "unlock_trigger": "chapter_6_restoration_complete",
-          "character_count": 120
-        }
-      ]
+      "id": "umeko",
+      "name": "桐島梅子",
+      "age": "约55岁",
+      "role": "陶艺工匠，Ch2",
+      "chapter_focus": 2,
+      "character": "岛上唯一的陶艺师，只做碗——每只都按照她对这个人的感受来捏，不是复制长相，是捕捉一种她说不清楚的气质。律到岛那天，店里最显眼处已经有一只，她说「做着做着就做了这个」。她把人当真实的人来对待，不绕弯子，不客套。",
+      "warmth_with_ritsu": "律到岛第一天，那只脸碗就摆在最显眼处——「这里有你的位置」，一个字都不用说。工作室最里面有一只碗，碗口朝墙放着，三十年了——那是健三的脸碗，梅子懂得让秘密待在它应该在的地方。",
+      "turning_point": "律到岛第一天，那只脸碗就已经在最显眼处。梅子后来把律随手捏的小泥块烧好了，放到碗旁边，说「不平的东西，有时候比较稳」。",
+      "turning_point_chapter": 1,
+      "key_question_to_ritsu": "「你工作这些年，有没有一次，是真的想做的？」",
+      "okfine_line": "「不平的东西，有时候比较稳。」——第2章。底层含义：不完美也是够了。"
     },
     {
-      "character_id": "isobe-kenzo",
-      "name_jp": "磯部健三",
-      "name_en": "Isobe Kenzo",
-      "age": "~70",
-      "gender": "male",
-      "role": "npc_chapter1",
-      "arc_type": "supporting-mirror",
-      "occupation": "漁師 (Fisherman)",
-      "chapter_presence": [1],
-      "personality": "無口で実直。言葉より行動で語る。若い頃の渉との友情を、口には出さない。",
-      "relation_to_wataru": "幼馴染。渉と健三は子どもの頃から港で遊んだ。渉の死後、健三は網を直す気力をなくしていた。",
-      "function_in_story": "律に「手を動かすこと」の価値を教える。島の以前の賑わいを証言する。",
-      "key_action": "網の結び方を律に実演して見せる。説明はしない。ただ手を動かす。",
-      "key_dialogue": "「島は、昔はもっと賑やかだった」「結び目は、急ぐと解ける。急がなくても、いつか解ける。だからゆっくり結ぶんだ」",
-      "wound": "親友の渉を失い、港に意味を感じられなくなっていた。",
-      "arc_within_chapter": "律が網仕事を手伝うことで、健三も少しだけ手が動き始める。鏡のような関係。"
+      "id": "naho",
+      "name": "海野夏帆",
+      "age": 32,
+      "role": "自然向导，Ch3",
+      "chapter_focus": 3,
+      "character": "岛上最了解山路和植物的人，话很少，注意力极细。她习惯先说观察到的事，再说自己的感受，像是在给自己勇气。知道谁今天走路的步子不对，哪棵树最近长了新枝。ひなた手账里有一栏「夏帆植物今日观测」，夏帆不知道这件事。",
+      "warmth_with_ritsu": "夏帆递给律一束刚开了一半的花，没有说话，只是笑了笑。律接过来闻了一下，眼睛酸了。",
+      "turning_point": "第一次对律说话（通过松树）：「那棵松树，你经过的时候它在颤抖，是因为今天风很大。」停了一下，低头小声说：「是我想告诉你的，不是树。」——这是她全游戏对人类说过的最直接的一句话。",
+      "turning_point_chapter": 3,
+      "okfine_line": "「半开的花，已经是花了。」——第3章。不需要完成才算完成，当下的状态本身就是够的。"
     },
     {
-      "character_id": "kirishima-umeko",
-      "name_jp": "桐島梅子",
-      "name_en": "Kirishima Umeko",
-      "age": "~55",
-      "gender": "female",
-      "role": "npc_chapter2",
-      "arc_type": "supporting-challenger",
-      "occupation": "陶芸家 (Potter)",
-      "chapter_presence": [2],
-      "personality": "静かで観察眼が鋭い。アドバイスを乞われるまで口を開かない。しかし一度話し始めると、核心を突く。",
-      "relation_to_wataru": "20年前、渉が彼女の窯の修復を依頼した。その時から友人。渉は梅子の器を「島で一番正直なもの」と言っていた。",
-      "function_in_story": "律の完璧主義に正面から向き合わせる。「誰かに見せるため」ではない創作の価値を問う。",
-      "key_action": "律が最初に「何かアドバイスはありますか」と聞いても無視する。2度目に同じ質問をしたとき、初めて振り返る。",
-      "key_dialogue": "「本当に書きたかった広告が、一本でもありましたか」「壊れた器を捨てないのはなぜか、聞きますか？　次に作るときの、地図になるからです」",
-      "wound": "若い頃、評価されることを目的に作っていた時期があった。それを乗り越えた経験を持つ。",
-      "arc_within_chapter": "律に問いを投げかけることで、自分自身の過去の嘘とも向き合う、静かな共鳴。"
+      "id": "fuyuko",
+      "name": "丸山冬子",
+      "age": 65,
+      "role": "灯台守遗孀，渉邮件的真正发送者，Ch6",
+      "chapter_focus": 6,
+      "character": "渉已经病逝，这是事实层面。冬子一直住在灯台旁，没有离开过岛。她不说「他走了」，只说「他不在这里」——这是她的应对方式，不是事实上的失踪。每晚还是会在灯台旁坐一会儿，说一些话，说给谁听的，她没解释过。她替大家保管暂时拿不动的东西，等到那个人准备好来取，从来不解释为什么留着。",
+      "keeper_items": [
+        "ひなた小时候的雨衣",
+        "健三的旧烟盒（他戒烟那年留下的）",
+        "夏帆写错的植物牌",
+        "律到岛那天的便利店小票"
+      ],
+      "warmth_with_ritsu": "每晚对灯塔说「律今天很努力」——律路过听到了，站了十秒，然后悄悄走开了。他当晚日记只写了日期。",
+      "turning_point": "每晚对着灯塔说「律今天很努力」——律路过听到了，装作没听到。",
+      "turning_point_chapter": 6,
+      "hidden_mystery_role": "渉留给冬子一封「不寄出的信」，信里提到东京来的年轻人，并留下临终遗愿。冬子按遗愿以荒诞形式联系到律：发件人「Kagayaki-jima」的垃圾邮件 + 休假申请表 + 船票。游戏永远不解释机制，只保留结果。",
+      "wataru_note": "渉已病逝（非失踪）。冬子用「不在这里」表达情感延续，而非否认事实。邀请来源为冬子按渉遗愿发送荒诞邮件和船票。"
     },
     {
-      "character_id": "umino-naho",
-      "name_jp": "海野夏帆",
-      "name_en": "Umino Naho",
-      "age": "~45",
-      "gender": "female",
-      "role": "npc_chapter3",
-      "arc_type": "supporting-guide",
-      "occupation": "自然ガイド・植物研究者 (Nature guide and plant researcher)",
-      "chapter_presence": [3],
-      "personality": "エネルギッシュで博識。植物一つひとつに感情移入する。渉の影響を強く受けた人物。",
-      "relation_to_wataru": "30年前、渉の元で学んだ若き博物学者。渉は夏帆に「名前を知ることは、愛することの始まりだ」と教えた。",
-      "function_in_story": "律に「名前を知ることで見え方が変わる」ことを示す。律のスケッチ衝動の引き金を引く。",
-      "key_action": "花野の全植物の名前を次々と言いながら歩く。律が追いつけないほど詳しい。それが律の好奇心を刺激する。",
-      "key_dialogue": "「名前を知ると、ちゃんと見えるようになるから」「渉さんも、ここをよく歩いていた。植物に話しかけながら」",
-      "wound": "渉の死後、誰にこの知識を伝えればいいか、迷っていた。",
-      "arc_within_chapter": "律に植物の名前を教えることで、渉から受け取った贈り物を次の人間へ渡す。"
-    },
-    {
-      "character_id": "maruyama-fuyuko",
-      "name_jp": "丸山冬子",
-      "name_en": "Maruyama Fuyuko",
-      "age": "~70",
-      "gender": "female",
-      "role": "npc_chapter6",
-      "arc_type": "supporting-gatekeeper",
-      "occupation": "渉の妻・灯台の番人 (Wataru's wife, guardian of the lighthouse)",
-      "chapter_presence": [6],
-      "personality": "ほとんど話さない。行動で全てを語る。深い悲しみと深い平和が共存している。",
-      "relation_to_wataru": "50年以上の伴侶。渉の全てを知っている。渉の最後の日記を、適切な人間に渡す時を待っていた。",
-      "function_in_story": "物語の最終的な扉を開ける。渉の最後の日記エントリを律に手渡す。言葉ではなく行動で完結させる。",
-      "key_action": "灯台の修復が完了した瞬間、何も言わずに日記の最後のページを律に差し出す。",
-      "key_dialogue": "「渉が——ずっと待っていました、あなたのような人を」（これだけ）",
-      "wound": "夫の志を継ぐ人間が来ないかもしれないという恐れ。",
-      "arc_within_chapter": "律に日記を渡すことで、50年分の待機が完結する。"
+      "id": "chairman",
+      "name": "议长（橘猫）",
+      "age": "年龄不详",
+      "role": "岛上老居民，贯穿全章",
+      "chapter_focus": "全章",
+      "character": "岛上资历最老的居民，一只橘猫，没有人知道他多大了。他去哪儿从不受管，但他总出现在合适的地方——谁今天情绪不好，他就去谁那里坐着。他在旁边，总觉得事情没那么难。每晚陪冬子在灯台旁坐着，是他唯一不需要任何理由的固定日程。",
+      "warmth_with_ritsu": "律到岛第3天，议长走到律脚边，坐了十二秒，然后向左走离开——裁决律可以留在这里。此后岛上居民对律的态度有了微妙变化：他是「岛上的人」了。",
+      "turning_point": "抵岛第3天向左走12秒，裁决律的留岛资格——律正式成为「岛上的人」。健三在档案里记下。",
+      "turning_point_chapter": 1
     }
   ],
-  "relationship_edges": [
+  "npc_bonds": [
     {
-      "edge_id": "ritsu-hinata",
-      "source": "yamada-ritsu",
-      "target": "maruyama-hinata",
-      "relationship_type": "implicit_romance",
-      "tension_start": "strangers on the same ferry — parallel wounds, unaware",
-      "tension_end": "companions who understand each other without words — romantic potential, unnamed",
-      "presence_escalation": ["ch1_passing_glance", "ch2_brief_exchange", "ch3_shared_walk", "ch4_absence_felt", "ch5_emotional_core", "ch6_silent_companionship"]
+      "pair": "健三 × 冬子",
+      "description": "五十年的早晨，从不命名。每天带当日打捞物去敲门，放下，一起看灯塔两分钟，说「先走了」，走了。这个仪式的名字，是健三从来没有给它起过名字这件事。"
     },
     {
-      "edge_id": "ritsu-wataru",
-      "source": "yamada-ritsu",
-      "target": "maruyama-wataru",
-      "relationship_type": "mentor_from_beyond",
-      "tension_start": "unknown letter from a stranger — confusion and resentment",
-      "tension_end": "deep gratitude for being seen by someone who never met him in person",
-      "medium": "6 journal entries, 1 letter"
+      "pair": "梅子 × 夏帆",
+      "description": "十年无声合作。两人中间有一只碗，每月换一次内容物：夏帆的野花，或梅子泡好的茶。从不当面提起，也不讨论谁来放什么。十年里通过那只碗传递过的东西，比她们所有对话加起来还多。"
     },
     {
-      "edge_id": "ritsu-kenzo",
-      "source": "yamada-ritsu",
-      "target": "isobe-kenzo",
-      "relationship_type": "mentor_craft",
-      "tension_start": "efficiency-minded city worker meets slow-handed fisherman",
-      "tension_end": "mutual, wordless understanding that hands remember what minds forget"
+      "pair": "健三 × 梅子",
+      "description": "三十年前健三让梅子做了脸碗，那只碗现在碗口朝墙放在最里面，三十年了，岛上没有人问过。梅子说那只碗「心情稳定」，这是她能说的全部。"
     },
     {
-      "edge_id": "ritsu-umeko",
-      "source": "yamada-ritsu",
-      "target": "kirishima-umeko",
-      "relationship_type": "challenger_student",
-      "tension_start": "律 wants validation; 梅子 refuses to give it until earned",
-      "tension_end": "律 asks the real question; 梅子 gives the real answer"
+      "pair": "冬子 × ひなた",
+      "description": "冬子从不追问ひなた手账里的符号。ひなた状态不好时，冬子的厨房就会多做一份ひなた最爱吃的东西放在门口，不敲门，放下就走。ひなた从不提，冬子从不提。"
     },
     {
-      "edge_id": "ritsu-naho",
-      "source": "yamada-ritsu",
-      "target": "umino-naho",
-      "relationship_type": "guide_awakener",
-      "tension_start": "律 sees scenery; 夏帆 sees living things with names",
-      "tension_end": "律 starts drawing again — 夏帆 unlocked his dormant wonder"
-    },
-    {
-      "edge_id": "ritsu-fuyuko",
-      "source": "yamada-ritsu",
-      "target": "maruyama-fuyuko",
-      "relationship_type": "gatekeeper_pilgrim",
-      "tension_start": "律 must prove himself worthy of the final truth",
-      "tension_end": "冬子 confirms 律 is the right person, in silence"
-    },
-    {
-      "edge_id": "hinata-wataru",
-      "source": "maruyama-hinata",
-      "target": "maruyama-wataru",
-      "relationship_type": "granddaughter_absent_grandfather",
-      "tension_start": "grief, guilt at being away when he died",
-      "tension_end": "accepts his death and his love; carries his ring forward"
-    },
-    {
-      "edge_id": "hinata-fuyuko",
-      "source": "maruyama-hinata",
-      "target": "maruyama-fuyuko",
-      "relationship_type": "granddaughter_grandmother",
-      "tension_start": "complicated — both grieving, both protecting the other from grief",
-      "tension_end": "stand together at lighthouse without words, grief shared"
-    },
-    {
-      "edge_id": "wataru-kenzo",
-      "source": "maruyama-wataru",
-      "target": "isobe-kenzo",
-      "relationship_type": "childhood_friends",
-      "tension_start": "渉's death left 健三 without his oldest companion",
-      "tension_end": "revealed through 健三's behavior and the harbor journal entry"
-    },
-    {
-      "edge_id": "wataru-umeko",
-      "source": "maruyama-wataru",
-      "target": "kirishima-umeko",
-      "relationship_type": "patron_artist",
-      "tension_start": "渉 commissioned kiln restoration 20 years ago",
-      "tension_end": "梅子 still uses that kiln; every piece is a continuation"
-    },
-    {
-      "edge_id": "wataru-naho",
-      "source": "maruyama-wataru",
-      "target": "umino-naho",
-      "relationship_type": "teacher_student",
-      "tension_start": "渉 taught 夏帆 naturalism 30 years ago",
-      "tension_end": "夏帆 carries his teachings; now passes them to 律"
-    },
-    {
-      "edge_id": "wataru-fuyuko",
-      "source": "maruyama-wataru",
-      "target": "maruyama-fuyuko",
-      "relationship_type": "spouses_50_years",
-      "tension_start": "渉's death; 冬子 holds his final words",
-      "tension_end": "冬子 releases those words to 律 — completing 渉's final act"
+      "pair": "夏帆 × ひなた",
+      "description": "ひなた手账有一栏「夏帆植物今日观测」，从律到岛第八天开始越写越长，记录越来越多关于律的动态。律永远不会知道，夏帆也不知道ひなた在记录这些。"
     }
   ],
-  "memory_fragments": [
+  "okfine_arc": {
+    "description": "「还行」铺垫节奏：Ch1-4各有一句台词铺垫「还行」的重量，Ch5落地。",
+    "setup_beats": [
+      {
+        "chapter": 1,
+        "speaker": "磯部健三",
+        "line": "「能走就行。」",
+        "weight": "这是健三认可一件事的最高表达。不用「很好」，只说「行」——意味着这就是够了，不需要更好。"
+      },
+      {
+        "chapter": 2,
+        "speaker": "桐島梅子",
+        "line": "「不平的东西，有时候比较稳。」",
+        "weight": "底层含义是「不完美也是够了」——来自三十年做碗的经验，没有直接说，但意思在那里。"
+      },
+      {
+        "chapter": 3,
+        "speaker": "海野夏帆",
+        "line": "「半开的花，已经是花了。」",
+        "weight": "不需要完成才算完成，当下的状态本身就是够的。给「还行」打了注脚。"
+      },
+      {
+        "chapter": 4,
+        "speaker": "律的日记",
+        "line": "「我不知道什么叫够了。也不知道从什么时候起，开始觉得这样也行。」",
+        "weight": "律第一次对自己说出「也行」——不是降低标准，是开始感受到够了是什么感觉。这是第5章「还行」的内在土壤。"
+      }
+    ],
+    "landing_chapter": 5,
+    "landing_line": "律第一次钓到鱼，ひなた侧过脸说：「还行。」当客户说「还行」，律不高兴了三天。她说了同样两个字，他想记住很久。"
+  },
+  "hidden_mystery": {
+    "three_stone_carvings": [
+      {
+        "chapter": 1,
+        "location": "码头附近",
+        "text": "りつ",
+        "weathering": "风化程度很深，不符合近期刻写",
+        "ritsu_reaction": "律以为是游客随手刻的涂鸦，继续走了。"
+      },
+      {
+        "chapter": 3,
+        "location": "花田山坡",
+        "text": "二〇二六",
+        "weathering": "笔迹和风化程度与第一块完全一致",
+        "ritsu_reaction": "这已经不是游客随手刻的了。同章夏帆「无意中」提到渉「好像知道你会来」。"
+      },
+      {
+        "chapter": 5,
+        "location": "灯台基石",
+        "text": "灯を見る人",
+        "weathering": "风化一致，均不符合近期刻写",
+        "ritsu_reaction": "律重新想起Ch3-Ch4的「不寄出的信」片段，第一次将三块石刻联系在一起。ひなた说「他从来没有跟我说过这件事」，两人都沉默了。"
+      }
+    ],
+    "combined_reading": "「りつ、二〇二六、灯を見る人」——三块合起来才浮现出指向律的可能，但从不组合成一句完整的话。",
+    "resolution_principle": "游戏永远不解释渉是怎么做到的。这个谜题永远没有答案。",
+    "wataru_final_line": "「灯台の光は、来るべき人を呼ぶのではない。来ようとしている人に、ここに灯りがあることを、知らせるだけだ。」"
+  },
+  "wataru_journal_entries": [
     {
       "chapter": 1,
-      "theme": "harbor_mornings",
-      "title": "港の朝について",
-      "unlock_trigger": "chapter_1_restoration_complete",
-      "prose_excerpt": "夜明けの港は、いつも私だけのものだった。波が木の桟橋を叩く音、遠くで健三が網を干す気配。島が静かに目を覚ます、その最初の息吹を聞けるのは、早起きした者だけの特権だと思っていた。美しいものは、いつも少し早起きしないと見られない。",
-      "narrative_function": "Introduces Wataru's voice and his love for the harbor; foreshadows Kenzo relationship"
+      "title": "关于码头的清晨",
+      "prose": "黎明前的码头，一直是只属于我的。海浪拍打木栈桥的声音，远处健三晾网的气息。能听见小岛静静醒来的那第一口气，是早起的人才有的特权。我一直这么觉得。美的东西，总要早起一点才能看见。",
+      "unlock_trigger": "第1章修复完成"
     },
     {
       "chapter": 2,
-      "theme": "craft_patience",
-      "title": "手仕事の辛抱について",
-      "unlock_trigger": "chapter_2_restoration_complete",
-      "prose_excerpt": "梅子さんの窯を直したとき、彼女は三日間、私に何も言わなかった。四日目に、焼き上がった器を黙って差し出した。それで全部わかった。手仕事というのは、急かすことができない。時間をかけることが、それ自体の意味なのだから。誰かに見せるために作るのではない。",
-      "narrative_function": "Indirect message to Ritsu about craft; echoes Umeko's theme"
+      "title": "关于手作的等待",
+      "prose": "我去帮梅子修窑的时候，她三天都没有对我说什么。第四天，她默默把烧好的器皿递过来。就这样，全明白了。手工这件事，急不得。花时间本身，就是它的意义所在。不是做给谁看的。",
+      "unlock_trigger": "第2章修复完成"
     },
     {
       "chapter": 3,
-      "theme": "hinata_child_memory",
-      "title": "ひなたのことを思い出す",
-      "unlock_trigger": "chapter_3_restoration_complete",
-      "prose_excerpt": "ひなたが三歳のとき、花野の中を走り回って転んだ。泥だらけで笑っていた。冬子がため息をついて、私が笑った。あの子は島のものだと、そのとき確信した。大阪へ行っても、きっと帰ってくる。美しいものは、生まれた場所を忘れない。",
-      "narrative_function": "Humanizes Wataru through family memory; connects to Hinata's presence in Ch3"
+      "title": "给冬子的信（前半）",
+      "prose": "冬子，如果有一天你读到这里，就不要把这封信寄出去。我只是想把那个预感留下：东京会来一个年轻人，名字我说不清，只觉得像「律」。他不是被灯台叫来的，也不是被我叫来的。他会在自己快要走不动的时候看见一条路。",
+      "unlock_trigger": "第3章修复完成"
     },
     {
       "chapter": 4,
-      "theme": "solitary_walk",
-      "title": "一人で歩いた午後",
-      "unlock_trigger": "chapter_4_restoration_complete",
-      "prose_excerpt": "島が静かになり始めた頃、私はよくこの石畳を一人で歩いた。若者が島を離れ、灯台の仕事も減っていた。寂しいかと問われれば、そうではない。静けさの中には、雑音が消えた後にしか聞こえない声がある。その声を聞くために、人は時々一人になる必要がある。",
-      "narrative_function": "Mirrors Ritsu's solitary chapter; validates sitting with silence"
+      "title": "给冬子的信（后半）",
+      "prose": "到那时，如果你觉得可以，就把船票放到他能拿到的地方。怎么做到，我不知道，也不用解释。灯只负责亮。若他真的来了，不要急着告诉他理由。让他先坐一会儿，听听海。",
+      "unlock_trigger": "第4章修复完成"
     },
     {
       "chapter": 5,
-      "theme": "stars_smallness",
-      "title": "星と小ささについて",
-      "unlock_trigger": "chapter_5_restoration_complete",
-      "prose_excerpt": "崖の上で星を数えることは、できない。でも数えようとしながら、自分がとても小さいことに気づく。不思議なことに、それは怖くない。むしろ軽くなる。背負っていたものが、宇宙の前では塵ほどの重さしかないと分かったとき、初めて深く息ができる気がした。",
-      "narrative_function": "Core emotional resonance; Hinata reads this aloud to Ritsu in Ch5"
+      "title": "关于星星和渺小",
+      "prose": "站在崖上数星星，是数不完的。但试着数的时候，会发现自己很渺小。奇怪的是，这并不让人害怕。反而轻了。背负的东西，在宇宙面前只有尘埃那么重——明白这件事的那一刻，才终于能深呼吸了。",
+      "unlock_trigger": "第5章修复完成"
     },
     {
       "chapter": 6,
-      "theme": "the_letter_reason",
-      "title": "律に手紙を書いた理由",
-      "unlock_trigger": "chapter_6_restoration_complete",
-      "prose_excerpt": "あの人に頼んだのは、理由がある。何年か前、彼の仕事を雑誌で見た。広告の中に、一枚だけ、本物の美しさが宿っている絵があった。きっと本人は、もうそれを忘れている。でも忘れた人間は、まだ持っている人間だ。輝島は、そういう人間に灯台を直してほしかった。",
-      "narrative_function": "The truth revealed: why Wataru chose Ritsu — completes Ritsu's wound/truth arc"
+      "title": "灯台の光",
+      "prose": "灯台の光は、来るべき人を呼ぶのではない。来ようとしている人に、ここに灯りがあることを、知らせるだけだ。——渉の最後のページ。冬子さん、灯は、你が点けていい。",
+      "unlock_trigger": "第6章修复完成"
     }
   ],
-  "scene_presence_matrix": {
-    "characters": ["yamada-ritsu", "maruyama-hinata", "maruyama-wataru", "isobe-kenzo", "kirishima-umeko", "umino-naho", "maruyama-fuyuko"],
+  "presence_matrix": {
+    "characters": ["山田律", "丸山ひなた", "丸山渉（日记）", "磯部健三", "桐島梅子", "海野夏帆", "丸山冬子", "議長（橘猫）"],
     "chapters": {
       "ch1": {
-        "yamada-ritsu": "full",
-        "maruyama-hinata": "brief",
-        "maruyama-wataru": "indirect",
-        "isobe-kenzo": "full",
-        "kirishima-umeko": "absent",
-        "umino-naho": "absent",
-        "maruyama-fuyuko": "absent"
+        "山田律": "full",
+        "丸山ひなた": "brief",
+        "丸山渉（日記）": "indirect",
+        "磯部健三": "full",
+        "桐島梅子": "indirect",
+        "海野夏帆": "absent",
+        "丸山冬子": "absent",
+        "議長（橘猫）": "brief"
       },
       "ch2": {
-        "yamada-ritsu": "full",
-        "maruyama-hinata": "brief",
-        "maruyama-wataru": "indirect",
-        "isobe-kenzo": "absent",
-        "kirishima-umeko": "full",
-        "umino-naho": "absent",
-        "maruyama-fuyuko": "absent"
+        "山田律": "full",
+        "丸山ひなた": "brief",
+        "丸山渉（日記）": "indirect",
+        "磯部健三": "brief",
+        "桐島梅子": "full",
+        "海野夏帆": "absent",
+        "丸山冬子": "absent",
+        "議長（橘猫）": "absent"
       },
       "ch3": {
-        "yamada-ritsu": "full",
-        "maruyama-hinata": "full",
-        "maruyama-wataru": "indirect",
-        "isobe-kenzo": "absent",
-        "kirishima-umeko": "absent",
-        "umino-naho": "full",
-        "maruyama-fuyuko": "absent"
+        "山田律": "full",
+        "丸山ひなた": "full",
+        "丸山渉（日記）": "indirect",
+        "磯部健三": "absent",
+        "桐島梅子": "absent",
+        "海野夏帆": "full",
+        "丸山冬子": "absent",
+        "議長（橘猫）": "absent"
       },
       "ch4": {
-        "yamada-ritsu": "full",
-        "maruyama-hinata": "indirect",
-        "maruyama-wataru": "indirect",
-        "isobe-kenzo": "absent",
-        "kirishima-umeko": "absent",
-        "umino-naho": "absent",
-        "maruyama-fuyuko": "absent"
+        "山田律": "full",
+        "丸山ひなた": "indirect",
+        "丸山渉（日記）": "indirect",
+        "磯部健三": "indirect",
+        "桐島梅子": "absent",
+        "海野夏帆": "absent",
+        "丸山冬子": "indirect",
+        "議長（橘猫）": "brief"
       },
       "ch5": {
-        "yamada-ritsu": "full",
-        "maruyama-hinata": "full",
-        "maruyama-wataru": "indirect",
-        "isobe-kenzo": "absent",
-        "kirishima-umeko": "absent",
-        "umino-naho": "absent",
-        "maruyama-fuyuko": "absent"
+        "山田律": "full",
+        "丸山ひなた": "full",
+        "丸山渉（日記）": "indirect",
+        "磯部健三": "brief",
+        "桐島梅子": "absent",
+        "海野夏帆": "absent",
+        "丸山冬子": "brief",
+        "議長（橘猫）": "absent"
       },
       "ch6": {
-        "yamada-ritsu": "full",
-        "maruyama-hinata": "full",
-        "maruyama-wataru": "indirect",
-        "isobe-kenzo": "absent",
-        "kirishima-umeko": "absent",
-        "umino-naho": "absent",
-        "maruyama-fuyuko": "full"
+        "山田律": "full",
+        "丸山ひなた": "full",
+        "丸山渉（日記）": "indirect",
+        "磯部健三": "full",
+        "桐島梅子": "brief",
+        "海野夏帆": "brief",
+        "丸山冬子": "full",
+        "議長（橘猫）": "full"
       }
     }
   }

@@ -1,1976 +1,1591 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Glow Island — Meta-Game Layer Design | 輝島</title>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 元游戏层设计文档 v2.0</title>
+  <style>
+    :root {
+      --bg: #0f0e0c;
+      --bg2: #141210;
+      --surface: #1a1815;
+      --surface2: #211f1b;
+      --surface3: #282420;
+      --border: #2e2a24;
+      --border-soft: #252118;
+      --text: #e8dcc8;
+      --text-secondary: #b8a88a;
+      --muted: #6e6050;
+      --accent: #c8943a;
+      --accent-dim: rgba(200,148,58,0.12);
+      --accent-border: rgba(200,148,58,0.28);
+      --accent2: #6aaa7a;
+      --accent2-dim: rgba(106,170,122,0.10);
+      --accent2-border: rgba(106,170,122,0.25);
+      --accent3: #7a9ec8;
+      --accent3-dim: rgba(122,158,200,0.10);
+      --accent3-border: rgba(122,158,200,0.25);
+      --amber: #d4aa48;
+      --amber-dim: rgba(212,170,72,0.10);
+      --amber-border: rgba(212,170,72,0.28);
+      --warm: #c8743a;
+      --warm-dim: rgba(200,116,58,0.10);
+      --warm-border: rgba(200,116,58,0.25);
+      --mystery: #9a7acc;
+      --mystery-dim: rgba(154,122,204,0.10);
+      --mystery-border: rgba(154,122,204,0.28);
+      --gold: #e8b840;
+      --heading: #f0e0c0;
+      --tag-bg: rgba(200,148,58,0.15);
+      --lighthouse: #e8c050;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.82;
+      padding: 0 1rem 6rem;
+    }
 
-  :root {
-    --bg:         #0f0f1a;
-    --bg2:        #161625;
-    --bg3:        #1e1e30;
-    --bg4:        #252540;
-    --green:      #4caf50;
-    --green-dim:  #2d6e30;
-    --gold:       #d4a017;
-    --gold-dim:   #8a6810;
-    --text:       #e8d5b0;
-    --text-dim:   #9a8870;
-    --text-faint: #4a4038;
-    --red:        #e05050;
-    --teal:       #4ab8c0;
-    --pink:       #c98dbe;
-    --border:     #2a2a42;
-    --shadow:     rgba(0,0,0,0.6);
-  }
+    /* ── Header ── */
+    .page-header {
+      background: linear-gradient(160deg, #0a0a08 0%, #1a140a 40%, #231a08 70%, #0f0d0a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 2rem 3.5rem;
+      margin: 0 -1rem 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(200,148,58,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent2), var(--accent), var(--amber), var(--mystery), transparent);
+      opacity: 0.55;
+    }
+    .page-header .label {
+      display: inline-block;
+      background: var(--accent2-dim);
+      color: var(--accent2);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.25rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent2-border);
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+    }
+    .page-header h1 {
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.6rem;
+      text-shadow: 0 2px 32px rgba(200,148,58,0.3);
+    }
+    .page-header .subtitle {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+    .page-header .meta {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+    .version-badge {
+      display: inline-block;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      border-radius: 4px;
+      padding: 0.18rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
 
-  html { scroll-behavior: smooth; }
+    /* ── Navigation tabs ── */
+    .nav-tabs {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,14,12,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1rem;
+      margin: 0 -1rem 3rem;
+      overflow-x: auto;
+      display: flex;
+      gap: 0;
+    }
+    .nav-tabs a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.85rem 1.2rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.18s, border-color 0.18s;
+      font-weight: 500;
+    }
+    .nav-tabs a:hover {
+      color: var(--text);
+      border-bottom-color: var(--border);
+    }
+    .nav-tabs a.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
 
-  body {
-    font-family: 'Georgia', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    font-size: 15px;
-  }
+    /* ── Layout ── */
+    .container {
+      max-width: 940px;
+      margin: 0 auto;
+    }
 
-  /* ── NAV ── */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(15,15,26,0.96);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 0;
-    padding: 0 24px;
-    height: 48px;
-    backdrop-filter: blur(8px);
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  nav .logo {
-    font-size: 13px;
-    color: var(--gold);
-    font-weight: bold;
-    margin-right: 28px;
-    letter-spacing: 0.05em;
-    flex-shrink: 0;
-  }
-  nav a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 12px;
-    padding: 0 14px;
-    height: 48px;
-    display: inline-flex;
-    align-items: center;
-    letter-spacing: 0.03em;
-    transition: color 0.2s;
-    flex-shrink: 0;
-  }
-  nav a:hover { color: var(--gold); }
+    /* ── Section headers ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin: 3.5rem 0 1.8rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .icon-amber { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+    .icon-green { background: var(--accent2-dim); border: 1px solid var(--accent2-border); }
+    .icon-blue { background: var(--accent3-dim); border: 1px solid var(--accent3-border); }
+    .icon-warm { background: var(--warm-dim); border: 1px solid var(--warm-border); }
+    .icon-mystery { background: var(--mystery-dim); border: 1px solid var(--mystery-border); }
+    .icon-gold { background: var(--accent-dim); border: 1px solid var(--accent-border); }
 
-  /* ── LAYOUT ── */
-  .hero {
-    background: linear-gradient(180deg, #0d1520 0%, #0f0f1a 100%);
-    padding: 64px 24px 48px;
-    text-align: center;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 60%, rgba(212,160,23,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-tag {
-    display: inline-block;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    border: 1px solid var(--gold-dim);
-    padding: 3px 10px;
-    border-radius: 3px;
-    margin-bottom: 20px;
-  }
-  .hero h1 {
-    font-size: clamp(28px, 5vw, 52px);
-    color: var(--text);
-    letter-spacing: 0.03em;
-    line-height: 1.2;
-    margin-bottom: 8px;
-  }
-  .hero h1 span { color: var(--gold); }
-  .hero .sub {
-    font-size: 14px;
-    color: var(--text-dim);
-    margin-bottom: 32px;
-    letter-spacing: 0.08em;
-  }
-  .hero-meta {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    flex-wrap: wrap;
-    font-size: 12px;
-    color: var(--text-dim);
-  }
-  .hero-meta strong { color: var(--green); }
+    .section-header h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: -0.01em;
+    }
+    .section-header .section-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
 
-  section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 56px 24px;
-    border-bottom: 1px solid var(--border);
-  }
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 2rem 0 0.8rem;
+    }
+    h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 1.4rem 0 0.55rem;
+    }
+    p { margin: 0.6rem 0 0.9rem; color: var(--text-secondary); line-height: 1.8; }
+    strong { color: var(--text); font-weight: 600; }
+    em { color: var(--accent2); font-style: normal; }
 
-  h2 {
-    font-size: 22px;
-    color: var(--gold);
-    letter-spacing: 0.05em;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  h2 .section-num {
-    font-size: 11px;
-    color: var(--text-faint);
-    font-family: monospace;
-    letter-spacing: 0.1em;
-  }
-  .section-rule {
-    width: 48px;
-    height: 2px;
-    background: var(--gold);
-    margin-bottom: 28px;
-    opacity: 0.5;
-  }
-  h3 {
-    font-size: 15px;
-    color: var(--green);
-    margin-bottom: 10px;
-    letter-spacing: 0.05em;
-  }
-  p { color: var(--text-dim); margin-bottom: 12px; }
+    /* ── Philosophy card ── */
+    .philosophy-card {
+      background: linear-gradient(135deg, var(--surface2) 0%, var(--surface3) 100%);
+      border: 1px solid var(--accent-border);
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+      margin: 0 0 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .philosophy-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent), var(--amber));
+      opacity: 0.5;
+    }
+    .philosophy-card p {
+      color: var(--text);
+      font-size: 1.05rem;
+      line-height: 1.9;
+      margin: 0;
+    }
 
-  /* ── ISLAND MAP SVG ── */
-  .map-container {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 32px;
-    position: relative;
-  }
-  .map-title {
-    font-size: 12px;
-    color: var(--text-faint);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
+    /* ── Summary grid ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 0 0 2rem;
+    }
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.3rem;
+      text-align: center;
+    }
+    .summary-card .value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .summary-card .label {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
 
-  /* ── STATE GRID ── */
-  .state-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
-    margin-top: 24px;
-  }
-  .state-card {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px;
-    transition: border-color 0.2s;
-  }
-  .state-card:hover { border-color: var(--gold-dim); }
-  .state-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    font-family: monospace;
-  }
-  .state-badge.desolate { background: rgba(80,80,100,0.3); color: #8888aa; border: 1px solid #444460; }
-  .state-badge.stirring { background: rgba(76,175,80,0.12); color: #78c47b; border: 1px solid #2d6e30; }
-  .state-badge.blooming { background: rgba(78,184,192,0.15); color: #6dd4da; border: 1px solid #2a7a80; }
-  .state-badge.radiant  { background: rgba(212,160,23,0.15); color: #e4b832; border: 1px solid #8a6810; }
-  .state-dot { width: 7px; height: 7px; border-radius: 50%; }
-  .state-badge.desolate .state-dot { background: #8888aa; }
-  .state-badge.stirring .state-dot { background: #78c47b; }
-  .state-badge.blooming .state-dot { background: #6dd4da; }
-  .state-badge.radiant  .state-dot { background: #e4b832; }
-  .state-card h4 { font-size: 14px; color: var(--text); margin-bottom: 6px; }
-  .state-card p { font-size: 13px; line-height: 1.6; margin: 0; }
-  .ascii-box {
-    font-family: monospace;
-    font-size: 11px;
-    color: var(--text-faint);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 12px;
-    margin: 10px 0;
-    line-height: 1.4;
-    white-space: pre;
-    overflow-x: auto;
-  }
+    /* ── System cards ── */
+    .system-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.2rem;
+      transition: border-color 0.2s;
+    }
+    .system-card:hover { border-color: var(--accent-border); }
+    .system-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .system-card-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.18rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+    .badge-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
+    .badge-green { background: var(--accent2-dim); color: var(--accent2); border: 1px solid var(--accent2-border); }
+    .badge-blue { background: var(--accent3-dim); color: var(--accent3); border: 1px solid var(--accent3-border); }
+    .badge-warm { background: var(--warm-dim); color: var(--warm); border: 1px solid var(--warm-border); }
+    .badge-mystery { background: var(--mystery-dim); color: var(--mystery); border: 1px solid var(--mystery-border); }
+    .badge-gold { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+    .badge-draft { background: rgba(110,96,80,0.15); color: var(--muted); border: 1px solid rgba(110,96,80,0.3); }
 
-  /* ── CHAPTER CARDS ── */
-  .chapter-row {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 0;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    background: var(--bg2);
-  }
-  .chapter-header {
-    padding: 20px 18px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    border-right: 1px solid var(--border);
-  }
-  .chapter-num {
-    font-size: 11px;
-    font-family: monospace;
-    color: var(--text-faint);
-    letter-spacing: 0.12em;
-    margin-bottom: 6px;
-  }
-  .chapter-jp {
-    font-size: 22px;
-    color: var(--text);
-    margin-bottom: 2px;
-    line-height: 1.2;
-  }
-  .chapter-en {
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 0.08em;
-    margin-bottom: 12px;
-  }
-  .chapter-material {
-    font-size: 12px;
-    color: var(--gold);
-    display: inline-block;
-    background: rgba(212,160,23,0.1);
-    border: 1px solid var(--gold-dim);
-    border-radius: 4px;
-    padding: 2px 8px;
-  }
-  .chapter-body { padding: 20px; }
-  .states-inline {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .state-mini {
-    padding: 8px 10px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--bg3);
-  }
-  .state-mini .label { font-size: 9px; font-family: monospace; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-  .state-mini.desolate .label { color: #8888aa; }
-  .state-mini.stirring .label { color: #78c47b; }
-  .state-mini.blooming .label { color: #6dd4da; }
-  .state-mini.radiant  .label { color: #e4b832; }
-  .state-mini p { font-size: 11px; margin: 0; line-height: 1.5; }
-  .radiant-callout {
-    background: rgba(212,160,23,0.08);
-    border: 1px solid var(--gold-dim);
-    border-radius: 6px;
-    padding: 10px 14px;
-    font-size: 12px;
-    color: var(--gold);
-    margin-top: 8px;
-  }
-  .radiant-callout strong { color: #e4b832; display: block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+    .system-card-title { font-size: 1.1rem; font-weight: 700; color: var(--heading); margin-bottom: 0.2rem; }
+    .system-card-id { font-size: 0.72rem; color: var(--muted); font-family: 'SF Mono', 'Cascadia Code', monospace; }
 
-  /* ── COST TABLE ── */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    margin: 16px 0;
-  }
-  th {
-    background: var(--bg3);
-    color: var(--text-dim);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 10px 14px;
-    text-align: left;
-    border-bottom: 2px solid var(--border);
-    font-weight: normal;
-  }
-  td {
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text-dim);
-    vertical-align: top;
-  }
-  tr:hover td { background: rgba(255,255,255,0.02); }
-  td.mat { color: var(--gold); font-family: monospace; }
-  td.qty { color: var(--text); font-family: monospace; font-weight: bold; text-align: right; }
-  td.lvl { color: var(--teal); font-family: monospace; }
-  .stage-badge {
-    display: inline-block;
-    font-size: 10px;
-    font-family: monospace;
-    padding: 2px 7px;
-    border-radius: 3px;
-    letter-spacing: 0.08em;
-  }
-  .stage-1 { background: rgba(76,175,80,0.15); color: #78c47b; border: 1px solid #2d6e30; }
-  .stage-2 { background: rgba(78,184,192,0.15); color: #6dd4da; border: 1px solid #2a7a80; }
-  .stage-3 { background: rgba(212,160,23,0.15); color: #e4b832; border: 1px solid #8a6810; }
-  tr.chapter-divider td {
-    background: var(--bg3);
-    color: var(--text-faint);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    border-top: 1px solid var(--border);
-  }
+    .field-row {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 0.3rem 1rem;
+      margin-bottom: 0.4rem;
+      align-items: baseline;
+    }
+    .field-label {
+      font-size: 0.73rem;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding-top: 0.1rem;
+    }
+    .field-value { font-size: 0.88rem; color: var(--text-secondary); }
+    .field-value.highlight { color: var(--text); }
 
-  /* ── CEREMONY FLOWCHART ── */
-  .flow-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    margin: 24px auto;
-    max-width: 560px;
-  }
-  .flow-step {
-    width: 100%;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px 20px;
-    position: relative;
-  }
-  .flow-step:hover { border-color: var(--green-dim); }
-  .flow-step .step-num {
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    background: var(--green);
-    color: var(--bg);
-    font-size: 10px;
-    font-family: monospace;
-    font-weight: bold;
-    padding: 3px 8px;
-    border-radius: 7px 0 4px 0;
-    letter-spacing: 0.08em;
-  }
-  .flow-step h4 { font-size: 13px; color: var(--text); margin-bottom: 4px; padding-top: 6px; }
-  .flow-step p { font-size: 12px; margin: 0; }
-  .flow-step .duration {
-    position: absolute;
-    top: 12px;
-    right: 14px;
-    font-size: 11px;
-    color: var(--text-faint);
-    font-family: monospace;
-  }
-  .flow-arrow {
-    width: 2px;
-    height: 20px;
-    background: linear-gradient(var(--green), var(--green-dim));
-    position: relative;
-    flex-shrink: 0;
-  }
-  .flow-arrow::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 7px solid var(--green-dim);
-  }
-  .hinata-line {
-    background: rgba(201,141,190,0.08);
-    border: 1px solid rgba(201,141,190,0.25);
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 13px;
-    color: var(--pink);
-    margin-top: 6px;
-    font-style: italic;
-  }
-  .hinata-line::before { content: 'ひなた: '; font-style: normal; font-size: 10px; letter-spacing: 0.08em; opacity: 0.7; }
+    /* ── Chapter progression ── */
+    .chapter-grid {
+      display: grid;
+      gap: 1.2rem;
+      margin: 1.5rem 0;
+    }
+    .chapter-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .chapter-card-header {
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .chapter-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .chapter-title {
+      flex: 1;
+    }
+    .chapter-name { font-size: 1rem; font-weight: 700; color: var(--heading); }
+    .chapter-area { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+    .chapter-levels {
+      font-size: 0.75rem;
+      color: var(--accent2);
+      background: var(--accent2-dim);
+      border: 1px solid var(--accent2-border);
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .chapter-card-body { padding: 1.2rem 1.4rem; }
 
-  /* ── MEMORY FRAGMENTS ── */
-  .fragments-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 24px;
-  }
-  .fragment-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .fragment-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px var(--gold-dim);
-  }
-  .fragment-top {
-    padding: 14px 18px 10px;
-    background: var(--bg3);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .fragment-ch {
-    font-size: 10px;
-    font-family: monospace;
-    letter-spacing: 0.1em;
-    color: var(--text-faint);
-  }
-  .fragment-title {
-    font-size: 13px;
-    color: var(--text-dim);
-    flex: 1;
-  }
-  .fragment-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: rgba(212,160,23,0.12);
-    border: 1px solid var(--gold-dim);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-  .fragment-body {
-    padding: 16px 18px;
-  }
-  .fragment-prose {
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.8;
-    font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Georgia', serif;
-    font-style: italic;
-    letter-spacing: 0.04em;
-    border-left: 2px solid var(--gold-dim);
-    padding-left: 14px;
-    margin-bottom: 12px;
-  }
-  .fragment-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 11px;
-    color: var(--text-faint);
-    font-family: monospace;
-  }
-  .fragment-theme { color: var(--text-faint); font-size: 11px; margin-top: 6px; }
+    /* ── Visual stages timeline ── */
+    .stage-timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      margin: 0.8rem 0 1.2rem;
+    }
+    .stage-item {
+      background: var(--surface2);
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      padding: 0.7rem 0.8rem;
+      position: relative;
+    }
+    .stage-item.climax {
+      border-color: var(--accent-border);
+      background: linear-gradient(135deg, var(--surface2), var(--accent-dim));
+    }
+    .stage-trigger {
+      font-size: 0.65rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      font-family: 'SF Mono', 'Cascadia Code', monospace;
+    }
+    .stage-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+    .stage-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .stage-arrow {
+      position: absolute;
+      right: -0.4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--border);
+      font-size: 0.7rem;
+      z-index: 1;
+    }
 
-  /* ── MATERIAL LOOP ── */
-  .loop-diagram {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    flex-wrap: wrap;
-    margin: 24px 0;
-  }
-  .loop-node {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 18px;
-    text-align: center;
-    min-width: 120px;
-  }
-  .loop-node .node-label {
-    font-size: 10px;
-    font-family: monospace;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    margin-bottom: 4px;
-  }
-  .loop-node .node-title {
-    font-size: 13px;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .loop-node .node-sub { font-size: 11px; color: var(--text-dim); }
-  .loop-node.highlight { border-color: var(--green-dim); }
-  .loop-node.highlight .node-title { color: var(--green); }
-  .loop-node.rare-node { border-color: var(--gold-dim); }
-  .loop-node.rare-node .node-title { color: var(--gold); }
-  .loop-arrow-h {
-    width: 32px;
-    height: 2px;
-    background: var(--border);
-    position: relative;
-    flex-shrink: 0;
-  }
-  .loop-arrow-h::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-left: 7px solid var(--border);
-  }
-  .loop-rare-branch {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    margin: 12px 0;
-    padding: 16px;
-    background: rgba(212,160,23,0.04);
-    border: 1px dashed var(--gold-dim);
-    border-radius: 8px;
-    font-size: 12px;
-    color: var(--text-dim);
-  }
-  .loop-rare-branch strong { color: var(--gold); }
+    /* ── Narrative trigger table ── */
+    .trigger-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+      margin: 0.8rem 0 1.4rem;
+    }
+    .trigger-table th {
+      background: var(--surface2);
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .trigger-table td {
+      padding: 0.65rem 0.9rem;
+      border-bottom: 1px solid var(--border-soft);
+      color: var(--text-secondary);
+      vertical-align: top;
+    }
+    .trigger-table tr:last-child td { border-bottom: none; }
+    .trigger-table tr:hover td { background: var(--surface2); }
+    .trigger-type {
+      display: inline-block;
+      padding: 0.12rem 0.45rem;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+    .type-npc { background: var(--accent2-dim); color: var(--accent2); }
+    .type-hinata { background: var(--mystery-dim); color: var(--mystery); }
+    .type-mystery { background: var(--warm-dim); color: var(--warm); }
+    .type-climax { background: var(--accent-dim); color: var(--accent); }
+    .type-memory { background: var(--amber-dim); color: var(--amber); }
+    .type-note { background: var(--accent3-dim); color: var(--accent3); }
+    .lv-badge {
+      font-family: 'SF Mono', 'Cascadia Code', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
 
-  /* ── MAP INTERACTION ── */
-  .interaction-list {
-    list-style: none;
-    margin: 16px 0;
-  }
-  .interaction-list li {
-    padding: 12px 16px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background: var(--bg2);
-    font-size: 13px;
-    color: var(--text-dim);
-    display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 12px;
-    align-items: start;
-  }
-  .interaction-list li strong {
-    color: var(--teal);
-    font-family: monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-  }
+    /* ── NPC idle lines ── */
+    .idle-lines {
+      background: var(--surface2);
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.5rem 0;
+    }
+    .idle-line {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border-soft);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.65;
+    }
+    .idle-line:last-child { border-bottom: none; padding-bottom: 0; }
 
-  /* ── DESIGN RATIONALE ── */
-  .errc-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    margin: 24px 0;
-  }
-  .errc-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 18px;
-  }
-  .errc-label {
-    font-size: 10px;
-    font-family: monospace;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    display: inline-block;
-  }
-  .errc-E { background: rgba(224,80,80,0.15); color: #e08080; border: 1px solid rgba(224,80,80,0.3); }
-  .errc-R1 { background: rgba(212,160,23,0.15); color: #d4a060; border: 1px solid rgba(212,160,23,0.3); }
-  .errc-R2 { background: rgba(76,175,80,0.15); color: #78c47b; border: 1px solid rgba(76,175,80,0.3); }
-  .errc-C { background: rgba(78,184,192,0.15); color: #6dd4da; border: 1px solid rgba(78,184,192,0.3); }
-  .errc-list {
-    list-style: none;
-    font-size: 12px;
-    color: var(--text-dim);
-    line-height: 1.7;
-  }
-  .errc-list li::before { content: '— '; color: var(--text-faint); }
-  .rationale-block {
-    background: var(--bg2);
-    border-left: 3px solid var(--gold);
-    padding: 16px 20px;
-    border-radius: 0 8px 8px 0;
-    margin: 20px 0;
-    font-size: 14px;
-    color: var(--text-dim);
-    line-height: 1.8;
-  }
-  .rationale-block strong { color: var(--gold); }
+    /* ── Lighthouse stages ── */
+    .lighthouse-track {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+    .lh-stage {
+      flex: 1;
+      min-width: 130px;
+      background: var(--surface2);
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      padding: 0.8rem 0.9rem;
+      text-align: center;
+    }
+    .lh-stage.active-glow { border-color: var(--amber-border); background: var(--amber-dim); }
+    .lh-ch { font-size: 0.65rem; color: var(--muted); margin-bottom: 0.35rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .lh-icon { font-size: 1.5rem; margin-bottom: 0.35rem; }
+    .lh-label { font-size: 0.73rem; color: var(--text-secondary); line-height: 1.4; }
 
-  /* ── HINATA LINES TABLE ── */
-  .lines-table {
-    margin: 16px 0;
-  }
-  .line-row {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 16px;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-    align-items: start;
-  }
-  .line-row:last-child { border-bottom: none; }
-  .line-chapter {
-    font-size: 11px;
-    font-family: monospace;
-    color: var(--text-faint);
-    letter-spacing: 0.08em;
-  }
-  .line-jp {
-    font-size: 14px;
-    color: var(--pink);
-    font-style: italic;
-    line-height: 1.7;
-    letter-spacing: 0.04em;
-  }
+    /* ── Friend schema table ── */
+    .schema-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+      margin: 0.8rem 0;
+    }
+    .schema-table th {
+      background: var(--surface2);
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .schema-table td {
+      padding: 0.6rem 0.9rem;
+      border-bottom: 1px solid var(--border-soft);
+      vertical-align: top;
+    }
+    .schema-table tr:last-child td { border-bottom: none; }
+    .field-name { font-family: 'SF Mono', 'Cascadia Code', monospace; color: var(--accent); font-size: 0.8rem; }
+    .field-type { color: var(--accent3); font-family: 'SF Mono', 'Cascadia Code', monospace; font-size: 0.78rem; }
+    .field-desc { color: var(--text-secondary); font-size: 0.82rem; }
 
-  /* ── NO-BP DECLARATION ── */
-  .declaration-box {
-    background: var(--bg2);
-    border: 2px solid var(--green-dim);
-    border-radius: 12px;
-    padding: 28px 32px;
-    margin: 24px 0;
-    text-align: center;
-  }
-  .declaration-box .decl-title {
-    font-size: 20px;
-    color: var(--green);
-    letter-spacing: 0.05em;
-    margin-bottom: 6px;
-  }
-  .declaration-box p {
-    font-size: 13px;
-    max-width: 600px;
-    margin: 6px auto;
-  }
-  .no-tags {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 16px;
-  }
-  .no-tag {
-    background: rgba(224,80,80,0.12);
-    border: 1px solid rgba(224,80,80,0.3);
-    color: #e08080;
-    font-size: 11px;
-    font-family: monospace;
-    padding: 3px 10px;
-    border-radius: 4px;
-    letter-spacing: 0.08em;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .no-tag::before { content: '✕'; font-size: 9px; opacity: 0.7; }
+    /* ── Season cards ── */
+    .season-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.9rem;
+      margin: 1rem 0;
+    }
+    .season-card {
+      background: var(--surface2);
+      border: 1px solid var(--border-soft);
+      border-radius: 9px;
+      padding: 1rem 1.1rem;
+    }
+    .season-name { font-size: 0.9rem; font-weight: 700; color: var(--heading); margin-bottom: 0.4rem; }
+    .season-detail { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.2rem; }
 
-  /* ── FOOTER ── */
-  footer {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 32px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 11px;
-    color: var(--text-faint);
-    letter-spacing: 0.06em;
-  }
-  footer a { color: var(--text-faint); text-decoration: none; }
+    /* ── Exclusion table ── */
+    .exclusion-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 1rem 0;
+    }
+    .exclusion-table th {
+      background: var(--surface2);
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .exclusion-table td {
+      padding: 0.65rem 0.9rem;
+      border-bottom: 1px solid var(--border-soft);
+      vertical-align: top;
+    }
+    .exclusion-table tr:last-child td { border-bottom: none; }
+    .excl-name { color: var(--warm); font-weight: 600; }
+    .excl-reason { color: var(--text-secondary); }
 
-  @media (max-width: 700px) {
-    .chapter-row { grid-template-columns: 1fr; }
-    .chapter-header { border-right: none; border-bottom: 1px solid var(--border); }
-    .states-inline { grid-template-columns: repeat(2,1fr); }
-    .errc-grid { grid-template-columns: 1fr; }
-    .line-row { grid-template-columns: 1fr; }
-    .interaction-list li { grid-template-columns: 1fr; }
-    .loop-arrow-h { display: none; }
-  }
-</style>
+    /* ── Callout boxes ── */
+    .callout {
+      border-radius: 8px;
+      padding: 0.9rem 1.2rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+    }
+    .callout-note { background: var(--accent3-dim); border: 1px solid var(--accent3-border); }
+    .callout-warning { background: var(--warm-dim); border: 1px solid var(--warm-border); }
+    .callout-highlight { background: var(--accent-dim); border: 1px solid var(--accent-border); }
+    .callout-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .callout-text { font-size: 0.86rem; color: var(--text-secondary); line-height: 1.65; }
+    .callout-text strong { color: var(--text); }
+
+    /* ── Phase roadmap ── */
+    .roadmap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .roadmap-phase {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.3rem;
+    }
+    .roadmap-phase-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .roadmap-phase h4 { margin-top: 0; margin-bottom: 0.5rem; }
+    .roadmap-phase p { margin: 0; font-size: 0.84rem; }
+
+    /* ── Tags ── */
+    .tag-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0; }
+    .tag {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: var(--surface2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .tag-accent { background: var(--accent-dim); color: var(--accent); border-color: var(--accent-border); }
+    .tag-green { background: var(--accent2-dim); color: var(--accent2); border-color: var(--accent2-border); }
+    .tag-blue { background: var(--accent3-dim); color: var(--accent3); border-color: var(--accent3-border); }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* ── Review checklist ── */
+    .checklist {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin: 1rem 0;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-box {
+      width: 1.1rem;
+      height: 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      .stage-timeline { grid-template-columns: repeat(2, 1fr); }
+      .season-grid { grid-template-columns: 1fr; }
+      .roadmap { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .field-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .page-header h1 { font-size: 1.7rem; }
+      .stage-timeline { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <span class="logo">輝島 / META-GAME</span>
-  <a href="#map">Island Map</a>
-  <a href="#states">Visual States</a>
-  <a href="#ceremony">Ceremony</a>
-  <a href="#memories">Memories</a>
-  <a href="#materials">Materials</a>
-  <a href="#costs">Costs</a>
-  <a href="#interaction">Interaction</a>
-  <a href="#rationale">No BP</a>
+<!-- ───────────────── 页面标题 ───────────────── -->
+<header class="page-header">
+  <div class="label">Glow Island · 元游戏设计</div>
+  <h1>元游戏层设计文档 <span class="version-badge">v2.0</span></h1>
+  <p class="subtitle">岛屿地图视觉进度 · 叙事解锁 · 灯塔元目标 · 好友进度（第二期预留）</p>
+  <p class="meta">生成日期：2026-05-13 &nbsp;|&nbsp; 语言：zh-CN &nbsp;|&nbsp; 状态：草稿</p>
+</header>
+
+<!-- ───────────────── 导航 ───────────────── -->
+<nav class="nav-tabs">
+  <a href="#philosophy" class="active">设计理念</a>
+  <a href="#systems">系统总览</a>
+  <a href="#island-map">岛屿地图进度</a>
+  <a href="#chapters">章节视觉阶段</a>
+  <a href="#narrative">叙事解锁</a>
+  <a href="#daily-reward">每日礼物</a>
+  <a href="#lighthouse">灯塔锚点</a>
+  <a href="#friends">好友系统</a>
+  <a href="#exclusions">排除项</a>
+  <a href="#checklist">评审清单</a>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <span class="hero-tag">Meta-Game Layer Design v1.0</span>
-  <h1>輝島 — <span>Glow Island</span></h1>
-  <p class="sub">Island Restoration Meta-System · 山田律 · 6 Chapters · 渉's Memory Fragments</p>
-  <div class="hero-meta">
-    <span><strong>Areas:</strong> 6 restoration zones</span>
-    <span><strong>Visual States:</strong> desolate → stirring → blooming → radiant</span>
-    <span><strong>Materials:</strong> 7 types across 6 chapters</span>
-    <span><strong>Memory Fragments:</strong> 6 journal entries (渉)</span>
-    <span><strong>Battle Pass:</strong> None · Timeless design</span>
-    <span><strong>Energy System:</strong> None</span>
-  </div>
-</div>
+<div class="container">
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- SECTION 1: ISLAND MAP SVG -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="map">
-  <h2><span class="section-num">01</span> Island Map — Visual State System</h2>
-  <div class="section-rule"></div>
-  <p>The island map is the meta-game's primary surface. Six restoration areas are laid out in a loose chain from the harbor up to the cliff and lighthouse. The lighthouse is always visible on the horizon regardless of chapter — it is the game's north star, never locked from view, never reachable until Chapter 6.</p>
-
-  <div class="map-container">
-    <div class="map-title">KAGAYAKI-JIMA — 輝島 — INTERACTIVE MAP LAYOUT</div>
-
-    <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:500px;">
-      <defs>
-        <radialGradient id="seaGrad" cx="50%" cy="50%">
-          <stop offset="0%" stop-color="#0d1e2e"/>
-          <stop offset="100%" stop-color="#080f18"/>
-        </radialGradient>
-        <radialGradient id="islandGrad" cx="45%" cy="55%">
-          <stop offset="0%" stop-color="#1a2a18"/>
-          <stop offset="100%" stop-color="#0f1f0d"/>
-        </radialGradient>
-        <radialGradient id="lighthouseGlow" cx="50%" cy="50%">
-          <stop offset="0%" stop-color="#d4a017" stop-opacity="0.5"/>
-          <stop offset="100%" stop-color="#d4a017" stop-opacity="0"/>
-        </radialGradient>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="softglow">
-          <feGaussianBlur stdDeviation="6" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="fogglow">
-          <feGaussianBlur stdDeviation="4"/>
-        </filter>
-      </defs>
-
-      <!-- Sea background -->
-      <rect width="900" height="520" fill="url(#seaGrad)"/>
-
-      <!-- Sea texture lines -->
-      <g opacity="0.08" stroke="#4ab8c0" stroke-width="1" fill="none">
-        <path d="M0,280 Q225,265 450,280 Q675,295 900,280"/>
-        <path d="M0,310 Q225,297 450,310 Q675,323 900,310"/>
-        <path d="M0,340 Q225,328 450,340 Q675,352 900,340"/>
-        <path d="M0,370 Q225,358 450,370 Q675,382 900,370"/>
-        <path d="M0,400 Q225,390 450,400 Q675,410 900,400"/>
-        <path d="M0,430 Q225,421 450,430 Q675,439 900,430"/>
-        <path d="M0,460 Q225,452 450,460 Q675,468 900,460"/>
-        <path d="M0,490 Q225,483 450,490 Q675,497 900,490"/>
-      </g>
-
-      <!-- Island body -->
-      <ellipse cx="380" cy="280" rx="280" ry="180" fill="url(#islandGrad)" opacity="0.6"/>
-
-      <!-- Connection lines between areas -->
-      <g stroke="#2a2a42" stroke-width="2" stroke-dasharray="6,4" fill="none" opacity="0.8">
-        <!-- Harbor to Pottery -->
-        <line x1="200" y1="310" x2="290" y2="255"/>
-        <!-- Pottery to Forest -->
-        <line x1="320" y1="235" x2="380" y2="220"/>
-        <!-- Forest to Stone Path -->
-        <line x1="420" y1="220" x2="480" y2="240"/>
-        <!-- Stone Path to Cliff -->
-        <line x1="530" y1="235" x2="590" y2="210"/>
-        <!-- Cliff to Lighthouse (dashed, always visible but far) -->
-        <line x1="625" y1="200" x2="780" y2="140" stroke-dasharray="4,6" opacity="0.5"/>
-      </g>
-
-      <!-- ── AREA 1: HARBOR (漁港) ── -->
-      <g filter="url(#glow)">
-        <circle cx="175" cy="320" r="52" fill="#0d1e1a" stroke="#4caf50" stroke-width="2"/>
-        <circle cx="175" cy="320" r="44" fill="#0f2218" opacity="0.8"/>
-      </g>
-      <!-- Harbor detail: dock + lantern -->
-      <g transform="translate(150,300)">
-        <rect x="0" y="18" width="50" height="6" fill="#4caf50" opacity="0.4" rx="2"/>
-        <rect x="8" y="6" width="4" height="14" fill="#4caf50" opacity="0.5"/>
-        <rect x="24" y="4" width="4" height="16" fill="#4caf50" opacity="0.5"/>
-        <rect x="40" y="8" width="4" height="12" fill="#4caf50" opacity="0.5"/>
-        <circle cx="10" cy="5" r="3" fill="#d4a017" opacity="0.9"/>
-        <circle cx="26" cy="3" r="3" fill="#d4a017" opacity="0.7"/>
-      </g>
-      <text x="175" y="380" text-anchor="middle" fill="#4caf50" font-size="13" font-family="sans-serif" opacity="0.9">漁港</text>
-      <text x="175" y="394" text-anchor="middle" fill="#4caf50" font-size="9" font-family="monospace" opacity="0.6">CH.1 · HARBOR</text>
-      <!-- State indicators -->
-      <g transform="translate(134,292)">
-        <rect x="0" y="0" width="10" height="10" rx="2" fill="#4caf50" opacity="0.9"/>
-        <rect x="13" y="0" width="10" height="10" rx="2" fill="#4ab8c0" opacity="0.9"/>
-        <rect x="26" y="0" width="10" height="10" rx="2" fill="#d4a017" opacity="0.9"/>
-        <rect x="39" y="0" width="10" height="10" rx="2" fill="#888" opacity="0.3"/>
-      </g>
-
-      <!-- ── AREA 2: POTTERY (陶芸工房) ── -->
-      <g filter="url(#glow)">
-        <circle cx="305" cy="240" r="46" fill="#0d1a16" stroke="#4caf50" stroke-width="1.5"/>
-        <circle cx="305" cy="240" r="38" fill="#0e1f14" opacity="0.8"/>
-      </g>
-      <!-- Kiln shape -->
-      <g transform="translate(282,220)">
-        <rect x="4" y="8" width="38" height="26" fill="none" stroke="#d4a017" stroke-width="1.5" rx="12" opacity="0.6"/>
-        <rect x="12" y="24" width="22" height="4" fill="#d4a017" opacity="0.4"/>
-        <rect x="18" y="14" width="10" height="10" fill="#d4a017" opacity="0.2"/>
-        <!-- chimney -->
-        <rect x="20" y="0" width="6" height="10" fill="#d4a017" opacity="0.4" rx="2"/>
-        <ellipse cx="23" cy="0" rx="5" ry="3" fill="#d4a017" opacity="0.3"/>
-      </g>
-      <text x="305" y="296" text-anchor="middle" fill="#4caf50" font-size="12" font-family="sans-serif" opacity="0.9">陶芸工房</text>
-      <text x="305" y="308" text-anchor="middle" fill="#4caf50" font-size="9" font-family="monospace" opacity="0.6">CH.2 · POTTERY</text>
-      <g transform="translate(268,212)">
-        <rect x="0" y="0" width="9" height="9" rx="2" fill="#4caf50" opacity="0.9"/>
-        <rect x="12" y="0" width="9" height="9" rx="2" fill="#4ab8c0" opacity="0.6"/>
-        <rect x="24" y="0" width="9" height="9" rx="2" fill="#888" opacity="0.3"/>
-        <rect x="36" y="0" width="9" height="9" rx="2" fill="#888" opacity="0.3"/>
-      </g>
-
-      <!-- ── AREA 3: FOREST (海辺の森) ── -->
-      <g filter="url(#glow)">
-        <circle cx="400" cy="200" r="44" fill="#0e1d12" stroke="#4caf50" stroke-width="1.5"/>
-        <circle cx="400" cy="200" r="36" fill="#0f2010" opacity="0.8"/>
-      </g>
-      <!-- Tree shapes -->
-      <g transform="translate(376,178)">
-        <polygon points="12,0 0,18 24,18" fill="#4caf50" opacity="0.4"/>
-        <polygon points="12,6 2,20 22,20" fill="#4caf50" opacity="0.5"/>
-        <rect x="10" y="18" width="4" height="8" fill="#4caf50" opacity="0.3"/>
-        <!-- Cherry blossom hint -->
-        <circle cx="36" cy="6" r="7" fill="#c98dbe" opacity="0.3"/>
-        <circle cx="44" cy="10" r="5" fill="#c98dbe" opacity="0.25"/>
-      </g>
-      <text x="400" y="253" text-anchor="middle" fill="#4caf50" font-size="12" font-family="sans-serif" opacity="0.9">海辺の森</text>
-      <text x="400" y="265" text-anchor="middle" fill="#4caf50" font-size="9" font-family="monospace" opacity="0.6">CH.3 · FOREST</text>
-      <g transform="translate(366,172)">
-        <rect x="0" y="0" width="9" height="9" rx="2" fill="#4caf50" opacity="0.6"/>
-        <rect x="12" y="0" width="9" height="9" rx="2" fill="#888" opacity="0.3"/>
-        <rect x="24" y="0" width="9" height="9" rx="2" fill="#888" opacity="0.3"/>
-        <rect x="36" y="0" width="9" height="9" rx="2" fill="#888" opacity="0.3"/>
-      </g>
-
-      <!-- ── AREA 4: STONE PATH (石畳の小道) ── -->
-      <g filter="url(#glow)">
-        <circle cx="500" cy="218" r="43" fill="#0d1a1a" stroke="#4ab8c0" stroke-width="1.5" stroke-dasharray="3,3"/>
-        <circle cx="500" cy="218" r="35" fill="#0e1c1c" opacity="0.8"/>
-      </g>
-      <!-- Paving stones -->
-      <g transform="translate(478,200)">
-        <rect x="0" y="10" width="12" height="10" fill="#4ab8c0" opacity="0.3" rx="2"/>
-        <rect x="14" y="10" width="12" height="10" fill="#4ab8c0" opacity="0.2" rx="2"/>
-        <rect x="28" y="10" width="12" height="10" fill="#4ab8c0" opacity="0.3" rx="2"/>
-        <rect x="7" y="22" width="12" height="10" fill="#4ab8c0" opacity="0.2" rx="2"/>
-        <rect x="21" y="22" width="12" height="10" fill="#4ab8c0" opacity="0.3" rx="2"/>
-      </g>
-      <text x="500" y="270" text-anchor="middle" fill="#4ab8c0" font-size="11" font-family="sans-serif" opacity="0.7">石畳の小道</text>
-      <text x="500" y="282" text-anchor="middle" fill="#4ab8c0" font-size="9" font-family="monospace" opacity="0.5">CH.4 · LOCKED</text>
-      <!-- Fog overlay on locked areas -->
-      <circle cx="500" cy="218" r="43" fill="#1a2030" opacity="0.4"/>
-      <g transform="translate(467,190)">
-        <rect x="0" y="0" width="9" height="9" rx="2" fill="#888" opacity="0.2"/>
-        <rect x="12" y="0" width="9" height="9" rx="2" fill="#888" opacity="0.2"/>
-        <rect x="24" y="0" width="9" height="9" rx="2" fill="#888" opacity="0.2"/>
-        <rect x="36" y="0" width="9" height="9" rx="2" fill="#888" opacity="0.2"/>
-      </g>
-
-      <!-- ── AREA 5: CLIFF (崖の展望台) ── -->
-      <g filter="url(#glow)" opacity="0.7">
-        <circle cx="600" cy="188" r="40" fill="#0d1818" stroke="#4ab8c0" stroke-width="1" stroke-dasharray="3,4"/>
-        <circle cx="600" cy="188" r="32" fill="#0e1a1a" opacity="0.7"/>
-      </g>
-      <!-- Cliff shape -->
-      <g transform="translate(578,168)">
-        <polygon points="22,0 0,22 44,22" fill="#4ab8c0" opacity="0.15"/>
-        <polygon points="22,4 4,22 40,22" fill="#4ab8c0" opacity="0.1"/>
-        <!-- Star hint -->
-        <circle cx="8" cy="6" r="1.5" fill="#e8d5b0" opacity="0.4"/>
-        <circle cx="34" cy="4" r="1" fill="#e8d5b0" opacity="0.3"/>
-        <circle cx="20" cy="2" r="1" fill="#e8d5b0" opacity="0.35"/>
-      </g>
-      <circle cx="600" cy="188" r="40" fill="#1a2030" opacity="0.5"/>
-      <text x="600" y="237" text-anchor="middle" fill="#4ab8c0" font-size="11" font-family="sans-serif" opacity="0.5">崖の展望台</text>
-      <text x="600" y="248" text-anchor="middle" fill="#4ab8c0" font-size="9" font-family="monospace" opacity="0.4">CH.5 · LOCKED</text>
-
-      <!-- ── LIGHTHOUSE (輝く灯台) — always visible on horizon ── -->
-      <!-- Glow halo -->
-      <circle cx="795" cy="120" r="55" fill="url(#lighthouseGlow)" opacity="0.6"/>
-      <!-- Lighthouse body -->
-      <g transform="translate(775,68)" filter="url(#glow)">
-        <!-- Tower -->
-        <rect x="14" y="14" width="12" height="52" fill="#d4a017" opacity="0.5" rx="2"/>
-        <!-- Lantern room -->
-        <polygon points="20,0 10,14 30,14" fill="#d4a017" opacity="0.8"/>
-        <rect x="8" y="14" width="24" height="10" fill="#d4a017" opacity="0.6" rx="1"/>
-        <!-- Light windows -->
-        <rect x="12" y="16" width="6" height="6" fill="#fff" opacity="0.9" rx="1"/>
-        <rect x="22" y="16" width="6" height="6" fill="#fff" opacity="0.9" rx="1"/>
-        <!-- Balcony line -->
-        <rect x="8" y="24" width="24" height="2" fill="#d4a017" opacity="0.5"/>
-        <!-- Base -->
-        <rect x="10" y="64" width="20" height="8" fill="#d4a017" opacity="0.3" rx="2"/>
-      </g>
-      <!-- Lighthouse beam sweep (purely decorative, suggests motion) -->
-      <line x1="793" y1="82" x2="650" y2="200" stroke="#d4a017" stroke-width="1.5" opacity="0.15"/>
-      <line x1="793" y1="82" x2="640" y2="210" stroke="#d4a017" stroke-width="1" opacity="0.1"/>
-      <text x="795" y="158" text-anchor="middle" fill="#d4a017" font-size="12" font-family="sans-serif" opacity="0.9">輝く灯台</text>
-      <text x="795" y="170" text-anchor="middle" fill="#d4a017" font-size="9" font-family="monospace" opacity="0.7">CH.6 · ON HORIZON</text>
-      <text x="795" y="182" text-anchor="middle" fill="#d4a017" font-size="8" font-family="monospace" opacity="0.5">ALWAYS VISIBLE</text>
-
-      <!-- Visual state legend -->
-      <g transform="translate(20,20)">
-        <rect x="0" y="0" width="180" height="100" fill="#0f0f1a" opacity="0.85" rx="6"/>
-        <text x="10" y="18" fill="#9a8870" font-size="9" font-family="monospace" letter-spacing="2">VISUAL STATES</text>
-        <rect x="10" y="26" width="8" height="8" rx="2" fill="#8888aa"/>
-        <text x="24" y="34" fill="#8888aa" font-size="10" font-family="monospace">DESOLATE</text>
-        <rect x="10" y="40" width="8" height="8" rx="2" fill="#4caf50"/>
-        <text x="24" y="48" fill="#4caf50" font-size="10" font-family="monospace">STIRRING</text>
-        <rect x="10" y="54" width="8" height="8" rx="2" fill="#4ab8c0"/>
-        <text x="24" y="62" fill="#4ab8c0" font-size="10" font-family="monospace">BLOOMING</text>
-        <rect x="10" y="68" width="8" height="8" rx="2" fill="#d4a017"/>
-        <text x="24" y="76" fill="#d4a017" font-size="10" font-family="monospace">RADIANT</text>
-        <text x="10" y="92" fill="#4a4038" font-size="9" font-family="monospace">CH1+2 restored above</text>
-      </g>
-
-      <!-- Chapter labels on connection dots -->
-      <circle cx="240" cy="285" r="4" fill="#2a2a42"/>
-      <circle cx="350" cy="222" r="4" fill="#2a2a42"/>
-      <circle cx="450" cy="210" r="4" fill="#2a2a42"/>
-      <circle cx="562" cy="222" r="4" fill="#2a2a42"/>
-    </svg>
-
-    <p style="font-size:11px;color:var(--text-faint);text-align:center;margin-top:8px;">Map schematic — Ch1 &amp; Ch2 shown as restored (stirring/blooming indicators active). Ch3–5 shown locked. Lighthouse always on horizon. Tap any area for restoration progress.</p>
-  </div>
-
-  <!-- State Indicator Key -->
-  <h3>State Indicator Key (4 squares per area)</h3>
-  <div class="state-grid">
-    <div class="state-card">
-      <span class="state-badge desolate"><span class="state-dot"></span>Desolate</span>
-      <h4>荒廃状態</h4>
-      <p>Greyscale, desaturated. Broken structures. No NPCs. The area looks abandoned and forgotten. Low-contrast fog at edges. Starting state for all chapters.</p>
-      <div class="ascii-box">  ___________
- |  .  .  .  |  &lt;- broken fixtures
- |.     .    |  &lt;- overgrown
- |_____._.___|  &lt;- cracked surfaces
- palette: grey-white, #888</div>
-    </div>
-    <div class="state-card">
-      <span class="state-badge stirring"><span class="state-dot"></span>Stirring</span>
-      <h4>目覚め状態</h4>
-      <p>First signs of life — a single light, one repaired element, gathered materials. Muted colour begins to return. Requires Stage 1 restoration (5 levels + base materials).</p>
-      <div class="ascii-box">  ___________
- |  *  .  .  |  &lt;- one light
- |. [mat]    |  &lt;- materials gathered
- |____.*.____|  &lt;- partial repair
- palette: muted green, soft gold</div>
-    </div>
-    <div class="state-card">
-      <span class="state-badge blooming"><span class="state-dot"></span>Blooming</span>
-      <h4>開花状態</h4>
-      <p>Full colour, active NPCs, restored structures. The area feels inhabited. Requires Stage 2 restoration (~half chapter levels + mid-tier materials).</p>
-      <div class="ascii-box">  ___________
- |  * @ *  * |  &lt;- NPCs active
- |* [area] * |  &lt;- full colour
- |___@_*_@___|  &lt;- restored structure
- palette: teal, green, warm cream</div>
-    </div>
-    <div class="state-card">
-      <span class="state-badge radiant"><span class="state-dot"></span>Radiant</span>
-      <h4>輝き状態</h4>
-      <p>Unique chapter visual flourish. One defining cinematic moment — lanterns, kiln fire, blossoms, star field, lighthouse beam. Final state. Triggers Memory Fragment unlock.</p>
-      <div class="ascii-box">  ___________
- |  &lt;&gt; &lt;&gt; &lt;&gt; |  &lt;- signature glow
- |* [radiant]*|  &lt;- chapter moment
- |__&lt;&gt;__&lt;&gt;___|  &lt;- full restoration
- palette: gold, chapter-specific</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- SECTION 2: VISUAL STATES PER CHAPTER -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="states">
-  <h2><span class="section-num">02</span> Chapter Visual States — Per-Area Detail</h2>
-  <div class="section-rule"></div>
-  <p>Each area transitions through four distinct visual states as the player progresses through restoration stages. Each radiant state features the ONE defining visual moment that marks the chapter's completion.</p>
-
-  <!-- CH1 -->
-  <div class="chapter-row">
-    <div class="chapter-header">
-      <span class="chapter-num">CHAPTER 01</span>
-      <span class="chapter-jp">漁港</span>
-      <span class="chapter-en">Harbor</span>
-      <span class="chapter-material">浮木 Driftwood</span>
-    </div>
-    <div class="chapter-body">
-      <div class="states-inline">
-        <div class="state-mini desolate">
-          <div class="label">Desolate</div>
-          <p>Splintered docks, half-submerged boats. Tangled nets. Broken lantern poles. Grey-white fog at water's edge. Fish-market awning torn.</p>
-        </div>
-        <div class="state-mini stirring">
-          <div class="label">Stirring</div>
-          <p>One lantern re-hung, flickering. One boat upright and cleaned. Driftwood cleared from dock boards. Muted sea-blue returns.</p>
-        </div>
-        <div class="state-mini blooming">
-          <div class="label">Blooming</div>
-          <p>Three boats moored neatly. Fish-market stalls open, dusty-red awnings. Two fishermen NPCs move the dock. Seagulls overhead. Teal water.</p>
-        </div>
-        <div class="state-mini radiant">
-          <div class="label">Radiant</div>
-          <p>All lanterns alight at dusk. Amber light in dancing water columns. Market serves grilled fish. Fisherman NPC watches light on the water.</p>
-        </div>
-      </div>
-      <div class="radiant-callout">
-        <strong>Radiant Moment</strong>
-        夕暮れ時、漁港の灯籠がひとつひとつ灯る。黄金色の光が水面に揺れる。
-        Fishing lanterns ignite one by one at dusk. Warm amber reflects in long rippling columns across the water.
+  <!-- ───────────────── 核心理念 ───────────────── -->
+  <section id="philosophy">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🏝️</div>
+      <div>
+        <h2>元游戏设计理念</h2>
+        <div class="section-sub">元游戏设计理念</div>
       </div>
     </div>
-  </div>
 
-  <!-- CH2 -->
-  <div class="chapter-row">
-    <div class="chapter-header">
-      <span class="chapter-num">CHAPTER 02</span>
-      <span class="chapter-jp">陶芸工房</span>
-      <span class="chapter-en">Pottery Studio</span>
-      <span class="chapter-material">陶土 Clay</span>
+    <div class="philosophy-card">
+      <p>元游戏层即岛屿地图本身。没有独立技能树或元进度系统；玩家的进度感来自岛屿视觉的逐步修复——废墟变为有色彩、有光、有声音的生活之地。这不是一个让人变好的系统，而是一个<strong>不催人的系统</strong>。</p>
     </div>
-    <div class="chapter-body">
-      <div class="states-inline">
-        <div class="state-mini desolate">
-          <div class="label">Desolate</div>
-          <p>Cold, cracked kiln. Pottery shards on floor. Dusty half-thrown forms on shelves. Wheel dried hard. Door on one hinge.</p>
-        </div>
-        <div class="state-mini stirring">
-          <div class="label">Stirring</div>
-          <p>Floor swept. Wheel turning slowly, cleaned. Fresh clay mound beside the wheel. Kiln exterior patched. Earthy tones return.</p>
-        </div>
-        <div class="state-mini blooming">
-          <div class="label">Blooming</div>
-          <p>Three shelves of glazed pottery (soft blue + cream). Potter works at wheel, focused. Second NPC stacks pieces. Display table outside. Leaf-green palette.</p>
-        </div>
-        <div class="state-mini radiant">
-          <div class="label">Radiant</div>
-          <p>Kiln fires up. Door ajar, deep orange light pulses out. Heat shimmer from chimney. Potter pauses, bows slightly toward kiln. Private moment.</p>
-        </div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="value">6</div>
+        <div class="label">章节 × 区域</div>
       </div>
-      <div class="radiant-callout">
-        <strong>Radiant Moment</strong>
-        窯に火が入る。扉から深い橙色の光が溢れ出す。熱気が立ち上り、島に陶芸の香りが戻ってくる。
-        The kiln fires. Deep orange light floods the courtyard. For the first time in years, the island smells of warm clay and wood-smoke.
+      <div class="summary-card">
+        <div class="value">180</div>
+        <div class="label">总关卡数</div>
+      </div>
+      <div class="summary-card">
+        <div class="value">24</div>
+        <div class="label">视觉阶段节点</div>
+      </div>
+      <div class="summary-card">
+        <div class="value">24</div>
+        <div class="label">渉日记碎片</div>
+      </div>
+      <div class="summary-card">
+        <div class="value">12</div>
+        <div class="label">ひなた情感节点</div>
+      </div>
+      <div class="summary-card">
+        <div class="value">5–10</div>
+        <div class="label">关/次小视觉变化</div>
       </div>
     </div>
-  </div>
 
-  <!-- CH3 -->
-  <div class="chapter-row">
-    <div class="chapter-header">
-      <span class="chapter-num">CHAPTER 03</span>
-      <span class="chapter-jp">海辺の森</span>
-      <span class="chapter-en">Coastal Forest</span>
-      <span class="chapter-material">苔と種 Moss &amp; Seeds</span>
+    <div class="callout callout-highlight">
+      <div class="callout-icon">💡</div>
+      <div class="callout-text"><strong>设计原则：</strong>岛屿不是一个让人变好的地方，它只是一个不催你的地方。元游戏的所有反馈机制都服务于这一核心——奖励是视觉与叙事，而非资源与数值压力。</div>
     </div>
-    <div class="chapter-body">
-      <div class="states-inline">
-        <div class="state-mini desolate">
-          <div class="label">Desolate</div>
-          <p>Path invisible under choked undergrowth. Rusted signs. Fallen branches. Dark blue-green shadow. Light barely penetrates canopy.</p>
-        </div>
-        <div class="state-mini stirring">
-          <div class="label">Stirring</div>
-          <p>Narrow path cleared (single-file width). Bright moss at path edges. One seedling in cleared patch reaching for filtered light.</p>
-        </div>
-        <div class="state-mini blooming">
-          <div class="label">Blooming</div>
-          <p>Wide defined path. Young ferns, placed stones at edges. Two NPC children running through — deliberate echo of 渉's memory. Dappled gold light.</p>
-        </div>
-        <div class="state-mini radiant">
-          <div class="label">Radiant</div>
-          <p>Cherry blossoms in full bloom create a canopy arch. Petals drift continuously. Soft pink-white light. Cliff visible at path's end.</p>
-        </div>
-      </div>
-      <div class="radiant-callout">
-        <strong>Radiant Moment</strong>
-        桜の花が一斉に開く。花びらがひなたの髪に舞い落ちる。彼女は気づかず、ただ光の中を見ている。
-        Cherry blossoms all open at once. A single petal lands on Hinata's hair. She doesn't notice — she's looking ahead at the light through the trees.
+  </section>
+
+  <!-- ───────────────── 系统总览 ───────────────── -->
+  <section id="systems">
+    <div class="section-header">
+      <div class="section-icon icon-green">📋</div>
+      <div>
+        <h2>元游戏系统总览</h2>
+        <div class="section-sub">元游戏系统总览</div>
       </div>
     </div>
-  </div>
 
-  <!-- CH4 -->
-  <div class="chapter-row">
-    <div class="chapter-header">
-      <span class="chapter-num">CHAPTER 04</span>
-      <span class="chapter-jp">石畳の小道</span>
-      <span class="chapter-en">Stone Path</span>
-      <span class="chapter-material">石畳石 Paving Stones</span>
-    </div>
-    <div class="chapter-body">
-      <div class="states-inline">
-        <div class="state-mini desolate">
-          <div class="label">Desolate</div>
-          <p>Cracked, sunken paving stones. Toppled stone lanterns, cracked glass. Weeds in every joint. Path edges eroded. Cold grey-blue.</p>
-        </div>
-        <div class="state-mini stirring">
-          <div class="label">Stirring</div>
-          <p>First section levelled. One lantern re-erected, new glass (unlit but intact). Path edges trimmed. Hand-laid stonework beauty beginning to show.</p>
-        </div>
-        <div class="state-mini blooming">
-          <div class="label">Blooming</div>
-          <p>Most path restored and level. Lanterns upright with new glass at intervals. Elder NPC walks slowly, tapping cane. Deliberate moss in joints.</p>
-        </div>
-        <div class="state-mini radiant">
-          <div class="label">Radiant</div>
-          <p>All lanterns alight at twilight in sequence. Amber chain of light stretches full path length. Stones glow warm underfoot. Ancient + cared-for.</p>
-        </div>
-      </div>
-      <div class="radiant-callout">
-        <strong>Radiant Moment</strong>
-        夕暮れに、石灯籠が一つずつ順番に灯る。その光の連なりが、森から崖まで続く。まるで星が地に落ちたような道。
-        Stone lanterns ignite in sequence at twilight — a chain of amber light stretching from forest to cliff. A landing strip for stars.
-      </div>
-    </div>
-  </div>
-
-  <!-- CH5 -->
-  <div class="chapter-row">
-    <div class="chapter-header">
-      <span class="chapter-num">CHAPTER 05</span>
-      <span class="chapter-jp">崖の展望台</span>
-      <span class="chapter-en">Cliff Lookout</span>
-      <span class="chapter-material">崖の石英 Cliff Quartz</span>
-    </div>
-    <div class="chapter-body">
-      <div class="states-inline">
-        <div class="state-mini desolate">
-          <div class="label">Desolate</div>
-          <p>Crumbling railing, missing sections. Rotted bench. Blank weathered plaques. Overcast sky perpetually — view present but grey and obscured.</p>
-        </div>
-        <div class="state-mini stirring">
-          <div class="label">Stirring</div>
-          <p>Dangerous railing blocked with rope. Bench cleared and sound. Quartz fragments at platform edge, catching light. Sky shows through cloud gaps.</p>
-        </div>
-        <div class="state-mini blooming">
-          <div class="label">Blooming</div>
-          <p>New stone railing with quartz inlays catching sunlight. Bench restored. NPC couple at the view. In the distance: the lighthouse on its rock.</p>
-        </div>
-        <div class="state-mini radiant">
-          <div class="label">Radiant</div>
-          <p>Night time-lapse. Quartz railing seems to glow from within. Stars emerge. Milky Way arcs overhead. Lighthouse beam sweeps past — first time.</p>
-        </div>
-      </div>
-      <div class="radiant-callout">
-        <strong>Radiant Moment</strong>
-        星空のタイムラプス。石英の手すりが星の光を捕まえて静かに輝く。遠くから、灯台の光が初めて海を渡ってくる。
-        A star time-lapse plays. The quartz railing glows faintly with starlight. From the distance, the lighthouse beam sweeps across the sea for the first time — a promise of what is next.
-      </div>
-    </div>
-  </div>
-
-  <!-- CH6 -->
-  <div class="chapter-row">
-    <div class="chapter-header">
-      <span class="chapter-num">CHAPTER 06</span>
-      <span class="chapter-jp">輝く灯台</span>
-      <span class="chapter-en">Lighthouse</span>
-      <span class="chapter-material">灯油 + 硝子</span>
-    </div>
-    <div class="chapter-body">
-      <div class="states-inline">
-        <div class="state-mini desolate">
-          <div class="label">Desolate</div>
-          <p>Tower intact but dark. Cottage windows boarded. Path overgrown. Cold oil stains. Feels haunted — not merely abandoned. The loneliest structure.</p>
-        </div>
-        <div class="state-mini stirring">
-          <div class="label">Stirring</div>
-          <p>Path to door cleared. One cottage window unboarded — warm empty interior visible. Lens chamber accessed, cracked glass panels stacked. Small oil lanterns around base lit.</p>
-        </div>
-        <div class="state-mini blooming">
-          <div class="label">Blooming</div>
-          <p>Cottage inhabited — Hinata moves back in. Light in windows at night. New lens glass refracts daylight as prismatic colour. Beam not yet active.</p>
-        </div>
-        <div class="state-mini radiant">
-          <div class="label">Radiant</div>
-          <p>Beam activates. Warm gold sweeps across sea and island. Each prior chapter's signature glow caught for 1 second as the beam passes. The island is whole.</p>
-        </div>
-      </div>
-      <div class="radiant-callout">
-        <strong>Radiant Moment — Game Climax</strong>
-        灯台の光が海に向かって放たれる。その光が漁港、工房、森、石畳、崖へと順番に触れていく。島全体が、ひとつの呼吸のように輝く。
-        The lighthouse beam sweeps across the sea. As it passes, each restored area — the harbor, the kiln, the blossoms, the stone path, the cliff quartz — glows for one second. The island breathes as one.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- SECTION 3: CHAPTER UNLOCK CEREMONY -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="ceremony">
-  <h2><span class="section-num">03</span> Chapter Unlock Ceremony — 6-Step Sequence</h2>
-  <div class="section-rule"></div>
-  <p>When a chapter's final level is completed, a six-step transition sequence plays. This ceremony is the emotional punctuation between chapters — it rewards completion while opening the next narrative window.</p>
-
-  <div class="flow-wrap">
-    <div class="flow-step">
-      <span class="step-num">STEP 01</span>
-      <span class="duration">0 sec</span>
-      <h4>Final Level Complete</h4>
-      <p>Level complete screen fades. Star count is displayed briefly then fades to black. The screen holds black for 0.5s — a breath before the ceremony.</p>
-    </div>
-    <div class="flow-arrow"></div>
-
-    <div class="flow-step">
-      <span class="step-num">STEP 02</span>
-      <span class="duration">3–4 sec</span>
-      <h4>Area Restoration Animation</h4>
-      <p>Chapter N transitions to its radiant state with a full-area glow animation. The chapter's signature visual plays at full screen: harbor lanterns / kiln fire / cherry blossoms / stone lanterns / star time-lapse / lighthouse beam.</p>
-    </div>
-    <div class="flow-arrow"></div>
-
-    <div class="flow-step">
-      <span class="step-num">STEP 03</span>
-      <span class="duration">2 sec</span>
-      <h4>Camera Pan to Adjacent Area</h4>
-      <p>Camera pulls back to the island map, then pans to the adjacent locked area. Fog lifts in a soft 2-second dissolve to reveal the area silhouette. Colour is still muted — desolate state. Soft swell music: single koto note, rising.</p>
-    </div>
-    <div class="flow-arrow"></div>
-
-    <div class="flow-step">
-      <span class="step-num">STEP 04</span>
-      <span class="duration">5 sec</span>
-      <h4>ひなた Hint Line</h4>
-      <p>Hinata's portrait appears at lower third. She delivers a single Japanese line about what lies ahead — teasing the next chapter's theme without spoiling the story beat. Voiced with subtitle.</p>
-    </div>
-    <div class="flow-arrow"></div>
-
-    <div class="flow-step">
-      <span class="step-num">STEP 05</span>
-      <span class="duration">1 sec</span>
-      <h4>Chapter Levels Unlock</h4>
-      <p>New chapter area glows gold briefly on the map. Three level nodes appear with a soft unlocking chime — like a music-box note. The first 3 levels of the new chapter become playable immediately.</p>
-    </div>
-    <div class="flow-arrow"></div>
-
-    <div class="flow-step">
-      <span class="step-num">STEP 06</span>
-      <span class="duration">3 sec</span>
-      <h4>Memory Fragment Unlock</h4>
-      <p>A journal page floats up from the restored area with a paper-rustle sound effect. '渉の記憶 — 第N章' fades in briefly. The page folds into the Memory Room icon in the UI. Notification: 渉の記憶に新しい記録が加わりました。</p>
-    </div>
-  </div>
-
-  <h3 style="margin-top:36px;">ひなた's Chapter Transition Lines</h3>
-  <p>One line per chapter transition. Each hints at the next area's emotional theme without spoiling the narrative. Poetic, personal, slightly hesitant.</p>
-
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:16px;">
-    <div class="lines-table">
-      <div class="line-row" style="background:var(--bg3);">
-        <span class="line-chapter">CH1 → CH2<br>漁港 → 陶芸工房</span>
-        <span class="line-jp">「次は山の向こうに工房があるんです。おじいちゃんがよく、あそこの土は魂を持っていると言っていました。」</span>
-      </div>
-      <div class="line-row">
-        <span class="line-chapter">CH2 → CH3<br>陶芸工房 → 海辺の森</span>
-        <span class="line-jp">「海辺の森、覚えてます？子どもの頃よく走り回っていたんです。今はどうなっているのか、怖くて見に行けなくて。」</span>
-      </div>
-      <div class="line-row" style="background:var(--bg3);">
-        <span class="line-chapter">CH3 → CH4<br>海辺の森 → 石畳の小道</span>
-        <span class="line-jp">「石畳の小道、もうずっと誰も歩いていないと思う。でも、きっとまだそこにあるはずだから。」</span>
-      </div>
-      <div class="line-row">
-        <span class="line-chapter">CH4 → CH5<br>石畳の小道 → 崖の展望台</span>
-        <span class="line-jp">「崖に出ると、空が全部見えるんです。晴れた夜は、星が落ちてくるみたいで。」</span>
-      </div>
-      <div class="line-row" style="background:var(--bg3);">
-        <span class="line-chapter">CH5 → CH6<br>崖の展望台 → 輝く灯台</span>
-        <span class="line-jp">「灯台には、おじいちゃんの全てが詰まってる気がして。ひとりでは、まだ上がれなかったんです。」</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- SECTION 4: MEMORY FRAGMENT COLLECTION -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="memories">
-  <h2><span class="section-num">04</span> Memory Fragment Collection — 渉の記憶</h2>
-  <div class="section-rule"></div>
-  <p>Six journal entries written by 丸山渉 — the lighthouse keeper who sent the letter to Ritsu. He was gone before the story begins, but his handwriting remains. Each entry unlocks when its chapter's restoration is complete. Together they answer: <em>why did he choose a stranger?</em></p>
-
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0;padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;">
-    <div style="font-size:12px;color:var(--text-dim);">
-      <strong style="color:var(--gold);">Trigger:</strong> Complete chapter restoration (all 3 stages)
-    </div>
-    <div style="font-size:12px;color:var(--text-dim);">
-      <strong style="color:var(--gold);">Access:</strong> Memory Room — island map top-right
-    </div>
-    <div style="font-size:12px;color:var(--text-dim);">
-      <strong style="color:var(--gold);">Completionist:</strong> All 6 → Special illustration unlocked
-    </div>
-    <div style="font-size:12px;color:var(--text-dim);">
-      <strong style="color:var(--gold);">Style:</strong> Animated journal page turn, 2s
-    </div>
-    <div style="font-size:12px;color:var(--text-dim);">
-      <strong style="color:var(--gold);">Visual:</strong> Black ink on aged cream paper
-    </div>
-    <div style="font-size:12px;color:var(--text-dim);">
-      <strong style="color:var(--gold);">Typography:</strong> Handwriting-style brushstroke font
-    </div>
-  </div>
-
-  <div class="fragments-grid">
-    <!-- Fragment 1 -->
-    <div class="fragment-card">
-      <div class="fragment-top">
-        <div class="fragment-icon">⚓</div>
+    <div class="system-card">
+      <div class="system-card-header">
+        <div class="system-card-badge badge-amber">核心系统</div>
         <div>
-          <div class="fragment-ch">CH.1 · 漁港</div>
-          <div class="fragment-title">Harbor Mornings</div>
+          <div class="system-card-title">岛屿地图视觉进度系统</div>
+          <div class="system-card-id">island_map_progression</div>
         </div>
+        <div class="system-card-badge badge-draft">草稿</div>
       </div>
-      <div class="fragment-body">
-        <div class="fragment-prose">
-          夜明け前の漁港が好きだった。まだ暗いうちから灯籠の明かりが水に揺れて、漁師たちが言葉少なに網を整える。あの静けさの中に、島の心拍があった。海の匂いと、人が働く音と。それだけで十分だった。
-        </div>
-        <div class="fragment-theme">The smell of brine before dawn. Fishermen in silence. The harbor's heartbeat.</div>
-        <div class="fragment-meta">
-          <span>92 characters</span>
-          <span>Unlocks after Ch1 complete</span>
-        </div>
-      </div>
+      <div class="field-row"><div class="field-label">玩家动机</div><div class="field-value">目睹荒废的輝島逐步恢复生机，色彩饱和度随修复进度上升</div></div>
+      <div class="field-row"><div class="field-label">回话桥接</div><div class="field-value">每次通关后岛屿地图可能触发小视觉变化；章末必有一次大变化</div></div>
+      <div class="field-row"><div class="field-label">长期目标</div><div class="field-value highlight">点亮灯塔，让輝島重新出现在地图上</div></div>
+      <div class="field-row"><div class="field-label">小变化触发</div><div class="field-value">每 5–10 关一次（N值由 progression-curve-design 确定）</div></div>
+      <div class="field-row"><div class="field-label">大变化触发</div><div class="field-value">每章（30关）完成</div></div>
+      <div class="field-row"><div class="field-label">饱和度规则</div><div class="field-value">修复前灰白色调；每次修复后饱和度上升一阶；Ch6点灯后最高饱和度</div></div>
+      <div class="field-row"><div class="field-label">重置规则</div><div class="field-value">无重置，视觉状态永久保留，单向推进</div></div>
     </div>
 
-    <!-- Fragment 2 -->
-    <div class="fragment-card">
-      <div class="fragment-top">
-        <div class="fragment-icon">碗</div>
+    <div class="system-card">
+      <div class="system-card-header">
+        <div class="system-card-badge badge-green">叙事系统</div>
         <div>
-          <div class="fragment-ch">CH.2 · 陶芸工房</div>
-          <div class="fragment-title">The Potter's Lesson</div>
+          <div class="system-card-title">叙事解锁系统</div>
+          <div class="system-card-id">narrative_unlock_system</div>
         </div>
+        <div class="system-card-badge badge-draft">草稿</div>
       </div>
-      <div class="fragment-body">
-        <div class="fragment-prose">
-          土は急かされるのを嫌う。焦れば割れる。ただ手のひらで包んで、回しながら待てばいい。人も同じかもしれない。壊れかけた心を直す方法も、きっとそれに近い——急がずに、ただそばにいることだ。
-        </div>
-        <div class="fragment-theme">Clay breaks when rushed. So does a person. Be patient. Be present.</div>
-        <div class="fragment-meta">
-          <span>88 characters</span>
-          <span>Unlocks after Ch2 complete</span>
-        </div>
-      </div>
+      <div class="field-row"><div class="field-label">玩家动机</div><div class="field-value">解锁剧情、NPC对话和日记碎片是核心回归动力——好奇心驱动</div></div>
+      <div class="field-row"><div class="field-label">节奏规则</div><div class="field-value highlight">每章30关内分布 3–5 个剧情触发点，章末必有情感高潮+视觉大变化</div></div>
+      <div class="field-row"><div class="field-label">长期目标</div><div class="field-value">集齐渉的24块日记碎片，解锁终章故事</div></div>
+      <div class="field-row"><div class="field-label">NPC idle台词</div><div class="field-value">关卡间隙随机触发，非阻断式，轻量文字气泡，温暖但不打断节奏</div></div>
     </div>
 
-    <!-- Fragment 3 -->
-    <div class="fragment-card">
-      <div class="fragment-top">
-        <div class="fragment-icon">葉</div>
+    <div class="system-card">
+      <div class="system-card-header">
+        <div class="system-card-badge badge-blue">留存系统</div>
         <div>
-          <div class="fragment-ch">CH.3 · 海辺の森</div>
-          <div class="fragment-title">ひなた in the Forest</div>
+          <div class="system-card-title">每日签到·岛屿礼物系统</div>
+          <div class="system-card-id">daily_reward_system</div>
         </div>
+        <div class="system-card-badge badge-draft">草稿</div>
       </div>
-      <div class="fragment-body">
-        <div class="fragment-prose">
-          ひなたは気づいていなかっただろう、私が木の陰から見ていたことを。あの子は夏の森を風みたいに走っていた。笑い声が枝の間に消えて、また戻ってくる。ただそれを見ていた。あれが幸せというものだった。
-        </div>
-        <div class="fragment-theme">She ran like the wind and didn't know he was watching. That was happiness.</div>
-        <div class="fragment-meta">
-          <span>95 characters</span>
-          <span>Unlocks after Ch3 complete</span>
-        </div>
-      </div>
+      <div class="field-row"><div class="field-label">玩家动机</div><div class="field-value">每天回来看码头礼物箱，感受到岛屿的声音</div></div>
+      <div class="field-row"><div class="field-label">节奏</div><div class="field-value">D1–D7精确叙事；D8–D30随机池+里程碑；D30+季节循环</div></div>
+      <div class="field-row"><div class="field-label">断签处理</div><div class="field-value highlight">软欢迎回来，不惩罚，缺席越久回来礼物越厚重</div></div>
+      <div class="field-row"><div class="field-label">推送通知</div><div class="field-value">完全可选，第3天温和询问，D30后静默（除非缺席3天以上）</div></div>
     </div>
 
-    <!-- Fragment 4 -->
-    <div class="fragment-card">
-      <div class="fragment-top">
-        <div class="fragment-icon">石</div>
+    <div class="system-card">
+      <div class="system-card-header">
+        <div class="system-card-badge badge-warm">远景锚点</div>
         <div>
-          <div class="fragment-ch">CH.4 · 石畳の小道</div>
-          <div class="fragment-title">The Empty Island Walk</div>
+          <div class="system-card-title">灯塔元目标</div>
+          <div class="system-card-id">lighthouse_meta_goal</div>
         </div>
+        <div class="system-card-badge badge-draft">草稿</div>
       </div>
-      <div class="fragment-body">
-        <div class="fragment-prose">
-          人が去った後も、石畳は残っていた。ひとりで歩くと、足音がよく響いた。静かな島は寂しくもあったが、正直でもあった。風の音、草の揺れ、遠い波。それらは誰かのためでなく、ただそこにあり続けていた。
-        </div>
-        <div class="fragment-theme">After everyone left, only the stones remained. The island was honest in its emptiness.</div>
-        <div class="fragment-meta">
-          <span>93 characters</span>
-          <span>Unlocks after Ch4 complete</span>
-        </div>
-      </div>
+      <div class="field-row"><div class="field-label">玩家动机</div><div class="field-value">从Ch1地平线隐约可见，随进度越来越清晰，光越来越强</div></div>
+      <div class="field-row"><div class="field-label">视觉规则</div><div class="field-value">6章6个可见度阶段，从浓雾轮廓到完全点亮的光柱</div></div>
+      <div class="field-row"><div class="field-label">结局状态</div><div class="field-value highlight">Ch6完成后永久保持 lighthouse_glow_always_on</div></div>
     </div>
 
-    <!-- Fragment 5 -->
-    <div class="fragment-card">
-      <div class="fragment-top">
-        <div class="fragment-icon">★</div>
+    <div class="system-card">
+      <div class="system-card-header">
+        <div class="system-card-badge badge-mystery">第二期</div>
         <div>
-          <div class="fragment-ch">CH.5 · 崖の展望台</div>
-          <div class="fragment-title">Stars and Smallness</div>
+          <div class="system-card-title">好友进度展示</div>
+          <div class="system-card-id">friend_progress_system</div>
         </div>
+        <div class="system-card-badge badge-draft">草稿</div>
       </div>
-      <div class="fragment-body">
-        <div class="fragment-prose">
-          星空の下に立つと、自分がどれほど小さいか分かる。若い頃はそれが怖かった。でも年を取るにつれて、あの小ささが楽になってきた。何も抱えなくていい、という感覚。ただの点として、宇宙の中にいる安心感。
-        </div>
-        <div class="fragment-theme">As a young man the smallness was frightening. With age it became comfort. Put down everything — just be a point in the cosmos.</div>
-        <div class="fragment-meta">
-          <span>95 characters</span>
-          <span>Unlocks after Ch5 complete</span>
-        </div>
+      <div class="field-row"><div class="field-label">玩家动机</div><div class="field-value">轻社交，无竞技压力：看朋友打到哪章</div></div>
+      <div class="field-row"><div class="field-label">第一期</div><div class="field-value highlight">仅设计数据结构，UI不实现</div></div>
+      <div class="field-row"><div class="field-label">第二期</div><div class="field-value">岛屿地图叠加好友进度气泡，接入 Game Center / Google Play</div></div>
+      <div class="field-row"><div class="field-label">设计约束</div><div class="field-value">无PvP · 无排行榜 · 无强制社交 · 完全可选</div></div>
+    </div>
+  </section>
+
+  <!-- ───────────────── 岛屿地图进度 ───────────────── -->
+  <section id="island-map">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🗺️</div>
+      <div>
+        <h2>岛屿地图视觉进度</h2>
+        <div class="section-sub">岛屿视觉进度系统</div>
       </div>
     </div>
 
-    <!-- Fragment 6 -->
-    <div class="fragment-card" style="border-color:var(--gold-dim);">
-      <div class="fragment-top" style="background:rgba(212,160,23,0.08);">
-        <div class="fragment-icon" style="background:rgba(212,160,23,0.2);border-color:var(--gold);">灯</div>
-        <div>
-          <div class="fragment-ch">CH.6 · 輝く灯台</div>
-          <div class="fragment-title">The Letter — なぜ律を選んだか</div>
-        </div>
-      </div>
-      <div class="fragment-body">
-        <div class="fragment-prose" style="border-left-color:var(--gold);">
-          あなたのことを新聞で読んだとき、理由は分からないが確信した。疲れた人間にしか、壊れた場所の美しさは見えない。島はあなたを必要としている。そして、もしかしたらあなたも、島を必要としているのかもしれないと思った。
-        </div>
-        <div class="fragment-theme" style="color:var(--gold-dim);">When I read about you in the newspaper I knew, though I could not say why. Only an exhausted person can see the beauty in a broken place.</div>
-        <div class="fragment-meta">
-          <span>103 characters</span>
-          <span style="color:var(--gold);">All 6 unlocked → Special Illustration</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-top:24px;padding:18px 22px;background:rgba(212,160,23,0.06);border:1px solid var(--gold-dim);border-radius:8px;">
-    <h3 style="margin-bottom:8px;color:var(--gold);">Completionist Reward — Special Illustration</h3>
-    <p style="font-size:13px;">When all 6 fragments are collected, a full-page illustrated scene unlocks: 渉 and a young ひなた at the lighthouse, warm evening light. Drawn in the game's pastoral illustration style. No gameplay advantage — pure narrative closure. Viewable in the Memory Room as a seventh "page". The scene shows 渉 looking out at the sea with ひなた beside him, the letter already written but not yet sent.</p>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- SECTION 5: MATERIAL COLLECTION LOOP -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="materials">
-  <h2><span class="section-num">05</span> Material Collection Loop</h2>
-  <div class="section-rule"></div>
-  <p>Materials are the currency of restoration. They drop from puzzle level completion and rare combo chains, accumulate without decay, and are spent to advance restoration stages. The loop is calm and satisfying — never urgent.</p>
-
-  <!-- Flow diagram -->
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:28px;">
-    <div style="font-size:11px;color:var(--text-faint);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;">MATERIAL COLLECTION LOOP — FLOW</div>
-
-    <!-- Main loop -->
-    <div class="loop-diagram">
-      <div class="loop-node highlight">
-        <div class="node-label">Start</div>
-        <div class="node-title">Play Level</div>
-        <div class="node-sub">Any chapter level</div>
-      </div>
-      <div class="loop-arrow-h"></div>
-      <div class="loop-node">
-        <div class="node-label">In-Level</div>
-        <div class="node-title">Build Combos</div>
-        <div class="node-sub">Match tiles, chain</div>
-      </div>
-      <div class="loop-arrow-h"></div>
-      <div class="loop-node highlight">
-        <div class="node-label">Completion</div>
-        <div class="node-title">Level Clear</div>
-        <div class="node-sub">2–5 materials drop</div>
-      </div>
-      <div class="loop-arrow-h"></div>
-      <div class="loop-node">
-        <div class="node-label">Inventory</div>
-        <div class="node-title">Materials Held</div>
-        <div class="node-sub">Soft cap: 99</div>
-      </div>
-      <div class="loop-arrow-h"></div>
-      <div class="loop-node rare-node">
-        <div class="node-label">Restoration</div>
-        <div class="node-title">Spend Materials</div>
-        <div class="node-sub">Stage 1 / 2 / 3</div>
-      </div>
-      <div class="loop-arrow-h"></div>
-      <div class="loop-node">
-        <div class="node-label">Result</div>
-        <div class="node-title">Visual Upgrade</div>
-        <div class="node-sub">desolate → radiant</div>
-      </div>
+    <div class="callout callout-note">
+      <div class="callout-icon">📐</div>
+      <div class="callout-text"><strong>核心公式：</strong>每次成功通关 → 积累进度 → 达到触发阈值 → 岛屿视觉更新 → 玩家感受到「这个地方因为我而不同了」→ 想打下一关。资源系统（沙滩币/续关）是辅助，不是驱动力。</div>
     </div>
 
-    <!-- Rare branch -->
-    <div class="loop-rare-branch">
-      <strong>Rare Drop Branch — 4+ Combo Chain</strong>
-      During a level: 4+ tile chain triggers a 15% chance of bonus material drop at level end.
-      Drop quantity: 3–8 materials (above the normal 2–5).
-      Visual cue: Glowing material icon pulses during the combo chain. Player knows the chance is active.
-      No timer. No streak required. Pure puzzle reward.
+    <h3>视觉变化触发机制</h3>
+    <div class="field-row"><div class="field-label">小变化周期</div><div class="field-value highlight">每 5–10 关触发一次（N 由 progression-curve-design 节点确定）</div></div>
+    <div class="field-row"><div class="field-label">大变化触发</div><div class="field-value highlight">每章（30关）完成时，触发一次明显的岛屿大变化</div></div>
+    <div class="field-row"><div class="field-label">饱和度曲线</div><div class="field-value">修复前灰白色调（饱和度最低）→ 每章修复后饱和度上升一阶 → Ch6点灯后达到最高饱和度（动物森友会风格柔和粉彩）</div></div>
+    <div class="field-row"><div class="field-label">声音设计</div><div class="field-value">晨风里的远处风铃声预示修复，早于场景视觉更新；每章环境音层次随修复增加</div></div>
+
+    <h3>6章·区域路径</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table class="trigger-table" style="min-width:560px">
+      <thead>
+        <tr>
+          <th>章节</th>
+          <th>区域名称</th>
+          <th>日文区域名</th>
+          <th>关卡范围</th>
+          <th>主NPC</th>
+          <th>机制解锁</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="lv-badge">Ch1</span></td>
+          <td><strong>海边码头</strong></td>
+          <td>漁港</td>
+          <td><span class="lv-badge">1–30</span></td>
+          <td>磯部健三</td>
+          <td>基础连连看 · 连击系统</td>
+        </tr>
+        <tr>
+          <td><span class="lv-badge">Ch2</span></td>
+          <td><strong>渔村中央小镇</strong></td>
+          <td>漁村</td>
+          <td><span class="lv-badge">31–60</span></td>
+          <td>桐島梅子</td>
+          <td>冰封块（1层）</td>
+        </tr>
+        <tr>
+          <td><span class="lv-badge">Ch3</span></td>
+          <td><strong>花田山坡</strong></td>
+          <td>花畑の丘</td>
+          <td><span class="lv-badge">61–90</span></td>
+          <td>海野夏帆</td>
+          <td>锁链 · 传送门 · 异形棋盘</td>
+        </tr>
+        <tr>
+          <td><span class="lv-badge">Ch4</span></td>
+          <td><strong>森林露营地</strong></td>
+          <td>森のキャンプ地</td>
+          <td><span class="lv-badge">91–120</span></td>
+          <td>（独处）</td>
+          <td>单路径通道</td>
+        </tr>
+        <tr>
+          <td><span class="lv-badge">Ch5</span></td>
+          <td><strong>温泉山谷</strong></td>
+          <td>温泉の谷</td>
+          <td><span class="lv-badge">121–150</span></td>
+          <td>丸山ひなた（核心章）</td>
+          <td>重力下落 · 方块滑落 · 局部旋转</td>
+        </tr>
+        <tr>
+          <td><span class="lv-badge">Ch6</span></td>
+          <td><strong>夜晚灯塔</strong></td>
+          <td>夜の灯台</td>
+          <td><span class="lv-badge">151–180</span></td>
+          <td>丸山冬子</td>
+          <td>扩散障碍（藤蔓/苔藓）· 全机制综合</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- ───────────────── 章节视觉阶段 ───────────────── -->
+  <section id="chapters">
+    <div class="section-header">
+      <div class="section-icon icon-gold">🎨</div>
+      <div>
+        <h2>章节视觉阶段详情</h2>
+        <div class="section-sub">章节视觉阶段（6章 × 4阶段）</div>
+      </div>
     </div>
 
-    <!-- Material types table -->
-    <div style="margin-top:16px;">
-      <table>
-        <thead>
-          <tr>
-            <th>Chapter</th>
-            <th>Material (JP)</th>
-            <th>Material (EN)</th>
-            <th>Source</th>
-            <th>Rarity</th>
-          </tr>
-        </thead>
+    <div class="callout callout-note">
+      <div class="callout-icon">📝</div>
+      <div class="callout-text"><strong>阶段命名：</strong>每章统一分为 4 个视觉阶段——<strong>荒废</strong>（初始）→ <strong>兆头</strong>（早期修复）→ <strong>萌芽</strong>（中期修复）→ <strong>章末大变化</strong>（情感高潮）。</div>
+    </div>
+
+    <div class="chapter-grid">
+
+      <!-- Ch1 -->
+      <div class="chapter-card">
+        <div class="chapter-card-header">
+          <div class="chapter-number">1</div>
+          <div class="chapter-title">
+            <div class="chapter-name">到来 — 海边码头</div>
+            <div class="chapter-area">漁港 &nbsp;·&nbsp; 主NPC：磯部健三 &nbsp;·&nbsp; 情感主轴：陌生感 · 第一次真正呼吸</div>
+          </div>
+          <div class="chapter-levels">Lv 1–30</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="stage-timeline">
+            <div class="stage-item">
+              <div class="stage-trigger">Lv 1</div>
+              <div class="stage-name">荒废</div>
+              <div class="stage-desc">码头木板腐朽，灯笼熄灭，渔船搁浅，灰白色调</div>
+            </div>
+            <div class="stage-item">
+              <div class="stage-trigger">Lv 8</div>
+              <div class="stage-name">兆头</div>
+              <div class="stage-desc">码头栈板修缮，轮子不再卡，健三鱼竿重新架起，第一抹暖色</div>
+            </div>
+            <div class="stage-item">
+              <div class="stage-trigger">Lv 18</div>
+              <div class="stage-name">萌芽</div>
+              <div class="stage-desc">灯笼点亮，码头有了颜色；告示板「请随便走走」，无署名</div>
+            </div>
+            <div class="stage-item climax">
+              <div class="stage-trigger">Lv 30 🔔</div>
+              <div class="stage-name">章末大变化</div>
+              <div class="stage-desc">渔船归位，远处灯塔轮廓首次隐约可见。律日记：「海风里有一种不急的味道。」</div>
+            </div>
+          </div>
+
+          <h4>叙事触发点</h4>
+          <table class="trigger-table">
+            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
+            <tbody>
+              <tr><td class="lv-badge">Lv 1</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>健三放下热茶：「坐吧，铃声一会儿会停的。」铃声没停，但律坐下来了。</td></tr>
+              <tr><td class="lv-badge">Lv 5</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>客房破裂的窗户被悄悄换上新玻璃，只留下一片木屑。</td></tr>
+              <tr><td class="lv-badge">Lv 10</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>门口出现一根精心保养的旧钓竿，无留言，只有沙上浅浅的脚印。</td></tr>
+              <tr><td class="lv-badge">Lv 20</td><td><span class="trigger-type type-mystery">谜题石刻</span></td><td>码头风化石刻：「りつ」。律以为是游客随手刻的，继续走了。</td></tr>
+              <tr><td class="lv-badge">Lv 30</td><td><span class="trigger-type type-climax">章末高潮</span></td><td>律日记：「海风里有一种不急的味道。我不知道那是什么。但我想待久一点。」岛屿视觉大变化。</td></tr>
+            </tbody>
+          </table>
+
+          <h4>NPC 氛围台词（随机非阻断）</h4>
+          <div class="idle-lines">
+            <div class="idle-line">律在码头反复调整行李箱的摆放角度，健三路过看了一眼，说：「能走就行。」然后继续去收网。</div>
+            <div class="idle-line">健三把一件海上漂来的东西放在码头木箱上，贴上手写标签：「来处不明，应是需要找到它的人的东西。」</div>
+            <div class="idle-line">议长在码头坐了一会儿，然后向左走了。健三在档案里记下：「山田律，通过，用时12秒。」</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ch2 -->
+      <div class="chapter-card">
+        <div class="chapter-card-header">
+          <div class="chapter-number">2</div>
+          <div class="chapter-title">
+            <div class="chapter-name">扎根 — 渔村中央小镇</div>
+            <div class="chapter-area">漁村 &nbsp;·&nbsp; 主NPC：桐島梅子 &nbsp;·&nbsp; 情感主轴：归属感初现 · 某件搁着的事突然不需要搁了</div>
+          </div>
+          <div class="chapter-levels">Lv 31–60</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="stage-timeline">
+            <div class="stage-item"><div class="stage-trigger">Lv 31</div><div class="stage-name">荒废</div><div class="stage-desc">石板路泥泞，喷泉干涸，店铺门牌褪色，梅子工作室的门卡住</div></div>
+            <div class="stage-item"><div class="stage-trigger">Lv 38</div><div class="stage-name">兆头</div><div class="stage-desc">石板路清扫，工作室的门能打开了；店铺门牌修缮，老式字迹</div></div>
+            <div class="stage-item"><div class="stage-trigger">Lv 50</div><div class="stage-name">萌芽</div><div class="stage-desc">喷泉第一次出水时水柱歪了一下然后直了；座椅修缮，健三来坐说「挺好的」</div></div>
+            <div class="stage-item climax"><div class="stage-trigger">Lv 60 🔔</div><div class="stage-name">章末大变化</div><div class="stage-desc">一片落叶绕着水柱旋了一圈飘走了。律日记：「某件一直搁着的事突然不需要搁了。」</div></div>
+          </div>
+
+          <h4>叙事触发点</h4>
+          <table class="trigger-table">
+            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
+            <tbody>
+              <tr><td class="lv-badge">Lv 33</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>梅子工作室，律的脸碗在最显眼处：「做着做着就做了这个。」</td></tr>
+              <tr><td class="lv-badge">Lv 40</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>邮箱里出现麻布包裹的陶器碎片，署名只有一个名字。</td></tr>
+              <tr><td class="lv-badge">Lv 50</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>陶艺体验：ひなた不说话，只把律的手挪到正确位置。轆轤转动声充满工房。</td></tr>
+              <tr><td class="lv-badge">Lv 55</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>梅子把律随手捏的泥块烧好了——歪歪的。「不平的东西，有时候比较稳。」</td></tr>
+              <tr><td class="lv-badge">Lv 60</td><td><span class="trigger-type type-climax">章末高潮</span></td><td>律日记：「不是高兴，是像某件一直搁着的事突然不需要搁了。我没有改这个说法。」</td></tr>
+            </tbody>
+          </table>
+
+          <h4>NPC 氛围台词</h4>
+          <div class="idle-lines">
+            <div class="idle-line">梅子把律随手捏的小泥块烧好了——歪歪的，一边厚一边薄。她把它放到律的碗旁边，只说：「不平的东西，有时候比较稳。」</div>
+            <div class="idle-line">健三在小镇中央座椅上坐了很久，什么都没说，只是看着喷泉。然后站起来，说「挺好的」，走了。</div>
+            <div class="idle-line">议长在梅子工作室门口坐了一会儿，梅子给它端了碗水，什么都没说。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ch3 -->
+      <div class="chapter-card">
+        <div class="chapter-card-header">
+          <div class="chapter-number">3</div>
+          <div class="chapter-title">
+            <div class="chapter-name">感受 — 花田山坡</div>
+            <div class="chapter-area">花畑の丘 &nbsp;·&nbsp; 主NPC：海野夏帆 &nbsp;·&nbsp; 情感主轴：情绪解冻 · 五年来第一次闻到有气味的下午</div>
+          </div>
+          <div class="chapter-levels">Lv 61–90</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="stage-timeline">
+            <div class="stage-item"><div class="stage-trigger">Lv 61</div><div class="stage-name">荒废</div><div class="stage-desc">花田杂草，瞭望台破损，野花圃荒乱，山坡石阶崩塌，绿灰色调</div></div>
+            <div class="stage-item"><div class="stage-trigger">Lv 68</div><div class="stage-name">兆头</div><div class="stage-desc">小径清理，夏帆说路好走多了；异形棋盘开始出现</div></div>
+            <div class="stage-item"><div class="stage-trigger">Lv 78</div><div class="stage-name">萌芽</div><div class="stage-desc">瞭望台修复，可以看见灯塔了（灯还是灭的）；夏帆告诉每株花「谢谢配合」</div></div>
+            <div class="stage-item climax"><div class="stage-trigger">Lv 90 🔔</div><div class="stage-name">章末大变化</div><div class="stage-desc">夏帆递来半开的花束，律眼睛酸了。日记：「在东京五年，我没有闻过任何有气味的下午。」</div></div>
+          </div>
+
+          <h4>叙事触发点</h4>
+          <table class="trigger-table">
+            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
+            <tbody>
+              <tr><td class="lv-badge">Lv 63</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>黄昏，律在森林入口发现ひなた一人坐在石头上。两人都没说话，一起等到日完全落下。</td></tr>
+              <tr><td class="lv-badge">Lv 70</td><td><span class="trigger-type type-mystery">谜题石刻</span></td><td>花田山坡第二块石刻：「二〇二六」——字体风化与码头那块完全一致。夏帆「无意中」提到渉「好像知道你会来」。</td></tr>
+              <tr><td class="lv-badge">Lv 75</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>夏帆带律走花田：「半开的花，已经是花了。」</td></tr>
+              <tr><td class="lv-badge">Lv 80</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>修复后的森林中发现ひなた留下的素描：森林全景，律的背影被小心描在角落里。</td></tr>
+              <tr><td class="lv-badge">Lv 90</td><td><span class="trigger-type type-climax">章末高潮</span></td><td>夏帆递花，律眼睛酸了，那道情绪的玻璃裂开了一条缝——不大，但是有了。</td></tr>
+            </tbody>
+          </table>
+
+          <h4>NPC 氛围台词</h4>
+          <div class="idle-lines">
+            <div class="idle-line">夏帆：「那棵松树，你经过的时候它在颤抖，是因为今天风很大。」停了一下，低头，小声说：「是我想告诉你的，不是树。」</div>
+            <div class="idle-line">夏帆带律走花田，律问是不是该等花开完？夏帆说：「半开的花，已经是花了。」</div>
+            <div class="idle-line">议长在花田路上坐着，夏帆在旁边做了一会儿记录，什么都没说。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ch4 -->
+      <div class="chapter-card">
+        <div class="chapter-card-header">
+          <div class="chapter-number">4</div>
+          <div class="chapter-title">
+            <div class="chapter-name">栖息 — 森林露营地</div>
+            <div class="chapter-area">森のキャンプ地 &nbsp;·&nbsp; 主NPC：无（独处章节）&nbsp;·&nbsp; 情感主轴：安静 · 第一次不赶时间</div>
+          </div>
+          <div class="chapter-levels">Lv 91–120</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="stage-timeline">
+            <div class="stage-item"><div class="stage-trigger">Lv 91</div><div class="stage-name">荒废</div><div class="stage-desc">营地帐篷架生锈，篝火台积灰，山路木牌腐朽，阴暗色调</div></div>
+            <div class="stage-item"><div class="stage-trigger">Lv 98</div><div class="stage-name">兆头</div><div class="stage-desc">帐篷架修复，律自己住进去了；篝火台清理，当晚就生了火</div></div>
+            <div class="stage-item"><div class="stage-trigger">Lv 108</div><div class="stage-name">萌芽</div><div class="stage-desc">小径木牌修缮（路名全是花的名字）；岔路口出现ひなた留下的符号木板</div></div>
+            <div class="stage-item climax"><div class="stage-trigger">Lv 120 🔔</div><div class="stage-name">章末大变化</div><div class="stage-desc">营地瞭望点修复，同时可见灯塔和冬子家的灯。律仰头看星空。日记：「星星很多，我不知道我还记不记得怎么浪费时间。」</div></div>
+          </div>
+
+          <h4>叙事触发点</h4>
+          <table class="trigger-table">
+            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
+            <tbody>
+              <tr><td class="lv-badge">Lv 93</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>石板路上有两种脚印，其中一种在岔路口折向律不知道的方向，消失在藤蔓里。</td></tr>
+              <tr><td class="lv-badge">Lv 100</td><td><span class="trigger-type type-note">内心日记</span></td><td>律把两块石刻位置画在日记里，想找规律，找不到。把纸合上，没再想。</td></tr>
+              <tr><td class="lv-badge">Lv 108</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>客房桌上出现无署名的信：手绘岛屿地图，点线指向灯塔，余白：「いつか、見えるようになります。」</td></tr>
+              <tr><td class="lv-badge">Lv 115</td><td><span class="trigger-type type-npc">NPC氛围</span></td><td>议长在营地边上绕了一圈，向左走了。冬子的厨房飘来饭香，律没有去找原因。</td></tr>
+              <tr><td class="lv-badge">Lv 120</td><td><span class="trigger-type type-climax">章末高潮</span></td><td>篝火夜晚，第一次不赶时间，脑子安静下来——那种安静是许久不在的一种清醒。</td></tr>
+            </tbody>
+          </table>
+
+          <h4>NPC 氛围台词</h4>
+          <div class="idle-lines">
+            <div class="idle-line">律独行的夜里在营地写日记，画面闪一行字：「我不知道什么叫够了。也不知道从什么时候起，开始觉得这样也行。」</div>
+            <div class="idle-line">议长在营地边上绕了一圈，走的时候向左走。</div>
+            <div class="idle-line">营地山路上有ひなた留下的符号木板——律看不懂，但跟着符号走，绕开了一段很陡的坡路。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ch5 -->
+      <div class="chapter-card">
+        <div class="chapter-card-header">
+          <div class="chapter-number">5</div>
+          <div class="chapter-title">
+            <div class="chapter-name">接受 — 温泉山谷</div>
+            <div class="chapter-area">温泉の谷 &nbsp;·&nbsp; 主NPC：丸山ひなた（核心章）&nbsp;·&nbsp; 情感主轴：放下 · 和解 · 第一次被「还行」说得心里暖</div>
+          </div>
+          <div class="chapter-levels">Lv 121–150</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="stage-timeline">
+            <div class="stage-item"><div class="stage-trigger">Lv 121</div><div class="stage-name">荒废</div><div class="stage-desc">温泉石道堵塞，热气散不出，木亭朽败，牌坊倒塌</div></div>
+            <div class="stage-item"><div class="stage-trigger">Lv 128</div><div class="stage-name">兆头</div><div class="stage-desc">石道修复，热气顺着石缝漫出；ひなた说「渉以前在这里教我钓鱼的」</div></div>
+            <div class="stage-item"><div class="stage-trigger">Lv 138</div><div class="stage-name">萌芽</div><div class="stage-desc">护栏修复，健三来看说「挺结实的，好」；牌坊修复，门牌是冬子用渉的字体描的</div></div>
+            <div class="stage-item climax"><div class="stage-trigger">Lv 150 🔔</div><div class="stage-name">章末大变化</div><div class="stage-desc">律第一次钓到鱼，ひなた说「还行」。灯塔轮廓清晰，温暖的光从灯室向外渗出。</div></div>
+          </div>
+
+          <h4>叙事触发点</h4>
+          <table class="trigger-table">
+            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
+            <tbody>
+              <tr><td class="lv-badge">Lv 123</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>钓鱼课：ひなた钓3条，律一条没有。她默默把一条放进律的桶。</td></tr>
+              <tr><td class="lv-badge">Lv 130</td><td><span class="trigger-type type-mystery">谜题石刻</span></td><td>第三块石刻：「灯を見る人」。律第一次将三块联系在一起：「りつ、二〇二六、灯を見る人」。ひなた：「他从来没有跟我说过这件事。」两人都沉默了。</td></tr>
+              <tr><td class="lv-badge">Lv 138</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>ひなた在木亭朗读渉的日记：「それでも灯台は消していない。光は、待っているものだと思うから。」</td></tr>
+              <tr><td class="lv-badge">Lv 145</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>ひなた把渉的第三册日记给律看：「他从来没有跟我说过这件事。」渔夫戒攥在她掌心，两人沉默很久。</td></tr>
+              <tr><td class="lv-badge">Lv 150</td><td><span class="trigger-type type-climax">章末高潮</span></td><td>「还行」两个字。前面那句「有些事不是为了证明你会」，让这两个字的重量完全不同了。</td></tr>
+            </tbody>
+          </table>
+
+          <h4>NPC 氛围台词</h4>
+          <div class="idle-lines">
+            <div class="idle-line">健三来看了看护栏，说「挺结实的，好」，然后去看了一眼温泉，点了点头，走了。</div>
+            <div class="idle-line">ひなた把渉的第三册日记给律看：「他从来没有跟我说过这件事。」渔夫戒攥在她掌心，两人沉默了很久。</div>
+            <div class="idle-line">议长在山谷入口坐了一会儿，然后跟着热气走进了温泉区。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ch6 -->
+      <div class="chapter-card">
+        <div class="chapter-card-header">
+          <div class="chapter-number" style="background:var(--amber-dim);border-color:var(--amber-border);color:var(--amber)">6</div>
+          <div class="chapter-title">
+            <div class="chapter-name">点亮 — 夜晚灯塔</div>
+            <div class="chapter-area">夜の灯台 &nbsp;·&nbsp; 主NPC：丸山冬子 &nbsp;·&nbsp; 情感主轴：孤独中的温暖 · 光出现了</div>
+          </div>
+          <div class="chapter-levels" style="color:var(--amber);border-color:var(--amber-border);background:var(--amber-dim)">Lv 151–180</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="stage-timeline">
+            <div class="stage-item"><div class="stage-trigger">Lv 151</div><div class="stage-name">荒废</div><div class="stage-desc">灯塔外壁发黑，灯室积灰，杂草覆盖，整个岛上最沉默的地方</div></div>
+            <div class="stage-item"><div class="stage-trigger">Lv 158</div><div class="stage-name">兆头</div><div class="stage-desc">外壁修缮，老白重新出来；ひなた一个人清洁灯室，积了很多年的灰</div></div>
+            <div class="stage-item"><div class="stage-trigger">Lv 168</div><div class="stage-name">萌芽</div><div class="stage-desc">灯具修复，健三找来零件；冬子每晚在灯塔旁说话，议长陪着</div></div>
+            <div class="stage-item climax"><div class="stage-trigger">Lv 180 ✨</div><div class="stage-name">章末大变化·点灯</div><div class="stage-desc">律递出点火装置，ひなた握住，停了一下，点亮了。冬子：「渉さん、見えてますよ。」岛重新出现在地图上。</div></div>
+          </div>
+
+          <h4>叙事触发点</h4>
+          <table class="trigger-table">
+            <thead><tr><th>关卡</th><th>类型</th><th>内容摘要</th></tr></thead>
+            <tbody>
+              <tr><td class="lv-badge">Lv 153</td><td><span class="trigger-type type-hinata">ひなた节点</span></td><td>律第一次到达灯塔底部，看见ひなた单手抚着石壁、仰头看上方。她没注意到律，然后转身离开了。</td></tr>
+              <tr><td class="lv-badge">Lv 160</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>冬子从储物间拿出ひなた小时候的雨衣：「放在这里好多年了，她准备好了，我就还给她。」</td></tr>
+              <tr><td class="lv-badge">Lv 168</td><td><span class="trigger-type type-memory">日记碎片</span></td><td>渉「不寄出的信」最后一段：「灯台の光は、来るべき人を呼ぶのではない。来ようとしている人に、ここに灯りがあることを、知らせるだけだ。」</td></tr>
+              <tr><td class="lv-badge">Lv 175</td><td><span class="trigger-type type-npc">NPC对话</span></td><td>健三在档案里写最后一条记录，把笔放下，站着看了很久灯塔。那是第七本记录册的最后一页。</td></tr>
+              <tr><td class="lv-badge">Lv 180</td><td><span class="trigger-type type-climax">章末高潮·结局</span></td><td>点灯仪式。什么都没说，什么都说了。灯亮后第二天：一切照常。这才是最深的治愈——世界已经在替你留着那个位置了。</td></tr>
+            </tbody>
+          </table>
+
+          <h4>NPC 氛围台词</h4>
+          <div class="idle-lines">
+            <div class="idle-line">冬子在灯塔旁坐着，说了些什么，议长在旁边听着。律路过时每次都能听到「律今天很努力」。</div>
+            <div class="idle-line">健三站在码头，看着灯塔的方向，站了两分钟，说「那先走了」，走了。</div>
+            <div class="idle-line">点灯后第二天，健三已经在倒茶，说「坐吧」，什么都没提。梅子工作室的碗还在最显眼处，律的那只没有被撤走。</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end chapter-grid -->
+  </section>
+
+  <!-- ───────────────── 叙事解锁系统 ───────────────── -->
+  <section id="narrative">
+    <div class="section-header">
+      <div class="section-icon icon-green">📖</div>
+      <div>
+        <h2>叙事解锁系统</h2>
+        <div class="section-sub">叙事解锁系统</div>
+      </div>
+    </div>
+
+    <div class="callout callout-highlight">
+      <div class="callout-icon">🎯</div>
+      <div class="callout-text"><strong>设计原则：</strong>剧情内容本身即奖励，无额外资源掉落。玩家因好奇心驱动回归，而非资源激励。所有叙事触发均为关卡通关驱动，非时间/登录驱动。</div>
+    </div>
+
+    <h3>解锁类型</h3>
+    <table class="trigger-table">
+      <thead>
+        <tr>
+          <th>解锁类型</th>
+          <th>触发机制</th>
+          <th>呈现方式</th>
+          <th>数量</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="trigger-type type-npc">NPC对话片段</span></td>
+          <td>通关特定关卡</td>
+          <td>关卡结算后文字气泡</td>
+          <td>每章 3–5 个</td>
+        </tr>
+        <tr>
+          <td><span class="trigger-type type-memory">渉日记碎片</span></td>
+          <td>关卡里程碑或每日礼物</td>
+          <td>日记本书页界面</td>
+          <td>共 24 块</td>
+        </tr>
+        <tr>
+          <td><span class="trigger-type type-hinata">ひなた情感节点</span></td>
+          <td>章节修复里程碑</td>
+          <td>过场动画或环境变化发现</td>
+          <td>共 12 个节点</td>
+        </tr>
+        <tr>
+          <td><span class="trigger-type type-climax">岛屿视觉修复</span></td>
+          <td>每 N 关 / 章末</td>
+          <td>岛屿地图视觉更新</td>
+          <td>24 个视觉节点</td>
+        </tr>
+        <tr>
+          <td><span class="trigger-type type-mystery">谜题石刻</span></td>
+          <td>Ch1/Ch3/Ch5 特定关卡</td>
+          <td>地图探索发现</td>
+          <td>3 块石刻</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>三块谜题石刻</h3>
+    <div class="system-card">
+      <table class="trigger-table">
+        <thead><tr><th>位置</th><th>内容</th><th>发现关卡</th><th>律的反应</th></tr></thead>
         <tbody>
-          <tr><td>Ch1</td><td class="mat">浮木</td><td>Driftwood</td><td>Ch1 levels</td><td>Common</td></tr>
-          <tr><td>Ch2</td><td class="mat">陶土</td><td>Clay</td><td>Ch2 levels</td><td>Common</td></tr>
-          <tr><td>Ch3</td><td class="mat">苔と種</td><td>Moss &amp; Seeds</td><td>Ch3 levels</td><td>Common</td></tr>
-          <tr><td>Ch4</td><td class="mat">石畳石</td><td>Paving Stones</td><td>Ch4 levels</td><td>Common</td></tr>
-          <tr><td>Ch5</td><td class="mat">崖の石英</td><td>Cliff Quartz</td><td>Ch5 levels</td><td>Common</td></tr>
-          <tr><td>Ch6</td><td class="mat">灯油</td><td>Lamp Oil</td><td>Ch6 levels</td><td>Common</td></tr>
-          <tr><td>Ch6</td><td class="mat">硝子</td><td>Glass</td><td>Ch6 levels (rare drop)</td><td style="color:var(--gold);">Uncommon</td></tr>
+          <tr>
+            <td>Ch1 码头附近</td>
+            <td style="font-size:1rem;font-weight:700;color:var(--mystery)">「りつ」</td>
+            <td class="lv-badge">Lv 20</td>
+            <td>以为是游客随手刻的，继续走了</td>
+          </tr>
+          <tr>
+            <td>Ch3 花田山坡</td>
+            <td style="font-size:1rem;font-weight:700;color:var(--mystery)">「二〇二六」</td>
+            <td class="lv-badge">Lv 70</td>
+            <td>意识到字体风化与第一块完全相同——这已不是游客所为</td>
+          </tr>
+          <tr>
+            <td>Ch5 灯台基石</td>
+            <td style="font-size:1rem;font-weight:700;color:var(--mystery)">「灯を見る人」</td>
+            <td class="lv-badge">Lv 130</td>
+            <td>第一次将三块联系在一起，无法确认是命运还是巧合</td>
+          </tr>
         </tbody>
       </table>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;font-size:12px;">
-      <div style="padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text-dim);">
-        <strong style="color:var(--green);display:block;font-size:10px;letter-spacing:0.1em;margin-bottom:4px;">SOFT CAP</strong>
-        99 per material type. Overflow during active play is permitted — materials collected mid-level are always granted in full.
-      </div>
-      <div style="padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text-dim);">
-        <strong style="color:var(--green);display:block;font-size:10px;letter-spacing:0.1em;margin-bottom:4px;">NO DECAY</strong>
-        Materials never expire, never decay, never devalue. The player's stockpile is always safe. Time pressure is absent by design.
-      </div>
-      <div style="padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text-dim);">
-        <strong style="color:var(--green);display:block;font-size:10px;letter-spacing:0.1em;margin-bottom:4px;">NO ENERGY</strong>
-        No energy or stamina system. The player can play as many levels as they want, whenever they want. The only gate is narrative + materials.
+      <div class="callout callout-warning" style="margin-top:0.8rem;margin-bottom:0">
+        <div class="callout-icon">🌀</div>
+        <div class="callout-text"><strong>解谜原则：</strong>游戏永远不确认这是命运安排还是巧合。答案属于玩家自己。渉日记最后一段：「灯台の光は、来るべき人を呼ぶのではない。来ようとしている人に、ここに灯りがあることを、知らせるだけだ。」</div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- SECTION 6: MATERIAL COST TABLE -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="costs">
-  <h2><span class="section-num">06</span> Restoration Costs — Chapter × Stage × Material</h2>
-  <div class="section-rule"></div>
-  <p>Three stages per chapter. Stage 1 is affordable by level 5. Stage 2 requires roughly half the chapter levels. Stage 3 requires chapter completion plus a material surplus (achieved via the rare drop mechanic).</p>
+    <h3>NPC 闲置台词系统</h3>
+    <div class="field-row"><div class="field-label">触发方式</div><div class="field-value">关卡间隙随机触发（非剧情推进，纯氛围）</div></div>
+    <div class="field-row"><div class="field-label">是否阻断</div><div class="field-value highlight">否——轻量文字气泡，温暖但不打断游戏节奏</div></div>
+    <div class="field-row"><div class="field-label">消除方式</div><div class="field-value">自动消失或点击跳过</div></div>
+  </section>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Chapter</th>
-        <th>Stage</th>
-        <th>State</th>
-        <th>Material</th>
-        <th style="text-align:right;">Qty</th>
-        <th>Min Levels</th>
-        <th>Narrative Beat</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- CH1 -->
-      <tr class="chapter-divider"><td colspan="7">Chapter 1 — 漁港 / Harbor</td></tr>
-      <tr>
-        <td>Ch1</td>
-        <td><span class="stage-badge stage-1">Stage 1</span></td>
-        <td><span class="state-badge stirring" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Stirring</span></td>
-        <td class="mat">浮木</td>
-        <td class="qty">15</td>
-        <td class="lvl">Lv 5</td>
-        <td style="font-size:12px;">Dock cleared; first lantern re-hung</td>
-      </tr>
-      <tr>
-        <td>Ch1</td>
-        <td><span class="stage-badge stage-2">Stage 2</span></td>
-        <td><span class="state-badge blooming" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Blooming</span></td>
-        <td class="mat">浮木</td>
-        <td class="qty">35</td>
-        <td class="lvl">Lv 11</td>
-        <td style="font-size:12px;">Fish market reopens; Hinata brings tea</td>
-      </tr>
-      <tr>
-        <td>Ch1</td>
-        <td><span class="stage-badge stage-3">Stage 3</span></td>
-        <td><span class="state-badge radiant" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Radiant</span></td>
-        <td class="mat">浮木</td>
-        <td class="qty">60</td>
-        <td class="lvl">Lv 22</td>
-        <td style="font-size:12px;">All lanterns lit at dusk; harbor alive</td>
-      </tr>
-      <!-- CH2 -->
-      <tr class="chapter-divider"><td colspan="7">Chapter 2 — 陶芸工房 / Pottery Studio</td></tr>
-      <tr>
-        <td>Ch2</td>
-        <td><span class="stage-badge stage-1">Stage 1</span></td>
-        <td><span class="state-badge stirring" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Stirring</span></td>
-        <td class="mat">陶土</td>
-        <td class="qty">18</td>
-        <td class="lvl">Lv 5</td>
-        <td style="font-size:12px;">Studio cleared; 渉's glazing notes found</td>
-      </tr>
-      <tr>
-        <td>Ch2</td>
-        <td><span class="stage-badge stage-2">Stage 2</span></td>
-        <td><span class="state-badge blooming" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Blooming</span></td>
-        <td class="mat">陶土</td>
-        <td class="qty">40</td>
-        <td class="lvl">Lv 12</td>
-        <td style="font-size:12px;">First new pots finished; Hinata holds one</td>
-      </tr>
-      <tr>
-        <td>Ch2</td>
-        <td><span class="stage-badge stage-3">Stage 3</span></td>
-        <td><span class="state-badge radiant" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Radiant</span></td>
-        <td class="mat">陶土</td>
-        <td class="qty">65</td>
-        <td class="lvl">Lv 24</td>
-        <td style="font-size:12px;">Kiln fires for the first time in years</td>
-      </tr>
-      <!-- CH3 -->
-      <tr class="chapter-divider"><td colspan="7">Chapter 3 — 海辺の森 / Coastal Forest</td></tr>
-      <tr>
-        <td>Ch3</td>
-        <td><span class="stage-badge stage-1">Stage 1</span></td>
-        <td><span class="state-badge stirring" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Stirring</span></td>
-        <td class="mat">苔と種</td>
-        <td class="qty">20</td>
-        <td class="lvl">Lv 5</td>
-        <td style="font-size:12px;">First path section cleared; marker stone found</td>
-      </tr>
-      <tr>
-        <td>Ch3</td>
-        <td><span class="stage-badge stage-2">Stage 2</span></td>
-        <td><span class="state-badge blooming" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Blooming</span></td>
-        <td class="mat">苔と種</td>
-        <td class="qty">45</td>
-        <td class="lvl">Lv 13</td>
-        <td style="font-size:12px;">Full path walkable; Hinata walks it in silence</td>
-      </tr>
-      <tr>
-        <td>Ch3</td>
-        <td><span class="stage-badge stage-3">Stage 3</span></td>
-        <td><span class="state-badge radiant" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Radiant</span></td>
-        <td class="mat">苔と種</td>
-        <td class="qty">70</td>
-        <td class="lvl">Lv 26</td>
-        <td style="font-size:12px;">Blossoms open all at once; petal on Hinata's hair</td>
-      </tr>
-      <!-- CH4 -->
-      <tr class="chapter-divider"><td colspan="7">Chapter 4 — 石畳の小道 / Stone Path</td></tr>
-      <tr>
-        <td>Ch4</td>
-        <td><span class="stage-badge stage-1">Stage 1</span></td>
-        <td><span class="state-badge stirring" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Stirring</span></td>
-        <td class="mat">石畳石</td>
-        <td class="qty">22</td>
-        <td class="lvl">Lv 5</td>
-        <td style="font-size:12px;">First section levelled; 丸山 stone found</td>
-      </tr>
-      <tr>
-        <td>Ch4</td>
-        <td><span class="stage-badge stage-2">Stage 2</span></td>
-        <td><span class="state-badge blooming" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Blooming</span></td>
-        <td class="mat">石畳石</td>
-        <td class="qty">50</td>
-        <td class="lvl">Lv 14</td>
-        <td style="font-size:12px;">Path connects fully; Hinata traces carved name</td>
-      </tr>
-      <tr>
-        <td>Ch4</td>
-        <td><span class="stage-badge stage-3">Stage 3</span></td>
-        <td><span class="state-badge radiant" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Radiant</span></td>
-        <td class="mat">石畳石</td>
-        <td class="qty">80</td>
-        <td class="lvl">Lv 28</td>
-        <td style="font-size:12px;">Lanterns light at dusk; they stand together without words</td>
-      </tr>
-      <!-- CH5 -->
-      <tr class="chapter-divider"><td colspan="7">Chapter 5 — 崖の展望台 / Cliff Lookout</td></tr>
-      <tr>
-        <td>Ch5</td>
-        <td><span class="stage-badge stage-1">Stage 1</span></td>
-        <td><span class="state-badge stirring" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Stirring</span></td>
-        <td class="mat">崖の石英</td>
-        <td class="qty">25</td>
-        <td class="lvl">Lv 5</td>
-        <td style="font-size:12px;">Lookout made safe; Hinata comes for the first time in years</td>
-      </tr>
-      <tr>
-        <td>Ch5</td>
-        <td><span class="stage-badge stage-2">Stage 2</span></td>
-        <td><span class="state-badge blooming" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Blooming</span></td>
-        <td class="mat">崖の石英</td>
-        <td class="qty">55</td>
-        <td class="lvl">Lv 15</td>
-        <td style="font-size:12px;">Quartz railing set; Hinata speaks of her grandfather</td>
-      </tr>
-      <tr>
-        <td>Ch5</td>
-        <td><span class="stage-badge stage-3">Stage 3</span></td>
-        <td><span class="state-badge radiant" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Radiant</span></td>
-        <td class="mat">崖の石英</td>
-        <td class="qty">85</td>
-        <td class="lvl">Lv 30</td>
-        <td style="font-size:12px;">Stars in time-lapse; lighthouse beam sweeps past first time</td>
-      </tr>
-      <!-- CH6 -->
-      <tr class="chapter-divider"><td colspan="7">Chapter 6 — 輝く灯台 / Lighthouse</td></tr>
-      <tr>
-        <td>Ch6</td>
-        <td><span class="stage-badge stage-1">Stage 1</span></td>
-        <td><span class="state-badge stirring" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Stirring</span></td>
-        <td class="mat">灯油 + 硝子</td>
-        <td class="qty">20 + 10</td>
-        <td class="lvl">Lv 5</td>
-        <td style="font-size:12px;">Path cleared; Ritsu reads 渉's last journal entry</td>
-      </tr>
-      <tr>
-        <td>Ch6</td>
-        <td><span class="stage-badge stage-2">Stage 2</span></td>
-        <td><span class="state-badge blooming" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Blooming</span></td>
-        <td class="mat">灯油 + 硝子</td>
-        <td class="qty">45 + 25</td>
-        <td class="lvl">Lv 15</td>
-        <td style="font-size:12px;">Hinata moves back in; they work on the lens together</td>
-      </tr>
-      <tr>
-        <td>Ch6</td>
-        <td><span class="stage-badge stage-3">Stage 3</span></td>
-        <td><span class="state-badge radiant" style="font-size:9px;padding:1px 6px;"><span class="state-dot"></span>Radiant</span></td>
-        <td class="mat">灯油 + 硝子</td>
-        <td class="qty">80 + 45</td>
-        <td class="lvl">Lv 30</td>
-        <td style="font-size:12px;">Beam sweeps across the sea. The island is whole. The game ends.</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Cost summary -->
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;">
-    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-dim);">
-      <strong style="color:var(--green);display:block;margin-bottom:4px;">Stage 1 Philosophy</strong>
-      Affordable by level 5 of each chapter. Normal drop rate (2–5 units/level) accumulates ~15 materials in 4–5 plays. Instant gratification — the first visual transformation comes quickly.
+  <!-- ───────────────── 每日礼物 ───────────────── -->
+  <section id="daily-reward">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🎁</div>
+      <div>
+        <h2>每日签到·岛屿礼物系统</h2>
+        <div class="section-sub">每日登录 / 岛屿礼物系统</div>
+      </div>
     </div>
-    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-dim);">
-      <strong style="color:var(--teal);display:block;margin-bottom:4px;">Stage 2 Philosophy</strong>
-      Requires ~half the chapter levels. Achievable after solid mid-chapter engagement. The second transformation rewards dedicated play without frustrating new players.
+
+    <h3>礼物节奏设计</h3>
+    <table class="trigger-table">
+      <thead><tr><th>阶段</th><th>天数范围</th><th>设计模式</th><th>关键里程碑</th></tr></thead>
+      <tbody>
+        <tr><td><strong>精确叙事期</strong></td><td class="lv-badge">D1–D7</td><td>每天一个岛屿物件+叙事风味文字，精确设计</td><td>D3日记碎片提示 · D6律第一篇日记 · D7 ひなた码头礼物</td></tr>
+        <tr><td><strong>维持期</strong></td><td class="lv-badge">D8–D30</td><td>随机池（材料偏稀有）+里程碑特殊事件</td><td>D14渉碎片 · D21律日记第2篇 · D28 ひなた特别信件</td></tr>
+        <tr><td><strong>季节循环</strong></td><td class="lv-badge">D30+</td><td>春夏秋冬各30天，限定材料+ひなた季节台词+视觉特效</td><td>每季节独特视觉叠加效果</td></tr>
+      </tbody>
+    </table>
+
+    <h3>四季礼物循环（D30+）</h3>
+    <div class="season-grid">
+      <div class="season-card">
+        <div class="season-name">🌸 春霞の島</div>
+        <div class="season-detail"><strong>限定材料：</strong>桜の花びら</div>
+        <div class="season-detail"><strong>视觉特效：</strong>樱花瓣飘落叠加层</div>
+        <div class="season-detail" style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">ひなた台词：「今年も桜が咲きましたね、律さん。去年は誰も見ていなかった桜です。」</div>
+      </div>
+      <div class="season-card">
+        <div class="season-name">☀️ 熱波の島</div>
+        <div class="season-detail"><strong>限定材料：</strong>夏蛍の光石</div>
+        <div class="season-detail"><strong>视觉特效：</strong>黄昏萤火虫发光</div>
+        <div class="season-detail" style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">ひなた台词：「夕暮れに蛍が出ます。崖の上から見るといいですよ。」</div>
+      </div>
+      <div class="season-card">
+        <div class="season-name">🍁 紅葉の島</div>
+        <div class="season-detail"><strong>限定材料：</strong>紅葉の枝</div>
+        <div class="season-detail"><strong>视觉特效：</strong>秋叶随风散落</div>
+        <div class="season-detail" style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">ひなた台词：「葉っぱが落ちると、島が少し、寂しそうに見えますね。」</div>
+      </div>
+      <div class="season-card">
+        <div class="season-name">❄️ 冬凪の島</div>
+        <div class="season-detail"><strong>限定材料：</strong>冬の霜草</div>
+        <div class="season-detail"><strong>视觉特效：</strong>晨雾霜晨效果</div>
+        <div class="season-detail" style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">ひなた台词：「冬の島は静かです。でも、その静かさが好きだと、祖父はよく言っていました。」</div>
+      </div>
     </div>
-    <div style="padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-dim);">
-      <strong style="color:var(--gold);display:block;margin-bottom:4px;">Stage 3 Philosophy</strong>
-      Requires chapter completion + material surplus. The rare drop bonus (15% on 4+ chains) is what closes the gap. Players who play well are rewarded with early access to the radiant state.
+
+    <h3>断签回归机制（软欢迎回来）</h3>
+    <table class="trigger-table">
+      <thead><tr><th>缺席时长</th><th>回归礼物</th><th>基调</th></tr></thead>
+      <tbody>
+        <tr><td>1–3天</td><td>标准礼物 + 额外材料</td><td>「おかえり、島はずっとここにいます。」</td></tr>
+        <tr><td>4–7天</td><td>稀有材料 + 日记碎片提示</td><td>温和迎接，无罪恶感</td></tr>
+        <tr><td>8天以上</td><td>章节素材包 + ひなた欢迎回来手记</td><td>岛屿以更厚重的礼物说「我们等你」</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-note">
+      <div class="callout-icon">🔔</div>
+      <div class="callout-text"><strong>推送通知设计原则：</strong>完全可选，第3天游戏后温和询问。最多每天1条，D30后静默（除非缺席3天以上）。措辞语气：岛屿视角，穏やかで、急かさない，不制造义务感。</div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- SECTION 7: MAP INTERACTION DESIGN -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="interaction">
-  <h2><span class="section-num">07</span> Map Interaction Design</h2>
-  <div class="section-rule"></div>
-  <p>The island map is the player's home screen between sessions. It should feel warm, living, and inviting — not like a level-select menu. Every interaction is designed to reinforce the restoration narrative.</p>
-
-  <ul class="interaction-list">
-    <li>
-      <strong>TAP RESTORED AREA</strong>
-      Shows area name (JP/EN), current visual state, restoration percentage, stage completion indicators, and materials held vs. needed for next stage. A small animated vignette of the area plays at the centre of the panel.
-    </li>
-    <li>
-      <strong>TAP LOCKED AREA</strong>
-      Foggy silhouette with area name visible (never invisible — the teaser is always present). A locked-chapter icon with chapter number. Tap again: "Complete [previous chapter name] to restore this area." Never hostile — curious and inviting.
-    </li>
-    <li>
-      <strong>TAP LIGHTHOUSE (Ch1–5)</strong>
-      Lighthouse is visible on the map horizon but has no interactive tap target until Ch6. In Ch1–5, tapping near the lighthouse area triggers a soft visual pulse and ひなた's ambient voice line: 「いつかあそこまで、一緒に行けたらいいですね。」 (Someday, it would be nice to go there together.)
-    </li>
-    <li>
-      <strong>TAP LIGHTHOUSE (Ch6)</strong>
-      Becomes a full interactive area with restoration panel. The lighthouse is treated like any other area — stages 1, 2, 3 — except that Stage 3 is the game's emotional climax and triggers the final animation.
-    </li>
-    <li>
-      <strong>FOG LIFT ANIMATION</strong>
-      2-second dissolve from fog to muted-colour silhouette. Fog dissolves from centre outward, like a held breath released. Soft swell music: a single sustained koto note rising. Plays during chapter unlock ceremony Step 3.
-    </li>
-    <li>
-      <strong>LONG-PRESS ANY AREA</strong>
-      Opens a full-screen area view with ambient sound from that chapter. The area is rendered at full screen in its current visual state. Peaceful — like looking at a painting. Back-tap returns to map.
-    </li>
-    <li>
-      <strong>MEMORY ROOM ACCESS</strong>
-      Top-right corner of island map. Icon is an aged journal. Shows sealed/unsealed envelope icons for each chapter's fragment. Tap unlocked fragment to view the journal page with 渉's handwriting and the animated page-turn.
-    </li>
-    <li>
-      <strong>RESTORATION PANEL</strong>
-      Material display shows: material icon + quantity held + quantity needed for next stage. Visual progress bar per stage (empty → filled as materials accumulate). Spend button greys out when levels-required condition is not yet met — no frustrating "not enough materials" blocks, just a clear "Complete more levels first" state.
-    </li>
-  </ul>
-
-  <div style="margin-top:20px;padding:16px 20px;background:rgba(74,184,192,0.06);border:1px solid rgba(74,184,192,0.25);border-radius:8px;">
-    <h3 style="color:var(--teal);margin-bottom:8px;">Lighthouse — The Horizon Rule</h3>
-    <p style="font-size:13px;">The lighthouse is visible in the game's horizon from the moment the player first sees the island map in Chapter 1. It is rendered at roughly 70% opacity, warm gold, on the right edge of the map. It does not respond to most taps. It does not have a chapter badge. It simply exists — a constant reminder of where the journey ends. This is deliberate. The player should always know where they are going, even if they cannot go there yet. The lighthouse is hope, visualised as an unreachable light on the horizon.</p>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- SECTION 8: NO BATTLE PASS — DESIGN RATIONALE -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="rationale">
-  <h2><span class="section-num">08</span> No Battle Pass — A Deliberate Design Decision</h2>
-  <div class="section-rule"></div>
-
-  <div class="declaration-box">
-    <div class="decl-title">Glow Island has no Battle Pass.</div>
-    <p>No seasonal events. No expiring content. No daily login anxiety. No competitive leaderboards. No energy system. No timers. No PvP. These are not omissions — they are choices.</p>
-    <div class="no-tags">
-      <span class="no-tag">Battle Pass</span>
-      <span class="no-tag">Seasonal Events</span>
-      <span class="no-tag">Energy System</span>
-      <span class="no-tag">Daily Login Bonus</span>
-      <span class="no-tag">Expiring Content</span>
-      <span class="no-tag">FOMO Mechanics</span>
-      <span class="no-tag">Timers</span>
-      <span class="no-tag">PvP</span>
-      <span class="no-tag">Leaderboards</span>
-      <span class="no-tag">Time-Gated Rewards</span>
+  <!-- ───────────────── 灯塔锚点 ───────────────── -->
+  <section id="lighthouse">
+    <div class="section-header">
+      <div class="section-icon icon-warm">🏮</div>
+      <div>
+        <h2>灯塔元目标·远景锚点</h2>
+        <div class="section-sub">灯塔终极目标 — 视觉锚点</div>
+      </div>
     </div>
-  </div>
 
-  <h3 style="margin-top:32px;">ERRC Framework — What We Eliminated, Reduced, Raised, Created</h3>
-  <div class="errc-grid">
-    <div class="errc-card">
-      <span class="errc-label errc-E">Eliminate</span>
-      <ul class="errc-list">
-        <li>FOMO pressure from expiring content</li>
-        <li>Time-gated materials and rewards</li>
-        <li>Daily login anxiety and streaks</li>
-        <li>Competitive leaderboards and PvP stress</li>
-        <li>Energy systems that punish sustained play</li>
-        <li>Battle pass FOMO (fear of missing a tier)</li>
-        <li>Seasonal re-skinning that breaks the island's sense of a real place</li>
-      </ul>
+    <div class="philosophy-card">
+      <p>从Ch1开始，地平线上就隐约可见灯塔的轮廓——近而不可达，光而未点。随着修复进度，灯塔越来越清晰，光越来越强，形成六章贯穿的视觉驱动力。灯塔不只是目标，它是<strong>情感锚点</strong>——每次修复，灯塔窗里的光多一点点。</p>
     </div>
-    <div class="errc-card">
-      <span class="errc-label errc-R1">Reduce</span>
-      <ul class="errc-list">
-        <li>External motivation mechanisms (rewards for playing, not reasons to play)</li>
-        <li>Engagement as an obligation to the game</li>
-        <li>Monetisation friction in core restoration loop</li>
-        <li>Interruption of narrative flow by UI systems</li>
-      </ul>
+
+    <h3>灯塔可见度·六阶段</h3>
+    <div class="lighthouse-track">
+      <div class="lh-stage">
+        <div class="lh-ch">第1章</div>
+        <div class="lh-icon">🌫️</div>
+        <div class="lh-label">浓雾中仅见轮廓，灯完全熄灭</div>
+      </div>
+      <div class="lh-stage">
+        <div class="lh-ch">第2章</div>
+        <div class="lh-icon">🌁</div>
+        <div class="lh-label">薄雾中形状渐显，仍无光</div>
+      </div>
+      <div class="lh-stage">
+        <div class="lh-ch">第3章</div>
+        <div class="lh-icon">🏚️</div>
+        <div class="lh-label">轮廓清晰，灯室有隐约暖光透出</div>
+      </div>
+      <div class="lh-stage">
+        <div class="lh-ch">第4章</div>
+        <div class="lh-icon">🏠</div>
+        <div class="lh-label">灯塔清晰，光晕可见，灯尚未点亮</div>
+      </div>
+      <div class="lh-stage">
+        <div class="lh-ch">第5章</div>
+        <div class="lh-icon">🗼</div>
+        <div class="lh-label">灯塔完整，暖光充盈灯室，准备就绪感</div>
+      </div>
+      <div class="lh-stage active-glow">
+        <div class="lh-ch">第6章</div>
+        <div class="lh-icon">💡</div>
+        <div class="lh-label">灯亮，光柱扫过夜海，岛重新出现在地图上</div>
+      </div>
     </div>
-    <div class="errc-card">
-      <span class="errc-label errc-R2">Raise</span>
-      <ul class="errc-list">
-        <li>Intrinsic motivation through narrative investment</li>
-        <li>Completionist satisfaction as primary engagement driver</li>
-        <li>Emotional weight of each restoration moment</li>
-        <li>Player trust — the game does not manipulate</li>
-        <li>The feeling that the island is a real place</li>
-      </ul>
+
+    <h3>声音设计原则</h3>
+    <div class="callout callout-note">
+      <div class="callout-icon">🎵</div>
+      <div class="callout-text"><strong>声音先于视觉：</strong>晨风里的远处风铃声预示修复，早于场景更新。每章环境音层次随修复进度叠加——海浪声、木屐踏地声、风铃声、三味线、蝉声随时节变化。</div>
     </div>
-    <div class="errc-card">
-      <span class="errc-label errc-C">Create</span>
-      <ul class="errc-list">
-        <li>Finite narrative arc as the engagement spine</li>
-        <li>Memory fragment collection as the completionist hook</li>
-        <li>A game with a genuine ending — narrative closure</li>
-        <li>JOMO (Joy of Missing Out) — calm, unchased experience</li>
-        <li>No-pressure restoration loop that respects player time</li>
-      </ul>
+
+    <h3>章节衔接预告</h3>
+    <table class="trigger-table">
+      <thead><tr><th>章节衔接</th><th>霧中预告描述</th></tr></thead>
+      <tbody>
+        <tr><td>Ch1 → Ch2</td><td>霧の中に、窯の煙がほんの少し見える。</td></tr>
+        <tr><td>Ch2 → Ch3</td><td>石畳の先に、緑の影。</td></tr>
+        <tr><td>Ch3 → Ch4</td><td>木々の間から、灰色の石が並んでいる。</td></tr>
+        <tr><td>Ch4 → Ch5</td><td>道の果てに、崖の縁。その向こうに、海。</td></tr>
+        <tr><td>Ch5 → Ch6</td><td>霧が晴れると、灯台の輪郭がはっきりと見えた。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ───────────────── 好友系统 ───────────────── -->
+  <section id="friends">
+    <div class="section-header">
+      <div class="section-icon icon-mystery">👥</div>
+      <div>
+        <h2>好友进度展示系统</h2>
+        <div class="section-sub">好友进度系统 — 第二期预留</div>
+      </div>
     </div>
-  </div>
 
-  <div class="rationale-block">
-    <strong>Why Timeless &gt; Seasonal</strong><br>
-    Seasonal content requires Kagayaki-jima to be periodically re-dressed for marketing events. In January it would wear new year's decorations. In October it would wear autumn leaves scheduled to expire on November 1st. This would destroy the most important thing about the island: the sense that it was always there, that it has real history, that the player's restoration work has permanent meaning. A battle pass would make 渉's story a backdrop for limited-time cosmetics. The lighthouse would become a banner ad for a season. We refuse this.
-  </div>
+    <div class="callout callout-warning">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-text"><strong>第一期状态：</strong>仅设计数据结构，UI不实现。以下字段在后端预留，供第二期接入 Game Center / Google Play 后使用。</div>
+    </div>
 
-  <div class="rationale-block">
-    <strong>What Replaces FOMO: Completionist Satisfaction + Narrative Closure</strong><br>
-    FOMO (Fear of Missing Out) works by creating artificial scarcity. Limited-time content leverages anxiety as an engagement mechanism. Glow Island replaces this with a fundamentally different hook: the desire to know the end of the story. 渉's six journal entries are the most valuable content in the game, and they will never expire. The special illustration that unlocks when all six are collected will be available to every player, at every point in the future, who completes the restoration arc. This is not a soft replacement for FOMO — it is a direct rejection of it.
-  </div>
+    <h3>好友数据结构（第一期预留字段）</h3>
+    <table class="schema-table">
+      <thead><tr><th>字段名</th><th>类型</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td class="field-name">user_id</td><td class="field-type">string</td><td class="field-desc">玩家唯一标识符</td></tr>
+        <tr><td class="field-name">display_name</td><td class="field-type">string</td><td class="field-desc">显示名称</td></tr>
+        <tr><td class="field-name">current_chapter</td><td class="field-type">integer (1–6)</td><td class="field-desc">当前所在章节</td></tr>
+        <tr><td class="field-name">current_level</td><td class="field-type">integer (1–180)</td><td class="field-desc">当前关卡编号</td></tr>
+        <tr><td class="field-name">island_stage</td><td class="field-type">integer (1–24)</td><td class="field-desc">当前岛屿视觉阶段（6章×4阶段=24节点）</td></tr>
+        <tr><td class="field-name">last_active_at</td><td class="field-type">ISO8601 timestamp</td><td class="field-desc">最后活跃时间</td></tr>
+        <tr><td class="field-name">opt_in_social</td><td class="field-type">boolean</td><td class="field-desc">是否同意显示好友进度（默认 false）</td></tr>
+        <tr><td class="field-name">avatar_preset_id</td><td class="field-type">string</td><td class="field-desc">头像预设ID</td></tr>
+      </tbody>
+    </table>
 
-  <div class="rationale-block">
-    <strong>The Natural Finite Endpoint</strong><br>
-    The lighthouse beam activation is the game's intended ending. After this, the island is whole. The player has read 渉's final letter. They understand why he chose Ritsu. They have watched ひなた's face in the rotating light of the restored lamp room. The game does not extend past this with a post-game grind or new chapter unlock. There is no "Season 2." The island is complete. The player is free to revisit — to walk through every restored area, to re-read the memory fragments in order, to sit on the restored bench at the cliff lookout and watch the stars. But there is no pressure. The island will always be there. It will always be ready. Just as it waited for Ritsu, it will wait for you.
-  </div>
+    <h3>第二期 UI 设计规格</h3>
+    <div class="field-row"><div class="field-label">接入平台</div><div class="field-value">Game Center (iOS) · Google Play Games (Android)</div></div>
+    <div class="field-row"><div class="field-label">界面位置</div><div class="field-value">岛屿地图界面，好友进度气泡叠加在对应章节区域</div></div>
+    <div class="field-row"><div class="field-label">显示内容</div><div class="field-value highlight">头像 + 当前章节名称（不显示具体关卡数，避免比较压力）</div></div>
+    <div class="field-row"><div class="field-label">互动方式</div><div class="field-value">点击好友气泡可发送鼓励表情（无竞争性语言）</div></div>
+    <div class="field-row"><div class="field-label">隐私设置</div><div class="field-value">完全可选，默认不显示好友信息</div></div>
 
-  <div class="rationale-block">
-    <strong>Long-Term Engagement from a Finite Experience</strong><br>
-    A game with a genuine ending creates something rare in mobile: <em>recommendation value</em>. Players who complete Glow Island will recommend it. They will say: "I finished it, it was beautiful, it has an ending, you should play it." This is a different engagement model from retention-at-all-costs. We are building a game that players finish with satisfaction rather than abandon from fatigue. The long-term engagement is not from the players who play indefinitely — it is from the players who finish, recommend, and return to replay from the beginning because they want to re-experience 渉's story knowing what they now know.
-  </div>
-</section>
+    <h3>社交设计约束</h3>
+    <div class="tag-list">
+      <span class="tag" style="background:rgba(200,116,58,0.15);color:var(--warm);border-color:var(--warm-border)">禁止 PvP</span>
+      <span class="tag" style="background:rgba(200,116,58,0.15);color:var(--warm);border-color:var(--warm-border)">禁止排行榜</span>
+      <span class="tag" style="background:rgba(200,116,58,0.15);color:var(--warm);border-color:var(--warm-border)">禁止强制社交</span>
+      <span class="tag-green">仅可选的鼓励表情</span>
+      <span class="tag-green">默认不显示好友信息</span>
+    </div>
+  </section>
 
-<!-- FOOTER -->
-<footer>
-  <span>輝島 · Glow Island · Meta-Game Layer Design</span>
-  <span>Node: meta-game-design · Status: in-review · 2026-05-08</span>
-</footer>
+  <!-- ───────────────── 排除项 ───────────────── -->
+  <section id="exclusions">
+    <div class="section-header">
+      <div class="section-icon icon-warm">🚫</div>
+      <div>
+        <h2>设计排除项</h2>
+        <div class="section-sub">排除系统 — 治愈调性保护</div>
+      </div>
+    </div>
 
+    <div class="callout callout-warning">
+      <div class="callout-icon">🛡️</div>
+      <div class="callout-text"><strong>治愈调性保护：</strong>以下系统被明确排除，任何未来迭代均不得重新引入。Glow Island的差异化来自于「不催人、不比较、不施压」的体验承诺。</div>
+    </div>
+
+    <table class="exclusion-table">
+      <thead><tr><th>排除系统</th><th>排除原因</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="excl-name">独立技能树</td>
+          <td class="excl-reason">岛屿地图本身就是视觉化元进度展示，不需要额外复杂系统，增加认知负担</td>
+        </tr>
+        <tr>
+          <td class="excl-name">限时活动 / 时间限制元玩法</td>
+          <td class="excl-reason">保持治愈调性，排除一切时间压力——岛不催人</td>
+        </tr>
+        <tr>
+          <td class="excl-name">PvP / 排行榜</td>
+          <td class="excl-reason">治愈游戏核心价值观：不催人，不比较；竞争机制与叙事调性根本冲突</td>
+        </tr>
+        <tr>
+          <td class="excl-name">体力 / 生命值系统</td>
+          <td class="excl-reason">无体力是产品核心差异化承诺（F-004），与竞品的最根本区别</td>
+        </tr>
+        <tr>
+          <td class="excl-name">强制社交 / 公会义务</td>
+          <td class="excl-reason">社交完全可选；好友功能第二期才实现且仅为软激励，绝不强制</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ───────────────── 评审清单 ───────────────── -->
+  <section id="checklist">
+    <div class="section-header">
+      <div class="section-icon icon-gold">✅</div>
+      <div>
+        <h2>评审清单</h2>
+        <div class="section-sub">审批清单（人工关卡）</div>
+      </div>
+    </div>
+
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div>岛屿地图视觉变化节点与关卡通关进度精确对齐（每N关一次，N由progression-curve-design确定）</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div>6章节各自的岛屿视觉阶段描述清晰（荒废/兆头/萌芽/章末大变化 四阶段各有明确视觉状态说明）</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div>章末必有明显视觉大变化（情感高潮锚点）——6章×1次章末大变化均已定义</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div>日记碎片解锁触发机制与关卡节点对应关系已定义（总24块，触发方式：关卡里程碑+每日礼物+ひなた节点）</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div>好友进度展示（第二期）所需的数据结构字段已在JSON中预留（8个字段，含 opt_in_social 默认false）</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div>NPC idle台词系统设计为非阻断式（随机触发，轻量气泡，自动消失或点击跳过）</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div>设计排除项完整列出（技能树/限时活动/PvP/体力系统/强制社交）</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div>灯塔远景锚点6阶段可见度描述清晰，Ch6点灯后永久保持 lighthouse_glow_always_on</div>
+      </div>
+      <div class="check-item">
+        <div class="check-box"></div>
+        <div>每章3–5个叙事触发点分布均匀，章末必有一个情感高潮（6章均已定义，符合节奏要求）</div>
+      </div>
+    </div>
+
+    <!-- Phase Roadmap -->
+    <h3 style="margin-top:2rem">阶段路线图</h3>
+    <div class="roadmap">
+      <div class="roadmap-phase">
+        <div class="roadmap-phase-label">第一期 — Web Demo</div>
+        <h4 style="color:var(--accent2)">核心系统</h4>
+        <p>岛屿地图视觉进度 · 叙事解锁（6章全部内容）· 每日礼物（D1–D7精确）· 灯塔远景锚点 · 好友系统数据结构预留（UI不实现）</p>
+      </div>
+      <div class="roadmap-phase">
+        <div class="roadmap-phase-label">第二期 — iOS / Android</div>
+        <h4 style="color:var(--amber)">扩展系统</h4>
+        <p>接入 Game Center / Google Play · 好友进度展示UI实现 · 季节系统完整运营 · D30+季节循环活化</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p style="text-align:center;font-size:0.78rem;color:var(--muted)">
+      Glow Island &nbsp;·&nbsp; 元游戏层设计 v2.0 &nbsp;·&nbsp; 生成日期：2026-05-13 &nbsp;·&nbsp; 状态：草稿（待人工审批）
+    </p>
+  </section>
+
+</div><!-- end container -->
 </body>
 </html>

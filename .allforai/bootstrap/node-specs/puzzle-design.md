@@ -1,26 +1,57 @@
 ---
 node: puzzle-design
+capability: game-design
 discipline_owner: level-designer
 human_gate: true
+hard_blocked_by: [level-design]
+unlocks: [game-design-finalize]
+approval_record_path: .allforai/game-design/approval-records.json
 exit_artifacts:
   - .allforai/game-design/puzzle-design.html
   - .allforai/game-design/systems/puzzle-design.json
+review_checklist:
+  - 消除机制定义完整（最大路径长度、转折规则）
+  - Combo计时器参数与爽快感目标一致（倒计时曲线已定义）
+  - 4种特殊块触发条件与效果完整定义，无歧义
+  - 6章机制解锁时间表覆盖全部特殊块类型
+  - 关卡难度节奏通过教学节拍与步调QA验证
 ---
 
-# Task: 谜题机制设计文档（HTML + JSON）
+# Goal
 
-## Context Pull
-- 读取 `.allforai/game-design/puzzle-mechanics-spec.json`（v2.0，含分章解锁）
-- 读取 `.allforai/game-design/level-design.json`（前10关验证教学设计）
+Execute puzzle-design for this project.
 
-## Output
+> **Non-interactive execution.** All design decisions are recorded in `.allforai/`.
 
-**puzzle-design.html** — 包含：
-1. 连连看路径规则（BFS ≤2转弯）
-2. 20种图块类型表（T01-T20，日式自然主题）
-3. 4种特殊块机制（炸弹/十字行消/自动连/重排）
-4. 章节障碍解锁表（冰封→锁链+传送门→单路径→重力→扩散）
-5. 连击系统（2000ms窗口，×1.0/1.5/2.0/3.0）
-6. 天天爱消除爽快感设计原则
+> **Output language (mandatory):** All HTML navigation tabs, section headings, labels, captions,
+> and descriptive text MUST be in Chinese (zh-CN). In-game proper nouns (place/character/item names)
+> keep the game world's native language (Japanese). JSON field keys stay English snake_case.
 
-**systems/puzzle-design.json** — 机制规格摘要
+> Do NOT use AskUserQuestion or request user input. If a decision is ambiguous,
+> apply the most conservative interpretation derivable from the input contracts.
+
+## Sub-Skill Invocation
+
+Follow these sub-skills in sequence:
+
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-design/20-spec/level-design-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/10-design/level-flow-design/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/20-spec/level-layout-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/20-spec/teaching-beat-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/40-qa/level-pacing-qa/SKILL.md`
+
+## Inputs
+
+- `.allforai/concept-contract.json`
+- `.allforai/product-concept/concept-baseline.json`
+- `.allforai/game-design/systems/level-design.json` — level structure and chapter plan
+- `.allforai/game-design/systems/core-mechanics.json` — mechanic unlock schedule
+- Sub-skill SKILL.md files define their specific input contracts.
+
+## Key Design Decisions Already Made
+
+- 连线路径：≤2次转折，最大路径长度由本节点的数值设计确定
+- Combo计时器：连续消除后出现（触发阈值TBD），倒计时逐级缩短加速爽感
+- 4种特殊块：炸弹（范围消除）、行清除、自动连接（AI辅助一步）、重排洗牌
+- 6章机制解锁：Ch1基础消除→Ch2炸弹→Ch3行清除→Ch4自动连接→Ch5重排→Ch6全特效组合
+- 特殊块通过combo积分触发，非随机投放，确保可预期性

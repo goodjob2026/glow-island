@@ -1,154 +1,64 @@
-# Node Spec: ftue-design
+---
+node: ftue-design
+capability: game-design
+discipline_owner: ux-designer
+human_gate: true
+hard_blocked_by: [core-loop-design]
+unlocks: [game-design-finalize]
+approval_record_path: .allforai/game-design/approval-records.json
+exit_artifacts:
+  - .allforai/game-design/ftue.html
+  - .allforai/game-design/systems/ftue.json
+review_checklist:
+  - 新手引导流程完整，覆盖核心玩法的首次体验
+  - 特性解锁教学节奏自然，不阻塞进度（跳过率目标 < 15%）
+  - 摩擦点已识别并有设计对策
+  - UI 流程与屏幕布局规格完整，符合 Cocos Creator 分辨率适配要求
+  - 引导任务可量化（完成率、跳过率指标已定义）
+---
 
-## Role
-Design the First-Time User Experience (FTUE) for Glow Island — from the moment a new player opens the app through completing level 1-3. The FTUE must teach through level design, not tutorial popups. Establish the emotional hook within the first 5 minutes.
+# Goal
 
-**discipline_owner:** ux-designer  
-**discipline_reviewers:** lead-designer  
-**capability:** game-design  
-**human_gate:** true
+Execute ftue-design for this project.
 
-## Context Pull
+> **Non-interactive execution.** All design decisions are recorded in `.allforai/`.
 
-Read these files before generating output:
-- `.allforai/product-concept/concept-baseline.json` — protagonist, setting, ERRC highlights (no popup-heavy tutorials)
-- `.allforai/game-design/core-loop.html` or `.allforai/game-design/game-design-document.md` — core mechanics
-- `.allforai/game-design/level-design.json` — existing tutorial levels 1-1, 1-2, 1-3 (verify and document these)
-- `.allforai/game-design/systems/core-mechanics.json` (if exists)
-- `.allforai/game-design/approval-records.json` — confirm core-loop-design is approved
+> **Output language (mandatory):** All HTML navigation tabs, section headings, labels, captions,
+> and descriptive text MUST be in Chinese (zh-CN). In-game proper nouns (place/character/item names)
+> keep the game world's native language (Japanese). JSON field keys stay English snake_case.
 
-## Content Requirements
+> Do NOT use AskUserQuestion or request user input. If a decision is ambiguous,
+> apply the most conservative interpretation derivable from the input contracts.
 
-### Narrative Framing (First 60 Seconds)
+## Sub-Skill Invocation
 
-Design the soft onboarding sequence:
-1. **Opening scene:** 山田律 arrives at the dock — brief cutscene (max 3 panels, minimal text)
-2. **First encounter with ひなた:** She hands him a note from 渉's estate; tone is warm but not overly welcoming
-3. **Island introduction:** 律 sees the rundown harbor area; motivation established without exposition dump
-4. **Level 1-1 entry:** Natural transition into first puzzle — no tutorial popup, no forced dialogue
+Follow these sub-skills in sequence:
 
-All text must be in Japanese with a gentle, non-urgent tone. No exclamation marks in tutorial copy.
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-onboarding/10-design/first-session-experience-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-onboarding/20-spec/tutorial-step-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-onboarding/20-spec/feature-unlock-teaching-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-onboarding/40-qa/ftue-friction-qa/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-ui/10-design/ui-flow-design/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-ui/20-spec/screen-layout-spec/SKILL.md`
 
-### No-Popup Teaching Philosophy
+## Inputs
 
-The FTUE must teach entirely through:
-- **Level design** (first 2 tiles obvious, path visually clear)
-- **Visual affordance** (connectable tiles glow softly when touched)
-- **Immediate feedback** (satisfying connect SFX + particle trail on first match)
-- **Scaffolding** (Ch1 mechanics only; no special blocks in levels 1-1 through 1-3)
+- `.allforai/concept-contract.json`
+- `.allforai/product-concept/concept-baseline.json`
+- `.allforai/game-design/systems/core-mechanics.json` — core loop reference
+- Sub-skill SKILL.md files define their specific input contracts.
 
-Explicitly prohibited in FTUE:
-- Tutorial overlay popups
-- Forced tap targets with arrows
-- Skip/close buttons on mandatory screens
-- Timer pressure
+## Output Language
 
-### Level 1-1 Design (Verify Against level-design.json)
+**所有输出内容（ftue.html 正文、ftue.json 所有字符串字段）必须使用中文（简体）**。
+变量名/字段名保持英文，但描述性文本、说明、流程名称、台词、设计意图全部用中文书写。
 
-Verify and document the following from existing level-design.json:
-- Grid size
-- Number of tile pairs
-- Tile types present
-- Expected time to complete for first-time player (target: 60-90 seconds)
-- Step count (no step limit in tutorial levels)
+## Key Design Decisions Already Made
 
-If level-design.json specifies differently from this spec, document the discrepancy.
-
-**Intended teaching goal:** Establish that tiles connect if the path has ≤2 turns. Nothing else.
-
-### Level 1-2 Design
-
-**Teaching goal:** Introduce the concept that not all tiles can connect — some paths are blocked.
-- Add 1 obstacle (wall or gap)
-- Slightly larger grid than 1-1
-- Still no step limit; still no special blocks
-- End with a small combo (≥2 matches in quick succession) to trigger first combo feedback
-
-### Level 1-3 Design
-
-**Teaching goal:** First material reward → first island restoration moment.
-- Completing 1-3 triggers the "harbor dock restored" cutscene (even if partial)
-- ひなた appears briefly, acknowledges progress with 1 line
-- Material reward UI appears for the first time
-- This is the emotional payoff that makes players want to continue
-
-### FTUE Flow Diagram
-
-For each step specify: step name / goal / UI screen / skip-able? / estimated duration
-
-| Step | Name | Goal | Screen | Skip? | Duration |
-|------|------|------|--------|-------|----------|
-| 1 | Opening cutscene | Establish 律's arrival | Cutscene panel | No | 15s |
-| 2 | First ひなた encounter | Warm emotional hook | Dialogue screen | No | 10s |
-| 3 | Island overview | Show restoration potential | Island map (locked) | No | 5s |
-| 4 | Level 1-1 | Teach basic connect mechanic | Puzzle scene | No | 75s |
-| 5 | Level 1-2 | Introduce obstacles | Puzzle scene | No | 90s |
-| 6 | Level 1-3 | First restoration payoff | Puzzle → Island map | No | 120s |
-| 7 | Material reward | Teach material loop | Reward screen | No | 10s |
-| 8 | Harbor restored | Emotional reward | Island map animation | No | 15s |
-
-### Drop-off Risk Table
-
-For each step: expected completion %, red-flag threshold, mitigation design.
-
-### D1 Retention Hook Setup
-
-By end of FTUE, player must have:
-- Completed their first island restoration area
-- Seen ひなた at least twice
-- Received their first material reward
-- Unlocked the island map with one restored area visible
-
-This setup ensures the D1 hook (return to continue restoration + see what happens next with ひなた) is primed.
-
-## Output Format
-
-**Primary output:** `.allforai/game-design/ftue.html`
-- Above fold: FTUE flow diagram (step-by-step first session)
-- Expanded: Drop-off risk table with red-flag thresholds
-- Expanded: Tutorial level specs (1-1, 1-2, 1-3) verified against level-design.json
-- Expanded: No-popup teaching methodology with visual affordance inventory
-- Collapsed: Full copy spec (all tutorial-adjacent text verbatim, in Japanese, with tone notes)
-
-**Secondary output:** `.allforai/game-design/systems/ftue.json`
-
-```json
-{
-  "schema": "ftue-v1",
-  "generated_at": "<ISO>",
-  "philosophy": "teach-through-level-design",
-  "no_popup_rule": true,
-  "opening_sequence": {
-    "duration_seconds": 40,
-    "panels": [],
-    "first_hinata_appearance": "step_2"
-  },
-  "tutorial_levels": [
-    {
-      "level_id": "1-1",
-      "teaching_goal": "<string>",
-      "grid_size": "<WxH>",
-      "tile_pair_count": "<number>",
-      "step_limit": null,
-      "special_blocks": [],
-      "expected_duration_seconds": 75,
-      "verified_against_level_design_json": true
-    }
-  ],
-  "flow_steps": [],
-  "dropoff_risks": [],
-  "d1_retention_setup": {
-    "restoration_areas_completed": 1,
-    "hinata_appearances": 2,
-    "material_rewards_received": 1
-  }
-}
-```
-
-## Human Gate Instructions
-
-After generating both output files, update `.allforai/game-design/approval-records.json`:
-- Set `gate_status` to `"in-review"` for the `ftue-design` record
-- Set `updated_at` to current ISO timestamp
-
-Do NOT proceed to `game-design-finalize` until `gate_status == "approved"`.
+- 从「点亮灯塔」目标出发，Ch1第1关为手势引导教学，教学终点为律抵达輝島的过场+灯塔第一眼
+- 连连看核心机制（选-连-消，≤2转角）在前3关内完成教学，每关不超过3条新规则
+- Combo计时器在第5关首次出现，附带一次可跳过的高亮提示
+- 节奏连击的「快消维持combo」感受要在教学关卡里被主动触发一次（非靠玩家自发发现）
+- 沙滩币续关功能在第10关（首章约1/3处）首次展示，不强制购买
+- NPC首次对话顺序：Ch1第1关后→健三（码头老渔夫，简短暖场）；第3关后→ひなた首次出现（手账符号引发好奇）
+- 引导结束定义：玩家自主完成一次完整消除+触发一次combo，不需要任何提示框

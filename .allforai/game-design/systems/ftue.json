@@ -1,576 +1,504 @@
 {
   "schema": "ftue-v1",
-  "generated_at": "2026-05-08T12:00:00Z",
+  "generated_at": "2026-05-13T00:00:00+08:00",
   "project": "glow-island",
-  "philosophy": "teach-through-level-design",
-  "no_popup_rule": true,
-  "summary": "FTUE spans ~6.5 minutes of non-skippable experience across 8 steps: 3 cutscene/intro screens followed by 3 tutorial levels (1-1 through 1-3) and 2 payoff/reward screens. All mechanics are taught exclusively through level design, visual affordance, and immediate feedback — zero popup overlays, zero forced-tap arrows.",
-
+  "philosophy": "以关卡设计替代弹窗教学。规则通过视觉线索和即时反馈自然传达，零强制教程框、零箭头引导。玩家是来休息的成年人，不是等待被指导的学生——岛不催你，引导也不催你。每一条新规则都被包裹在一个有趣的关卡时刻里，让玩家在发现的瞬间自己感受到满足。引导结束的标志不是玩家看完所有提示，而是玩家自主完成一次完整消除并触发一次combo，不需要任何提示框。",
+  "summary": {
+    "total_tutorial_levels": 10,
+    "completion_target_pct": 85,
+    "skip_rate_target_pct": 12,
+    "first_npc_encounter_level": 1,
+    "iap_first_shown_level": 10
+  },
   "opening_sequence": {
-    "duration_seconds": 40,
-    "skippable": false,
-    "tone": "warm and melancholic, quiet arrival, no fanfare",
-    "panels": [
-      {
-        "panel": 1,
-        "scene": "Ferry deck at dusk — 律 stands at the rail, a battered leather satchel at his feet, grey island silhouette rising from mist ahead. No NPCs. Sea smell implied by visual. Shot is from behind his shoulder.",
-        "text_jp": "五年、ずっと走り続けてきた。",
-        "text_translation": "Five years of running without stopping.",
-        "visual_note": "Desaturated palette — grey-blue sea, washed-out sky. 律's silhouette warm amber against cool background.",
-        "tone": "exhaustion-landing, quiet resignation"
-      },
-      {
-        "panel": 2,
-        "scene": "Ferry docking at 輝島 harbor. Wooden planks, salt-eaten rope bollards. A rusted sign reads '輝島'. Overgrown weeds push through the dock boards. One weathered fishing boat.",
-        "text_jp": "島は、予想よりずっと静かだった。",
-        "text_translation": "The island was much quieter than I had imagined.",
-        "visual_note": "Grey-white pre-restoration color scheme. Slight warm glow from the lighthouse in distant background (barely visible). Environmental storytelling — no signage, no welcome.",
-        "tone": "desolate but not threatening, strangely still"
-      },
-      {
-        "panel": 3,
-        "scene": "律 steps off the gangplank onto the dock boards. Close-up on his hands gripping the satchel strap. The island stretches out before him — overgrown harbor, dim shopfronts, a single crow on a bollard.",
-        "text_jp": "なにかが、ここで待っている気がした。",
-        "text_translation": "Something felt like it had been waiting here.",
-        "visual_note": "First person perspective from 律's chest-level — we see his hands and the ground ahead. The crow turns its head. A subtle shimmer effect hints at possibility.",
-        "tone": "anticipatory quietness, gentle mystery"
-      }
-    ],
-    "first_hinata_appearance": "step_2",
-    "transition": "Dissolve from dock panel into 律 standing on the dock, camera pulling back to reveal the harbor overview."
+    "cutscene": "过场动画共三幕，无配音，以内心独白字幕推进。第一幕：黄昏渡轮甲板，律背对镜头站在船尾栏杆旁，皮质旧公文包放在脚边，灰蓝色海面，远处輝島轮廓在薄雾中浮现，字幕：「五年了，我不记得上一次放空是什么时候。」第二幕：渡轮靠岸，木栈道腐旧，缆绳盐蚀，码头牌匾「輝島」字迹斑驳，杂草从板缝里钻出，一艘旧渔船停在岸边，整体色调灰白低饱和，远景灯台隐约可见但灯是灭的，字幕：「岛比我想象中安静得多。」第三幕：律踏上栈道，行李箱轮子卡进木缝里，他蹲下来用手提着走，这是他在岛上做的第一件事，字幕：「有什么东西，好像在这里等着。」",
+    "first_interaction": "过场结束后，画面缓缓拉远，露出码头俯视全景——栈道板缝里隐约有图块形状的微光浮现，不标注、不说明，只是在那里。ひなた从律身边经过，弯腰把卡住的箱轮轻轻抬了一下，只说：「这块木头退潮后会翘。」说完就走，律回头时没记清她的脸，只记得铃声还在晃。之后画面自然推近码头第一关棋盘区域，无任何提示文字，等待玩家触碰。"
   },
-
-  "first_hinata_encounter": {
-    "step": 2,
-    "duration_seconds": 10,
-    "skippable": false,
-    "scene": "Harbor dock. ひなた walks past 律 in the same direction — both just disembarked. She pauses briefly without looking at him fully and holds out a sealed envelope. It bears the name 丸山渉 on the wax seal.",
-    "dialogue": [
-      {
-        "speaker": "丸山ひなた",
-        "text_jp": "船で見かけました。渉のおじいちゃんからの手紙、たぶんあなた宛てだと思って。",
-        "text_translation": "I noticed you on the ferry. This letter from grandfather Wataru — I think it was meant for you.",
-        "tone": "matter-of-fact warmth, no eye contact held long, she keeps walking after handing it"
-      }
-    ],
-    "visual_note": "ひなた wears light linen shirt, wooden hairpin. The fisherman's ring cord visible at her collar. Her expression is open but not overly friendly — she is warm but has her own purpose here. She continues walking after one beat, leaving 律 holding the letter.",
-    "emotional_beat": "Not a welcoming — a coincidence made meaningful. ひなた doesn't linger. This makes her subsequent appearances matter more."
-  },
-
-  "island_overview": {
-    "step": 3,
-    "duration_seconds": 5,
-    "skippable": false,
-    "scene": "Wide establishing shot of the harbor area from a slight elevation — 律's viewpoint. The dock, the weathered warehouse, the gap where a building once stood. Everything is muted and overgrown. In the distance, a faint path leads upward.",
-    "text_jp": "手紙には、島を頼むと書いてあった。",
-    "text_translation": "The letter said: take care of the island.",
-    "visual_note": "A gentle wind stirs the overgrowth. The first puzzle tiles are visible as faintly glowing shapes embedded in the dock boards — not called out, just visible. This plants the idea that the island itself contains something to discover. Color saturation is at minimum (0%) — every successful puzzle will gradually add saturation back.",
-    "emotional_beat": "Motivation established without exposition. 律 has a reason. The island has a need. The glowing tiles provide a visual invitation, not a command."
-  },
-
   "tutorial_levels": [
     {
-      "level_id": "1-1",
-      "teaching_goal": "Tiles can be connected if a path between them has at most 2 turns (BFS ≤2). First connection is always a straight line — zero turns required.",
-      "grid_size": "4x4",
-      "tile_pair_count": 4,
-      "tile_types_used": ["T01", "T02"],
-      "step_limit": null,
-      "time_limit": null,
-      "special_blocks": [],
-      "obstacles": [],
-      "board_events": [],
-      "expected_duration_seconds": 75,
-      "verified_against_level_design_json": true,
-      "layout_description": "8 tiles (4 pairs) on a 4×4 grid. The first pair (T01) is placed in the same row with no tiles between them — straight-line connection. The second pair (T02) is placed in the same column. The remaining two pairs require one turn each. No dead-end paths. Board is sparse — 8 tiles in a 16-cell grid makes gaps visible.",
-      "grid_layout": [
-        ["T01", "   ", "T01", "   "],
-        ["   ", "T02", "   ", "   "],
-        ["   ", "T02", "   ", "T03"],
-        ["T04", "   ", "T03", "T04"]
-      ],
-      "first_affordance_trigger": "Player touches any tile — it begins to glow with soft teal light and pulses gently. No instruction text appears.",
-      "second_affordance_trigger": "Player touches the matching tile — a faint dotted path preview appears between them showing the valid connection route.",
-      "success_feedback": {
-        "visual": "Matched tiles dissolve into a brief particle burst (light petals/foam). A faint warmth animation radiates from the cleared area.",
-        "audio": "Soft wooden-block chime (two notes ascending). No fanfare.",
-        "board_state": "Remaining tiles shift very slightly — a gentle settle animation — to draw attention to what's left."
-      },
-      "fail_feedback": {
-        "visual": "Tiles flash briefly (a soft red-orange pulse, not harsh). No path preview appears between incompatible tiles.",
-        "audio": "Single muted low note — not punishing, just 'not yet'.",
-        "recovery": "Tiles return to normal state immediately. Player retains agency."
-      },
-      "completion_note": "Level clears silently. No star explosion or trumpet fanfare. A gentle fade and the dock boards beneath the puzzle tiles glow warm for a moment — as if the wood itself remembered something.",
-      "material_reward": {
-        "type": "shell_fragment",
-        "amount": 5
-      },
-      "coin_reward": 10,
-      "emotional_note": "最初の一歩。足元の木が、少しだけ明るくなった気がした。"
+      "level": 1,
+      "title": "第一步：选中与连线",
+      "new_mechanic": "点击图块选中（发光），再点击同种图块完成连线消除（直线路径，零转角）",
+      "teaching_method": "4×4 稀疏棋盘，第一对图块在同一行且中间无遮挡，选中后对应图块也同步发光提示。玩家的第一次点击必然触碰到这对图块其中之一；无文字说明，靠发光和点击反馈引导。若8秒内未完成第二次点击，匹配图块轻微加速脉冲，无文字提示。",
+      "success_criteria": "玩家自主完成全部4对消除，关卡清空",
+      "skip_allowed": false
     },
     {
-      "level_id": "1-2",
-      "teaching_goal": "Not all pairs can connect via a straight line. Paths must route around obstacles. The player learns to read blocked space and find alternate routes. Ends with a 2-match combo triggering first combo feedback.",
-      "grid_size": "5x5",
-      "tile_pair_count": 6,
-      "tile_types_used": ["T01", "T02", "T03", "T04"],
-      "step_limit": null,
-      "time_limit": null,
-      "special_blocks": [],
-      "obstacles": [
-        {
-          "type": "wall_gap",
-          "description": "A section of broken dock boards — two adjacent empty cells that visually read as a gap/hole in the middle of the board, positioned to block the most obvious straight-line path between one specific pair. The gap is rendered as dark weathered wood with no tile beneath.",
-          "position": "row 2, columns 2-3 (0-indexed)",
-          "teaching_function": "Player's first attempt at the obvious path will be blocked. The visual gap explains why — no instruction needed. The alternate route (L-shape with 1 turn) is immediately visible once the straight path fails."
-        }
-      ],
-      "board_events": [],
-      "expected_duration_seconds": 90,
-      "verified_against_level_design_json": true,
-      "layout_description": "12 tiles (6 pairs) on a 5×5 grid. Obstacle placed to block one pair's straight-line path. The last two pairs in the level are placed adjacent to each other so that clearing the 5th pair leaves the 6th pair in the 'next clear window' — this is the combo setup. Combo window: 2 seconds between clears.",
-      "grid_layout": [
-        ["T01", "   ", "T02", "   ", "T01"],
-        ["   ", "T03", "XXX", "XXX", "T04"],
-        ["T02", "   ", "   ", "T03", "   "],
-        ["   ", "T04", "   ", "   ", "T05"],
-        ["T05", "   ", "T06", "   ", "T06"]
-      ],
-      "combo_trigger": {
-        "description": "Pairs T05 and T06 are placed so that clearing T05 leaves T06 as the only remaining pair, and both tiles of T06 are directly accessible. If player clears T05 and then quickly clears T06 within the 2-second combo window, the first combo feedback fires.",
-        "combo_level": 2,
-        "visual_feedback": "A warm cascade effect — tiles cleared in combo leave a slightly brighter particle trail. A subtle '×2' numeral floats up and fades. No popup, no pause — it flows naturally from the match."
-      },
-      "first_affordance_trigger": "Failed path attempt (straight-line blocked): tiles pulse red-orange briefly, then the gap cell glows slightly to draw the eye. No arrow, no text.",
-      "success_feedback": {
-        "visual": "Same as 1-1 plus combo multiplier visual for final pair if combo achieved.",
-        "audio": "Same ascending chime. Combo adds a second note layered on top — a brief harmonic.",
-        "board_state": "Post-clear the board has clear open space. The remaining pair glows slightly brighter than default — natural visual priority."
-      },
-      "completion_note": "Level clear. The harbor area on the map gets a slight color boost (barely perceptible — the first hint that these puzzles are doing something to the world).",
-      "material_reward": {
-        "type": "shell_fragment",
-        "amount": 3
-      },
-      "coin_reward": 10,
-      "emotional_note": "道は一本じゃない。それは島も、きっと同じだ。"
+      "level": 2,
+      "title": "绕路也是路",
+      "new_mechanic": "路径最多允许2次转角；遇障碍需绕路",
+      "teaching_method": "5×5 棋盘，引入一块腐朽栈板空格作为障碍物。玩家尝试最明显的直线连接时，被障碍物阻断——障碍格发出短暂的暖橙色光，指示阻塞位置，无文字。备选的L形1转角路径已在棋盘上可视，玩家自己找到。关卡最后两对图块紧邻排布，自然形成快速连续消除的条件，combo×2视觉粒子首次出现。",
+      "success_criteria": "玩家完成全部6对消除，并至少触发一次连击×2反馈",
+      "skip_allowed": false
     },
     {
-      "level_id": "1-3",
-      "teaching_goal": "Completing levels restores the island. The connection between puzzle-solving and the world changes is made explicit through a cutscene. First material reward UI appears. ひなた appears briefly.",
-      "grid_size": "5x5",
-      "tile_pair_count": 7,
-      "tile_types_used": ["T01", "T02", "T03", "T04"],
-      "step_limit": null,
-      "time_limit": null,
-      "special_blocks": [],
-      "obstacles": [
-        {
-          "type": "wall_gap",
-          "description": "Two broken dock board sections — positioned in different areas of the board, teaching that obstacles aren't always in the same place.",
-          "positions": ["row 1 col 3", "row 3 col 1"],
-          "teaching_function": "Player now expects obstacles and plans routing around them. The two separated obstacles confirm that 1-2 wasn't a one-time thing."
-        }
-      ],
-      "board_events": [
-        {
-          "trigger": "level_complete",
-          "event": "harbor_restoration_cutscene",
-          "description": "Upon clearing all 7 pairs, the board dissolves upward into a restoration animation. The dock boards in the foreground straighten and turn warm wood-grain amber. Overgrown plants recede slightly. A warm light passes over the harbor from left to right.",
-          "duration_seconds": 4
-        }
-      ],
-      "expected_duration_seconds": 105,
-      "verified_against_level_design_json": true,
-      "layout_description": "14 tiles (7 pairs) on a 5×5 grid with 2 wall gaps. Pairs are distributed across all quadrants. No pair requires more than 2 turns to resolve. The board is solvable in multiple orders, giving the player a sense of agency even in a tutorial.",
-      "grid_layout": [
-        ["T01", "   ", "T02", "   ", "T01"],
-        ["   ", "T03", "   ", "XXX", "T04"],
-        ["T02", "   ", "T05", "   ", "T03"],
-        ["   ", "XXX", "   ", "T06", "   "],
-        ["T04", "T05", "   ", "T06", "T07"],
-        ["T07", "   ", "   ", "   ", "   "]
-      ],
-      "completion_sequence": {
-        "harbor_cutscene": {
-          "duration_seconds": 4,
-          "scene": "The dock brightens — planks glow warm amber. The weathered sign '輝島' becomes readable. Weeds recede from the dock edge.",
-          "emotional_note": "No narration. The visual change speaks alone."
-        },
-        "hinata_appearance": {
-          "duration_seconds": 3,
-          "scene": "ひなた passes the dock at a slight distance. She glances at the restored planks, then at 律. A half-smile. She continues walking.",
-          "dialogue": {
-            "speaker": "丸山ひなた",
-            "text_jp": "少し、変わりましたね。",
-            "text_translation": "It's changed a little, hasn't it.",
-            "tone": "quiet observation, no praise, no pressure — she simply notices"
-          }
-        },
-        "material_reward_ui": {
-          "duration_seconds": 3,
-          "description": "A gentle material collection animation: a piece of driftwood (浮木) rises from the restored dock boards and drifts upward to a small inventory slot in the UI corner. The material name appears in soft teal: '浮木'. A soft chime.",
-          "first_time_tooltip": "A brief ambient text line appears in small type at the bottom of the screen (not a popup): '集めた素材で、島を直せるかもしれない。' — 'These materials may help restore the island.' Fades after 3 seconds."
-        }
-      },
-      "material_reward": {
-        "type": "driftwood",
-        "display_name_jp": "浮木",
-        "amount": 1,
-        "first_time": true
-      },
-      "coin_reward": 14,
-      "emotional_note": "ここには、まだ何かが残っている。"
+      "level": 3,
+      "title": "码头的变化",
+      "new_mechanic": "关卡通关触发场景修复动画，玩法进度与岛屿视觉直接关联",
+      "teaching_method": "5×5 棋盘，两处分离的障碍格让玩家巩固绕路经验；通关后触发码头修复动画（栈道板变暖色、锈牌变清晰），之后ひなた从远处经过，侧头看了一眼修复好的木板，轻声说：「少し、変わりましたね。」随后继续走。首次展示素材收集UI（浮木从修复的栈道飘起进入背包）。",
+      "success_criteria": "玩家完成全部7对消除，观看修复动画全程（不强制，自动播放）",
+      "skip_allowed": false
+    },
+    {
+      "level": 4,
+      "title": "健三的码头",
+      "new_mechanic": "步数制首次引入（显示步数计数器，但本关步数宽裕，不会失败）",
+      "teaching_method": "棋盘6×6，步数设置为对手图块数的2倍（极宽裕），左上角步数计数器以小字显示，不做专门讲解。健三在关卡间隙出现：「坐吧，铃声一会儿会停的。」——暖场台词，不涉及游戏机制。本关目的是让玩家在无压力状态下自然注意到步数的存在。",
+      "success_criteria": "玩家完成全部消除，步数计数器自然归零之前通关",
+      "skip_allowed": false
+    },
+    {
+      "level": 5,
+      "title": "节奏加快了",
+      "new_mechanic": "Combo计时器首次出现（2秒窗口）；计时器高亮提示一次（可跳过）",
+      "teaching_method": "6×6 棋盘，关卡开始时计时器进度条首次出现在屏幕顶部。首次出现时，进度条周围有一圈柔和的发光动效持续约3秒，随后自动消失——不弹框、不暂停游戏。棋盘设计使玩家必须在一次自然顺序中快速完成3连，计时器真实工作，combo×3倍率连击特效首次出现（橙红粒子+递进音效）。",
+      "success_criteria": "玩家触发至少一次combo×3，关卡清空",
+      "skip_allowed": true
+    },
+    {
+      "level": 6,
+      "title": "保持节奏",
+      "new_mechanic": "连续维持combo的爽快感体验（非教学，强化感受）",
+      "teaching_method": "棋盘布局刻意排布为「连续可消除路径」，让玩家轻松维持5连击以上，感受combo音效层层递进的节奏感。首次出现连锁图块（cascade，combo=3时在消除位附近生成），橙红波纹自动链消动画首次演示，不做文字说明。",
+      "success_criteria": "玩家维持combo≥5，连锁图块（cascade）至少触发一次",
+      "skip_allowed": true
+    },
+    {
+      "level": 7,
+      "title": "图块变多了",
+      "new_mechanic": "可用图块种类增加至8种（Ch1基础解锁阶段），棋盘信息密度上升",
+      "teaching_method": "7×7 棋盘，图块种类从4种扩展到8种，密度增加。棋盘布局保证每种图块都有邻近的同类可消，降低寻找成本。没有新规则，只是练习在更多图块中快速识别配对——培养连击流畅感。",
+      "success_criteria": "玩家完成全部消除，关卡清空",
+      "skip_allowed": true
+    },
+    {
+      "level": 8,
+      "title": "步数开始有意义了",
+      "new_mechanic": "步数限制开始有实质压力（步数设置为对手图块数的1.25倍），玩家首次体会步数管理",
+      "teaching_method": "7×7 棋盘，步数收紧，玩家需要注意避免无效操作。若步数剩余5步时仍有≥3对未消除，棋盘边缘出现轻微红色呼吸光（无文字，纯视觉）。本关不展示续关，目的是让玩家体会步数压力但不被卡住（关卡可解性已设计保证充裕）。",
+      "success_criteria": "玩家在步数耗尽前通关",
+      "skip_allowed": true
+    },
+    {
+      "level": 9,
+      "title": "丸山ひなた的手账",
+      "new_mechanic": "NPC叙事触发：ひなた第二次完整登场，手账符号引发好奇，情感线开始",
+      "teaching_method": "8×8 棋盘（Ch1标准尺寸），关卡通关后触发ひなた第二次对话：她在码头石凳上翻着手账，律靠过去，看见满页看不懂的符号，问她在写什么——她合上手账，说「岛况观测」，然后走了。律发现自己有点想知道那符号是什么意思。剧情触发，记忆碎片系统首次展示（健三·码头暖场片段）。",
+      "success_criteria": "玩家完成关卡，观看ひなた对话片段（不可跳过的剧情触发点）",
+      "skip_allowed": true
+    },
+    {
+      "level": 10,
+      "title": "续一步也没关系",
+      "new_mechanic": "沙滩币续关功能首次展示（步数耗尽时弹出，不强制购买）",
+      "teaching_method": "8×8 棋盘，步数设置为略低于平均水平（对手图块数的1.1倍），部分玩家会触发步数耗尽弹窗。弹窗展示续关选项（+5步，30沙滩币）和「再试一次」选项，两个按钮等权重排列，无倾向性设计。免费再试不惩罚玩家，续关是可选工具，不是门槛。",
+      "success_criteria": "玩家通关（无论是否使用续关），续关弹窗展示即视为教学完成",
+      "skip_allowed": true
     }
   ],
-
-  "flow_steps": [
+  "feature_unlocks": [
     {
-      "step": 1,
-      "name": "opening_cutscene",
-      "name_display": "律の到着",
-      "goal": "Establish protagonist identity, island tone, emotional context. No gameplay yet.",
-      "screen": "cutscene_dock_arrival",
-      "skippable": false,
-      "duration_seconds": 15,
-      "interaction": "tap_to_advance_panels",
-      "panel_count": 3,
-      "blocking": true,
-      "transition_to_next": "dissolve"
+      "feature": "基础连线消除（≤2转角路径匹配）",
+      "unlock_at_level": 1,
+      "teaching_trigger": "第1关稀疏棋盘，第一对图块直线可消，玩家触碰图块即触发发光引导",
+      "force_demo": false
     },
     {
-      "step": 2,
-      "name": "first_hinata_encounter",
-      "name_display": "ひなたとの出会い",
-      "goal": "Introduce romantic interest naturally — coincidence, not contrivance. Establish her as independent, purposeful.",
-      "screen": "cutscene_hinata_letter",
-      "skippable": false,
-      "duration_seconds": 10,
-      "interaction": "tap_to_advance",
-      "blocking": true,
-      "transition_to_next": "dissolve"
+      "feature": "障碍物绕路",
+      "unlock_at_level": 2,
+      "teaching_trigger": "第2关腐朽栈板空格阻断直线，尝试失败后障碍格发橙光，玩家自发寻找绕路",
+      "force_demo": false
     },
     {
-      "step": 3,
-      "name": "island_overview",
-      "name_display": "港の風景",
-      "goal": "Show the desolate harbor. Establish visual baseline (grey) before restoration begins. Plant puzzle-tile visual cues without explaining them.",
-      "screen": "environment_harbor_overview",
-      "skippable": false,
-      "duration_seconds": 5,
-      "interaction": "ambient_then_auto_advance",
-      "blocking": true,
-      "transition_to_next": "zoom_into_dock_boards"
+      "feature": "场景修复视觉反馈",
+      "unlock_at_level": 3,
+      "teaching_trigger": "第3关通关后自动触发码头修复动画，无文字说明",
+      "force_demo": true
     },
     {
-      "step": 4,
-      "name": "level_1_1",
-      "name_display": "レベル 1-1",
-      "goal": "Teach: tiles connect if path has ≤2 turns. First connection is zero-turn (straight line). Player discovers this themselves.",
-      "screen": "puzzle_1_1",
-      "skippable": false,
-      "duration_seconds": 75,
-      "interaction": "puzzle_gameplay",
-      "blocking": true,
-      "transition_to_next": "gentle_level_clear_fade"
+      "feature": "步数计数器",
+      "unlock_at_level": 4,
+      "teaching_trigger": "步数计数器静默出现在UI左上角，宽裕步数设计确保玩家不会失败，自然观察到存在",
+      "force_demo": false
     },
     {
-      "step": 5,
-      "name": "level_1_2",
-      "name_display": "レベル 1-2",
-      "goal": "Teach: blocked paths require alternate routing. First combo triggered naturally at level end.",
-      "screen": "puzzle_1_2",
-      "skippable": false,
-      "duration_seconds": 90,
-      "interaction": "puzzle_gameplay",
-      "blocking": true,
-      "transition_to_next": "gentle_level_clear_fade"
+      "feature": "Combo计时器（节奏连击系统）",
+      "unlock_at_level": 5,
+      "teaching_trigger": "进度条首次出现时，周围柔和发光动效持续3秒后自动消失，不弹框不暂停",
+      "force_demo": true
     },
     {
-      "step": 6,
-      "name": "level_1_3",
-      "name_display": "レベル 1-3",
-      "goal": "Complete the teaching arc. Restoration payoff triggered. Second ひなた appearance.",
-      "screen": "puzzle_1_3",
-      "skippable": false,
-      "duration_seconds": 120,
-      "interaction": "puzzle_gameplay",
-      "blocking": true,
-      "transition_to_next": "restoration_animation"
+      "feature": "连锁图块（cascade，Combo=3生成）",
+      "unlock_at_level": 6,
+      "teaching_trigger": "维持Combo≥3自然生成连锁图块，橙红波纹自动链消，玩家在爽快感中自发理解效果",
+      "force_demo": false
     },
     {
-      "step": 7,
-      "name": "material_reward_screen",
-      "name_display": "素材を得る",
-      "goal": "Introduce material economy. Show that puzzles produce tangible island-restoration resources. First 浮木 reward.",
-      "screen": "reward_driftwood",
-      "skippable": false,
-      "duration_seconds": 10,
-      "interaction": "tap_to_collect_then_continue",
-      "blocking": true,
-      "transition_to_next": "slide_to_map"
+      "feature": "预判辅助（场外道具，花费10沙滩币）",
+      "unlock_at_level": 7,
+      "teaching_trigger": "图块种类增加时，预判按钮在UI上首次显示（灰色，初始赠送10沙滩币可使用一次）",
+      "force_demo": false
     },
     {
-      "step": 8,
-      "name": "harbor_restored_animation",
-      "name_display": "港が少し、戻ってきた",
-      "goal": "Emotional payoff. Show the island map with one restored area visible. Unlock the map UI. Establish the meta-loop clearly.",
-      "screen": "island_map_restored_harbor",
-      "skippable": false,
-      "duration_seconds": 15,
-      "interaction": "ambient_reveal_then_continue",
-      "blocking": true,
-      "transition_to_next": "normal_gameplay_unlocked",
-      "unlock_events": [
-        "island_map_ui",
-        "level_select_ch1",
-        "material_inventory_ui"
+      "feature": "沙滩币续关（+5步，30沙滩币）",
+      "unlock_at_level": 10,
+      "teaching_trigger": "步数耗尽时弹出续关弹窗，两个选项等权重，不强制购买",
+      "force_demo": false
+    }
+  ],
+  "friction_points": [
+    {
+      "point": "玩家第一次触碰图块时不理解「点击另一个同种图块来连线」的规则，可能反复点击同一图块或乱点",
+      "mitigation": "第1关棋盘极稀疏（4×4，仅8个图块），第一对图块直线排列且选中后对应图块同步发光；若8秒无第二次点击，配对图块加速脉冲。零文字引导，完全依赖视觉反馈，降低认知门槛。",
+      "severity": "high"
+    },
+    {
+      "point": "玩家第一次遇到障碍物被阻断时，可能误以为游戏出现了Bug或认为这对图块无法消除",
+      "mitigation": "障碍物用「腐朽栈板破洞」的视觉元素表达（暗色木纹+空洞），与正常图块格子明显区别；连接失败时障碍格发暖橙光0.8秒，自然引导视线。备选L形路径在棋盘上已可见。",
+      "severity": "high"
+    },
+    {
+      "point": "Combo计时器首次出现时，玩家可能不理解进度条含义，产生焦虑或忽视",
+      "mitigation": "第5关Combo计时器进度条首次出现时，柔和发光动效吸引注意3秒后自动消失；关卡棋盘设计保证玩家必然触发Combo≥3，让玩家在真实游戏中体验计时器工作方式而非靠说明理解。",
+      "severity": "high"
+    },
+    {
+      "point": "步数耗尽时续关弹窗与「再试一次」的选择，可能让新玩家感到被推销",
+      "mitigation": "第10关是首次展示续关弹窗，「再试一次」与续关按钮等权重排列，无任何倾向性视觉差异；弹窗背景继续保持暖色治愈调，不使用红色/紧迫感设计。初始赠送100沙滩币，玩家有资本选择续关而不需要立即付费。",
+      "severity": "medium"
+    },
+    {
+      "point": "图块种类在第7关从4种扩展到8种，视觉信息量翻倍，玩家可能短暂迷失",
+      "mitigation": "第7关棋盘布局确保每种图块都有视觉可及的同类邻近，且图块图案差异度高（形状+颜色双重区分）；新增图块采用渐进方式进入，不在同一关卡同时新增4种。",
+      "severity": "medium"
+    },
+    {
+      "point": "过场动画和NPC对话之间切换时，玩家可能跳过剧情内容导致丧失情感连接",
+      "mitigation": "开场过场（3幕）和第1关前的ひなた初次相遇不可跳过；第3关后的修复动画自动播放（不需要玩家操作）；NPC关键对话（第1关后健三/第9关后ひなた）设计为自动触发的短片段，节奏简短不拖沓（每段<15秒）。",
+      "severity": "medium"
+    },
+    {
+      "point": "连锁图块（cascade）自动链消时玩家可能感到「游戏在替我操作」而失去主控感",
+      "mitigation": "cascade自动链消每次有0.3秒延迟，玩家可以看清每步过程；音效节奏逐步加快营造爽快感而非突兀；橙红波纹视觉清晰表明这是奖励效果，不是系统错误。",
+      "severity": "low"
+    },
+    {
+      "point": "部分玩家可能在前3关内通关速度过快，错过治愈叙事氛围",
+      "mitigation": "过场动画和修复动画不可跳过，确保每位玩家都经历核心情感时刻；关卡清空后有0.5秒「环境呼吸」动画（音效+色彩温度小幅提升），不立即跳转下一关，留给玩家自然感受。",
+      "severity": "low"
+    }
+  ],
+  "npc_intro_sequence": [
+    {
+      "npc": "丸山ひなた",
+      "trigger_level": 0,
+      "dialogue_summary": "过场动画结束、第1关前触发。ひなた与律同日抵岛，她弯腰把律卡住的行李箱轮轻轻抬了一下，只说「这块木头退潮后会翘」，说完就走。律回头时没记清她的脸，只记得铃声还在晃，海水味里混着一点碳粉墨水的气息。这是若有若无情感线的第一次接触，无任何浪漫意图表达，ひなた只是在做自己做的事。"
+    },
+    {
+      "npc": "磯部健三",
+      "trigger_level": 1,
+      "dialogue_summary": "第1关通关后触发。健三从码头走过，把一杯热茶放到律旁边，说「坐吧，铃声一会儿会停的」。铃声没有停，但律坐下来了——茶是热的。随后健三路过又看了一眼律反复调整的行李箱，说「能走就行」，就继续去收网了。简短暖场，不解释任何背景故事，温暖从举动中自然发生。"
+    },
+    {
+      "npc": "丸山ひなた（第二次，手账登场）",
+      "trigger_level": 9,
+      "dialogue_summary": "第9关通关后触发。ひなた坐在码头石凳上翻着手账，律靠过去，看见满页看不懂的符号体系。律问她在写什么，她合上手账，说「岛况观测」，然后走了。律发现自己有点想知道那些符号是什么意思。这是ひなた手账线索的首次引入，为后续章节情感线埋下好奇心伏笔。"
+    },
+    {
+      "npc": "议长（橘猫）",
+      "trigger_level": 3,
+      "dialogue_summary": "第3关码头修复动画播放时，议长悄悄出现在修复好的栈道边缘，坐了几秒，然后起身向左走。健三在旁边若无其事地在档案册上记了一条（玩家看不见记了什么）。议长不说话，只是出现在合适的地方——这是贯穿全章的温暖存在方式的首次展示。"
+    }
+  ],
+  "metrics": {
+    "d1_retention_target": "D1留存目标≥40%；新手引导完成率（第10关通关）≥85%；前3关完成率≥92%（教学核心区），跌幅不超过3%/关",
+    "tutorial_completion_target": "引导结束定义：玩家自主完成一次完整消除+触发一次Combo，无需任何提示框介入；skip_allowed=false的关卡（第1-4关）完成率目标≥88%；整体引导跳过率目标<12%（低于15%的设计门槛）",
+    "first_purchase_trigger": "续关弹窗首次展示于第10关（首章约1/3处），弹窗转化率目标2-4%（行业参考值）；初始赠送100沙滩币降低付费门槛，玩家可免费体验续关功能，首次IAP转化由此铺垫而非强制"
+  },
+  "ui_flow_map": {
+    "schema_version": "1.0",
+    "design_resolution": "750x1334",
+    "orientation": "portrait",
+    "screens": [
+      {
+        "screen_id": "screen_splash",
+        "name_cn": "启动画面",
+        "entry_conditions": ["app_start_first_time"],
+        "exit_transitions": [
+          {"to": "screen_opening_cutscene", "trigger": "auto_after_2s", "transition": "fade"}
+        ],
+        "overlays_allowed": [],
+        "back_behavior": "disabled"
+      },
+      {
+        "screen_id": "screen_opening_cutscene",
+        "name_cn": "开场过场（三幕）",
+        "entry_conditions": ["first_launch", "main_menu_replay"],
+        "exit_transitions": [
+          {"to": "screen_gameplay", "trigger": "cutscene_end", "transition": "fade", "note": "加载第1关棋盘，同时播放ひなた登场事件"}
+        ],
+        "overlays_allowed": [],
+        "back_behavior": "disabled",
+        "skip_policy": "不可跳过（首次）；重看时可跳过"
+      },
+      {
+        "screen_id": "screen_main_menu",
+        "name_cn": "主菜单",
+        "entry_conditions": ["app_start_returning_user", "level_result_back"],
+        "exit_transitions": [
+          {"to": "screen_island_map", "trigger": "tap_continue", "transition": "slide_up"},
+          {"to": "screen_opening_cutscene", "trigger": "tap_replay_opening", "transition": "fade"}
+        ],
+        "overlays_allowed": ["overlay_settings"],
+        "back_behavior": "exit_app_confirm"
+      },
+      {
+        "screen_id": "screen_island_map",
+        "name_cn": "岛屿地图",
+        "entry_conditions": ["main_menu_continue", "level_success_back", "level_fail_back"],
+        "exit_transitions": [
+          {"to": "screen_level_loading", "trigger": "tap_level_node", "transition": "gameplay_safe"},
+          {"to": "screen_npc_dialogue", "trigger": "tap_npc_bubble", "transition": "slide_up"}
+        ],
+        "overlays_allowed": ["overlay_settings"],
+        "back_behavior": "previous_screen"
+      },
+      {
+        "screen_id": "screen_level_loading",
+        "name_cn": "关卡加载",
+        "entry_conditions": ["island_map_level_tap"],
+        "exit_transitions": [
+          {"to": "screen_gameplay", "trigger": "load_complete", "transition": "fade"}
+        ],
+        "overlays_allowed": [],
+        "back_behavior": "disabled"
+      },
+      {
+        "screen_id": "screen_gameplay",
+        "name_cn": "棋盘游戏界面",
+        "entry_conditions": ["level_loading_complete", "continue_purchase"],
+        "exit_transitions": [
+          {"to": "screen_level_success", "trigger": "board_cleared", "transition": "celebration_then_fade"},
+          {"to": "overlay_continue", "trigger": "steps_depleted", "transition": "slide_up"},
+          {"to": "overlay_pause", "trigger": "tap_pause_button", "transition": "fade"}
+        ],
+        "overlays_allowed": ["overlay_pause", "overlay_continue", "overlay_settings"],
+        "back_behavior": "open_pause_overlay",
+        "hud_elements": ["步数计数器", "Combo计时器进度条", "暂停按钮", "重排按钮", "预判按钮", "沙滩币余额"]
+      },
+      {
+        "screen_id": "screen_level_success",
+        "name_cn": "关卡成功结算",
+        "entry_conditions": ["gameplay_board_cleared"],
+        "exit_transitions": [
+          {"to": "screen_level_loading", "trigger": "tap_next_level", "transition": "fade"},
+          {"to": "screen_island_map", "trigger": "tap_map", "transition": "slide_down"},
+          {"to": "screen_scene_repair", "trigger": "repair_trigger_condition", "transition": "auto_immediate", "note": "特定关卡（第3/10/20/30关）自动触发，优先于next_level"},
+          {"to": "screen_npc_dialogue", "trigger": "story_trigger_condition", "transition": "slide_up", "note": "有剧情触发的关卡通关后"}
+        ],
+        "overlays_allowed": [],
+        "back_behavior": "return_to_island_map"
+      },
+      {
+        "screen_id": "screen_scene_repair",
+        "name_cn": "场景修复动画",
+        "entry_conditions": ["level_success_repair_trigger"],
+        "exit_transitions": [
+          {"to": "screen_level_success", "trigger": "animation_complete", "transition": "fade"}
+        ],
+        "overlays_allowed": [],
+        "back_behavior": "disabled"
+      },
+      {
+        "screen_id": "screen_npc_dialogue",
+        "name_cn": "NPC对话弹窗",
+        "entry_conditions": ["story_trigger", "island_map_npc_tap"],
+        "exit_transitions": [
+          {"to": "screen_island_map", "trigger": "dialogue_end", "transition": "slide_down"}
+        ],
+        "overlays_allowed": [],
+        "back_behavior": "disabled_for_story_scenes",
+        "skip_policy": "核心剧情（ひなた首次登场/开场）不可跳过；其余NPC日常对话可点击跳过"
+      }
+    ],
+    "overlays": [
+      {
+        "overlay_id": "overlay_pause",
+        "name_cn": "暂停浮层",
+        "actions": ["继续（恢复游戏）", "重新开始（需确认弹窗）", "返回地图（需确认弹窗）", "设置"],
+        "close_behavior": "tap_continue_or_back",
+        "scrim": true
+      },
+      {
+        "overlay_id": "overlay_continue",
+        "name_cn": "续关弹窗",
+        "trigger": "步数归零时自动弹出",
+        "actions": ["续关+5步（30沙滩币）", "再试一次（等权重）", "放弃本关（小灰字）"],
+        "close_behavior": "选择任一选项后关闭",
+        "scrim": true,
+        "design_note": "两主按钮等权重，不使用红色/紧迫感色彩；弹窗整体保持治愈暖色调"
+      },
+      {
+        "overlay_id": "overlay_settings",
+        "name_cn": "设置浮层",
+        "actions": ["音效开关", "音乐开关", "语言设置", "关闭"],
+        "close_behavior": "tap_close_button",
+        "scrim": true
+      },
+      {
+        "overlay_id": "overlay_confirm_quit",
+        "name_cn": "放弃关卡确认弹窗",
+        "actions": ["确认放弃", "取消"],
+        "close_behavior": "确认→目标界面；取消→关闭弹窗",
+        "scrim": false
+      }
+    ],
+    "session_flows": {
+      "first_session": "screen_splash → screen_opening_cutscene → screen_gameplay（第1关，含ひなた登场事件） → screen_level_success → screen_npc_dialogue（健三暖场） → screen_gameplay（第2关）…",
+      "repeat_session": "screen_main_menu → screen_island_map → screen_level_loading → screen_gameplay → screen_level_success → screen_island_map",
+      "failed_run": "screen_gameplay → overlay_continue（步数耗尽） → 选择再试 → screen_gameplay（重置）"
+    },
+    "flow_validation": {
+      "status": "COMPLETED",
+      "checks_passed": [
+        "所有界面均有合法进入路径",
+        "游戏流程可从应用启动到达棋盘界面",
+        "所有非终止界面均有退出路径",
+        "所有弹窗/浮层均有关闭行为",
+        "失败状态（步数耗尽）提供重试和放弃两条路径",
+        "购买行为（续关）在弹窗中有取消选项"
       ]
     }
-  ],
-
-  "dropoff_risks": [
-    {
-      "step": 1,
-      "name": "opening_cutscene",
-      "expected_completion_pct": 97,
-      "red_flag_threshold": 82,
-      "risk": "Player exits before cutscene ends — may feel unclear what the game is",
-      "mitigation": "Cutscene limited to 15s with tap-to-advance. The puzzle tile shimmer in panel 3 provides visual intrigue. No tutorial text visible yet — curiosity drives forward. Font is warm, panels are brief."
-    },
-    {
-      "step": 2,
-      "name": "first_hinata_encounter",
-      "expected_completion_pct": 96,
-      "red_flag_threshold": 82,
-      "risk": "Player loses interest if dialogue feels slow or forced",
-      "mitigation": "ひなた's line is single, practical, warm. No lengthy introduction. She doesn't stop walking — action conveys personality. Total screen time 10s."
-    },
-    {
-      "step": 3,
-      "name": "island_overview",
-      "expected_completion_pct": 95,
-      "red_flag_threshold": 80,
-      "risk": "5-second non-interactive screen could feel like a loading screen",
-      "mitigation": "Subtle wind animation and ambient SFX keep the screen alive. The faint puzzle tile glow draws the eye forward. Auto-advances so player isn't waiting. Duration is just long enough to register the visual before the puzzle begins."
-    },
-    {
-      "step": 4,
-      "name": "level_1_1",
-      "expected_completion_pct": 92,
-      "red_flag_threshold": 75,
-      "risk": "Player fails to discover the mechanic without instruction text",
-      "mitigation": "4×4 sparse grid with first pair in straight line — the connection is visually obvious. Glow affordance on touch makes interactivity clear. If player taps a tile and doesn't connect within 8 seconds, the matched tile pulses slightly more urgently. No text still — visual suggestion only."
-    },
-    {
-      "step": 5,
-      "name": "level_1_2",
-      "expected_completion_pct": 87,
-      "red_flag_threshold": 70,
-      "risk": "Obstacle blocking obvious path may frustrate without explanation",
-      "mitigation": "The wall gap is visually unmistakable (broken board texture, dark gap cell). Failed path attempt makes the gap glow briefly — natural cause-effect. The 5×5 grid gives room for the alternate route to be visible. Combo payoff at end rewards forward momentum."
-    },
-    {
-      "step": 6,
-      "name": "level_1_3",
-      "expected_completion_pct": 83,
-      "red_flag_threshold": 65,
-      "risk": "7-pair puzzle may feel long before the payoff",
-      "mitigation": "Board has multiple valid solve orders — player feels in control. Two obstacles are separated so each feels like a discovered challenge not a wall. The mid-board density creates satisfying clearing rhythm. The post-completion restoration cutscene is the largest payoff so far — worth the effort."
-    },
-    {
-      "step": 7,
-      "name": "material_reward_screen",
-      "expected_completion_pct": 91,
-      "red_flag_threshold": 78,
-      "risk": "Reward UI feels arbitrary or confusing first time",
-      "mitigation": "The driftwood visually rises from the dock boards just restored — physical metaphor is clear. The ambient text '集めた素材で、島を直せるかもしれない。' is the only explanation needed. The UI animation is satisfying and brief."
-    },
-    {
-      "step": 8,
-      "name": "harbor_restored_animation",
-      "expected_completion_pct": 89,
-      "red_flag_threshold": 76,
-      "risk": "Map reveal could be underwhelming if visual change is too subtle",
-      "mitigation": "The harbor section of the map transitions from grey to warm color in a visible sweep. One restoration 'complete' marker glows. The surrounding grey map sections are visible — future potential is implied. The 15s duration gives the player time to absorb the change before gameplay opens."
-    }
-  ],
-
-  "d1_retention_setup": {
-    "restoration_areas_completed": 1,
-    "restoration_area_name": "harbor_dock",
-    "hinata_appearances": 2,
-    "hinata_appearance_details": [
-      {"step": 2, "context": "Hands 律 the letter from 渉 at the dock"},
-      {"step": 6, "context": "Passes the restored dock, notices the change, brief warm glance"}
-    ],
-    "material_rewards_received": 1,
-    "first_material": {
-      "type": "driftwood",
-      "display_name_jp": "浮木",
-      "source": "level_1_3_completion"
-    },
-    "island_map_unlocked": true,
-    "map_state_after_ftue": "harbor_area_restored_partial_warm_color",
-    "emotional_hooks_established": [
-      "律 has a purpose (restore the island per the letter)",
-      "ひなた is present and aware — not attached, not distant",
-      "The puzzle-restoration loop is understood without explanation",
-      "The island was beautiful once — and can be again"
-    ],
-    "next_session_pull": "The map shows 2 grey areas adjacent to the harbor — visible but not yet accessible. Player knows what to do next."
   },
-
-  "teaching_affordances": [
-    {
-      "affordance": "tile_touch_glow",
-      "trigger": "Player taps any puzzle tile",
-      "visual_effect": "Tile emits soft teal glow, brightens by ~40%, pulses once at 0.5s period",
-      "audio_effect": "Soft resonant tap sound — like a wooden block or hollow bamboo, single note",
-      "teaching_function": "Confirms interactivity. Establishes that tiles are 'alive' and selectable."
-    },
-    {
-      "affordance": "path_preview_dotted",
-      "trigger": "Player taps a second tile of the same type as selected tile",
-      "visual_effect": "Dotted path line appears along the valid route (if route exists). Line uses warm ivory color, gentle glow. If no valid route, nothing appears.",
-      "audio_effect": "None — the visual is enough. Absence of audio for invalid is intentional (no punishment sound).",
-      "teaching_function": "Shows the player that a route exists before they commit. Builds spatial understanding of BFS ≤2 turns."
-    },
-    {
-      "affordance": "gap_glow_on_failed_path",
-      "trigger": "Player attempts to connect two tiles and the path is blocked by an obstacle",
-      "visual_effect": "The obstacle cell(s) briefly glow a muted amber-orange for 0.8 seconds. Not harsh — warm and communicative.",
-      "audio_effect": "Single muted low note (not a buzzer — more like a stone dropped into shallow water)",
-      "teaching_function": "Points attention to what's blocking the route without any text. The player's eye goes to the gap naturally."
-    },
-    {
-      "affordance": "tile_settle_animation",
-      "trigger": "Any pair is successfully cleared",
-      "visual_effect": "Remaining tiles shift subtly (2-3px settle movement). Any tile that now has a clear line-of-sight to its match glows slightly brighter than others.",
-      "audio_effect": "None separate — part of the match success sound",
-      "teaching_function": "Guides the player's eye to remaining matches without explicit indication. Board 'breathes' between moves."
-    },
-    {
-      "affordance": "combo_particle_trail",
-      "trigger": "Player clears a second pair within 2000ms of the first",
-      "visual_effect": "The cleared tiles leave a brighter particle trail than single clears. A soft '×2' numeral floats up in teal and fades over 1 second. The board border briefly brightens.",
-      "audio_effect": "Second ascending note added to the match chime — creating a brief harmonic. Not fanfare, just 'more'.",
-      "teaching_function": "Rewards speed without demanding it. Player discovers that rapid clearing has a different feel — intrinsically motivating."
-    },
-    {
-      "affordance": "restoration_world_pulse",
-      "trigger": "Level complete",
-      "visual_effect": "The background scene behind the puzzle board shifts slightly warmer — a single-frame color temperature change (+5% saturation). Barely perceptible on first level, accumulates over time.",
-      "audio_effect": "Ambient ocean wave sound rises briefly then settles — like the island exhaling.",
-      "teaching_function": "Links puzzle completion to world change. The connection is felt before it is shown in the level 1-3 restoration cutscene."
-    },
-    {
-      "affordance": "hinata_passive_presence",
-      "trigger": "Level 1-3 completion restoration cutscene",
-      "visual_effect": "ひなた in the background, mid-distance. She is not highlighted or zoomed in. Her presence is ambient until she turns to glance at 律.",
-      "audio_effect": "Wind chime note coincides with her glance — a single soft tone",
-      "teaching_function": "Emotional affordance — signals to the player that their actions are noticed by someone who matters."
-    },
-    {
-      "affordance": "material_rise_animation",
-      "trigger": "First material reward (driftwood/浮木) collected after level 1-3",
-      "visual_effect": "Material item rises from dock boards with a gentle float path into the inventory UI corner. Warm glow surrounds it during flight. Landing in UI slot triggers a small ripple effect.",
-      "audio_effect": "Soft wind-chime ascent (3 notes, rising) matching the float duration",
-      "teaching_function": "Makes the material economy feel tangible and pleasurable — not transactional. The wood rising from the dock it just helped restore is a closed visual metaphor."
-    },
-    {
-      "affordance": "idle_urgency_pulse",
-      "trigger": "Player has tapped a tile but made no second tap within 8 seconds",
-      "visual_effect": "The selected tile pulses slightly more urgently (period shortens from 0.5s to 0.3s). The matching pair tile brightens very slightly.",
-      "audio_effect": "None",
-      "teaching_function": "Gentle nudge toward the correct action. Not instructional, not punishing — just slightly more energetic invitation."
-    }
-  ],
-
-  "copy_spec": {
-    "tone_notes": "All tutorial copy is Japanese, written in the gentle 'healing game' register. No exclamation marks. No directive language ('tap here', 'do this'). Emotional and observational rather than instructional. The player is a thoughtful adult arriving somewhere new, not a student being taught.",
-    "panel_texts": [
+  "screen_layout_spec": {
+    "schema_version": "1.0",
+    "engine": "cocos-creator-3.x",
+    "design_resolution": {"width": 750, "height": 1334},
+    "fit_mode": "FIXED_HEIGHT",
+    "orientation": "portrait",
+    "breakpoints": [
+      {"name": "mobile_compact", "width": 375, "height": 667, "device_ref": "iPhone SE"},
+      {"name": "mobile_standard", "width": 390, "height": 844, "device_ref": "iPhone 14（基准）"},
+      {"name": "mobile_large", "width": 430, "height": 932, "device_ref": "iPhone 14 Plus"},
+      {"name": "tablet", "width": 768, "height": 1024, "device_ref": "iPad Mini"}
+    ],
+    "screens": [
       {
-        "location": "opening_panel_1",
-        "text_jp": "五年、ずっと走り続けてきた。",
-        "character_count": 14,
-        "voice": "律 internal monologue"
+        "screen_id": "screen_gameplay",
+        "name_cn": "棋盘游戏界面",
+        "layout_type": "gameplay",
+        "regions": [
+          {
+            "region_id": "top_bar",
+            "name_cn": "顶部状态栏",
+            "height_dp": 48,
+            "safe_zone_top_dp": 16,
+            "elements": ["暂停按钮（44×44dp触控目标）", "关卡标题（Ch1-L1）", "步数计数器（≤5步时数字变红）"],
+            "protected": false
+          },
+          {
+            "region_id": "combo_timer_bar",
+            "name_cn": "Combo计时器进度条",
+            "height_dp": 12,
+            "position": "top_bar_below",
+            "color_states": ["×1灰色", "×2橙色", "×3红橙色", "×4+金色"],
+            "protected": false
+          },
+          {
+            "region_id": "playfield",
+            "name_cn": "棋盘区域",
+            "layout": "vertically_centered_between_top_and_bottom_bars",
+            "padding_dp": 8,
+            "tile_size_by_board": {
+              "4x4_tutorial": 108,
+              "6x6": 88,
+              "8x8": 72,
+              "9x9": 64
+            },
+            "protected": true,
+            "note": "受保护区域，HUD元素不可覆盖；棋盘节点锚点(0.5,0.5)，Canvas中心对齐"
+          },
+          {
+            "region_id": "bottom_bar",
+            "name_cn": "底部辅助工具栏",
+            "height_dp": 64,
+            "safe_zone_bottom_dp": 34,
+            "elements": [
+              {"id": "btn_reshuffle", "name_cn": "重排按钮", "touch_target_dp": "44×44", "cost": "30沙滩币"},
+              {"id": "beach_coins_display", "name_cn": "沙滩币余额", "width_policy": "flex_1_center"},
+              {"id": "btn_hint", "name_cn": "预判按钮", "touch_target_dp": "44×44", "cost": "10沙滩币"}
+            ],
+            "protected": false
+          }
+        ],
+        "breakpoint_overrides": {
+          "mobile_compact": {"bottom_bar_height_dp": 52, "tile_size_8x8": 60, "note": "按钮图标优先，文字标签隐藏"},
+          "mobile_large": {"tile_size_8x8": 80},
+          "tablet": {"tile_size_8x8": 92, "bottom_bar_padding_horizontal_dp": 48}
+        }
       },
       {
-        "location": "opening_panel_2",
-        "text_jp": "島は、予想よりずっと静かだった。",
-        "character_count": 17,
-        "voice": "律 internal monologue"
+        "screen_id": "screen_main_menu",
+        "name_cn": "主菜单",
+        "layout_type": "menu",
+        "regions": [
+          {"region_id": "bg_illustration", "name_cn": "全屏背景插图", "layout": "fullscreen", "protected": false},
+          {"region_id": "logo_area", "name_cn": "Logo区域", "position": "top_third_center", "elements": ["游戏Logo", "「輝島」日文副标题"]},
+          {"region_id": "action_area", "name_cn": "主操作区", "position": "center", "elements": [
+            {"id": "btn_continue", "name_cn": "继续按钮", "width_dp": 220, "height_dp": 56, "style": "primary"},
+            {"id": "btn_settings", "name_cn": "设置按钮", "style": "secondary"},
+            {"id": "btn_replay_opening", "name_cn": "重看开场按钮", "style": "secondary"}
+          ]},
+          {"region_id": "version_label", "name_cn": "版本号", "position": "bottom_right_corner", "font_size_rem": 0.78}
+        ]
       },
       {
-        "location": "opening_panel_3",
-        "text_jp": "なにかが、ここで待っている気がした。",
-        "character_count": 18,
-        "voice": "律 internal monologue"
+        "screen_id": "overlay_continue",
+        "name_cn": "续关弹窗",
+        "layout_type": "modal",
+        "modal_layout": {
+          "width_dp": 320,
+          "min_height_dp": 220,
+          "scrim_opacity": 0.65,
+          "border_radius_dp": 16,
+          "color_theme": "暖色治愈调（不使用红色/紧迫感色彩）",
+          "elements": [
+            {"id": "title", "name_cn": "标题「还有一点点」", "style": "暖色大字"},
+            {"id": "btn_continue_purchase", "name_cn": "续关+5步（30沙滩币）", "style": "primary", "weight": "equal"},
+            {"id": "btn_retry", "name_cn": "再试一次", "style": "secondary", "weight": "equal"},
+            {"id": "btn_quit", "name_cn": "放弃本关", "style": "text_small_gray", "position": "bottom"}
+          ],
+          "overflow_policy": "在最小视口（390×844）完整显示，无滚动"
+        }
       },
       {
-        "location": "hinata_encounter",
-        "text_jp": "船で見かけました。渉のおじいちゃんからの手紙、たぶんあなた宛てだと思って。",
-        "character_count": 37,
-        "voice": "ひなた dialogue"
-      },
-      {
-        "location": "island_overview",
-        "text_jp": "手紙には、島を頼むと書いてあった。",
-        "character_count": 18,
-        "voice": "律 internal monologue"
-      },
-      {
-        "location": "level_1_3_hinata_completion",
-        "text_jp": "少し、変わりましたね。",
-        "character_count": 10,
-        "voice": "ひなた dialogue"
-      },
-      {
-        "location": "material_reward_ambient",
-        "text_jp": "集めた素材で、島を直せるかもしれない。",
-        "character_count": 19,
-        "voice": "ambient game text (not attributed to character)"
+        "screen_id": "screen_npc_dialogue",
+        "name_cn": "NPC对话弹窗",
+        "layout_type": "modal",
+        "modal_layout": {
+          "position": "bottom_drawer",
+          "height_ratio": 0.4,
+          "elements": [
+            {"id": "npc_avatar", "name_cn": "NPC头像", "shape": "circle", "size_dp": "64×64", "position": "left"},
+            {"id": "dialogue_bubble", "name_cn": "对话气泡", "width_policy": "screen_width - avatar - 24dp", "max_chars_per_segment": 80},
+            {"id": "skip_button", "name_cn": "跳过按钮×", "position": "top_right", "visible_when": "非核心剧情"}
+          ],
+          "advance_trigger": "点击任意区域推进下一句"
+        }
       }
     ],
-    "prohibited_patterns": [
-      "「タップしてください」",
-      "「ここを押してください」",
-      "「チュートリアル」",
-      "「最初は…」",
-      "Exclamation marks in tutorial copy",
-      "Any text that presumes the player is confused"
-    ]
-  },
-
-  "scaffolding_progression": {
-    "description": "Complexity increases from 1-1 to 1-3 across four dimensions simultaneously, ensuring no single dimension overwhelms the player.",
-    "dimensions": [
-      {
-        "dimension": "grid_size",
-        "1_1": "4×4 (16 cells)",
-        "1_2": "5×5 (25 cells)",
-        "1_3": "5×5 (25 cells, same grid but denser fill)"
-      },
-      {
-        "dimension": "tile_pair_count",
-        "1_1": 4,
-        "1_2": 6,
-        "1_3": 7
-      },
-      {
-        "dimension": "obstacles",
-        "1_1": "none",
-        "1_2": "1 gap (single blocked straight-line path)",
-        "1_3": "2 gaps (separated, each blocking a different pair)"
-      },
-      {
-        "dimension": "routing_complexity",
-        "1_1": "First pair: 0 turns (straight line). Others: max 1 turn.",
-        "1_2": "Most pairs: 1 turn. One pair requires routing around obstacle. Combo introduced.",
-        "1_3": "All pairs require 1-2 turns. Two obstacle avoidances. Multiple valid board-clearing orders."
-      }
-    ]
+    "layout_validation": {
+      "status": "COMPLETED",
+      "checks_passed": [
+        "棋盘区域（playfield）已标记为受保护，HUD元素不可覆盖",
+        "所有主要操作按钮触控目标≥44×44dp（符合iOS HIG最低标准）",
+        "续关弹窗在最小视口（375×667）可完整显示无需滚动",
+        "NPC对话气泡文字区宽度充足，每段≤80字不触发滚动",
+        "顶部Bar预留16dp安全区适配刘海/灵动岛",
+        "底部Bar预留34dp安全区适配Home Bar",
+        "所有断点均有棋盘格子尺寸覆盖",
+        "FIXED_HEIGHT模式下棋盘居中锚点(0.5,0.5)定位正确"
+      ]
+    }
   }
 }

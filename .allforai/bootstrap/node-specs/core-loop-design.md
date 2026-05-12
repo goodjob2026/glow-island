@@ -1,40 +1,61 @@
 ---
 node: core-loop-design
+capability: game-design
 discipline_owner: lead-designer
 human_gate: true
+approval_record_path: .allforai/game-design/approval-records.json
 exit_artifacts:
   - .allforai/game-design/core-loop.html
   - .allforai/game-design/systems/core-mechanics.json
+review_checklist:
+  - 连击计时器机制完整（触发条件/重置规则/断连惩罚）
+  - combo倍率曲线定义清晰（初始值/递增方式/上限）
+  - 步数制关卡结构合理（初始步数/过关目标/续关成本）
+  - 单局1-2分钟目标可达（步数与棋盘密度配比）
+  - 5种战术棋盘特殊块（光波/光链/穿透/置换/连锁）与连击系统协同设计，不出现孤立单块移除导致无解
+  - 3种场外沙滩币辅助（重排/预判/续关）定义清晰，续关为唯一IAP触点
 ---
 
-# Task: 核心循环设计文档（HTML + JSON）
+# Goal
 
-读取现有 GDD 内容，生成符合 game-design capability 格式的 HTML 设计文档和紧凑 JSON。
+Design the core gameplay loop for Glow Island: a timing-based combo 连连看 system on top of path-matching mechanics.
 
-## Context Pull
-- 读取 `.allforai/game-design/game-design-document.md`（主策划文档 v2.1）
-- 读取 `.allforai/product-concept/concept-baseline.json`（设计基线）
-- 读取 `.allforai/game-design/puzzle-mechanics-spec.json`（机制规格）
+> **Non-interactive execution.** All design decisions are recorded in `.allforai/`.
 
-## Output
+> **Output language (mandatory):** All HTML navigation tabs, section headings, labels, captions,
+> and descriptive text MUST be in Chinese (zh-CN). In-game proper nouns (place/character/item names)
+> keep the game world's native language (Japanese). JSON field keys stay English snake_case.
 
-**core-loop.html** — 深色主题 HTML，章节包含：
-1. 核心循环图（文字描述：单局30s-3min → 材料奖励 → 岛屿修复 → 章节解锁）
-2. 元循环（岛屿地图 → 章节目标 → 关卡 → 材料 → 修复）
-3. 步数制设计原则（无倒计时、无体力）
-4. 连击系统（天天爱消除爽快感）
-5. 特殊块（炸弹/行消/自动连/重排）
-6. 章节机制解锁进度表（Ch1-Ch6）
+> Do NOT use AskUserQuestion or request user input.
 
-**systems/core-mechanics.json** — 紧凑摘要：
-```json
-{
-  "core_loop": { "session_duration": "30s-3min", "currency": "steps" },
-  "meta_loop": { "layers": ["puzzle", "material", "restoration", "narrative"] },
-  "special_blocks": [...],
-  "chapter_mechanics": {...}
-}
-```
+## Inputs
 
-## Human Gate
-执行完成后将 approval-records.json 中 core-loop-design 的 gate_status 更新为 "in-review"（已是 in-review，保持）。
+- `.allforai/product-concept/concept-baseline.json` — gameplay_feel, session_design, differentiation_strategy (combo_system), board_design
+- `.allforai/game-design/systems/worldbuilding.json` — chapters[], chapter mechanics unlock schedule
+
+## Sub-Skill Invocation
+
+Read and follow:
+
+1. **Core Loop Design:** Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-systems/10-design/core-loop-design/SKILL.md`
+
+## Key Design Decisions Already Made
+
+- **核心机制:** 连连看路径匹配（≤2转角消除同图案）+ 节奏连击系统（非静态解谜）
+- **Combo计时器:** 每次消除重置/延长计时器；超时combo归零；音效节奏随combo升级
+- **Combo倍率:** 随连击数递增（具体曲线由progression-curve-design设计）
+- **步数制:** 无倒计时、无体力；步数耗尽后可花沙滩币续关（唯一付费点）
+- **单局目标:** 1-2分钟/关；超休闲快进快出；关卡要保障玩家频繁触发连击
+- **棋盘:** Ch1-2标准矩形（8×8/9×9）；Ch3+逐步引入异形棋盘
+- **5种战术棋盘特殊块:**
+  - 光波（Wave）：向四周清除障碍物（冰/锁链/藤蔓），不移除图块，不破坏配对可能性
+  - 光链（Light Chain）：将场上所有同类型图块两两自动配对消除
+  - 穿透（Pierce）：消除时路径穿透一个障碍物，图块本身不消失
+  - 置换（Swap）：交换任意两个相邻图块的位置，不计入消除步数
+  - 连锁（Cascade）：触发后自动连续匹配所有当前可消对，combo不重置
+- **3种场外沙滩币辅助（非棋盘图块）:**
+  - 重排（30币）：打乱并重新排列所有图块（保证新局面有解）
+  - 预判（10币）：高亮显示1-3个可消对，不消耗步数
+  - 续关（30币）：步数耗尽后花费沙滩币继续——唯一IAP触点
+- **安全性:** 所有特殊块设计不移除单个图块，不破坏棋盘可解性（无需运行时奇偶校验）
+- **章节机制解锁:** Ch1基础+combo；Ch2冰封块；Ch3锁链+传送门；Ch4单路径约束；Ch5重力+滑落；Ch6扩散障碍（藤蔓/苔藓）

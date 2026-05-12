@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glow Island — 关卡设计文档</title>
+  <title>Glow Island — 关卡设计文档 v3.0</title>
   <style>
     :root {
       --bg: #0f1117;
@@ -58,10 +58,7 @@
       font-size: 0.82rem;
       margin-top: 0.5rem;
     }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    .container { max-width: 960px; margin: 0 auto; }
     h1, h2, h3, h4, h5, h6 {
       color: var(--heading);
       margin-top: 2.2rem;
@@ -87,7 +84,7 @@
       color: var(--muted);
     }
     code {
-      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
       font-size: 0.87em;
       background: var(--code-bg);
       color: var(--accent2);
@@ -103,25 +100,10 @@
       overflow-x: auto;
       margin: 1rem 0 1.4rem;
     }
-    pre code {
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 0.85rem;
-      color: var(--text);
-    }
-    ul, ol {
-      padding-left: 1.6rem;
-      margin: 0.5rem 0 1rem;
-    }
+    pre code { background: none; border: none; padding: 0; font-size: 0.85rem; color: var(--text); }
+    ul, ol { padding-left: 1.6rem; margin: 0.5rem 0 1rem; }
     li { margin: 0.3rem 0; }
-    li > ul, li > ol { margin: 0.2rem 0; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.2rem 0;
-      font-size: 0.9rem;
-    }
+    table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.9rem; }
     th {
       background: var(--surface);
       color: var(--accent);
@@ -130,18 +112,10 @@
       text-align: left;
       border: 1px solid var(--border);
     }
-    td {
-      padding: 0.55rem 0.9rem;
-      border: 1px solid var(--border);
-      vertical-align: top;
-    }
+    td { padding: 0.55rem 0.9rem; border: 1px solid var(--border); vertical-align: top; }
     tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
     tr:hover td { background: rgba(125,211,252,0.04); }
-    hr {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 2rem 0;
-    }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
     .footer {
       text-align: center;
       color: var(--muted);
@@ -150,11 +124,9 @@
       padding-top: 1.5rem;
       border-top: 1px solid var(--border);
     }
-
-    /* Custom components */
     .stat-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 1rem;
       margin: 1.5rem 0;
     }
@@ -165,19 +137,8 @@
       padding: 1rem 1.2rem;
       text-align: center;
     }
-    .stat-card .val {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 0.25rem;
-    }
-    .stat-card .lbl {
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-    }
-
+    .stat-card .val { font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.25rem; }
+    .stat-card .lbl { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.04em; }
     .chapter-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -205,35 +166,6 @@
     }
     .ch-title { font-size: 1.05rem; font-weight: 600; color: var(--heading); }
     .ch-meta { font-size: 0.82rem; color: var(--muted); }
-
-    .grid-evo {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      margin: 1rem 0;
-    }
-    .grid-box {
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.4rem 0.8rem;
-      font-size: 0.85rem;
-      color: var(--accent2);
-      background: var(--surface);
-      font-weight: 600;
-    }
-    .grid-arrow {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-    .grid-ch-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      background: var(--code-bg);
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-    }
-
     .tag {
       display: inline-block;
       background: rgba(134,239,172,0.1);
@@ -245,80 +177,31 @@
       margin: 0.1rem;
       font-weight: 500;
     }
-    .tag-obs {
-      background: rgba(249,168,212,0.1);
-      color: var(--accent3);
-      border-color: rgba(249,168,212,0.25);
-    }
-    .tag-new {
-      background: rgba(125,211,252,0.1);
-      color: var(--accent);
-      border-color: rgba(125,211,252,0.25);
-    }
-
-    .pacing-bar {
-      display: flex;
-      gap: 4px;
-      margin: 0.75rem 0;
-    }
+    .tag-obs { background: rgba(249,168,212,0.1); color: var(--accent3); border-color: rgba(249,168,212,0.25); }
+    .tag-new { background: rgba(125,211,252,0.1); color: var(--accent); border-color: rgba(125,211,252,0.25); }
+    .tag-story { background: rgba(250,204,21,0.1); color: #fbbf24; border-color: rgba(250,204,21,0.25); }
+    .tag-boss { background: rgba(239,68,68,0.1); color: #f87171; border-color: rgba(239,68,68,0.25); }
+    .tag-zen { background: rgba(167,139,250,0.1); color: #c4b5fd; border-color: rgba(167,139,250,0.25); }
+    .pacing-bar { display: flex; gap: 4px; margin: 0.75rem 0; }
     .pb-std {
-      flex: 3;
-      height: 28px;
+      flex: 3; height: 28px;
       background: linear-gradient(90deg, rgba(125,211,252,0.3), rgba(125,211,252,0.5));
       border-radius: 4px 0 0 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      color: var(--accent);
-      font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; color: var(--accent); font-weight: 600;
     }
     .pb-br {
-      flex: 1;
-      height: 28px;
+      flex: 1; height: 28px;
       background: linear-gradient(90deg, rgba(134,239,172,0.3), rgba(134,239,172,0.5));
       border-radius: 0 4px 4px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      color: var(--accent2);
-      font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; color: var(--accent2); font-weight: 600;
     }
-
-    .difficulty-row {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 0.4rem 0;
-      font-size: 0.85rem;
-    }
-    .diff-label {
-      width: 100px;
-      color: var(--muted);
-      flex-shrink: 0;
-      font-size: 0.78rem;
-    }
-    .diff-bar-wrap {
-      flex: 1;
-      height: 14px;
-      background: var(--surface);
-      border-radius: 7px;
-      overflow: hidden;
-    }
-    .diff-bar {
-      height: 100%;
-      border-radius: 7px;
-      background: linear-gradient(90deg, #3b82f6, #7dd3fc);
-    }
-    .diff-val {
-      width: 30px;
-      text-align: right;
-      color: var(--accent);
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-
+    .difficulty-row { display: flex; align-items: center; gap: 0.75rem; margin: 0.4rem 0; font-size: 0.85rem; }
+    .diff-label { width: 130px; color: var(--muted); flex-shrink: 0; font-size: 0.78rem; }
+    .diff-bar-wrap { flex: 1; height: 14px; background: var(--surface); border-radius: 7px; overflow: hidden; }
+    .diff-bar { height: 100%; border-radius: 7px; background: linear-gradient(90deg, #3b82f6, #7dd3fc); }
+    .diff-val { width: 35px; text-align: right; color: var(--accent); font-size: 0.8rem; font-weight: 600; }
     .level-example {
       background: var(--code-bg);
       border: 1px solid var(--border);
@@ -326,13 +209,7 @@
       padding: 1rem 1.2rem;
       margin: 1rem 0;
     }
-    .level-example h4 {
-      color: var(--accent);
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-      margin-top: 0;
-    }
-
+    .level-example h4 { color: var(--accent); font-size: 0.85rem; margin-bottom: 0.5rem; margin-top: 0; }
     .toc {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -343,17 +220,8 @@
     .toc h4 { margin-top: 0; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
     .toc ol { margin: 0.5rem 0 0; }
     .toc li { margin: 0.25rem 0; font-size: 0.9rem; }
-
-    .field-table td:first-child {
-      font-family: "JetBrains Mono", monospace;
-      font-size: 0.82rem;
-      color: var(--accent2);
-      white-space: nowrap;
-    }
-    .field-table td:nth-child(2) {
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
+    .field-table td:first-child { font-family: "JetBrains Mono", monospace; font-size: 0.82rem; color: var(--accent2); white-space: nowrap; }
+    .field-table td:nth-child(2) { font-size: 0.8rem; color: var(--muted); }
     .required-badge {
       display: inline-block;
       background: rgba(249,168,212,0.15);
@@ -378,13 +246,85 @@
       letter-spacing: 0.05em;
       margin-left: 0.3rem;
     }
+    .spec-tile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 0.75rem 0;
+    }
+    .spec-tile-card .tile-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .tile-id {
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: var(--accent2);
+      background: var(--code-bg);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .tile-name { font-weight: 700; color: var(--heading); }
+    .tile-ch { font-size: 0.75rem; color: var(--muted); }
+    .qa-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .qa-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+    }
+    .qa-card .qa-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.25rem; }
+    .qa-card .qa-value { font-size: 0.88rem; color: var(--heading); font-weight: 600; }
+    .qa-pass { border-left: 3px solid var(--accent2); }
+    .qa-warn { border-left: 3px solid #fbbf24; }
+    .narrative-timeline {
+      position: relative;
+      padding-left: 1.5rem;
+      margin: 1rem 0;
+    }
+    .narrative-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.3rem;
+      top: 0.5rem;
+      bottom: 0.5rem;
+      width: 2px;
+      background: var(--border);
+    }
+    .ntl-item {
+      position: relative;
+      margin: 0.6rem 0;
+      font-size: 0.88rem;
+    }
+    .ntl-item::before {
+      content: '';
+      position: absolute;
+      left: -1.2rem;
+      top: 0.5rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+    }
+    .ntl-level { color: var(--accent); font-weight: 700; font-size: 0.78rem; margin-right: 0.4rem; }
+    .ntl-type { color: var(--accent3); font-size: 0.72rem; margin-right: 0.4rem; background: rgba(249,168,212,0.1); padding: 0.1rem 0.35rem; border-radius: 3px; }
   </style>
 </head>
 <body>
   <div class="page-header">
-    <div class="project-tag">Glow Island · 发光岛</div>
-    <h1>关卡设计文档（Level Design）</h1>
-    <div class="meta">版本：2.0 &nbsp;|&nbsp; 日期：2026-05-08 &nbsp;|&nbsp; 总关卡：136关 / 6章节</div>
+    <div class="project-tag">Glow Island · 輝島（Kagayaki-jima）</div>
+    <h1>关卡设计文档</h1>
+    <div class="meta">版本：3.0 &nbsp;|&nbsp; 日期：2026-05-13 &nbsp;|&nbsp; 总关卡：180关 / 6章 / 每章30关</div>
+    <div class="meta" style="margin-top:0.3rem; color: var(--accent2);">与 core-mechanics v4.0 完整对齐 · 特殊图块系统全面重设计</div>
   </div>
 
   <div class="container">
@@ -392,12 +332,15 @@
     <div class="toc">
       <h4>目录</h4>
       <ol>
-        <li><a href="#overview">关卡总览</a> — 6章节 136关，网格尺寸进化</li>
-        <li><a href="#mechanics">章节机制解锁</a> — Ch1基础 → Ch6扩散障碍</li>
-        <li><a href="#difficulty">难度曲线</a> — 3:1节奏（喘息关），章内难度分布</li>
-        <li><a href="#tutorial">教学设计</a> — 1-1 / 1-2 / 1-3 无文字教学</li>
-        <li><a href="#objectives">目标类型演进</a> — Ch1仅消除 → Ch6全组合</li>
-        <li><a href="#format">关卡格式规范</a> — JSON字段说明（供关卡编辑器导入）</li>
+        <li><a href="#overview">关卡总览</a> — 6章×30关=180关，棋盘形状演进</li>
+        <li><a href="#chapters">章节详情</a> — 每章机制解锁、NPC引导、叙事触发</li>
+        <li><a href="#special-tiles">特殊图块系统 v4.0</a> — 5种战术型图块取代旧系统</li>
+        <li><a href="#difficulty">难度曲线</a> — 首次通关率目标70%，3:1节奏设计</li>
+        <li><a href="#tutorial">教学节拍</a> — 零文字教学，11个核心机制教学关</li>
+        <li><a href="#objectives">目标类型演进</a> — Ch1消除 → Ch6全组合</li>
+        <li><a href="#examples">关卡示例</a> — 7个典型关卡截面</li>
+        <li><a href="#format">关卡格式规范</a> — JSON字段说明（v3.0，供关卡编辑器导入）</li>
+        <li><a href="#qa">设计验证报告</a> — 节奏QA + 可玩性QA</li>
       </ol>
     </div>
 
@@ -405,661 +348,724 @@
     <h1 id="overview">1. 关卡总览</h1>
 
     <div class="stat-grid">
-      <div class="stat-card">
-        <div class="val">136</div>
-        <div class="lbl">总关卡数</div>
-      </div>
-      <div class="stat-card">
-        <div class="val">6</div>
-        <div class="lbl">章节数</div>
-      </div>
-      <div class="stat-card">
-        <div class="val">4×4</div>
-        <div class="lbl">最小网格</div>
-      </div>
-      <div class="stat-card">
-        <div class="val">10×10</div>
-        <div class="lbl">最大网格</div>
-      </div>
-      <div class="stat-card">
-        <div class="val">20</div>
-        <div class="lbl">图块种类上限</div>
-      </div>
-      <div class="stat-card">
-        <div class="val">18.5h</div>
-        <div class="lbl">中等玩家通关时长</div>
-      </div>
+      <div class="stat-card"><div class="val">180</div><div class="lbl">总关卡数</div></div>
+      <div class="stat-card"><div class="val">6</div><div class="lbl">章节数</div></div>
+      <div class="stat-card"><div class="val">30</div><div class="lbl">每章关卡数</div></div>
+      <div class="stat-card"><div class="val">8×8</div><div class="lbl">Ch1–2 基础棋盘</div></div>
+      <div class="stat-card"><div class="val">10×10</div><div class="lbl">终章最大棋盘</div></div>
+      <div class="stat-card"><div class="val">20</div><div class="lbl">图块种类上限</div></div>
+      <div class="stat-card"><div class="val">5</div><div class="lbl">战术特殊图块种类</div></div>
+      <div class="stat-card"><div class="val">70%</div><div class="lbl">首次通关率目标</div></div>
     </div>
 
-    <h2>章节概览</h2>
+    <h2>章节概览表</h2>
     <table>
       <thead>
         <tr>
           <th>章节</th>
-          <th>主题</th>
+          <th>主题区域</th>
           <th>关卡数</th>
           <th>关卡编号</th>
-          <th>网格范围</th>
-          <th>图块种类</th>
-          <th>材料奖励</th>
+          <th>棋盘规格</th>
+          <th>新图块数</th>
+          <th>章节材料</th>
+          <th>NPC向导</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>Ch1</strong></td>
+          <td><strong>第一章</strong></td>
           <td>海边码头</td>
-          <td>22</td>
-          <td>1-1 ~ 1-22</td>
-          <td>4×4 → 6×6</td>
-          <td>T01–T04</td>
+          <td>30</td>
+          <td>1-1 ~ 1-30</td>
+          <td>8×8 矩形</td>
+          <td>T01–T12（12种）</td>
           <td>shell_fragment</td>
+          <td>磯部健三（Isobe Kenzo）</td>
         </tr>
         <tr>
-          <td><strong>Ch2</strong></td>
+          <td><strong>第二章</strong></td>
           <td>中央小镇</td>
-          <td>23</td>
-          <td>2-1 ~ 2-23</td>
-          <td>6×6 → 7×7</td>
-          <td>T05–T08 新增</td>
+          <td>30</td>
+          <td>2-1 ~ 2-30</td>
+          <td>8×8 → 9×9 矩形</td>
+          <td>T13–T16（+4种）</td>
           <td>clay_shard</td>
+          <td>桐島梅子（Kirishima Umeko）</td>
         </tr>
         <tr>
-          <td><strong>Ch3</strong></td>
+          <td><strong>第三章</strong></td>
           <td>花田山坡</td>
-          <td>23</td>
-          <td>3-1 ~ 3-23</td>
-          <td>6×6 → 7×7</td>
-          <td>T09–T12 新增</td>
+          <td>30</td>
+          <td>3-1 ~ 3-30</td>
+          <td>8×8 异形渐进</td>
+          <td>T17–T18（+2种）</td>
           <td>pine_needle</td>
+          <td>海野夏帆（Umino Naho）</td>
         </tr>
         <tr>
-          <td><strong>Ch4</strong></td>
+          <td><strong>第四章</strong></td>
           <td>森林露营地</td>
-          <td>22</td>
-          <td>4-1 ~ 4-22</td>
-          <td>7×7 → 8×8</td>
-          <td>T13–T16 新增</td>
+          <td>30</td>
+          <td>4-1 ~ 4-30</td>
+          <td>8×8 岛屿轮廓异形</td>
+          <td>T19–T20（+2种，共20种）</td>
           <td>torii_fragment</td>
+          <td>议长（猫）</td>
         </tr>
         <tr>
-          <td><strong>Ch5</strong></td>
+          <td><strong>第五章</strong></td>
           <td>温泉山谷</td>
-          <td>23</td>
-          <td>5-1 ~ 5-23</td>
-          <td>8×8 → 9×9</td>
-          <td>T17–T18 新增</td>
+          <td>30</td>
+          <td>5-1 ~ 5-30</td>
+          <td>9×9 岛屿轮廓异形</td>
+          <td>—（机制深化）</td>
           <td>rope_fiber</td>
+          <td>丸山ひなた（Maruyama Hinata）</td>
         </tr>
         <tr>
-          <td><strong>Ch6</strong></td>
+          <td><strong>第六章</strong></td>
           <td>夜晚灯塔</td>
-          <td>23</td>
-          <td>6-1 ~ 6-23</td>
-          <td>8×8 → 10×10</td>
-          <td>T19–T20 新增（全20种）</td>
+          <td>30</td>
+          <td>6-1 ~ 6-30</td>
+          <td>9×9 → 10×10 灯塔轮廓异形</td>
+          <td>—（全20种启用）</td>
           <td>lantern_glass</td>
+          <td>丸山冬子（Maruyama Fuyuko）</td>
         </tr>
       </tbody>
     </table>
 
-    <h2>网格尺寸进化图</h2>
-    <p>随章节推进，棋盘尺寸逐步扩大，策略空间与难度压力同步增长。</p>
+    <h2>棋盘形状演进</h2>
+    <p>随章节推进，棋盘从标准矩形逐步演变为符合輝島地形的异形棋盘，策略空间与视觉叙事同步增长。</p>
+    <blockquote>
+      <strong>Ch1–2</strong>：标准矩形（8×8 / 9×9），零认知负担，专注机制学习。<br>
+      <strong>Ch3</strong>：前10关矩形过渡，第11关起引入海湾轮廓异形，有效格数保持偶数。<br>
+      <strong>Ch4–5</strong>：岛屿轮廓异形，void格子标记后有效格保持连通。<br>
+      <strong>Ch6</strong>：灯塔岛轮廓，终章最大扩展至10×10，Boss关满棋盘布局。
+    </blockquote>
 
-    <div class="grid-evo">
-      <span class="grid-ch-label">Ch1</span>
-      <span class="grid-box">4×4</span>
-      <span class="grid-arrow">→</span>
-      <span class="grid-box">5×5</span>
-      <span class="grid-arrow">→</span>
-      <span class="grid-box">6×6</span>
-      <span class="grid-arrow" style="margin: 0 0.5rem;">|</span>
-      <span class="grid-ch-label">Ch2–Ch3</span>
-      <span class="grid-box">6×6</span>
-      <span class="grid-arrow">→</span>
-      <span class="grid-box">7×7</span>
-      <span class="grid-arrow" style="margin: 0 0.5rem;">|</span>
-      <span class="grid-ch-label">Ch4</span>
-      <span class="grid-box">7×7</span>
-      <span class="grid-arrow">→</span>
-      <span class="grid-box">8×8</span>
-      <span class="grid-arrow" style="margin: 0 0.5rem;">|</span>
-      <span class="grid-ch-label">Ch5</span>
-      <span class="grid-box">8×8</span>
-      <span class="grid-arrow">→</span>
-      <span class="grid-box">9×9</span>
-      <span class="grid-arrow" style="margin: 0 0.5rem;">|</span>
-      <span class="grid-ch-label">Ch6</span>
-      <span class="grid-box">8×8</span>
-      <span class="grid-arrow">→</span>
-      <span class="grid-box">9×9</span>
-      <span class="grid-arrow">→</span>
-      <span class="grid-box" style="border-color: var(--accent); color: var(--accent);">10×10</span>
-    </div>
-
-    <blockquote>Ch4 开始引入 8×8 作为新起点，代表进入"中高难度带"；Ch6 终章最大扩展至 10×10，是全游戏最大棋盘。</blockquote>
+    <h2>关卡角色分布</h2>
+    <table>
+      <thead>
+        <tr><th>关卡角色</th><th>标识</th><th>每章数量</th><th>特征</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-new">标准关</span></td>
+          <td>standard</td>
+          <td>约21–23关</td>
+          <td>正常步数限制，3:1节奏中的标准关</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-story">故事关</span></td>
+          <td>story</td>
+          <td>2关</td>
+          <td>低难度 + NPC对话 + 剧情推进，步数宽裕</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-boss">Boss关</span></td>
+          <td>boss</td>
+          <td>1关（第30关）</td>
+          <td>高难度 + 叙事演出，通关后解锁新岛屿区域</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-zen">禅境关</span></td>
+          <td>zen</td>
+          <td>2关</td>
+          <td>关闭步数上限和失败判定，零压力消除体验</td>
+        </tr>
+        <tr>
+          <td><span class="tag">喘息关</span></td>
+          <td>breather</td>
+          <td>约7–8关</td>
+          <td>目标数较前3关降低约30%，节奏放缓</td>
+        </tr>
+      </tbody>
+    </table>
 
     <hr>
 
     <!-- ======================================================== -->
-    <h1 id="mechanics">2. 章节机制解锁</h1>
-
-    <p>每章首关（章节第1关）引入本章核心新机制，整章逐步深化组合运用。下表按章节列出机制解锁时序与首关截面示例。</p>
+    <h1 id="chapters">2. 章节详情</h1>
 
     <div class="chapter-card">
       <div class="ch-header">
-        <span class="chapter-badge">Ch1 · 海边码头</span>
-        <span class="ch-title">基础连连看 + 连击 + 炸弹</span>
+        <span class="chapter-badge">第一章 · 海边码头</span>
+        <span class="ch-title">基础连连看 + 连击 + 连锁图块（cascade）</span>
       </div>
-      <div class="ch-meta">关卡 1-1 ~ 1-22 &nbsp;|&nbsp; 网格 4×4 → 6×6 &nbsp;|&nbsp; 图块 T01–T04</div>
+      <div class="ch-meta">关卡 1-1 ~ 1-30 &nbsp;|&nbsp; 棋盘 8×8 矩形 &nbsp;|&nbsp; 图块 T01–T12 &nbsp;|&nbsp; NPC向导：磯部健三（Isobe Kenzo）</div>
       <ul style="margin-top:0.75rem; font-size:0.88rem;">
-        <li><span class="tag tag-new">新</span> 基础连连看（同色图块直线/折线连接消除）</li>
-        <li><span class="tag tag-new">新</span> 连击系统（combo）：连续消除累积能量</li>
-        <li><span class="tag tag-new">新</span> 特殊块 <code>bomb</code>：3连击触发范围清除</li>
+        <li><span class="tag tag-new">新</span> 基础连连看（≤2次转弯路径匹配，同种图块消除）</li>
+        <li><span class="tag tag-new">新</span> 连击系统（Combo计时器2000ms，连续配对延续链）</li>
+        <li><span class="tag tag-new">新</span> 连锁图块 <code>cascade</code>：Combo=3时生成，激活后自动链消最多5对</li>
       </ul>
+      <h4 style="margin-top:0.8rem; color:var(--accent3);">叙事触发点</h4>
+      <div class="narrative-timeline">
+        <div class="ntl-item"><span class="ntl-level">1-1关</span><span class="ntl-type">过场动画</span>律抵达輝島码头，磯部健三（Isobe Kenzo）出现在远处收网</div>
+        <div class="ntl-item"><span class="ntl-level">1-8关</span><span class="ntl-type">NPC对话</span>健三说起海上漂来的东西，隐约提到渉</div>
+        <div class="ntl-item"><span class="ntl-level">1-15关</span><span class="ntl-type">日记碎片</span>灯台守日记·其一：渉初到輝島的记录</div>
+        <div class="ntl-item"><span class="ntl-level">1-22关</span><span class="ntl-type">NPC对话</span>律注意到ひなた的手账，两人首次对话</div>
+        <div class="ntl-item"><span class="ntl-level">1-30关</span><span class="ntl-type">章末演出</span>码头修复完成，健三说：「能走就行。」灯塔方向光亮一闪</div>
+      </div>
       <div class="level-example">
-        <h4>首关截面 — 1-1</h4>
+        <h4>首关示例 — 1-1（零文字教学）</h4>
         <table style="margin:0; font-size:0.82rem;">
-          <tr><th>字段</th><th>值</th></tr>
-          <tr><td>网格</td><td>4×4</td></tr>
-          <tr><td>图块</td><td>T01, T02</td></tr>
-          <tr><td>目标</td><td>clear_tiles × 4</td></tr>
-          <tr><td>最大步数</td><td>无限制</td></tr>
-          <tr><td>障碍</td><td>无</td></tr>
-          <tr><td>情感注释</td><td><em>"First steps on the shore — the sea greets you gently."</em></td></tr>
+          <tr><th>棋盘</th><th>图块</th><th>目标</th><th>步数上限</th><th>障碍</th><th>特殊图块</th><th>情感注释</th></tr>
+          <tr><td>8×8</td><td>T01, T02</td><td>消除任意8块</td><td>无限制</td><td>无</td><td>无</td><td>律第一次踏上輝島的码头，健三从远处投来一瞥。</td></tr>
         </table>
       </div>
     </div>
 
     <div class="chapter-card">
       <div class="ch-header">
-        <span class="chapter-badge">Ch2 · 中央小镇</span>
-        <span class="ch-title">冰封块 + 杂草障碍 + 风车</span>
+        <span class="chapter-badge">第二章 · 中央小镇</span>
+        <span class="ch-title">冰封块 + 杂草 + 光链图块（light_chain）</span>
       </div>
-      <div class="ch-meta">关卡 2-1 ~ 2-23 &nbsp;|&nbsp; 网格 6×6 → 7×7 &nbsp;|&nbsp; 图块 T05–T08 新增</div>
+      <div class="ch-meta">关卡 2-1 ~ 2-30 &nbsp;|&nbsp; 棋盘 8×8 → 9×9 矩形 &nbsp;|&nbsp; 图块 T13–T16 新增 &nbsp;|&nbsp; NPC向导：桐島梅子（Kirishima Umeko）</div>
       <ul style="margin-top:0.75rem; font-size:0.88rem;">
-        <li><span class="tag tag-obs">障碍</span> <code>ice_block</code>（1层冰封）：需附近消除解冻</li>
-        <li><span class="tag tag-obs">障碍</span> <code>weed</code>（杂草）：阻挡格子，需匹配相邻色块清除</li>
-        <li><span class="tag tag-new">新</span> 特殊块 <code>windmill</code>：4连击触发行/列扫除</li>
-        <li><span class="tag tag-new">新</span> 目标类型 <code>clear_ice</code></li>
+        <li><span class="tag tag-obs">障碍</span> <code>ice_block</code>（1层冰封）：附近配对消除解冻，引入 <code>clear_ice</code> 目标</li>
+        <li><span class="tag tag-obs">障碍</span> <code>weed</code>（杂草）：阻挡格子，相邻匹配清除</li>
+        <li><span class="tag tag-new">新</span> 光链图块 <code>light_chain</code>：Combo=4时生成，激活后全图扫描同类型图块批量配对消除</li>
       </ul>
-      <div class="level-example">
-        <h4>首关截面 — 2-1</h4>
-        <table style="margin:0; font-size:0.82rem;">
-          <tr><th>字段</th><th>值</th></tr>
-          <tr><td>网格</td><td>6×6</td></tr>
-          <tr><td>图块</td><td>T01, T02</td></tr>
-          <tr><td>目标</td><td>clear_tiles × 10, clear_ice × 1</td></tr>
-          <tr><td>最大步数</td><td>无限制</td></tr>
-          <tr><td>障碍</td><td>ice_block @ [5,4] layers=1</td></tr>
-        </table>
+      <h4 style="margin-top:0.8rem; color:var(--accent3);">叙事触发点</h4>
+      <div class="narrative-timeline">
+        <div class="ntl-item"><span class="ntl-level">2-1关</span><span class="ntl-type">过场动画</span>梅子陶艺坊，律看到自己的碗摆在最显眼处</div>
+        <div class="ntl-item"><span class="ntl-level">2-10关</span><span class="ntl-type">NPC对话</span>梅子说：「不平的东西，有时候比较稳。」</div>
+        <div class="ntl-item"><span class="ntl-level">2-18关</span><span class="ntl-type">日记碎片</span>灯台守日记·其二：渉写给冬子的信片段</div>
+        <div class="ntl-item"><span class="ntl-level">2-25关</span><span class="ntl-type">NPC对话</span>ひなた在梅子坊帮忙，律看见手账上的「岛况观测」</div>
+        <div class="ntl-item"><span class="ntl-level">2-30关</span><span class="ntl-type">章末演出</span>小镇街灯亮起，新岛屿区域解锁</div>
       </div>
     </div>
 
     <div class="chapter-card">
       <div class="ch-header">
-        <span class="chapter-badge">Ch3 · 花田山坡</span>
-        <span class="ch-title">锁链 + 传送门 + 灯光块</span>
+        <span class="chapter-badge">第三章 · 花田山坡</span>
+        <span class="ch-title">锁链 + 传送门 + 光波图块（wave）+ 异形棋盘初现</span>
       </div>
-      <div class="ch-meta">关卡 3-1 ~ 3-23 &nbsp;|&nbsp; 网格 6×6 → 7×7 &nbsp;|&nbsp; 图块 T09–T12 新增</div>
+      <div class="ch-meta">关卡 3-1 ~ 3-30 &nbsp;|&nbsp; 棋盘 8×8 异形渐进 &nbsp;|&nbsp; 图块 T17–T18 新增 &nbsp;|&nbsp; NPC向导：海野夏帆（Umino Naho）</div>
       <ul style="margin-top:0.75rem; font-size:0.88rem;">
-        <li><span class="tag tag-obs">障碍</span> <code>chain_lock</code>（1~2环）：需在附近完成N次匹配解锁</li>
+        <li><span class="tag tag-obs">障碍</span> <code>chain_lock</code>（1~2环）：附近完成N次匹配解锁，引入 <code>free_chains</code> 目标</li>
         <li><span class="tag tag-obs">障碍</span> <code>portal</code>（传送门对）：路径穿越，零转弯代价</li>
         <li><span class="tag tag-new">新</span> 冰封块升级至2层</li>
-        <li><span class="tag tag-new">新</span> 特殊块 <code>lantern</code>（灯光块，关卡预置）</li>
-        <li><span class="tag tag-new">新</span> 目标类型 <code>free_chains</code></li>
+        <li><span class="tag tag-new">新</span> 光波图块 <code>wave</code>：Combo=6时生成，激活后清除3×3区域所有障碍层 + 5秒自由路径增益</li>
+        <li><span class="tag tag-new">新</span> 第11关起引入海湾轮廓异形棋盘</li>
       </ul>
-      <div class="level-example">
-        <h4>首关截面 — 3-1（位于全局第45关）</h4>
-        <table style="margin:0; font-size:0.82rem;">
-          <tr><th>字段</th><th>值</th></tr>
-          <tr><td>网格</td><td>6×6</td></tr>
-          <tr><td>图块</td><td>T01–T04（复用，新障碍引入）</td></tr>
-          <tr><td>目标</td><td>clear_tiles + free_chains（首次）</td></tr>
-          <tr><td>新障碍</td><td>chain_lock（1环）× 1</td></tr>
-        </table>
+      <h4 style="margin-top:0.8rem; color:var(--accent3);">叙事触发点</h4>
+      <div class="narrative-timeline">
+        <div class="ntl-item"><span class="ntl-level">3-1关</span><span class="ntl-type">过场动画</span>夏帆带律走花田，「那棵松树，你经过的时候它在颤抖……是我想告诉你的。」</div>
+        <div class="ntl-item"><span class="ntl-level">3-9关</span><span class="ntl-type">NPC对话</span>夏帆说：「半开的花，已经是花了。」</div>
+        <div class="ntl-item"><span class="ntl-level">3-16关</span><span class="ntl-type">日记碎片</span>灯台守日记·其三：渉写给「东京来的年轻人」那封不寄出的信片段</div>
+        <div class="ntl-item"><span class="ntl-level">3-23关</span><span class="ntl-type">NPC对话</span>议长猫出现在夏帆与律之间，三人静坐</div>
+        <div class="ntl-item"><span class="ntl-level">3-30关</span><span class="ntl-type">章末演出</span>花田路灯亮起，新岛屿区域解锁</div>
       </div>
     </div>
 
     <div class="chapter-card">
       <div class="ch-header">
-        <span class="chapter-badge">Ch4 · 森林露营地</span>
-        <span class="ch-title">单路径通道 + 木箱 + 海浪块</span>
+        <span class="chapter-badge">第四章 · 森林露营地</span>
+        <span class="ch-title">单路径通道 + 木箱 + 穿透图块（pierce）+ 全20种图块解锁</span>
       </div>
-      <div class="ch-meta">关卡 4-1 ~ 4-22 &nbsp;|&nbsp; 网格 7×7 → 8×8 &nbsp;|&nbsp; 图块 T13–T16 新增</div>
+      <div class="ch-meta">关卡 4-1 ~ 4-30 &nbsp;|&nbsp; 棋盘 8×8 岛屿轮廓异形 &nbsp;|&nbsp; 图块 T19–T20 新增（共20种）&nbsp;|&nbsp; NPC向导：议长（猫）</div>
       <ul style="margin-top:0.75rem; font-size:0.88rem;">
-        <li><span class="tag tag-obs">障碍</span> <code>single_path_corridor</code>：线形格子序列，必须按顺序穿越</li>
-        <li><span class="tag tag-obs">障碍</span> <code>wooden_crate</code>（永久木箱）：阻挡格，用炸弹/风车消除</li>
-        <li><span class="tag tag-new">新</span> 冰封块升级至3层，锁链升级至3环</li>
-        <li><span class="tag tag-new">新</span> 特殊块 <code>wave</code>（海浪块，关卡预置）</li>
-        <li><span class="tag tag-new">新</span> 目标类型 <code>traverse_path</code></li>
+        <li><span class="tag tag-obs">障碍</span> <code>single_path_corridor</code>：线形格子序列，引入 <code>traverse_path</code> 目标</li>
+        <li><span class="tag tag-obs">障碍</span> <code>wooden_crate</code>（永久木箱）：阻挡格，通过特殊图块清除</li>
+        <li><span class="tag tag-new">新</span> 冰封块升级至3层，锁链升至3环</li>
+        <li><span class="tag tag-new">新</span> 穿透图块 <code>pierce</code>（仅关卡预置）：激活后8秒内路径可穿越任意占据格</li>
+        <li><span class="tag tag-new">新</span> 全20种图块全部解锁，本章首次同台</li>
       </ul>
-      <div class="level-example">
-        <h4>首关截面 — 4-1（位于全局第68关）</h4>
-        <table style="margin:0; font-size:0.82rem;">
-          <tr><th>字段</th><th>值</th></tr>
-          <tr><td>网格</td><td>7×7</td></tr>
-          <tr><td>目标</td><td>clear_tiles + traverse_path（首次）</td></tr>
-          <tr><td>新障碍</td><td>single_path_corridor × 1, wooden_crate × 1</td></tr>
-        </table>
+      <h4 style="margin-top:0.8rem; color:var(--accent3);">叙事触发点</h4>
+      <div class="narrative-timeline">
+        <div class="ntl-item"><span class="ntl-level">4-3关</span><span class="ntl-type">日记碎片</span>灯台守日记·其四：渉日记碎片，律独行发现</div>
+        <div class="ntl-item"><span class="ntl-level">4-12关</span><span class="ntl-type">过场动画</span>律营地写日记，画面闪一行字：「我不知道什么叫够了。也不知道从什么时候起，开始觉得这样也行。」</div>
+        <div class="ntl-item"><span class="ntl-level">4-20关</span><span class="ntl-type">NPC对话</span>ひなた出现在营地，说起灯塔。律第一次说起东京。</div>
+        <div class="ntl-item"><span class="ntl-level">4-28关</span><span class="ntl-type">NPC对话</span>议长猫在律状态最低时出现，安静陪伴</div>
+        <div class="ntl-item"><span class="ntl-level">4-30关</span><span class="ntl-type">章末演出</span>森林营地小灯亮起，律看向灯塔方向，新区域解锁</div>
       </div>
     </div>
 
     <div class="chapter-card">
       <div class="ch-header">
-        <span class="chapter-badge">Ch5 · 温泉山谷</span>
-        <span class="ch-title">重力下落 + 棋盘旋转 + 水流障碍</span>
+        <span class="chapter-badge">第五章 · 温泉山谷</span>
+        <span class="ch-title">重力下落 + 方块滑落 + 水流障碍 + 置换图块（swap）</span>
       </div>
-      <div class="ch-meta">关卡 5-1 ~ 5-23 &nbsp;|&nbsp; 网格 8×8 → 9×9 &nbsp;|&nbsp; 图块 T17–T18 新增</div>
+      <div class="ch-meta">关卡 5-1 ~ 5-30 &nbsp;|&nbsp; 棋盘 9×9 岛屿轮廓异形 &nbsp;|&nbsp; 全20种图块运用 &nbsp;|&nbsp; NPC向导：丸山ひなた（Maruyama Hinata）</div>
       <ul style="margin-top:0.75rem; font-size:0.88rem;">
-        <li><span class="tag tag-new">新</span> Board Event <code>tile_fall</code>：每次消除后图块重力下落填补</li>
-        <li><span class="tag tag-new">新</span> Board Event <code>tile_slide</code>：图块向指定方向滑动</li>
-        <li><span class="tag tag-new">新</span> Board Event <code>board_rotate</code>：棋盘定期旋转，方向感挑战</li>
-        <li><span class="tag tag-obs">障碍</span> <code>water_current</code>：水流定期切换方向，影响连接路径</li>
+        <li><span class="tag tag-new">新</span> 棋盘事件 <code>tile_fall</code>：每次消除后图块重力下落填补空位</li>
+        <li><span class="tag tag-new">新</span> 棋盘事件 <code>tile_slide</code>：图块向指定方向滑动</li>
+        <li><span class="tag tag-new">新</span> 棋盘事件 <code>board_rotate</code>（仅挑战关）：棋盘定期旋转</li>
+        <li><span class="tag tag-obs">障碍</span> <code>water_current</code>：水流定期切换方向，影响连线路径</li>
+        <li><span class="tag tag-new">新</span> 置换图块 <code>swap</code>（仅关卡预置）：激活后10秒选择任意两格内容互换</li>
       </ul>
-      <div class="level-example">
-        <h4>首关截面 — 5-1（位于全局第91关）</h4>
-        <table style="margin:0; font-size:0.82rem;">
-          <tr><th>字段</th><th>值</th></tr>
-          <tr><td>网格</td><td>8×8</td></tr>
-          <tr><td>图块</td><td>T01, T02（新章节缓冲期）</td></tr>
-          <tr><td>目标</td><td>clear_tiles × 31, clear_ice × 1, free_chains × 1</td></tr>
-          <tr><td>最大步数</td><td>40</td></tr>
-          <tr><td>特殊块</td><td>wave @ [1,7]</td></tr>
-          <tr><td>障碍</td><td>ice_block(2层), chain_lock(1环), portal × 1对</td></tr>
-        </table>
+      <h4 style="margin-top:0.8rem; color:var(--accent3);">叙事触发点</h4>
+      <div class="narrative-timeline">
+        <div class="ntl-item"><span class="ntl-level">5-5关</span><span class="ntl-type">NPC对话</span>ひなた手账出现新记录：律今天走路比昨天轻了一点</div>
+        <div class="ntl-item"><span class="ntl-level">5-14关</span><span class="ntl-type">日记碎片</span>灯台守日记·其五：渉写给ひなた的心意，从未说出口</div>
+        <div class="ntl-item"><span class="ntl-level">5-22关</span><span class="ntl-type">过场动画</span>律与ひなた坐在温泉旁，两人各自说起不同的害怕，第一次接近彼此的秘密</div>
+        <div class="ntl-item"><span class="ntl-level">5-28关</span><span class="ntl-type">NPC对话</span>夏帆手账栏：「松树说律今天终于停下来了」</div>
+        <div class="ntl-item"><span class="ntl-level">5-30关</span><span class="ntl-type">章末演出</span>山谷水声变缓，灯塔灯光第一次被远远望见，新区域解锁</div>
       </div>
     </div>
 
     <div class="chapter-card">
       <div class="ch-header">
-        <span class="chapter-badge">Ch6 · 夜晚灯塔</span>
-        <span class="ch-title">扩散障碍 + 全机制组合挑战</span>
+        <span class="chapter-badge">第六章 · 夜晚灯塔</span>
+        <span class="ch-title">扩散障碍（藤蔓/苔藓）+ 全机制综合 + 终章点灯</span>
       </div>
-      <div class="ch-meta">关卡 6-1 ~ 6-23 &nbsp;|&nbsp; 网格 8×8 → 10×10 &nbsp;|&nbsp; T19–T20 新增（全20种图块启用）</div>
+      <div class="ch-meta">关卡 6-1 ~ 6-30 &nbsp;|&nbsp; 棋盘 9×9 → 10×10 灯塔轮廓异形 &nbsp;|&nbsp; 全20种图块 + 5种特殊图块全解锁 &nbsp;|&nbsp; NPC向导：丸山冬子（Maruyama Fuyuko）</div>
       <ul style="margin-top:0.75rem; font-size:0.88rem;">
-        <li><span class="tag tag-obs">障碍</span> <code>spreading_obstacle</code>（藤蔓/苔藓）：每N步向邻格扩散，若占满指定数量则失败</li>
-        <li><span class="tag tag-new">新</span> Board Event <code>vine_spread</code>：随board_event触发扩散动画</li>
-        <li><span class="tag tag-new">新</span> 目标类型 <code>survive_spread</code>：在有效步数内阻止扩散</li>
+        <li><span class="tag tag-obs">障碍</span> <code>spreading_obstacle</code>（藤蔓/苔藓）：每N步向邻格扩散，引入 <code>survive_spread</code> 目标</li>
+        <li><span class="tag tag-new">新</span> 棋盘事件 <code>vine_spread</code>：扩散动画触发器</li>
         <li><span class="tag tag-new">终章</span> 全20种图块并用，所有已解锁机制可组合出现</li>
+        <li><span class="tag tag-new">终章</span> 80%有效格被扩散占据触发视觉警告</li>
       </ul>
-      <div class="level-example">
-        <h4>首关截面 — 6-1（位于全局第114关）</h4>
-        <table style="margin:0; font-size:0.82rem;">
-          <tr><th>字段</th><th>值</th></tr>
-          <tr><td>网格</td><td>8×8</td></tr>
-          <tr><td>图块</td><td>T01, T02（章节缓冲期）</td></tr>
-          <tr><td>目标</td><td>clear_tiles × 32, clear_ice × 1, free_chains × 1, survive_spread × 32</td></tr>
-          <tr><td>最大步数</td><td>40</td></tr>
-          <tr><td>新障碍</td><td>spreading_obstacle(moss, interval=2) × 2, portal, ice_block, chain_lock</td></tr>
-          <tr><td>Board Events</td><td>tile_fall</td></tr>
-        </table>
+      <h4 style="margin-top:0.8rem; color:var(--accent3);">叙事触发点</h4>
+      <div class="narrative-timeline">
+        <div class="ntl-item"><span class="ntl-level">6-3关</span><span class="ntl-type">NPC对话</span>冬子在灯台旁说：「律今天很努力。」律第一次听见</div>
+        <div class="ntl-item"><span class="ntl-level">6-10关</span><span class="ntl-type">日记碎片</span>灯台守日记·其六（最终章）：渉给律那封不寄出的信的完整内容</div>
+        <div class="ntl-item"><span class="ntl-level">6-20关</span><span class="ntl-type">过场动画</span>冬子把律到岛那天的便利店小票还给他，说：「你准备好了。」</div>
+        <div class="ntl-item"><span class="ntl-level">6-25关</span><span class="ntl-type">NPC对话</span>ひなた说她害怕灯亮后岛被找到。律第一次说：「那就让我们先在这里。」</div>
+        <div class="ntl-item"><span class="ntl-level">6-30关</span><span class="ntl-type">章末演出</span>律与ひなた共同点亮灯塔。海面光亮。岛，再次出现在世界的地图上。</div>
       </div>
     </div>
 
     <hr>
 
     <!-- ======================================================== -->
-    <h1 id="difficulty">3. 难度曲线</h1>
+    <h1 id="special-tiles">3. 特殊图块系统 v4.0</h1>
 
-    <h2>3:1 节奏设计（喘息关）</h2>
-    <p>全游戏采用 <strong>3:1 标准:喘息</strong> 节奏模型。每3关标准难度后安排1关喘息关（明显降低目标数与步数压力），防止玩家疲劳流失。</p>
+    <p>v4.0 完全重设计。旧系统（bomb炸弹 / windmill风车 / lantern灯光块 / 旧wave海浪块）全部废弃，替换为5种<strong>战术型棋盘特殊图块</strong>。所有新特殊图块由设计层面保证奇偶安全，无需运行时自动修正。</p>
 
+    <div class="spec-tile-card">
+      <div class="tile-header">
+        <span class="tile-id">cascade</span>
+        <span class="tile-name">连锁图块</span>
+        <span class="tile-ch">第一章起</span>
+      </div>
+      <table style="font-size:0.85rem; margin:0;">
+        <tr><th style="width:100px">生成方式</th><td>Combo=3时在最近消除位自动生成；关卡编辑器可预置</td></tr>
+        <tr><th>触发</th><td>玩家将两个连锁图块配对连线激活</td></tr>
+        <tr><th>效果</th><td>引擎自动执行最多5次合法配对（0.3秒间隔展示），每次自动配对各计入Combo链</td></tr>
+        <tr><th>奇偶安全</th><td>仅执行路径可连通的合法配对，始终偶数消除</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-tile-card">
+      <div class="tile-header">
+        <span class="tile-id">light_chain</span>
+        <span class="tile-name">光链图块</span>
+        <span class="tile-ch">第二章起</span>
+      </div>
+      <table style="font-size:0.85rem; margin:0;">
+        <tr><th style="width:100px">生成方式</th><td>Combo=4时在最近消除位自动生成；关卡编辑器可预置</td></tr>
+        <tr><th>触发</th><td>玩家将两个光链图块配对连线激活</td></tr>
+        <tr><th>效果</th><td>全图扫描数量最多的图块类型，自动匹配所有可组成的配对并链消；余1块不消除</td></tr>
+        <tr><th>奇偶安全</th><td>只消除完整配对，奇数个时留最后1块，天然安全</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-tile-card">
+      <div class="tile-header">
+        <span class="tile-id">wave</span>
+        <span class="tile-name">光波图块</span>
+        <span class="tile-ch">第三章起</span>
+      </div>
+      <table style="font-size:0.85rem; margin:0;">
+        <tr><th style="width:100px">生成方式</th><td>Combo=6时生成（重磅奖励）；关卡编辑器可预置</td></tr>
+        <tr><th>触发</th><td>玩家将两个光波图块配对连线激活</td></tr>
+        <tr><th>效果</th><td>清除以连线中点为中心的3×3区域内所有障碍层（不消除匹配图块），并赋予该区域5秒自由路径增益</td></tr>
+        <tr><th>奇偶安全</th><td>障碍不是配对图块，清除障碍完全不影响任何图块奇偶，零风险</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-tile-card">
+      <div class="tile-header">
+        <span class="tile-id">pierce</span>
+        <span class="tile-name">穿透图块</span>
+        <span class="tile-ch">第四章起（仅关卡预置）</span>
+      </div>
+      <table style="font-size:0.85rem; margin:0;">
+        <tr><th style="width:100px">生成方式</th><td>仅关卡编辑器预置（战略性谜题元素，不由Combo自动生成）</td></tr>
+        <tr><th>触发</th><td>玩家将两个穿透图块配对连线激活</td></tr>
+        <tr><th>效果</th><td>赋予『穿透模式』8秒增益：连线路径可穿越棋盘上任意已占据格子（障碍或图块均可穿越），同类图块匹配规则不变</td></tr>
+        <tr><th>奇偶安全</th><td>不移除任何图块，仅修改路径路由规则，奇偶完全不受影响</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-tile-card">
+      <div class="tile-header">
+        <span class="tile-id">swap</span>
+        <span class="tile-name">置换图块</span>
+        <span class="tile-ch">第五章起（仅关卡预置）</span>
+      </div>
+      <table style="font-size:0.85rem; margin:0;">
+        <tr><th style="width:100px">生成方式</th><td>仅关卡编辑器预置（高技巧战术元素）</td></tr>
+        <tr><th>触发</th><td>玩家将两个置换图块配对连线激活</td></tr>
+        <tr><th>效果</th><td>玩家进入『选择模式』10秒，在棋盘上选择任意两格，其内容（图块/障碍/空格）互换位置；10秒未选择则置换图块保留等待再次配对</td></tr>
+        <tr><th>奇偶安全</th><td>只交换位置，不增减任何图块，总计数不变，奇偶完全不受影响</td></tr>
+      </table>
+    </div>
+
+    <blockquote>
+      <strong>旧版特殊图块已废弃</strong>：bomb（炸弹）、windmill（风车）、lantern（灯光块）、旧版wave（海浪块行滑动）均不再使用。<br>
+      新版5种图块均不消除单格匹配图块，奇偶安全由设计层面保证，无需运行时自动修正逻辑。
+    </blockquote>
+
+    <hr>
+
+    <!-- ======================================================== -->
+    <h1 id="difficulty">4. 难度曲线</h1>
+
+    <h2>首次通关率目标与降级机制</h2>
+    <table>
+      <tr><th>设计目标</th><td><strong>首次通关率 ≥ 70%</strong>（首次游玩通关关卡的玩家比例）</td></tr>
+      <tr><th>降级触发</th><td>通关率低于 50% 时触发关卡难度降级建议（减少障碍或增加步数）</td></tr>
+      <tr><th>步数续关</th><td>步数耗尽后可花费30沙滩币购买+5步续关，降低硬卡关流失</td></tr>
+    </table>
+
+    <h2>3:1 节奏设计</h2>
+    <p>全游戏采用 <strong>3:1 标准:喘息</strong> 节奏模型。每3关标准难度后安排1关喘息关，防止玩家疲劳流失。</p>
     <div class="pacing-bar">
       <div class="pb-std">标准关 ×3</div>
       <div class="pb-br">喘息关 ×1</div>
     </div>
-    <p style="font-size:0.85rem; color: var(--muted);">喘息关特征：目标数较前3关降低约30%，emotional_note 带有轻松意象（如 "Breather: sit on the pier" / "a bamboo ladle of spring water"）。</p>
+    <p style="font-size:0.85rem; color: var(--muted);">喘息关特征：目标数较前3关降低约30%，emotional_note 带有轻松意象；步数余量充裕。</p>
+    <p style="font-size:0.85rem; color: var(--muted);">禅境关（每章2关）：完全关闭步数上限和失败判定，零压力连击体验。</p>
 
-    <h2>全局难度分布</h2>
-    <p>全游戏呈<strong>6段锯齿上升曲线</strong>：每章开头3关难度回落约15%（章节缓冲期），章内按宽松→标准→挑战三段递进。</p>
-
-    <table>
-      <thead>
-        <tr><th>关卡范围</th><th>难度值（/10）</th><th>段落标签</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>1-1 ~ 1-3</td><td>1.0</td><td>新手教学</td></tr>
-        <tr><td>1-4 ~ 1-8</td><td>1.5</td><td>章1宽松</td></tr>
-        <tr><td>1-9 ~ 1-14</td><td>2.2</td><td>章1标准</td></tr>
-        <tr><td>1-15 ~ 1-22</td><td>3.0</td><td>章1挑战</td></tr>
-        <tr><td>2-1 ~ 2-5</td><td>2.5</td><td>章2宽松（章节重置）</td></tr>
-        <tr><td>2-6 ~ 2-15</td><td>3.5</td><td>章2标准</td></tr>
-        <tr><td>2-16 ~ 2-23</td><td>4.5</td><td>章2挑战</td></tr>
-        <tr><td>3-1 ~ 3-6</td><td>3.8</td><td>章3宽松</td></tr>
-        <tr><td>3-7 ~ 3-17</td><td>5.0</td><td>章3标准</td></tr>
-        <tr><td>3-18 ~ 3-23</td><td>6.2</td><td>章3挑战</td></tr>
-        <tr><td>4-1 ~ 4-6</td><td>5.2</td><td>章4宽松</td></tr>
-        <tr><td>4-7 ~ 4-17</td><td>6.5</td><td>章4标准</td></tr>
-        <tr><td>4-18 ~ 4-22</td><td>8.0</td><td>章4挑战</td></tr>
-        <tr><td>5-1 ~ 5-6</td><td>6.8</td><td>章5宽松</td></tr>
-        <tr><td>5-7 ~ 5-19</td><td>8.2</td><td>章5标准</td></tr>
-        <tr><td>5-20 ~ 5-23</td><td>9.5</td><td>章5挑战</td></tr>
-        <tr><td>6-1 ~ 6-6</td><td>8.0</td><td>章6宽松</td></tr>
-        <tr><td>6-7 ~ 6-19</td><td>9.2</td><td>章6标准</td></tr>
-        <tr><td>6-20 ~ 6-23</td><td>10.0</td><td>章6终极</td></tr>
-      </tbody>
-    </table>
-
-    <h2>章内难度可视化</h2>
-    <p style="font-size:0.85rem; color:var(--muted);">条形长度对应难度值（/10），颜色深浅区分宽松/标准/挑战段。</p>
+    <h2>全局难度分布（24个难度段）</h2>
+    <p>全游戏呈<strong>6段锯齿上升曲线</strong>：每章开头难度回落约15%（章节缓冲期），章内按宽松→标准→挑战三段递进，Boss关为当章最高峰值。</p>
 
     <div style="margin: 1rem 0;">
-      <div class="difficulty-row"><span class="diff-label">1-1~1-3 教学</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:10%; background:linear-gradient(90deg,#1e40af,#3b82f6);"></div></div><span class="diff-val">1.0</span></div>
-      <div class="difficulty-row"><span class="diff-label">1-4~1-8 宽松</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:15%; background:linear-gradient(90deg,#1e40af,#3b82f6);"></div></div><span class="diff-val">1.5</span></div>
-      <div class="difficulty-row"><span class="diff-label">2-1~2-5 宽松</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:25%; background:linear-gradient(90deg,#1d4ed8,#60a5fa);"></div></div><span class="diff-val">2.5</span></div>
-      <div class="difficulty-row"><span class="diff-label">2-6~2-15 标准</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:35%; background:linear-gradient(90deg,#2563eb,#7dd3fc);"></div></div><span class="diff-val">3.5</span></div>
-      <div class="difficulty-row"><span class="diff-label">3-1~3-6 宽松</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:38%; background:linear-gradient(90deg,#0284c7,#38bdf8);"></div></div><span class="diff-val">3.8</span></div>
-      <div class="difficulty-row"><span class="diff-label">3-7~3-17 标准</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:50%; background:linear-gradient(90deg,#0369a1,#7dd3fc);"></div></div><span class="diff-val">5.0</span></div>
-      <div class="difficulty-row"><span class="diff-label">4-1~4-6 宽松</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:52%; background:linear-gradient(90deg,#065f46,#34d399);"></div></div><span class="diff-val">5.2</span></div>
-      <div class="difficulty-row"><span class="diff-label">4-7~4-17 标准</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:65%; background:linear-gradient(90deg,#047857,#6ee7b7);"></div></div><span class="diff-val">6.5</span></div>
-      <div class="difficulty-row"><span class="diff-label">5-7~5-19 标准</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:82%; background:linear-gradient(90deg,#b45309,#fbbf24);"></div></div><span class="diff-val">8.2</span></div>
-      <div class="difficulty-row"><span class="diff-label">5-20~5-23 挑战</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:95%; background:linear-gradient(90deg,#c2410c,#fb923c);"></div></div><span class="diff-val">9.5</span></div>
-      <div class="difficulty-row"><span class="diff-label">6-20~6-23 终极</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:100%; background:linear-gradient(90deg,#9f1239,#f43f5e);"></div></div><span class="diff-val">10.0</span></div>
+      <div class="difficulty-row"><span class="diff-label">1-1~1-3 教学期</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:10%; background:linear-gradient(90deg,#1e40af,#3b82f6);"></div></div><span class="diff-val">1.0</span></div>
+      <div class="difficulty-row"><span class="diff-label">1-4~1-12 第一章宽松</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:15%; background:linear-gradient(90deg,#1e40af,#3b82f6);"></div></div><span class="diff-val">1.5</span></div>
+      <div class="difficulty-row"><span class="diff-label">1-13~1-22 第一章标准</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:25%; background:linear-gradient(90deg,#1d4ed8,#60a5fa);"></div></div><span class="diff-val">2.5</span></div>
+      <div class="difficulty-row"><span class="diff-label">1-23~1-29 第一章挑战</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:35%; background:linear-gradient(90deg,#1d4ed8,#60a5fa);"></div></div><span class="diff-val">3.5</span></div>
+      <div class="difficulty-row"><span class="diff-label">1-30 Boss关</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:40%; background:linear-gradient(90deg,#b45309,#f59e0b);"></div></div><span class="diff-val">4.0</span></div>
+      <div class="difficulty-row"><span class="diff-label">2-1~2-8 第二章宽松</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:30%; background:linear-gradient(90deg,#0284c7,#38bdf8);"></div></div><span class="diff-val">3.0</span></div>
+      <div class="difficulty-row"><span class="diff-label">2-9~2-20 第二章标准</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:40%; background:linear-gradient(90deg,#0369a1,#7dd3fc);"></div></div><span class="diff-val">4.0</span></div>
+      <div class="difficulty-row"><span class="diff-label">2-21~2-29 第二章挑战</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:50%; background:linear-gradient(90deg,#0369a1,#7dd3fc);"></div></div><span class="diff-val">5.0</span></div>
+      <div class="difficulty-row"><span class="diff-label">3-1~3-8 第三章宽松</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:42%; background:linear-gradient(90deg,#065f46,#34d399);"></div></div><span class="diff-val">4.2</span></div>
+      <div class="difficulty-row"><span class="diff-label">3-9~3-20 第三章标准</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:55%; background:linear-gradient(90deg,#047857,#6ee7b7);"></div></div><span class="diff-val">5.5</span></div>
+      <div class="difficulty-row"><span class="diff-label">3-21~3-29 第三章挑战</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:65%; background:linear-gradient(90deg,#047857,#6ee7b7);"></div></div><span class="diff-val">6.5</span></div>
+      <div class="difficulty-row"><span class="diff-label">4-1~4-8 第四章宽松</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:55%; background:linear-gradient(90deg,#6d28d9,#a78bfa);"></div></div><span class="diff-val">5.5</span></div>
+      <div class="difficulty-row"><span class="diff-label">4-9~4-20 第四章标准</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:70%; background:linear-gradient(90deg,#7c3aed,#c4b5fd);"></div></div><span class="diff-val">7.0</span></div>
+      <div class="difficulty-row"><span class="diff-label">4-21~4-29 第四章挑战</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:82%; background:linear-gradient(90deg,#7c3aed,#c4b5fd);"></div></div><span class="diff-val">8.2</span></div>
+      <div class="difficulty-row"><span class="diff-label">5-1~5-8 第五章宽松</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:70%; background:linear-gradient(90deg,#b45309,#fbbf24);"></div></div><span class="diff-val">7.0</span></div>
+      <div class="difficulty-row"><span class="diff-label">5-9~5-22 第五章标准</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:85%; background:linear-gradient(90deg,#c2410c,#fb923c);"></div></div><span class="diff-val">8.5</span></div>
+      <div class="difficulty-row"><span class="diff-label">5-23~5-29 第五章挑战</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:95%; background:linear-gradient(90deg,#dc2626,#f87171);"></div></div><span class="diff-val">9.5</span></div>
+      <div class="difficulty-row"><span class="diff-label">6-1~6-8 第六章宽松</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:82%; background:linear-gradient(90deg,#9f1239,#fb7185);"></div></div><span class="diff-val">8.2</span></div>
+      <div class="difficulty-row"><span class="diff-label">6-9~6-22 第六章标准</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:92%; background:linear-gradient(90deg,#9f1239,#f43f5e);"></div></div><span class="diff-val">9.2</span></div>
+      <div class="difficulty-row"><span class="diff-label">6-23~6-29 第六章挑战</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:98%; background:linear-gradient(90deg,#881337,#f43f5e);"></div></div><span class="diff-val">9.8</span></div>
+      <div class="difficulty-row"><span class="diff-label">6-30 终章Boss关</span><div class="diff-bar-wrap"><div class="diff-bar" style="width:100%; background:linear-gradient(90deg,#7f1d1d,#ef4444);"></div></div><span class="diff-val">10.0</span></div>
     </div>
 
     <h2>关卡耗时参考</h2>
     <table>
       <thead>
-        <tr><th>章节</th><th>宽松段均值</th><th>标准段均值</th><th>挑战段均值</th></tr>
+        <tr><th>章节</th><th>宽松段均值</th><th>标准段均值</th><th>挑战段均值</th><th>Boss关均值</th></tr>
       </thead>
       <tbody>
-        <tr><td>Ch1</td><td>75 s</td><td>100 s</td><td>130 s</td></tr>
-        <tr><td>Ch2</td><td>90 s</td><td>115 s</td><td>150 s</td></tr>
-        <tr><td>Ch3</td><td>105 s</td><td>135 s</td><td>175 s</td></tr>
-        <tr><td>Ch4</td><td>115 s</td><td>150 s</td><td>200 s</td></tr>
-        <tr><td>Ch5</td><td>130 s</td><td>170 s</td><td>220 s</td></tr>
-        <tr><td>Ch6</td><td>145 s</td><td>190 s</td><td>260 s</td></tr>
+        <tr><td>第一章</td><td>70 秒</td><td>95 秒</td><td>120 秒</td><td>150 秒</td></tr>
+        <tr><td>第二章</td><td>85 秒</td><td>110 秒</td><td>145 秒</td><td>180 秒</td></tr>
+        <tr><td>第三章</td><td>100 秒</td><td>130 秒</td><td>170 秒</td><td>210 秒</td></tr>
+        <tr><td>第四章</td><td>110 秒</td><td>145 秒</td><td>190 秒</td><td>240 秒</td></tr>
+        <tr><td>第五章</td><td>125 秒</td><td>165 秒</td><td>215 秒</td><td>270 秒</td></tr>
+        <tr><td>第六章</td><td>140 秒</td><td>185 秒</td><td>250 秒</td><td>360 秒</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.82rem; color:var(--muted);">目标单关时长：1–2分钟；超休闲碎片化友好。预计中等玩家通关全游戏约22.5小时。</p>
+
+    <hr>
+
+    <!-- ======================================================== -->
+    <h1 id="tutorial">5. 教学节拍</h1>
+
+    <p>全部11个核心机制均通过<strong>零文字教学</strong>（Zero-Text Tutorial）传递——无教学弹窗，全部通过关卡布局、颜色引导和视觉反馈完成教学。</p>
+
+    <table>
+      <thead>
+        <tr><th>教学节拍编号</th><th>教学关卡</th><th>教学内容</th><th>节奏阶段</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>tb-001</td><td>1-1</td><td>基础路径匹配（直线连接同色图块）</td><td>安全引入</td></tr>
+        <tr><td>tb-002</td><td>1-2</td><td>目标计数器感知（达成目标数量=通关）</td><td>学习</td></tr>
+        <tr><td>tb-003</td><td>1-3</td><td>折线路径（≤2次转弯），L形路径探索</td><td>学习</td></tr>
+        <tr><td>tb-004</td><td>1-7</td><td>连击系统（Combo计时器）+ 连锁图块（cascade）首次演示</td><td>学习</td></tr>
+        <tr><td>tb-005</td><td>2-1</td><td>冰封块（ice_block）破解方式，附近配对解冻</td><td>学习</td></tr>
+        <tr><td>tb-006</td><td>2-8</td><td>光链图块（light_chain）全图扫描批量链消</td><td>学习</td></tr>
+        <tr><td>tb-007</td><td>3-1</td><td>锁链障碍（chain_lock）+ 光波图块（wave）3×3障碍清除</td><td>学习</td></tr>
+        <tr><td>tb-008</td><td>4-3</td><td>穿透图块（pierce）路径穿越增益</td><td>学习</td></tr>
+        <tr><td>tb-009</td><td>5-3</td><td>重力下落（tile_fall）棋盘事件</td><td>学习</td></tr>
+        <tr><td>tb-010</td><td>5-8</td><td>置换图块（swap）两格内容互换</td><td>学习</td></tr>
+        <tr><td>tb-011</td><td>6-1</td><td>扩散障碍（spreading_obstacle）及阻断策略</td><td>学习</td></tr>
       </tbody>
     </table>
 
     <hr>
 
     <!-- ======================================================== -->
-    <h1 id="tutorial">4. 教学设计</h1>
+    <h1 id="objectives">6. 目标类型演进</h1>
 
-    <p>关卡 1-1、1-2、1-3 为<strong>无文字教学</strong>（zero-text tutorial），全部核心概念通过关卡布局与视觉引导传递，不出现教学弹窗。</p>
-
-    <h2>1-1：初识连接</h2>
-    <table>
-      <tr><th>设计意图</th><td>让玩家直觉发现"同色图块可连接"。4×4 最小盘面，仅 T01/T02 两色，目标仅4块。布局预置两条显而易见的同色直线，玩家几乎不会失败。成功消除时同步播放粒子光效，强化操作反馈。</td></tr>
-      <tr><th>核心传达</th><td>连接 → 消除 → 得分（<em>无步数压力</em>）</td></tr>
-      <tr><th>情感基调</th><td>"First steps on the shore — the sea greets you gently."</td></tr>
-    </table>
-
-    <h2>1-2：数量目标感知</h2>
-    <table>
-      <tr><th>设计意图</th><td>目标从4块提升至6块，引入"目标计数器"视觉元素。玩家需要多连接两次才能达成，自然理解"完成目标才能通关"的循环。仍无步数限制，保持治愈节奏。</td></tr>
-      <tr><th>核心传达</th><td>目标数量 = 进度感知（UI计数器）</td></tr>
-      <tr><th>情感基调</th><td>"Warm sand under your feet, a simple puzzle to start."</td></tr>
-    </table>
-
-    <h2>1-3：折线路径探索</h2>
-    <table>
-      <tr><th>设计意图</th><td>预置一组需要折线（L形路径）才能连接的同色图块。玩家若只尝试直线连接会失败，被迫探索折线规则。关卡布局通过颜色引导视线——折线两端用同色高亮图块，减少试错次数。</td></tr>
-      <tr><th>核心传达</th><td>连接路径可折线（最多2次转弯）</td></tr>
-      <tr><th>情感基调</th><td>"The dock creaks; a good omen for matching."</td></tr>
-    </table>
-
-    <blockquote>三关结束后，玩家无需任何文字说明即可掌握核心连连看操作；1-4起可安全引入第三种颜色 T03 与更大目标数。</blockquote>
-
-    <hr>
-
-    <!-- ======================================================== -->
-    <h1 id="objectives">5. 目标类型演进</h1>
-
-    <p>目标类型随章节线性堆叠，最终章允许5种目标同时出现，形成最高复杂度的组合挑战。</p>
+    <p>目标类型随章节线性堆叠，最终章允许5种目标同时出现（全组合挑战）。</p>
 
     <table>
       <thead>
         <tr>
           <th>章节</th>
           <th>可用目标类型</th>
-          <th>新增</th>
+          <th>本章新增</th>
           <th>典型组合示例</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Ch1</td>
+          <td>第一章</td>
           <td><code>clear_tiles</code></td>
           <td><span class="tag tag-new">clear_tiles</span></td>
-          <td>消除任意 N 块</td>
+          <td>消除任意 N 块图块</td>
         </tr>
         <tr>
-          <td>Ch2</td>
-          <td>Ch1 + <code>clear_ice</code></td>
+          <td>第二章</td>
+          <td>第一章 + <code>clear_ice</code></td>
           <td><span class="tag tag-new">clear_ice</span></td>
-          <td>消除N块 + 解冻M块冰</td>
+          <td>消除N块 + 解冻M块冰封块</td>
         </tr>
         <tr>
-          <td>Ch3</td>
-          <td>Ch2 + <code>free_chains</code></td>
+          <td>第三章</td>
+          <td>第二章 + <code>free_chains</code></td>
           <td><span class="tag tag-new">free_chains</span></td>
-          <td>消除N块 + 解冻M冰 + 解开K锁链</td>
+          <td>消除N块 + 解冻M冰 + 解开K条锁链</td>
         </tr>
         <tr>
-          <td>Ch4</td>
-          <td>Ch3 + <code>traverse_path</code></td>
+          <td>第四章</td>
+          <td>第三章 + <code>traverse_path</code></td>
           <td><span class="tag tag-new">traverse_path</span></td>
-          <td>消除 + 解冻 + 解链 + 穿越L条通道</td>
+          <td>消除 + 解冻 + 解链 + 穿越L条单路径通道</td>
         </tr>
         <tr>
-          <td>Ch5</td>
-          <td>Ch4（无新目标，深化Board Events）</td>
+          <td>第五章</td>
+          <td>第四章（深化棋盘事件）</td>
           <td>—</td>
-          <td>组合目标 × 动态棋盘事件（下落/滑动/旋转）</td>
+          <td>组合目标 × 动态棋盘事件（重力下落/滑落/旋转）</td>
         </tr>
         <tr>
-          <td>Ch6</td>
-          <td>Ch4 + <code>survive_spread</code></td>
+          <td>第六章</td>
+          <td>第四章 + <code>survive_spread</code></td>
           <td><span class="tag tag-new">survive_spread</span></td>
-          <td>消除 + 解冻 + 解链 + 穿越 + 阻止扩散 <em>（全组合）</em></td>
+          <td>消除 + 解冻 + 解链 + 穿越 + 阻止扩散 <em>（五目标全组合）</em></td>
         </tr>
       </tbody>
-    </table>
-
-    <h2>3–5个实际关卡示例</h2>
-
-    <h3>示例 1 — 关卡 1-1（入门教学）</h3>
-    <table>
-      <tr><th>ID</th><th>网格</th><th>图块</th><th>目标</th><th>步数上限</th><th>障碍</th><th>特殊块</th><th>金币奖励</th></tr>
-      <tr><td><code>1-1</code></td><td>4×4</td><td>T01, T02</td><td>clear_tiles × 4</td><td>无限</td><td>无</td><td>无</td><td>10</td></tr>
-    </table>
-
-    <h3>示例 2 — 关卡 2-10（风车解锁）</h3>
-    <table>
-      <tr><th>ID</th><th>网格</th><th>图块</th><th>目标</th><th>步数上限</th><th>障碍</th><th>特殊块</th><th>金币奖励</th></tr>
-      <tr><td><code>2-10</code></td><td>6×6</td><td>T01–T04</td><td>clear_tiles × 10<br>clear_ice × 2</td><td>28</td><td>ice_block(1层) × 2</td><td>windmill @ [5,0]</td><td>20</td></tr>
-    </table>
-
-    <h3>示例 3 — 关卡 4-11（多目标中盘）</h3>
-    <table>
-      <tr><th>ID</th><th>网格</th><th>图块</th><th>目标</th><th>步数上限</th><th>障碍</th><th>特殊块</th><th>金币奖励</th></tr>
-      <tr><td><code>4-11</code></td><td>7×7</td><td>T01–T09</td><td>clear_tiles × 12<br>clear_ice × 1<br>free_chains × 1<br>traverse_path × 1</td><td>37</td><td>ice_block(3层), chain_lock(2环), portal, single_path_corridor, wooden_crate</td><td>lantern, bomb</td><td>35</td></tr>
-    </table>
-
-    <h3>示例 4 — 关卡 5-15（动态棋盘喘息关）</h3>
-    <table>
-      <tr><th>ID</th><th>网格</th><th>图块</th><th>目标</th><th>步数上限</th><th>Board Events</th><th>金币奖励</th></tr>
-      <tr><td><code>5-15</code></td><td>9×9</td><td>T01–T12</td><td>clear_tiles × 40<br>clear_ice × 3<br>free_chains × 2<br>traverse_path × 1</td><td>40</td><td>tile_fall, tile_slide(left), water_current</td><td>42</td></tr>
-    </table>
-
-    <h3>示例 5 — 关卡 6-15（终章全组合）</h3>
-    <table>
-      <tr><th>ID</th><th>网格</th><th>图块</th><th>目标</th><th>步数上限</th><th>障碍</th><th>Board Events</th><th>金币奖励</th></tr>
-      <tr><td><code>6-15</code></td><td>9×9</td><td>T01–T13</td><td>clear_tiles × 27<br>clear_ice × 1<br>free_chains × 1<br>traverse_path × 1<br>survive_spread × 27</td><td>40</td><td>spreading_obstacle(moss) × 3, chain_lock(3环), portal × 2对, corridor, wooden_crate, water_current</td><td>tile_fall, vine_spread, tile_slide</td><td>46</td></tr>
     </table>
 
     <hr>
 
     <!-- ======================================================== -->
-    <h1 id="format">6. 关卡格式规范</h1>
+    <h1 id="examples">7. 关卡示例</h1>
 
-    <p>每个关卡以 JSON 对象形式存储于 <code>level-design.json</code> 的 <code>levels</code> 数组中。关卡编辑器导入时需严格符合以下字段规范。</p>
+    <h3>示例1 — 1-1（零文字教学首关）</h3>
+    <table>
+      <tr><th>关卡编号</th><th>棋盘</th><th>图块</th><th>目标</th><th>步数上限</th><th>障碍</th><th>特殊图块</th><th>章节材料奖励</th></tr>
+      <tr><td><code>1-1</code></td><td>8×8</td><td>T01, T02</td><td>消除任意8块</td><td>无限制</td><td>无</td><td>无</td><td>shell_fragment ×2</td></tr>
+    </table>
+    <p style="font-size:0.83rem; color:var(--muted);">情感注释：律第一次踏上輝島的码头，健三从远处投来一瞥。</p>
 
-    <h2>顶层字段</h2>
+    <h3>示例2 — 1-10（第一章禅境关）</h3>
+    <table>
+      <tr><th>关卡编号</th><th>棋盘</th><th>图块</th><th>目标</th><th>步数上限</th><th>禅境标志</th></tr>
+      <tr><td><code>1-10</code></td><td>8×8</td><td>T01, T02, T03</td><td>消除任意16块</td><td>无限制</td><td>静海徽章（装饰性奖励）</td></tr>
+    </table>
+    <p style="font-size:0.83rem; color:var(--muted);">无步数限制，无失败判定。坐在码头，慢慢消，看海浪。</p>
+
+    <h3>示例3 — 1-30（第一章Boss关）</h3>
+    <table>
+      <tr><th>关卡编号</th><th>棋盘</th><th>图块</th><th>目标</th><th>步数上限</th><th>预置特殊图块</th><th>章节材料奖励</th></tr>
+      <tr><td><code>1-30</code></td><td>8×8</td><td>T01–T08</td><td>消除任意40块</td><td>35</td><td>cascade ×2（位于[3,3]和[5,5]）</td><td>shell_fragment ×8</td></tr>
+    </table>
+    <p style="font-size:0.83rem; color:var(--muted);">叙事触发：码头修复完成，健三说：「能走就行。」Boss关通关后解锁中央小镇区域。</p>
+
+    <h3>示例4 — 3-5（第三章异形棋盘中盘）</h3>
+    <table>
+      <tr><th>关卡编号</th><th>棋盘</th><th>图块</th><th>目标</th><th>步数上限</th><th>障碍</th></tr>
+      <tr><td><code>3-5</code></td><td>8×8（海湾轮廓）</td><td>T01–T06</td><td>消除任意20块 + 解开1条锁链</td><td>28</td><td>chain_lock（1环）×1，portal对 ×1组</td></tr>
+    </table>
+    <p style="font-size:0.83rem; color:var(--muted);">情感注释：野花半开，锁链在晨光里生锈，等待。</p>
+
+    <h3>示例5 — 5-22（第五章故事关·情感高潮）</h3>
+    <table>
+      <tr><th>关卡编号</th><th>棋盘</th><th>图块</th><th>目标</th><th>步数上限</th><th>障碍</th><th>棋盘事件</th></tr>
+      <tr><td><code>5-22</code></td><td>9×9（岛屿轮廓）</td><td>T01–T10</td><td>消除30块 + 解冻2个冰封块 + 解开1条锁链</td><td>38</td><td>ice_block(2层)×2，chain_lock(2环)×1，water_current×1</td><td>tile_fall，tile_slide</td></tr>
+    </table>
+    <p style="font-size:0.83rem; color:var(--muted);">叙事触发（过场动画）：律与ひなた坐在温泉旁，两人各自说出害怕，第一次接近彼此的秘密。</p>
+
+    <h3>示例6 — 6-1（第六章开章·扩散障碍教学）</h3>
+    <table>
+      <tr><th>关卡编号</th><th>棋盘</th><th>图块</th><th>目标</th><th>步数上限</th><th>障碍</th></tr>
+      <tr><td><code>6-1</code></td><td>9×9（灯塔轮廓）</td><td>T01–T08</td><td>消除32块 + 阻止扩散占满32格</td><td>40</td><td>spreading_obstacle(moss, 3步扩散)×2，ice_block(1层)×1，chain_lock(1环)×1</td></tr>
+    </table>
+    <p style="font-size:0.83rem; color:var(--muted);">首次引入扩散障碍，步数宽裕，扩散速度慢，供玩家探索阻断策略。</p>
+
+    <h3>示例7 — 6-30（终章Boss关·点亮灯塔）</h3>
+    <table>
+      <tr><th>关卡编号</th><th>棋盘</th><th>图块</th><th>目标组合</th><th>步数上限</th></tr>
+      <tr><td><code>6-30</code></td><td>10×10（灯塔岛轮廓，全游戏最大棋盘）</td><td>T01–T20（全20种）</td><td>消除50块 + 解冻3冰 + 解开2锁链 + 穿越1通道 + 阻止扩散占满60格</td><td>45</td></tr>
+    </table>
+    <p style="font-size:0.83rem; color:var(--muted);">预置特殊图块：wave×2，pierce×2，swap×2。障碍：ice_block(3层)×3，chain_lock(3环)×2，portal×1，corridor×1，water_current×1，spreading_obstacle×2。终章叙事演出：律与ひなた共同点亮灯塔。</p>
+
+    <hr>
+
+    <!-- ======================================================== -->
+    <h1 id="format">8. 关卡格式规范 v3.0</h1>
+
+    <p>每个关卡以 JSON 对象形式存储，供关卡编辑器导入。v3.0 规范与 core-mechanics v4.0 完整对齐。</p>
+
+    <h2>顶层字段说明</h2>
     <table class="field-table">
       <thead>
-        <tr><th>字段名</th><th>类型</th><th>必填</th><th>说明</th></tr>
+        <tr><th>字段名</th><th>类型</th><th>必填性</th><th>说明</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td>id</td><td>string</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>唯一关卡标识，格式 <code>"&lt;chapter&gt;-&lt;level&gt;"</code>，如 <code>"1-1"</code>、<code>"6-23"</code></td>
-        </tr>
-        <tr>
-          <td>chapter</td><td>integer</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>所属章节编号，1–6</td>
-        </tr>
-        <tr>
-          <td>level</td><td>integer</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>章内关卡序号，从1开始</td>
-        </tr>
-        <tr>
-          <td>grid_size</td><td>[int, int]</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>棋盘尺寸 [宽, 高]，有效范围 [4,4]~[10,10]</td>
-        </tr>
-        <tr>
-          <td>tile_types</td><td>string[]</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>本关启用的图块类型列表，如 <code>["T01","T02","T03"]</code>；需为已解锁章节的图块子集</td>
-        </tr>
-        <tr>
-          <td>objectives</td><td>Objective[]</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>胜利条件数组，至少1条，见下方 Objective 结构</td>
-        </tr>
-        <tr>
-          <td>max_moves</td><td>integer | null</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>最大步数限制；<code>null</code> 表示无限制（仅用于早期教学关）</td>
-        </tr>
-        <tr>
-          <td>obstacles</td><td>Obstacle[]</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>障碍对象数组，空数组表示无障碍</td>
-        </tr>
-        <tr>
-          <td>special_blocks</td><td>SpecialBlock[]</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>预置特殊块数组，空数组表示无</td>
-        </tr>
-        <tr>
-          <td>board_events</td><td>BoardEvent[]</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>棋盘事件数组，空数组表示无动态事件</td>
-        </tr>
-        <tr>
-          <td>material_reward</td><td>{ type, amount }</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>通关材料奖励，<code>type</code> 须匹配章节材料类型</td>
-        </tr>
-        <tr>
-          <td>coin_reward</td><td>integer</td>
-          <td><span class="required-badge">REQUIRED</span></td>
-          <td>基础金币奖励（三星时另有额外奖励，由评分系统计算）</td>
-        </tr>
-        <tr>
-          <td>emotional_note</td><td>string</td>
-          <td><span class="optional-badge">OPTIONAL</span></td>
-          <td>情感注释，供美术/叙事参考，不影响游戏逻辑</td>
-        </tr>
+        <tr><td>id</td><td>string</td><td><span class="required-badge">必填</span></td><td>唯一关卡标识，格式 <code>"&lt;章节&gt;-&lt;关卡序号&gt;"</code>，如 <code>"1-1"</code>、<code>"6-30"</code></td></tr>
+        <tr><td>chapter</td><td>integer</td><td><span class="required-badge">必填</span></td><td>所属章节编号，1–6</td></tr>
+        <tr><td>level</td><td>integer</td><td><span class="required-badge">必填</span></td><td>章内关卡序号，1–30</td></tr>
+        <tr><td>level_role</td><td>string</td><td><span class="required-badge">必填</span></td><td>关卡角色：<code>tutorial</code> / <code>standard</code> / <code>story</code> / <code>boss</code> / <code>zen</code> / <code>breather</code></td></tr>
+        <tr><td>grid_size</td><td>[int, int]</td><td><span class="required-badge">必填</span></td><td>棋盘尺寸 [宽, 高]，有效范围 [8,8]~[10,10]</td></tr>
+        <tr><td>shape</td><td>string</td><td><span class="required-badge">必填</span></td><td>棋盘形状：<code>rectangle</code> / <code>bay_contour</code> / <code>island_contour</code> / <code>lighthouse_contour</code></td></tr>
+        <tr><td>tile_types</td><td>string[]</td><td><span class="required-badge">必填</span></td><td>本关启用的图块类型列表，如 <code>["T01","T02","T03"]</code>；须为已解锁章节的图块子集</td></tr>
+        <tr><td>objectives</td><td>Objective[]</td><td><span class="required-badge">必填</span></td><td>胜利条件数组，至少1条，见下方 Objective 结构说明</td></tr>
+        <tr><td>max_moves</td><td>integer | null</td><td><span class="required-badge">必填</span></td><td>最大步数限制；<code>null</code> 表示无限制（禅境关与早期教学关专用）</td></tr>
+        <tr><td>obstacles</td><td>Obstacle[]</td><td><span class="required-badge">必填</span></td><td>障碍对象数组，无障碍时为空数组 <code>[]</code></td></tr>
+        <tr><td>special_tiles</td><td>SpecialTile[]</td><td><span class="required-badge">必填</span></td><td>预置特殊图块数组（cascade/light_chain/wave/pierce/swap），无时为 <code>[]</code></td></tr>
+        <tr><td>board_events</td><td>BoardEvent[]</td><td><span class="required-badge">必填</span></td><td>棋盘事件数组，无动态事件时为 <code>[]</code></td></tr>
+        <tr><td>material_reward</td><td>{ type, amount }</td><td><span class="required-badge">必填</span></td><td>通关材料奖励，<code>type</code> 须匹配本章材料类型</td></tr>
+        <tr><td>coin_reward</td><td>integer</td><td><span class="required-badge">必填</span></td><td>通关基础沙滩币奖励</td></tr>
+        <tr><td>emotional_note</td><td>string</td><td><span class="optional-badge">可选</span></td><td>情感注释，供美术/叙事参考，不影响游戏逻辑；文字用中文</td></tr>
+        <tr><td>narrative_trigger</td><td>string</td><td><span class="optional-badge">可选</span></td><td>叙事触发类型：<code>over_scene</code> / <code>npc_dialogue</code> / <code>diary_fragment</code></td></tr>
+        <tr><td>teaching_beat</td><td>string</td><td><span class="optional-badge">可选</span></td><td>关联教学节拍ID，如 <code>"tb-001"</code></td></tr>
+        <tr><td>zen_badge</td><td>string</td><td><span class="optional-badge">可选</span></td><td>禅境关装饰性徽章名称（仅 level_role=zen 时有效）</td></tr>
       </tbody>
     </table>
 
-    <h2>Objective 结构</h2>
+    <h2>Objective 结构说明</h2>
     <table class="field-table">
       <thead>
         <tr><th>字段</th><th>类型</th><th>说明</th></tr>
       </thead>
       <tbody>
         <tr><td>type</td><td>string</td><td><code>clear_tiles</code> / <code>clear_ice</code> / <code>free_chains</code> / <code>traverse_path</code> / <code>survive_spread</code></td></tr>
-        <tr><td>tile_type</td><td>string</td><td>仅 clear_tiles 使用，值为 <code>"any"</code> 或具体类型如 <code>"T03"</code></td></tr>
-        <tr><td>count</td><td>integer</td><td>目标数量；traverse_path 时为 <code>corridor_count</code></td></tr>
-        <tr><td>tile_count</td><td>integer</td><td>仅 survive_spread 使用，表示需保护的格子数</td></tr>
-        <tr><td>spreading_obstacle_type</td><td>string</td><td>仅 survive_spread 使用，值为 <code>"spreading_obstacle"</code></td></tr>
+        <tr><td>tile_type</td><td>string</td><td>仅 <code>clear_tiles</code> 使用，值为 <code>"any"</code> 或具体类型如 <code>"T03"</code></td></tr>
+        <tr><td>count</td><td>integer</td><td>目标数量；<code>traverse_path</code> 时表示 <code>corridor_count</code>（通道数）</td></tr>
+        <tr><td>tile_count</td><td>integer</td><td>仅 <code>survive_spread</code> 使用，表示需保护的有效格数量上限</td></tr>
+        <tr><td>spreading_obstacle_type</td><td>string</td><td>仅 <code>survive_spread</code> 使用，值为 <code>"spreading_obstacle"</code></td></tr>
       </tbody>
     </table>
 
-    <h2>Obstacle 类型枚举</h2>
+    <h2>障碍类型枚举（按章节引入顺序）</h2>
     <table class="field-table">
       <thead>
         <tr><th>type 值</th><th>引入章节</th><th>关键子字段</th></tr>
       </thead>
       <tbody>
-        <tr><td>ice_block</td><td>Ch2</td><td><code>position</code>, <code>layers</code> (1–3)</td></tr>
-        <tr><td>weed</td><td>Ch2</td><td><code>position</code></td></tr>
-        <tr><td>chain_lock</td><td>Ch3</td><td><code>position</code>, <code>required_matches</code> (1–3)</td></tr>
-        <tr><td>portal</td><td>Ch3</td><td><code>position</code>, <code>pair_id</code>, <code>role</code> ("entry"/"exit")</td></tr>
-        <tr><td>single_path_corridor</td><td>Ch4</td><td><code>cells</code> (坐标数组), <code>direction</code></td></tr>
-        <tr><td>wooden_crate</td><td>Ch4</td><td><code>position</code></td></tr>
-        <tr><td>water_current</td><td>Ch5</td><td><code>position</code>, <code>initial_direction</code>, <code>change_interval_s</code></td></tr>
-        <tr><td>spreading_obstacle</td><td>Ch6</td><td><code>position</code>, <code>variant</code> ("moss"/"vine"), <code>spread_interval_moves</code></td></tr>
+        <tr><td>ice_block</td><td>第二章</td><td><code>position</code>, <code>layers</code> (1–3)</td></tr>
+        <tr><td>weed</td><td>第二章</td><td><code>position</code></td></tr>
+        <tr><td>chain_lock</td><td>第三章</td><td><code>position</code>, <code>required_matches</code> (1–3)</td></tr>
+        <tr><td>portal</td><td>第三章</td><td><code>position</code>, <code>pair_id</code>, <code>role</code> ("entry"/"exit")</td></tr>
+        <tr><td>single_path_corridor</td><td>第四章</td><td><code>cells</code>（坐标数组）, <code>direction</code></td></tr>
+        <tr><td>wooden_crate</td><td>第四章</td><td><code>position</code>（永久阻挡格）</td></tr>
+        <tr><td>water_current</td><td>第五章</td><td><code>position</code>, <code>initial_direction</code>, <code>change_interval_s</code></td></tr>
+        <tr><td>spreading_obstacle</td><td>第六章</td><td><code>position</code>, <code>variant</code> ("moss"/"vine"), <code>spread_interval_moves</code></td></tr>
       </tbody>
     </table>
 
-    <h2>SpecialBlock 类型枚举</h2>
+    <h2>特殊图块枚举 v4.0（已废弃旧版本）</h2>
     <table class="field-table">
       <thead>
-        <tr><th>type 值</th><th>引入章节</th><th>触发条件</th></tr>
+        <tr><th>type 值</th><th>引入章节</th><th>生成方式</th></tr>
       </thead>
       <tbody>
-        <tr><td>bomb</td><td>Ch1</td><td>3连击触发，范围消除3×3</td></tr>
-        <tr><td>windmill</td><td>Ch2</td><td>4连击触发，扫除所在行+列</td></tr>
-        <tr><td>lantern</td><td>Ch3</td><td>预置，激活后全场照亮冰块/锁链</td></tr>
-        <tr><td>wave</td><td>Ch4</td><td>预置，激活后触发一次全行滑动</td></tr>
+        <tr><td>cascade</td><td>第一章</td><td>Combo=3自动生成 / 关卡预置</td></tr>
+        <tr><td>light_chain</td><td>第二章</td><td>Combo=4自动生成 / 关卡预置</td></tr>
+        <tr><td>wave</td><td>第三章</td><td>Combo=6自动生成 / 关卡预置</td></tr>
+        <tr><td>pierce</td><td>第四章</td><td>仅关卡预置</td></tr>
+        <tr><td>swap</td><td>第五章</td><td>仅关卡预置</td></tr>
       </tbody>
     </table>
+    <p style="font-size:0.82rem; color:var(--accent3);">⚠ 已废弃：bomb / windmill / lantern / 旧版wave。请勿在 v3.0 关卡文件中使用。</p>
 
-    <h2>BoardEvent 类型枚举</h2>
+    <h2>棋盘事件枚举</h2>
     <table class="field-table">
       <thead>
         <tr><th>type 值</th><th>引入章节</th><th>关键子字段</th></tr>
       </thead>
       <tbody>
-        <tr><td>tile_fall</td><td>Ch5</td><td><code>enabled: true</code></td></tr>
-        <tr><td>tile_slide</td><td>Ch5</td><td><code>enabled</code>, <code>direction</code></td></tr>
-        <tr><td>board_rotate</td><td>Ch5</td><td><code>enabled</code>, <code>interval_moves</code></td></tr>
-        <tr><td>water_flow</td><td>Ch5</td><td><code>enabled</code></td></tr>
-        <tr><td>vine_spread</td><td>Ch6</td><td><code>enabled</code>, <code>spread_interval_moves</code></td></tr>
+        <tr><td>tile_fall</td><td>第五章</td><td><code>enabled: true</code></td></tr>
+        <tr><td>tile_slide</td><td>第五章</td><td><code>enabled</code>, <code>direction</code></td></tr>
+        <tr><td>board_rotate</td><td>第五章（仅挑战关）</td><td><code>enabled</code>, <code>interval_moves</code></td></tr>
+        <tr><td>vine_spread</td><td>第六章</td><td><code>enabled</code>, <code>spread_interval_moves</code></td></tr>
       </tbody>
     </table>
 
-    <h2>JSON 示例片段</h2>
+    <h2>JSON 关卡格式示例片段</h2>
     <pre><code>{
   "id": "3-5",
   "chapter": 3,
   "level": 5,
-  "grid_size": [6, 6],
-  "tile_types": ["T01", "T02", "T03", "T04"],
+  "level_role": "standard",
+  "grid_size": [8, 8],
+  "shape": "bay_contour",
+  "tile_types": ["T01", "T02", "T03", "T04", "T05", "T06"],
   "objectives": [
-    { "type": "clear_tiles", "tile_type": "any", "count": 14 },
+    { "type": "clear_tiles", "tile_type": "any", "count": 20 },
     { "type": "free_chains", "count": 1 }
   ],
-  "max_moves": 26,
+  "max_moves": 28,
   "obstacles": [
     { "type": "chain_lock", "position": [2, 3], "required_matches": 1 },
     { "type": "portal", "position": [0, 5], "pair_id": 0, "role": "entry" },
-    { "type": "portal", "position": [5, 1], "pair_id": 0, "role": "exit" }
+    { "type": "portal", "position": [7, 1], "pair_id": 0, "role": "exit" }
   ],
-  "special_blocks": [
-    { "type": "lantern", "position": [4, 4] }
-  ],
+  "special_tiles": [],
   "board_events": [],
-  "material_reward": { "type": "pine_needle", "amount": 6 },
-  "coin_reward": 24,
-  "emotional_note": "Wildflowers sway; the lock yields to patience."
+  "material_reward": { "type": "pine_needle", "amount": 5 },
+  "coin_reward": 20,
+  "emotional_note": "野花半开，锁链在晨光里生锈，等待。"
 }</code></pre>
 
     <hr>
 
+    <!-- ======================================================== -->
+    <h1 id="qa">9. 设计验证报告</h1>
+
+    <h2>节奏QA — 检查结果</h2>
+    <div class="qa-grid">
+      <div class="qa-card qa-pass"><div class="qa-label">关卡总量</div><div class="qa-value">180关 ✓（目标6×30）</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">Boss关分布</div><div class="qa-value">6个（每章第30关）✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">禅境关分布</div><div class="qa-value">12个（每章2个）✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">故事关分布</div><div class="qa-value">12个（每章2个）✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">3:1喘息节奏</div><div class="qa-value">每章约7-8个喘息关 ✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">叙事触发点</div><div class="qa-value">每章5个，共30个 ✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">难度曲线连续性</div><div class="qa-value">章节重置最大降幅1.5，无突增&gt;2.0 ✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">首次通关率目标</div><div class="qa-value">设计目标≥70%，降级阈值50% ✓</div></div>
+    </div>
+
+    <h2>可玩性QA — 检查结果</h2>
+    <div class="qa-grid">
+      <div class="qa-card qa-pass"><div class="qa-label">特殊图块v4.0对齐</div><div class="qa-value">cascade/light_chain/wave/pierce/swap ✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">棋盘尺寸规格</div><div class="qa-value">Ch1-2矩形8×8/9×9，Ch3+异形 ✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">奇偶保证机制</div><div class="qa-value">关卡生成时强制偶数校验 ✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">异形棋盘连通性</div><div class="qa-value">void格标记后有效格保持连通 ✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">障碍可达性</div><div class="qa-value">所有障碍位于合法路径可到达位置 ✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">终章Boss关可行性</div><div class="qa-value">6-30关45步，预估余量&gt;10% ✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">扩散障碍奇偶安全</div><div class="qa-value">障碍不是配对图块，不影响奇偶 ✓</div></div>
+      <div class="qa-card qa-pass"><div class="qa-label">旧版特殊图块清除</div><div class="qa-value">bomb/windmill/lantern/旧wave已废弃 ✓</div></div>
+    </div>
+
+    <blockquote>
+      本文档版本：3.0 &nbsp;|&nbsp; 与 core-mechanics v4.0 完整对齐 &nbsp;|&nbsp; 输出语言：zh-CN（游戏内专有名词保留日文）
+    </blockquote>
+
     <div class="footer">
-      Glow Island · Level Design Document v2.0 &nbsp;·&nbsp; 2026-05-08<br>
-      源数据：<code>.allforai/game-design/level-design.json</code> (136 levels) &nbsp;|&nbsp; <code>progression-curve.json</code>
+      Glow Island · 輝島（Kagayaki-jima）· 关卡设计文档 v3.0 &nbsp;·&nbsp; 2026-05-13<br>
+      源数据：<code>.allforai/game-design/systems/level-design.json</code>（180关）&nbsp;|&nbsp; 上游：<code>core-mechanics.json v4.0</code>
     </div>
 
   </div>

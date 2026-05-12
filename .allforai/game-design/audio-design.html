@@ -1,1412 +1,701 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Glow Island — Audio Design Document</title>
+<title>Glow Island — 音频设计文档</title>
 <style>
   :root {
-    --bg: #0f0f1a;
-    --bg2: #161628;
-    --bg3: #1d1d35;
-    --bg4: #222240;
-    --accent: #9c27b0;
-    --accent2: #ce93d8;
-    --accent3: #7b1fa2;
-    --gold: #f9c74f;
-    --teal: #4dd0e1;
-    --green: #81c784;
-    --red: #e57373;
-    --text: #e8d5b0;
-    --text2: #c4b08a;
-    --text3: #a09070;
-    --border: rgba(156, 39, 176, 0.3);
-    --border2: rgba(156, 39, 176, 0.15);
+    --ocean: #4a9ebb;
+    --sand: #f5e6c8;
+    --coral: #e8826a;
+    --seafoam: #7ec8a0;
+    --night: #1a2a3a;
+    --warm-white: #fdfaf5;
+    --accent: #f0a500;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Georgia', serif;
-    font-size: 15px;
-    line-height: 1.7;
-  }
-  a { color: var(--accent2); text-decoration: none; }
-
-  /* ── Layout ── */
-  .page-wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
-
-  /* ── Hero ── */
-  .hero {
-    background: linear-gradient(160deg, #1a0a2e 0%, #0f0f1a 60%);
-    border-bottom: 1px solid var(--border);
-    padding: 56px 24px 48px;
-    text-align: center;
-  }
-  .hero-eyebrow {
-    font-size: 11px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--accent2);
-    margin-bottom: 14px;
-  }
-  .hero-title {
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: normal;
-    color: #fff;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-  }
-  .hero-jp {
-    font-size: 22px;
-    color: var(--accent2);
-    margin-bottom: 24px;
-    letter-spacing: 4px;
-  }
-  .hero-sub {
-    font-size: 14px;
-    color: var(--text3);
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  /* ── Section ── */
-  section { margin-top: 56px; }
-  .section-label {
-    font-size: 10px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-  h2 {
-    font-size: 22px;
-    font-weight: normal;
-    color: var(--accent2);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 10px;
-    margin-bottom: 28px;
-  }
-  h3 {
-    font-size: 15px;
-    font-weight: bold;
-    color: var(--gold);
-    margin: 24px 0 12px;
-    letter-spacing: 0.5px;
-  }
-  h4 {
-    font-size: 13px;
-    color: var(--accent2);
-    margin: 16px 0 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  p { color: var(--text2); margin-bottom: 12px; }
-
-  /* ── Identity Card ── */
-  .identity-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-  @media(max-width: 600px) { .identity-grid { grid-template-columns: 1fr; } }
-  .identity-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-  }
-  .identity-card .card-title {
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-  .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
-  .tag {
-    background: rgba(156, 39, 176, 0.15);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 12px;
-    color: var(--accent2);
-  }
-  .tag.forbidden {
-    background: rgba(229, 115, 115, 0.1);
-    border-color: rgba(229, 115, 115, 0.3);
-    color: var(--red);
-  }
-  .tag.instrument {
-    background: rgba(77, 208, 225, 0.1);
-    border-color: rgba(77, 208, 225, 0.25);
-    color: var(--teal);
-  }
-
-  /* ── Quote block ── */
-  .philosophy-box {
-    background: linear-gradient(135deg, rgba(156, 39, 176, 0.08) 0%, rgba(77, 208, 225, 0.04) 100%);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    padding: 20px 24px;
-    margin: 24px 0;
-    font-style: italic;
-    color: var(--text);
-    font-size: 16px;
-    line-height: 1.9;
-  }
-
-  /* ── Tables ── */
-  .table-wrap { overflow-x: auto; margin-bottom: 8px; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-  thead tr { background: var(--bg4); }
-  thead th {
-    text-align: left;
-    padding: 10px 14px;
-    color: var(--accent2);
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border-bottom: 2px solid var(--border);
-    white-space: nowrap;
-  }
-  tbody tr { border-bottom: 1px solid var(--border2); }
-  tbody tr:hover { background: rgba(156,39,176,0.05); }
-  tbody td {
-    padding: 10px 14px;
-    color: var(--text2);
-    vertical-align: top;
-  }
-  .key-cell {
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    color: var(--teal);
-    white-space: nowrap;
-  }
-  .badge {
-    display: inline-block;
-    border-radius: 4px;
-    padding: 2px 8px;
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .badge-alpha { background: rgba(129, 199, 132, 0.2); color: var(--green); border: 1px solid rgba(129,199,132,0.35); }
-  .badge-beta  { background: rgba(249, 199, 79, 0.15); color: var(--gold); border: 1px solid rgba(249,199,79,0.3); }
-  .badge-gold  { background: rgba(249, 199, 79, 0.25); color: #ffe082; border: 1px solid rgba(249,199,79,0.5); }
-  .badge-high    { background: rgba(229,115,115,0.15); color: #ef9a9a; border: 1px solid rgba(229,115,115,0.3); }
-  .badge-critical { background: rgba(229,115,115,0.25); color: #ff6b6b; border: 1px solid rgba(229,115,115,0.45); }
-  .badge-medium  { background: rgba(156,39,176,0.2); color: var(--accent2); border: 1px solid var(--border); }
-  .badge-low     { background: rgba(77,208,225,0.1); color: var(--teal); border: 1px solid rgba(77,208,225,0.25); }
-  .bool-true  { color: var(--green); font-size: 12px; }
-  .bool-false { color: var(--text3); font-size: 12px; }
-  .jp { color: var(--accent2); font-size: 14px; }
-
-  /* ── Chapter cards ── */
-  .chapter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media(max-width:700px) { .chapter-grid { grid-template-columns: 1fr; } }
-  .chapter-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  .chapter-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-  }
-  .chapter-card.ch1::before { background: linear-gradient(90deg,#1565c0,#42a5f5); }
-  .chapter-card.ch2::before { background: linear-gradient(90deg,#6d4c41,#bcaaa4); }
-  .chapter-card.ch3::before { background: linear-gradient(90deg,#2e7d32,#81c784); }
-  .chapter-card.ch4::before { background: linear-gradient(90deg,#455a64,#90a4ae); }
-  .chapter-card.ch5::before { background: linear-gradient(90deg,#4527a0,#9575cd); }
-  .chapter-card.ch6::before { background: linear-gradient(90deg,#e65100,#ffcc02); }
-  .ch-num { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
-  .ch-name { font-size: 17px; color: #fff; margin-bottom: 2px; }
-  .ch-jp { font-size: 13px; color: var(--accent2); margin-bottom: 12px; }
-  .ch-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
-  .ch-pill {
-    background: var(--bg4);
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 12px;
-    color: var(--text3);
-  }
-  .ch-pill span { color: var(--text); }
-  .ch-instruments { font-size: 12px; color: var(--text3); }
-  .ch-instruments span { color: var(--text2); }
-  .ch-tone { font-size: 13px; color: var(--text2); font-style: italic; margin-top: 8px; }
-  .ch-note { font-size: 12px; color: var(--text3); margin-top: 8px; border-top: 1px solid var(--border2); padding-top: 8px; }
-
-  /* ── Adaptive SVG area ── */
-  .svg-wrap {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px 24px;
-    margin-bottom: 24px;
-    overflow-x: auto;
-  }
-  svg text { font-family: 'Georgia', serif; }
-
-  /* ── Special scenes ── */
-  .scene-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin-bottom: 16px;
-  }
-  .scene-title { font-size: 16px; color: #fff; margin-bottom: 4px; }
-  .scene-meta { font-size: 12px; color: var(--text3); margin-bottom: 12px; }
-  .scene-timeline {
-    background: var(--bg3);
-    border-radius: 6px;
-    padding: 12px 16px;
-    margin: 12px 0;
-  }
-  .timeline-item {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 6px;
-    font-size: 13px;
-  }
-  .timeline-time { color: var(--accent2); min-width: 50px; font-family: monospace; font-size: 12px; }
-  .timeline-desc { color: var(--text2); }
-
-  /* ── Voice card ── */
-  .voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media(max-width:650px) { .voice-grid { grid-template-columns: 1fr; } }
-  .voice-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px 20px;
-  }
-  .voice-name { font-size: 15px; color: #fff; margin-bottom: 2px; }
-  .voice-role { font-size: 12px; color: var(--text3); margin-bottom: 10px; }
-  .vocal-chip {
-    display: inline-block;
-    background: rgba(156,39,176,0.15);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 3px 10px;
-    font-size: 14px;
-    color: var(--accent2);
-    margin: 3px 3px 3px 0;
-    font-style: italic;
-  }
-  .voice-note { font-size: 12px; color: var(--text3); margin-top: 10px; font-style: italic; }
-
-  /* ── Asset list ── */
-  .asset-group-title {
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin: 24px 0 8px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid var(--border2);
-  }
-  .asset-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 12px;
-    background: var(--bg2);
-    border-radius: 6px;
-    margin-bottom: 4px;
-    font-size: 13px;
-  }
-  .asset-id { font-family: monospace; color: var(--teal); min-width: 220px; }
-  .asset-dur { color: var(--text3); min-width: 80px; }
-  .asset-desc { color: var(--text2); flex: 1; }
-
-  /* ── Integration note ── */
-  .integration-box {
-    background: var(--bg2);
-    border: 1px solid rgba(77,208,225,0.25);
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin-top: 24px;
-  }
-  .integration-box h4 { color: var(--teal); margin-top: 0; }
-  .code-inline {
-    font-family: 'Courier New', monospace;
-    background: var(--bg4);
-    border-radius: 4px;
-    padding: 2px 6px;
-    font-size: 12px;
-    color: var(--teal);
-  }
-
-  /* ── Footer ── */
-  .footer {
-    margin-top: 80px;
-    padding: 24px;
-    border-top: 1px solid var(--border2);
-    text-align: center;
-    font-size: 12px;
-    color: var(--text3);
-  }
-  .footer .jp-footer { color: var(--accent); font-size: 18px; letter-spacing: 6px; margin-bottom: 8px; }
-
-  /* ── Divider ── */
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border2);
-    margin: 36px 0;
-  }
-
-  /* ── Callout ── */
-  .callout {
-    background: rgba(249,199,79,0.07);
-    border: 1px solid rgba(249,199,79,0.25);
-    border-radius: 8px;
-    padding: 14px 18px;
-    font-size: 13px;
-    color: var(--text2);
-    margin: 16px 0;
-  }
-  .callout strong { color: var(--gold); }
-
-  /* ── Adaptive diagram specific ── */
-  .layer-row {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-  .layer-label {
-    width: 120px;
-    min-width: 120px;
-    padding: 14px 16px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    line-height: 1.4;
-  }
-  .layer-base { background: rgba(77,208,225,0.15); color: var(--teal); }
-  .layer-melody { background: rgba(156,39,176,0.15); color: var(--accent2); }
-  .layer-intensity { background: rgba(249,199,79,0.1); color: var(--gold); }
-  .layer-detail {
-    flex: 1;
-    background: var(--bg3);
-    padding: 14px 18px;
-    font-size: 13px;
-    color: var(--text2);
-  }
-  .layer-trigger {
-    font-size: 11px;
-    color: var(--text3);
-    margin-top: 4px;
-  }
-  .layer-trigger span { color: var(--text); }
+  body { font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; background: var(--warm-white); color: var(--night); line-height: 1.7; }
+  header { background: linear-gradient(135deg, var(--ocean) 0%, #2d6a8a 100%); color: white; padding: 32px 24px 24px; text-align: center; }
+  header h1 { font-size: 2rem; letter-spacing: 2px; margin-bottom: 6px; }
+  header p { opacity: 0.85; font-size: 0.95rem; }
+  nav { background: var(--night); display: flex; flex-wrap: wrap; gap: 2px; padding: 4px; position: sticky; top: 0; z-index: 100; }
+  nav button { background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 0.85rem; padding: 10px 16px; border-radius: 4px; transition: all 0.2s; white-space: nowrap; }
+  nav button:hover { background: rgba(255,255,255,0.1); color: white; }
+  nav button.active { background: var(--ocean); color: white; }
+  .section { display: none; padding: 32px 24px; max-width: 1100px; margin: 0 auto; }
+  .section.active { display: block; }
+  h2 { color: var(--ocean); font-size: 1.5rem; margin-bottom: 20px; border-bottom: 2px solid var(--sand); padding-bottom: 8px; }
+  h3 { color: var(--night); font-size: 1.1rem; margin: 20px 0 10px; }
+  .card { background: white; border-radius: 10px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-left: 4px solid var(--ocean); }
+  .card.coral { border-left-color: var(--coral); }
+  .card.seafoam { border-left-color: var(--seafoam); }
+  .card.accent { border-left-color: var(--accent); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+  th { background: var(--ocean); color: white; padding: 10px 12px; text-align: left; }
+  td { padding: 9px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+  tr:nth-child(even) td { background: #f8fbff; }
+  .tag { display: inline-block; background: var(--sand); color: var(--night); border-radius: 12px; padding: 2px 10px; font-size: 0.8rem; margin: 2px; }
+  .tag.ocean { background: var(--ocean); color: white; }
+  .tag.seafoam { background: var(--seafoam); color: white; }
+  .tag.coral { background: var(--coral); color: white; }
+  .tag.accent { background: var(--accent); color: white; }
+  .combo-timeline { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+  .combo-row { display: flex; align-items: center; gap: 12px; }
+  .combo-badge { min-width: 72px; text-align: center; border-radius: 20px; padding: 4px 12px; font-weight: bold; font-size: 0.85rem; color: white; }
+  .combo-bar { height: 28px; border-radius: 4px; display: flex; align-items: center; padding-left: 10px; font-size: 0.82rem; color: white; flex: 1; }
+  .layer-block { background: white; border-radius: 8px; padding: 16px; border: 2px solid; margin-bottom: 12px; }
+  .layer-block.base { border-color: var(--ocean); }
+  .layer-block.melody { border-color: var(--seafoam); }
+  .layer-block.intensity { border-color: var(--coral); }
+  .checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; }
+  .checklist-item:last-child { border-bottom: none; }
+  .check-icon { width: 22px; height: 22px; border-radius: 50%; background: var(--seafoam); color: white; display: flex; align-items: center; justify-content:: center; font-size: 0.85rem; flex-shrink: 0; text-align: center; line-height: 22px; }
+  .npc-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .npc-name { font-size: 1.1rem; font-weight: bold; margin-bottom: 4px; }
+  .npc-voice-bar { height: 6px; border-radius: 3px; margin: 8px 0; }
+  .stat-box { background: var(--ocean); color: white; border-radius: 8px; padding: 16px; text-align: center; }
+  .stat-number { font-size: 2rem; font-weight: bold; }
+  .stat-label { font-size: 0.85rem; opacity: 0.85; }
+  .info-note { background: #fff8e1; border-left: 4px solid var(--accent); padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 0.9rem; margin: 12px 0; }
+  .forbidden-list { background: #fff0f0; border-left: 4px solid var(--coral); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; }
+  .forbidden-list li { list-style: none; padding: 2px 0; font-size: 0.9rem; }
+  .forbidden-list li::before { content: "✗ "; color: var(--coral); font-weight: bold; }
 </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════ HERO ════════════════════════════════ -->
-<div class="hero">
-  <div class="page-wrap" style="text-align:center;">
-    <div class="hero-eyebrow">Glow Island · 輝島 · Audio Design Document</div>
-    <h1 class="hero-title">Audio Direction — 輝島 (Kagayaki-jima)</h1>
-    <div class="hero-jp">音楽と音響設計</div>
-    <div class="hero-sub">
-      A healing match-connect puzzle game set on a restored Japanese island.<br>
-      Audio designed to hold silence as intentionally as it holds melody.
+<header>
+  <h1>🎵 Glow Island 音频设计文档</h1>
+  <p>輝島（Kagayaki-jima）— Animal Crossing 治愈风格 | v2.0 | 2026-05-13</p>
+</header>
+
+<nav id="mainNav">
+  <button class="active" onclick="showSection('identity', this)">音频身份</button>
+  <button onclick="showSection('combo', this)">Combo音频系统</button>
+  <button onclick="showSection('sfx', this)">SFX目录</button>
+  <button onclick="showSection('bgm', this)">章节BGM</button>
+  <button onclick="showSection('npc', this)">NPC声音风格</button>
+  <button onclick="showSection('adaptive', this)">自适应系统</button>
+  <button onclick="showSection('tech', this)">技术规格</button>
+  <button onclick="showSection('assets', this)">资产清单</button>
+  <button onclick="showSection('checklist', this)">审查清单</button>
+</nav>
+
+<!-- ======== 音频身份 ======== -->
+<div id="identity" class="section active">
+  <h2>音频身份</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>整体风格定位</h3>
+      <table>
+        <tr><td><strong>流派</strong></td><td>声学 + 环境音 + 轻电子</td></tr>
+        <tr><td><strong>情感基调</strong></td><td>治愈、不急不忙、静静地喜悦</td></tr>
+        <tr><td><strong>风格参照</strong></td><td>どうぶつの森（Animal Crossing）— 轻松愉快、岛屿氛围、无压迫感</td></tr>
+        <tr><td><strong>受众感受</strong></td><td>放松、想要再玩一关、有陪伴感</td></tr>
+      </table>
+    </div>
+    <div class="card seafoam">
+      <h3>参考作品</h3>
+      <table>
+        <tr><td>どうぶつの森</td><td>K.K. Slider声学温暖感</td></tr>
+        <tr><td>天天爱消除</td><td>满足感短音效、递进Combo音调</td></tr>
+        <tr><td>久石让 Joe Hisaishi</td><td>旋律中的空间与呼吸</td></tr>
+        <tr><td>Nujabes</td><td>不具攻击性的低调律动</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>核心乐器编成</h3>
+    <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">
+      <span class="tag ocean">acoustic guitar（指弹主旋律）</span>
+      <span class="tag ocean">koto（琴，日式弦乐）</span>
+      <span class="tag ocean">soft piano（轻柔钢琴）</span>
+      <span class="tag seafoam">ocean ambience（海浪环境音）</span>
+      <span class="tag seafoam">wind chimes（风铃）</span>
+      <span class="tag seafoam">birdsong（鸟鸣）</span>
+      <span class="tag seafoam">cicada（蝉声）</span>
+      <span class="tag">wooden geta（木屐踏石声）</span>
+      <span class="tag">shamisen（三味线，偶尔点缀）</span>
+      <span class="tag">gentle hand percussion（轻柔手鼓）</span>
+      <span class="tag">light ambient pads（环境pad）</span>
+    </div>
+  </div>
+
+  <div class="forbidden-list">
+    <strong style="display:block;margin-bottom:6px;color:var(--coral);">禁止使用的音效类型</strong>
+    <li>aggressive percussion（激进打击乐）</li>
+    <li>distorted bass（失真低音）</li>
+    <li>high-BPM electronic（高BPM电子音乐）</li>
+    <li>triumphant brass fanfares（胜利铜管号角）</li>
+    <li>urgent alarm sounds（紧迫警报音）</li>
+    <li>harsh buzzer tones（刺耳蜂鸣）</li>
+    <li>rapid-fire drum machines（快速鼓机）</li>
+    <li>EDM drops（EDM高潮段）</li>
+  </div>
+
+  <div class="info-note">
+    设计原则：所有音效必须让玩家感到舒适与愉悦，不允许出现任何让人感到焦虑或压迫的声音。即使是关卡失败提示，也应使用温柔下行音调而非刺耳蜂鸣。
+  </div>
+</div>
+
+<!-- ======== Combo音频系统 ======== -->
+<div id="combo" class="section">
+  <h2>Combo音频反馈系统</h2>
+
+  <div class="card">
+    <h3>系统概述</h3>
+    <p>Combo计时器音频反馈系统是游戏爽快感的核心来源。每次消除触发轻柔击中音；Combo计时器运行期间，BGM节拍持续加速（<strong>tempo变化，不切换BGM轨道</strong>）；Combo等级提升时播放对应音效；Combo断连时播放轻微下行音效（非惩罚性，仅作提示）。</p>
+    <table style="margin-top:12px;">
+      <tr><td><strong>计时器窗口</strong></td><td>2000ms（2秒内连续消除视为Combo延续）</td></tr>
+      <tr><td><strong>加速机制</strong></td><td>BGM tempo逐级加速，断连后渐变回原速（2秒过渡）</td></tr>
+      <tr><td><strong>最大加速</strong></td><td>+20%（Combo x6时）</td></tr>
+    </table>
+  </div>
+
+  <h3>Combo等级音效时间线</h3>
+  <div class="combo-timeline">
+    <div class="combo-row">
+      <div class="combo-badge" style="background:#7ec8a0;">基础 x1</div>
+      <div class="combo-bar" style="background:#7ec8a0; width:20%;">轻柔「叮」— sfx_tile_connect</div>
+      <span style="font-size:0.8rem;color:#666;">tempo: 原速</span>
+    </div>
+    <div class="combo-row">
+      <div class="combo-badge" style="background:#4a9ebb;">Combo x2</div>
+      <div class="combo-bar" style="background:#4a9ebb; width:36%;">渐亮音调上升 — sfx_combo_lv1</div>
+      <span style="font-size:0.8rem;color:#666;">tempo: +5%</span>
+    </div>
+    <div class="combo-row">
+      <div class="combo-badge" style="background:#2d7aa8;">Combo x3</div>
+      <div class="combo-bar" style="background:#2d7aa8; width:52%;">「叮叮」双音 + cascade生成提示 — sfx_combo_lv2</div>
+      <span style="font-size:0.8rem;color:#666;">tempo: +10%</span>
+    </div>
+    <div class="combo-row">
+      <div class="combo-badge" style="background:#f0a500;">Combo x4</div>
+      <div class="combo-bar" style="background:#f0a500; width:68%;">琴弦扫奏 + light_chain生成提示 — sfx_combo_lv3</div>
+      <span style="font-size:0.8rem;color:#666;">tempo: +15%</span>
+    </div>
+    <div class="combo-row">
+      <div class="combo-badge" style="background:#e8826a;">Combo x6</div>
+      <div class="combo-bar" style="background:#e8826a; width:84%;">海浪大奖音效 + wave生成提示 — sfx_combo_lv4_wave</div>
+      <span style="font-size:0.8rem;color:#666;">tempo: +20%</span>
+    </div>
+    <div class="combo-row">
+      <div class="combo-badge" style="background:#999;">断连</div>
+      <div class="combo-bar" style="background:#999; width:30%;">轻微下行「嗖」— sfx_combo_break</div>
+      <span style="font-size:0.8rem;color:#666;">tempo: 渐回原速（2s）</span>
+    </div>
+  </div>
+
+  <div class="info-note">
+    <strong>特殊图案生成提示音</strong>：Combo x3触发cascade、Combo x4触发light_chain、Combo x6触发wave，各有独立的"生成提示音"叠加在combo升级音效之上，让玩家直觉感知即将出现的特殊图案。
+  </div>
+</div>
+
+<!-- ======== SFX目录 ======== -->
+<div id="sfx" class="section">
+  <h2>SFX完整目录</h2>
+
+  <h3>核心交互音效</h3>
+  <table>
+    <thead><tr><th>音效键名</th><th>触发时机</th><th>音色描述</th><th>时长(ms)</th></tr></thead>
+    <tbody>
+      <tr><td>sfx_tile_connect</td><td>点击/连线图案时</td><td>轻柔木质「叮」，如碰触风铃下沿</td><td>120</td></tr>
+      <tr><td>sfx_tile_clear</td><td>图案消除时</td><td>短促晶莹「叮叮」，带轻微尾音</td><td>200</td></tr>
+      <tr><td>sfx_combo_lv1</td><td>Combo x2达成</td><td>上行音调渐亮，轻钢琴单音</td><td>300</td></tr>
+      <tr><td>sfx_combo_lv2</td><td>Combo x3达成（cascade触发）</td><td>双音「叮叮」+ 轻微水波纹尾音</td><td>400</td></tr>
+      <tr><td>sfx_combo_lv3</td><td>Combo x4达成（light_chain触发）</td><td>琴弦轻扫 + 渐明音调，有层次感</td><td>500</td></tr>
+      <tr><td>sfx_combo_lv4_wave</td><td>Combo x6达成（wave触发）</td><td>海浪涌起声 + 风铃大扫奏，重磅满足感</td><td>800</td></tr>
+      <tr><td>sfx_combo_break</td><td>Combo断连时</td><td>轻微下行「嗖」，温柔非惩罚性</td><td>250</td></tr>
+    </tbody>
+  </table>
+
+  <h3>特殊图案音效（v4.0 特殊图案系统）</h3>
+  <table>
+    <thead><tr><th>音效键名</th><th>特殊图案</th><th>触发条件</th><th>音色描述</th><th>时长(ms)</th></tr></thead>
+    <tbody>
+      <tr><td>sfx_special_cascade</td><td>cascade（瀑布）</td><td>Combo x3生成，使用时</td><td>水流倾泻声 + 消除叮铃叠加</td><td>600</td></tr>
+      <tr><td>sfx_special_light_chain</td><td>light_chain（光链）</td><td>Combo x4生成，使用时</td><td>光束扫射声 + 连锁叮响</td><td>700</td></tr>
+      <tr><td>sfx_special_wave</td><td>wave（海浪）</td><td>Combo x6生成，使用时</td><td>大海浪涌起 + 多重消除叠加，最高满足感</td><td>1000</td></tr>
+      <tr><td>sfx_special_pierce</td><td>pierce（贯穿）</td><td>关卡预设，使用时</td><td>箭矢破空声 + 直线消除叮响</td><td>500</td></tr>
+      <tr><td>sfx_special_swap</td><td>swap（交换）</td><td>关卡预设，使用时</td><td>轻柔气泡交换声 + 位移嗖音</td><td>400</td></tr>
+    </tbody>
+  </table>
+
+  <h3>系统与叙事音效</h3>
+  <table>
+    <thead><tr><th>音效键名</th><th>触发时机</th><th>音色描述</th><th>时长(ms)</th></tr></thead>
+    <tbody>
+      <tr><td>sfx_level_complete</td><td>关卡通关</td><td>上行分解和弦 + 欢呼短音，温暖满足</td><td>1200</td></tr>
+      <tr><td>sfx_level_fail</td><td>关卡失败</td><td>温柔下行音调，非惩罚性，引导再试</td><td>800</td></tr>
+      <tr><td>sfx_area_restore</td><td>地区恢复/解锁</td><td>岛屿主题升华音效，如晨光照耀</td><td>2000</td></tr>
+      <tr><td>sfx_lighthouse_on</td><td>灯塔点亮</td><td>渐强光晕音效 + 远处海浪呼应</td><td>2500</td></tr>
+      <tr><td>sfx_diary_unlock</td><td>日记/记忆解锁</td><td>温柔书页翻动声 + 轻钢琴音符</td><td>1500</td></tr>
+      <tr><td>sfx_tool_use</td><td>道具使用</td><td>轻快实体点击声（依道具类型微调）</td><td>300</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ======== 章节BGM ======== -->
+<div id="bgm" class="section">
+  <h2>章节BGM规划</h2>
+
+  <div class="info-note">
+    BGM策略：6章各有独立主题BGM，随章节解锁；关卡内BGM与地图/菜单BGM有明显区别（关卡内更活跃，地图更悠闲）。BGM采用<strong>三层自适应叠加结构</strong>（详见"自适应系统"标签页）。
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>bgm_menu — 主菜单 / 岛屿地图</h3>
+      <table>
+        <tr><td><strong>情感色调</strong></td><td>悠闲温馨，欢迎归来</td></tr>
+        <tr><td><strong>主乐器</strong></td><td>acoustic guitar 指弹 + 海浪底层</td></tr>
+        <tr><td><strong>BPM</strong></td><td>72</td></tr>
+        <tr><td><strong>时长</strong></td><td>120s（无缝循环）</td></tr>
+        <tr><td><strong>特色</strong></td><td>随时间段微妙变化（早晨/傍晚/夜间音色）</td></tr>
+      </table>
+    </div>
+    <div class="card seafoam">
+      <h3>bgm_chapter1 — 第一章（港口区域）</h3>
+      <table>
+        <tr><td><strong>地点</strong></td><td>渔港・波止場</td></tr>
+        <tr><td><strong>情感色调</strong></td><td>初来乍到，好奇探索</td></tr>
+        <tr><td><strong>主乐器</strong></td><td>轻柔钢琴 + 海鸥鸣叫 + 海浪</td></tr>
+        <tr><td><strong>BPM</strong></td><td>80</td></tr>
+        <tr><td><strong>时长</strong></td><td>90s（无缝循环）</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>bgm_chapter2 — 第二章（集市街道）</h3>
+      <table>
+        <tr><td><strong>地点</strong></td><td>商店街・にぎわい通り</td></tr>
+        <tr><td><strong>情感色调</strong></td><td>热闹友好，邻里温情</td></tr>
+        <tr><td><strong>主乐器</strong></td><td>手风琴 + 轻打击乐 + 风铃</td></tr>
+        <tr><td><strong>BPM</strong></td><td>90</td></tr>
+        <tr><td><strong>时长</strong></td><td>90s（无缝循环）</td></tr>
+      </table>
+    </div>
+    <div class="card accent">
+      <h3>bgm_chapter3 — 第三章（神社林道）</h3>
+      <table>
+        <tr><td><strong>地点</strong></td><td>神社・参道</td></tr>
+        <tr><td><strong>情感色调</strong></td><td>静谧神圣，传统与自然</td></tr>
+        <tr><td><strong>主乐器</strong></td><td>shakuhachi（尺八）+ koto（琴）+ 蝉声</td></tr>
+        <tr><td><strong>BPM</strong></td><td>68</td></tr>
+        <tr><td><strong>时长</strong></td><td>100s（无缝循环）</td></tr>
+      </table>
+    </div>
+    <div class="card seafoam">
+      <h3>bgm_chapter4_camping — 第四章（森林露营地）</h3>
+      <table>
+        <tr><td><strong>地点</strong></td><td>森の露営地</td></tr>
+        <tr><td><strong>情感色调</strong></td><td>篝火温暖，户外冒险治愈</td></tr>
+        <tr><td><strong>主乐器</strong></td><td>木吉他 + 夜虫声 + 轻鼓点</td></tr>
+        <tr><td><strong>BPM</strong></td><td>76</td></tr>
+        <tr><td><strong>时长</strong></td><td>95s（无缝循环）</td></tr>
+      </table>
+    </div>
+    <div class="card coral">
+      <h3>bgm_chapter5 — 第五章（温泉山谷）</h3>
+      <table>
+        <tr><td><strong>地点</strong></td><td>温泉山谷</td></tr>
+        <tr><td><strong>情感色调</strong></td><td>放松疗愈，温泉蒸汽氛围</td></tr>
+        <tr><td><strong>主乐器</strong></td><td>竖琴 + 流水声 + 轻钢琴</td></tr>
+        <tr><td><strong>BPM</strong></td><td>65</td></tr>
+        <tr><td><strong>时长</strong></td><td>110s（无缝循环）</td></tr>
+      </table>
+    </div>
+    <div class="card accent">
+      <h3>bgm_chapter6 — 第六章（灯塔之巅）</h3>
+      <table>
+        <tr><td><strong>地点</strong></td><td>灯台・輝きの丘</td></tr>
+        <tr><td><strong>情感色调</strong></td><td>感动高潮，岛屿重生圆满</td></tr>
+        <tr><td><strong>主乐器</strong></td><td>弦乐组 + 钢琴 + 海浪全景音效</td></tr>
+        <tr><td><strong>BPM</strong></td><td>84</td></tr>
+        <tr><td><strong>时长</strong></td><td>120s（无缝循环）</td></tr>
+      </table>
     </div>
   </div>
 </div>
 
-<div class="page-wrap">
+<!-- ======== NPC声音风格 ======== -->
+<div id="npc" class="section">
+  <h2>NPC声音风格</h2>
 
-<!-- ════════════════════════════════ SECTION 1: AUDIO IDENTITY ════════════════════════════════ -->
-<section id="identity">
-  <div class="section-label">Section 01</div>
-  <h2>Audio Identity Statement</h2>
-
-  <div class="philosophy-box">
-    The island does not demand your attention. It offers it, quietly. Every sound in 輝島 is chosen to deepen rest, reward presence, and make the player feel — not perform. Where pop puzzle games accelerate, we decelerate. Where others fill silence with urgency, we let silence breathe. The audio of Glow Island is the sound of a place slowly healing, and the player healing along with it.
+  <div class="info-note">
+    声音策略：采用 Animal Crossing 式嘟嘟声（blippy voices）——每个NPC有独特音色体现性格，<strong>不做全语音配音</strong>。对话文字逐字显示时播放对应角色音色的短促音节。
   </div>
 
-  <div class="identity-grid">
-    <div class="identity-card">
-      <div class="card-title">Genre &amp; Mood</div>
-      <div style="margin-bottom:10px;">
-        <span class="tag" style="background:rgba(156,39,176,0.2);color:var(--accent2);font-size:14px;padding:6px 16px;">Acoustic + Ambient + Light Electronic</span>
-      </div>
-      <p style="font-size:13px;color:var(--text3);margin-top:10px;">Mood: <span style="color:var(--text);">Healing · Unhurried · Quietly Joyful</span></p>
-      <p style="font-size:13px;color:var(--text3);">Aesthetic anchors: <span style="color:var(--text);">どうぶつの森 acoustic warmth · Joe Hisaishi space · Nujabes understated groove</span></p>
+  <div class="grid-2">
+    <div class="npc-card">
+      <div class="npc-name">磯部健三（いそべ けんぞう）</div>
+      <span class="tag ocean">渔夫/老水手</span>
+      <span class="tag">精神导师</span>
+      <div class="npc-voice-bar" style="background: linear-gradient(90deg, #2d4a6e, #4a7a9b); height:6px; border-radius:3px; margin:8px 0;"></div>
+      <table style="font-size:0.88rem;">
+        <tr><td><strong>音色</strong></td><td>低沉温厚的嘟嘟声</td></tr>
+        <tr><td><strong>音调范围</strong></td><td>低频，80–140Hz</td></tr>
+        <tr><td><strong>节奏</strong></td><td>缓慢，每字间有停顿</td></tr>
+        <tr><td><strong>情感质感</strong></td><td>稳重、可靠、父亲般的温暖</td></tr>
+        <tr><td><strong>情绪变体</strong></td><td>普通/回忆感伤/鼓励振奋</td></tr>
+      </table>
     </div>
-    <div class="identity-card">
-      <div class="card-title">Key Instruments</div>
-      <div class="tag-list">
-        <span class="tag instrument">Acoustic Guitar</span>
-        <span class="tag instrument">Koto (琴)</span>
-        <span class="tag instrument">Soft Piano</span>
-        <span class="tag instrument">Ocean Waves</span>
-        <span class="tag instrument">Wind Chimes</span>
-        <span class="tag instrument">Birdsong</span>
-        <span class="tag instrument">Cicada</span>
-        <span class="tag instrument">Wooden Geta on Stone</span>
-        <span class="tag instrument">Hand Percussion</span>
-        <span class="tag instrument">Ambient Pads</span>
-      </div>
+    <div class="npc-card">
+      <div class="npc-name">桐島梅子（きりしま うめこ）</div>
+      <span class="tag coral">杂货铺老板娘</span>
+      <span class="tag">话唠型NPC</span>
+      <div class="npc-voice-bar" style="background: linear-gradient(90deg, #e87a50, #f0a080); height:6px; border-radius:3px; margin:8px 0;"></div>
+      <table style="font-size:0.88rem;">
+        <tr><td><strong>音色</strong></td><td>清脆欢快的叮叮声</td></tr>
+        <tr><td><strong>音调范围</strong></td><td>中高频，220–350Hz</td></tr>
+        <tr><td><strong>节奏</strong></td><td>快速，语速轻快</td></tr>
+        <tr><td><strong>情感质感</strong></td><td>活泼、碎嘴、市井热情</td></tr>
+        <tr><td><strong>情绪变体</strong></td><td>普通/八卦兴奋/心疼絮叨</td></tr>
+      </table>
     </div>
-    <div class="identity-card">
-      <div class="card-title">Forbidden Sounds</div>
-      <div class="tag-list">
-        <span class="tag forbidden">Aggressive Percussion</span>
-        <span class="tag forbidden">Distorted Bass</span>
-        <span class="tag forbidden">High-BPM Electronic</span>
-        <span class="tag forbidden">Triumphant Brass Fanfares</span>
-        <span class="tag forbidden">Urgent Alarm Tones</span>
-        <span class="tag forbidden">Harsh Buzzer SFX</span>
-        <span class="tag forbidden">EDM Drops</span>
-        <span class="tag forbidden">Rapid-Fire Drum Machines</span>
-      </div>
+    <div class="npc-card">
+      <div class="npc-name">海野夏帆（うみの かほ）</div>
+      <span class="tag seafoam">咖啡馆主</span>
+      <span class="tag">心理支持型</span>
+      <div class="npc-voice-bar" style="background: linear-gradient(90deg, #5a9a78, #8bcba0); height:6px; border-radius:3px; margin:8px 0;"></div>
+      <table style="font-size:0.88rem;">
+        <tr><td><strong>音色</strong></td><td>温柔细腻、略带沙哑</td></tr>
+        <tr><td><strong>音调范围</strong></td><td>中频，160–220Hz</td></tr>
+        <tr><td><strong>节奏</strong></td><td>平稳，如娓娓道来</td></tr>
+        <tr><td><strong>情感质感</strong></td><td>温暖、倾听、轻度忧郁的过去</td></tr>
+        <tr><td><strong>情绪变体</strong></td><td>普通/悠远回忆/温柔关怀</td></tr>
+      </table>
     </div>
-    <div class="identity-card">
-      <div class="card-title">Emotional Arc (6 Chapters)</div>
-      <div style="font-size:13px;">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="width:10px;height:10px;background:#42a5f5;border-radius:50%;display:inline-block;"></span> <span style="color:var(--text3);">Ch1</span> <span style="color:var(--text);">Burnout → Discovery</span></div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="width:10px;height:10px;background:#bcaaa4;border-radius:50%;display:inline-block;"></span> <span style="color:var(--text3);">Ch2</span> <span style="color:var(--text);">Discovery → Early Healing</span></div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="width:10px;height:10px;background:#81c784;border-radius:50%;display:inline-block;"></span> <span style="color:var(--text3);">Ch3</span> <span style="color:var(--text);">Healing — Mid Journey</span></div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="width:10px;height:10px;background:#90a4ae;border-radius:50%;display:inline-block;"></span> <span style="color:var(--text3);">Ch4</span> <span style="color:var(--text);">Healing → Connection</span></div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="width:10px;height:10px;background:#9575cd;border-radius:50%;display:inline-block;"></span> <span style="color:var(--text3);">Ch5</span> <span style="color:var(--text);">Connection → Resilience</span></div>
-        <div style="display:flex;align-items:center;gap:8px;"><span style="width:10px;height:10px;background:#ffcc02;border-radius:50%;display:inline-block;"></span> <span style="color:var(--text3);">Ch6</span> <span style="color:var(--text);">Resilience → Restoration</span></div>
-      </div>
+    <div class="npc-card">
+      <div class="npc-name">丸山冬子（まるやま ふゆこ）</div>
+      <span class="tag accent">旅馆少女</span>
+      <span class="tag">成长型NPC</span>
+      <div class="npc-voice-bar" style="background: linear-gradient(90deg, #d4a017, #f0c040); height:6px; border-radius:3px; margin:8px 0;"></div>
+      <table style="font-size:0.88rem;">
+        <tr><td><strong>音色</strong></td><td>明亮活泼、偶尔带颤音</td></tr>
+        <tr><td><strong>音调范围</strong></td><td>高频，280–420Hz</td></tr>
+        <tr><td><strong>节奏</strong></td><td>活跃，有时带紧张颤抖</td></tr>
+        <tr><td><strong>情感质感</strong></td><td>少女感、努力、偶尔不安</td></tr>
+        <tr><td><strong>情绪变体</strong></td><td>普通/紧张/高兴雀跃/委屈</td></tr>
+      </table>
     </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════ SECTION 2: ADAPTIVE MUSIC SYSTEM ════════════════════════════════ -->
-<section id="adaptive">
-  <div class="section-label">Section 02</div>
-  <h2>Adaptive Music System</h2>
-
-  <p>Three independent audio layers stack in real-time to match player engagement without jarring transitions. The system always feels like the same piece of music — just more or less present.</p>
-
-  <!-- Layer diagram -->
-  <div class="svg-wrap">
-    <svg width="100%" viewBox="0 0 960 320" xmlns="http://www.w3.org/2000/svg" style="min-width:700px;">
-      <defs>
-        <linearGradient id="gb" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#4dd0e1" stop-opacity="0.3"/>
-          <stop offset="100%" stop-color="#4dd0e1" stop-opacity="0.05"/>
-        </linearGradient>
-        <linearGradient id="gm" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="30%" stop-color="#9c27b0" stop-opacity="0"/>
-          <stop offset="50%" stop-color="#9c27b0" stop-opacity="0.35"/>
-          <stop offset="100%" stop-color="#ce93d8" stop-opacity="0.2"/>
-        </linearGradient>
-        <linearGradient id="gi" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="50%" stop-color="#f9c74f" stop-opacity="0"/>
-          <stop offset="65%" stop-color="#f9c74f" stop-opacity="0.4"/>
-          <stop offset="80%" stop-color="#f9c74f" stop-opacity="0.3"/>
-          <stop offset="90%" stop-color="#f9c74f" stop-opacity="0.05"/>
-        </linearGradient>
-        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#9c27b0" opacity="0.7"/>
-        </marker>
-      </defs>
-
-      <!-- Timeline axis -->
-      <text x="180" y="24" fill="#605070" font-size="11" letter-spacing="2">TIME →</text>
-      <line x1="180" y1="30" x2="940" y2="30" stroke="#302045" stroke-width="1"/>
-
-      <!-- Time markers -->
-      <text x="180" y="44" fill="#605070" font-size="10">0s</text>
-      <text x="330" y="44" fill="#605070" font-size="10">10s</text>
-      <text x="530" y="44" fill="#605070" font-size="10">20s</text>
-      <text x="700" y="44" fill="#605070" font-size="10">combo+3</text>
-      <text x="840" y="44" fill="#605070" font-size="10">+3s</text>
-      <line x1="330" y1="30" x2="330" y2="290" stroke="#302045" stroke-dasharray="4,4" stroke-width="1"/>
-      <line x1="700" y1="30" x2="700" y2="290" stroke="#302045" stroke-dasharray="4,4" stroke-width="1"/>
-      <line x1="840" y1="30" x2="840" y2="290" stroke="#302045" stroke-dasharray="4,4" stroke-width="1"/>
-
-      <!-- BASE LAYER -->
-      <text x="20" y="110" fill="#4dd0e1" font-size="12" font-weight="bold" letter-spacing="1">BASE</text>
-      <text x="20" y="126" fill="#4dd0e1" font-size="10" opacity="0.7">LAYER</text>
-      <rect x="180" y="80" width="760" height="50" rx="6" fill="url(#gb)" stroke="#4dd0e1" stroke-opacity="0.4" stroke-width="1"/>
-      <text x="320" y="110" fill="#4dd0e1" font-size="12">Ocean · Wind · Ambient field recordings — ALWAYS ON</text>
-
-      <!-- MELODY LAYER -->
-      <text x="20" y="190" fill="#ce93d8" font-size="12" font-weight="bold" letter-spacing="1">MELODY</text>
-      <text x="20" y="206" fill="#ce93d8" font-size="10" opacity="0.7">LAYER</text>
-      <!-- silent zone -->
-      <rect x="180" y="160" width="150" height="50" rx="6" fill="#9c27b0" fill-opacity="0.03" stroke="#9c27b0" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
-      <text x="215" y="192" fill="#605070" font-size="11">silent</text>
-      <!-- fade in zone -->
-      <rect x="330" y="160" width="40" height="50" rx="0" fill="#9c27b0" fill-opacity="0.1"/>
-      <!-- active -->
-      <rect x="370" y="160" width="570" height="50" rx="6" fill="url(#gm)" stroke="#9c27b0" stroke-opacity="0.4" stroke-width="1"/>
-      <text x="480" y="192" fill="#ce93d8" font-size="12">Guitar · Koto · Piano (chapter theme) — fades in after 10s</text>
-      <!-- arrow + label -->
-      <line x1="330" y1="140" x2="355" y2="155" stroke="#9c27b0" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arrow)"/>
-      <text x="280" y="136" fill="#9c27b0" font-size="11">trigger: 10s active play</text>
-
-      <!-- INTENSITY LAYER -->
-      <text x="20" y="272" fill="#f9c74f" font-size="12" font-weight="bold" letter-spacing="1">INTENSITY</text>
-      <text x="20" y="288" fill="#f9c74f" font-size="10" opacity="0.7">LAYER</text>
-      <!-- silent zone -->
-      <rect x="180" y="242" width="520" height="50" rx="6" fill="#f9c74f" fill-opacity="0.02" stroke="#f9c74f" stroke-opacity="0.1" stroke-width="1" stroke-dasharray="4,3"/>
-      <text x="390" y="272" fill="#605040" font-size="11">inactive — combo chain ≤ 2</text>
-      <!-- active -->
-      <rect x="700" y="242" width="140" height="50" rx="6" fill="url(#gi)" stroke="#f9c74f" stroke-opacity="0.4" stroke-width="1"/>
-      <text x="712" y="268" fill="#f9c74f" font-size="11">Percussion</text>
-      <text x="712" y="284" fill="#f9c74f" font-size="11">+ 2nd instrument</text>
-      <!-- fade out zone -->
-      <rect x="840" y="242" width="100" height="50" rx="0" fill="#f9c74f" fill-opacity="0.05"/>
-      <text x="856" y="275" fill="#605040" font-size="10">3s fade</text>
-      <!-- arrow + label -->
-      <line x1="700" y1="222" x2="710" y2="237" stroke="#f9c74f" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arrow)"/>
-      <text x="620" y="218" fill="#f9c74f" font-size="11">trigger: combo chain ≥ 3</text>
-    </svg>
-  </div>
-
-  <div class="layer-row">
-    <div class="layer-label layer-base">Base<br>Layer</div>
-    <div class="layer-detail">
-      <strong style="color:var(--teal);">Always playing</strong> — environmental ambient sounds specific to each chapter area. Ocean waves, pottery wheel hum, forest wind, cliff wind, near-silence with room tone. This layer alone must feel appropriate and complete.
-      <div class="layer-trigger">Volume: always on · Crossfade: 2s between chapters · Low-resource mode: only this layer plays</div>
+    <div class="npc-card">
+      <div class="npc-name">丸山ひなた（まるやま ひなた）</div>
+      <span class="tag ocean">玩家的信</span>
+      <span class="tag">叙事核心</span>
+      <div class="npc-voice-bar" style="background: linear-gradient(90deg, #4a7abc, #7aaae0); height:6px; border-radius:3px; margin:8px 0;"></div>
+      <table style="font-size:0.88rem;">
+        <tr><td><strong>音色</strong></td><td>空灵若有似无的吟唱声</td></tr>
+        <tr><td><strong>音调范围</strong></td><td>高频，320–480Hz，带混响</td></tr>
+        <tr><td><strong>节奏</strong></td><td>缓慢，带回响感</td></tr>
+        <tr><td><strong>情感质感</strong></td><td>遥远、思念、温柔的遗憾</td></tr>
+        <tr><td><strong>情绪变体</strong></td><td>普通书信/思念/希望祝福</td></tr>
+      </table>
+    </div>
+    <div class="npc-card">
+      <div class="npc-name">议长（橘猫 / 招き猫）</div>
+      <span class="tag">神秘向导</span>
+      <span class="tag">吉祥物</span>
+      <div class="npc-voice-bar" style="background: linear-gradient(90deg, #aa7740, #d4a060); height:6px; border-radius:3px; margin:8px 0;"></div>
+      <table style="font-size:0.88rem;">
+        <tr><td><strong>音色</strong></td><td>猫咪嗓音 + 轻量嘟嘟声混合</td></tr>
+        <tr><td><strong>音调范围</strong></td><td>中频，190–260Hz，带猫鸣特色</td></tr>
+        <tr><td><strong>节奏</strong></td><td>随机停顿，带神秘感</td></tr>
+        <tr><td><strong>情感质感</strong></td><td>玄妙、卖关子、实则关心</td></tr>
+        <tr><td><strong>情绪变体</strong></td><td>普通/神秘提示/满意咕噜声</td></tr>
+      </table>
+    </div>
+    <div class="npc-card">
+      <div class="npc-name">山田律（やまだ りつ）— 玩家角色</div>
+      <span class="tag">主角</span>
+      <span class="tag coral">无声音</span>
+      <div class="npc-voice-bar" style="background: #ddd; height:6px; border-radius:3px; margin:8px 0;"></div>
+      <table style="font-size:0.88rem;">
+        <tr><td><strong>音色</strong></td><td>无（保持玩家代入感）</td></tr>
+        <tr><td><strong>说明</strong></td><td>选择对话选项时无声音，配合UI点击音效</td></tr>
+      </table>
     </div>
   </div>
-
-  <div class="layer-row">
-    <div class="layer-label layer-melody">Melody<br>Layer</div>
-    <div class="layer-detail">
-      <strong style="color:var(--accent2);">Fades in after 10s of active puzzle engagement</strong> — the primary musical theme for the chapter. Acoustic guitar in Ch1, Koto in Ch2, Piano in Ch3, Solo instrument in Ch4, ambient Koto in Ch5, progressive ensemble in Ch6.
-      <div class="layer-trigger">Fade in: 3s · Fade out: 5s on pause or level exit · Trigger reset: each new level entry</div>
-    </div>
-  </div>
-
-  <div class="layer-row">
-    <div class="layer-label layer-intensity">Intensity<br>Layer</div>
-    <div class="layer-detail">
-      <strong style="color:var(--gold);">Activates on 3+ consecutive combo chains</strong> — adds subtle percussion or a secondary instrument. Should feel like the music notices the combo, not react frantically. Very subtle — never transforms the piece.
-      <div class="layer-trigger">Fade in: 0.5s · Fade out: 3s after last combo · Volume: 60% of full · MUST feel like same piece</div>
-    </div>
-  </div>
-
-  <h3>Transition Rules</h3>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Transition</th>
-          <th>Rule</th>
-          <th>Duration</th>
-          <th>Exception</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Chapter → Chapter</td>
-          <td>Fade out current BGM, fade in new BGM</td>
-          <td>2s crossfade</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td>Menu → Chapter</td>
-          <td>Menu BGM fades, chapter ambient starts</td>
-          <td>2s</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td>Level complete</td>
-          <td>BGM ducks, level_complete sting plays, BGM resumes</td>
-          <td>Auto via tween</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td>Lighthouse finale</td>
-          <td>All BGM fades to silence, 2s pause, lighthouse_final plays</td>
-          <td>2s silence gap</td>
-          <td>Never overlaps other BGM</td>
-        </tr>
-        <tr>
-          <td>Hard cuts</td>
-          <td colspan="3" style="color:var(--red);">NEVER. All transitions use tween-based fade. No hard audio cuts anywhere in the game.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="callout">
-    <strong>Low Resource Mode:</strong> When player enables low-data mode, or device reports low battery, audio falls back to Base Layer only at lower bitrate. The base ambient layer is designed to feel complete even without melody — ocean waves and birdsong are music enough.
-  </div>
-</section>
-
-<!-- ════════════════════════════════ SECTION 3: SFX CATALOGUE ════════════════════════════════ -->
-<section id="sfx">
-  <div class="section-label">Section 03</div>
-  <h2>Gameplay SFX Catalogue</h2>
-
-  <p>All 12 core gameplay SFX, mapped to <span class="code-inline">SFXKey</span> enum values in <span class="code-inline">AudioConfig.ts</span>. All verified as defined in the AudioManager.</p>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>SFXKey (AudioConfig)</th>
-          <th>Design Label</th>
-          <th>Event Trigger</th>
-          <th>Sonic Feel</th>
-          <th>Duration</th>
-          <th>Loop</th>
-          <th>Priority</th>
-          <th>Gate</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="color:var(--text3);">01</td>
-          <td class="key-cell">sfx_connect</td>
-          <td>tile_connect</td>
-          <td>Tiles connected via path</td>
-          <td>Soft resonant chime, D pentatonic, slight reverb. ±3st pitch variance.</td>
-          <td>0.7s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">02</td>
-          <td class="key-cell">sfx_disappear</td>
-          <td>tile_clear</td>
-          <td>Tile pair clears from board</td>
-          <td>Light sparkle burst, high shimmer 200–4kHz, 350ms. Pitch-up envelope.</td>
-          <td>0.35s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">03</td>
-          <td class="key-cell">sfx_combo1</td>
-          <td>combo_x2</td>
-          <td>x2 combo chain</td>
-          <td>Two ascending notes (D→A perfect fifth), koto pluck timbre. Musical 'yes'.</td>
-          <td>0.4s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">04</td>
-          <td class="key-cell">sfx_combo2</td>
-          <td>combo_x3</td>
-          <td>x3 combo chain</td>
-          <td>Three ascending notes (D→F#→A major triad), koto + piano, shimmer tail.</td>
-          <td>0.6s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">05</td>
-          <td class="key-cell">sfx_combo3</td>
-          <td>combo_x4_plus</td>
-          <td>x4+ combo chain</td>
-          <td>6-note pentatonic cascade (D→E→F#→A→B→D'), guitar + koto + chime. Resonant end.</td>
-          <td>0.9s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-critical">Critical</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">06</td>
-          <td class="key-cell">sfx_special_bomb</td>
-          <td>special_bomb</td>
-          <td>Bomb special block activates</td>
-          <td>Muffled soft pop (~200Hz, like cork) + upward chime. Earthy, not explosive.</td>
-          <td>0.75s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">07</td>
-          <td class="key-cell">sfx_special_windmill</td>
-          <td>special_line_clear</td>
-          <td>Windmill/line-clear activates</td>
-          <td>Soft whoosh (filtered noise 300ms) → clear bell (A4, 400ms). Sweep motion.</td>
-          <td>0.7s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">08</td>
-          <td class="key-cell">sfx_special_light</td>
-          <td>special_auto_connect</td>
-          <td>Light/auto-connect activates</td>
-          <td>High shimmer swell (200ms) + 4 rapid chimes in sequence (each 80ms). Sparkle-chain.</td>
-          <td>0.6s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">09</td>
-          <td class="key-cell">sfx_special_wave</td>
-          <td>special_reshuffle</td>
-          <td>Wave/reshuffle activates</td>
-          <td>Circular whoosh panning L→R→C (400ms) + soft wave-crash tail (300ms). Oceanic.</td>
-          <td>0.7s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">10</td>
-          <td class="key-cell">sfx_level_complete</td>
-          <td>level_complete</td>
-          <td>Level completed</td>
-          <td>D major arpeggio D→F#→A→D' (1.2s), guitar + piano, gentle sustain pad. Warm.</td>
-          <td>1.2s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-critical">Critical</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">11</td>
-          <td class="key-cell">sfx_area_restore</td>
-          <td>area_restore</td>
-          <td>Chapter area restoration</td>
-          <td>Multi-layer emotional swell, 10s. Koto→piano→guitar→nature. Peak at 9s. Tears welcome.</td>
-          <td>10s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-critical">Critical</span></td>
-          <td><span class="badge badge-beta">Beta</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">12</td>
-          <td class="key-cell">sfx_lighthouse_on</td>
-          <td>lighthouse_final</td>
-          <td>Lighthouse final illumination</td>
-          <td>Full ambient swell + distant bell, 25s. One-time play. Game's emotional peak. Non-loop.</td>
-          <td>25s</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-critical">Critical</span></td>
-          <td><span class="badge badge-gold">Gold</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <p style="font-size:12px;color:var(--text3);margin-top:8px;">Note: All combo SFX (sfx_combo1–3) use fixed pitch — no variance — to build player recognition and expectation of escalating reward.</p>
-
-  <h3>Combo Escalation Design</h3>
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px;">
-    <div style="display:flex;align-items:flex-end;gap:16px;margin-bottom:16px;">
-      <div style="text-align:center;">
-        <div style="background:rgba(129,199,132,0.15);border:1px solid rgba(129,199,132,0.3);border-radius:6px;padding:8px 14px;font-size:22px;margin-bottom:4px;">♩♩</div>
-        <div style="font-size:11px;color:var(--text3);">x2 combo</div>
-        <div style="font-size:11px;color:var(--green);">D → A</div>
-      </div>
-      <div style="color:var(--text3);font-size:20px;">→</div>
-      <div style="text-align:center;">
-        <div style="background:rgba(156,39,176,0.15);border:1px solid var(--border);border-radius:6px;padding:8px 14px;font-size:22px;margin-bottom:4px;">♩♩♩</div>
-        <div style="font-size:11px;color:var(--text3);">x3 combo</div>
-        <div style="font-size:11px;color:var(--accent2);">D → F# → A</div>
-      </div>
-      <div style="color:var(--text3);font-size:20px;">→</div>
-      <div style="text-align:center;">
-        <div style="background:rgba(249,199,79,0.12);border:1px solid rgba(249,199,79,0.3);border-radius:6px;padding:8px 14px;font-size:22px;margin-bottom:4px;">♩♩♩♩♩♩</div>
-        <div style="font-size:11px;color:var(--text3);">x4+ combo</div>
-        <div style="font-size:11px;color:var(--gold);">D→E→F#→A→B→D'</div>
-      </div>
-    </div>
-    <p style="font-size:13px;color:var(--text3);">Each escalation adds notes and warmth — never loudness or aggression. The x4+ cascade should feel like a musical reward, not a celebration alarm.</p>
-  </div>
-</section>
-
-<!-- ════════════════════════════════ SECTION 4: BGM CHAPTERS ════════════════════════════════ -->
-<section id="bgm">
-  <div class="section-label">Section 04</div>
-  <h2>Chapter BGM Design</h2>
-
-  <p>Six chapter themes, each locked to a BGMKey in AudioConfig.ts. BPMs slow the emotional pace intentionally — this is not inattention, it is design.</p>
-
-  <div class="chapter-grid">
-
-    <div class="chapter-card ch1">
-      <div class="ch-num">Chapter 01 · Alpha</div>
-      <div class="ch-name">Harbor</div>
-      <div class="ch-jp">漁港 (Ryokō) — <span style="color:var(--text3);font-size:12px;">BGMKey.CHAPTER_1</span></div>
-      <div class="ch-meta">
-        <div class="ch-pill">BPM <span>62</span></div>
-        <div class="ch-pill">Key <span>G major / E minor</span></div>
-        <div class="ch-pill">Loop <span>3–4 min</span></div>
-      </div>
-      <div class="ch-instruments">Instruments: <span>Acoustic guitar (fingerpicked) · Ocean wave field recording · Distant seagull · Wind chime accents · Sparse piano counter-melody</span></div>
-      <div class="ch-tone">"Curious, slightly melancholic — arriving somewhere unfamiliar but quietly beautiful."</div>
-      <div class="ch-note">Morning light character. Music must have breathing gaps. Ocean waves audible in silences. Base layer = ocean. Melody layer fades in after 10s. Intensity = soft hand drum, barely there.</div>
-    </div>
-
-    <div class="chapter-card ch2">
-      <div class="ch-num">Chapter 02 · Alpha</div>
-      <div class="ch-name">Pottery Studio</div>
-      <div class="ch-jp">陶芸工房 (Tōgei kōbō) — <span style="color:var(--text3);font-size:12px;">BGMKey.CHAPTER_2</span></div>
-      <div class="ch-meta">
-        <div class="ch-pill">BPM <span>72</span></div>
-        <div class="ch-pill">Key <span>D pentatonic</span></div>
-        <div class="ch-pill">Loop <span>3–4 min</span></div>
-      </div>
-      <div class="ch-instruments">Instruments: <span>Koto (primary, plucked patterns) · Soft hand percussion (clay-tapping 2-3 hit rhythm) · Pottery wheel hum (ambient) · Wooden block accent · Sparse guitar at phrase ends</span></div>
-      <div class="ch-tone">"Focused, rhythmic — the meditative repetition of craft; hands working, mind quiet."</div>
-      <div class="ch-note">Rhythmic but never urgent. Hypnotic koto repetition. Clay-work rhythm is the heartbeat. Intensity layer makes hand percussion more prominent.</div>
-    </div>
-
-    <div class="chapter-card ch3">
-      <div class="ch-num">Chapter 03 · Alpha</div>
-      <div class="ch-name">Coastal Forest</div>
-      <div class="ch-jp">海辺の森 (Umibe no mori) — <span style="color:var(--text3);font-size:12px;">BGMKey.CHAPTER_3</span></div>
-      <div class="ch-meta">
-        <div class="ch-pill">BPM <span>58</span></div>
-        <div class="ch-pill">Key <span>A major</span></div>
-        <div class="ch-pill">Loop <span>4–5 min</span></div>
-      </div>
-      <div class="ch-instruments">Instruments: <span>Soft piano (wide intervals, spacious) · Wind ambience (continuous) · Birdsong (multiple species) · Guitar harmonics (periodic) · Distant cicada · Heavy reverb on all melodic elements</span></div>
-      <div class="ch-tone">"Wonder, expansive — stepping into dappled light; the forest is ancient and welcoming."</div>
-      <div class="ch-note">Most spacious chapter. Piano notes must fully decay before next note. Heavy reverb suggests cathedral forest canopy. Long 4-5 min loop to avoid repetition. Birdsong variation ensures freshness.</div>
-    </div>
-
-    <div class="chapter-card ch4">
-      <div class="ch-num">Chapter 04 · Alpha</div>
-      <div class="ch-name">Stone Path</div>
-      <div class="ch-jp">石畳の小道 (Ishidatami no komichi) — <span style="color:var(--text3);font-size:12px;">BGMKey.CHAPTER_4</span></div>
-      <div class="ch-meta">
-        <div class="ch-pill">BPM <span>52</span></div>
-        <div class="ch-pill">Key <span>C major / A minor</span></div>
-        <div class="ch-pill">Loop <span>5–6 min</span></div>
-      </div>
-      <div class="ch-instruments">Instruments: <span>Solo piano (sparse, widely-spaced chords) OR Solo acoustic guitar — choose one · Distant wind (very low mix) · Occasional geta-on-stone steps · Room tone (silence filler)</span></div>
-      <div class="ch-tone">"Introspective, quiet — walking alone with thoughts; finding peace in solitude."</div>
-      <div class="ch-note">MOST MINIMAL. Long intentional silences. Underlying room tone prevents audio dropout feeling. Do NOT fill the space. Intensity layer = adds second instrument very softly.</div>
-    </div>
-
-    <div class="chapter-card ch5">
-      <div class="ch-num">Chapter 05 · Beta</div>
-      <div class="ch-name">Cliff Lookout</div>
-      <div class="ch-jp">崖の展望台 (Gake no tenbōdai) — <span style="color:var(--text3);font-size:12px;">BGMKey.CHAPTER_5</span></div>
-      <div class="ch-meta">
-        <div class="ch-pill">BPM <span>68</span></div>
-        <div class="ch-pill">Key <span>F# minor</span></div>
-        <div class="ch-pill">Loop <span>5–6 min</span></div>
-      </div>
-      <div class="ch-instruments">Instruments: <span>Layered ambient pads (slowly evolving) · Koto (intermittent phrases) · Coastal cliff wind (field recording) · Distant ocean rumble (felt not heard) · Sparse piano (at dusk/star moments)</span></div>
-      <div class="ch-tone">"Awe, slightly tense — standing at the edge of everything; beauty and vertigo together."</div>
-      <div class="ch-note">Builds slowly over session duration. Must feel like a long-exposure photograph. Visual trigger: stars appearing at dusk → music swells subtly. Hour-long ambient variant recommended.</div>
-    </div>
-
-    <div class="chapter-card ch6">
-      <div class="ch-num">Chapter 06 · Gold</div>
-      <div class="ch-name">Glowing Lighthouse</div>
-      <div class="ch-jp">輝く灯台 (Kagayaku tōdai) — <span style="color:var(--text3);font-size:12px;">BGMKey.CHAPTER_6</span></div>
-      <div class="ch-meta">
-        <div class="ch-pill">BPM <span>64</span></div>
-        <div class="ch-pill">Key <span>D major</span></div>
-        <div class="ch-pill" style="color:var(--red);">Non-loop</div>
-      </div>
-      <div class="ch-instruments">Instruments: <span>Solo piano (start) · Acoustic guitar (mid) · Koto (approaching climax) · Wind chimes (climax) · Ocean swells (always) · Ambient pads (builds from silence) · Distant bell (finale only)</span></div>
-      <div class="ch-tone">"Emotional climax — from quiet arrival to radiant restoration; every instrument earned."</div>
-      <div class="ch-note">Dynamic, non-looping. Each instrument added only when earned. Lighthouse activation preceded by 2s near-silence. Ambient fallback loop (ocean + sparse piano) for extended play before finale.</div>
-    </div>
-
-  </div>
-
-  <h3>BGM Summary Table</h3>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Ch</th>
-          <th>Area</th>
-          <th>BGMKey</th>
-          <th>BPM</th>
-          <th>Key</th>
-          <th>Primary Instrument</th>
-          <th>Loop</th>
-          <th>Gate</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Menu</td>
-          <td>Island Map</td>
-          <td class="key-cell">bgm_menu</td>
-          <td>60</td>
-          <td>G major</td>
-          <td>Acoustic guitar + ocean</td>
-          <td class="bool-true">Yes</td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td class="jp">漁港</td>
-          <td class="key-cell">bgm_chapter1_seaside</td>
-          <td>62</td>
-          <td>G major</td>
-          <td>Fingerpicked acoustic guitar</td>
-          <td class="bool-true">Yes</td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td class="jp">陶芸工房</td>
-          <td class="key-cell">bgm_chapter2_town</td>
-          <td>72</td>
-          <td>D pentatonic</td>
-          <td>Koto + hand percussion</td>
-          <td class="bool-true">Yes</td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td class="jp">海辺の森</td>
-          <td class="key-cell">bgm_chapter3_flower</td>
-          <td>58</td>
-          <td>A major</td>
-          <td>Piano + heavy reverb</td>
-          <td class="bool-true">Yes</td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td class="jp">石畳の小道</td>
-          <td class="key-cell">bgm_chapter4_forest</td>
-          <td>52</td>
-          <td>C/A minor</td>
-          <td>Solo piano or solo guitar</td>
-          <td class="bool-true">Yes</td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td class="jp">崖の展望台</td>
-          <td class="key-cell">bgm_chapter5_hotspring</td>
-          <td>68</td>
-          <td>F# minor</td>
-          <td>Ambient pads + koto</td>
-          <td class="bool-true">Yes</td>
-          <td><span class="badge badge-beta">Beta</span></td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td class="jp">輝く灯台</td>
-          <td class="key-cell">bgm_chapter6_lighthouse</td>
-          <td>64</td>
-          <td>D major</td>
-          <td>Full ensemble (progressive)</td>
-          <td class="bool-false">No</td>
-          <td><span class="badge badge-gold">Gold</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- ════════════════════════════════ SECTION 5: SPECIAL BGM SCENES ════════════════════════════════ -->
-<section id="special">
-  <div class="section-label">Section 05</div>
-  <h2>Special BGM Scenes</h2>
-
-  <div class="scene-card">
-    <div class="scene-title">Level Complete Sting</div>
-    <div class="scene-meta">Duration: 4–6s · BPM: 72 · Key: D major · Non-looping · Gate: Alpha</div>
-    <p style="font-size:13px;">A brief stinger played on the level-clear screen. Warm accomplishment without triumph — this is not a fanfare, it is a quiet "yes." The player did something good, not something epic.</p>
-    <div class="scene-timeline">
-      <div class="timeline-item"><div class="timeline-time">0.0s</div><div class="timeline-desc">Acoustic guitar begins D major arpeggio ascending (D→F#→A→D')</div></div>
-      <div class="timeline-item"><div class="timeline-time">0.8s</div><div class="timeline-desc">Soft piano joins on final note, gentle chord hold</div></div>
-      <div class="timeline-item"><div class="timeline-time">1.5s</div><div class="timeline-desc">Single wind chime accent at peak note</div></div>
-      <div class="timeline-item"><div class="timeline-time">2.0–5.0s</div><div class="timeline-desc">Sustained chord decays naturally to silence. No hard cutoff.</div></div>
-    </div>
-  </div>
-
-  <div class="scene-card">
-    <div class="scene-title">Restoration Ceremony Sting</div>
-    <div class="scene-meta">Duration: 8–12s · BPM: 60 · Key: G major · Non-looping · Per-chapter variants · Gate: Beta</div>
-    <p style="font-size:13px;">Triggered once per chapter when the island area restoration animation completes. Instruments are added with each chapter — the sound of the island growing more alive. Chapter 1 restoration is the simplest; Chapter 6 is the fullest.</p>
-    <div class="scene-timeline">
-      <div class="timeline-item"><div class="timeline-time">0–2s</div><div class="timeline-desc">Solo koto — single sustained note, like a question</div></div>
-      <div class="timeline-item"><div class="timeline-time">2–4s</div><div class="timeline-desc">Piano joins with a soft chord response</div></div>
-      <div class="timeline-item"><div class="timeline-time">4–6s</div><div class="timeline-desc">Acoustic guitar enters with a gentle melodic phrase</div></div>
-      <div class="timeline-item"><div class="timeline-time">6–9s</div><div class="timeline-desc">Nature ambience rises: birdsong, wind, ocean (chapter-dependent)</div></div>
-      <div class="timeline-item"><div class="timeline-time">9s peak</div><div class="timeline-desc">Full gentle ensemble at emotional peak — strings of instruments present, not loud</div></div>
-      <div class="timeline-item"><div class="timeline-time">9–12s</div><div class="timeline-desc">Decay to silence. Last sound: a single wind chime.</div></div>
-    </div>
-    <div style="margin-top:12px;font-size:12px;color:var(--text3);">
-      <strong style="color:var(--text2);">Chapter variants:</strong>
-      Ch1 = Solo guitar + wind chime only ·
-      Ch2 = Koto + guitar ·
-      Ch3 = Piano + guitar + birdsong ·
-      Ch4 = Piano + guitar + ambient pads ·
-      Ch5 = Full ensemble minus bell ·
-      Ch6 = Full ensemble + distant bell (triggers lighthouse_final)
-    </div>
-  </div>
-
-  <div class="scene-card" style="border-color:rgba(249,199,79,0.4);">
-    <div class="scene-title" style="color:var(--gold);">Lighthouse Finale</div>
-    <div class="scene-meta" style="color:rgba(249,199,79,0.6);">Duration: 20–30s · BPM: 64 · Key: D major · Non-looping · One-time play per player lifetime · Gate: Gold</div>
-    <p style="font-size:13px;">This plays ONCE — the moment the lighthouse illuminates for the first time. Every second must be earned. This is the concept of <strong style="color:var(--accent2);">物の哀れ (mono no aware)</strong> — the bittersweet beauty of transience — rendered in sound. Preceding silence (2s) is mandatory.</p>
-    <div class="scene-timeline">
-      <div class="timeline-item"><div class="timeline-time">-2s</div><div class="timeline-desc" style="color:var(--text3);">[Near-silence — last BGM has faded] All ambient reduces to almost nothing</div></div>
-      <div class="timeline-item"><div class="timeline-time">0–5s</div><div class="timeline-desc">Solo piano, intimate and sparse. Three notes, widely spaced. Like a held breath.</div></div>
-      <div class="timeline-item"><div class="timeline-time">5–10s</div><div class="timeline-desc">Koto joins — interweaves with piano. Two voices in conversation.</div></div>
-      <div class="timeline-item"><div class="timeline-time">10–15s</div><div class="timeline-desc">Ocean ambience rises — the island itself is joining. The sea has always been there.</div></div>
-      <div class="timeline-item"><div class="timeline-time">12–15s</div><div class="timeline-desc">Acoustic guitar enters with the main theme's melody. Recognition.</div></div>
-      <div class="timeline-item"><div class="timeline-time">15–18s</div><div class="timeline-desc">Wind chimes added. Ambient pads swell. The full island sound.</div></div>
-      <div class="timeline-item"><div class="timeline-time">18–22s</div><div class="timeline-desc">Full ensemble at peak — every instrument together, quietly radiant. Not loud, but complete.</div></div>
-      <div class="timeline-item"><div class="timeline-time">22–25s</div><div class="timeline-desc" style="color:var(--gold);">Distant bell resonates — single clear tone, long decay. Everything else falls away around it.</div></div>
-      <div class="timeline-item"><div class="timeline-time">25–28s</div><div class="timeline-desc">Ocean ambience alone. The bell's echo fading. Silence approaches from the right.</div></div>
-    </div>
-    <div class="callout" style="margin-top:12px;background:rgba(249,199,79,0.05);border-color:rgba(249,199,79,0.2);">
-      <strong>Production note:</strong> This piece should be recorded as a standalone musical work, then integrated. It should work without any game context — as music, it must be complete. The bell note must ring at exactly the visual moment the lighthouse beam sweeps across the island for the first time.
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════ SECTION 6: UI SOUNDS ════════════════════════════════ -->
-<section id="ui">
-  <div class="section-label">Section 06</div>
-  <h2>UI Sound Design — 12 Micro-Sounds</h2>
-
-  <p>UI sounds are the texture of daily interaction. Each must feel organic, never synthetic. At high repetition (button taps, dialogue advances), they must be inoffensive. At key moments (daily reward, chapter unlock), they must briefly delight.</p>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Key</th>
-          <th>Event</th>
-          <th>Feel</th>
-          <th>Duration</th>
-          <th>Priority</th>
-          <th>Gate</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="color:var(--text3);">01</td>
-          <td class="key-cell">ui_button_tap</td>
-          <td>Button pressed</td>
-          <td>Soft organic wooden click (~400Hz). Warm, tactile, never harsh.</td>
-          <td>60ms</td>
-          <td><span class="badge badge-medium">Medium</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">02</td>
-          <td class="key-cell">ui_menu_open</td>
-          <td>Menu/panel opens</td>
-          <td>Paper slide whoosh. Like unfolding a hand-drawn map. Organic texture.</td>
-          <td>200ms</td>
-          <td><span class="badge badge-low">Low</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">03</td>
-          <td class="key-cell">ui_menu_close</td>
-          <td>Menu/panel closes</td>
-          <td>Reverse of menu_open. Pitch-down tail. Folding away.</td>
-          <td>180ms</td>
-          <td><span class="badge badge-low">Low</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">04</td>
-          <td class="key-cell">ui_shop_item_select</td>
-          <td>Shop item highlighted</td>
-          <td>Light metallic shimmer. High pitch bend up. Small coin spinning to rest.</td>
-          <td>300ms</td>
-          <td><span class="badge badge-medium">Medium</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">05</td>
-          <td class="key-cell">ui_dialogue_advance</td>
-          <td>Dialogue text advances</td>
-          <td>Soft typewriter tick, 30ms, ±2st pitch variance to avoid robotic feel. Very low volume.</td>
-          <td>30ms</td>
-          <td><span class="badge badge-low">Low</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">06</td>
-          <td class="key-cell">ui_error_cannot_do</td>
-          <td>Invalid action</td>
-          <td>Soft hollow low tap (~180Hz). Gentle 'no' — not a scolding. NEVER a buzzer.</td>
-          <td>80ms</td>
-          <td><span class="badge badge-medium">Medium</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">07</td>
-          <td class="key-cell">ui_notification_badge</td>
-          <td>Notification badge appears</td>
-          <td>Single C5 chime, 400ms decay. Soft attack. Like a distant doorbell.</td>
-          <td>400ms</td>
-          <td><span class="badge badge-low">Low</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">08</td>
-          <td class="key-cell">ui_island_map_open</td>
-          <td>Island map opens</td>
-          <td>Ambient swell in. Ocean breath. Like opening a door to the outside.</td>
-          <td>600ms</td>
-          <td><span class="badge badge-medium">Medium</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">09</td>
-          <td class="key-cell">ui_chapter_unlock</td>
-          <td>Chapter unlocked</td>
-          <td>Rising shimmer 400ms + soft chime peak. Pentatonic fragment. Wonder, not excitement.</td>
-          <td>400ms</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">10</td>
-          <td class="key-cell">ui_material_collect</td>
-          <td>Craft material collected</td>
-          <td>Small water-drop plop. Smooth pebble into calm water. Physical, organic, immediate.</td>
-          <td>120ms</td>
-          <td><span class="badge badge-medium">Medium</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">11</td>
-          <td class="key-cell">ui_daily_reward_open</td>
-          <td>Daily reward opened</td>
-          <td>Warm pad swell + guitar strum. Major chord. Morning light arriving. A small moment of care.</td>
-          <td>800ms</td>
-          <td><span class="badge badge-medium">Medium</span></td>
-          <td><span class="badge badge-alpha">Alpha</span></td>
-        </tr>
-        <tr>
-          <td style="color:var(--text3);">12</td>
-          <td class="key-cell">ui_hinata_moment</td>
-          <td>ひなた NPC moment</td>
-          <td>Single note, soft piano or koto (E4/A4). No attack. Intimate, personal, quiet. She is right beside you.</td>
-          <td>800ms</td>
-          <td><span class="badge badge-high">High</span></td>
-          <td><span class="badge badge-beta">Beta</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- ════════════════════════════════ SECTION 7: VOICE / NARRATION ════════════════════════════════ -->
-<section id="voice">
-  <div class="section-label">Section 07</div>
-  <h2>Voice &amp; Narration Style</h2>
-
-  <div class="philosophy-box">
-    No full voice acting. This is a deliberate creative choice, not a budget constraint. Silence, ambient swells, and 1–2 syllable vocalizations carry more emotional weight than performance. The player's imagination completes each character's voice. What is not said is more powerful than what is.
-  </div>
-
-  <div class="identity-grid" style="margin-bottom:24px;">
-    <div class="identity-card">
-      <div class="card-title">Voice System Principles</div>
-      <ul style="font-size:13px;color:var(--text2);padding-left:16px;line-height:2;">
-        <li>No full sentences ever voiced</li>
-        <li>Max 2 syllables per character vocalization</li>
-        <li>All narrative carried by text + ambient music</li>
-        <li>Music swells during emotional text moments</li>
-        <li>Murmur style: Japanese wordless minimal</li>
-      </ul>
-    </div>
-    <div class="identity-card">
-      <div class="card-title">Narration &amp; Journal</div>
-      <p style="font-size:13px;">律's internal monologue: text only, no audio. Journal reading (丸山渉's letters): text only, music swells. Dialogue advance: <span class="code-inline">ui_dialogue_advance</span> SFX + optional character vocalization. Chapter reflection texts: ambient BGM layer rises softly.</p>
-    </div>
-  </div>
-
-  <div class="voice-grid">
-
-    <div class="voice-card">
-      <div class="voice-name">山田律 (Yamada Ritz)</div>
-      <div class="voice-role">Player character · Protagonist · No voice</div>
-      <div style="font-size:12px;color:var(--text3);margin-bottom:8px;">Audio approach: Text only for all inner monologue. Ambient music swells on key reflection moments.</div>
-      <div style="font-size:12px;color:var(--text2);">Chapter complete: Optional faint breath exhale or implied 'ん…' via text+ambient. Never a full vocalization. Silence is the character's voice.</div>
-    </div>
-
-    <div class="voice-card" style="border-color:rgba(206,147,216,0.4);">
-      <div class="voice-name">ひなた (Hinata) <span class="badge badge-beta" style="vertical-align:middle;margin-left:6px;">Beta</span></div>
-      <div class="voice-role">Island companion · 1–2 syllables max</div>
-      <div style="margin-bottom:8px;">
-        <span class="vocal-chip">律さん…</span>
-        <span class="vocal-chip">うん</span>
-        <span class="vocal-chip">ふふ</span>
-      </div>
-      <div class="voice-note">Recorded breathy, warm, close-mic. Never projected. Feels like the person next to you speaking, not performing. Triggers <span class="code-inline">ui_hinata_moment</span> simultaneously.</div>
-    </div>
-
-    <div class="voice-card">
-      <div class="voice-name">磯部健三 (Isobe Kenzō) <span class="badge badge-beta" style="vertical-align:middle;margin-left:6px;">Beta</span></div>
-      <div class="voice-role">Harbor fisherman · Gruff warmth</div>
-      <div style="margin-bottom:8px;"><span class="vocal-chip">はは</span></div>
-      <div class="voice-note">Gruff warm laugh. Low, resonant, chest voice. Warm despite roughness. Used sparingly — only when truly earned. Like a boat settling on calm water.</div>
-    </div>
-
-    <div class="voice-card">
-      <div class="voice-name">桐島梅子 (Kirishima Umeko) <span class="badge badge-beta" style="vertical-align:middle;margin-left:6px;">Beta</span></div>
-      <div class="voice-role">Pottery studio · Contented craftsperson</div>
-      <div style="margin-bottom:8px;"><span class="vocal-chip">[wordless hum]</span></div>
-      <div class="voice-note">Wordless contented hum — no specific syllables. Mid-range, calm, slightly raspy with age. Like someone who has found exactly their place in the world.</div>
-    </div>
-
-    <div class="voice-card">
-      <div class="voice-name">海野夏帆 (Umino Natsho) <span class="badge badge-beta" style="vertical-align:middle;margin-left:6px;">Beta</span></div>
-      <div class="voice-role">Forest botanist · Curious · Excitable</div>
-      <div style="margin-bottom:8px;"><span class="vocal-chip">あっ</span></div>
-      <div class="voice-note">Bright surprised exclamation when discovering rare plants. Higher register. Genuine, not performed. The sound of real discovery.</div>
-    </div>
-
-    <div class="voice-card">
-      <div class="voice-name">丸山冬子 (Maruyama Fuyuko) <span class="badge badge-gold" style="vertical-align:middle;margin-left:6px;">Gold</span></div>
-      <div class="voice-role">Stone path hermit · Near-silence</div>
-      <div style="margin-bottom:8px;"><span class="vocal-chip">…ありがとう</span></div>
-      <div class="voice-note">This single vocalization triggers ONCE in the entire game. Almost a whisper. Elderly, fragile-sounding but not weak. Players who reach it will feel it.</div>
-    </div>
-
-    <div class="voice-card">
-      <div class="voice-name">丸山渉 (Maruyama Wataru) <span class="badge badge-gold" style="vertical-align:middle;margin-left:6px;">Gold</span></div>
-      <div class="voice-role">Absent · Present only through journals</div>
-      <div style="font-size:12px;color:var(--text3);margin-bottom:8px;">No voice. Ever.</div>
-      <div class="voice-note">Journal entries are text-only. During reading, ambient music swells. The swelling ambient music IS his voice. Absence is presence. His silence says everything.</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ════════════════════════════════ SECTION 8: ASSET LIST ════════════════════════════════ -->
-<section id="assets">
-  <div class="section-label">Section 08</div>
-  <h2>Audio Asset List — Milestone Gates</h2>
-
-  <p>45 total audio assets. Format: OGG (primary) + MP3 (fallback). All assets spec_only at this stage — no production audio has been created.</p>
-
-  <div style="display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 20px;text-align:center;">
-      <div style="font-size:28px;color:var(--green);">19</div>
-      <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;">Alpha Assets</div>
-    </div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 20px;text-align:center;">
-      <div style="font-size:28px;color:var(--gold);">18</div>
-      <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;">Beta Assets</div>
-    </div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 20px;text-align:center;">
-      <div style="font-size:28px;color:#ffe082;">8</div>
-      <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;">Gold Assets</div>
-    </div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 20px;text-align:center;">
-      <div style="font-size:28px;color:var(--text);">45</div>
-      <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;">Total Assets</div>
-    </div>
-  </div>
-
-  <div class="asset-group-title">BGM — 7 files</div>
-  <div class="asset-row"><div class="asset-id">bgm_menu</div><div class="asset-dur">loop ~4min</div><div class="asset-desc">Main menu / island map</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">bgm_chapter1_seaside</div><div class="asset-dur">loop ~4min</div><div class="asset-desc">Harbor — 3 adaptive layers</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">bgm_chapter2_town</div><div class="asset-dur">loop ~4min</div><div class="asset-desc">Pottery Studio — 3 adaptive layers</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">bgm_chapter3_flower</div><div class="asset-dur">loop ~5min</div><div class="asset-desc">Coastal Forest — 3 adaptive layers</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">bgm_chapter4_forest</div><div class="asset-dur">loop ~6min</div><div class="asset-desc">Stone Path — 3 adaptive layers</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">bgm_chapter5_hotspring</div><div class="asset-dur">loop ~6min</div><div class="asset-desc">Cliff Lookout — 3 adaptive layers + dusk variant</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">bgm_chapter6_lighthouse</div><div class="asset-dur">8–10min + 2min loop</div><div class="asset-desc">Lighthouse — dynamic main + ambient fallback</div><span class="badge badge-gold">Gold</span></div>
-
-  <div class="asset-group-title">Stings — 7 files</div>
-  <div class="asset-row"><div class="asset-id">sting_level_complete</div><div class="asset-dur">~5s</div><div class="asset-desc">Level clear stinger</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sting_restoration_ch1</div><div class="asset-dur">~10s</div><div class="asset-desc">Chapter 1 restoration ceremony</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">sting_restoration_ch2</div><div class="asset-dur">~10s</div><div class="asset-desc">Chapter 2 restoration ceremony</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">sting_restoration_ch3</div><div class="asset-dur">~10s</div><div class="asset-desc">Chapter 3 restoration ceremony</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">sting_restoration_ch4</div><div class="asset-dur">~10s</div><div class="asset-desc">Chapter 4 restoration ceremony</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">sting_restoration_ch5</div><div class="asset-dur">~12s</div><div class="asset-desc">Chapter 5 restoration ceremony</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">sting_restoration_ch6</div><div class="asset-dur">~25s</div><div class="asset-desc">Chapter 6 / lighthouse finale</div><span class="badge badge-gold">Gold</span></div>
-
-  <div class="asset-group-title">Gameplay SFX — 12 files</div>
-  <div class="asset-row"><div class="asset-id">sfx_connect</div><div class="asset-dur">0.7s</div><div class="asset-desc">Tile connect resonant chime</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_disappear</div><div class="asset-dur">0.35s</div><div class="asset-desc">Tile clear sparkle burst</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_combo1</div><div class="asset-dur">0.4s</div><div class="asset-desc">x2 combo — two ascending notes</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_combo2</div><div class="asset-dur">0.6s</div><div class="asset-desc">x3 combo — three ascending notes</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_combo3</div><div class="asset-dur">0.9s</div><div class="asset-desc">x4+ combo — pentatonic cascade</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_special_bomb</div><div class="asset-dur">0.75s</div><div class="asset-desc">Bomb special — muffled pop + chime</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_special_windmill</div><div class="asset-dur">0.7s</div><div class="asset-desc">Windmill/line-clear — swoosh + bell</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_special_light</div><div class="asset-dur">0.6s</div><div class="asset-desc">Light/auto-connect — shimmer chain</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_special_wave</div><div class="asset-dur">0.7s</div><div class="asset-desc">Wave/reshuffle — oceanic whoosh</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_level_complete</div><div class="asset-dur">1.2s</div><div class="asset-desc">Level complete — warm arpeggio</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_area_restore</div><div class="asset-dur">10s</div><div class="asset-desc">Area restore — multi-layer swell</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">sfx_lighthouse_on</div><div class="asset-dur">25s</div><div class="asset-desc">Lighthouse finale — swell + distant bell</div><span class="badge badge-gold">Gold</span></div>
-
-  <div class="asset-group-title">UI SFX — 12 files</div>
-  <div class="asset-row"><div class="asset-id">ui_button_tap</div><div class="asset-dur">60ms</div><div class="asset-desc">Organic wooden click</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_menu_open</div><div class="asset-dur">200ms</div><div class="asset-desc">Paper slide whoosh</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_menu_close</div><div class="asset-dur">180ms</div><div class="asset-desc">Reverse paper whoosh</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_shop_item_select</div><div class="asset-dur">300ms</div><div class="asset-desc">Coin shimmer</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_dialogue_advance</div><div class="asset-dur">30ms</div><div class="asset-desc">Typewriter tick (pitch-varied)</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_error_cannot_do</div><div class="asset-dur">80ms</div><div class="asset-desc">Soft hollow low tap — never a buzzer</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_notification_badge</div><div class="asset-dur">400ms</div><div class="asset-desc">Single C5 chime</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_island_map_open</div><div class="asset-dur">600ms</div><div class="asset-desc">Ambient swell in</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_chapter_unlock</div><div class="asset-dur">400ms</div><div class="asset-desc">Magic shimmer + chime peak</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_material_collect</div><div class="asset-dur">120ms</div><div class="asset-desc">Water-drop plop</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_daily_reward_open</div><div class="asset-dur">800ms</div><div class="asset-desc">Morning warmth swell</div><span class="badge badge-alpha">Alpha</span></div>
-  <div class="asset-row"><div class="asset-id">ui_hinata_moment</div><div class="asset-dur">800ms</div><div class="asset-desc">Single-note intimate resonance</div><span class="badge badge-beta">Beta</span></div>
-
-  <div class="asset-group-title">Voice Clips — 7 files</div>
-  <div class="asset-row"><div class="asset-id">voice_hinata_ritsu_san</div><div class="asset-dur">0.8s</div><div class="asset-desc">ひなた — '律さん…'</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">voice_hinata_un</div><div class="asset-dur">0.3s</div><div class="asset-desc">ひなた — 'うん'</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">voice_hinata_fufu</div><div class="asset-dur">0.5s</div><div class="asset-desc">ひなた — 'ふふ' soft laugh</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">voice_isobe_haha</div><div class="asset-dur">0.6s</div><div class="asset-desc">磯部健三 — 'はは' warm laugh</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">voice_kirima_hum</div><div class="asset-dur">2.0s</div><div class="asset-desc">桐島梅子 — contented wordless hum</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">voice_umino_a</div><div class="asset-dur">0.3s</div><div class="asset-desc">海野夏帆 — 'あっ' exclamation</div><span class="badge badge-beta">Beta</span></div>
-  <div class="asset-row"><div class="asset-id">voice_maruyama_fuyu_arigatou</div><div class="asset-dur">1.2s</div><div class="asset-desc">丸山冬子 — '…ありがとう' (one-time)</div><span class="badge badge-gold">Gold</span></div>
-
-  <!-- AudioManager integration note -->
-  <div class="integration-box">
-    <h4>AudioManager.ts Integration Notes</h4>
-    <p style="font-size:13px;color:var(--text2);">The existing <span class="code-inline">AudioManager.ts</span> handles single-source BGM with tween-based fade (via <span class="code-inline">playBGM(key, fadeDuration)</span>) and one-shot SFX (via <span class="code-inline">playSFX(key)</span>). Chapter BGM is accessible via <span class="code-inline">playChapterBGM(chapterId)</span>.</p>
-    <p style="font-size:13px;color:var(--text2);margin-top:8px;"><strong style="color:var(--gold);">Beta sprint requirement:</strong> The 3-layer adaptive system requires extending <span class="code-inline">AudioManager</span> to support multiple concurrent BGM sources or a new <span class="code-inline">AdaptiveBGMManager</span> class. Current single <span class="code-inline">_bgmSource</span> cannot handle simultaneous base + melody + intensity layers.</p>
-    <p style="font-size:13px;color:var(--text2);margin-top:8px;">All SFX keys confirmed against <span class="code-inline">SFXKey</span> enum. All BGM keys confirmed against <span class="code-inline">BGMKey</span> enum. File path convention: <span class="code-inline">audio/bgm/{key}</span> and <span class="code-inline">audio/sfx/{key}</span>.</p>
-  </div>
-</section>
-
-<!-- ════════════════════════════════ FOOTER ════════════════════════════════ -->
-<div class="footer">
-  <div class="jp-footer">輝島 · 音楽設計</div>
-  <div>Glow Island — Audio Design Document · Generated 2026-05-08 · Version 1.0</div>
-  <div style="margin-top:6px;color:rgba(160,144,112,0.5);">Audio Director · Status: In Review · Pending Lead Designer approval</div>
-  <div style="margin-top:16px;color:rgba(156,39,176,0.4);font-size:11px;letter-spacing:2px;">SPEC ONLY — NO PRODUCTION AUDIO CREATED AT THIS STAGE</div>
 </div>
 
-</div><!-- end page-wrap -->
+<!-- ======== 自适应系统 ======== -->
+<div id="adaptive" class="section">
+  <h2>自适应BGM系统</h2>
+
+  <div class="info-note">
+    三层叠加架构：BGM由三个可独立控制的音轨层组成，根据玩家行为实时淡入淡出，实现从"悠闲环境音"到"高能Combo节奏"的流畅过渡——<strong>全程不切换BGM文件</strong>。
+  </div>
+
+  <div class="layer-block base">
+    <h3>第一层：底层环境音（常时播放）</h3>
+    <p>海浪声、自然环境音、轻柔ambient pad。游戏始终激活，音量保持80%。确保即使玩家不操作，游戏也有舒适的环境声。</p>
+    <table style="margin-top:10px;font-size:0.9rem;">
+      <tr><td><strong>激活条件</strong></td><td>进入游戏即激活</td></tr>
+      <tr><td><strong>音量</strong></td><td>80%（固定）</td></tr>
+      <tr><td><strong>内容</strong></td><td>ocean_base_{chapter}.ogg + ambient_pad_{chapter}.ogg</td></tr>
+    </table>
+  </div>
+
+  <div class="layer-block melody">
+    <h3>第二层：主旋律层（参与10秒后激活）</h3>
+    <p>acoustic guitar / koto / piano 主旋律。玩家持续游戏10秒后淡入（3秒过渡），Combo断线超过15秒后淡出。</p>
+    <table style="margin-top:10px;font-size:0.9rem;">
+      <tr><td><strong>激活条件</strong></td><td>连续参与 ≥ 10秒</td></tr>
+      <tr><td><strong>淡入时长</strong></td><td>3秒</td></tr>
+      <tr><td><strong>淡出条件</strong></td><td>停止操作 &gt; 15秒</td></tr>
+      <tr><td><strong>内容</strong></td><td>melody_{chapter}.ogg</td></tr>
+    </table>
+  </div>
+
+  <div class="layer-block intensity">
+    <h3>第三层：强度节奏层（Combo x3+时激活）</h3>
+    <p>轻柔手鼓、节拍强化。Combo达到x3时淡入（1.5秒），Combo断连后淡出（2秒）。</p>
+    <table style="margin-top:10px;font-size:0.9rem;">
+      <tr><td><strong>激活条件</strong></td><td>Combo ≥ x3</td></tr>
+      <tr><td><strong>淡入时长</strong></td><td>1.5秒</td></tr>
+      <tr><td><strong>淡出条件</strong></td><td>Combo断连后2秒</td></tr>
+      <tr><td><strong>内容</strong></td><td>intensity_rhythm_{chapter}.ogg</td></tr>
+    </table>
+  </div>
+
+  <div class="card coral">
+    <h3>BGM节拍加速（Tempo Acceleration）</h3>
+    <p>在三层叠加基础上，Combo等级同时驱动全局BGM播放速度（tempo）变化：</p>
+    <table style="margin-top:10px;">
+      <thead><tr><th>Combo等级</th><th>Tempo倍率</th><th>变化说明</th></tr></thead>
+      <tbody>
+        <tr><td>基础 / 断连</td><td>1.0x（原速）</td><td>2秒渐变回原速</td></tr>
+        <tr><td>Combo x2</td><td>1.05x（+5%）</td><td>0.5秒渐变</td></tr>
+        <tr><td>Combo x3</td><td>1.10x（+10%）</td><td>0.5秒渐变</td></tr>
+        <tr><td>Combo x4</td><td>1.15x（+15%）</td><td>0.5秒渐变</td></tr>
+        <tr><td>Combo x6（wave）</td><td>1.20x（+20%）</td><td>0.5秒渐变</td></tr>
+      </tbody>
+    </table>
+    <div class="info-note" style="margin-top:12px;">
+      <strong>实现接口：</strong> <code>AudioManager.setBGMTempo(multiplier: number, transitionSeconds: number)</code><br>
+      此API需在AudioManager中新增实现，通过Web Audio API的 <code>AudioBufferSourceNode.playbackRate</code> 控制。
+    </div>
+  </div>
+</div>
+
+<!-- ======== 技术规格 ======== -->
+<div id="tech" class="section">
+  <h2>音频技术规格</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>文件格式规格</h3>
+      <table>
+        <tr><td><strong>主格式</strong></td><td>OGG Vorbis（Web优先）</td></tr>
+        <tr><td><strong>备用格式</strong></td><td>MP3 128kbps（iOS Safari兼容）</td></tr>
+        <tr><td><strong>BGM码率</strong></td><td>OGG Q5（约160kbps）</td></tr>
+        <tr><td><strong>SFX码率</strong></td><td>OGG Q3（约96kbps）</td></tr>
+        <tr><td><strong>采样率</strong></td><td>44100Hz</td></tr>
+        <tr><td><strong>声道</strong></td><td>BGM: 立体声；SFX: 单声道</td></tr>
+      </table>
+    </div>
+    <div class="card seafoam">
+      <h3>加载策略</h3>
+      <table>
+        <tr><td><strong>BGM加载</strong></td><td>流式加载（streaming），按章节懒加载</td></tr>
+        <tr><td><strong>SFX加载</strong></td><td>预加载至内存，游戏启动时完成</td></tr>
+        <tr><td><strong>NPC声音</strong></td><td>按章节预加载，小文件缓存</td></tr>
+        <tr><td><strong>内存预算</strong></td><td>SFX缓冲池 &lt; 8MB</td></tr>
+        <tr><td><strong>首屏加载</strong></td><td>仅加载菜单BGM + 核心SFX（&lt; 2MB）</td></tr>
+      </table>
+    </div>
+    <div class="card accent">
+      <h3>Cocos Creator 集成规格</h3>
+      <table>
+        <tr><td><strong>音频引擎</strong></td><td>Cocos Creator AudioSource组件</td></tr>
+        <tr><td><strong>BGM控制</strong></td><td>AudioManager单例管理三层混音</td></tr>
+        <tr><td><strong>Tempo API</strong></td><td><code>AudioManager.setBGMTempo(multiplier, transitionSeconds)</code></td></tr>
+        <tr><td><strong>底层实现</strong></td><td>Web Audio API AudioBufferSourceNode.playbackRate</td></tr>
+        <tr><td><strong>SFX控制</strong></td><td>AudioManager.playSFX(key: string, volume?: number)</td></tr>
+        <tr><td><strong>NPC声音</strong></td><td>AudioManager.playNPCBlip(npcId, pitch)</td></tr>
+      </table>
+    </div>
+    <div class="card coral">
+      <h3>平台适配规划</h3>
+      <table>
+        <tr><td><strong>当前阶段</strong></td><td>Web优先（Cocos web-mobile导出）</td></tr>
+        <tr><td><strong>iOS适配</strong></td><td>MP3备用格式，AutoPlay政策合规</td></tr>
+        <tr><td><strong>Android适配</strong></td><td>OGG原生支持，AudioFocus处理</td></tr>
+        <tr><td><strong>移动端适配</strong></td><td>后期阶段，需添加静音/音量控制UI</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ======== 资产清单 ======== -->
+<div id="assets" class="section">
+  <h2>音频资产清单汇总</h2>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="stat-box">
+      <div class="stat-number">7</div>
+      <div class="stat-label">BGM轨道（含菜单）</div>
+    </div>
+    <div class="stat-box" style="background:var(--seafoam);">
+      <div class="stat-number">21</div>
+      <div class="stat-label">自适应BGM层（7×3层）</div>
+    </div>
+    <div class="stat-box" style="background:var(--coral);">
+      <div class="stat-number">16</div>
+      <div class="stat-label">SFX音效文件</div>
+    </div>
+    <div class="stat-box" style="background:var(--accent);">
+      <div class="stat-number">6</div>
+      <div class="stat-label">NPC声音包</div>
+    </div>
+    <div class="stat-box" style="background:#7a6a9a;">
+      <div class="stat-number">3</div>
+      <div class="stat-label">情绪变体/NPC（平均）</div>
+    </div>
+    <div class="stat-box" style="background:#5a8a6a;">
+      <div class="stat-number">47</div>
+      <div class="stat-label">总音频文件数（OGG版）</div>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>资产类别</th><th>文件数量</th><th>格式</th><th>估计总大小</th><th>优先级</th></tr></thead>
+    <tbody>
+      <tr><td>BGM主轨（3层×7章/菜单）</td><td>21</td><td>OGG + MP3</td><td>~42MB（OGG）</td><td>高</td></tr>
+      <tr><td>核心SFX（连线/消除/combo）</td><td>7</td><td>OGG + MP3</td><td>~3MB</td><td>高</td></tr>
+      <tr><td>特殊图案SFX（v4.0）</td><td>5</td><td>OGG + MP3</td><td>~3MB</td><td>高</td></tr>
+      <tr><td>系统音效（通关/失败/解锁等）</td><td>4</td><td>OGG + MP3</td><td>~4MB</td><td>中</td></tr>
+      <tr><td>NPC声音包（6角色×3变体）</td><td>18+</td><td>OGG + MP3</td><td>~6MB</td><td>中</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-note" style="margin-top:16px;">
+    所有OGG文件同时提供MP3备用版本，实际文件数量翻倍。首屏加载预算：核心SFX（7文件）+ bgm_menu底层（1文件）控制在2MB以内。
+  </div>
+</div>
+
+<!-- ======== 审查清单 ======== -->
+<div id="checklist" class="section">
+  <h2>音频设计审查清单</h2>
+
+  <div class="card">
+    <h3>BGM风格与叙事一致性</h3>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--seafoam);">✓</div>
+      <div>BGM整体风格与Animal Crossing治愈调性一致，无压迫感，适合长时间游玩</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--seafoam);">✓</div>
+      <div>6章各有独立情感色调：港口探索→街市热闹→神社静谧→露营温暖→温泉放松→灯塔感动</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--seafoam);">✓</div>
+      <div>菜单BGM与关卡内BGM有明显区分，体现"悠闲地图"vs"专注游玩"两种状态</div>
+    </div>
+  </div>
+
+  <div class="card seafoam">
+    <h3>Combo音频反馈系统完整性</h3>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--ocean);">✓</div>
+      <div>每级Combo（x2/x3/x4/x6）均有对应音效描述，音色递进感明确</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--ocean);">✓</div>
+      <div>节拍加速规则完整：+5%/+10%/+15%/+20%，断连后2秒渐变回原速</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--ocean);">✓</div>
+      <div>Combo断连音效（sfx_combo_break）设计为非惩罚性下行音调</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--ocean);">✓</div>
+      <div>特殊图案生成提示音与Combo等级绑定：cascade(x3)/light_chain(x4)/wave(x6)</div>
+    </div>
+  </div>
+
+  <div class="card accent">
+    <h3>SFX目录覆盖完整性</h3>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--accent);">✓</div>
+      <div>点击/连线图案：sfx_tile_connect ✓</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--accent);">✓</div>
+      <div>消除：sfx_tile_clear ✓</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--accent);">✓</div>
+      <div>Combo触发：sfx_combo_lv1/lv2/lv3/lv4_wave ✓（全4级）</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--accent);">✓</div>
+      <div>道具/特殊图案使用：sfx_special_cascade/light_chain/wave/pierce/swap + sfx_tool_use ✓</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--accent);">✓</div>
+      <div>关卡完成：sfx_level_complete ✓ | 关卡失败：sfx_level_fail ✓</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--accent);">✓</div>
+      <div>日记解锁：sfx_diary_unlock ✓</div>
+    </div>
+  </div>
+
+  <div class="card coral">
+    <h3>NPC声音风格</h3>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--coral);">✓</div>
+      <div>所有6个有声NPC均有独立音色描述（音调范围、节奏、情感质感）</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--coral);">✓</div>
+      <div>Animal Crossing式嘟嘟声设计，非全语音，符合制作预算</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--coral);">✓</div>
+      <div>每个NPC音色体现性格：健三(低沉)→梅子(清脆)→夏帆(沙哑)→冬子(颤音)→ひなた(空灵)→议长(猫鸣)</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--coral);">✓</div>
+      <div>山田律（玩家角色）无声音，保持代入感</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>音频技术规格与平台兼容性</h3>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--ocean);">✓</div>
+      <div>Web优先：OGG主格式 + MP3备用，符合浏览器兼容要求</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--ocean);">✓</div>
+      <div>流式加载（BGM）+ 预加载（SFX）策略，首屏控制在2MB以内</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--ocean);">✓</div>
+      <div>三层自适应BGM系统API接口明确定义，Tempo API已规划</div>
+    </div>
+    <div class="checklist-item">
+      <div class="check-icon" style="background:var(--ocean);">✓</div>
+      <div>移动端适配纳入后期计划，当前阶段不阻断开发进程</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
 </body>
 </html>

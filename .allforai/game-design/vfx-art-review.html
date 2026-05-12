@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>特效美术评审 — Glow Island</title>
+  <style>
+    :root {
+      --bg-page: #1a1a2e;
+      --bg-card: #16213e;
+      --bg-card-header: #0f3460;
+      --accent: #7EC8E3;
+      --accent-gold: #F5A623;
+      --accent-pink: #FF8A80;
+      --accent-green: #7DBE77;
+      --text-primary: #e8eaf0;
+      --text-secondary: #9baab8;
+      --text-muted: #6a7a8a;
+      --status-ready: #2ecc71;
+      --border-subtle: rgba(126, 200, 227, 0.15);
+      --border-card: rgba(126, 200, 227, 0.25);
+      --font-mono: 'Courier New', Courier, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── 页眉 ── */
+    .page-header {
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 60%, #1a1a2e 100%);
+      border-bottom: 2px solid var(--accent);
+      padding: 36px 48px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(126,200,227,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .page-header .subtitle {
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+    .page-header .subtitle span {
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+    .meta-pills {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      background: rgba(126, 200, 227, 0.12);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+    .pill.gold {
+      background: rgba(245, 166, 35, 0.12);
+      border-color: rgba(245, 166, 35, 0.35);
+      color: var(--accent-gold);
+    }
+
+    /* ── 主布局 ── */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* ── 特效卡片网格 ── */
+    .vfx-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(580px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .vfx-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .vfx-card:hover {
+      border-color: var(--accent);
+    }
+
+    .card-header {
+      background: var(--bg-card-header);
+      padding: 16px 20px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .card-header-left {
+      flex: 1;
+    }
+    .asset-id {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent);
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+    .asset-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .type-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .type-png { background: rgba(245, 166, 35, 0.2); color: var(--accent-gold); border: 1px solid rgba(245,166,35,0.4); }
+    .type-spine { background: rgba(126, 200, 227, 0.15); color: var(--accent); border: 1px solid var(--border-card); }
+
+    .card-body {
+      padding: 18px 20px;
+    }
+
+    /* ── 元数据行 ── */
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-bottom: 16px;
+    }
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .meta-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .meta-value {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+    }
+    .meta-value.highlight {
+      color: var(--accent);
+    }
+
+    /* ── 触发条件 ── */
+    .trigger-row {
+      background: rgba(126, 200, 227, 0.06);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .trigger-row strong {
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    /* ── 关键帧时间轴 ── */
+    .timeline-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .timeline {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 48px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border-subtle);
+    }
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 6px 0;
+      position: relative;
+    }
+    .timeline-time {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-gold);
+      min-width: 40px;
+      text-align: right;
+      padding-top: 1px;
+      flex-shrink: 0;
+    }
+    .timeline-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg-card);
+      flex-shrink: 0;
+      margin-top: 5px;
+      position: relative;
+      z-index: 1;
+    }
+    .timeline-dot.key { background: var(--accent-gold); }
+    .timeline-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      padding-right: 8px;
+    }
+
+    /* ── 色彩面板 ── */
+    .palette-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .palette-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      min-width: 72px;
+    }
+    .palette-swatches {
+      display: flex;
+      gap: 4px;
+    }
+    .swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      cursor: default;
+    }
+    .swatch:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000;
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      z-index: 10;
+      font-family: var(--font-mono);
+    }
+
+    /* ── 音效配对 ── */
+    .sfx-row {
+      background: rgba(245, 166, 35, 0.06);
+      border-left: 3px solid var(--accent-gold);
+      border-radius: 0 6px 6px 0;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .sfx-row strong {
+      color: var(--accent-gold);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 3px;
+    }
+    .sfx-key {
+      font-family: var(--font-mono);
+      color: var(--accent-gold);
+      background: rgba(245,166,35,0.12);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    /* ── 制作备注 ── */
+    .notes-row {
+      background: rgba(255,255,255,0.03);
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .notes-row strong {
+      color: var(--text-secondary);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ── 文件列表 ── */
+    .files-row {
+      margin-bottom: 14px;
+    }
+    .files-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .files-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .file-chip {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 4px;
+      padding: 2px 7px;
+    }
+
+    /* ── 状态标签 ── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(46, 204, 113, 0.12);
+      border: 1px solid rgba(46, 204, 113, 0.35);
+      color: var(--status-ready);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .status-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--status-ready);
+      flex-shrink: 0;
+      box-shadow: 0 0 6px rgba(46, 204, 113, 0.6);
+    }
+
+    .card-footer {
+      padding: 10px 20px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .milestone-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 10px;
+    }
+    .ms-alpha { background: rgba(126,200,227,0.15); color: var(--accent); border: 1px solid rgba(126,200,227,0.3); }
+    .ms-beta  { background: rgba(245,166,35,0.12); color: var(--accent-gold); border: 1px solid rgba(245,166,35,0.3); }
+    .ms-gold  { background: rgba(255,215,0,0.1); color: #ffd700; border: 1px solid rgba(255,215,0,0.3); }
+
+    /* ── 优先级表格 ── */
+    .priority-section {
+      margin-top: 16px;
+    }
+    .priority-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .priority-table th {
+      background: var(--bg-card-header);
+      padding: 12px 18px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .priority-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: top;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .priority-table tr:last-child td {
+      border-bottom: none;
+    }
+    .priority-table tr:hover td {
+      background: rgba(126, 200, 227, 0.04);
+    }
+    .asset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .asset-chip {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      color: var(--text-primary);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+    }
+    .ms-row-alpha td:first-child { border-left: 3px solid var(--accent); }
+    .ms-row-beta  td:first-child { border-left: 3px solid var(--accent-gold); }
+    .ms-row-gold  td:first-child { border-left: 3px solid #ffd700; }
+
+    .notes-cell {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── 总览统计栏 ── */
+    .stat-bar {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 10px;
+      padding: 14px 22px;
+      flex: 1;
+      min-width: 120px;
+    }
+    .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── 动画方案横幅 ── */
+    .approach-banner {
+      background: linear-gradient(135deg, rgba(15,52,96,0.8) 0%, rgba(22,33,62,0.9) 100%);
+      border: 1px solid var(--border-card);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .approach-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    .approach-text h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .approach-text p {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .approach-text code {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: rgba(126,200,227,0.12);
+      padding: 1px 6px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    /* ── 响应式 ── */
+    @media (max-width: 700px) {
+      .page-header { padding: 24px 20px; }
+      .container { padding: 24px 16px; }
+      .vfx-grid { grid-template-columns: 1fr; }
+      .card-header { flex-direction: column; align-items: flex-start; }
+      .stat-bar { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─────────────── 页眉 ─────────────── -->
+<header class="page-header">
+  <h1>特效美术评审 — Glow Island</h1>
+  <p class="subtitle">
+    项目：<span>glow-island（輝島 Kagayaki-jima）</span> &nbsp;|&nbsp;
+    规格版本：<span>1.0</span> &nbsp;|&nbsp;
+    生成日期：<span>2026-05-13</span> &nbsp;|&nbsp;
+    特效总数：<span>8 个资产</span>
+  </p>
+  <div class="meta-pills">
+    <span class="pill">混合方案：PNG序列 + Spine骨骼</span>
+    <span class="pill">动森弹跳曲线（ease-out cubic）</span>
+    <span class="pill gold">光と水の日本小島 风格</span>
+    <span class="pill">Spine工具：待建立</span>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- 动画方案横幅 -->
+  <div class="approach-banner">
+    <div class="approach-icon">✦</div>
+    <div class="approach-text">
+      <h3>动画曲线：动森弹跳（Animal Crossing 风格回弹）</h3>
+      <p>
+        所有特效使用 <code>ease-out cubic</code>，过冲峰值 <code>10–15%</code> 后回落 —— 与 Animal Crossing 圆润、温暖美学完美契合。
+        &nbsp;公式：<code>f(t) = 1 − (1−t)³</code>，在峰值处叠加一段短暂的微弱反弹。
+        色彩限定在识别色系内：暖青 <code>#7EC8E3</code>、金色 <code>#F5A623</code>、珊瑚粉 <code>#FF8A80</code>、暖白 <code>#FFFDF5</code>。
+      </p>
+    </div>
+  </div>
+
+  <!-- 统计栏 -->
+  <div class="stat-bar">
+    <div class="stat-item">
+      <div class="stat-number">8</div>
+      <div class="stat-label">特效资产总数</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">1</div>
+      <div class="stat-label">PNG序列</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">7</div>
+      <div class="stat-label">Spine骨骼动画</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">72</div>
+      <div class="stat-label">PNG帧（消除特效 × 6色变体）</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" style="color: var(--status-ready)">8/8</div>
+      <div class="stat-label">规格就绪</div>
+    </div>
+  </div>
+
+  <p class="section-title">特效资产规格</p>
+
+  <!-- ─────────────── 特效卡片网格 ─────────────── -->
+  <div class="vfx-grid">
+
+    <!-- ── EF01: fx_tile_disappear ── -->
+    <div class="vfx-card">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="asset-id">EF01 · fx_tile_disappear</div>
+          <div class="asset-name">图块消除特效</div>
+        </div>
+        <span class="type-badge type-png">PNG 序列</span>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row">
+          <strong>触发条件</strong>
+          任意图块消除时（每对图块被成功消除）
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">160 × 160 px</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">帧数</span>
+            <span class="meta-value">12 帧</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">帧率</span>
+            <span class="meta-value">30 fps</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">0.40s</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">色彩变体</span>
+            <span class="meta-value">6 色 × 12 帧 = 72 PNG</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#7EC8E3" title="#7EC8E3 暖青"></div>
+            <div class="swatch" style="background:#FF8A80" title="#FF8A80 珊瑚粉"></div>
+            <div class="swatch" style="background:#F5A623" title="#F5A623 金色"></div>
+            <div class="swatch" style="background:#7DBE77" title="#7DBE77 绿色"></div>
+            <div class="swatch" style="background:#E05050" title="#E05050 红色"></div>
+            <div class="swatch" style="background:#2A3650" title="#2A3650 深蓝"></div>
+          </div>
+        </div>
+
+        <div class="timeline-label">关键帧时间轴</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-time">f01 · 0.00s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">图块原始尺寸 160×160，完全不透明，外缘开始出现柔和光晕（半径8px）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">f03 · 0.07s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">过冲顶峰：scale 1.15x squash（宽压扁），透明度100%，光晕最亮 —— 动森弹跳核心帧</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">f06 · 0.17s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">scale 0.6x 向内收缩，透明度85%，4–6颗粒子向四周散射（速度120px/s，雪花状45°/135°/225°/315°）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">f09 · 0.27s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">scale 0.25x，透明度40%，粒子散射至最大半径130px，粒子透明度30%</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">f12 · 0.37s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">scale 0，透明度0，主体与粒子全部消失，画布清空</span>
+          </div>
+        </div>
+
+        <div class="sfx-row">
+          <strong>音效配对</strong>
+          <span class="sfx-key">sfx_disappear</span> &nbsp;—— 0.00s 同步开始，高频闪烁声 350ms，与第3帧光晕峰值对齐
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          6种颜色变体分别输出独立PNG序列，背景透明。第3帧1.15x过冲必须保留（动森弹跳曲线关键）。粒子为纯色小圆点，末端渐变白色。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件（示例）</div>
+          <div class="files-list">
+            <span class="file-chip">fx_tile_disappear_teal_f01@2x.png</span>
+            <span class="file-chip">… f12@2x.png</span>
+            <span class="file-chip">fx_tile_disappear_pink_f01…f12@2x.png</span>
+            <span class="file-chip">_gold / _green / _red / _navy</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-alpha">Alpha</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ── EF02: fx_combo_popup ── -->
+    <div class="vfx-card">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="asset-id">EF02 · fx_combo_popup</div>
+          <div class="asset-name">连击气泡</div>
+        </div>
+        <span class="type-badge type-spine">Spine 骨骼动画</span>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row">
+          <strong>触发条件</strong>
+          连击数 ≥ 3 时，在最后消除的图块位置上方弹出气泡显示连击数
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">220 × 110 px</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">0.90s</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">动画集</span>
+            <span class="meta-value">popup_in / idle / popup_out / combo_x3 / x4 / x5+</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#F5A623" title="#F5A623 金色（×3）"></div>
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白"></div>
+            <div class="swatch" style="background:#FF8A80" title="#FF8A80 珊瑚粉（×4）"></div>
+            <div class="swatch" style="background:#7EC8E3" title="#7EC8E3 暖青高光"></div>
+          </div>
+        </div>
+
+        <div class="timeline-label">关键帧时间轴</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-time">0.00s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">气泡从 scale 0、透明度0 开始</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.08s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">过冲顶峰 scale 1.1x，透明度100%，连击数字与气泡同步弹出</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.16s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">settle 至1.0x，停留约0.6s（气泡在画面保持可读状态）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.75s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">气泡向上漂移（+20px），透明度开始降低</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.90s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">scale 0.7x，透明度0，完全消失于起点上方30px处</span>
+          </div>
+        </div>
+
+        <div class="sfx-row">
+          <strong>音效配对</strong>
+          <span class="sfx-key">sfx_combo1/2/3</span> &nbsp;—— ×3=sfx_combo1（400ms双音），×4=sfx_combo2（600ms三音），×5+=sfx_combo3（900ms六音级联），与气泡弹出同帧同步
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          圆角矩形气泡+指向尾巴，尾巴方向随屏幕位置动态翻转。×3=金色，×4=珊瑚粉，×5+=彩虹渐变，可换皮实现。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">assets/effects/spine/fx_combo_popup.skel</span>
+            <span class="file-chip">fx_combo_popup.atlas</span>
+            <span class="file-chip">fx_combo_popup.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-alpha">Alpha</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ── EF03: fx_firefly_chain ── -->
+    <div class="vfx-card">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="asset-id">EF03 · fx_firefly_chain</div>
+          <div class="asset-name">萤火光链效果</div>
+        </div>
+        <span class="type-badge type-spine">Spine 骨骼动画</span>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row">
+          <strong>触发条件</strong>
+          T-Glow 萤火提灯块连接成功时，沿连接路径生成从起点到终点的萤火光链
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">1080 × 1920（全屏叠加层）</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">1.20s</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">混合模式</span>
+            <span class="meta-value">加法混合</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白（萤火核心）"></div>
+            <div class="swatch" style="background:#F5A623" title="#F5A623 金色（光轨末端）"></div>
+            <div class="swatch" style="background:#FFE8A0" title="#FFE8A0 柔金（光晕）"></div>
+            <div class="swatch" style="background:#7EC8E3" title="#7EC8E3 暖青（节点星光）"></div>
+          </div>
+        </div>
+
+        <div class="timeline-label">关键帧时间轴</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-time">0.00s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">1–3只萤火虫（8px发光圆点）从起始提灯块中心飞出，开始沿路径运动</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.15s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">萤火虫沿路径飞行，身后留下渐淡光轨（暖白→金色渐变，宽2px），每只有独立轻微抖动</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.35s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">抵达目标图块，路径光链完全可见，整条链开始脉冲式呼吸光效</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.60s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">光链亮度峰值，路径节点处出现金色4角星闪烁（对应4个 mini-chimes 音效节点）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.80s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">萤火虫 idle 飞舞，光链亮度缓降至50%</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">1.20s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">整体淡出至透明度0，光链与萤火虫全部消失</span>
+          </div>
+        </div>
+
+        <div class="sfx-row">
+          <strong>音效配对</strong>
+          <span class="sfx-key">sfx_special_light</span> &nbsp;—— 0.00s 200ms高频闪烁音与萤火飞出同步；4个 mini-chimes 对应 0.35s/0.50s/0.65s/0.80s 节点星光
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          全屏叠加层，加法混合。路径为参数化骨骼IK，由代码传入起点/中间节点/终点坐标动态计算萤火运动轨迹。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">assets/effects/spine/fx_firefly_chain.skel</span>
+            <span class="file-chip">fx_firefly_chain.atlas</span>
+            <span class="file-chip">fx_firefly_chain.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-beta">Beta</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ── EF04: fx_area_restore ── -->
+    <div class="vfx-card">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="asset-id">EF04 · fx_area_restore</div>
+          <div class="asset-name">区域修复光效</div>
+        </div>
+        <span class="type-badge type-spine">Spine 骨骼动画</span>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row">
+          <strong>触发条件</strong>
+          区域修复阶段切换时（章节区域 s0→s1→s2→s3→s4 修复动画，配合 sfx_area_restore 8–12s 仪式感音效）
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">400 × 400 px</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">10.0s</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">混合模式</span>
+            <span class="meta-value">加法混合</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#7EC8E3" title="#7EC8E3 暖青（光环边缘）"></div>
+            <div class="swatch" style="background:#F5A623" title="#F5A623 金色（粒子）"></div>
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白（光柱）"></div>
+            <div class="swatch" style="background:#7DBE77" title="#7DBE77 绿色（花瓣）"></div>
+            <div class="swatch" style="background:#FFE8A0" title="#FFE8A0 柔金（光晕）"></div>
+          </div>
+        </div>
+
+        <div class="timeline-label">关键帧时间轴（与 sfx_area_restore 对齐）</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-time">0.00s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">solo koto 起音 —— 单束白色光柱从区域中心升起，透明度0→100%（与 koto 同步）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.50s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">光柱扩散为圆形光环（半径40px），边缘金色粒子群向外发散</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">1.50s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">光环扩散至100px，区域轮廓 teal 描边（3px），花瓣/萤火粒子在区域内漂浮</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">2.00s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">钢琴音色加入 —— 粒子密度增加，光环亮度提升</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">3.00s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">完整仪式状态：光环覆盖全区域400×400，中心光柱最亮（延伸200px），约25颗粒子，颜色循环（teal↔gold↔white）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">4.00s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">吉他音色加入 —— 光效进入呼吸模式（亮度±20%，周期2s）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">8.00s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">光环开始缓慢收缩（100px→0），光柱高度降低，粒子减少</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">10.00s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">全部透明度归0，区域显示新修复状态的静止画面</span>
+          </div>
+        </div>
+
+        <div class="sfx-row">
+          <strong>音效配对</strong>
+          <span class="sfx-key">sfx_area_restore</span> &nbsp;—— 完全对齐8–12s仪式音效：solo koto=0s / 钢琴=2s / 吉他=4s / 自然音=6s / ensemble=9s / 淡出=8–10s
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          粒子类型按章节主题变化（ch1=水珠，ch2=陶瓷碎光，ch3=樱花瓣，ch4=苔藓孢子，ch5=水汽泡泡，ch6=金色星光），通过运行时颜色替换实现，避免多套骨骼。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">assets/effects/spine/fx_area_restore.skel</span>
+            <span class="file-chip">fx_area_restore.atlas</span>
+            <span class="file-chip">fx_area_restore.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-beta">Beta</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ── EF05: fx_pufferfish_pop ── -->
+    <div class="vfx-card">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="asset-id">EF05 · fx_pufferfish_pop</div>
+          <div class="asset-name">河豚爆炸特效</div>
+        </div>
+        <span class="type-badge type-spine">Spine 骨骼动画</span>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row">
+          <strong>触发条件</strong>
+          T-Bomb 炸弹块（河豚块）激活时，在河豚块位置播放（覆盖周围 3×3 格消除范围）
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">640 × 640 px</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">0.80s</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">过冲量</span>
+            <span class="meta-value">1.3x（15%）</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#F5A623" title="#F5A623 金色（冲击波环）"></div>
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白（闪光）"></div>
+            <div class="swatch" style="background:#FF8A80" title="#FF8A80 珊瑚粉（碎块）"></div>
+            <div class="swatch" style="background:#7EC8E3" title="#7EC8E3 暖青（星光）"></div>
+            <div class="swatch" style="background:#FFE8A0" title="#FFE8A0 柔金（粒子）"></div>
+          </div>
+        </div>
+
+        <div class="timeline-label">关键帧时间轴</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-time">0.00s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">河豚从静止（1.0x）快速膨胀，皮肤表面出现闪烁白色光点（约20颗）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.10s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">膨胀至过冲顶峰1.3x，全白 flash 覆盖0.05s，刺棘向外张开 —— 与 sfx 低频软爆声同帧</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.15s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">爆炸瞬间：本体分裂为8–10块圆弧片段向外飞散（300–500px/s），圆形冲击波从中心扩散（最终直径320px，线宽4px）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.30s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">碎片飞至最远处（半径约200px），冲击波透明度降至30%，约30颗金色星点粒子填满区域</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.50s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">碎片开始淡出（透明度50%），粒子消散，冲击波消失</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.80s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">全部效果归0，640×640画布清空</span>
+          </div>
+        </div>
+
+        <div class="sfx-row">
+          <strong>音效配对</strong>
+          <span class="sfx-key">sfx_special_bomb</span> &nbsp;—— 0.10s低频软爆声（~200Hz cork pop）与白色闪光同帧；0.15s upward chime 与冲击波扩散同步
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          保持可爱感不暴力 —— 碎片为圆弧/扇形（非尖锐），颜色暖橙+金色，无血迹。冲击波为 ring stroke（4px线宽，gold #F5A623），非实心圆。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">assets/effects/spine/fx_pufferfish_pop.skel</span>
+            <span class="file-chip">fx_pufferfish_pop.atlas</span>
+            <span class="file-chip">fx_pufferfish_pop.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-beta">Beta</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ── EF06: fx_tuna_dash ── -->
+    <div class="vfx-card">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="asset-id">EF06 · fx_tuna_dash</div>
+          <div class="asset-name">金枪鱼闪电横扫</div>
+        </div>
+        <span class="type-badge type-spine">Spine 骨骼动画（2套变体）</span>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row">
+          <strong>触发条件</strong>
+          T-Lightning 闪电块（金枪鱼块）激活时；横向消除播放行版，纵向消除播放列版
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布（行版）</span>
+            <span class="meta-value highlight">1080 × 160 px</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">画布（列版）</span>
+            <span class="meta-value highlight">160 × 1920 px</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">0.50s</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">混合模式</span>
+            <span class="meta-value">加法混合（光轨）</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#7EC8E3" title="#7EC8E3 暖青（光轨头部）"></div>
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白（光轨尾部）"></div>
+            <div class="swatch" style="background:#F5A623" title="#F5A623 金色（图块爆发）"></div>
+            <div class="swatch" style="background:#5BBFB5" title="#5BBFB5 金枪鱼背部色"></div>
+          </div>
+        </div>
+
+        <div class="timeline-label">关键帧时间轴</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-time">0.00s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">金枪鱼在激活图块位置出现，瞬间加速（~0.02s ease-in），向目标方向冲刺 —— sfx whoosh 同步</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.05s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">达到最高速度，身后拖出长光轨（teal→white渐变，宽8px，长160px），沿整行/列移动</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.15s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">扫过中间区域，路径上每个消除图块位置爆发金色小星光（3×3颗粒）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.30s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">冲出屏幕边缘（ease-out减速），光轨开始淡出 —— sfx clear bell tone（A4）同帧</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.50s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">光轨与星光全部淡出至0，特效结束</span>
+          </div>
+        </div>
+
+        <div class="sfx-row">
+          <strong>音效配对</strong>
+          <span class="sfx-key">sfx_special_windmill</span> &nbsp;—— 0.00s soft whoosh（300ms白噪声滤波）与冲刺同步；0.30s clear bell tone（A4，400ms）与冲出屏幕同步
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          两套完全独立Spine资产（行版/列版）。金枪鱼侧视流线型，鱼背蓝（#5BBFB5），鱼腹银白，单眼大圆润（Animal Crossing风）。运动残影通过3–4层半透明鱼体骨骼offset实现。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_tuna_dash_row.skel</span>
+            <span class="file-chip">fx_tuna_dash_row.atlas</span>
+            <span class="file-chip">fx_tuna_dash_row.png</span>
+            <span class="file-chip">fx_tuna_dash_col.skel</span>
+            <span class="file-chip">fx_tuna_dash_col.atlas</span>
+            <span class="file-chip">fx_tuna_dash_col.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-beta">Beta</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ── EF07: fx_rainbow_burst ── -->
+    <div class="vfx-card">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="asset-id">EF07 · fx_rainbow_burst</div>
+          <div class="asset-name">彩虹鱼爆发特效</div>
+        </div>
+        <span class="type-badge type-spine">Spine 骨骼动画</span>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row">
+          <strong>触发条件</strong>
+          T-Rainbow 彩虹鱼块消除时，在消除位置播放（T-Rainbow 清除同色系全部图块）
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">320 × 320 px</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">时长</span>
+            <span class="meta-value">0.80s</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">过冲量</span>
+            <span class="meta-value">1.2x 星爆（10%）</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#FF8A80" title="#FF8A80 红（光束1）"></div>
+            <div class="swatch" style="background:#F5A623" title="#F5A623 橙（光束2）"></div>
+            <div class="swatch" style="background:#FFE873" title="#FFE873 黄（光束3）"></div>
+            <div class="swatch" style="background:#7DBE77" title="#7DBE77 绿（光束4）"></div>
+            <div class="swatch" style="background:#7EC8E3" title="#7EC8E3 蓝（光束5）"></div>
+            <div class="swatch" style="background:#A78BFA" title="#A78BFA 紫（光束6）"></div>
+          </div>
+        </div>
+
+        <div class="timeline-label">关键帧时间轴</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-time">0.00s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">中心白色 flash（0.03s），6条彩色光束向正六边形6方向扩散（60°间隔，红橙黄绿蓝紫）—— sfx circular whoosh 同步</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.08s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">6条光束扩散至40px，6条彩虹弧带从中心卷展开（类似彩虹伞打开，弧带宽8px）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.20s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">彩虹弧展开完成（半径120px圆形区域），形成完整彩虹圆环；中心出现金色12芒星爆（scale 0.5x→1.2x过冲）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.35s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">圆环最亮，中心星爆 settle 至1.0x，30颗彩色粒子向四周散射 —— sfx wave-crash tail 对应</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.55s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">圆环透明度降至60%，粒子淡出，颜色向白色过渡</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.80s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">全部效果归0，320×320画布清空</span>
+          </div>
+        </div>
+
+        <div class="sfx-row">
+          <strong>音效配对</strong>
+          <span class="sfx-key">sfx_special_wave</span> &nbsp;—— 0.00s circular whoosh（400ms，L→R→center）与彩虹爆发同步；0.35s soft wave-crash tail 与圆环最亮时刻对应
+        </div>
+
+        <div class="notes-row">
+          <strong>制作备注</strong>
+          彩虹弧颜色按可见光谱顺序（红橙黄绿蓝紫），饱和度80%，与游戏柔和色调形成短暂视觉高潮对比。每个被清除图块位置可播放0.5x缩小版。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">assets/effects/spine/fx_rainbow_burst.skel</span>
+            <span class="file-chip">fx_rainbow_burst.atlas</span>
+            <span class="file-chip">fx_rainbow_burst.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-gold">Gold</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+    <!-- ── EF08: fx_lighthouse_beam ── -->
+    <div class="vfx-card" style="border-color: rgba(255,215,0,0.3);">
+      <div class="card-header" style="background: linear-gradient(135deg, #1a2a0a 0%, #0f3460 100%);">
+        <div class="card-header-left">
+          <div class="asset-id" style="color:#ffd700">EF08 · fx_lighthouse_beam</div>
+          <div class="asset-name">灯塔光柱特效</div>
+        </div>
+        <span class="type-badge type-spine" style="border-color:rgba(255,215,0,0.4);color:#ffd700;background:rgba(255,215,0,0.1)">Spine 骨骼动画（2套变体）</span>
+      </div>
+      <div class="card-body">
+
+        <div class="trigger-row" style="border-left-color:#ffd700">
+          <strong style="color:#ffd700">触发条件</strong>
+          【行扫版】第6章每8步自动触发（轻量，0.6s）&nbsp;/&nbsp;【全岛版】第6章最终修复标志性时刻 —— 游戏情感最高峰（4.0s，一生仅触发一次）
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">画布</span>
+            <span class="meta-value highlight">1080 × 1920 px（全屏）</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">行扫版时长</span>
+            <span class="meta-value">0.60s</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">全岛版时长</span>
+            <span class="meta-value" style="color:#ffd700">4.00s</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">音效时长</span>
+            <span class="meta-value">25s（并行）</span>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <span class="palette-label">色彩</span>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#F5A623" title="#F5A623 金色（光束外晕）"></div>
+            <div class="swatch" style="background:#FFFDF5" title="#FFFDF5 暖白（光束内核）"></div>
+            <div class="swatch" style="background:#FFE8A0" title="#FFE8A0 柔金（光晕）"></div>
+            <div class="swatch" style="background:#2A3650" title="#2A3650 深蓝（夜空）"></div>
+            <div class="swatch" style="background:#FFD700" title="#FFD700 亮金（全岛叠加层）"></div>
+          </div>
+        </div>
+
+        <div class="timeline-label">行扫版（0.6s）—— 第6章每8步触发</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-time">0.00s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">灯塔位置出现光源点（白色圆，直径20px），光柱向棋盘方向射出（初始宽4px）</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.10s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">光柱以0.6s/1080px速度扫过当前行，宽度扩展至8px，路径有轻微光晕</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.40s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">光柱扫过全行，图块短暂白色高亮，光柱开始淡出</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.60s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">完全淡出，特效结束</span>
+          </div>
+        </div>
+
+        <div class="timeline-label" style="margin-top:12px">全岛版（4.0s）—— 最终灯塔点亮（情感最高峰）</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-time">0.00s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">灯塔顶端光源开始旋转（周期4s），光柱从灯塔向外发散，初始覆盖角度2° —— sfx_lighthouse_on solo piano 同步</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">0.50s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">光柱展宽至15°，照射范围逐步覆盖全岛，被照射区域出现柔和金色暖光叠加</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">1.50s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">光柱覆盖全屏90°扇形，各修复区域出现闪烁小星光 —— sfx koto 加入</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">2.50s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">亮度峰值 —— 全屏金色光幕叠加（透明度30%，#FFD700），光柱最宽（30°），画面最亮时刻</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">3.50s</span>
+            <div class="timeline-dot"></div>
+            <span class="timeline-desc">金色光幕开始淡出，光柱收窄，星光陆续消失</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">4.00s</span>
+            <div class="timeline-dot key"></div>
+            <span class="timeline-desc">光柱收回至灯塔，保留持续旋转的微弱光点（循环idle），特效结束 —— sfx 仍在播放（至25s）</span>
+          </div>
+        </div>
+
+        <div class="sfx-row" style="border-left-color:#ffd700">
+          <strong style="color:#ffd700">音效配对</strong>
+          【行扫版】BGM ambient swell；【全岛版】<span class="sfx-key" style="color:#ffd700;background:rgba(255,215,0,0.12)">sfx_lighthouse_on</span> —— 完全同步（25s情感高潮）：solo piano（0–5s）↔光柱建立，koto（5–10s）↔覆盖全岛，ensemble peak（15–22s）↔全屏金色光幕，distant bell（22–25s）↔光效完成后余韵
+        </div>
+
+        <div class="notes-row" style="background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.15)">
+          <strong style="color:#ffd700">制作备注 —— 最高优先级资产</strong>
+          两套独立Spine资产：行版（轻量，高频触发）和全岛版（重量，一生一次）。全岛版金色光幕用单独全屏精灵+Spine控制alpha实现（加法混合）。光柱颜色：内核暖白，外晕gold，最外层navy→transparent（模拟Tyndall效应）。动画团队应将最多精力投入此资产 —— 这是游戏的情感最高峰，「物の哀れ」的视觉化。
+        </div>
+
+        <div class="files-row">
+          <div class="files-label">预期文件</div>
+          <div class="files-list">
+            <span class="file-chip">fx_lighthouse_beam_row.skel</span>
+            <span class="file-chip">fx_lighthouse_beam_row.atlas</span>
+            <span class="file-chip">fx_lighthouse_beam_row.png</span>
+            <span class="file-chip">fx_lighthouse_beam_island.skel</span>
+            <span class="file-chip">fx_lighthouse_beam_island.atlas</span>
+            <span class="file-chip">fx_lighthouse_beam_island.png</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <span class="milestone-badge ms-gold">Gold —— 情感最高峰</span>
+        <span class="status-badge">规格就绪</span>
+      </div>
+    </div>
+
+  </div><!-- /vfx-grid -->
+
+  <!-- ─────────────── 制作优先级里程碑 ─────────────── -->
+  <p class="section-title">制作优先级里程碑</p>
+  <div class="priority-section">
+    <table class="priority-table">
+      <thead>
+        <tr>
+          <th style="width:120px">里程碑</th>
+          <th style="width:320px">资产</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="ms-row-alpha">
+          <td>
+            <span class="milestone-badge ms-alpha" style="display:inline-flex">Alpha</span>
+          </td>
+          <td>
+            <div class="asset-chips">
+              <span class="asset-chip" style="border-color:rgba(126,200,227,0.3);color:var(--accent)">fx_tile_disappear</span>
+              <span class="asset-chip" style="border-color:rgba(126,200,227,0.3);color:var(--accent)">fx_combo_popup</span>
+            </div>
+          </td>
+          <td class="notes-cell">
+            核心消除反馈，alpha测试必需。<strong style="color:var(--text-secondary)">fx_tile_disappear</strong> PNG序列可最快交付（无需Spine工具）。<strong style="color:var(--text-secondary)">fx_combo_popup</strong> 配合三档连击音效（koto上升曲线），是核心激励循环的视觉锚点。
+          </td>
+        </tr>
+        <tr class="ms-row-beta">
+          <td>
+            <span class="milestone-badge ms-beta" style="display:inline-flex">Beta</span>
+          </td>
+          <td>
+            <div class="asset-chips">
+              <span class="asset-chip" style="border-color:rgba(245,166,35,0.3);color:var(--accent-gold)">fx_firefly_chain</span>
+              <span class="asset-chip" style="border-color:rgba(245,166,35,0.3);color:var(--accent-gold)">fx_area_restore</span>
+              <span class="asset-chip" style="border-color:rgba(245,166,35,0.3);color:var(--accent-gold)">fx_pufferfish_pop</span>
+              <span class="asset-chip" style="border-color:rgba(245,166,35,0.3);color:var(--accent-gold)">fx_tuna_dash</span>
+            </div>
+          </td>
+          <td class="notes-cell">
+            特殊块机制（T-Bomb/T-Lightning/T-Glow）和区域修复是 beta 核心体验。<strong style="color:var(--text-secondary)">fx_area_restore</strong> 需与 sfx_area_restore（8–12s仪式音效）精确同步。<strong style="color:var(--text-secondary)">fx_tuna_dash</strong> 需交付行版+列版两套独立Spine资产。
+          </td>
+        </tr>
+        <tr class="ms-row-gold">
+          <td>
+            <span class="milestone-badge ms-gold" style="display:inline-flex">Gold</span>
+          </td>
+          <td>
+            <div class="asset-chips">
+              <span class="asset-chip" style="border-color:rgba(255,215,0,0.3);color:#ffd700">fx_rainbow_burst</span>
+              <span class="asset-chip" style="border-color:rgba(255,215,0,0.3);color:#ffd700">fx_lighthouse_beam</span>
+            </div>
+          </td>
+          <td class="notes-cell">
+            <strong style="color:#ffd700">fx_lighthouse_beam_island</strong> 是游戏情感最高峰（一生仅触发一次），gold发布前必须达到最高质量标准。<strong style="color:#ffd700">fx_rainbow_burst</strong> 配套T-Rainbow彩虹鱼机制，彩虹饱和度与游戏整体柔和色调形成短暂视觉高潮对比。灯塔全岛版需预留最多制作时间和评审迭代轮次。
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 页脚 -->
+  <div style="margin-top:48px;padding:24px 0;border-top:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div style="font-size:12px;color:var(--text-muted)">
+      Glow Island · 特效美术评审 · 规格版本 1.0 · 2026-05-13
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="pill">来源：vfx-asset-spec.json</span>
+      <span class="pill">参考：art-asset-inventory.json</span>
+      <span class="pill">参考：audio-design.json</span>
+      <span class="pill gold">Spine工具：待建立生产环境</span>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

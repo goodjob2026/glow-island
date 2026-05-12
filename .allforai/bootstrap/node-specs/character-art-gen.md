@@ -1,76 +1,85 @@
 ---
 node: character-art-gen
+capability: game-design
 discipline_owner: character-modeler
-discipline_reviewers: [art-director]
 human_gate: true
-blocked_by: [art-spec-design]
+hard_blocked_by: [concept-freeze]
 unlocks: [art-qa]
+approval_record_path: .allforai/game-design/approval-records.json
 exit_artifacts:
-  - game-client/assets/resources/sprites/characters/npc_kenzo_default.png
-  - game-client/assets/resources/sprites/characters/hinata_default.png
+  - path: .allforai/game-design/character-art-review.html
+  - path: .allforai/game-design/systems/character-art-spec.json
+review_checklist:
+  - 主角（律）有完整表情图（至少：默认/困惑/开心/疲惫/感动）
+  - 骨骼绑定点位标注清楚（DragonBones/帧动画二选一已确定）
+  - 角色比例在同一参考系下统一（律/ひなた/健三/梅子/夏帆/冬子）
+  - 各NPC的视觉识别特征明显（服装标识色/独特道具/发型）
+  - 角色有idle动效规格（轻微呼吸感动画帧描述）
 ---
 
-# Task: 角色美术生成（Character Art Generation）
+# Goal
 
-## Context Pull
-- 读取 `.allforai/game-design/art-pipeline-config.json`（若存在且 status=final）：
-  - `character.rig`：
-    - `frame_sequence` → 生成每个角色的多帧序列参考图（含关键帧标注）
-    - `spine_lite` 或 `spine_full` → 生成骨骼分层参考图（头部/躯干/四肢分层，含 bone 标注）
-    - 缺失 → 默认 `frame_sequence`
-  - `character.expressions`：`true` 则生成 default/happy/serious 3 种表情，`false` 仅 default
-  - `character.bone_limit`：骨骼数限制，写入资产规格说明
-- 读取 `.allforai/game-design/systems/art-asset-inventory.json` — category=character 条目
-- 读取 `.allforai/game-design/systems/character-arc.json` — 角色外貌描述、性格关键词
-- 读取 `art-direction-v2.html` — 角色设计规范（比例、眼睛大小、轮廓风格）
+Generate character art assets for all entries in `.allforai/concept-contract.json` `canonical_registry.characters[]`.
 
-## 样本策略（Sample Strategy）
+> **Non-interactive execution.** All design decisions are recorded in `.allforai/`.
+> Do NOT use AskUserQuestion or request user input.
 
-**每次执行生成样本集，不生成全部表情变体。**
+> **Output language (mandatory):** All HTML navigation tabs, section headings, labels, captions,
+> and descriptive text MUST be in Chinese (zh-CN). In-game proper nouns (place/character/item names)
+> keep the game world's native language (Japanese). JSON field keys stay English snake_case.
 
-### 必须生成（每次执行）
-- **主角 律（Ritsu）** default 表情 × 1
-- **ひなた（Hinata）** default 表情 × 1
-- **任意 1 个 NPC** default 表情 × 1
+## Inputs
 
-共 **3 张**，覆盖主角 + 重要配角 + NPC 三个层级，供 art-director 确认风格统一性。
+- `.allforai/concept-contract.json` — `canonical_registry.characters[]` (authoritative asset IDs and `file_prefix` values; do not invent your own names)
+- `.allforai/game-design/art-pipeline-config.json` — `character` configuration and `toolchain.detected_capabilities`
+- `.allforai/game-design/art-asset-inventory.json` — current asset states (skip assets with `current_state == "locked"`)
+- `.allforai/game-design/asset-registry.json` — canonical registry built by concept-freeze
 
-### 可选生成（样本审批通过后）
-- 律 happy + serious（+2）
-- ひなた happy + serious（+2）
-- 剩余 4 NPC default（+4）
-- 各 NPC happy + serious（+8）
+## Sub-Skill Invocation
 
-### 跳过（gold milestone）
-- 律 / ひなた 全身立绘（需更高分辨率和构图控制）
+Read and follow each sub-skill SKILL.md in order. Each sub-skill defines its own output contract — follow it exactly.
 
-## Prompt 构造规则
+### Step 0 — Source Resolution (per asset, before Pre-Spec)
 
-```
-final_prompt = style_prompt_prefix
-             + ", " + character.description
-             + ", " + expression_suffix[expression]
-             + ", transparent background, portrait crop"
+For each asset in `canonical_registry.characters[]`, check its `source_strategy` from `asset-registry.json`:
 
-expression_suffix:
-  default  → "neutral calm expression, gentle eyes"
-  happy    → "warm smile, eyes curved with joy"
-  serious  → "thoughtful focused gaze, slight frown"
-```
+- **`existing_asset_pack`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/asset-pack-search-spec/SKILL.md` — search and select candidate pack
+  2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → fall back to `ai_generated` and proceed to Step 1
+  3. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/existing-asset-adaptation-spec/SKILL.md` — adapt to spec
+  4. Mark asset `current_state: adapted`; skip Step 1 and Step 2 for this asset.
 
-角色描述从 character-arc.json 的 `characters[].appearance` 字段读取。
+- **`adapt_existing_asset`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → fall back to `ai_generated` and proceed to Step 1
+  2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/existing-asset-adaptation-spec/SKILL.md` — adapt to spec
+  3. Mark asset `current_state: adapted`; skip Step 1 and Step 2 for this asset.
 
-## 工具优先级
-1. `flux_generate_image` (portrait_4_3, 768×1024)
-2. `generate_image` (3:4)
-3. 降级：保持 placeholder
+- **`existing_3d_source_asset` / `user_provided_asset`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → halt with UPSTREAM_DEFECT
+  2. Proceed to Step 1 (pre-spec for rendering/conversion pipeline).
 
-## 状态回写
-同 tile-art-gen，更新 art-asset-inventory.json 对应 character 条目。
+- **`ai_generated` / `hybrid` / `placeholder_only`:** skip Step 0, proceed directly to Step 1.
 
-## 已知问题（需在本节点解决）
-- inventory 角色 ID（npc_ahai 等）与 character-arc-design 命名（npc_kenzo 等）不一致
-- 本节点执行时：**以 character-arc.json 的角色名为准**，同步更新 inventory 的 asset_id
+### Step 1 — Pre-Spec
 
-## HTML 输出
-`character-art-review.html` — 角色卡片展示（姓名、表情标注、风格符合度自评）
+1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/character-layer-sheet/SKILL.md` — always
+2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/visual-style-tokens/SKILL.md` — always
+
+Skip for assets that completed Step 0 and are already marked `adapted`.
+
+### Step 2 — Generate
+
+- When `character.rig = dragonbones`, `dragonbones_mesh`, or `skeletal_3d`:
+  `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/skeletal-animation/SKILL.md`
+- When `character.rig = frame_sequence`:
+  `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/frame-animation-generation/SKILL.md`
+- When `character.expressions = true` (append after primary generate):
+  `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/expression-set-generation/SKILL.md`
+
+Skip for assets already marked `adapted`.
+
+## Completion Condition
+
+`.allforai/game-design/systems/character-art-spec.json` exists AND `.allforai/game-design/character-art-review.html` exists AND all `canonical_registry.characters[]` entries have `current_state != "placeholder"`.
+
+If any sub-skill returns `UPSTREAM_DEFECT` → halt and report the defect. Do not advance to `art-qa`.

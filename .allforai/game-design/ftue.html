@@ -1,2185 +1,1712 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Glow Island — FTUE Design Document</title>
-<style>
-  :root {
-    --bg: #0f0f1a;
-    --bg2: #151525;
-    --bg3: #1a1a2e;
-    --card: #1e1e32;
-    --card-border: #2a2a42;
-    --accent: #00bcd4;
-    --accent-dim: #0097a7;
-    --accent-glow: rgba(0,188,212,0.15);
-    --warm: #e8b86d;
-    --warm-dim: #c49a50;
-    --text: #e8d5b0;
-    --text-dim: #a89880;
-    --text-muted: #6a5e50;
-    --red-flag: #ff5252;
-    --red-flag-bg: rgba(255,82,82,0.1);
-    --green: #69f0ae;
-    --green-bg: rgba(105,240,174,0.1);
-    --amber: #ffab40;
-    --amber-bg: rgba(255,171,64,0.1);
-    --grid-tile: #2a2a50;
-    --grid-t01: #00bcd4;
-    --grid-t02: #ff7043;
-    --grid-t03: #9c27b0;
-    --grid-t04: #4caf50;
-    --grid-t05: #ffc107;
-    --grid-t06: #e91e63;
-    --grid-t07: #607d8b;
-    --grid-gap: #2d1b0e;
-    --grid-empty: #151525;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Island — 新手引导设计文档（FTUE）</title>
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --surface: #ffffff;
+      --surface2: #f5f0e8;
+      --surface3: #f0ebe0;
+      --border: #e8e0d0;
+      --border-soft: #f0ead8;
+      --text: #3a3028;
+      --text-secondary: #6b5f52;
+      --muted: #9a8f82;
+      --accent: #c07b4a;
+      --accent2: #6b9e7a;
+      --heading: #2a1f18;
+      --warm: #c8834a;
+      --warm-dim: rgba(200,131,74,0.09);
+      --warm-border: rgba(200,131,74,0.25);
+      --sage: #5a8e6a;
+      --sage-dim: rgba(90,142,106,0.09);
+      --sage-border: rgba(90,142,106,0.28);
+      --amber: #c89840;
+      --amber-dim: rgba(200,152,64,0.09);
+      --amber-border: rgba(200,152,64,0.28);
+      --sea: #4a7a9e;
+      --sea-dim: rgba(74,122,158,0.08);
+      --sea-border: rgba(74,122,158,0.25);
+      --mystery: #7a6aaa;
+      --mystery-dim: rgba(122,106,170,0.08);
+      --mystery-border: rgba(122,106,170,0.25);
+      --lighthouse: #d4a83a;
+      --danger: #c0504a;
+      --danger-dim: rgba(192,80,74,0.08);
+      --danger-border: rgba(192,80,74,0.22);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Serif SC", "Microsoft YaHei", -apple-system, serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.88;
+      padding: 0 1rem 6rem;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ── Header ── */
+    .page-header {
+      background: linear-gradient(160deg, #edf5f0 0%, #f5ede0 50%, #fcecd6 100%);
+      border-bottom: 1.5px solid var(--border);
+      padding: 3.5rem 2rem 3rem;
+      margin: 0 -1rem 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--sage), var(--lighthouse), var(--warm), var(--sea));
+      opacity: 0.45;
+    }
+    .page-header .label {
+      display: inline-block;
+      background: var(--sea-dim);
+      color: var(--sea);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid var(--sea-border);
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+    }
+    .page-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.6rem;
+    }
+    .page-header .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-bottom: 0.4rem;
+    }
+    .page-header .meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+    }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', sans-serif;
-    line-height: 1.7;
-    font-size: 14px;
-  }
+    /* ── Layout ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
-  /* ── HEADER ── */
-  .doc-header {
-    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a35 50%, #0f1a2a 100%);
-    border-bottom: 1px solid var(--card-border);
-    padding: 40px 48px 32px;
-    position: relative;
-    overflow: hidden;
-  }
-  .doc-header::before {
-    content: '';
-    position: absolute;
-    top: -80px; right: -80px;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(0,188,212,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .doc-header::after {
-    content: '';
-    position: absolute;
-    bottom: -60px; left: 20%;
-    width: 400px; height: 200px;
-    background: radial-gradient(ellipse, rgba(232,184,109,0.05) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .header-eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0.8;
-    margin-bottom: 8px;
-  }
-  .header-title {
-    font-size: 32px;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .header-title span { color: var(--accent); }
-  .header-subtitle {
-    font-size: 16px;
-    color: var(--text-dim);
-    margin-bottom: 20px;
-  }
-  .header-meta {
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-  .meta-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 6px;
-    padding: 4px 12px;
-    font-size: 12px;
-    color: var(--text-dim);
-  }
-  .meta-badge .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-  }
-  .meta-badge.warn .dot { background: var(--amber); }
-  .meta-badge.ok .dot { background: var(--green); }
+    /* ── Section headers ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 3rem 0 1.5rem;
+      padding-bottom: 0.7rem;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .section-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      background: var(--warm-dim);
+      border: 1px solid var(--warm-border);
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--warm);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: -0.01em;
+    }
 
-  /* ── LAYOUT ── */
-  .page-body {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 32px;
-  }
+    /* ── Prose ── */
+    p {
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+    p:last-child { margin-bottom: 0; }
 
-  .section {
-    margin-bottom: 56px;
-  }
+    /* ── Philosophy block ── */
+    .philosophy-block {
+      background: linear-gradient(135deg, #f5f0e4 0%, #edf5ee 100%);
+      border: 1px solid var(--sage-border);
+      border-left: 3px solid var(--sage);
+      border-radius: 10px;
+      padding: 1.6rem 1.8rem;
+      margin: 1.5rem 0;
+    }
+    .philosophy-block p {
+      color: var(--text);
+      font-style: italic;
+      line-height: 1.95;
+    }
+    .philosophy-block .principle {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      margin-top: 0.9rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--sage-border);
+    }
+    .philosophy-block .principle-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sage);
+      margin-top: 0.6rem;
+      flex-shrink: 0;
+    }
+    .philosophy-block .principle p {
+      margin-bottom: 0;
+      font-style: normal;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
 
-  .section-title {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--card-border);
-  }
+    /* ── Cutscene panels ── */
+    .cutscene-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 650px) {
+      .cutscene-grid { grid-template-columns: 1fr; }
+    }
+    .cutscene-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .cutscene-panel-header {
+      background: linear-gradient(135deg, #2a1f18 0%, #3a2e26 100%);
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .cutscene-panel-num {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--lighthouse);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      letter-spacing: 0.08em;
+    }
+    .cutscene-panel-body {
+      padding: 1rem;
+    }
+    .cutscene-panel-body .scene-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 0.8rem;
+    }
+    .cutscene-panel-body .caption {
+      background: var(--surface2);
+      border-radius: 6px;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.82rem;
+      color: var(--text);
+      font-style: italic;
+      border-left: 2px solid var(--amber);
+    }
 
-  .h2 {
-    font-size: 22px;
-    font-weight: 400;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  .h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--warm);
-    margin-bottom: 12px;
-  }
-  .h4 {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--accent);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
+    .first-interaction-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+    .first-interaction-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.8rem;
+    }
 
-  .card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 16px;
-  }
-  .card.highlight {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px rgba(0,188,212,0.2), inset 0 0 20px rgba(0,188,212,0.03);
-  }
-  .card.warm {
-    border-color: rgba(232,184,109,0.3);
-    box-shadow: inset 0 0 20px rgba(232,184,109,0.03);
-  }
+    /* ── Tutorial levels table ── */
+    .level-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    .level-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .level-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.8rem 1.2rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .level-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2rem;
+      height: 2rem;
+      background: var(--warm-dim);
+      border: 1px solid var(--warm-border);
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--warm);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      flex-shrink: 0;
+    }
+    .level-title-block { flex: 1; min-width: 0; }
+    .level-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--heading);
+    }
+    .level-tag-row {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 0.2rem;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 0.68rem;
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      font-weight: 600;
+    }
+    .tag-skip-no {
+      background: var(--danger-dim);
+      border: 1px solid var(--danger-border);
+      color: var(--danger);
+    }
+    .tag-skip-yes {
+      background: var(--sage-dim);
+      border: 1px solid var(--sage-border);
+      color: var(--sage);
+    }
+    .level-card-body {
+      padding: 1rem 1.2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.8rem;
+    }
+    @media (max-width: 680px) {
+      .level-card-body { grid-template-columns: 1fr; }
+    }
+    .level-field label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin-bottom: 0.3rem;
+    }
+    .level-field p {
+      font-size: 0.86rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+    .level-field.mechanic-field p {
+      background: var(--amber-dim);
+      border: 1px solid var(--amber-border);
+      border-radius: 6px;
+      padding: 0.5rem 0.7rem;
+      color: var(--text);
+    }
 
-  /* ── FLOW DIAGRAM ── */
-  .flow-diagram {
-    overflow-x: auto;
-    padding: 8px 0 16px;
-  }
-  .flow-track {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    min-width: 900px;
-  }
-  .flow-step {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-  .flow-step:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 32px;
-    right: -1px;
-    width: 2px;
-    height: 24px;
-    background: var(--card-border);
-    z-index: 1;
-  }
-  .flow-connector {
-    width: 40px;
-    height: 2px;
-    background: linear-gradient(90deg, var(--card-border), var(--accent-dim));
-    margin-top: 31px;
-    flex-shrink: 0;
-  }
-  .flow-node {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 700;
-    border: 2px solid var(--card-border);
-    background: var(--card);
-    margin-bottom: 12px;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 2;
-  }
-  .flow-node.cutscene { border-color: var(--warm); color: var(--warm); background: rgba(232,184,109,0.08); }
-  .flow-node.puzzle { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
-  .flow-node.reward { border-color: var(--green); color: var(--green); background: var(--green-bg); }
-  .flow-step-body {
-    text-align: center;
-    padding: 0 4px;
-  }
-  .flow-step-num {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 2px;
-  }
-  .flow-step-name {
-    font-size: 12px;
-    color: var(--text);
-    line-height: 1.3;
-    margin-bottom: 4px;
-  }
-  .flow-step-name-jp {
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-bottom: 6px;
-  }
-  .flow-step-dur {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 10px;
-    background: var(--bg3);
-    color: var(--text-muted);
-    border: 1px solid var(--card-border);
-    margin-bottom: 4px;
-  }
-  .flow-step-lock {
-    font-size: 10px;
-    color: var(--red-flag);
-    opacity: 0.7;
-  }
+    /* ── Feature unlock table ── */
+    .unlock-table-wrap {
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+    .unlock-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.87rem;
+    }
+    .unlock-table thead tr {
+      background: var(--surface2);
+      border-bottom: 2px solid var(--border);
+    }
+    .unlock-table thead th {
+      padding: 0.65rem 0.9rem;
+      text-align: left;
+      font-weight: 700;
+      color: var(--heading);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .unlock-table tbody tr {
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .unlock-table tbody tr:last-child { border-bottom: none; }
+    .unlock-table tbody tr:hover { background: var(--surface2); }
+    .unlock-table tbody td {
+      padding: 0.65rem 0.9rem;
+      color: var(--text);
+      vertical-align: top;
+    }
+    .unlock-table tbody td.level-num {
+      font-weight: 700;
+      color: var(--warm);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .force-demo-yes {
+      display: inline-block;
+      background: var(--amber-dim);
+      border: 1px solid var(--amber-border);
+      color: var(--amber);
+      font-size: 0.68rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+    }
+    .force-demo-no {
+      display: inline-block;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.68rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+    }
 
-  /* SWIM LANE */
-  .swim-lane-grid {
-    display: grid;
-    grid-template-columns: 120px repeat(8, 1fr);
-    gap: 0;
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    overflow: hidden;
-    font-size: 12px;
-  }
-  .sl-header {
-    background: var(--bg3);
-    border-right: 1px solid var(--card-border);
-    border-bottom: 1px solid var(--card-border);
-    padding: 10px 12px;
-    font-size: 11px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  .sl-cell {
-    border-right: 1px solid var(--card-border);
-    border-bottom: 1px solid var(--card-border);
-    padding: 8px 10px;
-    vertical-align: middle;
-  }
-  .sl-cell:last-child { border-right: none; }
-  .sl-row-label {
-    background: var(--bg3);
-    border-right: 1px solid var(--card-border);
-    border-bottom: 1px solid var(--card-border);
-    padding: 10px 12px;
-    color: var(--text-dim);
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-  }
-  .sl-row-label:last-child { border-bottom: none; }
-  .sl-filled {
-    background: var(--accent-glow);
-    border-radius: 4px;
-    padding: 4px 6px;
-    text-align: center;
-    font-size: 11px;
-    color: var(--accent);
-  }
-  .sl-filled.warm {
-    background: rgba(232,184,109,0.1);
-    color: var(--warm);
-  }
-  .sl-filled.green {
-    background: var(--green-bg);
-    color: var(--green);
-  }
+    /* ── Friction cards ── */
+    .friction-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    .friction-card {
+      background: var(--surface);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .friction-card.severity-high {
+      border-left: 3px solid var(--danger);
+    }
+    .friction-card.severity-medium {
+      border-left: 3px solid var(--amber);
+    }
+    .friction-card.severity-low {
+      border-left: 3px solid var(--sage);
+    }
+    .friction-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.7rem 1.1rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .severity-badge {
+      font-size: 0.67rem;
+      font-weight: 700;
+      padding: 0.12rem 0.55rem;
+      border-radius: 999px;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      white-space: nowrap;
+    }
+    .severity-badge.high {
+      background: var(--danger-dim);
+      border: 1px solid var(--danger-border);
+      color: var(--danger);
+    }
+    .severity-badge.medium {
+      background: var(--amber-dim);
+      border: 1px solid var(--amber-border);
+      color: var(--amber);
+    }
+    .severity-badge.low {
+      background: var(--sage-dim);
+      border: 1px solid var(--sage-border);
+      color: var(--sage);
+    }
+    .friction-card-body {
+      padding: 0.9rem 1.1rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+    @media (max-width: 600px) {
+      .friction-card-body { grid-template-columns: 1fr; }
+    }
+    .friction-field label {
+      display: block;
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin-bottom: 0.3rem;
+    }
+    .friction-field p {
+      font-size: 0.86rem;
+      color: var(--text);
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
 
-  /* ── DROP-OFF TABLE ── */
-  .risk-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-  .risk-table th {
-    text-align: left;
-    padding: 10px 16px;
-    background: var(--bg3);
-    color: var(--text-muted);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border-bottom: 1px solid var(--card-border);
-  }
-  .risk-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--card-border);
-    vertical-align: top;
-  }
-  .risk-table tr:last-child td { border-bottom: none; }
-  .risk-table tr:hover td { background: rgba(255,255,255,0.02); }
-  .pct-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .pct-track {
-    flex: 1;
-    height: 6px;
-    background: var(--bg3);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .pct-fill {
-    height: 100%;
-    border-radius: 3px;
-    background: var(--accent);
-  }
-  .pct-fill.warning { background: var(--amber); }
-  .pct-fill.danger { background: var(--red-flag); }
-  .pct-num {
-    font-size: 13px;
-    font-weight: 600;
-    min-width: 32px;
-    text-align: right;
-  }
-  .threshold-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    background: var(--red-flag-bg);
-    color: var(--red-flag);
-    border: 1px solid rgba(255,82,82,0.3);
-  }
-  .step-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    font-size: 11px;
-    font-weight: 700;
-    border: 1px solid;
-  }
-  .step-badge.cutscene { border-color: var(--warm); color: var(--warm); }
-  .step-badge.puzzle { border-color: var(--accent); color: var(--accent); }
-  .step-badge.reward { border-color: var(--green); color: var(--green); }
+    /* ── NPC intro sequence ── */
+    .npc-timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .npc-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.55rem;
+      top: 0.6rem;
+      bottom: 0.6rem;
+      width: 2px;
+      background: var(--border);
+    }
+    .npc-item {
+      position: relative;
+      margin-bottom: 1.2rem;
+    }
+    .npc-item:last-child { margin-bottom: 0; }
+    .npc-dot {
+      position: absolute;
+      left: -1.65rem;
+      top: 0.55rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--warm);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--warm-border);
+    }
+    .npc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .npc-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.65rem 1rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border-soft);
+      flex-wrap: wrap;
+    }
+    .npc-level-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--sea);
+      background: var(--sea-dim);
+      border: 1px solid var(--sea-border);
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      white-space: nowrap;
+    }
+    .npc-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--heading);
+    }
+    .npc-card-body {
+      padding: 0.8rem 1rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
 
-  /* ── GRID VISUALIZER ── */
-  .grid-container {
-    display: inline-block;
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    overflow: hidden;
-    background: var(--bg3);
-  }
-  .grid-row {
-    display: flex;
-  }
-  .grid-cell {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 700;
-    border: 1px solid rgba(255,255,255,0.05);
-    position: relative;
-    letter-spacing: 0;
-  }
-  .grid-cell.empty {
-    background: var(--grid-empty);
-    color: transparent;
-  }
-  .grid-cell.t01 { background: rgba(0,188,212,0.2); color: #00bcd4; border-color: rgba(0,188,212,0.4); }
-  .grid-cell.t02 { background: rgba(255,112,67,0.2); color: #ff7043; border-color: rgba(255,112,67,0.4); }
-  .grid-cell.t03 { background: rgba(156,39,176,0.2); color: #ce93d8; border-color: rgba(156,39,176,0.4); }
-  .grid-cell.t04 { background: rgba(76,175,80,0.2); color: #81c784; border-color: rgba(76,175,80,0.4); }
-  .grid-cell.t05 { background: rgba(255,193,7,0.2); color: #ffd54f; border-color: rgba(255,193,7,0.4); }
-  .grid-cell.t06 { background: rgba(233,30,99,0.2); color: #f48fb1; border-color: rgba(233,30,99,0.4); }
-  .grid-cell.t07 { background: rgba(96,125,139,0.2); color: #b0bec5; border-color: rgba(96,125,139,0.4); }
-  .grid-cell.gap {
-    background: var(--grid-gap);
-    border-color: rgba(80,40,10,0.6);
-  }
-  .grid-cell.gap::after {
-    content: '';
-    position: absolute;
-    inset: 4px;
-    background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 3px,
-      rgba(100,50,20,0.4) 3px,
-      rgba(100,50,20,0.4) 6px
-    );
-    border-radius: 2px;
-  }
-  .grid-glow {
-    position: absolute;
-    inset: 0;
-    border-radius: 0;
-    pointer-events: none;
-  }
-  .tile-label {
-    position: relative;
-    z-index: 1;
-    font-size: 9px;
-    text-align: center;
-    line-height: 1.1;
-  }
+    /* ── Metrics ── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 600px) {
+      .metrics-grid { grid-template-columns: 1fr; }
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.2rem 1rem;
+    }
+    .metric-card .metric-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin-bottom: 0.35rem;
+    }
+    .metric-card .metric-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--warm);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+    .metric-card .metric-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
 
-  .grid-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 12px;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--text-dim);
-  }
-  .legend-swatch {
-    width: 14px; height: 14px;
-    border-radius: 3px;
-    border: 1px solid;
-  }
+    /* ── Completion ── */
+    .completion-card {
+      background: linear-gradient(135deg, #fdf6e8 0%, #f0f5ec 100%);
+      border: 1px solid var(--amber-border);
+      border-radius: 12px;
+      padding: 1.6rem 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+    .completion-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.8rem;
+    }
+    .completion-def {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .completion-def p {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.75;
+    }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 0.7rem;
+    }
+    .kpi-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 0.9rem;
+    }
+    .kpi-item .kpi-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin-bottom: 0.25rem;
+    }
+    .kpi-item .kpi-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--heading);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+    }
+    .kpi-item .kpi-note {
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      margin-top: 0.15rem;
+    }
 
-  /* ── LEVEL CARDS ── */
-  .level-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .level-id-badge {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-  .level-meta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .level-tag {
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    border: 1px solid;
-  }
-  .level-tag.grid { border-color: var(--card-border); color: var(--text-dim); }
-  .level-tag.pairs { border-color: rgba(0,188,212,0.4); color: var(--accent); background: var(--accent-glow); }
-  .level-tag.no-limit { border-color: rgba(105,240,174,0.4); color: var(--green); background: var(--green-bg); }
-  .level-tag.time { border-color: rgba(255,171,64,0.4); color: var(--amber); background: var(--amber-bg); }
-
-  .teaching-goal-box {
-    background: var(--bg3);
-    border-left: 3px solid var(--accent);
-    padding: 12px 16px;
-    border-radius: 0 8px 8px 0;
-    margin-bottom: 20px;
-    font-size: 13px;
-    color: var(--text);
-    line-height: 1.6;
-  }
-
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    align-items: start;
-  }
-  @media (max-width: 700px) {
-    .two-col { grid-template-columns: 1fr; }
-  }
-
-  .feedback-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 12px;
-  }
-  .feedback-box {
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 12px;
-  }
-  .feedback-box.success { background: var(--green-bg); border: 1px solid rgba(105,240,174,0.2); }
-  .feedback-box.fail { background: var(--amber-bg); border: 1px solid rgba(255,171,64,0.2); }
-  .feedback-box .fb-title {
-    font-weight: 600;
-    margin-bottom: 6px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  .feedback-box.success .fb-title { color: var(--green); }
-  .feedback-box.fail .fb-title { color: var(--amber); }
-
-  /* ── AFFORDANCES ── */
-  .affordance-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    padding: 16px 20px;
-    margin-bottom: 12px;
-    display: grid;
-    grid-template-columns: auto 1fr 1fr;
-    gap: 16px;
-    align-items: start;
-  }
-  @media (max-width: 700px) {
-    .affordance-card { grid-template-columns: 1fr; }
-  }
-  .affordance-icon {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: var(--accent-glow);
-    border: 1px solid var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-  .affordance-name {
-    font-weight: 600;
-    color: var(--accent);
-    font-size: 13px;
-    margin-bottom: 4px;
-  }
-  .affordance-trigger {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-bottom: 4px;
-  }
-  .affordance-purpose {
-    font-size: 12px;
-    color: var(--text);
-    font-style: italic;
-  }
-
-  /* ── COPY SPEC ── */
-  .copy-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    padding: 16px 20px;
-    margin-bottom: 10px;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 16px;
-    align-items: center;
-  }
-  @media (max-width: 600px) { .copy-card { grid-template-columns: 1fr; } }
-  .copy-location {
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    min-width: 120px;
-  }
-  .copy-jp {
-    font-size: 16px;
-    color: var(--text);
-    line-height: 1.6;
-  }
-  .copy-speaker {
-    font-size: 11px;
-    color: var(--accent);
-    text-align: right;
-    min-width: 80px;
-  }
-  .copy-translation {
-    font-size: 12px;
-    color: var(--text-dim);
-    font-style: italic;
-    margin-top: 2px;
-  }
-  .copy-cutscene { border-left: 3px solid var(--warm); }
-  .copy-dialogue { border-left: 3px solid var(--accent); }
-  .copy-ambient { border-left: 3px solid var(--green); }
-
-  /* ── D1 CHECKLIST ── */
-  .checklist {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 12px;
-  }
-  @media (max-width: 600px) { .checklist { grid-template-columns: 1fr; } }
-  .check-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    padding: 14px 16px;
-  }
-  .check-icon {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    flex-shrink: 0;
-  }
-  .check-icon.green { background: var(--green-bg); border: 1px solid rgba(105,240,174,0.4); color: var(--green); }
-  .check-icon.accent { background: var(--accent-glow); border: 1px solid var(--accent); color: var(--accent); }
-  .check-text-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-  .check-text-sub { font-size: 12px; color: var(--text-dim); }
-
-  /* ── SCAFFOLDING DIAGRAM ── */
-  .scaffold-grid {
-    display: grid;
-    grid-template-columns: 160px repeat(3, 1fr);
-    gap: 0;
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    overflow: hidden;
-    font-size: 12px;
-  }
-  .scaffold-header {
-    background: var(--bg3);
-    padding: 10px 14px;
-    border-right: 1px solid var(--card-border);
-    border-bottom: 1px solid var(--card-border);
-    font-size: 11px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  .scaffold-cell {
-    padding: 12px 14px;
-    border-right: 1px solid var(--card-border);
-    border-bottom: 1px solid var(--card-border);
-    vertical-align: top;
-  }
-  .scaffold-cell:last-child { border-right: none; }
-  .scaffold-row:last-child .scaffold-cell { border-bottom: none; }
-  .scaffold-row:last-child .scaffold-header { border-bottom: none; }
-  .difficulty-pip {
-    display: inline-block;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    margin-right: 3px;
-    background: var(--card-border);
-  }
-  .difficulty-pip.filled { background: var(--accent); }
-
-  /* ── PHILOSOPHY BOX ── */
-  .philosophy-box {
-    background: linear-gradient(135deg, rgba(0,188,212,0.05) 0%, rgba(232,184,109,0.05) 100%);
-    border: 1px solid rgba(0,188,212,0.2);
-    border-radius: 12px;
-    padding: 28px 32px;
-    margin-bottom: 40px;
-    position: relative;
-    overflow: hidden;
-  }
-  .philosophy-box::before {
-    content: '✦';
-    position: absolute;
-    top: 20px; right: 28px;
-    font-size: 48px;
-    color: var(--accent);
-    opacity: 0.06;
-  }
-  .philosophy-quote {
-    font-size: 18px;
-    color: var(--text);
-    font-weight: 300;
-    line-height: 1.7;
-    margin-bottom: 12px;
-  }
-  .philosophy-quote em {
-    color: var(--accent);
-    font-style: normal;
-  }
-  .philosophy-quote .jp {
-    font-size: 15px;
-    color: var(--text-dim);
-    display: block;
-    margin-top: 4px;
-  }
-  .no-popup-rule {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--red-flag-bg);
-    border: 1px solid rgba(255,82,82,0.3);
-    border-radius: 6px;
-    padding: 6px 14px;
-    font-size: 12px;
-    color: var(--red-flag);
-    margin-top: 12px;
-  }
-
-  /* ── OPENING PANELS ── */
-  .panel-strip {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-  @media (max-width: 600px) { .panel-strip { grid-template-columns: 1fr; } }
-  .panel-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .panel-image {
-    height: 120px;
-    background: var(--bg3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
-    opacity: 0.5;
-    border-bottom: 1px solid var(--card-border);
-    position: relative;
-    overflow: hidden;
-  }
-  .panel-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 40%, rgba(15,15,26,0.8) 100%);
-  }
-  .panel-image.p1 { background: linear-gradient(135deg, #1a2030 0%, #0f1520 100%); }
-  .panel-image.p2 { background: linear-gradient(135deg, #1a1820 0%, #12100f 100%); }
-  .panel-image.p3 { background: linear-gradient(135deg, #151520 0%, #0f1518 100%); }
-  .panel-number {
-    position: absolute;
-    top: 10px; left: 12px;
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    z-index: 1;
-  }
-  .panel-body {
-    padding: 14px 16px;
-  }
-  .panel-text-jp {
-    font-size: 15px;
-    color: var(--text);
-    margin-bottom: 4px;
-    line-height: 1.5;
-  }
-  .panel-translation {
-    font-size: 11px;
-    color: var(--text-dim);
-    font-style: italic;
-    margin-bottom: 8px;
-  }
-  .panel-tone {
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  /* ── UTILITIES ── */
-  p { color: var(--text-dim); font-size: 13px; line-height: 1.7; margin-bottom: 10px; }
-  ul, ol { padding-left: 20px; margin-bottom: 10px; }
-  li { color: var(--text-dim); font-size: 13px; line-height: 1.7; margin-bottom: 4px; }
-  strong { color: var(--text); }
-  code {
-    background: var(--bg3);
-    border: 1px solid var(--card-border);
-    border-radius: 4px;
-    padding: 1px 6px;
-    font-size: 12px;
-    color: var(--accent);
-    font-family: 'SF Mono', 'Fira Code', monospace;
-  }
-  .divider {
-    border: none;
-    border-top: 1px solid var(--card-border);
-    margin: 32px 0;
-  }
-  .tag-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 8px;
-  }
-  .tag {
-    padding: 2px 10px;
-    border-radius: 12px;
-    font-size: 11px;
-    border: 1px solid var(--card-border);
-    color: var(--text-dim);
-  }
-  .note-block {
-    background: var(--amber-bg);
-    border: 1px solid rgba(255,171,64,0.25);
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 12px;
-    color: var(--amber);
-    margin-bottom: 12px;
-  }
-  .info-block {
-    background: var(--accent-glow);
-    border: 1px solid rgba(0,188,212,0.25);
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 12px;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-
-  /* ── NARRATIVE ── */
-  .hinata-profile {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 20px;
-  }
-  .hinata-avatar {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(0,188,212,0.2) 0%, rgba(232,184,109,0.15) 100%);
-    border: 2px solid var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    flex-shrink: 0;
-  }
-  .hinata-info { flex: 1; }
-  .hinata-name { font-size: 18px; color: var(--text); margin-bottom: 2px; }
-  .hinata-name-romaji { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
-  .hinata-traits {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .trait-tag {
-    padding: 2px 10px;
-    border-radius: 12px;
-    font-size: 11px;
-    background: var(--bg3);
-    border: 1px solid var(--card-border);
-    color: var(--text-dim);
-  }
-
-  /* ── EMOTIONAL ARC BAR ── */
-  .arc-bar {
-    display: flex;
-    gap: 4px;
-    margin: 16px 0;
-    align-items: stretch;
-    height: 48px;
-  }
-  .arc-seg {
-    flex: 1;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 9px;
-    color: rgba(255,255,255,0.6);
-    text-align: center;
-    letter-spacing: 0;
-    line-height: 1.2;
-    padding: 2px 4px;
-    cursor: default;
-    position: relative;
-  }
-  .arc-seg.step1 { background: rgba(232,184,109,0.25); border: 1px solid rgba(232,184,109,0.3); }
-  .arc-seg.step2 { background: rgba(232,184,109,0.3); border: 1px solid rgba(232,184,109,0.4); }
-  .arc-seg.step3 { background: rgba(232,184,109,0.2); border: 1px solid rgba(232,184,109,0.25); }
-  .arc-seg.step4 { background: rgba(0,188,212,0.2); border: 1px solid rgba(0,188,212,0.3); }
-  .arc-seg.step5 { background: rgba(0,188,212,0.25); border: 1px solid rgba(0,188,212,0.35); }
-  .arc-seg.step6 { background: rgba(0,188,212,0.3); border: 1px solid rgba(0,188,212,0.45); }
-  .arc-seg.step7 { background: rgba(105,240,174,0.2); border: 1px solid rgba(105,240,174,0.35); }
-  .arc-seg.step8 { background: rgba(105,240,174,0.3); border: 1px solid rgba(105,240,174,0.5); }
-
-  /* ── FOOTER ── */
-  .doc-footer {
-    border-top: 1px solid var(--card-border);
-    padding: 24px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .footer-info { font-size: 11px; color: var(--text-muted); }
-  .footer-brand { font-size: 13px; color: var(--accent); letter-spacing: 0.05em; }
-</style>
+    /* ── Summary stats ── */
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 700px) {
+      .summary-row { grid-template-columns: 1fr 1fr; }
+    }
+    .summary-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 0.9rem;
+      text-align: center;
+    }
+    .summary-stat .stat-val {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--warm);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      line-height: 1.15;
+    }
+    .summary-stat .stat-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+    }
+  </style>
 </head>
 <body>
-
-<!-- ══════════════════════════════════ HEADER ══════════════════════════════════ -->
-<div class="doc-header">
-  <div class="header-eyebrow">UX Design Document · Glow Island · FTUE</div>
-  <div class="header-title">First-Time User Experience<br><span>輝島</span> — Kagayaki-jima</div>
-  <div class="header-subtitle">完全チュートリアル設計 · Full Tutorial Design Specification</div>
-  <div class="header-meta">
-    <div class="meta-badge ok"><span class="dot"></span>philosophy: teach-through-level-design</div>
-    <div class="meta-badge warn"><span class="dot"></span>no-popup rule: enforced</div>
-    <div class="meta-badge"><span class="dot"></span>total FTUE: ~6.5 min</div>
-    <div class="meta-badge"><span class="dot"></span>generated: 2026-05-08</div>
-    <div class="meta-badge ok"><span class="dot"></span>ch1 verified: level-design.json</div>
-  </div>
+<div class="page-header">
+  <div class="label">UX Design · FTUE</div>
+  <h1>Glow Island 新手引导设计</h1>
+  <p class="subtitle">山田律抵达輝島 — 教学关卡 · 特性解锁 · 摩擦点分析</p>
+  <p class="meta">生成时间：2026-05-13 &nbsp;|&nbsp; 版本：ftue-v1 &nbsp;|&nbsp; 负责人：ux-designer</p>
 </div>
 
-<div class="page-body">
+<div class="container">
 
-  <!-- ══════════════════ PHILOSOPHY ══════════════════ -->
-  <div class="philosophy-box">
-    <div class="philosophy-quote">
-      教えるのではなく、<em>気づかせる</em>。<br>
-      指示の言葉は一言も使わない。<br>
-      <span class="jp">Don't teach — let them discover. Not a single word of instruction.</span>
+  <!-- 概要数据 -->
+  <div class="summary-row">
+    <div class="summary-stat">
+      <div class="stat-val">10</div>
+      <div class="stat-label">教学关卡总数</div>
     </div>
-    <p style="font-size:13px; color:var(--text-dim); margin:0 0 12px;">
-      The FTUE for Glow Island treats the player as a thoughtful adult arriving somewhere new. Mechanics are introduced entirely through spatial arrangement, visual affordance, and immediate sensory feedback. The island teaches itself.
-    </p>
-    <div class="no-popup-rule">⊘ NO popup overlays &nbsp;·&nbsp; NO forced-tap arrows &nbsp;·&nbsp; NO skip buttons on mandatory screens &nbsp;·&nbsp; NO instruction text</div>
-  </div>
-
-  <!-- ══════════════════ SECTION 1: FLOW DIAGRAM ══════════════════ -->
-  <div class="section">
-    <div class="section-title">01 · FTUE Flow — 8 Steps · ~6.5 Minutes</div>
-
-    <div class="card" style="padding: 24px 20px;">
-      <div class="arc-bar">
-        <div class="arc-seg step1">Panel 1–3<br>Arrival</div>
-        <div class="arc-seg step2">ひなた<br>Letter</div>
-        <div class="arc-seg step3">Harbor<br>Overview</div>
-        <div class="arc-seg step4">Level<br>1-1</div>
-        <div class="arc-seg step5">Level<br>1-2</div>
-        <div class="arc-seg step6">Level<br>1-3</div>
-        <div class="arc-seg step7">Material<br>Reward</div>
-        <div class="arc-seg step8">Harbor<br>Restored</div>
-      </div>
-      <div style="display:flex; gap:16px; font-size:11px; color:var(--text-muted); margin-top:4px;">
-        <span style="color:var(--warm);">■ Narrative/Cutscene</span>
-        <span style="color:var(--accent);">■ Puzzle Gameplay</span>
-        <span style="color:var(--green);">■ Payoff/Reward</span>
-      </div>
+    <div class="summary-stat">
+      <div class="stat-val">85%</div>
+      <div class="stat-label">引导完成率目标</div>
     </div>
-
-    <div class="flow-diagram">
-      <div class="flow-track">
-
-        <!-- Step 1 -->
-        <div class="flow-step">
-          <div class="flow-node cutscene">1</div>
-          <div class="flow-step-body">
-            <div class="flow-step-num">Step 01</div>
-            <div class="flow-step-name">Opening Cutscene</div>
-            <div class="flow-step-name-jp">律の到着</div>
-            <div class="flow-step-dur">15s</div><br>
-            <div class="flow-step-lock">🔒 not skippable</div>
-          </div>
-        </div>
-
-        <div class="flow-connector"></div>
-
-        <!-- Step 2 -->
-        <div class="flow-step">
-          <div class="flow-node cutscene">2</div>
-          <div class="flow-step-body">
-            <div class="flow-step-num">Step 02</div>
-            <div class="flow-step-name">First ひなた Encounter</div>
-            <div class="flow-step-name-jp">ひなたとの出会い</div>
-            <div class="flow-step-dur">10s</div><br>
-            <div class="flow-step-lock">🔒 not skippable</div>
-          </div>
-        </div>
-
-        <div class="flow-connector"></div>
-
-        <!-- Step 3 -->
-        <div class="flow-step">
-          <div class="flow-node cutscene">3</div>
-          <div class="flow-step-body">
-            <div class="flow-step-num">Step 03</div>
-            <div class="flow-step-name">Island Overview</div>
-            <div class="flow-step-name-jp">港の風景</div>
-            <div class="flow-step-dur">5s</div><br>
-            <div class="flow-step-lock">🔒 not skippable</div>
-          </div>
-        </div>
-
-        <div class="flow-connector"></div>
-
-        <!-- Step 4 -->
-        <div class="flow-step">
-          <div class="flow-node puzzle">4</div>
-          <div class="flow-step-body">
-            <div class="flow-step-num">Step 04</div>
-            <div class="flow-step-name">Level 1-1</div>
-            <div class="flow-step-name-jp">基本接続を学ぶ</div>
-            <div class="flow-step-dur">~75s</div><br>
-            <div class="flow-step-lock">🔒 not skippable</div>
-          </div>
-        </div>
-
-        <div class="flow-connector"></div>
-
-        <!-- Step 5 -->
-        <div class="flow-step">
-          <div class="flow-node puzzle">5</div>
-          <div class="flow-step-body">
-            <div class="flow-step-num">Step 05</div>
-            <div class="flow-step-name">Level 1-2</div>
-            <div class="flow-step-name-jp">障害物を学ぶ</div>
-            <div class="flow-step-dur">~90s</div><br>
-            <div class="flow-step-lock">🔒 not skippable</div>
-          </div>
-        </div>
-
-        <div class="flow-connector"></div>
-
-        <!-- Step 6 -->
-        <div class="flow-step">
-          <div class="flow-node puzzle">6</div>
-          <div class="flow-step-body">
-            <div class="flow-step-num">Step 06</div>
-            <div class="flow-step-name">Level 1-3</div>
-            <div class="flow-step-name-jp">島が戻ってくる</div>
-            <div class="flow-step-dur">~120s</div><br>
-            <div class="flow-step-lock">🔒 not skippable</div>
-          </div>
-        </div>
-
-        <div class="flow-connector"></div>
-
-        <!-- Step 7 -->
-        <div class="flow-step">
-          <div class="flow-node reward">7</div>
-          <div class="flow-step-body">
-            <div class="flow-step-num">Step 07</div>
-            <div class="flow-step-name">Material Reward</div>
-            <div class="flow-step-name-jp">素材を得る</div>
-            <div class="flow-step-dur">10s</div><br>
-            <div class="flow-step-lock">🔒 not skippable</div>
-          </div>
-        </div>
-
-        <div class="flow-connector"></div>
-
-        <!-- Step 8 -->
-        <div class="flow-step">
-          <div class="flow-node reward">8</div>
-          <div class="flow-step-body">
-            <div class="flow-step-num">Step 08</div>
-            <div class="flow-step-name">Harbor Restored</div>
-            <div class="flow-step-name-jp">港が少し、戻ってきた</div>
-            <div class="flow-step-dur">15s</div><br>
-            <div class="flow-step-lock">🔒 not skippable</div>
-          </div>
-        </div>
-
-      </div>
+    <div class="summary-stat">
+      <div class="stat-val">&lt;12%</div>
+      <div class="stat-label">跳过率目标</div>
     </div>
-
-    <!-- Swim-lane breakdown -->
-    <div class="swim-lane-grid" style="margin-top:24px; font-size:11px;">
-      <div class="sl-header">Lane</div>
-      <div class="sl-header">S1</div><div class="sl-header">S2</div><div class="sl-header">S3</div>
-      <div class="sl-header">S4</div><div class="sl-header">S5</div><div class="sl-header">S6</div>
-      <div class="sl-header">S7</div><div class="sl-header">S8</div>
-
-      <div class="sl-row-label">Narrative</div>
-      <div class="sl-cell"><div class="sl-filled warm">Arrival 3 panels</div></div>
-      <div class="sl-cell"><div class="sl-filled warm">ひなた letter</div></div>
-      <div class="sl-cell"><div class="sl-filled warm">Harbor grey</div></div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell"><div class="sl-filled warm">Restoration cut</div></div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell"><div class="sl-filled warm">Map reveal</div></div>
-
-      <div class="sl-row-label">Gameplay</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell"><div class="sl-filled">4×4 · 4 pairs</div></div>
-      <div class="sl-cell"><div class="sl-filled">5×5 · 6 pairs · obstacle</div></div>
-      <div class="sl-cell"><div class="sl-filled">5×5 · 7 pairs · 2 obstacles</div></div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-
-      <div class="sl-row-label">ひなた</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell"><div class="sl-filled">1st appearance</div></div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell"><div class="sl-filled">2nd appearance</div></div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-
-      <div class="sl-row-label">Reward</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell" style="background:var(--bg3);color:var(--text-muted); font-size:10px; text-align:center;">—</div>
-      <div class="sl-cell"><div class="sl-filled green">shell ×5</div></div>
-      <div class="sl-cell"><div class="sl-filled green">shell ×3</div></div>
-      <div class="sl-cell"><div class="sl-filled green">浮木 ×1 (first)</div></div>
-      <div class="sl-cell"><div class="sl-filled green">浮木 UI</div></div>
-      <div class="sl-cell"><div class="sl-filled green">Map unlock</div></div>
+    <div class="summary-stat">
+      <div class="stat-val">第1关</div>
+      <div class="stat-label">首个NPC登场</div>
+    </div>
+    <div class="summary-stat">
+      <div class="stat-val">第10关</div>
+      <div class="stat-label">IAP首次展示</div>
     </div>
   </div>
 
-  <!-- ══════════════════ SECTION 2: OPENING SEQUENCE ══════════════════ -->
-  <div class="section">
-    <div class="section-title">02 · Opening Sequence — 3 Cutscene Panels</div>
+  <!-- 1. 新手引导设计哲学 -->
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <h2>新手引导设计哲学</h2>
+  </div>
 
-    <div class="info-block">Duration: 15s · 3 panels · tap-to-advance · not skippable · tone: warm melancholy, quiet arrival</div>
-
-    <div class="panel-strip">
-      <div class="panel-card">
-        <div class="panel-image p1">
-          <div class="panel-number">Panel 01</div>
-          <span style="z-index:1; position:relative;">⛴</span>
-        </div>
-        <div class="panel-body">
-          <div class="panel-text-jp">五年、ずっと走り続けてきた。</div>
-          <div class="panel-translation">"Five years of running without stopping."</div>
-          <div class="panel-tone">律 internal · exhaustion-landing · grey-blue palette</div>
-        </div>
-      </div>
-      <div class="panel-card">
-        <div class="panel-image p2">
-          <div class="panel-number">Panel 02</div>
-          <span style="z-index:1; position:relative;">⚓</span>
-        </div>
-        <div class="panel-body">
-          <div class="panel-text-jp">島は、予想よりずっと静かだった。</div>
-          <div class="panel-translation">"The island was much quieter than I had imagined."</div>
-          <div class="panel-tone">律 internal · desolate dock · rusted sign '輝島'</div>
-        </div>
-      </div>
-      <div class="panel-card">
-        <div class="panel-image p3">
-          <div class="panel-number">Panel 03</div>
-          <span style="z-index:1; position:relative;">🪶</span>
-        </div>
-        <div class="panel-body">
-          <div class="panel-text-jp">なにかが、ここで待っている気がした。</div>
-          <div class="panel-translation">"Something felt like it had been waiting here."</div>
-          <div class="panel-tone">律 internal · puzzle shimmer hint · crow on bollard</div>
-        </div>
-      </div>
+  <div class="philosophy-block">
+    <p>以关卡设计替代弹窗教学。规则通过视觉线索和即时反馈自然传达，零强制教程框、零箭头引导。玩家是来休息的成年人，不是等待被指导的学生——岛不催你，引导也不催你。</p>
+    <div class="principle">
+      <div class="principle-dot"></div>
+      <p><strong>发现而非灌输：</strong>每一条新规则都被包裹在一个有趣的关卡时刻里，让玩家在发现的瞬间自己感受到满足。失败是学习路径的一部分，不是惩罚。</p>
     </div>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
-      <div class="card">
-        <div class="h4">Character Introduced</div>
-        <div class="hinata-profile" style="padding:14px;">
-          <div class="hinata-avatar">律</div>
-          <div class="hinata-info">
-            <div class="hinata-name">山田律</div>
-            <div class="hinata-name-romaji">Yamada Ritsu · 29 · Ad Creative Director</div>
-            <div class="hinata-traits">
-              <span class="trait-tag">battered leather satchel</span>
-              <span class="trait-tag">5 years burnout</span>
-              <span class="trait-tag">silent observer</span>
-              <span class="trait-tag">copywriter's precision</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="h4">Visual Direction</div>
-        <ul>
-          <li>Color saturation: <strong>0%</strong> (minimum) — grey-white pre-restoration state</li>
-          <li>Lighting: dusk, warm amber against cool grey</li>
-          <li>Camera: panel 1 from behind 律's shoulder; panel 3 chest-level first-person</li>
-          <li>Ambient: ocean waves, distant gull, creaking wood</li>
-          <li>Puzzle tile shimmer: barely visible in panel 3 — curiosity plant, not explicit</li>
-        </ul>
-      </div>
+    <div class="principle">
+      <div class="principle-dot"></div>
+      <p><strong>视觉先于文字：</strong>发光的图块、橙色的阻挡格、渐暖的场景色温——所有教学信号都是视觉和音效，不依赖任何强制阅读的文字框。</p>
     </div>
-
-    <div class="card warm">
-      <div class="h4">Step 2 — First ひなた Encounter (10s)</div>
-      <div class="hinata-profile" style="padding:14px; margin-bottom:14px;">
-        <div class="hinata-avatar" style="font-size:22px;">ひな</div>
-        <div class="hinata-info">
-          <div class="hinata-name">丸山ひなた</div>
-          <div class="hinata-name-romaji">Maruyama Hinata · 24 · Design student, returned from Osaka</div>
-          <div class="hinata-traits">
-            <span class="trait-tag">wooden hairpin (grandfather's)</span>
-            <span class="trait-tag">fisherman's ring on cord</span>
-            <span class="trait-tag">light linen shirt</span>
-            <span class="trait-tag">warm but not waiting</span>
-          </div>
-        </div>
-      </div>
-      <div style="background:var(--bg3); border-left: 3px solid var(--warm); padding:14px 18px; border-radius:0 8px 8px 0;">
-        <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">ひなた — dialogue</div>
-        <div style="font-size:17px; color:var(--text); margin-bottom:4px;">船で見かけました。渉のおじいちゃんからの手紙、たぶんあなた宛てだと思って。</div>
-        <div style="font-size:12px; color:var(--text-dim); font-style:italic;">"I noticed you on the ferry. This letter from grandfather Wataru — I think it was meant for you."</div>
-      </div>
-      <p style="margin-top:12px; font-size:12px;">
-        Tone: matter-of-fact warmth. ひなた does not stop to introduce herself. She hands the letter, makes eye contact for exactly one beat, then continues walking. She has her own purpose here. This independence makes her subsequent appearances meaningful.
-      </p>
+    <div class="principle">
+      <div class="principle-dot"></div>
+      <p><strong>节奏感受必须被主动触发：</strong>Combo计时器和快消维持Combo的爽快感，不能靠玩家自发发现——关卡设计须保证教学期间至少触发一次完整连击体验，让玩家知道游戏「快起来」是什么感觉。</p>
+    </div>
+    <div class="principle">
+      <div class="principle-dot"></div>
+      <p><strong>引导完成的标志：</strong>玩家自主完成一次完整消除并触发一次Combo，不需要任何提示框介入——这才是真正理解了游戏核心循环。</p>
+    </div>
+    <div class="principle">
+      <div class="principle-dot"></div>
+      <p><strong>叙事与引导对齐：</strong>教学关卡的每个重要时刻都与律抵达輝島的情感弧线同步——码头修复是第一个视觉奖励，健三的暖场台词是第一次人情连接，ひなた的手账是第一条情感悬念。</p>
     </div>
   </div>
 
-  <!-- ══════════════════ SECTION 3: LEVEL SPECS ══════════════════ -->
-  <div class="section">
-    <div class="section-title">03 · Tutorial Level Specifications — 1-1 through 1-3</div>
+  <!-- 2. 开场过场序列 -->
+  <div class="section-header">
+    <div class="section-number">2</div>
+    <h2>开场过场序列：律抵达輝島</h2>
+  </div>
 
-    <!-- LEVEL 1-1 -->
-    <div class="card highlight" style="margin-bottom:24px;">
-      <div class="level-header">
-        <div>
-          <div class="level-id-badge">1-1</div>
-          <div style="font-size:13px; color:var(--text-dim); margin-top:2px;">Teaching: tiles connect if path has ≤ 2 turns</div>
-        </div>
-        <div class="level-meta-row" style="margin:0;">
-          <span class="level-tag grid">4 × 4 grid</span>
-          <span class="level-tag pairs">4 tile pairs</span>
-          <span class="level-tag no-limit">no step limit</span>
-          <span class="level-tag time">~75s expected</span>
-        </div>
+  <div class="cutscene-grid">
+    <div class="cutscene-panel">
+      <div class="cutscene-panel-header">
+        <span class="cutscene-panel-num">第一幕 · 渡轮甲板</span>
       </div>
-
-      <div class="teaching-goal-box">
-        The first connection the player makes is a straight line — zero turns. No instruction needed: two glowing same-type tiles in the same row are irresistible. Once they connect, the player has intuitively understood the mechanic and will try increasingly complex paths.
-      </div>
-
-      <div class="two-col">
-        <div>
-          <div class="h4" style="margin-bottom:12px;">Grid Layout</div>
-          <div class="grid-container">
-            <!-- Row 0 -->
-            <div class="grid-row">
-              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
-              <div class="grid-cell empty"></div>
-            </div>
-            <!-- Row 1 -->
-            <div class="grid-row">
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell empty"></div>
-            </div>
-            <!-- Row 2 -->
-            <div class="grid-row">
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
-            </div>
-            <!-- Row 3 -->
-            <div class="grid-row">
-              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
-              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
-            </div>
-          </div>
-          <div class="grid-legend">
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(0,188,212,0.3);border-color:#00bcd4;"></div> T01</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,112,67,0.3);border-color:#ff7043;"></div> T02</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(156,39,176,0.3);border-color:#ce93d8;"></div> T03</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(76,175,80,0.3);border-color:#81c784;"></div> T04</div>
-          </div>
-          <div style="margin-top:10px; font-size:11px; color:var(--text-muted);">
-            T01 pair: straight line (row 0) — zero turns required<br>
-            T02 pair: same column (col 1) — zero turns required<br>
-            T03, T04: one turn each
-          </div>
-        </div>
-
-        <div>
-          <div class="h4" style="margin-bottom:12px;">Teaching Mechanics</div>
-          <ul style="margin-bottom:16px;">
-            <li>T01 pair in same row — visually identical and spatially aligned — the first tap is inevitable</li>
-            <li>T02 pair in same column teaches vertical connections</li>
-            <li>T03 and T04 require one turn each — player discovers BFS routing through natural play</li>
-            <li>16 cells, only 8 filled — generous empty space shows path possibilities</li>
-            <li>No obstacle, no noise, nothing to confuse</li>
-          </ul>
-
-          <div class="h4" style="margin-bottom:8px;">Affordances Active</div>
-          <div class="tag-row">
-            <span class="tag">tile_touch_glow</span>
-            <span class="tag">path_preview_dotted</span>
-            <span class="tag">tile_settle_animation</span>
-            <span class="tag">restoration_world_pulse</span>
-          </div>
-
-          <div class="feedback-row" style="margin-top:12px;">
-            <div class="feedback-box success">
-              <div class="fb-title">Success</div>
-              Tiles dissolve into light petal particles. Wooden-block chime (2 ascending notes). Remaining tiles settle gently.
-            </div>
-            <div class="feedback-box fail">
-              <div class="fb-title">Failed Path</div>
-              Soft red-orange pulse on tile. Single muted low note. Tiles return immediately. No penalty.
-            </div>
-          </div>
-
-          <div style="margin-top:16px; padding:10px 14px; background:var(--bg3); border-radius:6px; font-size:12px; color:var(--text-dim);">
-            <strong style="color:var(--warm);">Completion note:</strong> Level clears without fanfare. Dock boards beneath the grid glow warm amber briefly — the island exhaling.
-          </div>
-        </div>
+      <div class="cutscene-panel-body">
+        <p class="scene-text">黄昏时分，律背对镜头站在船尾栏杆旁，皮质旧公文包放在脚边。灰蓝色海面，远处輝島轮廓在薄雾中浮现。色调低饱和，律的剪影在冷色背景前呈现暖琥珀色。</p>
+        <div class="caption">「五年了，我不记得上一次放空是什么时候。」</div>
       </div>
     </div>
-
-    <!-- LEVEL 1-2 -->
-    <div class="card" style="margin-bottom:24px; border-color:rgba(232,184,109,0.3);">
-      <div class="level-header">
-        <div>
-          <div class="level-id-badge" style="color:var(--warm);">1-2</div>
-          <div style="font-size:13px; color:var(--text-dim); margin-top:2px;">Teaching: blocked paths require alternate routing + first combo</div>
-        </div>
-        <div class="level-meta-row" style="margin:0;">
-          <span class="level-tag grid">5 × 5 grid</span>
-          <span class="level-tag pairs">6 tile pairs</span>
-          <span class="level-tag no-limit">no step limit</span>
-          <span class="level-tag time">~90s expected</span>
-          <span class="level-tag" style="border-color:rgba(255,82,82,0.4);color:var(--red-flag);background:var(--red-flag-bg);">1 obstacle</span>
-        </div>
+    <div class="cutscene-panel">
+      <div class="cutscene-panel-header">
+        <span class="cutscene-panel-num">第二幕 · 码头靠岸</span>
       </div>
-
-      <div class="teaching-goal-box" style="border-left-color:var(--warm);">
-        The wall gap blocks the most visually obvious path between one pair. The player's first attempt fails — the gap briefly glows to identify the blocker. The alternate L-shaped route is immediately visible. No text, no arrow: the blocked path is its own explanation.
-      </div>
-
-      <div class="two-col">
-        <div>
-          <div class="h4" style="margin-bottom:12px;">Grid Layout</div>
-          <div class="grid-container">
-            <!-- Row 0 -->
-            <div class="grid-row">
-              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
-            </div>
-            <!-- Row 1 -->
-            <div class="grid-row">
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
-              <div class="grid-cell gap"></div>
-              <div class="grid-cell gap"></div>
-              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
-            </div>
-            <!-- Row 2 -->
-            <div class="grid-row">
-              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
-              <div class="grid-cell empty"></div>
-            </div>
-            <!-- Row 3 -->
-            <div class="grid-row">
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t05"><div class="tile-label">T05<br>⬟</div></div>
-            </div>
-            <!-- Row 4 -->
-            <div class="grid-row">
-              <div class="grid-cell t05"><div class="tile-label">T05<br>⬟</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t06"><div class="tile-label">T06<br>✦</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t06"><div class="tile-label">T06<br>✦</div></div>
-            </div>
-          </div>
-          <div class="grid-legend">
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(0,188,212,0.3);border-color:#00bcd4;"></div> T01</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,112,67,0.3);border-color:#ff7043;"></div> T02</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(156,39,176,0.3);border-color:#ce93d8;"></div> T03</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(76,175,80,0.3);border-color:#81c784;"></div> T04</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,193,7,0.3);border-color:#ffd54f;"></div> T05</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(233,30,99,0.3);border-color:#f48fb1;"></div> T06</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:var(--grid-gap);border-color:rgba(80,40,10,0.6);"></div> Gap (obstacle)</div>
-          </div>
-          <div style="margin-top:10px; font-size:11px; color:var(--text-muted);">
-            Wall gap at row 1, cols 2-3 blocks straight path from T01(0,0) to T01(0,4).<br>
-            T05-T06 placement enables combo if cleared consecutively.
-          </div>
-        </div>
-
-        <div>
-          <div class="h4" style="margin-bottom:12px;">Teaching Mechanics</div>
-          <ul style="margin-bottom:16px;">
-            <li>T01 pair: obvious path blocked by gap — player's first encounter with routing constraint</li>
-            <li>Gap glow affordance: obstacle cell briefly lights amber on failed connection — identifies the blocker without text</li>
-            <li>Alternate routes (going around the gap) require 1-2 turns — well within BFS ≤2 limit</li>
-            <li>T05 and T06 placed for natural combo: clearing T05 leaves T06 immediately accessible, combo window 2000ms</li>
-          </ul>
-
-          <div class="h4" style="margin-bottom:8px;">Combo Trigger — First Time</div>
-          <div style="background:var(--bg3); border:1px solid rgba(0,188,212,0.2); border-radius:8px; padding:12px;">
-            <p style="margin:0; font-size:12px;">
-              Clearing T05 immediately makes both T06 tiles the only remaining pair. If player clears T06 within 2 seconds: first combo fires. <strong style="color:var(--accent);">×2</strong> numeral floats up in teal and fades — no pause, no popup, flows from the match. A harmonic second note joins the chime.
-            </p>
-          </div>
-
-          <div class="h4" style="margin-bottom:8px; margin-top:14px;">Affordances Active</div>
-          <div class="tag-row">
-            <span class="tag">gap_glow_on_failed_path</span>
-            <span class="tag">combo_particle_trail</span>
-            <span class="tag">tile_settle_animation</span>
-            <span class="tag">path_preview_dotted</span>
-          </div>
-
-          <div style="margin-top:14px; font-size:12px; color:var(--text-dim);">
-            <strong style="color:var(--warm);">Emotional note (internal):</strong><br>
-            <span style="font-size:14px;">道は一本じゃない。それは島も、きっと同じだ。</span><br>
-            <em>"A path is never just one route. The island is probably the same."</em>
-          </div>
-        </div>
+      <div class="cutscene-panel-body">
+        <p class="scene-text">渡轮靠岸，木栈道腐旧，缆绳盐蚀，码头牌匾「輝島」字迹斑驳，杂草从板缝里钻出。整体色调灰白低饱和，远景灯台隐约可见但灯是灭的。</p>
+        <div class="caption">「岛比我想象中安静得多。」</div>
       </div>
     </div>
-
-    <!-- LEVEL 1-3 -->
-    <div class="card" style="border-color:rgba(105,240,174,0.3);">
-      <div class="level-header">
-        <div>
-          <div class="level-id-badge" style="color:var(--green);">1-3</div>
-          <div style="font-size:13px; color:var(--text-dim); margin-top:2px;">Teaching: completing levels restores the island — the payoff</div>
-        </div>
-        <div class="level-meta-row" style="margin:0;">
-          <span class="level-tag grid">5 × 5 grid</span>
-          <span class="level-tag pairs">7 tile pairs</span>
-          <span class="level-tag no-limit">no step limit</span>
-          <span class="level-tag time">~105s expected</span>
-          <span class="level-tag" style="border-color:rgba(255,82,82,0.4);color:var(--red-flag);background:var(--red-flag-bg);">2 obstacles</span>
-          <span class="level-tag" style="border-color:rgba(105,240,174,0.4);color:var(--green);background:var(--green-bg);">first 浮木 reward</span>
-        </div>
+    <div class="cutscene-panel">
+      <div class="cutscene-panel-header">
+        <span class="cutscene-panel-num">第三幕 · 第一步</span>
       </div>
-
-      <div class="teaching-goal-box" style="border-left-color:var(--green);">
-        The largest payoff of the FTUE. 7 pairs, 2 separate wall gaps — the player is confident now. Clearing the board triggers a restoration animation, ひなた's second appearance, and the first material reward. The puzzle-to-world-restoration loop is made unmistakably visible.
-      </div>
-
-      <div class="two-col">
-        <div>
-          <div class="h4" style="margin-bottom:12px;">Grid Layout</div>
-          <div class="grid-container">
-            <!-- Row 0 -->
-            <div class="grid-row">
-              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t01"><div class="tile-label">T01<br>◆</div></div>
-            </div>
-            <!-- Row 1 -->
-            <div class="grid-row">
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell gap"></div>
-              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
-            </div>
-            <!-- Row 2 -->
-            <div class="grid-row">
-              <div class="grid-cell t02"><div class="tile-label">T02<br>●</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t05"><div class="tile-label">T05<br>⬟</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t03"><div class="tile-label">T03<br>▲</div></div>
-            </div>
-            <!-- Row 3 -->
-            <div class="grid-row">
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell gap"></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t06"><div class="tile-label">T06<br>✦</div></div>
-              <div class="grid-cell empty"></div>
-            </div>
-            <!-- Row 4 -->
-            <div class="grid-row">
-              <div class="grid-cell t04"><div class="tile-label">T04<br>■</div></div>
-              <div class="grid-cell t05"><div class="tile-label">T05<br>⬟</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell t06"><div class="tile-label">T06<br>✦</div></div>
-              <div class="grid-cell t07"><div class="tile-label">T07<br>★</div></div>
-            </div>
-            <!-- Row 5 -->
-            <div class="grid-row">
-              <div class="grid-cell t07"><div class="tile-label">T07<br>★</div></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell empty"></div>
-              <div class="grid-cell empty"></div>
-            </div>
-          </div>
-          <div class="grid-legend">
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(0,188,212,0.3);border-color:#00bcd4;"></div> T01-T04</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,193,7,0.3);border-color:#ffd54f;"></div> T05</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(233,30,99,0.3);border-color:#f48fb1;"></div> T06</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:rgba(96,125,139,0.3);border-color:#b0bec5;"></div> T07</div>
-            <div class="legend-item"><div class="legend-swatch" style="background:var(--grid-gap);border-color:rgba(80,40,10,0.6);"></div> Gap ×2</div>
-          </div>
-        </div>
-
-        <div>
-          <div class="h4" style="margin-bottom:12px;">Completion Sequence</div>
-          <ol style="margin-bottom:16px;">
-            <li style="margin-bottom:6px;"><strong>Board clears</strong> — all 7 pairs resolved. Brief silence before the payoff begins.</li>
-            <li style="margin-bottom:6px;"><strong>Harbor restoration (4s)</strong> — dock planks straighten and warm. Sign '輝島' becomes readable. Overgrowth recedes. No narration.</li>
-            <li style="margin-bottom:6px;"><strong>ひなた appearance (3s)</strong> — she passes at mid-distance, glances at the restored dock, then at 律. A half-smile. Continues walking.</li>
-            <li style="margin-bottom:6px;"><strong>ひなた line:</strong> 「少し、変わりましたね。」— quiet observation, no praise. Wind chime note.</li>
-            <li><strong>浮木 reward (3s)</strong> — driftwood rises from dock boards and floats to inventory UI. Ambient text appears at screen bottom: 「集めた素材で、島を直せるかもしれない。」</li>
-          </ol>
-
-          <div class="h4" style="margin-bottom:8px;">Material Reward</div>
-          <div style="background:var(--green-bg); border:1px solid rgba(105,240,174,0.25); border-radius:8px; padding:12px; font-size:12px; margin-bottom:12px;">
-            <strong style="color:var(--green);">浮木 (Driftwood)</strong> — first material reward. Rises physically from the restored dock it helped create. The visual metaphor is closed: what you cleared became what is restored became what you carry forward.
-          </div>
-
-          <div class="h4" style="margin-bottom:8px;">Affordances Active</div>
-          <div class="tag-row">
-            <span class="tag">restoration_world_pulse</span>
-            <span class="tag">hinata_passive_presence</span>
-            <span class="tag">material_rise_animation</span>
-            <span class="tag">gap_glow_on_failed_path</span>
-          </div>
-
-          <div style="margin-top:14px; font-size:12px; color:var(--text-dim);">
-            <strong style="color:var(--green);">Emotional note (internal):</strong><br>
-            <span style="font-size:14px;">ここには、まだ何かが残っている。</span><br>
-            <em>"Something here still remains."</em>
-          </div>
-        </div>
+      <div class="cutscene-panel-body">
+        <p class="scene-text">律踏上栈道，行李箱轮子卡进木缝里，他蹲下来用手提着走——这是他在岛上做的第一件事，也是整个故事最准确的隐喻。栈板缝里图块微光隐约浮现。</p>
+        <div class="caption">「有什么东西，好像在这里等着。」</div>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════ SECTION 4: DROP-OFF RISK TABLE ══════════════════ -->
-  <div class="section">
-    <div class="section-title">04 · Drop-Off Risk Analysis</div>
+  <div class="first-interaction-card">
+    <h3>过场结束后 · 首次互动</h3>
+    <p>画面缓缓拉远，露出码头俯视全景。栈道板缝里隐约有图块形状的微光浮现，不标注、不说明，只是在那里等待。</p>
+    <p>ひなた从律身边经过，弯腰把卡住的箱轮轻轻抬了一下，只说「这块木头退潮后会翘」，说完就走。律回头时没记清她的脸，只记得铃声还在晃，海水味里混着一点碳粉墨水的气息。</p>
+    <p>之后画面自然推近码头第一关棋盘区域，无任何提示文字，等待玩家触碰。</p>
+  </div>
 
-    <div class="note-block">Red flag threshold indicates the minimum completion rate below which the step requires immediate design investigation. Expected rates are based on analogous healing/puzzle genre FTUE benchmarks.</div>
+  <!-- 3. 教学关卡表 -->
+  <div class="section-header">
+    <div class="section-number">3</div>
+    <h2>教学关卡表（第1–10关）</h2>
+  </div>
 
-    <div class="card" style="padding:0; overflow:hidden;">
-      <table class="risk-table">
+  <div class="level-grid">
+
+    <div class="level-card">
+      <div class="level-card-header">
+        <div class="level-badge">1</div>
+        <div class="level-title-block">
+          <div class="level-title">第一步：选中与连线</div>
+          <div class="level-tag-row">
+            <span class="tag tag-skip-no">不可跳过</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-card-body">
+        <div class="level-field mechanic-field">
+          <label>新机制</label>
+          <p>点击图块选中（发光），再点击同种图块完成连线消除（直线路径，零转角）</p>
+        </div>
+        <div class="level-field">
+          <label>教学方式</label>
+          <p>4×4 稀疏棋盘，第一对图块同行直线可消，选中后配对图块同步发光提示。零文字说明，完全依赖视觉反馈。8秒内无第二次点击则配对图块加速脉冲。</p>
+        </div>
+        <div class="level-field">
+          <label>成功标准</label>
+          <p>玩家自主完成全部4对消除，关卡清空</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-card-header">
+        <div class="level-badge">2</div>
+        <div class="level-title-block">
+          <div class="level-title">绕路也是路</div>
+          <div class="level-tag-row">
+            <span class="tag tag-skip-no">不可跳过</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-card-body">
+        <div class="level-field mechanic-field">
+          <label>新机制</label>
+          <p>路径最多允许2次转角；遇障碍需绕路（腐朽栈板空格作为障碍物视觉呈现）</p>
+        </div>
+        <div class="level-field">
+          <label>教学方式</label>
+          <p>5×5棋盘，障碍格阻断最明显直线——尝试失败后障碍格发暖橙色光0.8秒，自然引导视线。备选L形路径已在棋盘上可见。最后两对图块紧邻，自然形成Combo×2条件，粒子效果首次浮现。</p>
+        </div>
+        <div class="level-field">
+          <label>成功标准</label>
+          <p>完成全部6对消除，并至少触发一次连击×2反馈</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-card-header">
+        <div class="level-badge">3</div>
+        <div class="level-title-block">
+          <div class="level-title">码头的变化</div>
+          <div class="level-tag-row">
+            <span class="tag tag-skip-no">不可跳过</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-card-body">
+        <div class="level-field mechanic-field">
+          <label>新机制</label>
+          <p>关卡通关触发场景修复动画，玩法进度与岛屿视觉直接关联；素材收集UI首次展示</p>
+        </div>
+        <div class="level-field">
+          <label>教学方式</label>
+          <p>5×5棋盘，两处分离障碍格巩固绕路经验。通关后：码头修复动画（栈道变暖色、牌匾清晰化）；ひなた从远处经过，侧头说「少し、変わりましたね」然后继续走；浮木从修复栈道飘起进入背包UI。议长橘猫悄悄出现在修复好的栈道边，坐几秒后向左走离开。</p>
+        </div>
+        <div class="level-field">
+          <label>成功标准</label>
+          <p>完成全部7对消除，修复动画自动播放（不强制操作）</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-card-header">
+        <div class="level-badge">4</div>
+        <div class="level-title-block">
+          <div class="level-title">健三的码头</div>
+          <div class="level-tag-row">
+            <span class="tag tag-skip-no">不可跳过</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-card-body">
+        <div class="level-field mechanic-field">
+          <label>新机制</label>
+          <p>步数计数器首次静默出现（步数宽裕，本关不会失败）</p>
+        </div>
+        <div class="level-field">
+          <label>教学方式</label>
+          <p>6×6棋盘，步数设置为图块数的2倍（极宽裕）。步数计数器以小字显示在左上角，无专门讲解。关卡间隙健三出现：「坐吧，铃声一会儿会停的。」暖场台词，不涉及机制。目的是让玩家在无压力状态下自然注意到步数存在。</p>
+        </div>
+        <div class="level-field">
+          <label>成功标准</label>
+          <p>完成全部消除，步数计数器自然归零前通关</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-card-header">
+        <div class="level-badge">5</div>
+        <div class="level-title-block">
+          <div class="level-title">节奏加快了</div>
+          <div class="level-tag-row">
+            <span class="tag tag-skip-yes">可跳过</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-card-body">
+        <div class="level-field mechanic-field">
+          <label>新机制</label>
+          <p>Combo计时器（2秒窗口）首次出现；进度条首次出现时柔和发光动效持续约3秒后自动消失（不弹框不暂停游戏）</p>
+        </div>
+        <div class="level-field">
+          <label>教学方式</label>
+          <p>6×6棋盘，棋盘布局设计为必须快速完成3连的顺序，Combo×3倍率连击特效（橙红粒子+递进音效）首次出现。玩家在真实游戏中体验计时器工作方式，而非靠说明理解。</p>
+        </div>
+        <div class="level-field">
+          <label>成功标准</label>
+          <p>玩家触发至少一次Combo×3，关卡清空</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-card-header">
+        <div class="level-badge">6</div>
+        <div class="level-title-block">
+          <div class="level-title">保持节奏</div>
+          <div class="level-tag-row">
+            <span class="tag tag-skip-yes">可跳过</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-card-body">
+        <div class="level-field mechanic-field">
+          <label>新机制</label>
+          <p>连锁图块（cascade，Combo=3时生成）首次出现；橙红波纹自动链消动画首次演示</p>
+        </div>
+        <div class="level-field">
+          <label>教学方式</label>
+          <p>棋盘布局刻意排布为「连续可消除路径」，让玩家轻松维持5连击以上，感受Combo音效层层递进的节奏感。自然生成cascade图块时，自动链消动画在玩家维持爽快感中自发完成，无文字说明。</p>
+        </div>
+        <div class="level-field">
+          <label>成功标准</label>
+          <p>维持Combo≥5；连锁图块至少触发一次自动链消</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-card-header">
+        <div class="level-badge">7</div>
+        <div class="level-title-block">
+          <div class="level-title">图块变多了</div>
+          <div class="level-tag-row">
+            <span class="tag tag-skip-yes">可跳过</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-card-body">
+        <div class="level-field mechanic-field">
+          <label>新机制</label>
+          <p>可用图块种类增至8种（Ch1基础解锁阶段），棋盘信息密度上升；预判辅助按钮首次出现在UI上</p>
+        </div>
+        <div class="level-field">
+          <label>教学方式</label>
+          <p>7×7棋盘，图块种类从4种扩展到8种，密度增加。布局保证每种图块都有邻近同类可消，降低寻找成本。无新规则，只练习在更多图块中快速识别配对，培养连击流畅感。初始赠送10沙滩币，预判按钮可使用一次。</p>
+        </div>
+        <div class="level-field">
+          <label>成功标准</label>
+          <p>完成全部消除，关卡清空</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-card-header">
+        <div class="level-badge">8</div>
+        <div class="level-title-block">
+          <div class="level-title">步数开始有意义了</div>
+          <div class="level-tag-row">
+            <span class="tag tag-skip-yes">可跳过</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-card-body">
+        <div class="level-field mechanic-field">
+          <label>新机制</label>
+          <p>步数限制开始有实质压力（步数约为图块数×1.25），玩家首次体会步数管理的必要性</p>
+        </div>
+        <div class="level-field">
+          <label>教学方式</label>
+          <p>7×7棋盘，步数收紧，需避免无效操作。若步数剩余5步仍有≥3对未消除，棋盘边缘出现轻微红色呼吸光（无文字，纯视觉预警）。本关不展示续关，目的是让玩家体会步数压力但不被卡住（关卡可解性已设计保证充裕）。</p>
+        </div>
+        <div class="level-field">
+          <label>成功标准</label>
+          <p>在步数耗尽前通关</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-card-header">
+        <div class="level-badge">9</div>
+        <div class="level-title-block">
+          <div class="level-title">丸山ひなた的手账</div>
+          <div class="level-tag-row">
+            <span class="tag tag-skip-yes">可跳过</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-card-body">
+        <div class="level-field mechanic-field">
+          <label>新机制</label>
+          <p>NPC叙事触发：ひなた第二次完整登场，手账符号引发好奇，情感线与记忆碎片系统首次展示</p>
+        </div>
+        <div class="level-field">
+          <label>教学方式</label>
+          <p>8×8棋盘（Ch1标准尺寸），通关后触发ひなた第二次对话：她在码头石凳翻手账，律靠过去看见满页看不懂的符号，问「你在写什么」——她合上手账，说「岛况观测」，然后走了。律发现自己有点想知道那些符号是什么意思。健三·码头暖场记忆碎片片段首次解锁。</p>
+        </div>
+        <div class="level-field">
+          <label>成功标准</label>
+          <p>完成关卡，观看ひなた对话片段（剧情触发点，叙事时刻不可跳过）</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-card-header">
+        <div class="level-badge">10</div>
+        <div class="level-title-block">
+          <div class="level-title">续一步也没关系</div>
+          <div class="level-tag-row">
+            <span class="tag tag-skip-yes">可跳过</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-card-body">
+        <div class="level-field mechanic-field">
+          <label>新机制</label>
+          <p>沙滩币续关功能首次展示（步数耗尽时弹出，+5步/30沙滩币，不强制购买）</p>
+        </div>
+        <div class="level-field">
+          <label>教学方式</label>
+          <p>8×8棋盘，步数设置为略低于平均水平（图块数×1.1），部分玩家触发步数耗尽弹窗。「再试一次」与续关按钮等权重排列，无倾向性设计。暖色弹窗风格一致，不使用红色/紧迫感视觉。初始赠送100沙滩币，玩家有资本选择续关而无需立即付费。</p>
+        </div>
+        <div class="level-field">
+          <label>成功标准</label>
+          <p>通关（无论是否使用续关）；续关弹窗展示即视为本节教学完成</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 4. 特性解锁时间表 -->
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <h2>特性解锁时间表</h2>
+  </div>
+
+  <div class="unlock-table-wrap">
+    <table class="unlock-table">
+      <thead>
+        <tr>
+          <th>解锁关卡</th>
+          <th>特性</th>
+          <th>教学触发方式</th>
+          <th>强制演示</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="level-num">第1关</td>
+          <td>基础连线消除（≤2转角路径匹配）</td>
+          <td>稀疏棋盘第一对图块直线可消，触碰图块即触发发光引导</td>
+          <td><span class="force-demo-no">否</span></td>
+        </tr>
+        <tr>
+          <td class="level-num">第2关</td>
+          <td>障碍物绕路</td>
+          <td>腐朽栈板空格阻断直线，连接失败后障碍格发橙光，玩家自发寻找绕路</td>
+          <td><span class="force-demo-no">否</span></td>
+        </tr>
+        <tr>
+          <td class="level-num">第3关</td>
+          <td>场景修复视觉反馈 + 素材收集UI</td>
+          <td>通关后自动触发码头修复动画，浮木从栈道飘起进入背包，无文字说明</td>
+          <td><span class="force-demo-yes">是</span></td>
+        </tr>
+        <tr>
+          <td class="level-num">第4关</td>
+          <td>步数计数器（静默引入）</td>
+          <td>步数计数器静默出现在UI左上角，宽裕步数确保玩家不会失败，自然观察到存在</td>
+          <td><span class="force-demo-no">否</span></td>
+        </tr>
+        <tr>
+          <td class="level-num">第5关</td>
+          <td>Combo计时器（节奏连击系统）</td>
+          <td>进度条首次出现时柔和发光动效持续3秒后自动消失；关卡保证触发Combo≥3，玩家在游戏中体验而非说明理解</td>
+          <td><span class="force-demo-yes">是</span></td>
+        </tr>
+        <tr>
+          <td class="level-num">第6关</td>
+          <td>连锁图块（cascade，Combo=3生成）</td>
+          <td>维持Combo≥3自然生成连锁图块，橙红波纹自动链消，玩家在爽快感中自发理解效果</td>
+          <td><span class="force-demo-no">否</span></td>
+        </tr>
+        <tr>
+          <td class="level-num">第7关</td>
+          <td>预判辅助（场外道具，10沙滩币）</td>
+          <td>图块种类增加时预判按钮首次显示，初始赠送10沙滩币可使用一次</td>
+          <td><span class="force-demo-no">否</span></td>
+        </tr>
+        <tr>
+          <td class="level-num">第10关</td>
+          <td>沙滩币续关（+5步，30沙滩币）</td>
+          <td>步数耗尽时弹出续关弹窗，两选项等权重，不强制购买，初始100沙滩币铺垫</td>
+          <td><span class="force-demo-no">否</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 5. 摩擦点分析与对策 -->
+  <div class="section-header">
+    <div class="section-number">5</div>
+    <h2>摩擦点分析与对策</h2>
+  </div>
+
+  <div class="friction-grid">
+
+    <div class="friction-card severity-high">
+      <div class="friction-card-header">
+        <span class="severity-badge high">高风险</span>
+        <span style="font-size:0.88rem;font-weight:600;color:var(--heading)">首次操作：玩家不理解「点击另一个同种图块」的连线规则</span>
+      </div>
+      <div class="friction-card-body">
+        <div class="friction-field">
+          <label>摩擦描述</label>
+          <p>玩家第一次触碰图块时，可能反复点击同一图块或乱点，无法自发发现「选一个→点另一个同种图块→连线消除」的操作逻辑。</p>
+        </div>
+        <div class="friction-field">
+          <label>设计对策</label>
+          <p>第1关4×4极稀疏棋盘，第一对图块直线排列且选中后配对图块同步发光；8秒内无第二次点击，匹配图块加速脉冲吸引注意。零文字，完全依赖视觉反馈，降低认知门槛至最低。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="friction-card severity-high">
+      <div class="friction-card-header">
+        <span class="severity-badge high">高风险</span>
+        <span style="font-size:0.88rem;font-weight:600;color:var(--heading)">首次遇到障碍：误认为图块无法消除或游戏Bug</span>
+      </div>
+      <div class="friction-card-body">
+        <div class="friction-field">
+          <label>摩擦描述</label>
+          <p>玩家尝试最明显的直线路径被阻断时，可能误以为这两个图块存在问题，或认为游戏出了Bug，产生挫败感和困惑。</p>
+        </div>
+        <div class="friction-field">
+          <label>设计对策</label>
+          <p>障碍物用「腐朽栈板破洞」视觉元素表达（暗色木纹+空洞），与正常图块格子明显区别；连接失败后障碍格发暖橙光0.8秒，自然引导视线至阻塞点。备选L形路径在棋盘上已可见，玩家探索即可发现。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="friction-card severity-high">
+      <div class="friction-card-header">
+        <span class="severity-badge high">高风险</span>
+        <span style="font-size:0.88rem;font-weight:600;color:var(--heading)">Combo计时器首次出现：焦虑或忽视</span>
+      </div>
+      <div class="friction-card-body">
+        <div class="friction-field">
+          <label>摩擦描述</label>
+          <p>Combo计时器进度条首次出现时，玩家可能不理解含义而产生焦虑（「有时间限制了？」），或完全忽视它而错过核心爽快感机制。</p>
+        </div>
+        <div class="friction-field">
+          <label>设计对策</label>
+          <p>第5关进度条首次出现时，柔和发光动效吸引注意3秒后自动消失，不弹框不暂停游戏。关卡棋盘布局保证玩家必然触发Combo≥3，让玩家在真实游戏中体验计时器工作方式——感受比说明更有效。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="friction-card severity-medium">
+      <div class="friction-card-header">
+        <span class="severity-badge medium">中风险</span>
+        <span style="font-size:0.88rem;font-weight:600;color:var(--heading)">续关弹窗：新玩家感到被推销</span>
+      </div>
+      <div class="friction-card-body">
+        <div class="friction-field">
+          <label>摩擦描述</label>
+          <p>步数耗尽时的续关弹窗，可能让新玩家感到游戏在趁机推销付费，尤其是在尚未建立信任感的引导阶段。</p>
+        </div>
+        <div class="friction-field">
+          <label>设计对策</label>
+          <p>第10关首次展示续关弹窗，「再试一次」与续关按钮等权重排列，无倾向性视觉差异；弹窗保持暖色治愈调，不使用红色/紧迫感设计。初始赠送100沙滩币，玩家有资本选择续关而无需立即付费。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="friction-card severity-medium">
+      <div class="friction-card-header">
+        <span class="severity-badge medium">中风险</span>
+        <span style="font-size:0.88rem;font-weight:600;color:var(--heading)">图块种类突增：视觉信息量翻倍导致迷失</span>
+      </div>
+      <div class="friction-card-body">
+        <div class="friction-field">
+          <label>摩擦描述</label>
+          <p>第7关图块种类从4种扩展到8种，视觉信息量翻倍，玩家可能短暂迷失，花大量时间寻找配对，打断Combo节奏。</p>
+        </div>
+        <div class="friction-field">
+          <label>设计对策</label>
+          <p>第7关棋盘布局确保每种图块都有视觉可及的同类邻近，图块图案差异度高（形状+颜色双重区分）；新增图块采用渐进方式进入。预判辅助按钮此关开放，玩家迷失时有主动求助途径。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="friction-card severity-medium">
+      <div class="friction-card-header">
+        <span class="severity-badge medium">中风险</span>
+        <span style="font-size:0.88rem;font-weight:600;color:var(--heading)">跳过剧情内容：丧失情感连接</span>
+      </div>
+      <div class="friction-card-body">
+        <div class="friction-field">
+          <label>摩擦描述</label>
+          <p>玩家快速跳过过场动画和NPC对话，导致错过情感叙事，将游戏视为纯消除，降低D1留存动力。</p>
+        </div>
+        <div class="friction-field">
+          <label>设计对策</label>
+          <p>开场过场（3幕）和ひなた初次相遇设为不可跳过；第3关修复动画自动播放；NPC关键对话（第1关后健三/第9关后ひなた）设计为短片段（每段&lt;15秒），节奏简短不拖沓，减少跳过动机。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="friction-card severity-low">
+      <div class="friction-card-header">
+        <span class="severity-badge low">低风险</span>
+        <span style="font-size:0.88rem;font-weight:600;color:var(--heading)">连锁图块自动链消：玩家感到失去主控</span>
+      </div>
+      <div class="friction-card-body">
+        <div class="friction-field">
+          <label>摩擦描述</label>
+          <p>cascade图块触发自动链消时，玩家可能感到「游戏在替我操作」而失去主控感，不清楚是功能还是Bug。</p>
+        </div>
+        <div class="friction-field">
+          <label>设计对策</label>
+          <p>cascade自动链消每次有0.3秒延迟，玩家可以看清每步过程；音效节奏逐步加快营造爽快感；橙红波纹视觉清晰表明这是奖励效果。在爽快感语境中出现，玩家自然接受「这是奖励」。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="friction-card severity-low">
+      <div class="friction-card-header">
+        <span class="severity-badge low">低风险</span>
+        <span style="font-size:0.88rem;font-weight:600;color:var(--heading)">通关速度过快：错过治愈叙事氛围</span>
+      </div>
+      <div class="friction-card-body">
+        <div class="friction-field">
+          <label>摩擦描述</label>
+          <p>部分玩家在前3关内通关速度过快，错过治愈叙事氛围，游戏对他们而言只是「消除游戏」而非「情感体验」。</p>
+        </div>
+        <div class="friction-field">
+          <label>设计对策</label>
+          <p>过场动画和修复动画不可跳过，确保每位玩家都经历核心情感时刻；关卡清空后有0.5秒「环境呼吸」动画（音效+色彩温度小幅提升），不立即跳转下一关，留给玩家自然感受。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 6. NPC首次登场序列 -->
+  <div class="section-header">
+    <div class="section-number">6</div>
+    <h2>NPC首次登场序列</h2>
+  </div>
+
+  <div class="npc-timeline">
+
+    <div class="npc-item">
+      <div class="npc-dot"></div>
+      <div class="npc-card">
+        <div class="npc-card-header">
+          <span class="npc-level-badge">第1关前 · 过场结束后</span>
+          <span class="npc-name">丸山ひなた（24岁，灯台守孙女）</span>
+        </div>
+        <div class="npc-card-body">
+          ひなた与律同日抵岛，她弯腰把律卡住的行李箱轮轻轻抬了一下，只说「这块木头退潮后会翘」，说完就走。律回头时没记清她的脸，只记得铃声还在晃，海水味里混着一点碳粉墨水的气息。这是若有若无情感线的第一次接触，无任何浪漫意图表达——ひなた只是在做自己做的事。
+        </div>
+      </div>
+    </div>
+
+    <div class="npc-item">
+      <div class="npc-dot"></div>
+      <div class="npc-card">
+        <div class="npc-card-header">
+          <span class="npc-level-badge">第1关通关后</span>
+          <span class="npc-name">磯部健三（约70岁，老渔夫，Ch1向导）</span>
+        </div>
+        <div class="npc-card-body">
+          健三从码头走过，把一杯热茶放到律旁边，说「坐吧，铃声一会儿会停的」。铃声没有停，但律坐下来了——茶是热的。随后健三路过又看了一眼律反复调整的行李箱，说「能走就行」，就继续去收网了。简短暖场，不解释任何背景故事，温暖从举动中自然发生。
+        </div>
+      </div>
+    </div>
+
+    <div class="npc-item">
+      <div class="npc-dot"></div>
+      <div class="npc-card">
+        <div class="npc-card-header">
+          <span class="npc-level-badge">第3关修复动画后</span>
+          <span class="npc-name">议长（橘猫，岛上资历最老的居民）</span>
+        </div>
+        <div class="npc-card-body">
+          第3关码头修复动画播放时，议长悄悄出现在修复好的栈道边缘，坐了几秒，然后起身向左走。健三在旁边若无其事地在档案册上记了一条（玩家看不见记了什么）。议长不说话，只是出现在合适的地方——这是贯穿全章的温暖存在方式的首次展示。
+        </div>
+      </div>
+    </div>
+
+    <div class="npc-item">
+      <div class="npc-dot"></div>
+      <div class="npc-card">
+        <div class="npc-card-header">
+          <span class="npc-level-badge">第9关通关后</span>
+          <span class="npc-name">丸山ひなた（手账线索 · 第二次完整登场）</span>
+        </div>
+        <div class="npc-card-body">
+          ひなた坐在码头石凳上翻着手账，律靠过去，看见满页看不懂的符号体系。律问她在写什么，她合上手账，说「岛况观测」，然后走了。律发现自己有点想知道那些符号是什么意思。这是ひなた手账线索的首次引入，为后续章节情感线埋下好奇心伏笔。健三·码头暖场记忆碎片片段同步解锁。
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 7. UI界面流程图 -->
+  <div class="section-header">
+    <div class="section-number">7</div>
+    <h2>UI界面流程图</h2>
+  </div>
+
+  <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:1.5rem;">覆盖首次游玩会话的完整界面转跳路径，包含所有弹窗、覆盖层、失败/成功状态及恢复路径。</p>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1.5rem;">
+    <div style="background:var(--surface2);border-bottom:1px solid var(--border);padding:0.8rem 1.2rem;">
+      <strong style="font-size:0.9rem;color:var(--heading)">界面节点一览</strong>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="unlock-table" style="min-width:700px;">
         <thead>
           <tr>
-            <th style="width:36px;">#</th>
-            <th>Step</th>
-            <th style="width:180px;">Expected Completion</th>
-            <th style="width:110px;">Red Flag ⚑</th>
-            <th>Risk</th>
-            <th>Mitigation</th>
+            <th>界面ID</th>
+            <th>界面名称</th>
+            <th>进入条件</th>
+            <th>退出路径</th>
+            <th>返回行为</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><span class="step-badge cutscene">1</span></td>
-            <td><strong>Opening Cutscene</strong><br><span style="font-size:11px;color:var(--text-muted);">律の到着</span></td>
-            <td>
-              <div class="pct-bar">
-                <div class="pct-track"><div class="pct-fill" style="width:97%;"></div></div>
-                <div class="pct-num" style="color:var(--green);">97%</div>
-              </div>
-            </td>
-            <td><span class="threshold-badge">⚑ 82%</span></td>
-            <td style="font-size:12px;">Player exits before panels end — unclear what genre/game this is</td>
-            <td style="font-size:12px;">15s max, tap-to-advance. Puzzle shimmer in panel 3 creates visual curiosity hook before any gameplay.</td>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">screen_splash</code></td>
+            <td>启动画面</td>
+            <td>应用首次启动</td>
+            <td>自动跳转→开场过场</td>
+            <td>禁用</td>
           </tr>
           <tr>
-            <td><span class="step-badge cutscene">2</span></td>
-            <td><strong>First ひなた Encounter</strong><br><span style="font-size:11px;color:var(--text-muted);">ひなたとの出会い</span></td>
-            <td>
-              <div class="pct-bar">
-                <div class="pct-track"><div class="pct-fill" style="width:96%;"></div></div>
-                <div class="pct-num" style="color:var(--green);">96%</div>
-              </div>
-            </td>
-            <td><span class="threshold-badge">⚑ 82%</span></td>
-            <td style="font-size:12px;">Dialogue feels slow or forced — player disengages before establishing character interest</td>
-            <td style="font-size:12px;">Single practical line. ひなた doesn't stop walking — action communicates personality efficiently. 10s total.</td>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">screen_opening_cutscene</code></td>
+            <td>开场过场（三幕）</td>
+            <td>Splash结束后首次进入，或从主菜单「重看开场」</td>
+            <td>过场结束→首次互动（ひなた登场）→第1关棋盘</td>
+            <td>禁用（不可跳过）</td>
           </tr>
           <tr>
-            <td><span class="step-badge cutscene">3</span></td>
-            <td><strong>Island Overview</strong><br><span style="font-size:11px;color:var(--text-muted);">港の風景</span></td>
-            <td>
-              <div class="pct-bar">
-                <div class="pct-track"><div class="pct-fill" style="width:95%;"></div></div>
-                <div class="pct-num" style="color:var(--green);">95%</div>
-              </div>
-            </td>
-            <td><span class="threshold-badge">⚑ 80%</span></td>
-            <td style="font-size:12px;">Non-interactive 5s screen reads as loading screen — player disengages</td>
-            <td style="font-size:12px;">Wind animation and ambient SFX keep the screen alive. Auto-advances — no waiting. Faint tile glow draws eye forward.</td>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">screen_main_menu</code></td>
+            <td>主菜单</td>
+            <td>非首次进入时应用启动；关卡结算后返回</td>
+            <td>「继续」→关卡选择；「设置」→设置浮层</td>
+            <td>确认弹窗（退出应用）</td>
           </tr>
           <tr>
-            <td><span class="step-badge puzzle">4</span></td>
-            <td><strong>Level 1-1</strong><br><span style="font-size:11px;color:var(--text-muted);">基本接続を学ぶ</span></td>
-            <td>
-              <div class="pct-bar">
-                <div class="pct-track"><div class="pct-fill warning" style="width:92%;"></div></div>
-                <div class="pct-num" style="color:var(--amber);">92%</div>
-              </div>
-            </td>
-            <td><span class="threshold-badge">⚑ 75%</span></td>
-            <td style="font-size:12px;">Player fails to discover mechanic without instruction text — taps tiles without understanding</td>
-            <td style="font-size:12px;">4×4 sparse grid, first pair in straight line — connection is visually inevitable. 8-second idle triggers subtle urgency pulse on tile. Still no text.</td>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">screen_island_map</code></td>
+            <td>岛屿地图</td>
+            <td>主菜单「继续」；关卡完成后章节内返回</td>
+            <td>点击关卡节点→关卡加载；点击NPC→对话弹窗</td>
+            <td>返回主菜单</td>
           </tr>
           <tr>
-            <td><span class="step-badge puzzle">5</span></td>
-            <td><strong>Level 1-2</strong><br><span style="font-size:11px;color:var(--text-muted);">障害物を学ぶ</span></td>
-            <td>
-              <div class="pct-bar">
-                <div class="pct-track"><div class="pct-fill warning" style="width:87%;"></div></div>
-                <div class="pct-num" style="color:var(--amber);">87%</div>
-              </div>
-            </td>
-            <td><span class="threshold-badge">⚑ 70%</span></td>
-            <td style="font-size:12px;">Wall gap blocks expected path — player frustrated without seeing why</td>
-            <td style="font-size:12px;">Gap texture is visually unmistakable broken-board. Gap cell glows amber on failed attempt — cause-effect teaching. 5×5 grid gives room for alternate route.</td>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">screen_level_loading</code></td>
+            <td>关卡加载</td>
+            <td>点击关卡节点后</td>
+            <td>加载完成→棋盘游戏界面</td>
+            <td>禁用</td>
           </tr>
           <tr>
-            <td><span class="step-badge puzzle">6</span></td>
-            <td><strong>Level 1-3</strong><br><span style="font-size:11px;color:var(--text-muted);">島が戻ってくる</span></td>
-            <td>
-              <div class="pct-bar">
-                <div class="pct-track"><div class="pct-fill warning" style="width:83%;"></div></div>
-                <div class="pct-num" style="color:var(--amber);">83%</div>
-              </div>
-            </td>
-            <td><span class="threshold-badge">⚑ 65%</span></td>
-            <td style="font-size:12px;">7-pair puzzle feels long before payoff — player loses interest mid-level</td>
-            <td style="font-size:12px;">Multiple valid solve orders give sense of agency. Two separated obstacles feel like discoveries not walls. Post-completion restoration is largest payoff yet — worth the investment.</td>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">screen_gameplay</code></td>
+            <td>棋盘游戏界面</td>
+            <td>关卡加载完成</td>
+            <td>通关→结算成功；步数耗尽→续关浮层；暂停按钮→暂停浮层</td>
+            <td>触发暂停浮层</td>
           </tr>
           <tr>
-            <td><span class="step-badge reward">7</span></td>
-            <td><strong>Material Reward</strong><br><span style="font-size:11px;color:var(--text-muted);">素材を得る</span></td>
-            <td>
-              <div class="pct-bar">
-                <div class="pct-track"><div class="pct-fill" style="width:91%;"></div></div>
-                <div class="pct-num" style="color:var(--green);">91%</div>
-              </div>
-            </td>
-            <td><span class="threshold-badge">⚑ 78%</span></td>
-            <td style="font-size:12px;">Reward UI feels arbitrary or unfamiliar — player doesn't understand what 浮木 is for</td>
-            <td style="font-size:12px;">Material rises physically from the dock just restored — metaphor is self-explaining. Ambient text provides minimal context without instruction. Animation is satisfying.</td>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">screen_level_success</code></td>
+            <td>关卡成功结算</td>
+            <td>棋盘全部消除</td>
+            <td>「下一关」→关卡加载；「地图」→岛屿地图；若有剧情触发→剧情对话弹窗</td>
+            <td>返回岛屿地图</td>
           </tr>
           <tr>
-            <td><span class="step-badge reward">8</span></td>
-            <td><strong>Harbor Restored</strong><br><span style="font-size:11px;color:var(--text-muted);">港が少し、戻ってきた</span></td>
-            <td>
-              <div class="pct-bar">
-                <div class="pct-track"><div class="pct-fill" style="width:89%;"></div></div>
-                <div class="pct-num" style="color:var(--green);">89%</div>
-              </div>
-            </td>
-            <td><span class="threshold-badge">⚑ 76%</span></td>
-            <td style="font-size:12px;">Map reveal underwhelming if visual change is too subtle — player doesn't feel the restoration</td>
-            <td style="font-size:12px;">Harbor section transitions from grey to warm color in a visible left-to-right sweep. Surrounding grey areas hint at future potential. 15s — enough time to absorb before gameplay opens.</td>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">screen_scene_repair</code></td>
+            <td>场景修复动画</td>
+            <td>特定关卡通关后自动触发（第3、10、20…关）</td>
+            <td>动画结束→自动返回结算或地图</td>
+            <td>禁用（不可跳过）</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">screen_npc_dialogue</code></td>
+            <td>NPC对话弹窗</td>
+            <td>剧情触发点（关卡通关后或地图点击）</td>
+            <td>对话结束→自动关闭返回来源界面</td>
+            <td>仅可跳过非核心剧情；核心剧情（ひなた初次/开场）禁用返回</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">overlay_pause</code></td>
+            <td>暂停浮层</td>
+            <td>游戏中点击暂停按钮</td>
+            <td>「继续」→恢复游戏；「重新开始」→确认弹窗；「地图」→确认弹窗→岛屿地图</td>
+            <td>关闭浮层（继续游戏）</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">overlay_continue</code></td>
+            <td>续关弹窗（步数耗尽）</td>
+            <td>步数归零时自动触发</td>
+            <td>「续关+5步」→关卡继续；「再试一次」→重置关卡；「放弃」→岛屿地图</td>
+            <td>等同「再试一次」</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">overlay_settings</code></td>
+            <td>设置浮层</td>
+            <td>主菜单或暂停中触发</td>
+            <td>关闭按钮→返回来源界面</td>
+            <td>关闭浮层</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:0.78rem;background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;">overlay_confirm_quit</code></td>
+            <td>放弃关卡确认弹窗</td>
+            <td>暂停中点击「地图」或「重新开始」</td>
+            <td>「确认」→目标界面；「取消」→关闭弹窗</td>
+            <td>取消（关闭弹窗）</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- ══════════════════ SECTION 5: NO-POPUP TEACHING METHODOLOGY ══════════════════ -->
-  <div class="section">
-    <div class="section-title">05 · No-Popup Teaching Methodology</div>
+  <!-- 首次游玩会话流程 -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.4rem 1.6rem;margin-bottom:1.5rem;">
+    <h3 style="font-size:0.95rem;font-weight:700;color:var(--heading);margin-bottom:1rem;">首次游玩会话路径</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;font-size:0.84rem;color:var(--text);">
+      <span style="background:var(--sea-dim);border:1px solid var(--sea-border);color:var(--sea);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">启动画面</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="background:var(--mystery-dim);border:1px solid var(--mystery-border);color:var(--mystery);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">开场过场</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="background:var(--mystery-dim);border:1px solid var(--mystery-border);color:var(--mystery);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">ひなた首次登场</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="background:var(--warm-dim);border:1px solid var(--warm-border);color:var(--warm);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">第1关棋盘</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="background:var(--sage-dim);border:1px solid var(--sage-border);color:var(--sage);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">结算成功</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="background:var(--amber-dim);border:1px solid var(--amber-border);color:var(--amber);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">健三NPC对话</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="background:var(--warm-dim);border:1px solid var(--warm-border);color:var(--warm);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">第2关…</span>
+    </div>
+    <p style="margin-top:1rem;font-size:0.84rem;color:var(--text-secondary);">首次进入时不展示主菜单，直接进入开场过场，完成后无缝衔接第1关棋盘。岛屿地图在第3关修复动画结束后首次解锁展示，用于玩家建立空间认知。</p>
+  </div>
 
-    <div class="two-col" style="margin-bottom:24px;">
-      <div>
-        <div class="h3">Visual Affordance Inventory</div>
-        <p>Every piece of information the player needs is communicated through visual or auditory affordances embedded in the game state itself. No popup windows. No arrows. No instruction text.</p>
+  <!-- 重复游玩会话流程 -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.4rem 1.6rem;margin-bottom:1.5rem;">
+    <h3 style="font-size:0.95rem;font-weight:700;color:var(--heading);margin-bottom:1rem;">重复游玩会话路径</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;font-size:0.84rem;color:var(--text);">
+      <span style="background:var(--sea-dim);border:1px solid var(--sea-border);color:var(--sea);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">启动→主菜单</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="background:var(--sea-dim);border:1px solid var(--sea-border);color:var(--sea);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">岛屿地图</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="background:var(--warm-dim);border:1px solid var(--warm-border);color:var(--warm);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">关卡棋盘</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="background:var(--sage-dim);border:1px solid var(--sage-border);color:var(--sage);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">结算</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="background:var(--sea-dim);border:1px solid var(--sea-border);color:var(--sea);padding:0.2rem 0.7rem;border-radius:6px;font-weight:600;">岛屿地图</span>
+    </div>
+    <p style="margin-top:1rem;font-size:0.84rem;color:var(--text-secondary);">存档玩家直接进入主菜单，「继续」按钮自动导向进度最深的未完成关卡所在章节地图。关卡通关后可选「下一关」（直接加载）或「地图」（返回选关）。</p>
+  </div>
+
+  <!-- 8. 屏幕布局规格 -->
+  <div class="section-header">
+    <div class="section-number">8</div>
+    <h2>屏幕布局规格</h2>
+  </div>
+
+  <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:1.5rem;">Cocos Creator 分辨率适配基准：设计分辨率 750×1334（竖屏），适配策略 FIXED_HEIGHT，安全区参考 iPhone 14（390×844 逻辑像素）。所有布局以移动端为优先，平板及桌面作为次级断点。</p>
+
+  <!-- 棋盘游戏界面布局 -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1.2rem;">
+    <div style="background:var(--warm-dim);border-bottom:1px solid var(--warm-border);padding:0.8rem 1.2rem;display:flex;align-items:center;gap:0.6rem;">
+      <span style="background:var(--warm-dim);border:1px solid var(--warm-border);color:var(--warm);font-size:0.7rem;font-weight:700;padding:0.15rem 0.55rem;border-radius:999px;">核心界面</span>
+      <strong style="font-size:0.9rem;color:var(--heading);">棋盘游戏界面（screen_gameplay）</strong>
+    </div>
+    <div style="padding:1.2rem 1.4rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+        <div>
+          <div style="font-size:0.68rem;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;">顶部区域（Top Bar）</div>
+          <p style="font-size:0.85rem;color:var(--text);line-height:1.65;">高度48dp。左侧：暂停按钮（44×44dp触控目标）；中间：关卡标题（Ch1-L1格式）；右侧：步数计数器（当步数≤5时数字变红）。安全区顶部留16dp间距（适配刘海/灵动岛）。</p>
+        </div>
+        <div>
+          <div style="font-size:0.68rem;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;">Combo计时器区域</div>
+          <p style="font-size:0.85rem;color:var(--text);line-height:1.65;">位于顶部区域正下方，高度12dp（进度条形式）。颜色随Combo等级变化：×1灰色→×2橙色→×3红橙→×4+金色。计时器到达80%剩余时轻微抖动动效。</p>
+        </div>
+        <div>
+          <div style="font-size:0.68rem;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;">棋盘区域（Playfield）</div>
+          <p style="font-size:0.85rem;color:var(--text);line-height:1.65;">受保护区域，不可被HUD元素覆盖。垂直居中，上下各留72dp给顶/底栏。棋盘单格尺寸：8×8棋盘格子约72×72dp（750宽设计稿）；棋盘四周留8dp安全边距，避免指触边缘误操作。</p>
+        </div>
+        <div>
+          <div style="font-size:0.68rem;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;">底部辅助工具栏（Bottom Bar）</div>
+          <p style="font-size:0.85rem;color:var(--text);line-height:1.65;">高度64dp，安全区底部留34dp（Home Bar适配）。从左到右：重排按钮（30沙滩币）、沙滩币余额显示、预判按钮（10沙滩币）。三个元素等分宽度；按钮触控目标≥44×44dp。</p>
+        </div>
       </div>
-      <div class="card" style="margin:0;">
-        <div class="h4">Prohibited Patterns</div>
-        <ul>
-          <li>「タップしてください」</li>
-          <li>「ここを押してください」</li>
-          <li>Any text with the word チュートリアル</li>
-          <li>「最初は…」 opening constructions</li>
-          <li>Exclamation marks in tutorial copy</li>
-          <li>Text that presumes player confusion</li>
-          <li>Arrows pointing at UI elements</li>
-          <li>Grayed-out UI with forced tap targets</li>
+      <div style="background:var(--surface2);border-radius:8px;padding:0.8rem 1rem;font-size:0.83rem;color:var(--text-secondary);">
+        <strong style="color:var(--text);">Cocos Creator适配备注：</strong>设计分辨率750×1334，适配策略FIXED_HEIGHT，允许左右留黑边。棋盘区域在Canvas中以锚点居中定位，不依赖屏幕绝对坐标。顶部Bar和底部Bar以相对于Canvas边缘的固定偏移定位，确保不同长宽比设备均可触及。
+      </div>
+    </div>
+  </div>
+
+  <!-- 主菜单 & 岛屿地图布局 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--sea-dim);border-bottom:1px solid var(--sea-border);padding:0.7rem 1rem;">
+        <strong style="font-size:0.88rem;color:var(--heading);">主菜单（screen_main_menu）</strong>
+      </div>
+      <div style="padding:1rem;">
+        <ul style="font-size:0.84rem;color:var(--text);line-height:1.8;padding-left:1.2rem;">
+          <li>全屏背景：灯塔+岛屿轮廓插图，低饱和暖色</li>
+          <li>顶部1/3：游戏Logo + 日语副标题「輝島」</li>
+          <li>中部：「继续」大按钮（主操作，W:220dp）</li>
+          <li>下方：「设置」「重看开场」两个次级按钮</li>
+          <li>底部右角：版本号（0.78rem灰色文字）</li>
         </ul>
       </div>
     </div>
-
-    <div class="affordance-card">
-      <div class="affordance-icon">✦</div>
-      <div>
-        <div class="affordance-name">tile_touch_glow</div>
-        <div class="affordance-trigger">Trigger: player taps any puzzle tile</div>
-        <div class="affordance-purpose">Confirms interactivity. The tile is 'alive'. No instruction needed to understand the game has begun.</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--sea-dim);border-bottom:1px solid var(--sea-border);padding:0.7rem 1rem;">
+        <strong style="font-size:0.88rem;color:var(--heading);">岛屿地图（screen_island_map）</strong>
       </div>
-      <div>
-        <div class="h4" style="font-size:10px;">Effect</div>
-        <p style="font-size:12px; margin:0;">Soft teal glow, +40% brightness, 0.5s pulse. Wooden hollow-bamboo tap sound. Single note.</p>
-      </div>
-    </div>
-
-    <div class="affordance-card">
-      <div class="affordance-icon">···</div>
-      <div>
-        <div class="affordance-name">path_preview_dotted</div>
-        <div class="affordance-trigger">Trigger: second tile of matching type is tapped</div>
-        <div class="affordance-purpose">Shows the connection route before commitment. Teaches BFS ≤2-turn routing through spatial visualization, not explanation.</div>
-      </div>
-      <div>
-        <div class="h4" style="font-size:10px;">Effect</div>
-        <p style="font-size:12px; margin:0;">Warm ivory dotted path line along valid route. No audio — the visual is the message. Absence of line for invalid routes teaches by difference.</p>
-      </div>
-    </div>
-
-    <div class="affordance-card">
-      <div class="affordance-icon">⊙</div>
-      <div>
-        <div class="affordance-name">gap_glow_on_failed_path</div>
-        <div class="affordance-trigger">Trigger: player attempts connection through an obstacle</div>
-        <div class="affordance-purpose">Points attention to the blocker without text. The gap is its own explanation once highlighted.</div>
-      </div>
-      <div>
-        <div class="h4" style="font-size:10px;">Effect</div>
-        <p style="font-size:12px; margin:0;">Obstacle cell glows muted amber-orange for 0.8s. Stone-in-water audio (not a buzzer). Calm and diagnostic, not punishing.</p>
-      </div>
-    </div>
-
-    <div class="affordance-card">
-      <div class="affordance-icon">↓</div>
-      <div>
-        <div class="affordance-name">tile_settle_animation</div>
-        <div class="affordance-trigger">Trigger: any pair successfully cleared</div>
-        <div class="affordance-purpose">Guides eye to remaining matches through relative brightness. Board 'breathes' between moves — living rhythm.</div>
-      </div>
-      <div>
-        <div class="h4" style="font-size:10px;">Effect</div>
-        <p style="font-size:12px; margin:0;">All tiles shift 2-3px settle movement. Tiles with clear line-of-sight to their match brighten slightly relative to others.</p>
-      </div>
-    </div>
-
-    <div class="affordance-card">
-      <div class="affordance-icon">×2</div>
-      <div>
-        <div class="affordance-name">combo_particle_trail</div>
-        <div class="affordance-trigger">Trigger: second pair cleared within 2000ms of first</div>
-        <div class="affordance-purpose">Rewards speed intrinsically without demanding it. Player discovers that rapid clearing has different sensory quality.</div>
-      </div>
-      <div>
-        <div class="h4" style="font-size:10px;">Effect</div>
-        <p style="font-size:12px; margin:0;">Brighter particle trail on cleared tiles. Teal '×2' numeral floats up, fades over 1s. Board border briefly brightens. Harmonic second note added to chime.</p>
-      </div>
-    </div>
-
-    <div class="affordance-card">
-      <div class="affordance-icon">🌊</div>
-      <div>
-        <div class="affordance-name">restoration_world_pulse</div>
-        <div class="affordance-trigger">Trigger: any level complete</div>
-        <div class="affordance-purpose">Links puzzle completion to world change before the explicit restoration cutscene. The connection is felt first, then shown.</div>
-      </div>
-      <div>
-        <div class="h4" style="font-size:10px;">Effect</div>
-        <p style="font-size:12px; margin:0;">Background shifts +5% warmer saturation. Ambient wave sound rises then settles — island exhaling. Accumulates across levels.</p>
-      </div>
-    </div>
-
-    <div class="affordance-card">
-      <div class="affordance-icon">ひな</div>
-      <div>
-        <div class="affordance-name">hinata_passive_presence</div>
-        <div class="affordance-trigger">Trigger: Level 1-3 completion restoration cutscene</div>
-        <div class="affordance-purpose">Emotional affordance — signals that the player's actions are witnessed by someone who matters. Not reward, not acknowledgment — just presence.</div>
-      </div>
-      <div>
-        <div class="h4" style="font-size:10px;">Effect</div>
-        <p style="font-size:12px; margin:0;">ひなた in background, mid-distance, not highlighted. Single wind-chime note coincides with her glance at 律.</p>
-      </div>
-    </div>
-
-    <div class="affordance-card">
-      <div class="affordance-icon">浮</div>
-      <div>
-        <div class="affordance-name">material_rise_animation</div>
-        <div class="affordance-trigger">Trigger: first 浮木 material reward after Level 1-3</div>
-        <div class="affordance-purpose">Makes material economy tangible, not transactional. The wood rising from the dock it helped restore closes a visual metaphor loop.</div>
-      </div>
-      <div>
-        <div class="h4" style="font-size:10px;">Effect</div>
-        <p style="font-size:12px; margin:0;">Material floats from dock boards to inventory UI corner with warm glow. Wind-chime 3-note ascent. Ripple effect on landing.</p>
-      </div>
-    </div>
-
-    <div class="affordance-card">
-      <div class="affordance-icon">⟳</div>
-      <div>
-        <div class="affordance-name">idle_urgency_pulse</div>
-        <div class="affordance-trigger">Trigger: selected tile untouched for 8 seconds</div>
-        <div class="affordance-purpose">Gentle invitation to act — not instruction, not punishment. The tile becomes slightly more energetic without telling the player what to do.</div>
-      </div>
-      <div>
-        <div class="h4" style="font-size:10px;">Effect</div>
-        <p style="font-size:12px; margin:0;">Pulse period shortens from 0.5s to 0.3s. Matching pair tile brightens very slightly. No audio. Resets if player taps anything.</p>
+      <div style="padding:1rem;">
+        <ul style="font-size:0.84rem;color:var(--text);line-height:1.8;padding-left:1.2rem;">
+          <li>全屏鸟瞰地图，可双指缩放（0.8×–1.5×）</li>
+          <li>顶部Bar：章节标题 + 沙滩币余额 + 设置按钮</li>
+          <li>关卡节点：圆形，已完成绿勾，当前关黄色脉冲</li>
+          <li>NPC站点：头像气泡，点击触发对话弹窗</li>
+          <li>底部：不固定，随地图内容滚动</li>
+        </ul>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════ SECTION 6: SCAFFOLDING PROGRESSION ══════════════════ -->
-  <div class="section">
-    <div class="section-title">06 · Scaffolding Progression — 1-1 → 1-2 → 1-3</div>
-
-    <p>Complexity increases simultaneously across four dimensions, ensuring no single dimension overwhelms. The player is always slightly ahead of the difficulty curve, never behind it.</p>
-
-    <div class="scaffold-grid" style="margin-top:16px;">
-      <div class="scaffold-header">Dimension</div>
-      <div class="scaffold-header">Level 1-1</div>
-      <div class="scaffold-header">Level 1-2</div>
-      <div class="scaffold-header">Level 1-3</div>
-
-      <div class="scaffold-row">
-        <div class="scaffold-header" style="font-size:12px; text-transform:none; letter-spacing:0; color:var(--text-dim);">Grid Size</div>
-        <div class="scaffold-cell">4 × 4 (16 cells)</div>
-        <div class="scaffold-cell">5 × 5 (25 cells)</div>
-        <div class="scaffold-cell">5 × 5 (25 cells, denser)</div>
+  <!-- 弹窗布局 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--amber-dim);border-bottom:1px solid var(--amber-border);padding:0.7rem 1rem;">
+        <strong style="font-size:0.88rem;color:var(--heading);">续关弹窗（overlay_continue）</strong>
       </div>
-
-      <div class="scaffold-row">
-        <div class="scaffold-header" style="font-size:12px; text-transform:none; letter-spacing:0; color:var(--text-dim);">Tile Pairs</div>
-        <div class="scaffold-cell">
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip"></span>
-          <span class="difficulty-pip"></span>
-          <span class="difficulty-pip"></span>
-          <br>
-          <span style="font-size:11px;color:var(--text-dim);">4 pairs (8 tiles)</span>
-        </div>
-        <div class="scaffold-cell">
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip"></span>
-          <br>
-          <span style="font-size:11px;color:var(--text-dim);">6 pairs (12 tiles)</span>
-        </div>
-        <div class="scaffold-cell">
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <span class="difficulty-pip filled"></span>
-          <br>
-          <span style="font-size:11px;color:var(--text-dim);">7 pairs (14 tiles)</span>
-        </div>
+      <div style="padding:1rem;">
+        <ul style="font-size:0.84rem;color:var(--text);line-height:1.8;padding-left:1.2rem;">
+          <li>半透明暗色蒙层覆盖棋盘</li>
+          <li>弹窗宽度：320dp；最小高度：220dp</li>
+          <li>标题：「还有一点点」（暖色大字）</li>
+          <li>主按钮：「续关+5步（30沙滩币）」</li>
+          <li>次按钮：「再试一次」（等权重，不弱化）</li>
+          <li>第三选项：「放弃本关」（小灰字，底部）</li>
+          <li>弹窗在最小视口（390×844）需完整显示，无滚动</li>
+        </ul>
       </div>
-
-      <div class="scaffold-row">
-        <div class="scaffold-header" style="font-size:12px; text-transform:none; letter-spacing:0; color:var(--text-dim);">Obstacles</div>
-        <div class="scaffold-cell" style="color:var(--green); font-size:12px;">None — pure open space</div>
-        <div class="scaffold-cell" style="color:var(--amber); font-size:12px;">1 gap — single blocked path</div>
-        <div class="scaffold-cell" style="color:var(--red-flag); font-size:12px;">2 gaps — separated, each blocking a different pair</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--mystery-dim);border-bottom:1px solid var(--mystery-border);padding:0.7rem 1rem;">
+        <strong style="font-size:0.88rem;color:var(--heading);">NPC对话弹窗（screen_npc_dialogue）</strong>
       </div>
-
-      <div class="scaffold-row">
-        <div class="scaffold-header" style="font-size:12px; text-transform:none; letter-spacing:0; color:var(--text-dim); border-bottom:none;">Routing Complexity</div>
-        <div class="scaffold-cell" style="border-bottom:none; font-size:12px;">First pair: 0 turns (straight line). Others: max 1 turn. Zero routing challenge.</div>
-        <div class="scaffold-cell" style="border-bottom:none; font-size:12px;">Most pairs: 1 turn. One pair: route around obstacle. Combo introduced at end.</div>
-        <div class="scaffold-cell" style="border-bottom:none; font-size:12px;">All pairs: 1-2 turns required. Two obstacle avoidances. Multiple valid clearing orders.</div>
+      <div style="padding:1rem;">
+        <ul style="font-size:0.84rem;color:var(--text);line-height:1.8;padding-left:1.2rem;">
+          <li>底部抽屉式，高度约屏幕40%</li>
+          <li>NPC头像（圆形，左侧64×64dp）</li>
+          <li>对话气泡宽度：屏幕宽-头像-24dp间距</li>
+          <li>每段对话≤80字，确保不触发滚动</li>
+          <li>跳过按钮：右上角「×」（非核心剧情时显示）</li>
+          <li>点击任意区域→推进到下一句台词</li>
+        </ul>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════ SECTION 7: COPY SPEC ══════════════════ -->
-  <div class="section">
-    <div class="section-title">07 · Copy Specification — All Tutorial Text in Japanese</div>
-
-    <div class="info-block">
-      Tone: healing game register. Thoughtful adult arriving somewhere new — not a student being taught. No exclamation marks. No directive language. Emotional and observational.
+  <!-- 断点适配规则 -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:1.5rem;">
+    <h3 style="font-size:0.92rem;font-weight:700;color:var(--heading);margin-bottom:0.9rem;">断点适配规则</h3>
+    <div style="overflow-x:auto;">
+      <table class="unlock-table" style="min-width:600px;">
+        <thead>
+          <tr>
+            <th>断点名称</th>
+            <th>目标尺寸（逻辑像素）</th>
+            <th>棋盘格子尺寸</th>
+            <th>主要适配策略</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>mobile_compact</strong></td>
+            <td>375×667（iPhone SE）</td>
+            <td>60×60dp</td>
+            <td>底部Bar收窄至52dp；按钮图标优先，文字隐藏</td>
+          </tr>
+          <tr>
+            <td><strong>mobile_standard</strong></td>
+            <td>390×844（iPhone 14）</td>
+            <td>72×72dp</td>
+            <td>基准布局，全部UI元素展示文字+图标</td>
+          </tr>
+          <tr>
+            <td><strong>mobile_large</strong></td>
+            <td>430×932（iPhone 14 Plus）</td>
+            <td>80×80dp</td>
+            <td>棋盘区域随高度扩展；底部Bar保持固定64dp</td>
+          </tr>
+          <tr>
+            <td><strong>tablet</strong></td>
+            <td>768×1024（iPad Mini）</td>
+            <td>92×92dp</td>
+            <td>棋盘左右加宽边距；底部工具栏选项加宽触控区</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <p style="font-size:0.82rem;color:var(--text-secondary);margin-top:0.8rem;margin-bottom:0;">Cocos Creator FIXED_HEIGHT策略：所有断点以相同画布高度渲染，宽度差异通过左右黑边（letterbox）处理。棋盘节点锚点设为(0.5, 0.5)，Canvas中心对齐，确保不同宽度屏幕棋盘始终居中可用。</p>
+  </div>
 
-    <!-- Cutscene copy -->
-    <div class="h3" style="margin-bottom:12px;">Opening Cutscene (律 internal monologue)</div>
+  <!-- 9. 引导完成定义与可量化指标 -->
+  <div class="section-header">
+    <div class="section-number">9</div>
+    <h2>引导完成定义与可量化指标</h2>
+  </div>
 
-    <div class="copy-card copy-cutscene">
-      <div class="copy-location">Panel 1<br>Arrival</div>
-      <div>
-        <div class="copy-jp">五年、ずっと走り続けてきた。</div>
-        <div class="copy-translation">"Five years of running without stopping."</div>
-      </div>
-      <div class="copy-speaker">律 / 内心</div>
-    </div>
-
-    <div class="copy-card copy-cutscene">
-      <div class="copy-location">Panel 2<br>Dock</div>
-      <div>
-        <div class="copy-jp">島は、予想よりずっと静かだった。</div>
-        <div class="copy-translation">"The island was much quieter than I had imagined."</div>
-      </div>
-      <div class="copy-speaker">律 / 内心</div>
-    </div>
-
-    <div class="copy-card copy-cutscene">
-      <div class="copy-location">Panel 3<br>First Steps</div>
-      <div>
-        <div class="copy-jp">なにかが、ここで待っている気がした。</div>
-        <div class="copy-translation">"Something felt like it had been waiting here."</div>
-      </div>
-      <div class="copy-speaker">律 / 内心</div>
-    </div>
-
-    <div class="h3" style="margin-top:24px; margin-bottom:12px;">ひなた Dialogue</div>
-
-    <div class="copy-card copy-dialogue">
-      <div class="copy-location">Step 2<br>ひなた encounter</div>
-      <div>
-        <div class="copy-jp">船で見かけました。渉のおじいちゃんからの手紙、たぶんあなた宛てだと思って。</div>
-        <div class="copy-translation">"I noticed you on the ferry. This letter from grandfather Wataru — I think it was meant for you."</div>
-      </div>
-      <div class="copy-speaker">丸山ひなた</div>
-    </div>
-
-    <div class="copy-card copy-dialogue">
-      <div class="copy-location">Step 6<br>1-3 payoff</div>
-      <div>
-        <div class="copy-jp">少し、変わりましたね。</div>
-        <div class="copy-translation">"It's changed a little, hasn't it."</div>
-      </div>
-      <div class="copy-speaker">丸山ひなた</div>
-    </div>
-
-    <div class="h3" style="margin-top:24px; margin-bottom:12px;">Ambient Text (not character-attributed)</div>
-
-    <div class="copy-card copy-ambient">
-      <div class="copy-location">Step 3<br>Island overview</div>
-      <div>
-        <div class="copy-jp">手紙には、島を頼むと書いてあった。</div>
-        <div class="copy-translation">"The letter said: take care of the island."</div>
-      </div>
-      <div class="copy-speaker">ambient</div>
-    </div>
-
-    <div class="copy-card copy-ambient">
-      <div class="copy-location">Step 7<br>Material reward</div>
-      <div>
-        <div class="copy-jp">集めた素材で、島を直せるかもしれない。</div>
-        <div class="copy-translation">"These materials may help restore the island."</div>
-      </div>
-      <div class="copy-speaker">ambient<br>(small type, bottom screen, 3s)</div>
-    </div>
-
-    <div class="h3" style="margin-top:24px; margin-bottom:12px;">Level Emotional Notes (internal diary register, not shown to player)</div>
-
-    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
-      <div class="card" style="padding:14px;">
-        <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Level 1-1</div>
-        <div style="font-size:15px; color:var(--text); margin-bottom:4px;">最初の一歩。足元の木が、少しだけ明るくなった気がした。</div>
-        <div style="font-size:11px; color:var(--text-dim); font-style:italic;">"First step. The wood underfoot felt slightly brighter."</div>
-      </div>
-      <div class="card" style="padding:14px;">
-        <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Level 1-2</div>
-        <div style="font-size:15px; color:var(--text); margin-bottom:4px;">道は一本じゃない。それは島も、きっと同じだ。</div>
-        <div style="font-size:11px; color:var(--text-dim); font-style:italic;">"A path is never just one route. The island is probably the same."</div>
-      </div>
-      <div class="card" style="padding:14px;">
-        <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px;">Level 1-3</div>
-        <div style="font-size:15px; color:var(--text); margin-bottom:4px;">ここには、まだ何かが残っている。</div>
-        <div style="font-size:11px; color:var(--text-dim); font-style:italic;">"Something here still remains."</div>
-      </div>
+  <div class="completion-card">
+    <h3>引导完成的定义</h3>
+    <div class="completion-def">
+      <p>玩家<strong>自主</strong>完成一次完整消除并触发一次Combo，<strong>不需要任何提示框介入</strong>——这才是真正理解了游戏核心循环。引导完成不等于看完所有教学内容，而是玩家已经内化了「选-连-消」和「快消维持Combo」这两个核心行为模式。</p>
     </div>
   </div>
 
-  <!-- ══════════════════ SECTION 8: D1 RETENTION SETUP ══════════════════ -->
-  <div class="section">
-    <div class="section-title">08 · D1 Retention Setup — By End of FTUE</div>
-
-    <p style="margin-bottom:20px;">
-      The FTUE is complete when the player has experienced all four retention anchors. Each anchor is a functional hook that creates a reason to return the next day. Together they establish the full emotional contract of the game.
-    </p>
-
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon green">✓</div>
-        <div>
-          <div class="check-text-title">First Island Restoration</div>
-          <div class="check-text-sub">Harbor dock partially restored — visible color change on island map. Player has caused a physical change in the world. The loop is proven.</div>
-        </div>
-      </div>
-
-      <div class="check-item">
-        <div class="check-icon green">✓</div>
-        <div>
-          <div class="check-text-title">ひなた Seen Twice</div>
-          <div class="check-text-sub">Step 2 (letter hand-off) + Step 6 (post-restoration glance). Two brief encounters with appropriate distance — intrigue established, not resolved.</div>
-        </div>
-      </div>
-
-      <div class="check-item">
-        <div class="check-icon green">✓</div>
-        <div>
-          <div class="check-text-title">First Material Reward</div>
-          <div class="check-text-sub">浮木 (driftwood) collected. Material economy introduced without tutorial. The connection between puzzle → material → restoration is physically demonstrated.</div>
-        </div>
-      </div>
-
-      <div class="check-item">
-        <div class="check-icon accent">✓</div>
-        <div>
-          <div class="check-text-title">Island Map Unlocked</div>
-          <div class="check-text-sub">One restored area visible (harbor, warm amber). Adjacent grey areas hint at unexplored potential. Player sees the meta-loop's scale. The 'what do I do next session' question is answered visually.</div>
-        </div>
-      </div>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">D1 留存目标</div>
+      <div class="metric-value">≥40%</div>
+      <div class="metric-desc">新手引导完成是D1留存的核心驱动；前3关完成率每下降5%，D1留存约下降2%</div>
     </div>
-
-    <div class="card warm" style="margin-top:20px;">
-      <div class="h4">Next Session Pull</div>
-      <p style="margin:0; font-size:13px;">
-        The island map after FTUE shows 2 grey areas adjacent to the restored harbor — visible but inaccessible. The player knows: more puzzles = more restoration. ひなた has been seen but not known. The letter from 渉 has been received but not yet understood. All three hooks point forward without urgency.
-      </p>
+    <div class="metric-card">
+      <div class="metric-label">引导完成率目标</div>
+      <div class="metric-value">85%</div>
+      <div class="metric-desc">第10关通关率；前3关（不可跳过）目标≥92%，跌幅不超过3%/关</div>
     </div>
-
-    <div class="card" style="margin-top:16px;">
-      <div class="h4">Emotional Hooks Established</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px;">
-        <div style="padding:10px 14px; background:var(--bg3); border-radius:8px; font-size:12px; border-left:3px solid var(--accent);">
-          <strong style="color:var(--text);">律 has a purpose</strong><br>
-          <span style="color:var(--text-dim);">Restore the island per the letter. Agency without pressure.</span>
-        </div>
-        <div style="padding:10px 14px; background:var(--bg3); border-radius:8px; font-size:12px; border-left:3px solid var(--warm);">
-          <strong style="color:var(--text);">ひなた is present but not waiting</strong><br>
-          <span style="color:var(--text-dim);">She noticed. She does not follow. The distance is compelling.</span>
-        </div>
-        <div style="padding:10px 14px; background:var(--bg3); border-radius:8px; font-size:12px; border-left:3px solid var(--green);">
-          <strong style="color:var(--text);">The loop is proven</strong><br>
-          <span style="color:var(--text-dim);">Puzzle → material → world change. Demonstrated without words.</span>
-        </div>
-        <div style="padding:10px 14px; background:var(--bg3); border-radius:8px; font-size:12px; border-left:3px solid var(--text-muted);">
-          <strong style="color:var(--text);">The island was beautiful once</strong><br>
-          <span style="color:var(--text-dim);">And can be again. The restored harbor is the proof.</span>
-        </div>
-      </div>
+    <div class="metric-card">
+      <div class="metric-label">引导跳过率目标</div>
+      <div class="metric-value">&lt;12%</div>
+      <div class="metric-desc">低于15%的设计门槛；可跳过关卡（第5-10关）的跳过率分布将作为难度调整依据</div>
     </div>
   </div>
 
-  <hr class="divider">
-
-  <!-- ══════════════════ APPENDIX: CHARACTER PROFILES ══════════════════ -->
-  <div class="section">
-    <div class="section-title">Appendix · Narrative Context</div>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-      <div class="card">
-        <div class="h4" style="margin-bottom:12px;">Protagonist</div>
-        <div style="display:flex; gap:14px; align-items:flex-start;">
-          <div style="width:56px;height:56px;border-radius:50%;background:rgba(232,184,109,0.1);border:2px solid var(--warm);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">律</div>
-          <div>
-            <div style="font-size:16px;color:var(--text);">山田律 (Yamada Ritsu)</div>
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">29 · Ad Creative Director · Tokyo burnout</div>
-            <div style="font-size:12px;color:var(--text-dim);">Five years of advertising exhaustion. Received a mysterious ink-brushed letter from lighthouse keeper Maruyama Wataru. Takes leave and arrives by ferry. Carries a battered leather satchel. Writes in a small diary — precise, circling, never directly about himself.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="h4" style="margin-bottom:12px;">Romantic Interest</div>
-        <div style="display:flex; gap:14px; align-items:flex-start;">
-          <div style="width:56px;height:56px;border-radius:50%;background:rgba(0,188,212,0.1);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">ひな</div>
-          <div>
-            <div style="font-size:16px;color:var(--text);">丸山ひなた (Maruyama Hinata)</div>
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">24 · Design student · Returned from Osaka same day</div>
-            <div style="font-size:12px;color:var(--text-dim);">Granddaughter of lighthouse keeper. Left island 3 years ago to study design. Returned on the same ferry as 律 — coincidence or something more. Outwardly bright, inwardly deep. Communicates through action. The fisherman's ring on a cord at her chest is the emotional tell.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="h4" style="margin-bottom:12px;">Setting</div>
-        <div style="font-size:12px;color:var(--text-dim);">
-          <strong style="color:var(--text);">輝島 (Kagayaki-jima)</strong> — a small island between Kyushu and the Nansei chain, contemporary era. Once vibrant, now quiet and overgrown since the lighthouse keeper's passing. The island's visual saturation is at 0% at game start — each restoration raises it one step. The game's visual arc is the island coming back to color.
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="h4" style="margin-bottom:12px;">The Letter</div>
-        <div style="font-size:12px;color:var(--text-dim);">
-          A letter from <strong style="color:var(--text);">丸山渉</strong> — the lighthouse keeper. Ink-brushed. Addressed to 律 specifically. Contains only the instruction: 「島を頼む」 — "Take care of the island." Why 律 was chosen, how 渉 knew him, what exactly taking care means: all unanswered in the FTUE. These are the questions that drive sessions 2 onward.
-        </div>
-      </div>
+  <div class="kpi-row">
+    <div class="kpi-item">
+      <div class="kpi-label">前3关完成率</div>
+      <div class="kpi-value">≥92%</div>
+      <div class="kpi-note">教学核心区，不可跳过</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">Combo首次触发关</div>
+      <div class="kpi-value">第5关</div>
+      <div class="kpi-note">保证100%玩家体验到</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">NPC首次出现</div>
+      <div class="kpi-value">第1关后</div>
+      <div class="kpi-note">健三·暖场台词</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">IAP首次展示关</div>
+      <div class="kpi-value">第10关</div>
+      <div class="kpi-note">首章约1/3处，非强制</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">IAP首次转化率目标</div>
+      <div class="kpi-value">2–4%</div>
+      <div class="kpi-note">行业参考值，续关弹窗</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">初始赠送沙滩币</div>
+      <div class="kpi-value">100枚</div>
+      <div class="kpi-note">降低付费门槛，可免费体验续关</div>
     </div>
   </div>
 
 </div>
-
-<!-- ══════════════════════════════════ FOOTER ══════════════════════════════════ -->
-<div class="doc-footer">
-  <div class="footer-info">
-    FTUE Design Document · glow-island · Generated 2026-05-08<br>
-    Schema: ftue-v1 · node: ftue-design · gate_status: in-review
-  </div>
-  <div class="footer-brand">Glow Island · 輝島</div>
-</div>
-
 </body>
 </html>

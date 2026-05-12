@@ -3,727 +3,1175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glow Island — 世界观设计文档（Worldbuilding）</title>
+  <title>輝島 · 世界观设计文档 v6.0</title>
   <style>
     :root {
-      --bg: #0f1117;
-      --surface: #1a1d26;
-      --border: #2a2d3a;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --accent: #7dd3fc;
-      --accent2: #86efac;
-      --heading: #f8fafc;
-      --code-bg: #12141c;
-      --tag-bg: #1e3a5f;
-      --warm: #fbbf24;
-      --warm-dim: #92400e;
-      --rose: #fb7185;
+      --bg: #faf7f2;
+      --surface: #ffffff;
+      --surface2: #f5f0e8;
+      --surface3: #f0ebe0;
+      --border: #e8e0d0;
+      --border-soft: #f0ead8;
+      --text: #3a3028;
+      --text-secondary: #6b5f52;
+      --muted: #9a8f82;
+      --accent: #c07b4a;
+      --accent2: #6b9e7a;
+      --heading: #2a1f18;
+      --warm: #c8834a;
+      --warm-dim: rgba(200,131,74,0.09);
+      --warm-border: rgba(200,131,74,0.25);
+      --sage: #5a8e6a;
+      --sage-dim: rgba(90,142,106,0.09);
+      --sage-border: rgba(90,142,106,0.28);
+      --amber: #c89840;
+      --amber-dim: rgba(200,152,64,0.09);
+      --amber-border: rgba(200,152,64,0.28);
+      --sea: #4a7a9e;
+      --sea-dim: rgba(74,122,158,0.08);
+      --sea-border: rgba(74,122,158,0.28);
+      --mystery: #7a6aaa;
+      --mystery-dim: rgba(122,106,170,0.08);
+      --mystery-border: rgba(122,106,170,0.25);
+      --lighthouse: #d4a83a;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Serif SC", "Microsoft YaHei", -apple-system, serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.75;
-      padding: 0 1rem 4rem;
+      line-height: 1.88;
+      padding: 0 1rem 6rem;
     }
+
+    /* ── 页头 ── */
     .page-header {
-      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 2.5rem 2rem 2rem;
-      margin: 0 -1rem 2.5rem;
+      background: linear-gradient(160deg, #edf5f0 0%, #f5ede0 50%, #fcecd6 100%);
+      border-bottom: 1.5px solid var(--border);
+      padding: 3.5rem 2rem 3rem;
+      margin: 0 -1rem 3.5rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    .page-header .project-tag {
+    .page-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--sage), var(--lighthouse), var(--warm), var(--sea));
+      opacity: 0.45;
+    }
+    .page-header .标签 {
       display: inline-block;
-      background: var(--tag-bg);
-      color: var(--accent);
+      background: var(--sage-dim);
+      color: var(--sage);
       font-size: 0.72rem;
       letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.75rem;
+      padding: 0.22rem 0.9rem;
       border-radius: 999px;
-      border: 1px solid rgba(125,211,252,0.25);
-      margin-bottom: 0.9rem;
+      border: 1px solid var(--sage-border);
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+      font-family: "PingFang SC", -apple-system, sans-serif;
     }
     .page-header h1 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 700;
       color: var(--heading);
-      text-shadow: 0 0 40px rgba(125,211,252,0.2);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.6rem;
     }
-    .page-header .subtitle {
+    .page-header .副标题 {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-bottom: 0.4rem;
+    }
+    .page-header .元信息 {
+      font-size: 0.78rem;
       color: var(--muted);
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
+      font-family: "PingFang SC", -apple-system, sans-serif;
     }
+
+    /* ── 布局 ── */
     .container {
-      max-width: 860px;
+      max-width: 900px;
       margin: 0 auto;
     }
-    h1, h2, h3, h4, h5, h6 {
+
+    /* ── 章节标题 ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 3rem 0 1.5rem;
+      padding-bottom: 0.7rem;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .section-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      background: var(--warm-dim);
+      border: 1px solid var(--warm-border);
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--warm);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
       color: var(--heading);
-      margin-top: 2rem;
-      margin-bottom: 0.6rem;
-      font-weight: 600;
-      line-height: 1.35;
+      letter-spacing: -0.01em;
     }
-    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
-    h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
-    h3 { font-size: 1.1rem; color: var(--accent2); }
-    h4 { font-size: 1rem; color: var(--muted); }
-    p { margin: 0.6rem 0 0.9rem; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    strong { color: var(--heading); font-weight: 600; }
-    em { color: var(--accent2); font-style: normal; }
-    blockquote {
-      border-left: 3px solid var(--accent);
-      padding: 0.5rem 1rem;
+
+    /* ── 正文 ── */
+    p {
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── 世界观介绍卡片 ── */
+    .world-intro {
       background: var(--surface);
-      border-radius: 0 6px 6px 0;
-      margin: 1rem 0;
-      color: var(--muted);
-    }
-    blockquote.warm {
-      border-left-color: var(--warm);
-      color: #fde68a;
-    }
-    blockquote.jp {
-      border-left-color: var(--rose);
-      color: #fda4af;
-      font-size: 1.05rem;
-    }
-    code {
-      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
-      font-size: 0.87em;
-      background: var(--code-bg);
-      color: var(--accent2);
-      padding: 0.15em 0.4em;
-      border-radius: 4px;
       border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem 2.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
     }
-    pre {
-      background: var(--code-bg);
+    .world-intro h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.8rem;
+    }
+
+    /* ── 治愈基调块 ── */
+    .healing-block {
+      background: linear-gradient(135deg, #f5f0e4 0%, #edf5ee 100%);
+      border: 1px solid var(--sage-border);
+      border-left: 3px solid var(--sage);
+      border-radius: 10px;
+      padding: 1.6rem 1.8rem;
+      margin: 1.5rem 0;
+    }
+    .healing-block p {
+      color: var(--text);
+      font-style: italic;
+      line-height: 1.9;
+    }
+
+    /* ── 到岛经过卡片 ── */
+    .arrival-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .arrival-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 1rem;
+    }
+    .arrival-email {
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 1.2rem 1.4rem;
-      overflow-x: auto;
-      margin: 1rem 0 1.4rem;
+      margin: 1rem 0;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
     }
-    pre code {
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 0.85rem;
-      color: var(--text);
-    }
-    ul, ol {
-      padding-left: 1.6rem;
-      margin: 0.5rem 0 1rem;
-    }
-    li { margin: 0.3rem 0; }
-    li > ul, li > ol { margin: 0.2rem 0; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.2rem 0;
-      font-size: 0.9rem;
-    }
-    th {
-      background: var(--surface);
-      color: var(--accent);
+    .arrival-email .邮件标题 {
       font-weight: 600;
-      padding: 0.6rem 0.9rem;
-      text-align: left;
-      border: 1px solid var(--border);
+      color: var(--text);
+      margin-bottom: 0.4rem;
     }
-    td {
-      padding: 0.55rem 0.9rem;
-      border: 1px solid var(--border);
-      vertical-align: top;
-    }
-    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-    tr:hover td { background: rgba(125,211,252,0.04); }
-    hr {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 2rem 0;
+    .arrival-note {
+      display: inline-block;
+      background: var(--amber-dim);
+      border: 1px solid var(--amber-border);
+      border-radius: 6px;
+      padding: 0.5rem 0.9rem;
+      font-size: 0.84rem;
+      color: var(--amber);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin: 0.8rem 0;
     }
 
-    /* Character cards */
-    .char-card {
+    /* ── 居民列表 ── */
+    .residents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.7rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .resident-pill {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.4rem 1.6rem;
-      margin: 1.4rem 0;
-      position: relative;
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.83rem;
+      color: var(--text);
+      line-height: 1.55;
     }
-    .char-card.protagonist {
-      border-color: var(--accent);
-      box-shadow: 0 0 24px rgba(125,211,252,0.08);
-    }
-    .char-card.romantic {
-      border-color: var(--rose);
-      box-shadow: 0 0 24px rgba(251,113,133,0.08);
-    }
-    .char-card.npc {
-      border-color: #334155;
-    }
-    .char-name {
-      font-size: 1.25rem;
+    .resident-pill .居民姓名 {
       font-weight: 700;
       color: var(--heading);
-      margin-bottom: 0.2rem;
     }
-    .char-name .romaji {
-      font-size: 0.78rem;
-      font-weight: 400;
+    .resident-pill .居民描述 {
+      font-size: 0.76rem;
       color: var(--muted);
-      margin-left: 0.6rem;
-      font-family: "JetBrains Mono", monospace;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin-top: 0.15rem;
     }
-    .char-meta {
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.8rem;
-    }
-    .char-tag {
-      font-size: 0.72rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      border: 1px solid;
-    }
-    .char-tag.age { color: var(--accent2); border-color: rgba(134,239,172,0.3); background: rgba(134,239,172,0.06); }
-    .char-tag.role { color: var(--accent); border-color: rgba(125,211,252,0.3); background: rgba(125,211,252,0.06); }
-    .char-tag.chapter { color: var(--warm); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.06); }
-    .char-keywords {
-      margin-top: 0.8rem;
-      padding-top: 0.8rem;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-    .char-keywords strong { color: var(--accent2); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
 
-    /* Chapter arc cards */
+    /* ── 章节情绪弧线 ── */
     .chapter-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: 1fr;
       gap: 1rem;
-      margin: 1.2rem 0;
+      margin-bottom: 1.5rem;
     }
     .chapter-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem 1.2rem;
-      transition: border-color 0.2s;
+      border-radius: 10px;
+      overflow: hidden;
     }
-    .chapter-card:hover { border-color: var(--accent); }
-    .chapter-num {
-      font-size: 0.7rem;
-      font-family: monospace;
+    .chapter-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.9rem 1.2rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .chapter-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.8rem;
+      height: 1.8rem;
+      background: var(--warm-dim);
+      border: 1px solid var(--warm-border);
+      border-radius: 50%;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--warm);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      flex-shrink: 0;
+    }
+    .chapter-title-block { flex: 1; min-width: 0; }
+    .chapter-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--heading);
+    }
+    .chapter-keyword {
+      font-size: 0.75rem;
       color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin-top: 0.1rem;
+    }
+    .chapter-area {
+      font-size: 0.75rem;
+      color: var(--sage);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      background: var(--sage-dim);
+      border: 1px solid var(--sage-border);
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+    }
+    .chapter-card-body {
+      padding: 1rem 1.2rem;
+    }
+    .arc-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+    .arc-col { }
+    .状态标签 {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      font-family: "PingFang SC", -apple-system, sans-serif;
       margin-bottom: 0.3rem;
     }
-    .chapter-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--heading);
-      margin-bottom: 0.2rem;
-    }
-    .chapter-subtitle {
-      font-size: 0.8rem;
-      color: var(--accent2);
-      margin-bottom: 0.6rem;
-    }
-    .chapter-emotion {
-      display: inline-block;
-      font-size: 0.72rem;
-      padding: 0.15rem 0.5rem;
-      border-radius: 999px;
-      background: rgba(125,211,252,0.1);
-      color: var(--accent);
-      border: 1px solid rgba(125,211,252,0.2);
-      margin-bottom: 0.5rem;
-    }
-    .chapter-body { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
-
-    /* Memory fragment */
-    .memory-card {
-      background: linear-gradient(135deg, #12141c 0%, #1a1d26 100%);
-      border: 1px solid rgba(251,191,36,0.2);
-      border-radius: 10px;
-      padding: 1.4rem 1.6rem;
-      margin: 1.2rem 0;
-      box-shadow: 0 0 30px rgba(251,191,36,0.05);
-    }
-    .memory-card h4 { color: var(--warm); margin-top: 0; }
-
-    /* Environment area cards */
-    .env-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
-      margin: 1.2rem 0;
-    }
-    .env-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem 1.2rem;
-    }
-    .env-card .area-num { font-size: 0.7rem; color: var(--muted); font-family: monospace; }
-    .env-card .area-name { font-size: 0.98rem; font-weight: 700; color: var(--heading); margin: 0.2rem 0; }
-    .env-card .area-mood { font-size: 0.78rem; color: var(--accent2); margin-bottom: 0.5rem; }
-    .env-card .area-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
-
-    /* Tone pills */
-    .tone-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 0.8rem 0 1.2rem;
-    }
-    .tone-pill {
-      font-size: 0.8rem;
-      padding: 0.3rem 0.8rem;
-      border-radius: 999px;
-      background: var(--surface);
-      border: 1px solid var(--border);
+    .arc-text {
+      font-size: 0.87rem;
       color: var(--text);
+      line-height: 1.7;
     }
-    .tone-pill.primary { border-color: var(--accent); color: var(--accent); background: rgba(125,211,252,0.06); }
+    .warmth-beat {
+      background: var(--sage-dim);
+      border-left: 2px solid var(--sage);
+      border-radius: 0 6px 6px 0;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.84rem;
+      color: var(--text);
+      line-height: 1.72;
+      margin-top: 0.6rem;
+    }
+    .warmth-beat-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--sage);
+      letter-spacing: 0.07em;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin-bottom: 0.35rem;
+    }
 
-    /* NPC grid */
+    /* ── NPC 档案 ── */
     .npc-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-      gap: 1rem;
-      margin: 1.2rem 0;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .npc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .npc-card-header {
+      padding: 1.2rem 1.5rem 1rem;
+      border-bottom: 1px solid var(--border-soft);
+      background: var(--surface2);
+    }
+    .npc-name-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.3rem;
+    }
+    .npc-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--heading);
+    }
+    .npc-romaji {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+    }
+    .npc-role-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.4rem;
+    }
+    .npc-role-tag {
+      font-size: 0.72rem;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+    .tag-warm {
+      background: var(--warm-dim);
+      border-color: var(--warm-border);
+      color: var(--warm);
+    }
+    .tag-sage {
+      background: var(--sage-dim);
+      border-color: var(--sage-border);
+      color: var(--sage);
+    }
+    .tag-amber {
+      background: var(--amber-dim);
+      border-color: var(--amber-border);
+      color: var(--amber);
+    }
+    .tag-sea {
+      background: var(--sea-dim);
+      border-color: var(--sea-border);
+      color: var(--sea);
+    }
+    .npc-card-body {
+      padding: 1.2rem 1.5rem;
+    }
+    .npc-section-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.07em;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin-bottom: 0.4rem;
+      margin-top: 1rem;
+    }
+    .npc-section-label:first-child { margin-top: 0; }
+    .npc-character-text {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.78;
+      margin-bottom: 0;
+    }
+    .npc-warmth-block {
+      background: var(--sage-dim);
+      border: 1px solid var(--sage-border);
+      border-left: 3px solid var(--sage);
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem;
+      margin-top: 0.5rem;
+    }
+    .npc-warmth-text {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.76;
+    }
+    .npc-bond-text {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-family: "PingFang SC", -apple-system, sans-serif;
     }
 
-    /* Relationship arc timeline */
-    .arc-timeline {
-      position: relative;
-      padding-left: 2rem;
-      margin: 1.2rem 0;
+    /* ── 角色羁绊 ── */
+    .bond-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
-    .arc-timeline::before {
-      content: '';
-      position: absolute;
-      left: 0.45rem;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--rose), var(--accent));
-      opacity: 0.3;
+    @media (max-width: 640px) {
+      .bond-grid { grid-template-columns: 1fr; }
+      .arc-row { grid-template-columns: 1fr; }
     }
-    .arc-step {
-      position: relative;
+    .bond-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
+    }
+    .bond-pair {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.5rem;
+    }
+    .bond-desc {
+      font-size: 0.84rem;
+      color: var(--text);
+      line-height: 1.72;
+    }
+    .bond-ritsu {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #f0ebe0 0%, #edf5ee 100%);
+      border-color: var(--sage-border);
+    }
+
+    /* ── 隐藏谜题 ── */
+    .mystery-layers {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
       margin-bottom: 1.2rem;
     }
-    .arc-step::before {
-      content: '';
-      position: absolute;
-      left: -1.6rem;
-      top: 0.4rem;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--rose);
-      border: 2px solid var(--bg);
+    .mystery-card {
+      background: var(--surface);
+      border: 1px solid var(--mystery-border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
     }
-    .arc-step .step-ch { font-size: 0.72rem; color: var(--muted); font-family: monospace; text-transform: uppercase; }
-    .arc-step .step-label { font-size: 0.95rem; font-weight: 600; color: var(--heading); }
-    .arc-step .step-body { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.6; }
-
-    .footer {
-      text-align: center;
+    .mystery-layer-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--mystery);
+      letter-spacing: 0.08em;
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      margin-bottom: 0.5rem;
+    }
+    .mystery-text {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.75;
+    }
+    .mystery-quote {
+      background: var(--mystery-dim);
+      border-left: 2px solid var(--mystery);
+      border-radius: 0 6px 6px 0;
+      padding: 0.8rem 1rem;
+      margin: 0.8rem 0 0;
+      font-size: 0.84rem;
+      color: var(--text);
+      line-height: 1.78;
+    }
+    .mystery-quote .日文原文 {
+      color: var(--text-secondary);
+      margin-bottom: 0.3rem;
+    }
+    .mystery-quote .中文注释 {
       color: var(--muted);
-      font-size: 0.78rem;
+      font-style: italic;
+    }
+    .mystery-timeline {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+    }
+    .mystery-timeline h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.9rem;
+    }
+    .timeline-item {
+      display: flex;
+      gap: 0.8rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 0.84rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-ch {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--mystery);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      min-width: 2.2rem;
+      margin-top: 0.1rem;
+    }
+    .resolution-block {
+      background: linear-gradient(135deg, var(--mystery-dim) 0%, var(--sage-dim) 100%);
+      border: 1px solid var(--mystery-border);
+      border-radius: 10px;
+      padding: 1.3rem 1.5rem;
+      margin-top: 1rem;
+    }
+    .resolution-block h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.7rem;
+    }
+    .resolution-block .日记日文 {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 0.4rem;
+    }
+    .resolution-block .日记中文 {
+      font-size: 0.84rem;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.75;
+    }
+
+    /* ── 页脚 ── */
+    .page-footer {
+      border-top: 1.5px solid var(--border);
       margin-top: 4rem;
       padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-family: "PingFang SC", -apple-system, sans-serif;
+      line-height: 1.7;
+    }
+
+    /* ── 工具样式 ── */
+    .emphasis {
+      font-style: italic;
+      color: var(--text-secondary);
     }
   </style>
 </head>
 <body>
   <div class="page-header">
-    <div class="project-tag">Glow Island · 輝島</div>
-    <h1>世界观设计文档（Worldbuilding）</h1>
-    <p class="subtitle">版本：2.1 &nbsp;|&nbsp; 2026-05-08 &nbsp;|&nbsp; 基于 worldbuilding-bible.md v2.1</p>
+    <div class="标签">輝島 · 世界观设计文档 · v6.0</div>
+    <h1>輝島 · Kagayaki-jima</h1>
+    <div class="副标题">辉之岛 — 一座不催你的地方</div>
+    <div class="元信息">治愈系重写版 · 2026-05-13 · 叙事设计参考文档 · 语言：zh-CN</div>
   </div>
 
   <div class="container">
 
-    <!-- ============================================================ -->
-    <h1 id="island-overview">一、岛屿概况</h1>
-
-    <p>这座岛叫做 <strong>輝島（Kagayaki-jima · 辉之岛）</strong>，位于日本西南海域某处，介于九州与南西诸岛之间。地图上几乎找不到它，但渡轮班次真实存在。</p>
-
-    <table>
-      <thead>
-        <tr><th>属性</th><th>详情</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><strong>岛屿名称</strong></td><td>輝島（Kagayaki-jima · 辉之岛）</td></tr>
-        <tr><td><strong>位置感</strong></td><td>日本西南海域，九州与南西诸岛之间，地图上几乎找不到，但渡轮班次真实存在</td></tr>
-        <tr><td><strong>气候</strong></td><td>温暖湿润，四季分明却不极端。春有樱和油菜花，夏有蝉鸣和海风，秋有红叶，冬有薄雾和温泉热气</td></tr>
-        <tr><td><strong>面积感</strong></td><td>走路一个上午可以绕完一圈，但足够多的小径值得反复走。每次走同一条路都能发现新的细节</td></tr>
-        <tr><td><strong>整体氛围</strong></td><td>像一首尚未唱完的歌：不急着收尾，不怕静下来。阳光永远是下午三点那种温柔的斜角，把影子拉得很长</td></tr>
-        <tr><td><strong>视觉基调</strong></td><td>动物之森式柔和粉彩——圆润的形体，低饱和的暖色系。恢复前色调偏灰白，每修复一处，颜色便饱和一分</td></tr>
-        <tr><td><strong>声音设计方向</strong></td><td>海浪声、木屐踩踏声、风铃、远处的三味线、蝉鸣变化；对话采用日式「喃喃音效」，无完整语音</td></tr>
-      </tbody>
-    </table>
-
-    <h3>基调关键词</h3>
-    <div class="tone-pills">
-      <span class="tone-pill primary">逃离与着陆</span>
-      <span class="tone-pill primary">疲惫中的温柔</span>
-      <span class="tone-pill primary">记忆的重量</span>
-      <span class="tone-pill primary">慢慢变亮</span>
-      <span class="tone-pill">治愈</span>
-      <span class="tone-pill">慢热情感线</span>
-      <span class="tone-pill">修复与觉醒</span>
-      <span class="tone-pill">日式离岛美学</span>
+    <!-- 一、世界背景 -->
+    <div class="section-header">
+      <div class="section-number">一</div>
+      <h2>世界背景</h2>
     </div>
 
-    <blockquote class="warm">
-      背景故事：山田律在东京广告公司做了五年文案，升到创意总监，却发现那把椅子比以前更沉。某个深夜，一封来自"輝島灯台守 · 丸山渉"的旧式和纸信夹在邮件里——信里只有一句话：「灯台は、まだ誰かを待っています。」（灯塔，还在等待着某个人。）一个月后，律请了长假，订了一张渡轮票。结果他留下来了。
-    </blockquote>
+    <div class="world-intro">
+      <h3>一座等着灯重新亮起的岛</h3>
+      <p>輝島在日本西南海域某个地方漂浮着。打开地图App，搜索"輝島"，什么都没有。不是错误提示，是真的没有——就像它决定停止对外招待，把自己从那个需要被找到的世界里安静地撤走了。</p>
+      <p>灯台守丸山渉守了这座灯塔四十年，病逝之后，灯就熄了。灯熄了，岛就从地图上消失了。不是真的消失，你踩上去地面还在，海还是蓝的，风铃还在响，健三还是每天早上来敲冬子的门——只是外面的世界不再知道它了。岛就这么等着一件事完成：等的就是灯塔重新亮起来。</p>
+      <p>唯一的出路：六章修复，点亮灯塔，岛重新出现在地图上。</p>
+    </div>
 
-    <hr>
+    <div class="healing-block">
+      <p>輝島不是一个让人变好的地方。它只是一个不催你的地方。来的人都带着什么，没有人问，也没有人催。岛上的居民在这里都有自己安静的理由，他们接纳一切来的人的方式，就是把自己的位置让一让，然后若无其事地继续做自己的事。这是世界上最轻的欢迎仪式，也是最真实的一种——你不需要解释自己，不需要表演振作，不需要赶路。</p>
+    </div>
 
-    <!-- ============================================================ -->
-    <h1 id="protagonist">二、主角档案</h1>
+    <p>有一天你坐在码头，面对大海，健三在旁边安静地做着自己的事，什么也没说，一杯热茶在你旁边。你不知道什么时候它出现的。那就是輝島。它不制造任何紧迫感。它只是在那里，完全认真地在那里。</p>
 
-    <div class="char-card protagonist">
-      <div class="char-name">山田律 <span class="romaji">Yamada Ritsu</span></div>
-      <div class="char-meta">
-        <span class="char-tag age">29 岁</span>
-        <span class="char-tag role">东京广告公司 · 创意总监</span>
-        <span class="char-tag role">资深文案策划</span>
+    <div class="residents-grid">
+      <div class="resident-pill">
+        <div class="居民姓名">磯部健三</div>
+        <div class="居民描述">约70岁 · 渔夫 · 码头</div>
       </div>
-      <p><strong>外形：</strong>中等偏高，黑色短发，习惯穿格子衬衫和棉麻裤子。刚到岛上时眼神有点空，带着那种长期透支之后特有的疲倦——不是失眠的倦，是被太多事情填满之后的空洞感。后来慢慢有了光。</p>
-      <p><strong>性格：</strong>表面上冷静职业，内心其实很容易被小事打动——一株缝隙里的杂草、阿爷做鱼时的认真神情、夜里远处灯塔方向偶尔的微光。他不擅长说出自己的情绪，但会默默把这些感受写进日记本。</p>
-      <p><strong>到岛动机：</strong>一封神秘来信 + 五年疲惫积累后某个无法解释的冲动。</p>
-      <p><strong>内心课题：</strong>重新搞清楚「什么对他来说是真正重要的」。</p>
-      <div class="char-keywords">
-        <strong>叙事载体</strong>&nbsp; 律的日记本是游戏内的叙事载体。每修复一个区域阶段，玩家可读到律的一篇日记——不是大段感悟，而是短短几行，像是自言自语。文案出身的人，用词很精准，偏偏在写自己的时候总是绕远路。
+      <div class="resident-pill">
+        <div class="居民姓名">桐島梅子</div>
+        <div class="居民描述">约55岁 · 陶艺工匠 · 中央小镇</div>
+      </div>
+      <div class="resident-pill">
+        <div class="居民姓名">海野夏帆</div>
+        <div class="居民描述">32岁 · 自然向导 · 花田山坡</div>
+      </div>
+      <div class="resident-pill">
+        <div class="居民姓名">丸山冬子</div>
+        <div class="居民描述">65岁 · 灯台守遗孀 · 灯塔旁</div>
+      </div>
+      <div class="resident-pill">
+        <div class="居民姓名">议长（橘猫）</div>
+        <div class="居民描述">年龄不详 · 全岛</div>
       </div>
     </div>
 
-    <hr>
-
-    <!-- ============================================================ -->
-    <h1 id="romantic-interest">三、情感线主角 · 丸山ひなた</h1>
-
-    <div class="char-card romantic">
-      <div class="char-name">丸山ひなた <span class="romaji">Maruyama Hinata</span></div>
-      <div class="char-meta">
-        <span class="char-tag age">24 岁</span>
-        <span class="char-tag role">灯台守 丸山渉 的孙女</span>
-        <span class="char-tag role">丸山冬子的孙女</span>
-        <span class="char-tag chapter">贯穿全 6 章</span>
+    <div class="arrival-card">
+      <h3>律的到岛经过：一个上班族在凌晨三点点击了一封垃圾邮件，并认真附上了他的简历</h3>
+      <p>山田律，29岁，东京上班族，五年职场高压，快被工作榨干。凌晨两点五十三分，他在公司格子间里打开手机邮件准备清理垃圾。邮件列表第三条：</p>
+      <div class="arrival-email">
+        <div class="邮件标题">【限时0元】灵魂修复之旅，名额最后3席——山田律先生专属推荐</div>
+        <div>山田律先生，您好。您的生活状态数据显示您可能需要休息。輝島为您保留了一个席位。点击报名，填写个人信息，附上履历，即可出发。费用：0元。出发日：随时。</div>
       </div>
-
-      <p><strong>身份背景：</strong>三年前独自前往大阪求学。就在律抵达輝島的同一天，她乘着另一班渡轮悄悄回来了。回来的契机说不清楚——是奶奶打来的一通简短电话，还是某天她突然觉得"该回去了"？她提着一只半旧的藤编行李箱，踏上了渡轮。</p>
-
-      <p><strong>外形（动物之森风格）：</strong>短黑发，刘海微乱，发间别着一枚木制发簪——那是她祖父守灯台时惯戴的，她把它带走又带回来了。皮肤被岛上的风和阳光晒得浅浅的健康棕色。常穿浅亚麻衬衫和宽松短裤，脚踩一双有些磨旧的草编凉鞋。胸前挂着一根细绳，绳上穿着一枚<strong>渔夫戒</strong>——祖父丸山渉留下来的，她不戴在手上，只让它挂着贴近心口。</p>
-
-      <p><strong>性格：</strong>了解輝島的每一处角落——哪块礁石退潮后会露出小螃蟹，哪片林子里有一棵百年老樟，花田西侧的坡地午后会刮小旋风，温泉山谷的第三个泉眼水温最刚好。这些知识是长在身体里的，不需要回忆，只需要走。她走在前面，律跟在后面，她偶尔回头看他一眼，确认他还跟着，然后继续往前走，不多解释。</p>
-
-      <p>她笑起来很轻松，笑声也干净，但如果你留神看，会发现她偶尔会停下来，望着灯台发一会儿呆，那个瞬间的眼神比她平时所有的话都重。</p>
-
-      <div class="char-keywords">
-        <strong>性格关键词</strong>&nbsp; 外向明亮而内心深沉 · 熟悉这片岛如同熟悉自己的掌纹 · 笑声轻但眼神重 · 从不直说感受 · 用行动代替言语
-      </div>
-
-      <div class="char-keywords" style="margin-top:0.8rem;">
-        <strong>与律的关联</strong>&nbsp; 她是他在岛上的向导，却不是老师；是伴侣，却不是伴侣；是岛的一部分，却也是一个正在回来的人。他们之间没有说破的东西，比说出口的更真实。灯台点亮的那一刻，他们站在同一道光里——玩家感受得到那份温度，游戏不需要替他们说出来。
-      </div>
+      <p>律点开了那个链接，认真填写了报名表。报名表最后有一栏：<strong>附件（可选）</strong>。</p>
+      <div class="arrival-note">律停了三秒钟，想了想，上传了他十二页的最新版简历——PDF格式，附作品集链接，含五年获奖记录。因为他是一个专业的人。</div>
+      <p>三天后，他收到一张单程船票。律盯着那张船票看了大约五分钟，然后去HR办公室请了四十五天长假，打包了一个行李箱，上了渡轮。</p>
+      <p class="emphasis">律在日记里的复盘最后只剩一句话："我只能说，我当时非常确定这不是诈骗。我没法解释为什么。我现在也没法解释。"</p>
+      <p style="margin-top:0.8rem; font-size:0.88rem; color:var(--muted);">邀请真相：灯台守丸山渉已病逝，冬子按渉临终遗愿以某种荒诞形式发出邀请。游戏永远不解释机制，只保留结果。</p>
     </div>
 
-    <h2 id="hinata-arc">丸山ひなた 六章关系弧</h2>
 
-    <div class="arc-timeline">
-      <div class="arc-step">
-        <div class="step-ch">第 1 章 · 海边码头</div>
-        <div class="step-label">相遇 — 码头上的错身</div>
-        <div class="step-body">律抵达，ひなた 同日归岛。码头木栈道上各自提着行李，互相点了点头——两个都是外来者的神情，只是一个真的是外来者，另一个是回家的人，但此刻都站在同样陌生的光线里。他们没有立刻说话，只是短暂交错，各自散去。</div>
-      </div>
-      <div class="arc-step">
-        <div class="step-ch">第 2 章 · 中央小镇</div>
-        <div class="step-label">偶遇 — 不多说，做完就走</div>
-        <div class="step-body">ひなた 偶尔路过小镇修复工事，有时留下来帮一把，不多说什么，做完就走。她的存在像一阵风——清楚知道自己在哪儿，却不解释来意。</div>
-      </div>
-      <div class="arc-step">
-        <div class="step-ch">第 3 章 · 花田山坡</div>
-        <div class="step-label">引路 — 带律走过每一条小径</div>
-        <div class="step-body">ひなた 带律走过花田山坡的每一条小径，讲哪株野菊最早开，哪棵树是祖父年轻时种的。她说话的方式很轻，但律听进去了每一句。这是他们之间第一次真正的并行——两个人，同一条路，不需要解释为什么在一起走。</div>
-      </div>
-      <div class="arc-step">
-        <div class="step-ch">第 4 章 · 森林露营地</div>
-        <div class="step-label">缺席的在场 — 一句话留在原地</div>
-        <div class="step-body">这是律的独处章节。ひなた 不在，但律想起了她说过的一句话："岛不会催你。"她的缺席让存在感变得更重。</div>
-      </div>
-      <div class="arc-step">
-        <div class="step-ch">第 5 章 · 温泉山谷</div>
-        <div class="step-label">核心时刻 — 渔夫戒与日志的沉默</div>
-        <div class="step-body">ひなた 成为这章的核心。他们在温泉山谷相遇，她教律钓鱼（握竿的角度、等待的耐心、鱼上钩前水面那一点细微的颤动）。律第一次钓到鱼时，她只侧过脸来看了他一眼，眼角带着一丝笑，说了句"还行"。之后，律把渉的日志念给她听——那段写渉年轻时第一次独守灯台的夜晚。ひなた 坐在他旁边，低着头，手里握着那枚渔夫戒，指节微微收紧了一下。律注意到了，但没有问。</div>
-      </div>
-      <div class="arc-step">
-        <div class="step-ch">第 6 章 · 夜晚灯塔</div>
-        <div class="step-label">高潮 — 同一道光里，什么都没说，什么都说了</div>
-        <div class="step-body">灯台点亮的那个夜晚，ひなた 站在灯台底部的台阶上，仰头看着光柱转过来的方向。冬子奶奶轻声叫了渉的名字。ひなた 什么都没说。只是把胸前那枚渔夫戒攥在掌心，闭上眼睛，深吸了一口气。律站在她旁边几步开外，也没说话。灯台的光第一次扫过夜海，照亮了岛，也照亮了水面上他们两个人静静站立的影子。</div>
-      </div>
+    <!-- 二、六章情绪弧线 -->
+    <div class="section-header">
+      <div class="section-number">二</div>
+      <h2>六章情绪弧线</h2>
     </div>
 
-    <hr>
-
-    <!-- ============================================================ -->
-    <h1 id="npcs">四、配角 NPC 档案</h1>
-
-    <div class="npc-grid">
-
-      <div class="char-card npc">
-        <div class="char-name">磯部健三 <span class="romaji">Isobe Kenzo</span></div>
-        <div class="char-meta">
-          <span class="char-tag age">约 70 岁</span>
-          <span class="char-tag role">渔夫</span>
-          <span class="char-tag chapter">第 1 章 · 海边码头</span>
-        </div>
-        <p>岛上最后一个没有离去的老居民。膝盖不好，走不动长路，索性守着码头钓鱼，每天的事就是把当天钓的鱼做一顿简单的盐烤，然后坐到日落。他不催促律做任何事，只是有时候抬起鱼竿朝某个方向指一下，说"那边有棵老松，以前大家都在那里乘凉"。他笑起来的时候，眼睛弯得像月牙。</p>
-        <div class="char-keywords">
-          <strong>性格关键词</strong>&nbsp; 慢吞吞 · 话少但温暖 · 笑起来眼弯成缝 · 茶壶永远不离手<br>
-          <strong>与律的关联</strong>&nbsp; 像一个从不给建议、但始终在场的祖父。律在岛上第一个认识的人。
-        </div>
-      </div>
-
-      <div class="char-card npc">
-        <div class="char-name">桐島梅子 <span class="romaji">Kirishima Umeko</span></div>
-        <div class="char-meta">
-          <span class="char-tag age">约 55 岁</span>
-          <span class="char-tag role">陶艺工匠</span>
-          <span class="char-tag chapter">第 2 章 · 中央小镇</span>
-        </div>
-        <p>岛上最中心的位置有一间小陶窑，是岛上唯一一间没有彻底荒废的店铺——因为她每年都会回来住上一段时间，说是"照看窑"，其实是放不下这里。银白色短发利落地别在耳后，手上有陶土留下的皲裂纹路，总穿一件靛蓝色的工作围裙。</p>
-        <p>她相信一个人做东西的方式，就是这个人本来的样子。她会在某一次对话里问律：「你写广告的时候，有没有一次是真的想写的？」——这一句让律沉默了很久。</p>
-        <div class="char-keywords">
-          <strong>性格关键词</strong>&nbsp; 直率 · 不废话 · 手很巧 · 说话像锤子——准而有力
-        </div>
-      </div>
-
-      <div class="char-card npc">
-        <div class="char-name">海野夏帆 <span class="romaji">Umino Naho</span></div>
-        <div class="char-meta">
-          <span class="char-tag age">32 岁</span>
-          <span class="char-tag role">自然向导</span>
-          <span class="char-tag chapter">第 3 章 · 花田山坡</span>
-        </div>
-        <p>偶然留在岛上的。她原本只是途经，但在花田山坡坐下来吃午饭时，一只鸟在她膝盖上落了三秒钟——她决定这就是某种信号。扎着两根松散的麻花辫，草帽沿总挂着一枚不同的野花，背一只装满小物件的亚麻包。</p>
-        <p>她了解岛上每一种植物，说话时爱用植物打比方，觉得"野草比移植来的花更诚实"。她是岛上最开朗的人，但偶尔会有一种细小的忧伤，像午后云层的缝隙。</p>
-        <div class="char-keywords">
-          <strong>性格关键词</strong>&nbsp; 热情 · 观察力强 · 话多但不聒噪 · 偶尔抒情<br>
-          <strong>与律的关联</strong>&nbsp; 律在岛上第一个"真正聊起来"的朋友。
-        </div>
-      </div>
-
-      <div class="char-card npc">
-        <div class="char-name">丸山冬子 <span class="romaji">Maruyama Fuyuko</span></div>
-        <div class="char-meta">
-          <span class="char-tag age">65 岁</span>
-          <span class="char-tag role">灯塔守遗孀</span>
-          <span class="char-tag chapter">第 6 章 · 夜晚灯塔</span>
-        </div>
-        <p>那封来信的真正来源。信是她代替已故丈夫渉（Wataru）寄出的——渉在世时曾托付她："如果有一天岛上来了对的人，把这封信给他。"渉病逝前最后的心愿就是再看一次灯塔的光。冬子从未离开小岛，独自住在灯塔脚下的小屋里，把灯塔擦得一尘不染，等待那个"对的人"出现。</p>
-        <p>头发全白，眼睛却很亮，动作缓慢但每一步都稳。常穿深色棉布和服，腰间别着一串旧钥匙。当灯塔在最后一章重新点亮，她仰头看着那道光柱，只说了一句：</p>
-        <blockquote class="jp">「渉さん、見えてますよ。」（渉，你看得到吗。）</blockquote>
-        <div class="char-keywords">
-          <strong>性格关键词</strong>&nbsp; 沉静 · 克制 · 深情 · 等待已久却不急切<br>
-          <strong>与律的关联</strong>&nbsp; 律整段旅程的情感锚点。律来岛是因为她的信，而冬子给律的最后一句话是："岛等了你，你也等了自己很久了。"
-        </div>
-      </div>
-
-    </div>
-
-    <hr>
-
-    <!-- ============================================================ -->
-    <h1 id="chapters">五、六章故事弧</h1>
-
-    <p>整体弧度：<em>逃离 → 扎根 → 感受 → 栖息 → 接受 → 点亮</em></p>
+    <p style="margin-bottom:1.2rem;">每一章都有律"抵达时的状态"和"离开时的状态"。这不是因为岛修复了他——而是因为在这里，他有空间在那个状态里待着，然后以自己的速度，变成另一个状态。</p>
 
     <div class="chapter-grid">
 
+      <!-- 第一章 -->
       <div class="chapter-card">
-        <div class="chapter-num">Ch 01 · 海边码头</div>
-        <div class="chapter-title">到来 / 逃离</div>
-        <div class="chapter-subtitle">悠闲的午后</div>
-        <span class="chapter-emotion">悠闲 · 陌生感</span>
-        <p class="chapter-body">律抵达，什么都陌生，但码头的咸风让他第一次深呼吸。ひなた 同日归岛，码头上与律短暂交错，互相点头，各自提着行李散去。磯部健三，岛上最后守候的老人，成为律第一个认识的人。</p>
+        <div class="chapter-card-header">
+          <div class="chapter-badge">一</div>
+          <div class="chapter-title-block">
+            <div class="chapter-name">到来</div>
+            <div class="chapter-keyword">逃离 · 着陆</div>
+          </div>
+          <div class="chapter-area">海边码头</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="arc-row">
+            <div class="arc-col">
+              <div class="状态标签">抵达时</div>
+              <div class="arc-text">带着五年积累的疲惫下船。行李箱轮子卡在木栈道缝里，他蹲下来提着走。身体还绷着，习惯性地找截止日期，找不到了。</div>
+            </div>
+            <div class="arc-col">
+              <div class="状态标签">离开时</div>
+              <div class="arc-text">第一次在没有 deadline 的情况下深吸了一口气——不是因为要做什么，只是因为想。海风里那种不急的味道，他注意到了。</div>
+            </div>
+          </div>
+          <div class="warmth-beat">
+            <div class="warmth-beat-label">温暖细节</div>
+            健三在记录册里写下律的到来："宇宙意图推测：宇宙把他送来了。"他没有对律说这句话。把记录册合上，倒上一杯热茶，放到律旁边，说"坐吧，铃声一会儿会停的"。铃声没有停。但律坐下来了。那杯茶是热的。
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">章节标志性台词</div>
+            律在码头反复调整行李箱的摆放角度，健三路过看了一眼，说：「能走就行。」然后继续去收网。
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">ひなた 情感伏笔</div>
+            渡轮靠岸，律的行李箱轮子卡进木栈道缝里。ひなた 从他身边经过，弯腰轻轻抬起卡住的箱轮，只说：「这块木头退潮后会翘。」说完就走。律回头时没记清她的脸，只记得铃声还在晃，海水味里混着一点碳粉墨水。
+          </div>
+        </div>
       </div>
 
+      <!-- 第二章 -->
       <div class="chapter-card">
-        <div class="chapter-num">Ch 02 · 中央小镇</div>
-        <div class="chapter-title">扎根</div>
-        <div class="chapter-subtitle">温暖的街角</div>
-        <span class="chapter-emotion">温暖 · 归属感萌芽</span>
-        <p class="chapter-body">律在小镇修修补补，开始有了"这里是我待的地方"的感觉。桐島梅子的一句问话让律第一次面对自己与工作之间真实的关系。ひなた 偶尔路过，帮一把就走。</p>
+        <div class="chapter-card-header">
+          <div class="chapter-badge">二</div>
+          <div class="chapter-title-block">
+            <div class="chapter-name">扎根</div>
+            <div class="chapter-keyword">温暖 · 归属萌芽</div>
+          </div>
+          <div class="chapter-area">中央小镇</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="arc-row">
+            <div class="arc-col">
+              <div class="状态标签">抵达时</div>
+              <div class="arc-text">用做项目的方式修复小镇：每件事都要有目标，每个步骤都要有意义，每项进度都要可以汇报。他高效，他疲惫，他没有意识到他在用工作的壳填满岛上的空白。</div>
+            </div>
+            <div class="arc-col">
+              <div class="状态标签">离开时</div>
+              <div class="arc-text">喷泉出水的那一秒，不是高兴，是像某件一直搁着的事突然不需要搁了。一片落叶绕着水柱旋了一圈，飘走了。他就站着，什么事也没做。</div>
+            </div>
+          </div>
+          <div class="warmth-beat">
+            <div class="warmth-beat-label">温暖细节</div>
+            律走进梅子工作室，在那排碗里看见了自己的脸。梅子头也不回："做着做着就做了这个，放在最显眼的地方。"那只碗从律到岛第一天起就在那里，一直在那里，不会因为律不在就撤下来。这是梅子说"这里有你的位置"的唯一方式，她不说出口。
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">章节标志性台词</div>
+            梅子把律第一次来时随手捏的小泥块烧好了——歪歪的，一边厚一边薄。她把它放到律的碗旁边，只说：「不平的东西，有时候比较稳。」
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">ひなた 情感伏笔</div>
+            律按修复清单准备换掉风化木牌，ひなた 摸了摸旧牌，说：「渉每天出海前都会摸这块牌，测风向。」律把工具放下了。那块牌还在原处，没有被换。他第一次意识到：修复不是把旧东西变新。
+          </div>
+        </div>
       </div>
 
+      <!-- 第三章 -->
       <div class="chapter-card">
-        <div class="chapter-num">Ch 03 · 花田山坡</div>
-        <div class="chapter-title">感受</div>
-        <div class="chapter-subtitle">治愈的花香</div>
-        <span class="chapter-emotion">治愈 · 情绪松动</span>
-        <p class="chapter-body">花田的颜色让律想起小时候某个下午，眼泪来得莫名其妙。ひなた 带律走过花田山坡的每一条小径，讲祖父年轻时种下的那棵树。海野夏帆的热情如同这片花田——满溢而不逼人。</p>
+        <div class="chapter-card-header">
+          <div class="chapter-badge">三</div>
+          <div class="chapter-title-block">
+            <div class="chapter-name">感受</div>
+            <div class="chapter-keyword">情绪解冻 · 第一次被看见</div>
+          </div>
+          <div class="chapter-area">花田山坡</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="arc-row">
+            <div class="arc-col">
+              <div class="状态标签">抵达时</div>
+              <div class="arc-text">他不记得上一次是什么时候觉得什么事情是真实的了。看见花，知道那是花，但他和花之间有什么东西像玻璃一样。</div>
+            </div>
+            <div class="arc-col">
+              <div class="状态标签">离开时</div>
+              <div class="arc-text">夏帆递来半开的花，律闻了一下，没什么特别的理由，眼睛就酸了。那块玻璃裂开了一条缝。不大，但是有了。</div>
+            </div>
+          </div>
+          <div class="warmth-beat">
+            <div class="warmth-beat-label">温暖细节</div>
+            夏帆第一次和律说话："那棵松树，你经过的时候它在颤抖，是因为今天风很大。"停了一下，低下头，小声说："是我想告诉你的，不是树。"律此后对她说的每一句话都认真对待了——因为他知道每一句都是真的，只是走了一段弯路出来。
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">章节标志性台词</div>
+            夏帆带律走花田，律注意到一株还没开完的野花，问是不是该等它开完？夏帆说：「半开的花，已经是花了。」
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">ひなた 情感伏笔</div>
+            "松树说律今天走路比昨天轻了一点。"——夏帆说的，ひなた 记在手账里的，律不知道。两个人各自通过间接的方式，在律完全不知情的情况下，在岛上编织着一张轻轻的网。
+          </div>
+        </div>
       </div>
 
+      <!-- 第四章 -->
       <div class="chapter-card">
-        <div class="chapter-num">Ch 04 · 森林露营地</div>
-        <div class="chapter-title">栖息</div>
-        <div class="chapter-subtitle">安静的栖息</div>
-        <span class="chapter-emotion">安静 · 独处</span>
-        <p class="chapter-body">森林的安静让律意识到：他已经很久没有在一个地方停下来了。律一个人在营地生火，在日记本上写了很多，又划掉了很多。ひなた 不在，但律想起了她说过的一句话："岛不会催你。"</p>
+        <div class="chapter-card-header">
+          <div class="chapter-badge">四</div>
+          <div class="chapter-title-block">
+            <div class="chapter-name">栖息</div>
+            <div class="chapter-keyword">安静 · 独处 · 第一次不需要做任何事</div>
+          </div>
+          <div class="chapter-area">森林露营地</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="arc-row">
+            <div class="arc-col">
+              <div class="状态标签">抵达时</div>
+              <div class="arc-text">来到营地，第一反应是把修复计划列出来，每件事按优先级排序，估算工时。他把帽子摘下来放在石头上，坐了下来，又马上站起来，想找点什么事情做。</div>
+            </div>
+            <div class="arc-col">
+              <div class="状态标签">离开时</div>
+              <div class="arc-text">篝火第一晚，把帽子放在膝盖上，仰头看星，看了很久。脑子就是安静了下来，不是刻意的。那种安静不是空白，是许久不在的一种清醒——他认不出它，但他没有逃开。</div>
+            </div>
+          </div>
+          <div class="warmth-beat">
+            <div class="warmth-beat-label">温暖细节</div>
+            独处章节，但律不是真的独处——那晚冬子的厨房飘来了饭香，议长在营地边上绕了一圈，向左走走了。ひなた 说过的那句话一直在那里："岛不会催你。"他们都没来，但他们都在。
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">章节日记片段</div>
+            律独行的夜里在营地写日记，画面闪一行字：「我不知道什么叫够了。也不知道从什么时候起，开始觉得这样也行。」
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">ひなた 情感伏笔（不在场的在场）</div>
+            营地山路岔路口有一块 ひなた 留下的木板，上面是她自创的符号——律完全看不懂，但他莫名其妙地跟着符号走，绕开了一段很陡的坡路。他后来意识到：她没有解释，但她在照顾他。
+          </div>
+        </div>
       </div>
 
+      <!-- 第五章 -->
       <div class="chapter-card">
-        <div class="chapter-num">Ch 05 · 温泉山谷</div>
-        <div class="chapter-title">接受</div>
-        <div class="chapter-subtitle">放松的浸泡</div>
-        <span class="chapter-emotion">放松 · 和解</span>
-        <p class="chapter-body">温泉里律想起了广告公司最后一个深夜，不再愤怒，只觉得那段日子也是自己的一部分。ひなた 成为这章核心：她教律钓鱼，律把渉的日志念给她听。那枚渔夫戒攥在她掌心的瞬间，两人都沉默了。</p>
+        <div class="chapter-card-header">
+          <div class="chapter-badge">五</div>
+          <div class="chapter-title-block">
+            <div class="chapter-name">接受</div>
+            <div class="chapter-keyword">放下 · 和解 · 第一次被"还行"说得心里暖</div>
+          </div>
+          <div class="chapter-area">温泉山谷</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="arc-row">
+            <div class="arc-col">
+              <div class="状态标签">抵达时</div>
+              <div class="arc-text">不知道怎么接受"还行"，总是要做到一百二十分。那种驱动他的东西，有一部分是认真，但有一部分是——他不知道不往前推的话，他是谁。</div>
+            </div>
+            <div class="arc-col">
+              <div class="状态标签">离开时</div>
+              <div class="arc-text">律第一次钓到鱼。ひなた 侧过脸，说了两个字："还行。"当客户说还行，他不高兴了三天。她说了同样两个字，他想记住很久。</div>
+            </div>
+          </div>
+          <div class="warmth-beat">
+            <div class="warmth-beat-label">温暖细节</div>
+            ひなた 把渉的第三册日记给律看："他从来没有跟我说过这件事。"两人都沉默了很久。这沉默里有一种东西，律后来写不出来，只写了"我们坐了很久，山谷里的热气慢慢漫上来"。渔夫戒攥在她掌心，律没有问。
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">ひなた × 律 临界时刻</div>
+            "还行"落下时，他几乎想说：我想留下来的理由里，好像有你。但温泉水滴从竹管落下，手账合上的声音轻得像把门留了一条缝。他没有把那句话推到她面前。——律×ひなた 感情弧线：Ch5 临界。
+          </div>
+        </div>
       </div>
 
+      <!-- 第六章 -->
       <div class="chapter-card">
-        <div class="chapter-num">Ch 06 · 夜晚灯塔</div>
-        <div class="chapter-title">点亮</div>
-        <div class="chapter-subtitle">孤独中的温暖</div>
-        <span class="chapter-emotion">孤独中的温暖 · 觉醒</span>
-        <p class="chapter-body">灯塔亮起。岛醒了。律也醒了。ひなた 站在灯台旁，闭眼深呼吸的那个瞬间，是全游戏最安静也最饱满的画面。他们并肩站在光里，什么都没说，什么都说了。丸山冬子轻声叫了渉的名字。</p>
+        <div class="chapter-card-header">
+          <div class="chapter-badge">六</div>
+          <div class="chapter-title-block">
+            <div class="chapter-name">点亮</div>
+            <div class="chapter-keyword">孤独中的温暖 · 觉醒</div>
+          </div>
+          <div class="chapter-area">夜晚灯塔</div>
+        </div>
+        <div class="chapter-card-body">
+          <div class="arc-row">
+            <div class="arc-col">
+              <div class="状态标签">抵达时</div>
+              <div class="arc-text">知道应该高兴，修复快完成了，灯塔快亮了，他可以回去了。但他坐在灯塔底下，有一种说不清楚的感觉——第一次真正感受到离开意味着什么。</div>
+            </div>
+            <div class="arc-col">
+              <div class="状态标签">离开时</div>
+              <div class="arc-text">暖黄光柱从塔顶扫出，照过所有已修复的地方，最后落在夜海上。冬子说「渉さん、見えてますよ」。律和 ひなた 站在光里，什么都没说，什么都说了。</div>
+            </div>
+          </div>
+          <div class="warmth-beat">
+            <div class="warmth-beat-label">温暖细节</div>
+            点灯之后，健三在档案里记下最后一条："今日：灯台点灯，全场一致，议长向左走，用时三秒。补记：渉さん、见えてますよ。"他合上档案，站着看了很久灯塔。那是第七本记录册的最后一页。
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">灯亮后第二天早上</div>
+            一切照常。律在码头醒来，健三已经在倒茶，说"坐吧"，什么都没提。梅子工作室的碗还在最显眼处，没有被撤走。夏帆换了山路上一块路标，写着花的名字。冬子厨房多做了一份。没有人提昨晚的事。岛没有因为昨夜的高潮，今天就收回了那份位置。这才是最深的治愈：没有因为昨夜的高潮，今天就收回了那份位置。
+          </div>
+          <div class="warmth-beat" style="margin-top:0.5rem;">
+            <div class="warmth-beat-label">ひなた 内在矛盾 · 点灯那一秒</div>
+            ひなた 握住点火装置停了一下——她想点灯，也害怕点灯后岛重新被世界找到。渉留下的安静可能就此结束。这个矛盾在这一秒最真实。然后她点亮了。律×ひなた 感情弧线：Ch6 收容，以沉默和行动收尾，不破。
+          </div>
+        </div>
       </div>
 
     </div>
 
-    <hr>
 
-    <!-- ============================================================ -->
-    <h1 id="memory-fragments">六、丸山渉 · 记忆碎片系统</h1>
-
-    <div class="memory-card">
-      <h4>灯塔日志系统</h4>
-      <p>每完成一个章节，玩家将解锁丸山渉留下的一段<strong>记忆碎片</strong>——以灯塔日志的形式呈现，写于不同年份，记录他守岛的岁月。</p>
-      <p>这些日志与律当下的体验形成呼应：渉在某年春天写的那段关于花田的话，恰好在律修复花田后读到。日志中偶尔出现年幼的 ひなた 的身影——她来岛上探望祖父的夏天、在灯台台阶上睡着的午后——让玩家在不知不觉间，也看见了 ひなた 来处的轮廓。</p>
-      <p>六段日志连起来，构成渉一生守望的完整轮廓，也让玩家理解：他写那封信，是因为他相信岛值得被等待。</p>
-
-      <table>
-        <thead>
-          <tr><th>章节</th><th>日志主题</th><th>情感呼应</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Ch 1 完成后</td><td>渉第一次接替父亲守码头的夜晚</td><td>到来与陌生</td></tr>
-          <tr><td>Ch 2 完成后</td><td>渉修缮小镇陶窑的那个冬天</td><td>扎根与手艺</td></tr>
-          <tr><td>Ch 3 完成后</td><td>渉在花田种下那棵树的春天（幼年 ひなた 来岛的第一个夏天）</td><td>生长与记忆</td></tr>
-          <tr><td>Ch 4 完成后</td><td>渉一个人在露营地守夜的秋天</td><td>栖息与独处</td></tr>
-          <tr><td>Ch 5 完成后</td><td>渉与冬子在温泉边的那个黄昏（ひなた 在灯台台阶上睡着的午后）</td><td>接受与爱</td></tr>
-          <tr><td>Ch 6 完成后</td><td>渉写给"某个将来的人"的最后一封信</td><td>点亮与托付</td></tr>
-        </tbody>
-      </table>
+    <!-- 三、NPC 档案 -->
+    <div class="section-header">
+      <div class="section-number">三</div>
+      <h2>NPC 档案</h2>
     </div>
 
-    <hr>
+    <p style="margin-bottom:1.2rem;">这些人各自有自己安静的在世方式。他们的温暖不会宣告，只是发生。律到了，他们还是做他们做的事，然后律发现自己被接住了。</p>
 
-    <!-- ============================================================ -->
-    <h1 id="environment">七、岛屿环境设计（六大区域）</h1>
+    <div class="npc-grid">
 
-    <p>核心理念：<em>不用说明文字，只用场景变化讲述修复的故事。</em></p>
-
-    <div class="env-grid">
-
-      <div class="env-card">
-        <div class="area-num">区域 01</div>
-        <div class="area-name">海边码头（Beach Harbor）</div>
-        <div class="area-mood">情绪基调：悠闲的南海小渔村午后</div>
-        <p class="area-desc">色调：淡蓝 + 米白，阳光斜射，整体明亮但饱和度低。修复前：码头木板松动脱落，绳索散乱，海面无反射，阴天。修复后：弯曲木码头延伸入水，竹制灯笼圆橙光，停靠一艘小木船，船头挂贝壳风铃。标志性时刻：夕阳下第一艘小船回港，健三用绳子把它系好，拍拍木桩，沉默地笑了。</p>
+      <!-- 磯部健三 -->
+      <div class="npc-card">
+        <div class="npc-card-header">
+          <div class="npc-name-row">
+            <span class="npc-name">磯部健三</span>
+            <span class="npc-romaji">Isobe Kenzo · 约70岁</span>
+          </div>
+          <div class="npc-role-row">
+            <span class="npc-role-tag tag-warm">第一章 · 海边码头</span>
+            <span class="npc-role-tag tag-amber">渔夫 · 向导</span>
+          </div>
+        </div>
+        <div class="npc-card-body">
+          <div class="npc-section-label">人物性格</div>
+          <p class="npc-character-text">出海几十年，话不多，但心里装着整片海。每次出航都会带回一些海上漂来的东西——不是鱼，是各种被海留下的物件。他的小屋里摆满了这些年的收藏，每件都贴有手写标签，写着发现的日期和他觉得"可能的来处"。记录格式参照田野调查手册，每件物品都有一栏"宇宙意图推测"。他是那种从不认为自己在做什么了不起的事的人，但这可能是他最了不起的地方。</p>
+          <div class="npc-section-label">温暖的方式</div>
+          <div class="npc-warmth-block">
+            <p class="npc-warmth-text">渉最老的朋友。渉病逝后，每天早上去敲冬子的门，把海上捞到的东西带过去——五十年了从未间断。雨天膝盖疼，也来。从不解释，只说"早上要出门的，路过就顺手"。<br><br>记录册里那天的"宇宙意图推测"一栏留了空白——七本记录册里唯一一处空白。这个仪式的名字，是健三从来没有给它起过名字这件事。</p>
+          </div>
+          <div class="npc-section-label">角色羁绊</div>
+          <p class="npc-bond-text">丸山冬子（五十年早晨）· 桐島梅子（三十年那只朝墙放的碗）· 丸山渉（最老的朋友）</p>
+        </div>
       </div>
 
-      <div class="env-card">
-        <div class="area-num">区域 02</div>
-        <div class="area-name">中央小镇（Bamboo Village）</div>
-        <div class="area-mood">情绪基调：翠竹掩映的宁静村庄</div>
-        <p class="area-desc">色调：暖黄 + 橙褐，午后阳光打在石板路上，有老房子的气息。修复前：石板路缝里长满杂草，木质店铺招牌歪斜，中央喷泉干涸。修复后：石板路清爽，窗台花盆，傍晚灯笼逐一点亮。标志性时刻：喷泉第一次出水，水柱细细的但清透，落叶绕着它转了一圈，飘走了。</p>
+      <!-- 桐島梅子 -->
+      <div class="npc-card">
+        <div class="npc-card-header">
+          <div class="npc-name-row">
+            <span class="npc-name">桐島梅子</span>
+            <span class="npc-romaji">Kirishima Umeko · 约55岁</span>
+          </div>
+          <div class="npc-role-row">
+            <span class="npc-role-tag tag-warm">第二章 · 中央小镇</span>
+            <span class="npc-role-tag tag-amber">陶艺工匠</span>
+          </div>
+        </div>
+        <div class="npc-card-body">
+          <div class="npc-section-label">人物性格</div>
+          <p class="npc-character-text">岛上唯一的陶艺师，只做碗，每只都按照她对这个人的感受来捏——不是复制长相，是捕捉一种她说不清楚的气质。她的眼力很准，有时候一个人刚到，她就知道这人需要什么样的碗了。律到岛那天，店里已经有一只摆在最显眼处，她说"做着做着就做了这个"。她把人当真实的人来对待，不绕弯子，不客套，不给出口，也不逃开。</p>
+          <div class="npc-section-label">温暖的方式</div>
+          <div class="npc-warmth-block">
+            <p class="npc-warmth-text">律进门就能看到自己的碗摆在最显眼处——这是她说"这里有你的位置"的方式，她不说欢迎。<br><br>她对律说过的最重要的话："你工作这些年，有没有一次，是真的想做的？"律沉默了很久，梅子没有追问，只是继续揉陶土，让那个问题在房间里晾着。<br><br>工作室最里面有一只碗，碗口朝墙，三十年了——那是健三的脸碗。她懂得让秘密待在它应该在的地方，不碰它。这本身就是一种温柔。</p>
+          </div>
+          <div class="npc-section-label">角色羁绊</div>
+          <p class="npc-bond-text">海野夏帆（十年无声 · 一只放在中间的碗）· 磯部健三（三十年那只朝墙放的碗）</p>
+        </div>
       </div>
 
-      <div class="env-card">
-        <div class="area-num">区域 03</div>
-        <div class="area-name">花田山坡（Sakura Hillside）</div>
-        <div class="area-mood">情绪基调：花瓣飘落的温柔坡田清晨</div>
-        <p class="area-desc">色调：粉紫 + 草绿，漫山花海，有微微薄雾的清晨感。修复前：野草盖过了花苗，阿花的草帽挂在木桩上，人不在。修复后：樱花树盛开，花田行列清晰，花浪涌动，香气飘向整座岛。标志性时刻：夏帆把一束刚摘的半开花递给玩家，没有说话，只是笑了笑。</p>
+      <!-- 海野夏帆 -->
+      <div class="npc-card">
+        <div class="npc-card-header">
+          <div class="npc-name-row">
+            <span class="npc-name">海野夏帆</span>
+            <span class="npc-romaji">Umino Naho · 32岁</span>
+          </div>
+          <div class="npc-role-row">
+            <span class="npc-role-tag tag-warm">第三章 · 花田山坡</span>
+            <span class="npc-role-tag tag-sage">自然向导</span>
+          </div>
+        </div>
+        <div class="npc-card-body">
+          <div class="npc-section-label">人物性格</div>
+          <p class="npc-character-text">岛上最了解山路和植物的人，话很少，注意力极细。她习惯先说观察到的事，再说自己的感受，像是在给自己勇气——先借助外部的东西说出来，然后慢慢地，自己也敢说了。她知道岛上每一种植物，知道谁今天走路的步子不对，哪棵树最近长了新枝，都记在心里。她的关心是真实的，观察是真实的，只是说出来需要走一段弯路。</p>
+          <div class="npc-section-label">温暖的方式</div>
+          <div class="npc-warmth-block">
+            <p class="npc-warmth-text">第一次跟律说话："那棵松树，你经过的时候它在颤抖，是因为今天风很大。"停了一下，低下头，小声说："是我想告诉你的，不是树。"<br><br>此后律对她说的每一句话都认真对待了——因为他知道每一句都是真的，只是走了一段弯路出来。<br><br>律到岛第八天，ひなた 手账里记下："松树说律今天走路比昨天轻了一点。"夏帆不知道 ひなた 在记录这些。</p>
+          </div>
+          <div class="npc-section-label">角色羁绊</div>
+          <p class="npc-bond-text">丸山ひなた（植物观测站 · 共享一个间接表达的系统）· 桐島梅子（十年无声 · 中间的碗）</p>
+        </div>
       </div>
 
-      <div class="env-card">
-        <div class="area-num">区域 04</div>
-        <div class="area-name">森林露营地（Pine Forest Shrine）</div>
-        <div class="area-mood">情绪基调：树荫深处的静谧安营</div>
-        <p class="area-desc">色调：深绿 + 棕褐，树荫斑驳，晚风带点凉意。修复前：帐篷架倒在草地上，篝火台石圈散了一半，原木坐凳长了苔藓。修复后：帐篷架立好，篝火燃起，营地外围挂小灯笼，夜晚星空清晰。标志性时刻：篝火第一次燃起，律抬头看了一眼星空，摘下帽子放在膝盖上。</p>
+      <!-- 丸山冬子 -->
+      <div class="npc-card">
+        <div class="npc-card-header">
+          <div class="npc-name-row">
+            <span class="npc-name">丸山冬子</span>
+            <span class="npc-romaji">Maruyama Fuyuko · 65岁</span>
+          </div>
+          <div class="npc-role-row">
+            <span class="npc-role-tag tag-warm">第六章 · 夜晚灯塔</span>
+            <span class="npc-role-tag tag-sea">灯台守遗孀 · 保管者</span>
+          </div>
+        </div>
+        <div class="npc-card-body">
+          <div class="npc-section-label">人物性格</div>
+          <p class="npc-character-text">渉已经病逝，这是事实层面。冬子一直住在灯台旁，没有离开过岛。她不说"他走了"，只说"他不在这里"——是习惯，还是某种不肯放手，她自己也说不清楚。每晚还是会在灯台旁坐一会儿，说一些话，说给谁听的，她没解释过。岛上也没有人觉得这需要解释。<br><br>她不是守着渉的人——她是懂得等待的人：替大家保管暂时拿不动的东西。多年来她收集了一些被人遗落在灯塔附近的物件：ひなた 小时候的雨衣、健三戒烟那年留下的旧烟盒、夏帆写错的植物牌，以及最近的——律到岛那天的便利店小票。她不立刻归还，她等，等到那个人准备好来取的时候。她从不解释为什么留着这些。</p>
+          <div class="npc-section-label">温暖的方式</div>
+          <div class="npc-warmth-block">
+            <p class="npc-warmth-text">每当 ひなた 状态不好，冬子的厨房就会多做一份 ひなた 最爱吃的东西，放在她门口，不敲门，放下就走。ひなた 从不追问，冬子从不提。<br><br>律有一次路过灯塔附近，听见冬子说："渉今天说律很努力。"律在原地站了大约十秒，然后悄悄走了。那天的日记里只有一个日期，再没有别的字。</p>
+          </div>
+          <div class="npc-section-label">角色羁绊</div>
+          <p class="npc-bond-text">磯部健三（五十年早晨）· 丸山ひなた（懂得留空间的爱）· 丸山渉（一直在对话中）</p>
+        </div>
       </div>
 
-      <div class="env-card">
-        <div class="area-num">区域 05</div>
-        <div class="area-name">温泉山谷（Hot Spring Valley）</div>
-        <div class="area-mood">情绪基调：水雾弥漫的疗愈谷地</div>
-        <p class="area-desc">色调：珍珠白 + 雾蓝，水雾弥漫，空气里有淡淡的矿物质气息。修复前：导水渠堵塞，温泉水位极低，石砌浴池边缘长满青苔。修复后：山泉重新流入，水雾升起，水面映出天空。标志性时刻：温泉水清澈后水面第一次映出天空——玩家俯身看见自己的倒影。</p>
+      <!-- 丸山ひなた -->
+      <div class="npc-card">
+        <div class="npc-card-header">
+          <div class="npc-name-row">
+            <span class="npc-name">丸山ひなた</span>
+            <span class="npc-romaji">Maruyama Hinata · 24岁</span>
+          </div>
+          <div class="npc-role-row">
+            <span class="npc-role-tag tag-warm">贯穿全章 · 情感弧线核心</span>
+            <span class="npc-role-tag tag-sage">灯台守孙女</span>
+          </div>
+        </div>
+        <div class="npc-card-body">
+          <div class="npc-section-label">人物性格</div>
+          <p class="npc-character-text">随身带一本手账，用自己发明的符号体系做记录——她叫它"岛况观测"，没有人能读懂。律第一天的观测符号，和第三十天的截然不同，律不知道这一点。她和律同一天到岛，码头上互相点了点头，各自拎着行李，没有说话。</p>
+          <div class="npc-section-label">内在矛盾</div>
+          <div class="npc-warmth-block">
+            <p class="npc-warmth-text">想点灯，也害怕点灯。灯一旦亮了，輝島就会重新出现在地图上，外面的世界会重新找到这里——渉留下的安静，可能就此结束。这个矛盾没有人知道，连冬子也没有。<br><br>这与律构成一面镜子：律害怕回东京，ひなた 害怕外界进入岛。两人守护的东西相同，从未对彼此说过。第六章她握住点火装置停了一下的那一秒，是这个矛盾最真实的时刻。</p>
+          </div>
+          <div class="npc-section-label">角色羁绊</div>
+          <p class="npc-bond-text">丸山冬子（懂得留空间的爱）· 海野夏帆（植物观测站）· 山田律（镜像结构 · 没有说破的东西）</p>
+        </div>
       </div>
 
-      <div class="env-card">
-        <div class="area-num">区域 06</div>
-        <div class="area-name">夜晚灯塔（Night Lighthouse）</div>
-        <div class="area-mood">情绪基调：深夜孤岛，一束光切开黑暗</div>
-        <p class="area-desc">色调：深蓝夜色 + 暖黄灯光，一束光切开黑暗，海面上有金色光柱倒影。修复前：灯塔灯室玻璃蒙尘，铁锈楼梯扭曲，漆黑。修复后：灯塔白色圆柱塔身，灯室金色穹顶，光柱扫过整片海面，将全岛所有修复区域依次照亮。标志性时刻：灯塔亮起——冬子轻声叫了渉的名字，ひなた 握住渔夫戒闭上眼睛，律站在几步开外，也没说话。</p>
+      <!-- 议长（橘猫） -->
+      <div class="npc-card">
+        <div class="npc-card-header">
+          <div class="npc-name-row">
+            <span class="npc-name">议长（橘猫）</span>
+            <span class="npc-romaji">Gichou · 年龄不详</span>
+          </div>
+          <div class="npc-role-row">
+            <span class="npc-role-tag tag-warm">贯穿全章</span>
+            <span class="npc-role-tag tag-amber">岛上老居民</span>
+          </div>
+        </div>
+        <div class="npc-card-body">
+          <div class="npc-section-label">人物性格</div>
+          <p class="npc-character-text">岛上资历最老的居民，没有人知道他多大了。他去哪儿从不受管，但他总出现在合适的地方——谁今天情绪不好，他就去谁那里坐着。岛上的人说不清他是懂还是不懂，但他在旁边，总觉得事情没那么难。健三维护着一本《议长历届裁决档案》，记录他的走向决策——向左走是通过，从未否决过任何议题，否决记录：零次。</p>
+          <div class="npc-section-label">温暖的方式</div>
+          <div class="npc-warmth-block">
+            <p class="npc-warmth-text">每个 NPC 都有被议长选中坐在身边的时刻：在最需要的时候他就安静地出现，坐下来，陪着。不解释，直接出现。每晚陪冬子在灯台旁坐着，是它唯一不需要任何理由的固定日程。<br><br>律到岛第三天，议长走到他脚边，坐了十二秒，然后起身离开，方向是左。健三立刻在档案里记下："山田律，通过，用时12秒。"此后律属于岛了——这是议长能给一个人最大的礼物，它用十二秒给完了。</p>
+          </div>
+          <div class="npc-section-label">角色羁绊</div>
+          <p class="npc-bond-text">丸山冬子（每晚灯塔旁）· 磯部健三（裁决档案维护）· 全体岛民</p>
+        </div>
       </div>
 
     </div>
 
-    <h2 id="env-principles">环境叙事五原则</h2>
-    <ol>
-      <li><strong>颜色先行</strong>：场景从灰白色调逐步过渡到动物之森式的柔和饱和色彩。每解锁一个阶段，对应区域的色饱和度提升一档，让玩家在视觉上先感受到"有什么在苏醒"。</li>
-      <li><strong>小细节大情绪</strong>：不展示宏大场景，只展示小物件的归位——晾衣绳上多了一件蓝色浴衣，码头边多了一只三毛猫，梅子窑里的灯又亮了，夏帆的草帽挂在了花田边的木桩上。</li>
-      <li><strong>NPC 的肢体语言叙事</strong>：NPC 不通过对话倾诉，而通过动作传递情绪——健三修好鱼竿后把竿伸向水面，一声不吭地等；梅子把新烧好的茶碗放在窗台，背对着律点点头；ひなた 站在光里，把胸前的渔夫戒攥在掌心，闭上眼睛，然后慢慢松开手。</li>
-      <li><strong>声音比画面先到</strong>：区域完全恢复前，可以先"听到"——晨风中远处的风铃声，夏帆哼的小曲，健三钓到鱼时的轻叹，水流重新淌过温泉池的声音。声音比画面早一步告诉玩家，岛正在醒来。</li>
-      <li><strong>灯塔是情感锚点</strong>：整座岛的叙事围绕一个问题——<em>灯塔什么时候会再亮？</em>每修复一个区域，灯塔窗里透出的光就多一点——从完全黑暗，到第6章的大放光明。</li>
-    </ol>
 
-    <hr>
-
-    <!-- ============================================================ -->
-    <h1 id="tone">八、基调关键词</h1>
-
-    <div class="tone-pills">
-      <span class="tone-pill primary">治愈（Healing）</span>
-      <span class="tone-pill primary">慢热情感线（Slow-burn romance）</span>
-      <span class="tone-pill primary">记忆（Memory）</span>
-      <span class="tone-pill primary">修复与觉醒（Restoration）</span>
-      <span class="tone-pill">逃离与着陆</span>
-      <span class="tone-pill">疲惫中的温柔</span>
-      <span class="tone-pill">日式离岛美学</span>
-      <span class="tone-pill">动物之森治愈感</span>
-      <span class="tone-pill">没有说破的温度</span>
-      <span class="tone-pill">灯塔的等待</span>
+    <!-- 四、角色羁绊网 -->
+    <div class="section-header">
+      <div class="section-number">四</div>
+      <h2>角色羁绊网</h2>
     </div>
 
-    <blockquote>
-      整座岛的情感核心：律来这里不是为了找到答案，而是为了重新能感受到提问。灯塔亮起的那一刻，不是终点，是开始。
-    </blockquote>
+    <div class="bond-grid">
 
-    <div class="footer">Glow Island — Worldbuilding Document v2.1 · 輝島，等你来 · 2026-05-08</div>
+      <div class="bond-card">
+        <div class="bond-pair">健三 × 冬子</div>
+        <p class="bond-desc">五十年的早晨，从不命名。每天带当日打捞物去敲门，放下，和冬子一起看灯塔，站两分钟，说"先走了"，走了。渉在的时候这样，渉不在了还是这样。雨天膝盖疼，也来。这个仪式的名字，是健三从来没有给它起过名字这件事。</p>
+      </div>
+
+      <div class="bond-card">
+        <div class="bond-pair">梅子 × 夏帆</div>
+        <p class="bond-desc">十年无声合作。两人中间有一只碗，每个月它会被清洁一次，里面出现不同的东西：夏帆摘来的野花，或梅子泡好的茶。从不当面提起，也从不讨论谁来放什么。十年里通过那只碗传递过的东西，比她们所有的对话加起来还多。</p>
+      </div>
+
+      <div class="bond-card">
+        <div class="bond-pair">健三 × 梅子</div>
+        <p class="bond-desc">三十年前，健三让梅子做了脸碗，那只碗现在碗口朝墙放在最里面，三十年了，岛上没有人问过。梅子说那只碗"心情稳定"，这是她能说的全部。健三从没解释为什么朝墙放，梅子也没问。这个秘密比大多数人的秘密都更体面。</p>
+      </div>
+
+      <div class="bond-card">
+        <div class="bond-pair">冬子 × ひなた</div>
+        <p class="bond-desc">冬子从不追问 ひなた 手账里的符号。ひなた 状态不好时，冬子的厨房就会多做一份 ひなた 最爱吃的东西放在门口，不敲门，放下就走。ひなた 从不提，冬子从不提。这种爱不占地方，但从不缺席。它的形状是一份食物，它的名字是不需要解释。</p>
+      </div>
+
+      <div class="bond-card">
+        <div class="bond-pair">夏帆 × ひなた</div>
+        <p class="bond-desc">ひなた 手账里有一栏"夏帆植物今日观测"，从律到岛第八天开始越写越长，记录越来越多关于律的动态。律永远不会知道，夏帆也不知道 ひなた 在记录这些。两个人各自通过间接的方式，一起关注着同一个人，没有商量过，也不需要商量。</p>
+      </div>
+
+      <div class="bond-card bond-ritsu">
+        <div class="bond-pair">律 × ひなた（镜像结构）</div>
+        <p class="bond-desc">第一章码头互相点头，第六章同一道光里站着，中间没有说破过任何东西。律认出 ひなた 不靠眼睛——那是海水加碳粉墨水的气味，是她做记录用的那种墨，渗进了她的指节缝里，混着岛上的海风。没有说破的东西，比说出口的更真实。<br><br>镜像结构：律害怕回东京，害怕失去岛上的安静；ひなた 害怕灯亮后岛被外界重新找到，害怕渉留下的安静就此结束。两人守护的东西相同，出发点不同，方向相反，从未对彼此说过。感情弧线六章节奏：Ch1注意 → Ch2共鸣 → Ch3并肩 → Ch4寻找 → Ch5临界 → Ch6收容，以沉默/行动收尾不破。</p>
+      </div>
+
+    </div>
+
+
+    <!-- 五、隐藏谜题结构 -->
+    <div class="section-header">
+      <div class="section-number">五</div>
+      <h2>隐藏谜题结构</h2>
+    </div>
+
+    <div class="mystery-layers">
+
+      <div class="mystery-card">
+        <div class="mystery-layer-label">表层谜题</div>
+        <p class="mystery-text">律为什么来到这里？他自己知道答案——他点了一封垃圾邮件链接并且附了简历。但那个答案太荒诞，所以他继续在岛上寻找别的解释。</p>
+      </div>
+
+      <div class="mystery-card">
+        <div class="mystery-layer-label">中层谜题 · 三块石刻</div>
+        <p class="mystery-text">岛上散布着三块风化石刻，位置各异，刻痕风化程度一致，均不符合近期刻写：</p>
+        <div class="mystery-quote">
+          <div class="日文原文">第一块（第一章，码头附近）：「りつ」</div>
+          <div class="中文注释">两个假名，像某人名字的一部分，风化很深。律以为是游客随手刻的，继续走了。</div>
+        </div>
+        <div class="mystery-quote">
+          <div class="日文原文">第二块（第三章，山坡）：「二〇二六」</div>
+          <div class="中文注释">一个年份。字体和风化程度与第一块完全一致——这已经不是随手刻的了。</div>
+        </div>
+        <div class="mystery-quote">
+          <div class="日文原文">第三块（第五章，灯台基石）：「灯を見る人」</div>
+          <div class="中文注释">看灯台的人。律读到渉日记后，第一次将三块石刻联系在一起——但不知道这是命运还是巧合。</div>
+        </div>
+        <p class="mystery-text" style="margin-top:0.8rem;">渉的日记第三册，写于二十年前：</p>
+        <div class="mystery-quote">
+          <div class="日文原文">「今日の海は穏やかだった。波の合間に、誰かがくる予感がした。その人の名前は、なぜか知っている気がする。律、という名前だ。理由はわからない。ただ、そう感じた。」</div>
+          <div class="中文注释">（今天的海很平静。在海浪的间隙里，我有一种某个人要来的预感。那个人的名字，不知为何我觉得我知道。叫律。不知道为什么。只是有这种感觉。）<br>日记写于二十年前。当时律只有九岁，从未离开过东京。</div>
+        </div>
+      </div>
+
+      <div class="mystery-card">
+        <div class="mystery-layer-label">深层谜题</div>
+        <p class="mystery-text">岛在等什么，等了多久，为什么是律？——游戏不给出答案。答案属于玩家自己。</p>
+      </div>
+
+    </div>
+
+    <div class="mystery-timeline">
+      <h3>谜题展开节奏（按章节分布）</h3>
+      <div class="timeline-item">
+        <span class="timeline-ch">第一章</span>
+        <span>码头附近，律偶然看见一块风化石，刻着「りつ」——两个假名，风化很深。律觉得是游客随手刻的，继续走了。</span>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-ch">第二章</span>
+        <span>夏帆"无意中"提到，渉"好像知道你会来"——说完低头，没有说更多。</span>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-ch">第三章</span>
+        <span>山坡上另一块石头，刻着「二〇二六」，字体和风化程度与第一块完全一致——这已经不是游客随手刻的了。律感到奇怪，但没有联系两块石刻。</span>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-ch">第四章</span>
+        <span>律在营地把两块石刻的位置画在日记里，想找出规律，找不到。那晚他把纸合上，没再想。</span>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-ch">第五章</span>
+        <span>灯台基石处，第三块石刻：「灯を見る人」。律读到渉日记第三册那段预感后，第一次将三块石刻联系在一起。ひなた 沉默了很久，说："他从来没有跟我说过这件事。"</span>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-ch">第六章</span>
+        <span>灯塔亮起。三块石刻，一份二十年前的日记，一个在凌晨三点点击垃圾邮件的人——它们以某种方式互相找到了对方。游戏不解释。</span>
+      </div>
+    </div>
+
+    <div class="resolution-block">
+      <h3>谜题的不解释原则</h3>
+      <p class="mystery-text" style="margin-bottom:0.8rem;">游戏不给出解释。"为什么"的答案属于玩家自己。渉日记最后一册，最后一段：</p>
+      <div class="日记日文">「灯台の光は、来るべき人を呼ぶのではない。来ようとしている人に、ここに灯りがあることを、知らせるだけだ。」</div>
+      <div class="日记中文">（灯塔的光，不是去召唤应该来的人。只是告诉那个正在想来的人：这里有灯。）</div>
+    </div>
+
+  </div><!-- /container -->
+
+  <div class="page-footer">
+    輝島 · 世界观设计文档 v6.0 · 2026-05-13<br>
+    叙事设计原则：温暖先于一切，无声而持续。NPC各自有自己安静的在世方式。治愈是一种在岛上慢慢发生的状态，不是一个目的地。<br>
+    输出语言：zh-CN（游戏内专有名词保留日文，JSON字段名保留英文snake_case）<br>
+    数据来源：.allforai/game-design/systems/worldbuilding.json v6.0 &amp; worldbuilding-bible.md v3.0
   </div>
 </body>
 </html>

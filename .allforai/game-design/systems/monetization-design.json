@@ -1,235 +1,258 @@
 {
-  "version": "2.0",
-  "product": "Glow Island",
-  "generated_at": "2026-05-08T00:00:00.000Z",
+  "version": "3.0",
+  "product": "Glow Island (輝島)",
+  "generated_at": "2026-05-13T00:00:00.000Z",
+  "revision_notes": "v3.0 — 单货币重构。移除双货币（沙滩币软货币 + 丹青石硬货币）旧设计，严格对齐 product-concept：单一沙滩币，仅IAP购买，唯一付费点为步数耗尽续关。移除材料合成体系、跳关、进度加速等变现点。",
   "source_refs": [
-    ".allforai/game-design/economy-model.json",
-    ".allforai/product-concept/concept-baseline.json"
+    ".allforai/product-concept/concept-baseline.json",
+    ".allforai/game-design/systems/core-mechanics.json"
   ],
-  "currencies": {
-    "soft": "beach_coins",
-    "hard": "glow_stones"
-  },
-  "soft_currency": {
+
+  "currency_model": "single_currency_iap_only",
+  "currency_model_note": "单货币模型：仅「沙滩币」一种货币，只通过IAP购买获得，无任何免费赚取渠道。无软货币/硬货币分层。",
+
+  "currency": {
     "id": "beach_coins",
-    "name": "沙滩币",
-    "initial_grant": 200,
-    "sources": ["level_clear", "daily_login", "daily_tasks", "event_levels", "zen_mode"],
-    "sinks": ["basic_boosters", "basic_decoration", "material_synthesis_speed"],
-    "daily_earn_active": 120,
-    "daily_spend_active": 80,
-    "cap": 9999
+    "name_cn": "沙滩币",
+    "name_en": "Beach Coins",
+    "icon_hint": "贝壳造型金黄色圆形硬币，带涟漪光晕，暖橙色",
+    "obtain_methods": ["iap_purchase_only"],
+    "free_earn": false,
+    "free_earn_note": "无签到奖励、无任务奖励、无通关奖励——沙滩币仅通过IAP购入，保持单一获取路径，经济模型清晰。",
+    "sinks": [
+      {
+        "sink_id": "continue_steps",
+        "name_cn": "续关（+5步）",
+        "cost_beach_coins": 30,
+        "trigger": "步数耗尽，结算界面弹出续关选项",
+        "repeatable": true,
+        "notes": "同一关卡可多次续关。每次+5步，费用固定30沙滩币。不设三次上限。"
+      },
+      {
+        "sink_id": "reshuffle",
+        "name_cn": "重排",
+        "cost_beach_coins": 30,
+        "trigger": "玩家主动点击重排按钮，或引擎检测无合法配对时弹出提示",
+        "repeatable": true,
+        "notes": "打乱棋盘图块位置，保证新布局存在合法配对"
+      },
+      {
+        "sink_id": "hint",
+        "name_cn": "预判",
+        "cost_beach_coins": 10,
+        "trigger": "玩家主动点击预判按钮",
+        "repeatable": true,
+        "notes": "高亮当前棋盘最优下一步，持续3秒"
+      }
+    ],
+    "no_cap": true,
+    "no_cap_note": "沙滩币无上限，付多少留多少"
   },
-  "hard_currency": {
-    "id": "glow_stones",
-    "name": "丹青石",
-    "initial_grant": 0,
-    "sources": ["iap_purchase", "monthly_card_daily", "milestone_achievement", "special_event"],
-    "sinks": ["continue_level", "skip_level", "premium_booster", "limited_decoration", "seasonal_tile_skin", "npc_interaction_props"],
-    "free_player_monthly_max": 63,
-    "monthly_card_monthly": 300
-  },
+
   "iap_skus": [
     {
-      "sku_id": "small_pack",
-      "name": "一抔沙",
+      "sku_id": "pack_small",
+      "name_cn": "一抔沙",
+      "name_en": "A Handful of Sand",
       "price_cny": 6,
       "price_usd": 0.99,
-      "glow_stones": 6,
+      "beach_coins": 60,
       "bonus": null,
       "purchase_limit": null,
-      "positioning": "低门槛入门包，应急续命"
+      "positioning": "低门槛入门包：应急续关首选，降低首次付费心理门槛",
+      "continue_count_equiv": 2,
+      "trigger_hint": "连续失败3次后，结算界面内嵌软推荐"
     },
     {
-      "sku_id": "starter_pack",
-      "name": "新玩家礼包",
-      "price_cny": 18,
-      "price_usd": 2.99,
-      "glow_stones": 50,
-      "bonus": ["beach_coins_300", "lighthouse_figurine_decoration"],
-      "purchase_limit": 1,
-      "eligibility_window_days": 7,
-      "positioning": "新玩家首充转化锚，限购一次"
-    },
-    {
-      "sku_id": "medium_pack",
-      "name": "一把贝壳",
+      "sku_id": "pack_medium",
+      "name_cn": "一把贝壳",
+      "name_en": "A Handful of Shells",
       "price_cny": 25,
       "price_usd": 3.99,
-      "glow_stones": 33,
-      "bonus": ["tile_skin_random_seasonal_x1"],
+      "beach_coins": 280,
+      "bonus": null,
       "purchase_limit": null,
-      "positioning": "主力单次购买包，IAP主推位"
+      "positioning": "主力单次购买包，性价比最优，IAP商城主推位",
+      "continue_count_equiv": 9,
+      "trigger_hint": "IAP商城主推展位"
     },
     {
-      "sku_id": "monthly_card",
-      "name": "月卡",
+      "sku_id": "pack_large",
+      "name_cn": "一篮珊瑚",
+      "name_en": "A Basket of Coral",
+      "price_cny": 68,
+      "price_usd": 9.99,
+      "beach_coins": 820,
+      "bonus": null,
+      "purchase_limit": null,
+      "positioning": "高价值大额消费包，重度玩家储粮首选",
+      "continue_count_equiv": 27,
+      "trigger_hint": "商城常驻，重度付费"
+    },
+    {
+      "sku_id": "pack_monthly_card",
+      "name_cn": "月卡（每日沙滩币）",
+      "name_en": "Monthly Card",
       "price_cny": 30,
       "price_usd": 4.99,
-      "glow_stones": 300,
-      "delivery": "10_per_day_x30",
-      "bonus": ["moonlight_tile_skin_x1", "moonlight_island_decoration_x1"],
+      "beach_coins": 0,
+      "beach_coins_delivery": "30_per_day_x30",
+      "beach_coins_total": 900,
+      "bonus": null,
       "purchase_limit": null,
       "is_subscription": true,
       "renewal_reminder_days": 3,
-      "positioning": "订阅复购产品，ARPU锚点"
-    },
-    {
-      "sku_id": "large_pack",
-      "name": "一篮珊瑚",
-      "price_cny": 68,
-      "price_usd": 9.99,
-      "glow_stones": 100,
-      "bonus": ["limited_island_decoration_x1", "tile_skin_x2"],
-      "purchase_limit": null,
-      "positioning": "高价值单次大额消费包"
-    },
-    {
-      "sku_id": "mega_pack",
-      "name": "灯塔礼包",
-      "price_cny": 128,
-      "price_usd": 19.99,
-      "glow_stones": 240,
-      "bonus": ["limited_island_decoration_x2", "tile_skin_x3", "npc_interaction_prop_x1"],
-      "purchase_limit": null,
-      "positioning": "重度付费用户大礼包，节日限时"
+      "positioning": "订阅复购产品：每天登录领取30沙滩币，持续30天，总价值高于一次性中包，鼓励规律游玩",
+      "continue_count_equiv": 30,
+      "trigger_hint": "商城订阅区，月活留存锚点"
     }
   ],
-  "chapter_materials": [
-    {
-      "material_id": "driftwood",
-      "name": "浮木",
-      "chapter": 1,
-      "chapter_name": "破旧码头",
-      "total_required": 120,
-      "drop_rates": {"1star": 1, "2star": 2, "3star": 3},
-      "avg_earn_per_level": 2.0,
-      "levels_to_complete": "50-65",
-      "synthesis": null,
-      "synthesis_cost_beach_coins": 0
-    },
-    {
-      "material_id": "tropical_flower",
-      "name": "热带花",
-      "chapter": 2,
-      "chapter_name": "废弃花园",
-      "total_required": 160,
-      "drop_rates": {"1star": 1, "2star": 2, "3star": 3},
-      "avg_earn_per_level": 2.0,
-      "levels_to_complete": "65-80",
-      "synthesis": {"input_material": "driftwood", "input_qty": 3, "output_qty": 1},
-      "synthesis_cost_beach_coins": 30
-    },
-    {
-      "material_id": "coral_fragment",
-      "name": "珊瑚碎片",
-      "chapter": 3,
-      "chapter_name": "沉船遗址",
-      "total_required": 200,
-      "drop_rates": {"1star": 1, "2star": 2, "3star": 3},
-      "avg_earn_per_level": 2.2,
-      "levels_to_complete": "75-90",
-      "synthesis": {"input_material": "tropical_flower", "input_qty": 3, "output_qty": 1},
-      "synthesis_cost_beach_coins": 50
-    },
-    {
-      "material_id": "starfish",
-      "name": "海星",
-      "chapter": 4,
-      "chapter_name": "神秘洞窟",
-      "total_required": 240,
-      "drop_rates": {"1star": 1, "2star": 2, "3star": 4},
-      "avg_earn_per_level": 2.5,
-      "levels_to_complete": "80-95",
-      "synthesis": {"input_material": "coral_fragment", "input_qty": 3, "output_qty": 1},
-      "synthesis_cost_beach_coins": 70
-    },
-    {
-      "material_id": "ancient_tile",
-      "name": "古陶片",
-      "chapter": 5,
-      "chapter_name": "遗忘神庙",
-      "total_required": 280,
-      "drop_rates": {"1star": 1, "2star": 3, "3star": 5},
-      "avg_earn_per_level": 3.0,
-      "levels_to_complete": "80-95",
-      "synthesis": {"input_material": "starfish", "input_qty": 3, "output_qty": 1},
-      "synthesis_cost_beach_coins": 100
-    },
-    {
-      "material_id": "moonlight_crystal",
-      "name": "月光水晶",
-      "chapter": 6,
-      "chapter_name": "岛屿之巅",
-      "total_required": 320,
-      "drop_rates": {"1star": 1, "2star": 3, "3star": 6},
-      "avg_earn_per_level": 3.5,
-      "levels_to_complete": "80-95",
-      "synthesis": {"input_material": "ancient_tile", "input_qty": 3, "output_qty": 1},
-      "synthesis_cost_beach_coins": 150
-    }
-  ],
-  "no_energy_system": true,
-  "no_forced_iap_popup": true,
-  "iap_trigger_rules": {
-    "min_failures_before_prompt": 3,
-    "forbidden": [
-      "popup_during_gameplay",
-      "forced_fullscreen_purchase_block",
-      "fomo_countdown_timers",
-      "commercial_content_in_narrative_scenes",
-      "prompt_on_less_than_3_consecutive_failures"
+
+  "pricing_rationale": {
+    "continue_cost_beach_coins": 30,
+    "continue_cost_cny_via_small_pack": 3.0,
+    "continue_cost_cny_via_medium_pack": 2.68,
+    "continue_cost_cny_via_large_pack": 2.49,
+    "reference_games": ["天天爱消除", "Candy Crush Saga"],
+    "localization_note": "定价参考天天爱消除/Candy Crush续关成本，采用本地化定价（CNY:USD≠6.1直换，而是参考市场心理价位）",
+    "value_note": "月卡总价值900沙滩币（30颗/天×30天），单价等效≈3.33分/沙滩币，优于中包（≈8.93分），鼓励订阅。小包单价≈10分，大包≈8.29分。月卡最优，对重度玩家最有价值。"
+  },
+
+  "paywall_design": {
+    "only_paywall": "步数耗尽后续关（+5步，30沙滩币/次）",
+    "no_paywalls": [
+      "道具/助攻器不强制付费（低成本沙滩币辅助）",
+      "章节解锁不付费",
+      "外观皮肤不付费",
+      "NPC对话/叙事内容不付费",
+      "不卖进度加速",
+      "不卖跳关"
     ],
+    "no_energy_system": true,
+    "no_energy_note": "无体力机制：玩家随时开始新关卡，失败立即重试，不受付费限制"
+  },
+
+  "iap_trigger_rules": {
+    "anti_intrusion_principle": "反侵入原则：不主动弹出购买提示，只在自然失败时展示续关选项",
     "allowed": [
-      "player_opens_shop_voluntarily",
-      "inline_hint_on_failure_screen_after_3plus_failures",
-      "chapter_milestone_soft_recommendation",
-      "moonlight_card_expiry_reminder_3days_prior"
+      "步数耗尽结算界面内嵌续关按钮（沙滩币余额≥30则直接消费，余额不足则引导购买）",
+      "玩家主动打开商城",
+      "连续失败3次以上后，结算界面下方展示「小包」软提示（非全屏强制）",
+      "月卡到期前3天，设置界面内提醒"
+    ],
+    "forbidden": [
+      "游戏进行中弹出购买窗口",
+      "全屏强制购买拦截",
+      "倒计时FOMO促销弹窗",
+      "叙事/过场场景中插入商业内容",
+      "少于3次连续失败就推送购买"
     ]
   },
+
+  "sku_count_rationale": {
+    "target_sku_count": 4,
+    "note": "4个SKU（小/中/大 + 月卡）覆盖完整转化漏斗，避免选择困难。无需6+个复杂档位。",
+    "funnel": {
+      "entry": "pack_small（¥6）首充转化，降低心理门槛",
+      "core": "pack_medium（¥25）主力复购，性价比锚点",
+      "whale": "pack_large（¥68）重度消费，储粮包",
+      "ltv": "pack_monthly_card（¥30/月）留存锚点，提升LTV"
+    }
+  },
+
   "arpu_targets": {
-    "d1": "$0.15",
-    "d7": "$0.60",
-    "d30": "$1.50",
-    "d90": "$3.20",
-    "paying_user_d30": "$15.00",
-    "iap_conversion_rate": "3%",
-    "monthly_card_renewal_rate": "60%"
+    "d7_arpu": "$0.45",
+    "d30_arpu": "$1.20",
+    "d90_arpu": "$2.80",
+    "paying_user_d30_arpu": "$12.00",
+    "iap_conversion_rate": "2.5%",
+    "monthly_card_renewal_rate": "55%",
+    "revenue_mix": {
+      "monthly_card_subscription": "40%",
+      "one_time_packs": "45%",
+      "micro_continue_spend": "15%"
+    },
+    "note": "单货币模型预期转化率略低于双货币（无软货币推流），但付费用户ARPU更高（决策路径更清晰）"
   },
-  "revenue_mix": {
-    "subscription_monthly_card": "45%",
-    "one_time_packs": "35%",
-    "micro_spend_continue_booster": "20%"
+
+  "economy_validation": {
+    "status": "validated",
+    "resource_flow_closed": true,
+    "checks": [
+      {
+        "check": "沙滩币有且只有一种获取途径（IAP）",
+        "pass": true
+      },
+      {
+        "check": "沙滩币有明确消费场景（续关/重排/预判）",
+        "pass": true
+      },
+      {
+        "check": "无双货币遗留（丹青石已完全移除）",
+        "pass": true
+      },
+      {
+        "check": "无体力系统遗留",
+        "pass": true
+      },
+      {
+        "check": "IAP SKU数量在合理范围（3-5个）",
+        "pass": true,
+        "detail": "4个SKU"
+      },
+      {
+        "check": "续关触发时机不侵入（步数耗尽后弹出，不主动推送）",
+        "pass": true
+      },
+      {
+        "check": "续关定价合理（参考天天爱消除/Candy Crush）",
+        "pass": true,
+        "detail": "30沙滩币≈¥2.49-3.00/次，市场对齐"
+      }
+    ],
+    "exploit_risks": [
+      {
+        "risk": "无限续关高消费",
+        "severity": "low",
+        "mitigation": "沙滩币余额有限，无强制消费；玩家可选择放弃重试"
+      },
+      {
+        "risk": "重排辅助滥用",
+        "severity": "low",
+        "mitigation": "重排消耗30沙滩币，有成本约束；棋盘设计保证大多数情况无需重排"
+      }
+    ]
   },
+
   "errc_commitments": {
     "eliminate": [
-      "energy_life_system",
-      "countdown_levels",
-      "forced_purchase_popups",
-      "pvp_leaderboards",
-      "forced_social_guild_obligations",
-      "progress_paywalls"
+      "体力/生命值系统",
+      "倒计时关卡",
+      "强制购买弹窗",
+      "PvP竞技排行榜",
+      "强制社交/公会义务",
+      "进度付费墙",
+      "双货币复杂度（丹青石已完全移除）"
     ],
     "reduce": [
-      "artificial_difficulty_walls",
-      "high_density_timed_events",
-      "intrusive_iap_prompts",
-      "repetitive_daily_obligations",
-      "fake_discount_pricing"
+      "人为难度墙",
+      "高密度限时活动",
+      "侵入式IAP提示",
+      "虚假折扣定价",
+      "选择困难（SKU精简为4档）"
     ],
     "raise": [
-      "match_satisfying_combo_feedback",
-      "art_quality_animal_crossing_style",
-      "narrative_emotional_depth",
-      "iap_perceived_value",
-      "player_purchase_agency"
+      "消除爽快感（连击/特效/音效）",
+      "美术精致度（动森风格）",
+      "叙事情感深度",
+      "IAP感知价值（清晰定价，真实呈现）",
+      "玩家付费主动性"
     ],
     "create": [
-      "progressive_island_visual_restoration",
-      "subtle_romance_storyline",
-      "lighthouse_keeper_memory_fragments",
-      "zen_mode_unlimited_casual_play",
-      "cross_chapter_synthesis_system"
+      "渐进式岛屿视觉修复（关卡进度→场景变化，免费）",
+      "若有若无情感线（山田律×丸山ひなた，免费）",
+      "灯台守记忆碎片系统（渉日记，免费）",
+      "月卡日领沙滩币（规律游玩激励，轻量订阅）"
     ]
   }
 }

@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glow Island · 美术资产规格说明</title>
+  <style>
+    :root {
+      --sand: #F7EDD8;
+      --wood: #E8D8B4;
+      --border: #8B6030;
+      --text: #3A2810;
+      --text-muted: #7A6040;
+      --coral: #E8866A;
+      --coral-dark: #B85A40;
+      --teal: #5BBFB5;
+      --green: #7DBE77;
+      --gold: #F5C842;
+      --indigo: #1E2E50;
+      --tab-active: #E8866A;
+      --tab-bg: #D4C090;
+      --radius: 16px;
+      --shadow: 0 4px 0 rgba(0,0,0,0.10);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "思源圆体", "Source Han Sans SC", "SF Pro Rounded", "Nunito", sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+    header {
+      background: var(--indigo);
+      color: #F5F0E8;
+      padding: 28px 32px 20px;
+    }
+    header h1 { font-size: 26px; font-weight: 700; letter-spacing: 0.04em; }
+    header .meta { font-size: 13px; opacity: 0.7; margin-top: 6px; }
+    nav.tabs {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      background: var(--wood);
+      padding: 12px 16px 0;
+      border-bottom: 3px solid var(--border);
+    }
+    nav.tabs button {
+      padding: 8px 18px;
+      border: 2px solid var(--border);
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+      background: var(--tab-bg);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    nav.tabs button.active {
+      background: var(--tab-active);
+      color: #fff;
+    }
+    nav.tabs button:hover:not(.active) { background: var(--coral); color: #fff; }
+    .tab-content { display: none; padding: 24px; max-width: 1200px; margin: 0 auto; }
+    .tab-content.active { display: block; }
+
+    /* 卡片 */
+    .card {
+      background: var(--wood);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .card h2 {
+      font-size: 18px; font-weight: 700; color: var(--indigo);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px; margin-bottom: 14px;
+    }
+    .card h3 { font-size: 15px; font-weight: 700; margin: 14px 0 6px; color: var(--coral-dark); }
+    .card p { margin-bottom: 8px; }
+
+    /* 徽章 */
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 12px; font-weight: 700;
+      margin: 2px;
+    }
+    .badge-mvp    { background: var(--coral); color: #fff; }
+    .badge-beta   { background: var(--teal);  color: #fff; }
+    .badge-release{ background: var(--indigo);color: #fff; }
+    .badge-ai     { background: var(--green); color: #fff; }
+    .badge-manual { background: #C85A40;       color: #fff; }
+    .badge-frame  { background: var(--gold);   color: var(--text); }
+    .badge-skel   { background: #7ECDE8;       color: var(--text); }
+    .badge-static { background: #B0C8A0;       color: var(--text); }
+    .badge-tween  { background: #D4B0E8;       color: var(--text); }
+
+    /* 表格 */
+    .asset-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .asset-table th {
+      background: var(--indigo);
+      color: #F5F0E8;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 700;
+    }
+    .asset-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(139,96,48,0.2);
+      vertical-align: top;
+    }
+    .asset-table tr:nth-child(even) td { background: rgba(255,255,255,0.35); }
+    .asset-table tr:hover td { background: rgba(232,134,106,0.15); }
+
+    /* 进度条 */
+    .progress-bar-wrap { background: rgba(0,0,0,0.1); border-radius: 999px; height: 8px; margin: 4px 0; }
+    .progress-bar { height: 8px; border-radius: 999px; background: var(--green); }
+
+    /* 调色板色块 */
+    .swatch-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+    .swatch {
+      display: flex; flex-direction: column; align-items: center;
+      font-size: 11px; color: var(--text-muted);
+    }
+    .swatch-block {
+      width: 56px; height: 40px;
+      border-radius: 10px;
+      border: 2px solid rgba(0,0,0,0.15);
+      margin-bottom: 4px;
+    }
+
+    /* 流程图 */
+    .pipeline-row {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px;
+    }
+    .pipe-node {
+      background: var(--indigo);
+      color: #F5F0E8;
+      border-radius: 10px;
+      padding: 6px 14px;
+      font-size: 13px; font-weight: 700;
+      text-align: center;
+    }
+    .pipe-arrow { font-size: 20px; color: var(--border); }
+
+    /* 图集卡片网格 */
+    .atlas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-top: 10px; }
+    .atlas-card {
+      background: rgba(255,255,255,0.4);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 13px;
+    }
+    .atlas-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+    /* 响应式 */
+    @media (max-width: 640px) {
+      .asset-table th, .asset-table td { font-size: 12px; padding: 6px 6px; }
+      header h1 { font-size: 20px; }
+      nav.tabs button { font-size: 12px; padding: 6px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Glow Island（輝島）· 美术资产规格说明</h1>
+  <div class="meta">节点：art-spec-design ｜ 负责人：concept-artist ｜ 版本：1.1（中文修订版）｜ 生成时间：2026-05-13</div>
+</header>
+
+<nav class="tabs">
+  <button class="active" onclick="showTab('总览', this)">总览</button>
+  <button onclick="showTab('图块资产', this)">图块资产</button>
+  <button onclick="showTab('角色资产', this)">角色资产</button>
+  <button onclick="showTab('场景背景', this)">场景背景</button>
+  <button onclick="showTab('界面资产', this)">界面资产</button>
+  <button onclick="showTab('特效资产', this)">特效资产</button>
+  <button onclick="showTab('图集策略', this)">图集策略</button>
+  <button onclick="showTab('美术管线', this)">美术管线</button>
+  <button onclick="showTab('质量标准', this)">质量标准</button>
+</nav>
+
+<!-- 总览 -->
+<div id="tab-总览" class="tab-content active">
+
+  <div class="card">
+    <h2>项目基本信息</h2>
+    <table class="asset-table" style="width:auto;">
+      <tr><th>项目名称</th><td>Glow Island（輝島 · Kagayaki-jima）</td></tr>
+      <tr><th>引擎</th><td>Cocos Creator · web-canvas-2d 平台</td></tr>
+      <tr><th>渲染维度</th><td>2D</td></tr>
+      <tr><th>设计分辨率</th><td>2x 设计，运行时自动降级至 1x</td></tr>
+      <tr><th>动画系统</th><td>DragonBones 骨骼动画 + 帧序列动画 + Cocos Tween 缓动</td></tr>
+      <tr><th>AI 生成接口</th><td>Google Imagen 4（主）／ OpenRouter GPT-Image（备选）</td></tr>
+      <tr><th>美术风格</th><td>手绘水彩 · 日式治愈离岛 · 圆润Q版 · 软阴影扁平UI</td></tr>
+      <tr><th>风格参考</th><td>Animal Crossing: New Horizons × 日式离岛美学（Wytchwood 水彩纹理，A Short Hike 户外构图）</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>资产总量汇总</h2>
+    <table class="asset-table">
+      <thead>
+        <tr>
+          <th>类别</th>
+          <th>主资产数</th>
+          <th>变体/帧</th>
+          <th>里程碑分层</th>
+          <th>AI生成</th>
+          <th>人工制作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>普通图块（20种，6章色变）</td>
+          <td>20</td>
+          <td>120 变体</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>20</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>特殊图块（5种，12帧动画）</td>
+          <td>5</td>
+          <td>60 帧</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>5</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>角色（骨骼动画，7位）</td>
+          <td>7</td>
+          <td>按动画组</td>
+          <td><span class="badge badge-mvp">MVP</span> <span class="badge badge-beta">Beta</span> <span class="badge badge-release">Release</span></td>
+          <td>0</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td>场景背景（6章 × 3状态）</td>
+          <td>18</td>
+          <td>–</td>
+          <td><span class="badge badge-mvp">MVP</span> <span class="badge badge-beta">Beta</span> <span class="badge badge-release">Release</span></td>
+          <td>18</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>界面 UI 资产</td>
+          <td>10</td>
+          <td>按变体</td>
+          <td><span class="badge badge-mvp">MVP</span> <span class="badge badge-beta">Beta</span></td>
+          <td>6</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>特效 VFX 资产</td>
+          <td>8</td>
+          <td>按帧/变体</td>
+          <td><span class="badge badge-mvp">MVP</span> <span class="badge badge-beta">Beta</span> <span class="badge badge-release">Release</span></td>
+          <td>8</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>场景道具</td>
+          <td>2</td>
+          <td>按变体</td>
+          <td><span class="badge badge-release">Release</span></td>
+          <td>2</td>
+          <td>0</td>
+        </tr>
+        <tr style="font-weight:700; background:rgba(232,134,106,0.15)">
+          <td>合计</td>
+          <td>70</td>
+          <td>–</td>
+          <td>–</td>
+          <td>59</td>
+          <td>11</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>里程碑资产分层规划</h2>
+
+    <h3>MVP（最小可行版本）— 优先交付</h3>
+    <p>20种普通图块全色变体 · 5种特殊图块帧动画 · 角色：山田律、丸山ひなた、磯部健三、桐島梅子 · 第1–2章场景背景（6项）· 全部核心UI资产 · MVP VFX 特效</p>
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:45%"></div></div>
+    <p style="font-size:12px;color:var(--text-muted)">占总资产约 45%</p>
+
+    <h3>Beta（测试版）— 第二优先级</h3>
+    <p>追加角色：海野夏帆、丸山冬子 · 第3–4章场景背景（6项）· 商店面板 UI · 章节修复 VFX</p>
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:70%"></div></div>
+    <p style="font-size:12px;color:var(--text-muted)">累计达约 70%</p>
+
+    <h3>Release（正式发布）— 完整版</h3>
+    <p>追加角色：議長（橘猫）· 第5–6章场景背景（6项）· 灯塔光晕帧动画 · 灯塔灯道具 · ひなた手账道具</p>
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:100%"></div></div>
+    <p style="font-size:12px;color:var(--text-muted)">全部 100%</p>
+  </div>
+
+  <div class="card">
+    <h2>资产状态生命周期</h2>
+    <table class="asset-table">
+      <thead><tr><th>状态值</th><th>含义</th><th>下一步操作</th></tr></thead>
+      <tbody>
+        <tr><td><code>placeholder</code></td><td>资产已列入清单但尚未生成</td><td>art-gen 节点负责生成</td></tr>
+        <tr><td><code>in_progress</code></td><td>正在生成中</td><td>等待生成完成</td></tr>
+        <tr><td><code>alpha</code></td><td>初稿已生成，待 QA 审核</td><td>art-qa 节点审核验收</td></tr>
+        <tr><td><code>locked</code></td><td>已通过 QA，不再修改</td><td>下游节点可直接使用</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:10px; color:var(--text-muted); font-size:13px">规则：所有资产初始 <code>current_state = "placeholder"</code>。art-gen 节点更新状态至 <code>in_progress</code> / <code>alpha</code>。art-qa 节点验收后设定最终 <code>locked</code>。</p>
+  </div>
+
+</div>
+
+<!-- 图块资产 -->
+<div id="tab-图块资产" class="tab-content">
+
+  <div class="card">
+    <h2>普通图块技术规格</h2>
+    <table class="asset-table" style="width:auto">
+      <tr><th>画布尺寸（2x）</th><td>128 × 128 px</td></tr>
+      <tr><th>实际绘制区域</th><td>112 × 112 px（四周各留 8 px 透明出血）</td></tr>
+      <tr><th>圆角半径（2x）</th><td>24 px</td></tr>
+      <tr><th>轮廓线</th><td>2 px，主色加深 32%（禁止纯黑 #000000）</td></tr>
+      <tr><th>纸纹叠加</th><td>6% 不透明度统一纸纹底（所有图块一致）</td></tr>
+      <tr><th>格式</th><td>PNG，无压缩</td></tr>
+      <tr><th>动画方式</th><td>静态（Static PNG）</td></tr>
+      <tr><th>图集策略</th><td>按章节分图集：tiles_ch1_atlas … tiles_ch6_atlas</td></tr>
+      <tr><th>最大图集尺寸</th><td>2048 × 2048 px</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>饱和度修复分阶规则</h2>
+    <p>同一图块在 6 个章节图集中使用不同饱和度参数，视觉上体现輝島的修复进度。</p>
+    <table class="asset-table">
+      <thead><tr><th>修复阶段</th><th>饱和度范围</th><th>亮度</th><th>视觉描述</th><th>应用章节</th></tr></thead>
+      <tbody>
+        <tr><td>s0（修复前）</td><td>8–15%</td><td>42–48%</td><td>褪色枯岛，铅笔草稿感</td><td>Ch1 初始状态</td></tr>
+        <tr><td>s1</td><td>28–38%</td><td>–</td><td>轮廓找回，淡彩涂色</td><td>Ch1 修复后</td></tr>
+        <tr><td>s2</td><td>48–58%</td><td>–</td><td>生活气息，色彩入稿</td><td>Ch2–Ch3</td></tr>
+        <tr><td>s3</td><td>62–72%</td><td>–</td><td>角色回归，满生命力</td><td>Ch4–Ch5</td></tr>
+        <tr><td>s4（完整）</td><td>75–88%</td><td>–</td><td>完整水彩光效全开</td><td>Ch6</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:8px;color:var(--text-muted);font-size:13px">饱和度过渡方式：crossfade 0.8s 每阶段切换。Ch6 灯塔光柱扫过时饱和度瞬间提升至 100% 再恢复。</p>
+  </div>
+
+  <div class="card">
+    <h2>20 种普通图块清单</h2>
+    <p style="margin-bottom:10px;color:var(--text-muted);font-size:13px">Ch1 解锁 12 种，后续每章解锁 2–3 种，Ch6 全 20 种解锁。变体文件命名格式：<code>tile_{id}_ch{N}</code>（N=1–6）。</p>
+    <table class="asset-table">
+      <thead>
+        <tr>
+          <th>资产 ID</th>
+          <th>名称</th>
+          <th>画布尺寸</th>
+          <th>格式</th>
+          <th>动画</th>
+          <th>章节色变数</th>
+          <th>里程碑</th>
+          <th>AI 生成</th>
+          <th>归属节点</th>
+          <th>初始状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>tile_tuna</td><td>金枪鱼</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_octopus</td><td>章鱼</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_starfish</td><td>海星</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_hermit_crab</td><td>寄居蟹</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_lanternfish</td><td>灯笼鱼</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_pufferfish</td><td>河豚</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_whale</td><td>鲸鱼</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_coral</td><td>珊瑚</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_conch</td><td>海螺</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_shell</td><td>贝壳</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_crab</td><td>螃蟹</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_turtle</td><td>海龟</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_jellyfish</td><td>水母</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_flying_fish</td><td>飞鱼</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_dolphin</td><td>海豚</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_seagull</td><td>海鸥</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_coconut_palm</td><td>椰子树</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_lighthouse</td><td>灯塔</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_fishing_boat</td><td>渔船</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+        <tr><td>tile_buoy</td><td>浮标</td><td>128×128</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>6</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>tile-art-gen</td><td>placeholder</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>5 种特殊图块规格</h2>
+    <p style="margin-bottom:12px;color:var(--text-muted);font-size:13px">特殊图块使用 12 帧 @30fps 帧序列动画，存入专用图集 <code>special_blocks_atlas</code>（与章节图集独立）。帧文件命名：<code>tile_{id}_frame_01</code>…<code>tile_{id}_frame_12</code>。</p>
+    <table class="asset-table">
+      <thead>
+        <tr>
+          <th>资产 ID</th>
+          <th>名称</th>
+          <th>标志色</th>
+          <th>图标视觉提示</th>
+          <th>帧数</th>
+          <th>触发条件</th>
+          <th>待机光效</th>
+          <th>里程碑</th>
+          <th>初始状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>tile_wave_block</td>
+          <td>光波特殊块</td>
+          <td><span style="display:inline-block;background:#7ECDE8;padding:2px 8px;border-radius:6px">#7ECDE8</span></td>
+          <td>涟漪光环，暖白色</td>
+          <td>12</td>
+          <td>Combo=6 自动生成 / 关卡预置</td>
+          <td>呼吸脉冲 2.0–2.8s</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>placeholder</td>
+        </tr>
+        <tr>
+          <td>tile_light_chain_block</td>
+          <td>光链特殊块</td>
+          <td><span style="display:inline-block;background:#F0C4C4;padding:2px 8px;border-radius:6px">#F0C4C4</span></td>
+          <td>链式光环，金色连环</td>
+          <td>12</td>
+          <td>Combo=4 自动生成 / 关卡预置</td>
+          <td>呼吸脉冲 2.0–2.8s</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>placeholder</td>
+        </tr>
+        <tr>
+          <td>tile_pierce_block</td>
+          <td>穿透特殊块</td>
+          <td><span style="display:inline-block;background:#F5A840;padding:2px 8px;border-radius:6px">#F5A840</span></td>
+          <td>光箭，蓝白渐变，穿透感</td>
+          <td>12</td>
+          <td>仅关卡编辑器预置</td>
+          <td>呼吸脉冲 2.0–2.8s</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>placeholder</td>
+        </tr>
+        <tr>
+          <td>tile_swap_block</td>
+          <td>置换特殊块</td>
+          <td><span style="display:inline-block;background:#F5C842;padding:2px 8px;border-radius:6px">#F5C842</span></td>
+          <td>双向箭头，绿色旋转</td>
+          <td>12</td>
+          <td>仅关卡编辑器预置</td>
+          <td>呼吸脉冲 2.0–2.8s</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>placeholder</td>
+        </tr>
+        <tr>
+          <td>tile_cascade_block</td>
+          <td>连锁特殊块</td>
+          <td><span style="display:inline-block;background:#4A7D55;padding:2px 8px;border-radius:6px;color:#fff">#4A7D55</span></td>
+          <td>连环波纹，橙红渐变</td>
+          <td>12</td>
+          <td>Combo=3 自动生成 / 关卡预置</td>
+          <td>呼吸脉冲 2.0–2.8s</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>placeholder</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- 角色资产 -->
+<div id="tab-角色资产" class="tab-content">
+
+  <div class="card">
+    <h2>角色通用技术规格</h2>
+    <table class="asset-table" style="width:auto">
+      <tr><th>标准骨骼画布</th><td>256 × 512 px（議長橘猫除外，使用 192×192 px）</td></tr>
+      <tr><th>骨骼系统</th><td>DragonBones Pro</td></tr>
+      <tr><th>动画帧率</th><td>30 fps</td></tr>
+      <tr><th>待机循环时长</th><td>2.0 秒，上下浮动振幅 3 px，ease-in-out</td></tr>
+      <tr><th>眨眼频率</th><td>每 5 秒一次，持续 0.15 秒</td></tr>
+      <tr><th>随机偶发动作</th><td>每 8–12 秒：左右摇头 ±5° / 手臂摆动 ±8° / 短暂抬头</td></tr>
+      <tr><th>头身比例</th><td>1:1.5 Q版；头部正圆形占全身高 40%</td></tr>
+      <tr><th>眼睛</th><td>水滴形占脸部 1/3，黑色瞳仁占眼面积 70%</td></tr>
+      <tr><th>身形</th><td>身体圆筒形无腰线；四肢短圆；脚部略大于手（增加稳定感）</td></tr>
+      <tr><th>剪影策略</th><td>每位 NPC 单色剪影，任意分辨率下可识别</td></tr>
+      <tr><th>格式</th><td>PNG 精灵图 + DragonBones JSON 骨骼数据</td></tr>
+      <tr><th>图集</th><td>characters_atlas（统一）</td></tr>
+      <tr><th>AI 生成</th><td>否（需人工制作骨骼绑定与表情调整）</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>5 种表情类型规格</h2>
+    <table class="asset-table">
+      <thead><tr><th>表情 ID</th><th>视觉描述</th><th>适用角色</th></tr></thead>
+      <tbody>
+        <tr><td>default</td><td>嘴角微翘，眼睛半开放松</td><td>全部角色</td></tr>
+        <tr><td>happy</td><td>月亮形眯眼（Ω嘴），双手握拳</td><td>全部角色</td></tr>
+        <tr><td>thinking</td><td>单眼眯起，嘴角歪斜，食指点嘴角</td><td>全部角色（議長除外）</td></tr>
+        <tr><td>surprised</td><td>头后仰，眼睛放大，头顶叹号</td><td>全部角色</td></tr>
+        <tr><td>react_jump</td><td>全身跳起 12px 弹性落下，头顶花瓣星星粒子</td><td>山田律（专属）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>7 位角色详细规格</h2>
+    <table class="asset-table">
+      <thead>
+        <tr>
+          <th>资产 ID</th>
+          <th>角色名</th>
+          <th>定位</th>
+          <th>标志色</th>
+          <th>画布 (px)</th>
+          <th>动画组</th>
+          <th>里程碑</th>
+          <th>初始状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>char_ritsu</td>
+          <td>山田律</td>
+          <td>主角</td>
+          <td>无固定色</td>
+          <td>256×512</td>
+          <td>idle / happy / surprised / sad / wave / react_jump</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>placeholder</td>
+        </tr>
+        <tr>
+          <td>char_hinata</td>
+          <td>丸山ひなた</td>
+          <td>恋爱兴趣角色</td>
+          <td><span style="display:inline-block;background:#F0C4C4;padding:2px 8px;border-radius:6px">#F0C4C4</span></td>
+          <td>256×512</td>
+          <td>idle / happy / surprised / sad / wave</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>placeholder</td>
+        </tr>
+        <tr>
+          <td>char_kenzo</td>
+          <td>磯部健三</td>
+          <td>NPC · Ch1 老渔夫向导</td>
+          <td><span style="display:inline-block;background:#4A6D9A;padding:2px 8px;border-radius:6px;color:#fff">#4A6D9A</span></td>
+          <td>256×512</td>
+          <td>idle / happy / surprised / sad / wave</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>placeholder</td>
+        </tr>
+        <tr>
+          <td>char_umeko</td>
+          <td>桐島梅子</td>
+          <td>NPC · Ch2 陶艺工匠</td>
+          <td><span style="display:inline-block;background:#7DBE77;padding:2px 8px;border-radius:6px">#7DBE77</span></td>
+          <td>256×512</td>
+          <td>idle / happy / surprised / sad / wave</td>
+          <td><span class="badge badge-mvp">MVP</span></td>
+          <td>placeholder</td>
+        </tr>
+        <tr>
+          <td>char_natsuka</td>
+          <td>海野夏帆</td>
+          <td>NPC · Ch3 自然向导</td>
+          <td><span style="display:inline-block;background:#3D6645;padding:2px 8px;border-radius:6px;color:#fff">#3D6645</span></td>
+          <td>256×512</td>
+          <td>idle / happy / surprised / sad / wave</td>
+          <td><span class="badge badge-beta">Beta</span></td>
+          <td>placeholder</td>
+        </tr>
+        <tr>
+          <td>char_fuyuko</td>
+          <td>丸山冬子</td>
+          <td>NPC · Ch6 灯台守遗孀</td>
+          <td><span style="display:inline-block;background:#2A4060;padding:2px 8px;border-radius:6px;color:#fff">#2A4060</span></td>
+          <td>256×512</td>
+          <td>idle / happy / surprised / sad / wave</td>
+          <td><span class="badge badge-beta">Beta</span></td>
+          <td>placeholder</td>
+        </tr>
+        <tr>
+          <td>char_gicho</td>
+          <td>議長（橘猫）</td>
+          <td>NPC · 全章贯穿</td>
+          <td><span style="display:inline-block;background:#2A3650;padding:2px 8px;border-radius:6px;color:#fff">#2A3650</span></td>
+          <td>192×192</td>
+          <td>idle / happy / surprised / wave</td>
+          <td><span class="badge badge-release">Release</span></td>
+          <td>placeholder</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>NPC 标志性外观备忘</h2>
+    <table class="asset-table">
+      <thead><tr><th>角色</th><th>服装外观标志</th><th>肤色参考</th></tr></thead>
+      <tbody>
+        <tr><td>磯部健三</td><td>靛蓝布衣，宽沿旧草帽 + 鱼竿</td><td>深褐 #9A6840</td></tr>
+        <tr><td>桐島梅子</td><td>草绿围裙 + 樱粉碎花长裙，头顶三瓣花 + 浇水壶</td><td>浅 #F5D4B0</td></tr>
+        <tr><td>海野夏帆</td><td>深绿探险外套，渔夫帽遮眼 + 灯笼背包</td><td>中 #E8B882</td></tr>
+        <tr><td>丸山冬子</td><td>藏青浴衣 + 金色腰带，头顶白方巾</td><td>中 #E8B882</td></tr>
+        <tr><td>議長（橘猫）</td><td>深灰蓝大衣，白色翻领 + 黄铜点火装置</td><td>橘猫毛色</td></tr>
+        <tr><td>丸山ひなた</td><td>浅樱粉圆领短袖 + 珊瑚色帽带草帽</td><td>浅暖调</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- 场景背景 -->
+<div id="tab-场景背景" class="tab-content">
+
+  <div class="card">
+    <h2>场景背景通用规格</h2>
+    <table class="asset-table" style="width:auto">
+      <tr><th>尺寸</th><td>1920 × 1080 px</td></tr>
+      <tr><th>格式</th><td>JPG（视觉细节丰富，文件体积更优）</td></tr>
+      <tr><th>动画方式</th><td>静态（饱和度切换通过 crossfade 0.8s 过渡）</td></tr>
+      <tr><th>视差层数</th><td>3 层：sky_far / midground / foreground_elements</td></tr>
+      <tr><th>每章状态数</th><td>3 个状态：修复前 / 修复中 / 修复后</td></tr>
+      <tr><th>总计资产数</th><td>6 章 × 3 状态 = 18 个背景资产</td></tr>
+      <tr><th>AI 生成</th><td>是</td></tr>
+      <tr><th>归属节点</th><td>environment-art-gen</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>棋盘形态演变</h2>
+    <table class="asset-table" style="width:auto">
+      <tr><th>Ch1–Ch2</th><td>标准矩形棋盘（8×8 / 9×9）</td></tr>
+      <tr><th>Ch3 起</th><td>异形棋盘（海湾 / 岛屿轮廓），有效格数始终为偶数</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>18 个场景背景清单</h2>
+    <table class="asset-table">
+      <thead>
+        <tr>
+          <th>资产 ID</th>
+          <th>场景名称</th>
+          <th>状态</th>
+          <th>章节主色</th>
+          <th>棋盘背景渐变</th>
+          <th>明暗</th>
+          <th>里程碑</th>
+          <th>初始状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>bg_ch1_before</td><td>海边码头（修复前）</td><td>修复前</td><td><span style="display:inline-block;background:#5BBFB5;padding:2px 8px;border-radius:6px">#5BBFB5</span></td><td>#A8DDD8 → #C8EEE8</td><td>暗淡</td><td><span class="badge badge-mvp">MVP</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch1_progress</td><td>海边码头（修复中）</td><td>修复中</td><td><span style="display:inline-block;background:#5BBFB5;padding:2px 8px;border-radius:6px">#5BBFB5</span></td><td>#A8DDD8 → #C8EEE8</td><td>暗淡</td><td><span class="badge badge-mvp">MVP</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch1_restored</td><td>海边码头（修复后）</td><td>修复后</td><td><span style="display:inline-block;background:#5BBFB5;padding:2px 8px;border-radius:6px">#5BBFB5</span></td><td>#A8DDD8 → #C8EEE8</td><td>暗淡</td><td><span class="badge badge-mvp">MVP</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch2_before</td><td>中央小镇（修复前）</td><td>修复前</td><td><span style="display:inline-block;background:#7DBE77;padding:2px 8px;border-radius:6px">#7DBE77</span></td><td>#C8E8C0 → #E0F0D8</td><td>暖调</td><td><span class="badge badge-mvp">MVP</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch2_progress</td><td>中央小镇（修复中）</td><td>修复中</td><td><span style="display:inline-block;background:#7DBE77;padding:2px 8px;border-radius:6px">#7DBE77</span></td><td>#C8E8C0 → #E0F0D8</td><td>暖调</td><td><span class="badge badge-mvp">MVP</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch2_restored</td><td>中央小镇（修复后）</td><td>修复后</td><td><span style="display:inline-block;background:#7DBE77;padding:2px 8px;border-radius:6px">#7DBE77</span></td><td>#C8E8C0 → #E0F0D8</td><td>暖调</td><td><span class="badge badge-mvp">MVP</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch3_before</td><td>花田山坡（修复前）</td><td>修复前</td><td><span style="display:inline-block;background:#F0C4C4;padding:2px 8px;border-radius:6px">#F0C4C4</span></td><td>#F8E8E8 → #FFF5F5</td><td>暖调</td><td><span class="badge badge-beta">Beta</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch3_progress</td><td>花田山坡（修复中）</td><td>修复中</td><td><span style="display:inline-block;background:#F0C4C4;padding:2px 8px;border-radius:6px">#F0C4C4</span></td><td>#F8E8E8 → #FFF5F5</td><td>暖调</td><td><span class="badge badge-beta">Beta</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch3_restored</td><td>花田山坡（修复后）</td><td>修复后</td><td><span style="display:inline-block;background:#F0C4C4;padding:2px 8px;border-radius:6px">#F0C4C4</span></td><td>#F8E8E8 → #FFF5F5</td><td>暖调</td><td><span class="badge badge-beta">Beta</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch4_before</td><td>森林露营地（修复前）</td><td>修复前</td><td><span style="display:inline-block;background:#4A7D55;padding:2px 8px;border-radius:6px;color:#fff">#4A7D55</span></td><td>#3D5040 → #5A7058</td><td>暗淡</td><td><span class="badge badge-beta">Beta</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch4_progress</td><td>森林露营地（修复中）</td><td>修复中</td><td><span style="display:inline-block;background:#4A7D55;padding:2px 8px;border-radius:6px;color:#fff">#4A7D55</span></td><td>#3D5040 → #5A7058</td><td>暗淡</td><td><span class="badge badge-beta">Beta</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch4_restored</td><td>森林露营地（修复后）</td><td>修复后</td><td><span style="display:inline-block;background:#4A7D55;padding:2px 8px;border-radius:6px;color:#fff">#4A7D55</span></td><td>#3D5040 → #5A7058</td><td>暗淡</td><td><span class="badge badge-beta">Beta</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch5_before</td><td>温泉山谷（修复前）</td><td>修复前</td><td><span style="display:inline-block;background:#C4955A;padding:2px 8px;border-radius:6px">#C4955A</span></td><td>#F0D8B0 → #E8C890</td><td>暖调</td><td><span class="badge badge-release">Release</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch5_progress</td><td>温泉山谷（修复中）</td><td>修复中</td><td><span style="display:inline-block;background:#C4955A;padding:2px 8px;border-radius:6px">#C4955A</span></td><td>#F0D8B0 → #E8C890</td><td>暖调</td><td><span class="badge badge-release">Release</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch5_restored</td><td>温泉山谷（修复后）</td><td>修复后</td><td><span style="display:inline-block;background:#C4955A;padding:2px 8px;border-radius:6px">#C4955A</span></td><td>#F0D8B0 → #E8C890</td><td>暖调</td><td><span class="badge badge-release">Release</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch6_before</td><td>夜晚灯塔（修复前）</td><td>修复前</td><td><span style="display:inline-block;background:#1E2E50;padding:2px 8px;border-radius:6px;color:#fff">#1E2E50</span></td><td>#0E1830 → #1E2E50</td><td>暗淡</td><td><span class="badge badge-release">Release</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch6_progress</td><td>夜晚灯塔（修复中）</td><td>修复中</td><td><span style="display:inline-block;background:#1E2E50;padding:2px 8px;border-radius:6px;color:#fff">#1E2E50</span></td><td>#0E1830 → #1E2E50</td><td>暗淡</td><td><span class="badge badge-release">Release</span></td><td>placeholder</td></tr>
+        <tr><td>bg_ch6_restored</td><td>夜晚灯塔（修复后）</td><td>修复后</td><td><span style="display:inline-block;background:#1E2E50;padding:2px 8px;border-radius:6px;color:#fff">#1E2E50</span></td><td>#0E1830 → #1E2E50</td><td>暗淡</td><td><span class="badge badge-release">Release</span></td><td>placeholder</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>场景道具（2 项）</h2>
+    <table class="asset-table">
+      <thead><tr><th>资产 ID</th><th>名称</th><th>尺寸 (px)</th><th>格式</th><th>动画</th><th>变体</th><th>里程碑</th><th>初始状态</th></tr></thead>
+      <tbody>
+        <tr><td>prop_notebook</td><td>ひなた手账</td><td>180×240</td><td>PNG</td><td><span class="badge badge-static">静态</span></td><td>closed / open</td><td><span class="badge badge-release">Release</span></td><td>placeholder</td></tr>
+        <tr><td>prop_lighthouse_lamp</td><td>灯塔灯</td><td>256×256</td><td>PNG</td><td><span class="badge badge-frame">帧动画</span></td><td>8 帧</td><td><span class="badge badge-release">Release</span></td><td>placeholder</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- 界面资产 -->
+<div id="tab-界面资产" class="tab-content">
+
+  <div class="card">
+    <h2>界面设计规格总览</h2>
+    <table class="asset-table" style="width:auto">
+      <tr><th>图标标准尺寸</th><td>64 × 64 px</td></tr>
+      <tr><th>图标按钮尺寸</th><td>56 × 56 px 圆形</td></tr>
+      <tr><th>卡片标准宽度</th><td>320 px</td></tr>
+      <tr><th>HUD 高度</th><td>80 px</td></tr>
+      <tr><th>HUD 最大宽度</th><td>棋盘宽度 ≤ 20%</td></tr>
+      <tr><th>对话框圆角</th><td>20 px，木纹底色 #E8D8B4，4px 深棕边框 #8B6030</td></tr>
+      <tr><th>按钮圆角</th><td>24 px（药丸形）</td></tr>
+      <tr><th>阴影样式</th><td>0 4px 0 rgba(0,0,0,0.10)，阴影最大不透明度 15%</td></tr>
+      <tr><th>主字体</th><td>思源圆体（备选：SF Pro Rounded / Nunito）</td></tr>
+      <tr><th>正文字号</th><td>15px / 行高 1.65 / 颜色 #3A2810</td></tr>
+      <tr><th>标题字号</th><td>22px Bold</td></tr>
+      <tr><th>按钮文字</th><td>Semi-Bold 16px / #F5F0E8</td></tr>
+      <tr><th>格式</th><td>PNG</td></tr>
+      <tr><th>图集</th><td>ui_elements_atlas</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>UI 配色方案</h2>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-block" style="background:#F7EDD8"></div>沙漠沙<br>#F7EDD8</div>
+      <div class="swatch"><div class="swatch-block" style="background:#E8D8B4"></div>木板棕<br>#E8D8B4</div>
+      <div class="swatch"><div class="swatch-block" style="background:#8B6030"></div>边框褐<br>#8B6030</div>
+      <div class="swatch"><div class="swatch-block" style="background:#3A2810"></div>深棕文字<br>#3A2810</div>
+      <div class="swatch"><div class="swatch-block" style="background:#F0997A"></div>主按钮上<br>#F0997A</div>
+      <div class="swatch"><div class="swatch-block" style="background:#E8866A"></div>主按钮下<br>#E8866A</div>
+      <div class="swatch"><div class="swatch-block" style="background:#C85A40"></div>连击气泡底<br>#C85A40</div>
+      <div class="swatch"><div class="swatch-block" style="background:#F5C842"></div>连击文字金<br>#F5C842</div>
+      <div class="swatch"><div class="swatch-block" style="background:#7DBE77"></div>进度条绿<br>#7DBE77</div>
+      <div class="swatch"><div class="swatch-block" style="background:#5BBFB5"></div>硬货币起始<br>#5BBFB5</div>
+      <div class="swatch"><div class="swatch-block" style="background:#3A9E94"></div>硬货币结束<br>#3A9E94</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>界面资产清单（10 项）</h2>
+    <table class="asset-table">
+      <thead>
+        <tr>
+          <th>资产 ID</th>
+          <th>名称</th>
+          <th>尺寸 (px)</th>
+          <th>动画方式</th>
+          <th>变体</th>
+          <th>里程碑</th>
+          <th>AI 生成</th>
+          <th>初始状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>ui_hud_bar</td><td>HUD 底栏</td><td>720×80</td><td><span class="badge badge-tween">Tween 缓动</span></td><td>–</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>placeholder</td></tr>
+        <tr><td>ui_card_level</td><td>关卡卡片</td><td>320×180</td><td><span class="badge badge-tween">Tween 缓动</span></td><td>–</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>placeholder</td></tr>
+        <tr><td>ui_btn_shuffle</td><td>重排按钮</td><td>80×80</td><td><span class="badge badge-tween">Tween 缓动</span></td><td>normal / pressed / disabled</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-manual">人工</span></td><td>placeholder</td></tr>
+        <tr><td>ui_btn_hint</td><td>预判按钮</td><td>80×80</td><td><span class="badge badge-tween">Tween 缓动</span></td><td>normal / pressed / disabled</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-manual">人工</span></td><td>placeholder</td></tr>
+        <tr><td>ui_btn_continue</td><td>续关按钮</td><td>80×80</td><td><span class="badge badge-tween">Tween 缓动</span></td><td>normal / pressed / disabled</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-manual">人工</span></td><td>placeholder</td></tr>
+        <tr><td>ui_panel_shop</td><td>商店面板</td><td>480×640</td><td><span class="badge badge-tween">Tween 缓动</span></td><td>–</td><td><span class="badge badge-beta">Beta</span></td><td><span class="badge badge-ai">AI</span></td><td>placeholder</td></tr>
+        <tr><td>ui_panel_npc_dialogue</td><td>NPC 对话框</td><td>720×200</td><td><span class="badge badge-tween">Tween 缓动</span></td><td>–</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>placeholder</td></tr>
+        <tr><td>ui_coin_icon</td><td>沙滩币图标</td><td>64×64</td><td><span class="badge badge-static">静态</span></td><td>–</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>placeholder</td></tr>
+        <tr><td>ui_star_icon</td><td>星星图标</td><td>64×64</td><td><span class="badge badge-static">静态</span></td><td>empty / filled / half</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-ai">AI</span></td><td>placeholder</td></tr>
+        <tr><td>ui_lighthouse_progress</td><td>灯塔进度条</td><td>120×480</td><td><span class="badge badge-tween">Tween 缓动</span></td><td>empty / quarter / half / three_quarters / full</td><td><span class="badge badge-mvp">MVP</span></td><td><span class="badge badge-manual">人工</span></td><td>placeholder</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- 特效资产 -->
+<div id="tab-特效资产" class="tab-content">
+
+  <div class="card">
+    <h2>VFX 技术参数总览</h2>
+    <table class="asset-table" style="width:auto">
+      <tr><th>连击粒子预算</th><td>每次连击爆发最多 200 粒子</td></tr>
+      <tr><th>每图块粒子数</th><td>4–6 粒子（使用章节主题色调）</td></tr>
+      <tr><th>VFX 图集最大尺寸</th><td>1024 × 1024 px（独立于主资产图集）</td></tr>
+      <tr><th>灯塔光晕</th><td>24 帧 @30fps</td></tr>
+      <tr><th>图块消除帧动画</th><td>12 帧 @30fps</td></tr>
+      <tr><th>格式</th><td>PNG</td></tr>
+      <tr><th>图集名称</th><td>vfx_atlas</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>5 种特殊图块激活效果说明</h2>
+    <table class="asset-table">
+      <thead><tr><th>特殊图块名</th><th>激活动效描述</th><th>持续时长</th><th>主色</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>光波（wave）</td>
+          <td>暖白色涟漪光环向外扩散 → 3×3 范围障碍物碎裂消散 → 清除区域保持 5 秒柔和光晕（自由路径增益标志）→ 5 秒后光晕渐退</td>
+          <td>0.5s 初始动画 + 5s 增益期</td>
+          <td>#FFFFFF warm glow</td>
+        </tr>
+        <tr>
+          <td>光链（light_chain）</td>
+          <td>金色光环脉冲两下 → 扫描波横扫棋盘 → 目标类型所有图块同时高亮金色 → 连线同时射出，链式消失，节奏递进</td>
+          <td>0.8s</td>
+          <td>#F5C842</td>
+        </tr>
+        <tr>
+          <td>穿透（pierce）</td>
+          <td>蓝白光箭爆发 → 屏幕四角持续蓝色边缘光晕（增益 8s 存续标志）→ 增益期间连线呈发光光束 → 8s 后渐退</td>
+          <td>激活 0.3s + 8s 增益期</td>
+          <td>#7ECDE8</td>
+        </tr>
+        <tr>
+          <td>置换（swap）</td>
+          <td>两个绿色旋转螺旋出现在被选中格子 → 相向旋转加速 → 图块互换弹性『咔哒』特效 → 绿色光晕渐退；10s 计时器显示于棋盘角落</td>
+          <td>选择计时 10s，交换动画 0.4s</td>
+          <td>#4A7D55</td>
+        </tr>
+        <tr>
+          <td>连锁（cascade）</td>
+          <td>橙红波纹向外扩展 → 聚光灯锁定第一对配对 → 自动连线消除 → 0.3s 延迟后锁定下一对 → 循环往复，节奏逐渐加快，音效强度递增</td>
+          <td>每对 0.3s 延迟，最多 5 对</td>
+          <td>#C85A40</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>VFX 资产清单（8 项）</h2>
+    <table class="asset-table">
+      <thead>
+        <tr>
+          <th>资产 ID</th>
+          <th>名称</th>
+          <th>尺寸 (px)</th>
+          <th>动画方式</th>
+          <th>帧数 / 变体</th>
+          <th>里程碑</th>
+          <th>归属节点</th>
+          <th>初始状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>vfx_combo_burst</td><td>连击爆炸特效</td><td>256×256</td><td><span class="badge badge-frame">粒子系统</span></td><td>变体：x2 / x3 / x5</td><td><span class="badge badge-mvp">MVP</span></td><td>vfx-art-gen</td><td>placeholder</td></tr>
+        <tr><td>vfx_match_disappear</td><td>图块消除特效</td><td>128×128</td><td><span class="badge badge-frame">粒子系统</span></td><td>–</td><td><span class="badge badge-mvp">MVP</span></td><td>vfx-art-gen</td><td>placeholder</td></tr>
+        <tr><td>vfx_lighthouse_glow</td><td>灯塔光晕特效</td><td>512×512</td><td><span class="badge badge-frame">帧动画</span></td><td>24 帧</td><td><span class="badge badge-release">Release</span></td><td>vfx-art-gen</td><td>placeholder</td></tr>
+        <tr><td>vfx_wave_clear</td><td>光波清除特效</td><td>256×256</td><td><span class="badge badge-frame">帧动画</span></td><td>8 帧</td><td><span class="badge badge-mvp">MVP</span></td><td>vfx-art-gen</td><td>placeholder</td></tr>
+        <tr><td>vfx_chapter_restore</td><td>章节修复特效</td><td>1920×1080</td><td><span class="badge badge-frame">粒子系统</span></td><td>–</td><td><span class="badge badge-beta">Beta</span></td><td>vfx-art-gen</td><td>placeholder</td></tr>
+        <tr><td>vfx_combo_multiplier_x2</td><td>连击倍率 ×2 气泡</td><td>128×64</td><td><span class="badge badge-frame">粒子系统</span></td><td>–</td><td><span class="badge badge-mvp">MVP</span></td><td>vfx-art-gen</td><td>placeholder</td></tr>
+        <tr><td>vfx_combo_multiplier_x3</td><td>连击倍率 ×3 气泡</td><td>128×64</td><td><span class="badge badge-frame">粒子系统</span></td><td>–</td><td><span class="badge badge-mvp">MVP</span></td><td>vfx-art-gen</td><td>placeholder</td></tr>
+        <tr><td>vfx_combo_multiplier_x5</td><td>连击倍率 ×5 气泡（最高）</td><td>128×64</td><td><span class="badge badge-frame">粒子系统</span></td><td>–</td><td><span class="badge badge-mvp">MVP</span></td><td>vfx-art-gen</td><td>placeholder</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>关键动效参数速查</h2>
+    <table class="asset-table">
+      <thead><tr><th>动效名称</th><th>关键参数</th></tr></thead>
+      <tbody>
+        <tr><td>图块消除</td><td>帧1–3: scale 1.0→1.14（32ms）；帧4–7: scale→0，旋转 ±12°，同时散出 4–6 粒子（0.3s）</td></tr>
+        <tr><td>连击气泡出现</td><td>spring stiffness=280 damping=22；从触发位上方 12px 出现，向上浮动 24px；scale 0→1.2→1.0</td></tr>
+        <tr><td>连击气泡消失</td><td>悬停 1.2s 后向上淡出 0.4s</td></tr>
+        <tr><td>弹窗出现</td><td>背景遮罩 0→0.5（0.3s ease-out）+ 弹窗 scale 0.7→1.05→1.0 spring（0.4s）</td></tr>
+        <tr><td>弹窗关闭</td><td>scale 1.0→0.85，透明度 1→0（0.25s ease-in）</td></tr>
+        <tr><td>章节过渡</td><td>白色圆形从中央扩散（0.5s cover + 0.5s reveal）</td></tr>
+        <tr><td>修复完成</td><td>crossfade 0.8s + 白色光波从中心扩散 0.6s；满修复额外金色粒子雨 2.5s</td></tr>
+        <tr><td>灯塔光束</td><td>金色光柱旋转扫射，24帧@30fps；饱和度瞬间提升至 100% 再恢复正常</td></tr>
+        <tr><td>特殊块待机光效</td><td>呼吸脉冲，周期 2.0–2.8s，不遮挡棋盘</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- 图集策略 -->
+<div id="tab-图集策略" class="tab-content">
+
+  <div class="card">
+    <h2>图集分配方案（共 10 个图集）</h2>
+    <div class="atlas-grid">
+      <div class="atlas-card">
+        <strong>tiles_ch1_atlas</strong>
+        第1章图块色变体<br>
+        最大 2048×2048 px · PNG
+      </div>
+      <div class="atlas-card">
+        <strong>tiles_ch2_atlas</strong>
+        第2章图块色变体<br>
+        最大 2048×2048 px · PNG
+      </div>
+      <div class="atlas-card">
+        <strong>tiles_ch3_atlas</strong>
+        第3章图块色变体<br>
+        最大 2048×2048 px · PNG
+      </div>
+      <div class="atlas-card">
+        <strong>tiles_ch4_atlas</strong>
+        第4章图块色变体<br>
+        最大 2048×2048 px · PNG
+      </div>
+      <div class="atlas-card">
+        <strong>tiles_ch5_atlas</strong>
+        第5章图块色变体<br>
+        最大 2048×2048 px · PNG
+      </div>
+      <div class="atlas-card">
+        <strong>tiles_ch6_atlas</strong>
+        第6章图块色变体<br>
+        最大 2048×2048 px · PNG
+      </div>
+      <div class="atlas-card">
+        <strong>special_blocks_atlas</strong>
+        5种特殊图块帧动画<br>（与章节无关，全局可用）<br>
+        最大 2048×2048 px · PNG
+      </div>
+      <div class="atlas-card">
+        <strong>characters_atlas</strong>
+        7位角色骨骼精灵图<br>
+        最大 2048×2048 px · PNG
+      </div>
+      <div class="atlas-card">
+        <strong>ui_elements_atlas</strong>
+        全部 HUD / 对话框 / 按钮 / 图标资产<br>
+        最大 2048×2048 px · PNG
+      </div>
+      <div class="atlas-card">
+        <strong>vfx_atlas</strong>
+        全部 VFX 帧序列资产<br>
+        最大 1024×1024 px · PNG
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>图集策略设计决策</h2>
+
+    <h3>为什么按章节分图集？</h3>
+    <p>Web-canvas-2d 平台需严格控制内存。按章节图集允许按需加载，玩家推进时才载入下一章图集，保持活跃 VRAM 占用最小化。</p>
+
+    <h3>为什么特殊图块独立图集？</h3>
+    <p>所有 5 种特殊图块可在任意章节出现（连锁从 Ch1 起即可用），其图块图标不绑定章节颜色变体，因此需独立于章节图集存在，避免重复打包。</p>
+
+    <h3>分辨率降级策略</h3>
+    <p>所有资产以 2x 分辨率设计，运行时根据设备 DPR 自动降级至 1x。Cocos Creator 自动图集打包工具统一处理，不需要手动维护两套资产。</p>
+
+    <h3>VFX 图集单独限制为 1024 px</h3>
+    <p>VFX 帧序列本身在 GPU 上为临时纹理，使用频率高、更新快，限制为 1024px 图集可在移动端浏览器保持稳定帧率。</p>
+  </div>
+
+</div>
+
+<!-- 美术管线 -->
+<div id="tab-美术管线" class="tab-content">
+
+  <div class="card">
+    <h2>美术生成管线流程</h2>
+    <div class="pipeline-row">
+      <div class="pipe-node">art-spec-design<br><small>资产清单 + 规格定义</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node">tile-art-gen<br><small>20种图块 × 6章色变</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node">character-art-gen<br><small>7位角色骨骼动画</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node">environment-art-gen<br><small>18场景背景 + 2道具</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node">ui-art-gen<br><small>10项 UI 资产</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node">vfx-art-gen<br><small>8项 VFX 特效</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node">art-qa<br><small>质量验收 + 状态锁定</small></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>工具链配置</h2>
+    <table class="asset-table">
+      <thead><tr><th>工具</th><th>用途</th><th>就绪状态</th></tr></thead>
+      <tbody>
+        <tr><td>Google Imagen 4</td><td>主生成 API，高质量水彩 / 手绘风格 2D 图块、背景、UI 生成</td><td>已就绪</td></tr>
+        <tr><td>OpenRouter GPT-Image</td><td>备用 / 辅助 API，风格对比测试和批量多样化生成</td><td>已就绪</td></tr>
+        <tr><td>DragonBones Pro</td><td>角色骨骼动画绑定、表情帧制作与导出（JSON 骨骼数据）</td><td>已就绪</td></tr>
+        <tr><td>Cocos Creator 自动图集</td><td>精灵图集打包、分辨率降级管理、运行时资产路径解析</td><td>已就绪</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>批次生成配置</h2>
+    <table class="asset-table">
+      <thead><tr><th>批次类型</th><th>单批次大小</th><th>批次说明</th></tr></thead>
+      <tbody>
+        <tr><td>图块批次</td><td>20</td><td>一次批次覆盖全部 20 种图块样式；6个章节色变体按 per-atlas 分批处理</td></tr>
+        <tr><td>角色批次</td><td>8</td><td>7位角色一次批次完成（批次容量 8，一批足够）</td></tr>
+        <tr><td>场景批次</td><td>6</td><td>6章 × 3状态 = 18背景，按章次分 6批运行（每批 3个状态）</td></tr>
+        <tr><td>UI 批次</td><td>30</td><td>全部 HUD / 对话框 / 按钮 / 图标资产一批处理</td></tr>
+        <tr><td>VFX 批次</td><td>15</td><td>5种特殊块激活特效 + 5种待机光晕 + 消除特效 + 连击气泡 + 章节过渡 + 修复光波 + 灯塔光束</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- 质量标准 -->
+<div id="tab-质量标准" class="tab-content">
+
+  <div class="card">
+    <h2>禁用风格（出现即驳回）</h2>
+    <ul style="margin-left:18px; line-height:2.2">
+      <li>像素艺术 (pixel art)</li>
+      <li>写实3D拟物化 (hyper-realistic 3D)</li>
+      <li>霓虹 / 赛博配色（#00FFFF 类纯荧光色）</li>
+      <li>金属铬钢高光渐变</li>
+      <li>纯黑色 #000000（必须替换为深棕 #3A2810 或深蓝 #1E2E50）</li>
+      <li>锐利直角几何 UI 元素</li>
+      <li>Material Icon 风格锐利矢量图标</li>
+      <li>过度粒子特效（屏幕碎片满天飞超过预算）</li>
+      <li>强对比警示色调（破坏治愈调性）</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>色彩对比规则（全部必须满足）</h2>
+    <table class="asset-table">
+      <thead><tr><th>规则</th><th>最低要求</th></tr></thead>
+      <tbody>
+        <tr><td>相邻章节图块色相差</td><td>≥ 30°（确保章节视觉可区分）</td></tr>
+        <tr><td>同章节内图块明度差</td><td>≥ 20%（避免图块视觉混淆）</td></tr>
+        <tr><td>图块最低饱和度</td><td>≥ 20%（禁止纯灰色图块）</td></tr>
+        <tr><td>背景装饰透明度</td><td>≤ 15%（不与图块色相重叠干扰）</td></tr>
+        <tr><td>灰度模式可识别性</td><td>任意两种图块在灰度模式下仍可区分（辅助功能要求）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>QA 评分标准</h2>
+    <table class="asset-table">
+      <thead><tr><th>评分</th><th>含义</th><th>处理结果</th></tr></thead>
+      <tbody>
+        <tr><td>5 分</td><td>完美匹配风格指南，无任何瑕疵</td><td>直接锁定（locked）</td></tr>
+        <tr><td>4 分</td><td>良好，轻微偏差不影响整体视觉效果</td><td>锁定，附说明备注</td></tr>
+        <tr><td>3 分（最低通过线）</td><td>可接受，但存在需记录的问题</td><td>alpha 状态，计划修复</td></tr>
+        <tr><td>2 分</td><td>不合格，质量不达标</td><td>驳回，触发重新生成</td></tr>
+        <tr><td>1 分</td><td>严重违反风格规范</td><td>驳回，需重新设计提示词</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>QA 验收检查清单</h2>
+    <ul style="margin-left:18px; line-height:2.4">
+      <li>所有 must_have 资产已列入清单（图块 / 角色 / 场景 / UI / VFX 全覆盖）</li>
+      <li>每个资产有明确尺寸规格（宽×高 px，分辨率倍数标注）</li>
+      <li>资产 ID 全局唯一无重复（遵循命名规范，lowercase snake_case）</li>
+      <li>ai_generatable 分类合理（明确哪些可AI生成，哪些需人工骨骼绑定）</li>
+      <li>milestone_gate 与发布计划一致（MVP / Beta / Release 分层正确）</li>
+      <li>图集打包检查（单图集不超过 2048×2048 px，VFX 图集不超过 1024×1024 px）</li>
+      <li>运行时导入检查（Cocos Creator 资产路径格式验证）</li>
+      <li>剪影可读性检查（每位角色在任意分辨率下轮廓形态唯一可识别）</li>
+      <li>禁用风格检查（无任何列表中的禁用样式存在）</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-content').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    document.querySelectorAll('nav.tabs button').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

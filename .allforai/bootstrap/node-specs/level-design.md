@@ -1,81 +1,62 @@
 ---
 node: level-design
+capability: game-design
+discipline_owner: level-designer
+human_gate: true
+hard_blocked_by: [core-loop-design]
+unlocks: [puzzle-design, game-design-finalize]
+approval_record_path: .allforai/game-design/approval-records.json
 exit_artifacts:
-  - .allforai/game-design/level-design.json
-  - .allforai/game-design/progression-curve.json
+  - .allforai/game-design/level-design.html
+  - .allforai/game-design/systems/level-design.json
+review_checklist:
+  - 关卡数量与章节分布合理（目标：6章×30关=180关）
+  - 难度曲线平滑，首次通关率目标70%
+  - 叙事触发点与区域解锁节点标注清晰
+  - 关卡布局规格（棋盘形状/障碍分布/奖励投放）完整
+  - 教学节拍覆盖所有核心机制的首次引入
 ---
 
-# Task: 6章节完整关卡表设计（~135关）
+# Goal
 
-输出可被关卡编辑器直接导入的关卡数据JSON，包含教学关和难度曲线规格。
+Execute level-design for this project.
 
-## Context Pull
+> **Non-interactive execution.** All design decisions are recorded in `.allforai/`.
 
-**必需：**
-- 从 `.allforai/game-design/puzzle-mechanics-spec.json` 读取 `grid`（网格尺寸约束）、`tile_types`（各章节可用图块类型）、`obstacles[]`（障碍类型枚举）、`special_blocks[]`（特殊块类型枚举）
-- 从 `.allforai/game-design/chapter-emotional-arcs.json` 读取 `chapters[].emotion`，关卡情绪节奏需与章节情感一致
+> **Output language (mandatory):** All HTML navigation tabs, section headings, labels, captions,
+> and descriptive text MUST be in Chinese (zh-CN). In-game proper nouns (place/character/item names)
+> keep the game world's native language (Japanese). JSON field keys stay English snake_case.
 
-## Theory Anchors
+> Do NOT use AskUserQuestion or request user input. If a decision is ambiguous,
+> apply the most conservative interpretation derivable from the input contracts.
 
-- **Pacing Theory**: 节奏交替——紧张关卡后跟一个呼吸关卡（3:1节奏）
-- **Teaching Through Design**: 前3关不用文字教程，用关卡设计教会玩家规则
-- **Difficulty Spike vs Curve**: 章节内难度渐进；章节切换时难度重置（保持动力）
-- **Content Gating**: 材料收集控制解锁节奏，防止跳过内容
+## Sub-Skill Invocation
 
-## Guidance
+Follow these sub-skills in sequence:
 
-### 关卡设计原则
-1. **教学关（1-1到1-3）**：
-   - 1-1：4×4网格，只有2种图块，无障碍，确保第一次必能连接成功
-   - 1-2：引入第3种图块，展示消除后新图块从顶部落下
-   - 1-3：引入连击，设计让玩家自然发现连击奖励的布局
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-design/20-spec/level-design-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/00-env/level-registry/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/10-design/level-flow-design/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/20-spec/level-layout-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/20-spec/level-difficulty-budget-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/20-spec/teaching-beat-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/20-spec/encounter-placement-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/20-spec/reward-placement-spec/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/40-qa/level-pacing-qa/SKILL.md`
+- Read and follow `${CLAUDE_PLUGIN_ROOT}/skills/game-level/40-qa/level-playability-qa/SKILL.md`
 
-2. **难度曲线**（每章）：
-   - 前25%关卡：宽松（大网格+少种类+无障碍）
-   - 中50%关卡：标准难度（引入障碍或动态事件）
-   - 后25%关卡：挑战关（障碍+限步数+特殊块组合）
+## Inputs
 
-3. **关卡目标类型**（按章节逐渐丰富）：
-   - 第1章：仅消除N个指定图块
-   - 第2章：引入步数限制（最多X步内完成）
-   - 第3章：引入障碍清除目标（消除所有冰块）
-   - 第4章：引入组合目标（消除指定图块+清除障碍）
-   - 第5-6章：全组合（消除+障碍+特殊块触发）
+- `.allforai/concept-contract.json`
+- `.allforai/product-concept/concept-baseline.json`
+- `.allforai/game-design/systems/core-mechanics.json` — core loop and mechanic unlock schedule
+- Sub-skill SKILL.md files define their specific input contracts.
 
-### 关卡JSON格式
-每关记录：
-```json
-{
-  "id": "1-1",
-  "chapter": 1,
-  "level": 1,
-  "grid_size": [4, 4],
-  "tile_types": ["shell", "starfish"],
-  "objectives": [{ "type": "clear_tiles", "count": 20 }],
-  "max_moves": null,
-  "initial_board": null,
-  "obstacles": [],
-  "special_blocks": [],
-  "board_events": [],
-  "material_reward": { "type": "driftwood", "amount": 3 },
-  "coin_reward": 15,
-  "emotional_note": "第一次连接，应该感觉很自然"
-}
-```
+## Key Design Decisions Already Made
 
-### 进度曲线规格（progression-curve.json）
-- 每章解锁所需材料数量
-- 修复各区域的材料配方
-- 章节内关卡的预估完成时间分布（30s/1min/2min/3min）
-- 沙滩币收入预测曲线
-
-## Exit Artifacts
-
-**level-design.json** — 完整关卡表（~135关），每关含完整配置
-**progression-curve.json** — 进度曲线和材料经济预测
-
-## Downstream Contract
-
-→ `level-editor-tool` 读取：`level-design.json` 格式结构，作为编辑器的导入/导出格式标准
-→ `implement-game-session` 读取：`level-design.json` 结构（LevelLoader按此格式解析）
-→ `demo-forge` 读取：`level-design.json` 选取代表性关卡创建测试存档
+- 6章×30关=180关总量，步进棋盘（不滚动）
+- Ch1-2：标准矩形棋盘（8×8至10×10）；Ch3+：不规则形状解锁
+- 每章末尾一个Boss关（高难度+叙事触发），Boss关通过后解锁新岛屿区域
+- 关卡数据以JSON驱动，支持关卡编辑器热更新
+- 首次通关率目标70%，通关率低于50%触发难度降级建议
+- 每章有1~2个"故事关"（低难度+NPC对话+剧情推进）

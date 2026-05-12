@@ -1,75 +1,81 @@
 ---
 node: tile-art-gen
+capability: game-design
 discipline_owner: concept-artist
-discipline_reviewers: [art-director]
 human_gate: true
-blocked_by: [art-spec-design]
+hard_blocked_by: [concept-freeze]
 unlocks: [art-qa]
+approval_record_path: .allforai/game-design/approval-records.json
 exit_artifacts:
-  - game-client/assets/resources/sprites/tiles/tile_01.png
-  - game-client/assets/resources/sprites/tiles/special/special_bomb.png
+  - path: .allforai/game-design/tile-art-review.html
+  - path: .allforai/game-design/systems/tile-art-spec.json
+review_checklist:
+  - 图块无缝拼接验证（边缘像素匹配，8方向衔接）
+  - 所有图案类型变体已生成（至少8种基础图案 + 各章节主题色变）
+  - 图块 atlas 尺寸符合规格（符合 art-pipeline-config.json.tileset 配置）
+  - 特殊块视觉识别度高（炸弹/行消/自动连/重排各有独特外观）
+  - combo触发特效帧完整（消除动画帧序列，不遮挡关键棋盘信息）
 ---
 
-# Task: 图块美术生成（Tile Art Generation）
+# Goal
 
-## Context Pull
-- 读取 `.allforai/game-design/art-pipeline-config.json`（若存在且 status=final）：
-  - `tileset.type`：`grid`→正交生图，`isometric`→等距斜视生图，缺失默认 `grid`
-  - `tileset.tile_size`：覆盖默认 128px（如 64、32）
-  - `style`：若为 `pixel`，激活像素化后处理管道（AI 生高清 → PIL NEAREST 降采样 → pngquant）
-  - `pixel.tile_resolution`：像素风 tile 目标分辨率（如 `32x32`）
-  - `pixel.palette_size`：调色板颜色数（如 32），传给 pngquant
-- 读取 `.allforai/game-design/systems/art-asset-inventory.json` — category=tile + tile_special 条目
-- 读取 `.allforai/game-design/art-style-guide.json`（若存在）或 `art-direction-v2.html` 提取 style_prompt_prefix
-- 读取 `art-tokens.json` 获取章节配色
+Generate tile art assets for all entries in `.allforai/concept-contract.json` `canonical_registry.tiles[]`.
 
-## 样本策略（Sample Strategy）
+> **Non-interactive execution.** All design decisions are recorded in `.allforai/`.
+> Do NOT use AskUserQuestion or request user input.
 
-**不生成全部，生成有代表性的样本供人工感知和审批。**
+> **Output language (mandatory):** All HTML navigation tabs, section headings, labels, captions,
+> and descriptive text MUST be in Chinese (zh-CN). In-game proper nouns (place/character/item names)
+> keep the game world's native language (Japanese). JSON field keys stay English snake_case.
 
-### 必须生成（每次执行）
-- 每章节选 **1 个** 代表性基础图块 → 共 6 张（验证章节配色）
-- 全部 4 个特殊块 → 4 张（bomb / windmill / light / wave，验证功能可识别性）
+## Inputs
 
-### 可选生成（art-director 确认样本通过后触发）
-- 剩余 14 个基础图块（补全 t01–t20）
-- 各图块 highlighted 状态（可程序化着色处理，优先级低）
+- `.allforai/concept-contract.json` — `canonical_registry.tiles[]` (authoritative asset IDs and `file_prefix` values; do not invent your own names)
+- `.allforai/game-design/art-pipeline-config.json` — `tileset` configuration and `toolchain.detected_capabilities`
+- `.allforai/game-design/art-asset-inventory.json` — current asset states (skip assets with `current_state == "locked"`)
+- `.allforai/game-design/asset-registry.json` — canonical registry built by concept-freeze
 
-### 跳过（gold milestone）
-- 消除动画帧序列（disappear_01–12）→ 需 Spine 或序列帧工具
+## Sub-Skill Invocation
 
-## Prompt 构造规则
+Read and follow each sub-skill SKILL.md in order. Each sub-skill defines its own output contract — follow it exactly.
 
-```
-final_prompt = style_prompt_prefix
-             + ", " + asset.theme
-             + ", " + asset.primary_color + " dominant color"
-             + ", Animal Crossing style icon, 128x128, white background"
-```
+### Step 0 — Source Resolution (per asset, before Pre-Spec)
 
-`style_prompt_prefix` 从 art-style-guide.json 读取；若文件不存在则使用：
-> "Animal Crossing style, rounded soft shapes, warm pastel colors, Japanese island theme, clean edges"
+For each asset in `canonical_registry.tiles[]`, check its `source_strategy` from `asset-registry.json`:
 
-## 工具优先级
-1. `mcp__plugin_meta-skill_ai-gateway__flux_generate_image` (FLUX Pro, square)
-2. `mcp__plugin_meta-skill_ai-gateway__generate_image` (Imagen 4, 1:1)
-3. 降级：保持 placeholder，写 `ai_generatable: true`
+- **`existing_asset_pack`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/asset-pack-search-spec/SKILL.md` — search and select candidate pack
+  2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → fall back to `ai_generated` for this asset and proceed to Step 1
+  3. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/existing-asset-adaptation-spec/SKILL.md` — adapt to spec
+  4. Mark asset `current_state: adapted`; skip Step 1 and Step 2 for this asset.
 
-## 状态回写（art-asset-inventory.json）
-每张成功生成的图块：
-```json
-{
-  "current_state": "temp",
-  "ai_generated": { "attempted": true, "success": true, "path": "<实际路径>" },
-  "substitution": { "temp": "<实际路径>" }
-}
-```
-失败则：`attempted: true, success: false, current_state` 保持 `placeholder`
+- **`adapt_existing_asset`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → fall back to `ai_generated` and proceed to Step 1
+  2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/existing-asset-adaptation-spec/SKILL.md` — adapt to spec
+  3. Mark asset `current_state: adapted`; skip Step 1 and Step 2 for this asset.
 
-## HTML 输出
-`tile-art-review.html` — 网格展示所有已生成图块（含样本标注和待生成条目灰显），
-供 concept-artist 提交、art-director 审批。
+- **`existing_3d_source_asset` / `user_provided_asset`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → halt with UPSTREAM_DEFECT
+  2. Proceed to Step 1 (pre-spec for rendering/conversion pipeline).
 
-## 完成条件
-- 10 张图块已生成（6 章节代表 + 4 特殊块）
-- HTML 报告包含每张图的 prompt、生成工具、asset_id 对照
+- **`ai_generated` / `hybrid` / `placeholder_only`:** skip Step 0, proceed directly to Step 1.
+
+### Step 1 — Pre-Spec
+
+1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/tileset-spec/SKILL.md` — define tileset spec (always)
+2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/2-5d-production-mode-spec/SKILL.md` + `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/2-5d-lighting-shadow-spec/SKILL.md` — when `dimension=2.5d`
+
+Skip for assets that completed Step 0 and are already marked `adapted`.
+
+### Step 2 — Generate
+
+1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/tileset-generation/SKILL.md` — always
+2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/render-to-2d-asset-generation/SKILL.md` — when `dimension=2.5d`
+
+Skip for assets already marked `adapted`.
+
+## Completion Condition
+
+`.allforai/game-design/systems/tile-art-spec.json` exists AND `.allforai/game-design/tile-art-review.html` exists AND all `canonical_registry.tiles[]` entries have `current_state != "placeholder"`.
+
+If any sub-skill returns `UPSTREAM_DEFECT` → halt and report the defect. Do not advance to `art-qa`.

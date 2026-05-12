@@ -1,8 +1,8 @@
 {
-  "version": "2.0",
-  "date": "2026-05-08",
-  "source": "puzzle-mechanics-spec v2.0",
-  "description": "Glow Island 谜题设计节点机器可读摘要",
+  "version": "4.0",
+  "generated_at": "2026-05-13",
+  "source": "puzzle-design node-spec v4.0 + core-mechanics v4.0",
+  "description": "Glow Island 谜题设计节点机器可读摘要（v4.0 — 基于新特殊图块系统重写）",
 
   "path_rules": {
     "max_turns": 2,
@@ -52,8 +52,7 @@
       "clear_hits": "1~3 (等于层数)",
       "blocks_path": false,
       "blocks_selection": true,
-      "permanent": false,
-      "is_new_in_v2": false
+      "permanent": false
     },
     {
       "id": "weed",
@@ -65,8 +64,7 @@
       "spread_interval_s": 15,
       "blocks_path": false,
       "blocks_selection": false,
-      "permanent": false,
-      "is_new_in_v2": false
+      "permanent": false
     },
     {
       "id": "chain_lock",
@@ -78,8 +76,7 @@
       "blocks_path": false,
       "blocks_selection": false,
       "permanent": false,
-      "tile_survives_until_final_match": true,
-      "is_new_in_v2": false
+      "tile_survives_until_final_match": true
     },
     {
       "id": "portal",
@@ -90,8 +87,7 @@
       "turn_cost": 0,
       "blocks_path": false,
       "permanent": true,
-      "pairs_per_level": "1+ (由关卡JSON指定)",
-      "is_new_in_v2": false
+      "pairs_per_level": "1+ (由关卡JSON指定)"
     },
     {
       "id": "single_path_corridor",
@@ -101,8 +97,7 @@
       "clear_method": "none",
       "blocks_path": true,
       "bypass_allowed": false,
-      "permanent": true,
-      "is_new_in_v2": true
+      "permanent": true
     },
     {
       "id": "wooden_crate",
@@ -112,8 +107,7 @@
       "clear_method": "none",
       "blocks_path": true,
       "blocks_selection": true,
-      "permanent": true,
-      "is_new_in_v2": true
+      "permanent": true
     },
     {
       "id": "water_current",
@@ -124,8 +118,7 @@
       "direction_change_interval_s": 5,
       "blocks_path": true,
       "dynamic": true,
-      "permanent": true,
-      "is_new_in_v2": true
+      "permanent": true
     },
     {
       "id": "spreading_obstacle",
@@ -141,57 +134,130 @@
       "blocks_path": false,
       "blocks_selection": true,
       "permanent": false,
-      "variants": ["vine", "moss"],
-      "is_new_in_v2": true
+      "variants": ["vine", "moss"]
     }
   ],
 
-  "special_blocks": [
+  "special_tiles": [
     {
-      "id": "bomb",
-      "name": "炸弹",
-      "name_en": "Bomb",
-      "trigger": "3连击必定生成 / 关卡JSON预置",
-      "effect": "消除以炸弹块为中心的 3×3 范围内所有图块（含障碍物及覆盖层）",
-      "effect_range": { "shape": "square", "radius": 1, "size": "3x3" },
-      "animation_duration_s": 0.5,
-      "skippable": false,
-      "spawn_on_combo": 3
+      "id": "cascade",
+      "name": "连锁",
+      "name_en": "Cascade",
+      "generation": "Combo=3时在最近消除位必定生成；关卡编辑器可预置",
+      "trigger": "玩家将两个连锁图块配对连线时激活",
+      "effect": "引擎自动执行连锁配对——找到路径最短的合法配对自动连线消除，持续5次（或棋盘无合法配对时提前终止）。每次自动配对间隔0.3s。",
+      "parity_safety": "仅执行路径可连通的合法配对（完整图块对），始终偶数消除，天然安全。",
+      "combo_interaction": "每次自动配对各计入Combo链（+1次），最后一次自动配对完成后重置计时器。",
+      "unlock_chapter": 1,
+      "max_auto_pairs": 5,
+      "auto_pair_delay_ms": 300
     },
     {
-      "id": "windmill",
-      "name": "风车",
-      "name_en": "Windmill",
-      "trigger": "4连击必定生成 / 关卡JSON预置",
-      "effect": "清除风车块所在整行+整列（十字清除，行消和列消同时触发）",
-      "effect_range": { "shape": "cross", "span": "full_row_and_column" },
-      "animation_duration_s": 0.4,
-      "skippable": false,
-      "spawn_on_combo": 4
-    },
-    {
-      "id": "lantern",
-      "name": "灯光",
-      "name_en": "Lantern",
-      "trigger": "仅关卡JSON预置（不可通过连击生成）",
-      "effect": "自动寻路连接距离最近的同类型图块并消除双方；无目标时持续脉冲等待",
-      "effect_range": { "shape": "auto", "target": "nearest_same_type", "max_search_radius": null },
-      "animation_duration_s": 0.3,
-      "skippable": false,
-      "spawn_on_combo": null
+      "id": "light_chain",
+      "name": "光链",
+      "name_en": "Light Chain",
+      "generation": "Combo=4时在最近消除位必定生成；关卡编辑器可预置",
+      "trigger": "玩家将两个光链图块配对连线时激活",
+      "effect": "扫描全棋盘，找出数量最多的图块类型，自动匹配该类型所有可组成的配对并同时消除。若该类型数量为奇数，最后一个单块保留。",
+      "parity_safety": "只消除完整配对（成双消除），奇数个时留下最后1块，天然安全。",
+      "combo_interaction": "每次自动匹配的配对各计入Combo链（+1次），最后一次自动配对完成后重置计时器。",
+      "unlock_chapter": 2,
+      "scan_strategy": "highest_count_type_first"
     },
     {
       "id": "wave",
-      "name": "海浪",
+      "name": "光波",
       "name_en": "Wave",
-      "trigger": "仅关卡JSON预置（不可通过连击生成）",
-      "effect": "重新随机排列棋盘上所有图块位置（保持各类型图块数量不变），最多3次自动重排",
-      "effect_range": { "shape": "full_board", "preserves_type_counts": true, "max_auto_retry": 3 },
-      "animation_duration_s": 0.8,
-      "skippable": false,
-      "spawn_on_combo": null
+      "generation": "Combo=6时在最近消除位必定生成（重磅奖励）；关卡编辑器可预置",
+      "trigger": "玩家将两个光波图块配对连线时激活",
+      "effect": "清除以两个光波连线中点为中心的3×3区域内所有障碍层（冰封、锁链、藤蔓、木箱等）。匹配图块本身不移除，只清除障碍层。同时赋予『自由路径区』5秒增益：已清除区域内连线路径可自由穿越任意图块。",
+      "parity_safety": "只清除障碍层，不移除任何匹配图块，天然零奇偶风险。",
+      "combo_interaction": "激活计入Combo链（+1次），重置计时器。",
+      "unlock_chapter": 3,
+      "effect_range": { "shape": "square", "radius": 1, "size": "3x3", "targets": "obstacle_layers_only" },
+      "free_path_bonus_duration_s": 5
+    },
+    {
+      "id": "pierce",
+      "name": "穿透",
+      "name_en": "Pierce",
+      "generation": "仅关卡编辑器预置（战略性谜题元素，不可通过Combo生成）",
+      "trigger": "玩家将两个穿透图块配对连线时激活",
+      "effect": "赋予玩家『穿透模式』增益持续8秒——连线路径可穿越棋盘上任意已占据的格子（含匹配图块和障碍物）。同种图块匹配规则不变。",
+      "parity_safety": "穿透模式不移除任何图块，只修改路径路由规则，奇偶完全不受影响。",
+      "combo_interaction": "激活计入Combo链（+1次），重置计时器；穿透模式期间正常配对各自计入Combo。",
+      "unlock_chapter": 4,
+      "bonus_duration_s": 8,
+      "preset_only": true
+    },
+    {
+      "id": "swap",
+      "name": "置换",
+      "name_en": "Swap",
+      "generation": "仅关卡编辑器预置（高技巧战术元素，不可通过Combo生成）",
+      "trigger": "玩家将两个置换图块配对连线时激活",
+      "effect": "玩家进入『选择模式』，选择棋盘上任意两个格子互换内容（图块/障碍/空格）。有10秒选择时限；未选择则置换图块保留在棋盘等待再次配对。",
+      "parity_safety": "只交换位置，不增减任何图块，总计数不变，奇偶完全不受影响。",
+      "combo_interaction": "配对置换图块计入Combo链（+1次），重置计时器；置换操作本身不计为配对。",
+      "unlock_chapter": 5,
+      "selection_timeout_s": 10,
+      "preset_only": true
     }
   ],
+
+  "ui_assists": [
+    {
+      "id": "reshuffle",
+      "name": "重排",
+      "name_en": "Reshuffle",
+      "trigger": "引擎检测棋盘无合法配对时弹出提示，或玩家主动点击",
+      "effect": "打乱棋盘上所有图块位置，保证新布局存在至少一个合法配对。图块种类数量完全不变。",
+      "cost_beach_coins": 30
+    },
+    {
+      "id": "hint",
+      "name": "预判",
+      "name_en": "Hint",
+      "trigger": "玩家主动点击",
+      "effect": "高亮显示当前棋盘上最优的下一步连接序列（兼顾Combo延续和步数效率），高亮持续3秒后消失。",
+      "cost_beach_coins": 10
+    },
+    {
+      "id": "continue",
+      "name": "续关",
+      "name_en": "Continue",
+      "trigger": "步数耗尽时弹出结算界面",
+      "effect": "立即补充+5步，关卡继续进行。同一关卡可多次续关。",
+      "cost_beach_coins": 30
+    }
+  ],
+
+  "combo_system": {
+    "window_ms": 2000,
+    "multiplier_curve": [
+      { "combo_count": 1, "multiplier": 1.0, "special_generation": null,      "effects": [] },
+      { "combo_count": 2, "multiplier": 1.5, "special_generation": null,      "effects": ["音效增强"] },
+      { "combo_count": 3, "multiplier": 2.0, "special_generation": "cascade", "effects": ["音效增强", "特效升级", "全屏微震", "连锁图块生成"] },
+      { "combo_count": 4, "multiplier": 2.5, "special_generation": "light_chain", "effects": ["音效增强", "特效升级", "屏幕震动", "粒子爆发", "光链图块生成"] },
+      { "combo_count": 6, "multiplier": 3.0, "special_generation": "wave",    "effects": ["音效增强", "大特效", "全屏震动", "光波图块生成（重磅奖励）"] }
+    ],
+    "reset_conditions": [
+      "连续两次配对间隔超过2000ms",
+      "棋盘当前无任何可用配对（引擎自动检测）",
+      "连锁（cascade）最后一次自动配对完成后重置计时器",
+      "光链（light_chain）最后一次自动配对完成后重置计时器",
+      "光波（wave）激活后重置计时器",
+      "穿透（pierce）激活后重置计时器",
+      "置换（swap）配对后重置计时器"
+    ]
+  },
+
+  "parity_guarantee": {
+    "rule": "每种图块类型在棋盘上的数量必须是偶数（0, 2, 4, 6...）",
+    "check_timing": "仅在关卡生成时执行一次强制奇偶校验",
+    "design_principle": "v4.0特殊图块系统由设计层面天然保证奇偶安全，不依赖运行时自动修正：(1)光波wave——仅清除障碍层；(2)光链light_chain——始终偶数消除；(3)穿透pierce——只修改路由规则；(4)置换swap——只交换位置；(5)连锁cascade——始终偶数消除。",
+    "rescue_mechanism": "场外『重排』UI按钮（30沙滩币），打乱位置并保证新布局存在合法配对。"
+  },
 
   "board_events": [
     {
@@ -209,7 +275,7 @@
       "name": "方块滑落",
       "name_en": "Tile Slide (Horizontal)",
       "unlock_chapter": 5,
-      "trigger": "tile_fall 完成后，若图块落在 slide_surface 格子上",
+      "trigger": "tile_fall完成后，图块落在slide_surface格子上",
       "slide_direction": "specified_by_level_json",
       "easing": "ease_out",
       "duration_s": 0.12,
@@ -220,20 +286,20 @@
       "name": "棋盘旋转",
       "name_en": "Board Section Rotate",
       "unlock_chapter": 5,
-      "trigger": "每 N 步操作后（N 由关卡JSON指定，典型值 3–5）",
+      "trigger": "每N步操作后（N由关卡JSON指定，典型值3–5）",
       "rotation_direction": "clockwise_90deg",
       "easing": "ease_in_out",
       "duration_s": 0.5,
       "warning_flash_before_s": 1.0,
       "enabled_by_default": false,
-      "restrictions": ["不可包含 portal 格子", "不可包含 single_path_corridor 格子"]
+      "restrictions": ["不可包含portal格子", "不可包含single_path_corridor格子"]
     },
     {
       "id": "water_flow",
       "name": "水流移动",
       "name_en": "Water Flow",
       "unlock_chapter": 5,
-      "trigger": "每 5 秒定时触发",
+      "trigger": "每5秒定时触发",
       "trigger_interval_s": 5,
       "wrap_around": true,
       "duration_s": 0.3,
@@ -244,7 +310,7 @@
       "name": "藤蔓扩散",
       "name_en": "Vine Spread",
       "unlock_chapter": 6,
-      "trigger": "每 10 秒定时触发",
+      "trigger": "每10秒定时触发",
       "trigger_interval_s": 10,
       "spread_radius_per_interval": 1,
       "duration_s": 0.5,
@@ -252,25 +318,113 @@
     }
   ],
 
-  "combo_window_ms": 2000,
-  "combo_thresholds": [
-    { "combo_count": 1, "multiplier": 1.0, "effects": [] },
-    { "combo_count": 2, "multiplier": 1.5, "effects": ["音效增强"] },
-    { "combo_count": 3, "multiplier": 2.0, "effects": ["音效增强", "特效升级", "全屏微震", "炸弹块生成"] },
-    { "combo_count": 4, "multiplier": 3.0, "effects": ["音效增强", "特效升级", "屏幕震动", "粒子爆发", "风车块生成"] }
-  ],
-  "combo_reset_conditions": [
-    "连续两次匹配间隔超过 2000ms",
-    "棋盘当前无任何可用匹配对"
+  "chapter_mechanic_unlock_schedule": [
+    {
+      "chapter": 1,
+      "area": "海边码头",
+      "board_size": "8×8",
+      "new_mechanics": ["基础连连看", "连击系统（Combo）"],
+      "special_tiles_available": ["cascade"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": [],
+      "notes": "前3关手势引导教学；连锁（cascade）通过Combo=3生成，教学关演示自动链消原理"
+    },
+    {
+      "chapter": 2,
+      "area": "中央小镇",
+      "board_size": "9×9",
+      "new_mechanics": ["冰封块（ice_block，1层）", "杂草障碍（weed）"],
+      "special_tiles_available": ["cascade", "light_chain"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": ["ice_block", "weed"],
+      "notes": "光链（light_chain）通过Combo=4生成；演示扫全图自动匹配同类型图块的链消效果"
+    },
+    {
+      "chapter": 3,
+      "area": "花田山坡",
+      "board_size": "8×8（异形开始）",
+      "new_mechanics": ["锁链（chain_lock，1-2环）", "传送门（portal）", "冰封块升至2层"],
+      "special_tiles_available": ["cascade", "light_chain", "wave"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": ["ice_block", "chain_lock", "portal", "weed"],
+      "notes": "光波（wave）通过Combo=6生成；wave的3×3障碍清除能力在锁链/传送门环境发挥核心价值"
+    },
+    {
+      "chapter": 4,
+      "area": "森林露营地",
+      "board_size": "8×8（异形）",
+      "new_mechanics": ["单路径通道（single_path_corridor）", "木箱障碍（wooden_crate）", "冰封块升至3层", "锁链升至3环"],
+      "special_tiles_available": ["cascade", "light_chain", "wave", "pierce"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": ["ice_block", "chain_lock", "portal", "single_path_corridor", "wooden_crate"],
+      "notes": "穿透（pierce）关卡预置引入；紧密通道布局让pierce的路径穿越能力成为关键战术"
+    },
+    {
+      "chapter": 5,
+      "area": "温泉山谷",
+      "board_size": "9×9（异形）",
+      "new_mechanics": ["重力下落（tile_fall）", "方块滑落（tile_slide）", "局部旋转（board_rotate，仅挑战关）", "水流障碍（water_current）"],
+      "special_tiles_available": ["cascade", "light_chain", "wave", "pierce", "swap"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": ["ice_block", "chain_lock", "portal", "single_path_corridor", "water_current"],
+      "notes": "置换（swap）关卡预置引入；重力机制改变图块布局，swap位置互换能力提供精准战术控制；五种特殊图块全部解锁"
+    },
+    {
+      "chapter": 6,
+      "area": "夜晚灯塔",
+      "board_size": "10×10（异形）",
+      "new_mechanics": ["扩散障碍（spreading_obstacle：藤蔓/苔藓）", "全机制组合挑战", "全20种图块解锁"],
+      "special_tiles_available": ["cascade", "light_chain", "wave", "pierce", "swap"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": ["ice_block", "chain_lock", "portal", "single_path_corridor", "water_current", "spreading_obstacle"],
+      "notes": "扩散障碍每步扩展一格；80%有效格被占触发视觉警告；全五种特殊图块综合运用"
+    }
   ],
 
-  "gameplay_feel_reference": "天天爱消除 (Chinese Candy Crush)",
+  "teaching_beats": [
+    { "level": "1-1", "mechanic": "基础连连看", "method": "无文字教学：手势引导直线连接同色图块" },
+    { "level": "1-2", "mechanic": "目标计数器UI", "method": "无文字教学：目标计数器高亮引导" },
+    { "level": "1-3", "mechanic": "L形/折线路径", "method": "无文字教学：折线路径探索" },
+    { "level": "1-8", "mechanic": "连击/Combo", "method": "布局引导玩家快速连续消除，Combo计时条首次出现" },
+    { "level": "1-12", "mechanic": "连锁cascade（Combo=3）", "method": "限定布局触发Combo=3，连锁图块自动演示效果" },
+    { "level": "2-1", "mechanic": "冰封块（1层）", "method": "弱引导：相邻图块高亮提示，首次破冰特效强化理解" },
+    { "level": "2-5", "mechanic": "杂草（weed）", "method": "少量杂草格子，扩散前有足够步数清除，低压力学习" },
+    { "level": "2-10", "mechanic": "光链light_chain（Combo=4）", "method": "布局设计使Combo=4自然出现，光链扫图演示" },
+    { "level": "3-1", "mechanic": "锁链（1环）", "method": "一个锁链块，需直接配对1次，失败提示辅助" },
+    { "level": "3-5", "mechanic": "传送门（portal）", "method": "简单两格传送门，路径引导动画展示穿越效果" },
+    { "level": "3-12", "mechanic": "光波wave（Combo=6）", "method": "积累Combo引导，wave激活时3×3障碍清除全特效" },
+    { "level": "4-1", "mechanic": "单路径通道", "method": "单一通道布局，引导玩家按序消除" },
+    { "level": "4-8", "mechanic": "穿透pierce（预置）", "method": "预置穿透图块，突出显示其位置，激活后8秒增益演示" },
+    { "level": "5-1", "mechanic": "重力下落（tile_fall）", "method": "宽阔棋盘，消除后图块下落动画强化，无复杂障碍" },
+    { "level": "5-8", "mechanic": "置换swap（预置）", "method": "预置置换图块，选择模式带10s进度条，交换动画明确" },
+    { "level": "6-1", "mechanic": "扩散障碍（藤蔓）", "method": "缓慢扩散节奏，边扩边教，80%警告UI提前出现" }
+  ],
+
+  "pacing": {
+    "pattern": "3:1 标准关:喘息关",
+    "standard_ratio": 3,
+    "breather_ratio": 1,
+    "breather_criteria": "目标数较前3关降低约30%，emotional_note含轻松意象",
+    "chapter_reset_behavior": "每章开始前3关难度回落约15%，给予缓冲期",
+    "difficulty_range": { "min": 1.0, "max": 10.0 },
+    "overall_shape": "6段锯齿上升曲线，每段内部三段式（宽松-标准-挑战）",
+    "zen_mode": "每章2-3个禅境关，关闭步数上限和失败判定，零压力消除体验"
+  },
+
+  "pacing_qa_checklist": [
+    "消除机制定义完整（最大路径长度、转折规则）",
+    "Combo计时器参数（2000ms窗口）与爽快感目标一致",
+    "5种特殊块触发条件与效果完整定义，无歧义，奇偶安全已验证",
+    "6章机制解锁时间表覆盖全部特殊块类型（cascade/light_chain/wave/pierce/swap）",
+    "关卡难度节奏通过教学节拍与步调QA验证"
+  ],
+
   "gameplay_feel_principles": [
     "每次成功匹配必须有清晰、爽快的视觉+音效反馈",
-    "连击链应产生渐进式增强的爆炸/粒子特效，3连击以上全屏震动",
+    "连击链应产生渐进式增强的爆炸/粒子特效，Combo=3以上全屏震动",
     "特殊块激活时动画不可跳过，持续时间控制在0.3~0.8s以保持节奏感",
-    "障碍物被清除时应有专属'解锁'音效+碎裂/解冻/断链粒子效果",
-    "重力下落使用弹性缓动(ease_in_bounce)，强化物理真实感",
+    "障碍物被清除时应有专属『解锁』音效+碎裂/解冻/断链粒子效果",
+    "重力下落使用弹性缓动（ease_in_bounce），强化物理真实感",
     "每章首次引入新机制时，通过引导关卡（无惩罚）让玩家自然学会"
   ]
 }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glow Island — 美术方向文档（Art Direction）</title>
+  <title>輝島（Kagayaki-jima）— 美术方向文档</title>
   <style>
     :root {
       --bg: #0f1117;
@@ -16,6 +16,8 @@
       --heading: #f8fafc;
       --code-bg: #12141c;
       --tag-bg: #1e3a5f;
+      --warm: #f5c842;
+      --coral: #e8866a;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -32,7 +34,7 @@
       margin: 0 -1rem 2.5rem;
       text-align: center;
     }
-    .page-header .project-tag {
+    .project-tag {
       display: inline-block;
       background: var(--tag-bg);
       color: var(--accent);
@@ -50,10 +52,39 @@
       color: var(--heading);
       text-shadow: 0 0 40px rgba(125,211,252,0.2);
     }
+    .page-header .meta {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+    }
     .container {
-      max-width: 860px;
+      max-width: 900px;
       margin: 0 auto;
     }
+    /* 导航选项卡 */
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0;
+    }
+    .nav-tab {
+      padding: 0.45rem 1rem;
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      cursor: pointer;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-tab:hover { color: var(--accent); background: #1e2436; }
+    .nav-tab.active { color: var(--warm); background: #0f1117; border-color: var(--border); border-bottom-color: var(--bg); }
+    /* 章节标题 */
     h1, h2, h3, h4, h5, h6 {
       color: var(--heading);
       margin-top: 2rem;
@@ -64,7 +95,7 @@
     h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
     h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
     h3 { font-size: 1.1rem; color: var(--accent2); }
-    h4 { font-size: 1rem; color: var(--muted); }
+    h4 { font-size: 1rem; color: var(--muted); font-weight: 600; margin-top: 1.2rem; }
     p { margin: 0.6rem 0 0.9rem; }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -102,10 +133,7 @@
       font-size: 0.85rem;
       color: var(--text);
     }
-    ul, ol {
-      padding-left: 1.6rem;
-      margin: 0.5rem 0 1rem;
-    }
+    ul, ol { padding-left: 1.6rem; margin: 0.5rem 0 1rem; }
     li { margin: 0.3rem 0; }
     li > ul, li > ol { margin: 0.2rem 0; }
     table {
@@ -129,11 +157,69 @@
     }
     tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
     tr:hover td { background: rgba(125,211,252,0.04); }
-    hr {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 2rem 0;
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    /* 色板色块 */
+    .swatch {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      vertical-align: middle;
+      margin-right: 4px;
+      border: 1px solid rgba(255,255,255,0.12);
     }
+    /* 章节情感卡片 */
+    .chapter-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+    }
+    .chapter-card .chapter-label {
+      font-size: 0.75rem;
+      color: var(--warm);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+    .chapter-card h4 {
+      color: var(--heading);
+      margin-top: 0;
+    }
+    /* NPC卡片 */
+    .npc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent2);
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0;
+    }
+    .npc-card .npc-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.2rem;
+    }
+    .npc-card h4 {
+      color: var(--accent2);
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+    /* 规范标签 */
+    .tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      border: 1px solid rgba(125,211,252,0.2);
+      margin: 0.15rem 0.15rem 0.15rem 0;
+    }
+    .tag.warn { background: #3a1a0a; color: var(--coral); border-color: rgba(232,134,106,0.25); }
+    .tag.ok { background: #0a2a1a; color: var(--accent2); border-color: rgba(134,239,172,0.25); }
     .footer {
       text-align: center;
       color: var(--muted);
@@ -142,703 +228,804 @@
       padding-top: 1.5rem;
       border-top: 1px solid var(--border);
     }
+    /* 检查清单 */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { padding: 0.3rem 0; padding-left: 1.5rem; position: relative; }
+    .checklist li::before { content: "✓"; position: absolute; left: 0; color: var(--accent2); font-weight: bold; }
   </style>
 </head>
 <body>
   <div class="page-header">
-    <div class="project-tag">Glow Island · 发光岛</div>
-    <h1>Glow Island — 美术方向文档（Art Direction）</h1>
+    <div class="project-tag">Glow Island · 輝島（Kagayaki-jima）</div>
+    <h1>美术方向文档</h1>
+    <div class="meta">版本 2.1 · 2026-05-13 · 状态：已确认 · 风格基准：どうぶつの森 × 日式离岛美学</div>
   </div>
+
   <div class="container">
-<h1 id="glow-island-art-direction">Glow Island — 美术方向文档（Art Direction）</h1>
-<blockquote>
-<p>版本：2.0 | 日期：2026-05-08 | 状态：已确认<br />
-风格基准：Animal Crossing（どうぶつの森）× 日式离岛美学</p>
-</blockquote>
-<hr />
-<h2 id="1">1. 整体风格定位</h2>
-<h3 id="_1">一句话定位</h3>
-<blockquote>
-<p>动物森友会式的温柔日式离岛：圆润、手绘、柔暖，随修复进度从褪色枯岛逐步"亮起"的治愈世界。</p>
-</blockquote>
-<h3 id="_2">核心视觉哲学</h3>
-<p><strong>为什么选择 Animal Crossing 风格</strong><br />
-Animal Crossing 的视觉语言天然降低认知负担：每个物件轮廓简洁、颜色区分鲜明、信息密度低而情感密度高。玩家在直觉层面就能识别图块类型，不需要"读"图块——只需"感受"它。这与 Glow Island 的消除玩法高度契合：快速连接靠的是图形识别，而非文字逻辑。</p>
-<p><strong>三项核心原则</strong><br />
-- <strong>圆润优先</strong>：所有形状使用大圆角（≥16px），避免尖角。角色头身比接近1:1.5的Q版比例，四肢短而圆。<br />
-- <strong>手绘质感</strong>：轮廓线保留轻微不规则感（模拟铅笔起稿），主色块用单色平铺+顶部极淡高光，整体如水彩图鉴插画风格。<br />
-- <strong>暖色主导</strong>：整体色温偏暖（金色下午光），冷色仅用于水面和夜晚章节。避免过度饱和（目标饱和度55-75%，非鲜艳卡通风）。</p>
-<h3 id="animal-crossing">与 Animal Crossing 的关键视觉共同点</h3>
-<table>
-<thead>
-<tr>
-<th>AC特征</th>
-<th>Glow Island 的对应体现</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>柔和轮廓线，非纯黑描边</td>
-<td>轮廓色 = 主色加深30%（非#000000）</td>
-</tr>
-<tr>
-<td>Q版角色，大头圆身</td>
-<td>Saki和NPC头身比1:1.5，眼睛占脸1/3</td>
-</tr>
-<tr>
-<td>木质/竹制/自然材料UI</td>
-<td>木牌对话框，树叶按钮，椰壳货币图标</td>
-</tr>
-<tr>
-<td>每个岛民有独特剪影</td>
-<td>每个NPC单色剪影可识别，无视分辨率</td>
-</tr>
-<tr>
-<td>环境物件有轻微"呼吸"弹动</td>
-<td>Idle动画包含0.5Hz轻微上下浮动</td>
-</tr>
-<tr>
-<td>柔和的环境音效映射视觉</td>
-<td>（美术参考，不在本文档范围）</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="2">2. 色彩系统</h2>
-<h3 id="21">2.1 全局色板</h3>
-<table>
-<thead>
-<tr>
-<th>色彩角色</th>
-<th>色名</th>
-<th>Hex</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>主背景沙</td>
-<td>Island Sand</td>
-<td><code>#F7EDD8</code></td>
-<td>UI底板、对话框背景</td>
-</tr>
-<tr>
-<td>暖珊瑚</td>
-<td>Coral Warm</td>
-<td><code>#E8866A</code></td>
-<td>主按钮、强调色</td>
-</tr>
-<tr>
-<td>柔珊瑚淡</td>
-<td>Coral Soft</td>
-<td><code>#F2A98A</code></td>
-<td>按钮高光、进度条填充</td>
-</tr>
-<tr>
-<td>海水青</td>
-<td>Ocean Teal</td>
-<td><code>#5BBFB5</code></td>
-<td>水系图块、第1章主色</td>
-</tr>
-<tr>
-<td>竹叶绿</td>
-<td>Bamboo Green</td>
-<td><code>#7DBE77</code></td>
-<td>自然图块、第2章森林色</td>
-</tr>
-<tr>
-<td>樱粉</td>
-<td>Sakura Pink</td>
-<td><code>#F0C4C4</code></td>
-<td>第3章花圃色、点缀</td>
-</tr>
-<tr>
-<td>木纹棕</td>
-<td>Driftwood</td>
-<td><code>#C4955A</code></td>
-<td>木质UI、T02木板块</td>
-</tr>
-<tr>
-<td>温暖沙棕</td>
-<td>Warm Dune</td>
-<td><code>#E2C48A</code></td>
-<td>沙滩底图、绳结系色</td>
-</tr>
-<tr>
-<td>金黄午光</td>
-<td>Golden Hour</td>
-<td><code>#F5C842</code></td>
-<td>灯塔高光、Glow块、星光</td>
-</tr>
-<tr>
-<td>暮橙</td>
-<td>Dusk Orange</td>
-<td><code>#EE8C55</code></td>
-<td>第1章夕阳、灯笼暖光</td>
-</tr>
-<tr>
-<td>深夜蓝</td>
-<td>Night Indigo</td>
-<td><code>#1E2E50</code></td>
-<td>第6章夜空底色</td>
-</tr>
-<tr>
-<td>月光白</td>
-<td>Moonlight</td>
-<td><code>#F5F0E8</code></td>
-<td>文字底色、UI高光区</td>
-</tr>
-<tr>
-<td>苔藓深绿</td>
-<td>Forest Moss</td>
-<td><code>#4A7D55</code></td>
-<td>第4章森林、树干阴影</td>
-</tr>
-<tr>
-<td>鸟居红</td>
-<td>Torii Red</td>
-<td><code>#C8402A</code></td>
-<td>神社标志色、第5章重音</td>
-</tr>
-<tr>
-<td>岩石灰蓝</td>
-<td>Stone Blue</td>
-<td><code>#8EA0AA</code></td>
-<td>第6章礁石、石板纹</td>
-</tr>
-</tbody>
-</table>
-<h3 id="22">2.2 章节主色对照</h3>
-<table>
-<thead>
-<tr>
-<th>章节</th>
-<th>场景</th>
-<th>主色</th>
-<th>辅色</th>
-<th>强调色</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>第1章</td>
-<td>海边码头</td>
-<td><code>#5BBFB5</code> Ocean Teal</td>
-<td><code>#F7EDD8</code> Island Sand</td>
-<td><code>#EE8C55</code> Dusk Orange</td>
-</tr>
-<tr>
-<td>第2章</td>
-<td>竹林村落</td>
-<td><code>#7DBE77</code> Bamboo Green</td>
-<td><code>#C4955A</code> Driftwood</td>
-<td><code>#F5C842</code> Golden Hour</td>
-</tr>
-<tr>
-<td>第3章</td>
-<td>樱花坡田</td>
-<td><code>#F0C4C4</code> Sakura Pink</td>
-<td><code>#7DBE77</code> Bamboo Green</td>
-<td><code>#FFFFFF</code></td>
-</tr>
-<tr>
-<td>第4章</td>
-<td>松林神社</td>
-<td><code>#4A7D55</code> Forest Moss</td>
-<td><code>#C4955A</code> Driftwood</td>
-<td><code>#C8402A</code> Torii Red</td>
-</tr>
-<tr>
-<td>第5章</td>
-<td>渔村港口</td>
-<td><code>#C4955A</code> Driftwood</td>
-<td><code>#5BBFB5</code> Ocean Teal</td>
-<td><code>#F5C842</code> Golden Hour</td>
-</tr>
-<tr>
-<td>第6章</td>
-<td>夜晚灯塔</td>
-<td><code>#1E2E50</code> Night Indigo</td>
-<td><code>#8EA0AA</code> Stone Blue</td>
-<td><code>#F5C842</code> Golden Hour</td>
-</tr>
-</tbody>
-</table>
-<h3 id="23">2.3 修复进度饱和度叙事</h3>
-<p>与AC岛屿"荒岛开拓"的节奏相似，修复前的岛屿是一张褪色速写，修复后是完整的水彩画稿。</p>
-<pre><code>修复前（s0）：HSL 饱和度 8-15%，亮度 42-48%  — 褪色枯岛，铅笔草稿感
-第1阶段（s1）：饱和度 28-38%               — 轮廓找回，淡彩涂色
-第2阶段（s2）：饱和度 48-58%               — 生活气息，色彩入稿
-第3阶段（s3）：饱和度 62-72%               — 角色回归，满生命力
-第4阶段（s4）：饱和度 75-88%               — 完整水彩，光效全开
-</code></pre>
-<h3 id="24">2.4 色彩对比度要求（降低认知负担核心规则）</h3>
-<p>20种图块之间必须满足：<br />
-- <strong>相邻章节图块色相差 ≥ 30°</strong>（HSL色环）<br />
-- <strong>同章节内图块之间明度差 ≥ 20%</strong><br />
-- <strong>任意两种图块在灰度模式下仍可区分</strong>（剪影原则）<br />
-- 禁止使用纯灰色图块（最低饱和度 ≥ 20%）</p>
-<hr />
-<h2 id="3">3. 角色设计规范</h2>
-<h3 id="31-saki">3.1 主角 Saki（咲）的视觉设定</h3>
-<p>Saki 是岛上唯一的玩家角色，出现在关卡过渡动画和全岛地图界面中。</p>
-<p><strong>体型与比例</strong><br />
-- 头身比：1:1.5（头部极大，接近AC村民比例）<br />
-- 头部：正圆形，直径占全身高40%；耳朵小圆形，略低于头顶<br />
-- 眼睛：水滴形，黑色瞳仁占眼面积70%，静止时略带向下弯曲的温柔感<br />
-- 鼻嘴：鼻子仅一个小圆点，嘴巴用简短弧线表达；AC式"省略鼻梁"原则<br />
-- 身体：圆筒形，无明显腰线；手臂短而圆，如两根小香肠<br />
-- 腿脚：短腿，脚部略大于手，增加稳定感和可爱感</p>
-<p><strong>服装（夏日离岛版）</strong><br />
-- 上衣：宽松圆领短袖，主色 <code>#F0C4C4</code> 浅樱粉，袖口有细小竹叶印花（深绿#4A7D55线条，2px宽）<br />
-- 短裤：米白<code>#F7EDD8</code>，宽松百慕大款<br />
-- 帽子：宽沿草帽，本色麻纹，帽带为珊瑚色<code>#E8866A</code><br />
-- 鞋：简单圆头凉鞋，棕色<code>#C4955A</code><br />
-- 道具：永远背着一个海藻绿小背包，上面有贝壳形状扣子</p>
-<p><strong>表情规范（三套）</strong><br />
-- Default（默认游览）：嘴角微微上翘，眼睛半开，放松状态<br />
-- Happy（关卡完成）：月亮形眯眼，嘴巴大"Ω"形，双手握拳举起<br />
-- Thinking（关卡提示）：一只眼眯起，嘴角歪向一侧，食指点嘴角</p>
-<h3 id="32-npc">3.2 NPC 通用设计原则</h3>
-<p>所有NPC遵循与AC村民相同的"一眼识别"原则：</p>
-<p><strong>剪影规则</strong><br />
-- 每个NPC有1个标志性道具/配件，使其黑色剪影与其他NPC完全不同<br />
-- 体型有明显差异：高/矮/圆/细，不允许两个NPC体型相近</p>
-<p><strong>颜色规则</strong><br />
-- 每个NPC有1个"代表色"占服装主色，与其章节主色协调但不完全相同<br />
-- 皮肤色限定4个色值：<code>#F5D4B0</code>（浅）/ <code>#E8B882</code>（中）/ <code>#C8935A</code>（深）/ <code>#9A6840</code>（深褐）</p>
-<p><strong>面部规则</strong><br />
-- 眼睛统一使用水滴形（同Saki）<br />
-- 允许添加：腮红（2个小圆点，主色降低明度40%）<br />
-- 允许添加：花纹/胡子/眼镜作为个性化标志</p>
-<h3 id="33-npc">3.3 各章节 NPC 视觉细节</h3>
-<p><strong>NPC01 — 渔夫·阿海（第1章 海边码头）</strong><br />
-- 体型：中等身高，圆肩，手臂略粗（常年拉网）<br />
-- 代表色：靛蓝 <code>#4A6D9A</code>（布衣）<br />
-- 标志性配件：宽沿草帽（比Saki的更旧更大，帽沿有破损线条）+ 右手常拿鱼竿<br />
-- 皮肤：深褐 <code>#9A6840</code>（日晒）<br />
-- 腮红：无（沉稳气质）<br />
-- 特别规则：第1章多数时候背对玩家看海，正面亮相仅在标志性时刻</p>
-<p><strong>NPC02 — 花农·阿花（第3章 樱花坡田）</strong><br />
-- 体型：矮小圆润，头略大，圆脸<br />
-- 代表色：草绿围裙 <code>#7DBE77</code> + 粉底碎花长裙（樱粉<code>#F0C4C4</code>底，小花印花）<br />
-- 标志性配件：头顶别着一朵三瓣花（与章节T09相同花形），左手常端浇水壶<br />
-- 皮肤：浅 <code>#F5D4B0</code><br />
-- 腮红：圆形深粉腮红，明显<br />
-- 特别规则：蹲地时身体变得更圆（膝盖消失，仅剩圆形轮廓）</p>
-<p><strong>NPC03 — 背包客·阿林（第4章 松林神社）</strong><br />
-- 体型：偏高细，肩宽，有探险家气质<br />
-- 代表色：深绿探险外套 <code>#3D6645</code><br />
-- 标志性配件：帽沿压低的渔夫帽（多数时候遮住眼睛，仅露出嘴巴）+ 大型背包（背包上挂着小灯笼）<br />
-- 皮肤：中 <code>#E8B882</code><br />
-- 腮红：无<br />
-- 特别规则：<strong>重要</strong> — 标志性时刻（第4章完成）阿林抬头仰望星空，这是全章唯一露出眼睛的时刻，眼神设计为温柔上弯（AC"微笑眼"变体）</p>
-<p><strong>NPC04 — 温泉老爷爷·阿福（第5章 渔村港口）</strong><br />
-- 体型：矮胖圆，肚子圆鼓（穿着缁色浴衣时如一颗圆球）<br />
-- 代表色：藏青浴衣 <code>#2A4060</code>，腰带为金色<code>#F5C842</code><br />
-- 标志性配件：头顶始终顶着一块叠好的白色方巾（AC式夸张道具）<br />
-- 皮肤：中 <code>#E8B882</code><br />
-- 腮红：深橙腮红，明显（笑纹配合腮红增强慈祥感）<br />
-- 特别规则：默认表情是"嫌弃/无奈"的眯眼撇嘴——眼睛向下弯（反向AC微笑眼），嘴角朝下，但腮红存在使其整体可爱而非凶狠</p>
-<p><strong>NPC05 — 灯塔守护者·阿明（第6章 夜晚灯塔）</strong><br />
-- 体型：偏高，微弯腰（习惯性的沉思姿态）<br />
-- 代表色：深灰蓝大衣 <code>#2A3650</code>，领口有白色翻领细节<br />
-- 标志性配件：右手握着旧式点火装置（黄铜色圆柱形，末端发微光）<br />
-- 皮肤：中 <code>#E8B882</code><br />
-- 腮红：无<br />
-- 特别规则：标志性时刻（灯塔亮起）阿明背对玩家，仅看到大衣后背和点亮灯塔的剪影——这个构图本身就是情感高峰，无需正面表情</p>
-<hr />
-<h2 id="4">4. 图块视觉设计规范</h2>
-<h3 id="41">4.1 图块基础规格</h3>
-<table>
-<thead>
-<tr>
-<th>项目</th>
-<th>规格</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>画布尺寸 @2x</td>
-<td>128 × 128 px</td>
-</tr>
-<tr>
-<td>实际绘制区 @2x</td>
-<td>112 × 112 px（四周各留8px透明出血）</td>
-</tr>
-<tr>
-<td>基础形状</td>
-<td>圆角矩形（圆角半径 24px），如有自然形态则使用有机轮廓</td>
-</tr>
-<tr>
-<td>轮廓线</td>
-<td>2px，颜色 = 主色加深32%，非纯黑</td>
-</tr>
-<tr>
-<td>底部阴影</td>
-<td><code>0 4px 0 rgba(0,0,0,0.10)</code> 烘焙进图层</td>
-</tr>
-<tr>
-<td>纸纹叠加</td>
-<td>6%不透明度的轻纸纹底，全部图块统一（模拟手绘纸感）</td>
-</tr>
-</tbody>
-</table>
-<h3 id="42-ac">4.2 AC风格图块设计原则</h3>
-<p><strong>有机形状优先</strong>：图块形状来源于自然物体（贝壳、叶片、花朵、鱼形），非几何图形。即使使用圆角矩形作底，也要在图块表面绘制清晰的自然主题插图。</p>
-<p><strong>剪影识别度</strong>：在32×32px大小下，每个图块的主题插图仍需可辨认。测试方法：将图块缩至25%大小，主题图案轮廓仍清晰。</p>
-<p><strong>色彩饱和度分布</strong>：图块主色饱和度60-75%，高光区饱和度降低15%，阴影区饱和度提升10%同时明度降低25%。</p>
-<h3 id="43">4.3 图块状态视觉规范</h3>
-<table>
-<thead>
-<tr>
-<th>状态</th>
-<th>视觉效果</th>
-<th>技术方案</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Normal（默认）</td>
-<td>标准色，无特效，底部烘焙阴影</td>
-<td>静态PNG</td>
-</tr>
-<tr>
-<td>Highlighted（连接高亮）</td>
-<td>白色内发光<code>rgba(255,255,255,0.4)</code>，scale(1.06)，轮廓线变亮</td>
-<td>Runtime Shader（或独立帧）</td>
-</tr>
-<tr>
-<td>Disappearing（消除）</td>
-<td>先scale(1.12)再缩至0，出现3-5个对应主题的小粒子散开（贝壳块散出贝壳碎片，花朵块散出花瓣）</td>
-<td>Spine序列帧，12帧@30fps</td>
-</tr>
-<tr>
-<td>Special（特殊块）</td>
-<td>持续呼吸发光（2.5s周期），光晕颜色对应类型</td>
-<td>Spine循环动画</td>
-</tr>
-</tbody>
-</table>
-<h3 id="44-ac">4.4 特殊图块（AC风格重新定义）</h3>
-<table>
-<thead>
-<tr>
-<th>图块类型</th>
-<th>自然主题</th>
-<th>视觉主色</th>
-<th>特效描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>炸弹块（Bomb Tile）</td>
-<td><strong>河豚</strong> — 鼓胀圆球形状，眼睛瞪大表情</td>
-<td>橙黄 <code>#F5A840</code></td>
-<td>激活时河豚夸张膨胀再"啵"一声爆开，散出气泡粒子（非火焰，保持治愈感）</td>
-</tr>
-<tr>
-<td>闪电块（Lightning Tile）</td>
-<td><strong>闪光金枪鱼</strong> — 流线形，表面有金属光泽</td>
-<td>银蓝 <code>#7ECDE8</code></td>
-<td>激活时鱼形残影横扫全行/列，电光为浅蓝非强白</td>
-</tr>
-<tr>
-<td>彩虹块（Rainbow Tile）</td>
-<td><strong>彩虹鱼（热带鱼）</strong> — 色彩条纹清晰</td>
-<td>七彩渐变</td>
-<td>表面色彩条纹缓慢流动（非闪烁），消除时彩色鱼鳞粒子扩散</td>
-</tr>
-<tr>
-<td>Glow发光块（Glow Tile）</td>
-<td><strong>萤火虫提灯</strong> — 竹制提灯造型，内部温暖光芒</td>
-<td>金色 <code>#F5C842</code></td>
-<td>提灯内光芒呼吸式脉冲（2s周期），连接时金色光粒子沿路径如萤火虫飞行</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="5-ui-ux">5. UI / UX 视觉语言</h2>
-<h3 id="51-ui">5.1 整体 UI 风格定义</h3>
-<p><strong>木牌系 UI（Wood Sign UI）</strong>：所有UI元素的材质参考来自AC中的木质告示牌、竹简、晒干的贝壳和天然石板。</p>
-<p><strong>禁止使用的视觉元素</strong><br />
-- 金属光泽（无铬钢、无铝合金边框）<br />
-- 硬边几何（无直角矩形，无菱形）<br />
-- 霓虹色（无荧光绿、电蓝、紫外色）<br />
-- 阴影过强（所有阴影透明度 ≤ 15%）</p>
-<h3 id="52">5.2 对话框 / 弹窗</h3>
-<ul>
-<li><strong>形状</strong>：圆角矩形，圆角半径 20px</li>
-<li><strong>背景材质</strong>：米色木纹底（<code>#E8D8B4</code>）+ 顶部轻量手绘木纹线条（3-5条横向波浪纹，透明度15%）</li>
-<li><strong>边框</strong>：4px 深棕木框线 <code>#8B6030</code>，外侧有1px米白高光 <code>#F7EDD8</code>（模拟木边缘）</li>
-<li><strong>顶部装饰</strong>：对话框顶部中央有一枚竹钉图案（圆形，<code>#7A5030</code>，直径16px）</li>
-<li><strong>文字</strong>：思源圆体 Regular，<code>#3A2810</code>深棕，行高1.6</li>
-</ul>
-<h3 id="53">5.3 按钮规范</h3>
-<p><strong>主要按钮（确认/开始）</strong><br />
-- 形状：宽度自适应，高度48px，圆角24px（药丸形）<br />
-- 背景：珊瑚橙渐变（顶 <code>#F0997A</code> → 底 <code>#E8866A</code>）<br />
-- 文字：月光白 <code>#F5F0E8</code>，思源圆体 Semi-Bold，16px<br />
-- 边框：2px 深珊瑚 <code>#B85A40</code>，底部有3px深珊瑚色偏移（AC式"按钮有重量感"）<br />
-- 点击态：整体下移2px（模拟物理按压），颜色整体加深8%</p>
-<p><strong>次要按钮（取消/关闭）</strong><br />
-- 背景：米色木牌色 <code>#E8D8B4</code><br />
-- 文字：深棕 <code>#5A3820</code><br />
-- 边框：2px <code>#B89060</code></p>
-<p><strong>图标按钮（道具类）</strong><br />
-- 形状：56×56px 圆形<br />
-- 背景：米白<code>#F7EDD8</code>圆形底 + 主题色图标<br />
-- 边框：3px 棕色木纹圈 <code>#C4955A</code><br />
-- 悬停/高亮：圆形变为主题色底色，图标变为白色</p>
-<h3 id="54-hud">5.4 HUD元素规范</h3>
-<p><strong>步数计数器</strong><br />
-- 形状：叶形或扇贝形容器（非矩形）<br />
-- 背景：深珊瑚 <code>#C85A40</code>（低步数时变红 <code>#C82020</code>）<br />
-- 数字：月光白，Bold，28px，思源圆体数字字形<br />
-- 位置：屏幕右上角</p>
-<p><strong>分数/进度</strong><br />
-- 形状：竹节形进度条（分段样式，每段为一节竹），圆角5px<br />
-- 填充色：竹叶绿 <code>#7DBE77</code><br />
-- 底色：深棕木 <code>#8B6030</code><br />
-- 段落之间用2px暗棕分隔线 <code>#5A3820</code></p>
-<p><strong>连击泡泡（Combo Popup）</strong><br />
-- 字体：思源圆体 Bold，连击数字极大（32-48px），颜色 <code>#F5C842</code> 金色<br />
-- 气泡形状：对话气泡轮廓，圆角矩形，底部有小三角尖（指向发生连击的区域）<br />
-- 背景：深珊瑚 <code>#C85A40</code>，边框月光白<code>#F5F0E8</code> 3px<br />
-- 入场动画：从下往上弹出，spring曲线，轻微overshooting（scale 1.2 → 1.0）</p>
-<h3 id="55">5.5 货币图标视觉</h3>
-<p><strong>沙滩币（软货币）</strong><br />
-- 形状：圆形，直径32px<br />
-- 图案：扇贝正视图，放射状细线，主色 <code>#F5C842</code> 金黄<br />
-- 边框：2px 深金 <code>#B8902A</code><br />
-- 质感：表面有轻微贝壳光泽渐变</p>
-<p><strong>光石（硬货币）</strong><br />
-- 形状：五边形宝石切面<br />
-- 图案：中央有星形内发光<br />
-- 主色：青绿渐变（<code>#5BBFB5</code> → <code>#3A9E94</code>），高光为月光白<br />
-- 特效：静止时有0.8Hz轻微脉动光晕</p>
-<h3 id="56">5.6 字体规范</h3>
-<ul>
-<li><strong>中文主字体</strong>：思源圆体（Source Han Rounded CN）</li>
-<li>标题（关卡名）：Bold，22px，<code>#3A2810</code></li>
-<li>正文（对话）：Regular，15px，<code>#3A2810</code>，行高1.65</li>
-<li>辅助信息：Light，12px，<code>#7A6040</code></li>
-<li><strong>数字</strong>：思源圆体（保持圆润感，与中文一致）</li>
-<li>步数/分数：Semi-Bold，20px</li>
-<li>连击数：Bold，32-48px（随连击层级增大）</li>
-<li><strong>英文</strong>：系统圆体（SF Pro Rounded / Nunito），仅用于无中文替代的场景</li>
-</ul>
-<h3 id="57">5.7 图标风格</h3>
-<p>所有图标以AC中的物品手绘图鉴为参考：<br />
-- 风格：轻手绘线面结合，有轻微线条不规则感<br />
-- 禁止：锐利的几何矢量图标（无 Material Icon 风格）<br />
-- 推荐：图标内有一个主题自然元素（树叶/贝壳/花朵）作为设计基元<br />
-- 色彩：图标使用章节主色，单色原则（不超过2色）</p>
-<hr />
-<h2 id="6-6">6. 环境设计（6章区域）</h2>
-<h3 id="61">6.1 整体环境风格原则</h3>
-<p>所有区域以AC的"俯视等距透视"为参考，但Glow Island棋盘区域为正视平面视角——环境设计主要体现在：<br />
-- <strong>棋盘背景</strong>：可透视的渐变底图，透明度20-35%以不干扰图块识别<br />
-- <strong>区域场景图</strong>（全岛地图视角）：45°俯视，手绘水彩风格<br />
-- <strong>过渡动画背景</strong>：章节开始/结束时的全屏场景插画</p>
-<h3 id="62">6.2 各章节区域详细设定</h3>
-<p><strong>第1章 — 海边码头（Beach Harbor）</strong></p>
-<p>情绪基调：悠闲的南海小渔村午后</p>
-<ul>
-<li><strong>修复前视觉</strong>：褪色木桩码头，绳索松垂，木板灰朽，海面无反射，阴天</li>
-<li><strong>修复后关键元素</strong>：</li>
-<li>弯曲木码头延伸入水，木板颜色<code>#C4955A</code>带轻微纹理</li>
-<li>码头两侧挂着竹制灯笼（圆形，<code>#EE8C55</code>橙光）</li>
-<li>停靠一艘小木船，船头挂着一串贝壳风铃</li>
-<li>背景有白色防浪提（漫画感简化形状），远处有小岛剪影</li>
-<li>整体光线：金色下午光，从右上方45°投射</li>
-<li><strong>棋盘背景</strong>：浅蓝绿渐变（<code>#A8DDD8</code>→<code>#C8EEE8</code>），顶部有海浪简略线条装饰（低透明度）</li>
-<li><strong>标志性时刻场景</strong>：夕阳版，天空橙红渐变<code>#F4A261</code>→<code>#EE6A30</code>，海面金色光道，阿海在远处码头系绳</li>
-</ul>
-<p><strong>第2章 — 竹林村落（Bamboo Village）</strong></p>
-<p>情绪基调：翠竹掩映的宁静村庄</p>
-<ul>
-<li><strong>修复前视觉</strong>：竹子倒伏，小路泥泞，屋檐破损，竹篱笆散落</li>
-<li><strong>修复后关键元素</strong>：</li>
-<li>竹林小径（地面为浅沙色<code>#E8D4A0</code>，两侧竹子<code>#7DBE77</code>）</li>
-<li>路边有竹制灯笼台（比第1章更精致，方形纸灯笼）</li>
-<li>小型竹制凉亭，屋顶为绿色草皮纹理</li>
-<li>路边有竹筒花器，插着粉色山茶花</li>
-<li>背景：竹林渐层（近处深绿<code>#4A7D55</code>，远处浅绿<code>#A0D898</code>）</li>
-<li><strong>棋盘背景</strong>：竹叶绿渐变（<code>#C8E8C0</code>→<code>#E0F0D8</code>），背景有竹节轮廓装饰（低透明度10%）</li>
-<li><strong>标志性时刻场景</strong>：新竹笋破土而出（从地面向上动画），象征村落重生</li>
-</ul>
-<p><strong>第3章 — 樱花坡田（Sakura Hillside）</strong></p>
-<p>情绪基调：花瓣飘落的温柔坡田清晨</p>
-<ul>
-<li><strong>修复前视觉</strong>：樱花树枯枝，花田荒芜，石板路碎裂，薄雾灰调</li>
-<li><strong>修复后关键元素</strong>：</li>
-<li>樱花树盛开（树冠圆形，粉白花簇<code>#F0D8D8</code>），花瓣永远有轻微飘落粒子</li>
-<li>石板坡道两侧有小石灯笼（圆顶，苔藓灰<code>#8AAA88</code>）</li>
-<li>花田行列清晰（交替种植樱粉色和白色花朵）</li>
-<li>远景：海岸线依稀可见，形成大场景感</li>
-<li>光线：清晨侧光，薄雾弥漫于山腰（白色低透明度层叠加）</li>
-<li><strong>棋盘背景</strong>：樱粉渐变（<code>#F8E8E8</code>→<code>#FFF5F5</code>），边缘有散落花瓣剪影装饰（5-7个随机位置，低透明度）</li>
-<li><strong>标志性时刻场景</strong>：整个坡田花海满开，花瓣漫天，阿花在画面中央捧起一束花</li>
-</ul>
-<p><strong>第4章 — 松林神社（Pine Forest Shrine）</strong></p>
-<p>情绪基调：树荫深处的静谧古神社</p>
-<ul>
-<li><strong>修复前视觉</strong>：鸟居倒斜，石灯笼苔藓横生，神社铃铛绳断落，石阶碎裂</li>
-<li><strong>修复后关键元素</strong>：</li>
-<li>红色鸟居（<code>#C8402A</code>），两立柱有金色文字装饰线</li>
-<li>石灯笼排列在小径两侧，夜晚有温暖灯光</li>
-<li>神社正面：茅草屋顶，深绿<code>#3D6645</code>木构件，正面有注连绳（稻草绳+纸垂）</li>
-<li>巨大松树背景，松针深绿团块状</li>
-<li>地面：铺设浅灰石板，缝隙有苔藓</li>
-<li><strong>棋盘背景</strong>：深林绿渐变（<code>#3D5040</code>→<code>#5A7058</code>），有极淡的松针剪影（透明度8%）</li>
-<li><strong>标志性时刻场景</strong>：夜晚，神社内所有灯笼同时亮起，阿林在场景最远处抬头仰望星空（露脸唯一时刻）</li>
-</ul>
-<p><strong>第5章 — 渔村港口（Fishing Village Port）</strong></p>
-<p>情绪基调：夕阳下的热闹渔村小港</p>
-<ul>
-<li><strong>修复前视觉</strong>：木栈道腐朽，渔网堆弃，船舶无缆绳，店铺门窗封闭</li>
-<li><strong>修复后关键元素</strong>：</li>
-<li>小港口有3艘不同颜色的小木船停靠（蓝、红、棕）</li>
-<li>渔网晾晒在木架上，网孔清晰</li>
-<li>路边有鱼类摊位（木板台，摆着简化鱼形道具<code>#5BBFB5</code>色调）</li>
-<li>港口入口有两根绑着彩旗（三角形小旗，珊瑚色+竹绿交替）的竹竿</li>
-<li>海面：金色夕阳倒影，海鸥剪影（2-3只，简化V形）</li>
-<li><strong>棋盘背景</strong>：暖金橙渐变（<code>#F0D8B0</code>→<code>#E8C890</code>），有水面波纹纹理（低透明度）</li>
-<li><strong>标志性时刻场景</strong>：港口灯笼全亮，阿福坐在码头边泡脚，满意地点头</li>
-</ul>
-<p><strong>第6章 — 夜晚灯塔（Night Lighthouse）</strong></p>
-<p>情绪基调：深夜孤岛，一束光切开黑暗</p>
-<ul>
-<li><strong>修复前视觉</strong>：灯塔灯室玻璃蒙尘，铁锈楼梯扭曲，礁石上寸草不生，漆黑</li>
-<li><strong>修复后关键元素</strong>：</li>
-<li>灯塔主体：白色圆柱塔身，蓝条纹装饰（每隔2m一圈<code>#3A5080</code>深蓝带），圆顶灯室为金色穹顶</li>
-<li>灯室内：旋转灯泡可见，金色光芒穿透玻璃</li>
-<li>灯塔基部：礁石上有若干橙色灯笼，随光照摇摆</li>
-<li>光柱效果：<code>#F5C842</code>金色光柱从灯室向外旋转，海面投射金色光道</li>
-<li>星空：密集星点（手绘白点+黄点混合），偶有流星划过</li>
-<li><strong>棋盘背景</strong>：深夜蓝渐变（<code>#0E1830</code>→<code>#1E2E50</code>），顶部有稀疏星点装饰（8-12颗，静态）</li>
-<li><strong>标志性时刻场景</strong>：全岛俯视，灯塔光柱缓慢旋转，将所有5个已修复区域依次照亮，全岛色彩在光柱扫过时饱和度瞬间提升再恢复</li>
-</ul>
-<hr />
-<h2 id="7">7. 动画风格规范</h2>
-<h3 id="71-ac">7.1 AC 式动画原则</h3>
-<p>Animal Crossing的动画特征：<strong>弹性、呼吸感、物理质感</strong>。所有动画都像是实际重量的物体在互动，而非数字UI元素在切换。</p>
-<p><strong>四个关键词</strong>：慢起快落（ease-out） / 轻微过冲（slight overshoot） / 呼吸感（breathing） / 弹性（spring）</p>
-<h3 id="72">7.2 角色动画</h3>
-<p><strong>Idle动画（所有NPC和Saki）</strong><br />
-- 上身/头部轻微上下浮动：振幅2-3px，周期2.5-3s，ease-in-out<br />
-- 眼睛每4-6秒眨一次：眼皮从上方降下，动画0.15s<br />
-- 偶发动作（每8-12秒随机触发一次）：<br />
-  - 左右轻摇头（旋转±5°）<br />
-  - 手臂小幅摆动（仅前臂，±8°）<br />
-  - 短暂"嗯？"抬头动作</p>
-<p><strong>Talk动画（对话中）</strong><br />
-- 嘴巴开合循环：0.3s周期，嘴形在"闭合"和"半张"之间切换<br />
-- 身体轻微前倾：向玩家方向倾斜3-5°，配合说话节奏<br />
-- 眼睛轻微眯起（表达亲密感）：比idle状态眯10%</p>
-<p><strong>React动画（特定情绪）</strong><br />
-- 开心：全身跳起（向上12px）再落下，弹性曲线，头顶出现星星/花瓣粒子（3-5个）<br />
-- 惊讶：头部向后仰，身体后退2px，眼睛变圆（瞬间放大），头顶出现"！"图案</p>
-<h3 id="73">7.3 图块动画</h3>
-<p><strong>图块消除</strong><br />
-- 帧1-3：图块scale从1.0→1.14（32ms）<br />
-- 帧4-7：图块scale从1.14→0，同时旋转±12°（随机方向）<br />
-- 同时散出：4-6个小粒子，形状为该图块的主题元素缩小版（贝壳块→小贝壳，花朵块→小花瓣），粒子运动方向随机，衰减消失（总时长0.3s）</p>
-<p><strong>连击气泡入场</strong><br />
-- Spring曲线：stiffness=280, damping=22<br />
-- 从触发图块上方12px位置出现，向上浮动24px<br />
-- 出现时scale 0→1.2→1.0（带轻微过冲）<br />
-- 悬停1.2s后向上淡出（0.4s, ease-in）</p>
-<p><strong>图块Highlighted（连接状态）</strong><br />
-- 进入高亮：scale 1.0→1.06，0.2s ease-out，同时内发光从0→目标亮度<br />
-- 退出高亮（连接取消）：scale 1.06→1.0，0.15s ease-in<br />
-- 保持高亮中：极慢速脉动，振幅±0.02 scale，周期1.5s</p>
-<p><strong>特殊块Idle呼吸</strong><br />
-- Glow提灯块：内光芒scale 0.85→1.15→0.85，周期2.0s，ease-in-out，颜色随呼吸从<code>#F5C842</code>→<code>#FFE580</code><br />
-- 彩虹鱼块：颜色条纹缓慢沿鱼身向尾方向流动，速度20px/s，不停歇<br />
-- 河豚块：轻微膨胀收缩，scale 0.95→1.05，周期2.8s，带轻微不规则性（非完美正弦）<br />
-- 金枪鱼块：身体轻微左右摆动（±3°），周期1.8s</p>
-<h3 id="74-ui">7.4 UI动画</h3>
-<p><strong>弹窗出现</strong><br />
-- 背景遮罩：透明度0→0.5，0.3s，ease-out<br />
-- 弹窗本体：scale 0.7→1.05→1.0，0.4s，spring曲线</p>
-<p><strong>弹窗关闭</strong><br />
-- 弹窗本体：scale 1.0→0.85，透明度1→0，0.25s，ease-in<br />
-- 背景遮罩：0.3s淡出</p>
-<p><strong>场景过渡（章节间）</strong><br />
-- 白色圆形从中央向外扩散（AC换图过渡经典手法），0.5s cover + 0.5s reveal<br />
-- 全屏时显示下一章节的主题图标（贝壳/竹叶/樱花等）居中展示0.3s</p>
-<p><strong>修复完成动画</strong><br />
-- 阶段切换：区域图片crossfade，0.8s ease-in-out<br />
-- 同步：白色光波从区域中心向外扩散（半径从0→全区域范围），透明度1→0，0.6s<br />
-- 第4阶段（满修复）：额外金色粒子雨，持续2.5s，粒子形状为该章节主题元素</p>
-<hr />
-<h2 id="8">8. 特殊视觉规则</h2>
-<h3 id="81-zen-mode">8.1 禅境模式（Zen Mode）</h3>
-<ul>
-<li>棋盘底图饱和度额外提升10%</li>
-<li>所有UI元素淡出至20%透明度（仅保留步数计数和棋盘本体）</li>
-<li>背景增加极慢速花瓣/树叶/泡泡粒子（速度0.3-0.8px/s，数量≤8个在屏幕内）</li>
-<li>图块消除时粒子效果更豪华（多出50%粒子量）</li>
-</ul>
-<h3 id="82">8.2 视觉降噪原则（认知负担控制清单）</h3>
-<ul>
-<li>棋盘区域内，同屏内运动元素不超过3个（排除消除动画）</li>
-<li>所有背景装饰透明度 ≤ 15%，不与图块色相重叠</li>
-<li>特殊块持续动画不超过2种同时在棋盘中出现（程序控制刷新频率）</li>
-<li>HUD元素总宽度 ≤ 棋盘宽度的20%（不侵占核心游戏区域）</li>
-<li>字体不超过2种字重混用于同一界面</li>
-</ul>
-<h3 id="83">8.3 刻意规避的视觉元素</h3>
-<table>
-<thead>
-<tr>
-<th>规避项</th>
-<th>原因</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>霓虹/赛博颜色（<code>#00FFFF</code>类）</td>
-<td>与暖色日式调性完全冲突</td>
-</tr>
-<tr>
-<td>金属高光（铬钢感渐变）</td>
-<td>破坏手绘有机质感</td>
-</tr>
-<tr>
-<td>像素艺术风格</td>
-<td>目标用户审美期待更现代</td>
-</tr>
-<tr>
-<td>过度粒子效果（屏幕碎片满天飞）</td>
-<td>增加认知负担，破坏"轻盈"感</td>
-</tr>
-<tr>
-<td>3D透视UI（拟物化极度写实）</td>
-<td>与扁平有机风格冲突</td>
-</tr>
-<tr>
-<td>纯黑色（<code>#000000</code>）使用</td>
-<td>任何地方均替换为深棕<code>#3A2810</code>或深蓝<code>#1E2E50</code></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="9">9. 参考风格坐标</h2>
-<p><strong>核心参考</strong>：Animal Crossing New Horizons（どうぶつの森 あつまれ）— 角色比例、UI材质、动画弹性、自然元素设计语言</p>
-<p><strong>辅助参考</strong>：<br />
-- Wytchwood（2021）— 手绘水彩质感的自然主题物件设计<br />
-- A Short Hike — 低饱和度手绘户外场景的构图方式<br />
-- 古风插画中的日式离岛美学（浮世绘简化线条 × 现代扁平化色块）</p>
-<p><strong>刻意与AC的差异化</strong>（避免直接复制）：<br />
-- 色调更偏向日式传统（增加鸟居红、藏青、竹绿）<br />
-- 游戏机制视觉（图块消除、连击反馈）用自然元素替代AC的家具系统元素<br />
-- 角色Saki有独立的日式少女身份，非AC圆头动物造型</p>
-<hr />
-<p><em>Art Direction v2.0 · Glow Island · 2026-05-08</em></p>
-    <div class="footer">Glow Island — Generated Documentation · 2026-05-08</div>
+
+    <!-- 导航选项卡 -->
+    <nav class="nav-tabs" aria-label="文档导航">
+      <a class="nav-tab active" href="#style-overview">整体风格</a>
+      <a class="nav-tab" href="#color-system">色彩系统</a>
+      <a class="nav-tab" href="#character-design">角色设计</a>
+      <a class="nav-tab" href="#tile-design">图块规范</a>
+      <a class="nav-tab" href="#ui-design">界面视觉</a>
+      <a class="nav-tab" href="#environment">环境设计</a>
+      <a class="nav-tab" href="#animation">动画规范</a>
+      <a class="nav-tab" href="#special-rules">特殊规则</a>
+      <a class="nav-tab" href="#checklist">审核清单</a>
+    </nav>
+
+    <!-- ─────────────────────────────────────────
+         第1节：整体风格定位
+         ───────────────────────────────────────── -->
+    <section id="style-overview">
+      <h1>一、整体风格定位</h1>
+
+      <h3>核心定位</h3>
+      <blockquote>
+        どうぶつの森式的温柔日式离岛：圆润、手绘、柔暖，随修复进度从褪色枯岛逐步"亮起"的治愈世界。<br>
+        「温暖从不宣告，只是发生。」
+      </blockquote>
+
+      <h3>视觉哲学：为什么选择 Animal Crossing 风格</h3>
+      <p>Animal Crossing 的视觉语言天然降低认知负担：每个物件轮廓简洁、颜色区分鲜明、信息密度低而情感密度高。玩家在直觉层面即可识别图块类型，无需"读"图块——只需"感受"它。这与 Glow Island 的连连看消除玩法高度契合：快速连接靠的是图形识别而非文字逻辑。</p>
+
+      <h3>三项核心原则</h3>
+      <ul>
+        <li><strong>圆润优先</strong>：所有形状使用大圆角（≥16px），避免尖角。角色头身比接近 1:1.5 的 Q版比例，四肢短而圆。</li>
+        <li><strong>手绘质感</strong>：轮廓线保留轻微不规则感（模拟铅笔起稿），主色块用单色平铺+顶部极淡高光，整体如水彩图鉴插画风格。</li>
+        <li><strong>暖色主导</strong>：整体色温偏暖（金色下午光），冷色仅用于水面和夜晚章节。饱和度目标 55–75%（非鲜艳卡通风）。</li>
+      </ul>
+
+      <h3>与 Animal Crossing 视觉共同点对照</h3>
+      <table>
+        <thead><tr><th>Animal Crossing 特征</th><th>Glow Island 对应体现</th></tr></thead>
+        <tbody>
+          <tr><td>柔和轮廓线，非纯黑描边</td><td>轮廓色 = 主色加深 30%（禁止使用 <code>#000000</code>）</td></tr>
+          <tr><td>Q版角色，大头圆身</td><td>山田律及 NPC 头身比 1:1.5，眼睛占脸 1/3</td></tr>
+          <tr><td>木质/竹制/自然材料 UI</td><td>木牌对话框，树叶按钮，扇贝形货币图标</td></tr>
+          <tr><td>每个岛民有独特剪影</td><td>每个 NPC 单色剪影可识别，无视分辨率</td></tr>
+          <tr><td>环境物件有轻微"呼吸"弹动</td><td>待机动画包含 0.5 Hz 轻微上下浮动</td></tr>
+          <tr><td>自然元素作为设计基元</td><td>图块主题取自岛上自然物：贝壳/花朵/竹叶/鱼类</td></tr>
+        </tbody>
+      </table>
+
+      <h3>与 Animal Crossing 的差异化（避免直接复制）</h3>
+      <ul>
+        <li>色调更偏向日式传统：增加鸟居红、藏青、竹绿，区别于 AC 鲜亮热带色调</li>
+        <li>主角 山田律 为写实比例更接近的人类青年，非 AC 圆头动物造型</li>
+        <li>游戏机制视觉（图块消除、连击反馈）以自然元素替代 AC 的家具系统元素</li>
+        <li>叙事情感浓度更高：角色设计服务于「若有若无情感线」与「治愈而不催促」的调性</li>
+      </ul>
+
+      <h3>参考风格坐标</h3>
+      <table>
+        <thead><tr><th>参考作品</th><th>借鉴维度</th><th>类型</th></tr></thead>
+        <tbody>
+          <tr><td>Animal Crossing: New Horizons（どうぶつの森 あつまれ）</td><td>角色比例、UI材质、动画弹性、自然元素设计语言</td><td><span class="tag ok">核心参考</span></td></tr>
+          <tr><td>Wytchwood（2021）</td><td>手绘水彩质感的自然主题物件设计</td><td><span class="tag">辅助参考</span></td></tr>
+          <tr><td>A Short Hike</td><td>低饱和度手绘户外场景的构图方式</td><td><span class="tag">辅助参考</span></td></tr>
+          <tr><td>《小森林》《夏日时光》《花束般的恋爱》</td><td>叙事调性：慢节奏生活质感、静谧温柔</td><td><span class="tag">调性参考</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr>
+
+    <!-- ─────────────────────────────────────────
+         第2节：色彩系统
+         ───────────────────────────────────────── -->
+    <section id="color-system">
+      <h1>二、色彩系统</h1>
+
+      <h2>2.1 全局色板</h2>
+      <table>
+        <thead><tr><th>色块</th><th>色彩角色</th><th>色名</th><th>十六进制</th><th>主要用途</th></tr></thead>
+        <tbody>
+          <tr><td><span class="swatch" style="background:#F7EDD8"></span></td><td>主背景沙</td><td>Island Sand</td><td><code>#F7EDD8</code></td><td>UI底板、对话框背景</td></tr>
+          <tr><td><span class="swatch" style="background:#E8866A"></span></td><td>暖珊瑚</td><td>Coral Warm</td><td><code>#E8866A</code></td><td>主按钮、强调色</td></tr>
+          <tr><td><span class="swatch" style="background:#F2A98A"></span></td><td>柔珊瑚淡</td><td>Coral Soft</td><td><code>#F2A98A</code></td><td>按钮高光、进度条填充</td></tr>
+          <tr><td><span class="swatch" style="background:#5BBFB5"></span></td><td>海水青</td><td>Ocean Teal</td><td><code>#5BBFB5</code></td><td>水系图块、第1章主色</td></tr>
+          <tr><td><span class="swatch" style="background:#7DBE77"></span></td><td>竹叶绿</td><td>Bamboo Green</td><td><code>#7DBE77</code></td><td>自然图块、第2章森林色</td></tr>
+          <tr><td><span class="swatch" style="background:#F0C4C4"></span></td><td>樱粉</td><td>Sakura Pink</td><td><code>#F0C4C4</code></td><td>第3章花圃色、点缀</td></tr>
+          <tr><td><span class="swatch" style="background:#C4955A"></span></td><td>木纹棕</td><td>Driftwood</td><td><code>#C4955A</code></td><td>木质UI、木板图块</td></tr>
+          <tr><td><span class="swatch" style="background:#E2C48A"></span></td><td>温暖沙棕</td><td>Warm Dune</td><td><code>#E2C48A</code></td><td>沙滩底图、绳结配色</td></tr>
+          <tr><td><span class="swatch" style="background:#F5C842"></span></td><td>金黄午光</td><td>Golden Hour</td><td><code>#F5C842</code></td><td>灯塔高光、发光块、星光、连击数字</td></tr>
+          <tr><td><span class="swatch" style="background:#EE8C55"></span></td><td>暮橙</td><td>Dusk Orange</td><td><code>#EE8C55</code></td><td>第1章夕阳、灯笼暖光</td></tr>
+          <tr><td><span class="swatch" style="background:#1E2E50"></span></td><td>深夜蓝</td><td>Night Indigo</td><td><code>#1E2E50</code></td><td>第6章夜空底色</td></tr>
+          <tr><td><span class="swatch" style="background:#F5F0E8"></span></td><td>月光白</td><td>Moonlight</td><td><code>#F5F0E8</code></td><td>文字底色、UI高光区</td></tr>
+          <tr><td><span class="swatch" style="background:#4A7D55"></span></td><td>苔藓深绿</td><td>Forest Moss</td><td><code>#4A7D55</code></td><td>第4章营地树干、阴影</td></tr>
+          <tr><td><span class="swatch" style="background:#C8402A"></span></td><td>鸟居红</td><td>Torii Red</td><td><code>#C8402A</code></td><td>第4章神社标志色（不在营地，参见说明）</td></tr>
+          <tr><td><span class="swatch" style="background:#8EA0AA"></span></td><td>岩石灰蓝</td><td>Stone Blue</td><td><code>#8EA0AA</code></td><td>第6章礁石、石板纹</td></tr>
+          <tr><td><span class="swatch" style="background:#D4A8C8"></span></td><td>薰衣草粉</td><td>Lavender Soft</td><td><code>#D4A8C8</code></td><td>第5章温泉薰蒸雾气色调</td></tr>
+        </tbody>
+      </table>
+
+      <h2>2.2 章节配色与情感对照</h2>
+      <p>颜色随岛屿修复进度而"苏醒"，饱和度从褪色草稿（s0）逐步提升至完整水彩（s4）。章节情感阶段与色调直接挂钩。</p>
+
+      <div class="chapter-card">
+        <div class="chapter-label">第1章 · 到来 · 逃离·着陆</div>
+        <h4>海边码头（海边の波止場）</h4>
+        <p>
+          <strong>情感基调：</strong>陌生感 · 第一次真正呼吸<br>
+          <strong>主色</strong> <span class="swatch" style="background:#5BBFB5"></span><code>#5BBFB5</code> Ocean Teal ·
+          <strong>辅色</strong> <span class="swatch" style="background:#F7EDD8"></span><code>#F7EDD8</code> Island Sand ·
+          <strong>强调色</strong> <span class="swatch" style="background:#EE8C55"></span><code>#EE8C55</code> Dusk Orange<br>
+          <strong>棋盘底图渐变：</strong><code>#A8DDD8 → #C8EEE8</code> · 饱和度阶段：s0 → s1（8–15% → 28–38%）
+        </p>
+      </div>
+
+      <div class="chapter-card">
+        <div class="chapter-label">第2章 · 扎根 · 温暖·归属萌芽</div>
+        <h4>中央小镇（中央の町）</h4>
+        <p>
+          <strong>情感基调：</strong>归属感初现 · 某件一直搁着的事突然不需要搁了<br>
+          <strong>主色</strong> <span class="swatch" style="background:#7DBE77"></span><code>#7DBE77</code> Bamboo Green ·
+          <strong>辅色</strong> <span class="swatch" style="background:#C4955A"></span><code>#C4955A</code> Driftwood ·
+          <strong>强调色</strong> <span class="swatch" style="background:#F5C842"></span><code>#F5C842</code> Golden Hour<br>
+          <strong>棋盘底图渐变：</strong><code>#C8E8C0 → #E0F0D8</code> · 饱和度阶段：s1 → s2（28–38% → 48–58%）
+        </p>
+      </div>
+
+      <div class="chapter-card">
+        <div class="chapter-label">第3章 · 感受 · 情绪解冻·第一次被看见</div>
+        <h4>花田山坡（花畑の丘）</h4>
+        <p>
+          <strong>情感基调：</strong>情绪松动 · 五年来第一次闻到有气味的下午<br>
+          <strong>主色</strong> <span class="swatch" style="background:#F0C4C4"></span><code>#F0C4C4</code> Sakura Pink ·
+          <strong>辅色</strong> <span class="swatch" style="background:#7DBE77"></span><code>#7DBE77</code> Bamboo Green ·
+          <strong>强调色</strong> <span class="swatch" style="background:#FFFFFF"></span><code>#FFFFFF</code> 花瓣高光白<br>
+          <strong>棋盘底图渐变：</strong><code>#F8E8E8 → #FFF5F5</code> · 饱和度阶段：s2 → s3（48–58% → 62–72%）
+        </p>
+      </div>
+
+      <div class="chapter-card">
+        <div class="chapter-label">第4章 · 栖息 · 安静·独处·第一次不需要做任何事</div>
+        <h4>森林露营地（森のキャンプ地）</h4>
+        <p>
+          <strong>情感基调：</strong>安静 · 独处 · 第一次不赶时间<br>
+          <strong>主色</strong> <span class="swatch" style="background:#4A7D55"></span><code>#4A7D55</code> Forest Moss ·
+          <strong>辅色</strong> <span class="swatch" style="background:#C4955A"></span><code>#C4955A</code> Driftwood ·
+          <strong>强调色</strong> <span class="swatch" style="background:#F5C842"></span><code>#F5C842</code> Golden Hour（篝火星点）<br>
+          <strong>棋盘底图渐变：</strong><code>#3D5040 → #5A7058</code> · 饱和度阶段：s2 → s3（48–58% → 62–72%）<br>
+          <strong>夜间变体：</strong>深林绿渐变加深，有极淡松针剪影（透明度 8%）
+        </p>
+      </div>
+
+      <div class="chapter-card">
+        <div class="chapter-label">第5章 · 接受 · 放下·和解·第一次被"还行"说得心里暖</div>
+        <h4>温泉山谷（温泉の谷）</h4>
+        <p>
+          <strong>情感基调：</strong>放松 · 和解 · 第一次钓到鱼<br>
+          <strong>主色</strong> <span class="swatch" style="background:#C4955A"></span><code>#C4955A</code> Driftwood ·
+          <strong>辅色</strong> <span class="swatch" style="background:#D4A8C8"></span><code>#D4A8C8</code> Lavender Soft（温泉雾气）·
+          <strong>强调色</strong> <span class="swatch" style="background:#F5C842"></span><code>#F5C842</code> Golden Hour<br>
+          <strong>棋盘底图渐变：</strong><code>#F0D8B0 → #E8C890</code> · 饱和度阶段：s3 → s4（62–72% → 75–88%）
+        </p>
+      </div>
+
+      <div class="chapter-card">
+        <div class="chapter-label">第6章 · 点亮 · 孤独中的温暖·觉醒</div>
+        <h4>夜晚灯塔（夜の灯台）</h4>
+        <p>
+          <strong>情感基调：</strong>孤独中的温暖 · 一切安静下来之后，光出现了<br>
+          <strong>主色</strong> <span class="swatch" style="background:#1E2E50"></span><code>#1E2E50</code> Night Indigo ·
+          <strong>辅色</strong> <span class="swatch" style="background:#8EA0AA"></span><code>#8EA0AA</code> Stone Blue ·
+          <strong>强调色</strong> <span class="swatch" style="background:#F5C842"></span><code>#F5C842</code> Golden Hour（灯塔光束）<br>
+          <strong>棋盘底图渐变：</strong><code>#0E1830 → #1E2E50</code> · 饱和度阶段：s4 满修复（75–88%），灯塔光柱扫过时瞬间提升至 100% 再恢复
+        </p>
+      </div>
+
+      <h2>2.3 修复进度饱和度叙事</h2>
+      <p>修复前的岛屿是一张褪色速写，修复后是完整的水彩画稿。饱和度随关卡进度线性提升，与岛屿视觉修复系统直接挂钩。</p>
+      <pre><code>修复阶段 s0（修复前）：HSL 饱和度 8–15%，亮度 42–48%   — 褪色枯岛，铅笔草稿感
+修复阶段 s1          ：饱和度 28–38%                    — 轮廓找回，淡彩涂色
+修复阶段 s2          ：饱和度 48–58%                    — 生活气息，色彩入稿
+修复阶段 s3          ：饱和度 62–72%                    — 角色回归，满生命力
+修复阶段 s4（满修复）：饱和度 75–88%                    — 完整水彩，光效全开</code></pre>
+
+      <h2>2.4 色彩对比度规则（降低认知负担）</h2>
+      <ul>
+        <li>相邻章节图块色相差 ≥ 30°（HSL色环）</li>
+        <li>同章节内图块之间明度差 ≥ 20%</li>
+        <li>任意两种图块在灰度模式下仍可区分（剪影原则）</li>
+        <li>禁止使用纯灰色图块（最低饱和度 ≥ 20%）</li>
+        <li>背景装饰透明度 ≤ 15%，不与图块色相重叠</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <!-- ─────────────────────────────────────────
+         第3节：角色设计规范
+         ───────────────────────────────────────── -->
+    <section id="character-design">
+      <h1>三、角色设计规范</h1>
+
+      <h2>3.1 主角 山田律（やまだ りつ / Yamada Ritsu）</h2>
+      <p>山田律 是玩家操控角色，出现在关卡过渡动画、剧情演出和全岛地图界面中。五年职场高压的上班族，来到 輝島（Kagayaki-jima）后逐渐解冻。</p>
+
+      <h4>体型与比例</h4>
+      <ul>
+        <li>头身比：1:1.5（Q版偏写实过渡，比 AC 村民略高挑，保留少量现实感）</li>
+        <li>头部：接近正圆形，直径占全身高 38%；耳朵小圆形，略低于头顶</li>
+        <li>眼睛：水滴形，黑色瞳仁占眼面积 65%，静止时略带内敛的疲惫感（与 NPC 的开朗眼神做区分）</li>
+        <li>鼻嘴：鼻子仅一个小圆点，嘴巴用简短弧线；AC 式"省略鼻梁"原则</li>
+        <li>身体：圆筒形，无明显腰线；手臂短而圆；腿脚：短腿，脚部略大于手</li>
+      </ul>
+
+      <h4>服装（夏日离岛版）</h4>
+      <ul>
+        <li>上衣：宽松圆领短袖，主色 <code>#E0E8D8</code> 浅灰绿（日常感，非鲜艳）</li>
+        <li>外搭：浅米色开衫，随剧情进度增减（Ch4 营地时脱下，放在石头上）</li>
+        <li>短裤：深灰蓝 <code>#3A4A60</code>，直筒款</li>
+        <li>帽子：浅灰软沿帽（非草帽）——区别于 AC 草帽形象</li>
+        <li>鞋：简单圆头休闲鞋，深棕 <code>#5A3820</code></li>
+        <li>标志性道具：随身带一本略皱的笔记本（用于写日记），封面灰绿色</li>
+      </ul>
+
+      <h4>表情规范（三套）</h4>
+      <table>
+        <thead><tr><th>表情名称</th><th>适用场景</th><th>视觉描述</th></tr></thead>
+        <tbody>
+          <tr><td>默认（待机）</td><td>关卡间隙、地图浏览</td><td>嘴角平直略带轻松，眼睛半开，肩膀放松（与初始紧绷形成对比）</td></tr>
+          <tr><td>开心（关卡完成）</td><td>通关结算、剧情触发</td><td>眼角上弯，嘴巴 Ω 形微开，略带意外感——不是狂喜，是"哦，还不错"的惊喜</td></tr>
+          <tr><td>思考（关卡提示）</td><td>步数不足时触发</td><td>一只眼眯起，嘴角歪向一侧，食指轻点嘴角，视线偏向棋盘</td></tr>
+        </tbody>
+      </table>
+
+      <h2>3.2 NPC 通用设计原则</h2>
+      <p>所有 NPC 遵循"一眼识别"原则：黑色剪影无需颜色即可区分；每位 NPC 有独一无二的标志性道具/配件。</p>
+
+      <h4>剪影规则</h4>
+      <ul>
+        <li>每个 NPC 有 1 个标志性道具/配件，使其黑色剪影与其他 NPC 完全不同</li>
+        <li>体型有明显差异：高/矮/圆/细，禁止两个 NPC 体型相近</li>
+      </ul>
+
+      <h4>颜色规则</h4>
+      <ul>
+        <li>每个 NPC 有 1 个"代表色"占服装主色，与其章节主色协调但不完全相同</li>
+        <li>皮肤色限定 4 个色值：<code>#F5D4B0</code>（浅）/ <code>#E8B882</code>（中）/ <code>#C8935A</code>（深）/ <code>#9A6840</code>（深褐）</li>
+      </ul>
+
+      <h4>面部规则</h4>
+      <ul>
+        <li>眼睛统一使用水滴形（同山田律）</li>
+        <li>允许添加：腮红（2个小圆点，主色降低明度 40%）</li>
+        <li>允许添加：花纹/胡子/眼镜作为个性化标志</li>
+      </ul>
+
+      <h2>3.3 各章节 NPC 视觉细节</h2>
+
+      <div class="npc-card">
+        <div class="npc-label">第1章 · 海边码头 · Ch1向导</div>
+        <h4>磯部健三（いそべ けんぞう / Isobe Kenzo）— 老渔夫</h4>
+        <ul>
+          <li><strong>体型：</strong>中等身高，圆肩，手臂略粗（常年拉网），后背微微弓起</li>
+          <li><strong>代表色：</strong><span class="swatch" style="background:#4A6D9A"></span><code>#4A6D9A</code> 靛蓝布衣（做旧感，不鲜亮）</li>
+          <li><strong>标志性配件：</strong>宽沿草帽（帽沿比一般大且有破损线条）+ 右手常拿鱼竿或打捞物</li>
+          <li><strong>皮肤：</strong><code>#9A6840</code> 深褐（常年日晒）</li>
+          <li><strong>腮红：</strong>无（沉稳气质）</li>
+          <li><strong>设计要点：</strong>Ch1 多数时候背对玩家看海，正面亮相仅在标志性情感时刻。动画中记录册道具可见于腰间。</li>
+        </ul>
+      </div>
+
+      <div class="npc-card">
+        <div class="npc-label">第2章 · 中央小镇 · Ch2</div>
+        <h4>桐島梅子（きりしま うめこ / Kirishima Umeko）— 陶艺工匠</h4>
+        <ul>
+          <li><strong>体型：</strong>矮小圆润，头略大，圆脸，手掌略宽（揉陶土的质感）</li>
+          <li><strong>代表色：</strong><span class="swatch" style="background:#7DBE77"></span><code>#7DBE77</code> 草绿围裙 + <span class="swatch" style="background:#F0C4C4"></span><code>#F0C4C4</code> 浅粉底裙（碎花细印）</li>
+          <li><strong>标志性配件：</strong>围裙上常有陶土痕迹（不规则灰棕点状）；双手偶有淡灰泥痕</li>
+          <li><strong>皮肤：</strong><code>#F5D4B0</code> 浅</li>
+          <li><strong>腮红：</strong>圆形深粉腮红，明显（眼力精准却面容亲切）</li>
+          <li><strong>设计要点：</strong>工作室最显眼处始终放着律的脸碗（浮雕，右眉小疤）。蹲地时身体变得更圆，膝盖消失仅剩圆形轮廓。</li>
+        </ul>
+      </div>
+
+      <div class="npc-card">
+        <div class="npc-label">第3章 · 花田山坡 · Ch3</div>
+        <h4>海野夏帆（うみの なほ / Umino Naho）— 自然向导</h4>
+        <ul>
+          <li><strong>体型：</strong>偏高细，轻盈感，常蹲下观察植物（蹲姿是标志性姿态）</li>
+          <li><strong>代表色：</strong><span class="swatch" style="background:#3D6645"></span><code>#3D6645</code> 深绿探险上衣 + 米色宽松长裤</li>
+          <li><strong>标志性配件：</strong>渔夫帽帽沿低压（多数时候遮住眼睛，仅露嘴巴与下巴），腰间挂着小植物标牌</li>
+          <li><strong>皮肤：</strong><code>#E8B882</code> 中</li>
+          <li><strong>腮红：</strong>无，但耳尖偶有淡粉（害羞说出真心话时）</li>
+          <li><strong>设计要点：</strong>第一次与律说话：「那棵松树，你经过的时候它在颤抖，是因为今天风很大。」帽沿从不主动抬起——这是她说话需要走弯路的视觉隐喻。</li>
+        </ul>
+      </div>
+
+      <div class="npc-card">
+        <div class="npc-label">第4章 · 森林露营地 · 独处章节（无主 NPC，但ひなた痕迹在场）</div>
+        <h4>本章角色缺席说明</h4>
+        <p>第4章 山田律 独处，无主要 NPC 出场。场景中保留 ひなた 留下的符号木板（贴于山路岔路口）、野花标记，以及远处冬子厨房的灯光。议长（橘猫）在营地边绕行出现。</p>
+        <ul>
+          <li><strong>ひなた 留下物的视觉：</strong>小木板，白桦色，表面有手写符号（自创符号体系，旁人看不懂），下压一束半干野花，花色为 <code>#F0C4C4</code> 浅樱粉</li>
+          <li><strong>议长（橘猫）出场：</strong>营地旁安静坐着，向左离开。橘猫体型圆润，底色 <code>#E8A050</code>，额头白色斑纹，尾尖白色。</li>
+        </ul>
+      </div>
+
+      <div class="npc-card">
+        <div class="npc-label">第5章 · 温泉山谷 · 核心章节（恋爱线最深）</div>
+        <h4>丸山ひなた（まるやま ひなた / Maruyama Hinata）— 灯台守孙女</h4>
+        <ul>
+          <li><strong>体型：</strong>接近律的比例，略矮半头，动作习惯轻柔——放东西时总是先确认不会打扰到什么，再轻轻放下</li>
+          <li><strong>代表色：</strong><span class="swatch" style="background:#F0C4C4"></span><code>#F0C4C4</code> 浅樱粉圆领短袖 + 浅米白裙 + 珊瑚色帽带草帽</li>
+          <li><strong>标志性配件：</strong>随身带一本边角起毛的手账（符号体系记录本），封面深蓝布面，总夹在手肘或腋下</li>
+          <li><strong>皮肤：</strong><code>#F5D4B0</code> 浅</li>
+          <li><strong>腮红：</strong>淡圆粉腮红，低调（不过分可爱化）</li>
+          <li><strong>气味视觉化：</strong>律认出 ひなた 靠气味（海水+碳粉墨水）。过场动画可用极淡的蓝灰色墨水粒子散在她指尖周围，仅在亲密感提升的演出时刻出现，透明度 20%，不过分显眼。</li>
+          <li><strong>设计要点：</strong>Ch5 标志性时刻 —— 律第一次钓到鱼，ひなた 侧过脸说「还行」，两字分量因前面对话而完全不同。表情：嘴角极轻上扬，眼神平和略带内容，非大笑。</li>
+        </ul>
+      </div>
+
+      <div class="npc-card">
+        <div class="npc-label">第6章 · 夜晚灯塔 · Ch6</div>
+        <h4>丸山冬子（まるやま ふゆこ / Maruyama Fuyuko）— 灯台守遗孀</h4>
+        <ul>
+          <li><strong>体型：</strong>偏高，微弯腰（习惯性的等待姿态），步伐缓慢而坚定</li>
+          <li><strong>代表色：</strong><span class="swatch" style="background:#2A4060"></span><code>#2A4060</code> 藏青外罩衫 + 浅灰内搭，腰带为 <code>#C4955A</code> 棕色布带</li>
+          <li><strong>标志性配件：</strong>左手偶有一个小木箱（存放别人暂时拿不动的东西）；灯塔旁有一把折叠椅是她常坐的地方</li>
+          <li><strong>皮肤：</strong><code>#E8B882</code> 中（岁月感，但非老态）</li>
+          <li><strong>腮红：</strong>无，眼角有轻微细纹（设计允许）</li>
+          <li><strong>设计要点：</strong>点灯仪式时，冬子在塔底，背对观看方向，望着灯塔说出「渉さん、見えてますよ。」这个构图本身是情感高峰——无需正面表情，背影剪影即足够。</li>
+        </ul>
+      </div>
+
+      <div class="npc-card">
+        <div class="npc-label">贯穿全章 · 全岛</div>
+        <h4>议长（橘猫 / Gichou）— 岛上最老的居民</h4>
+        <ul>
+          <li><strong>体型：</strong>圆润肥短的橘猫，四肢极短，尾巴微翘，坐下时是一个近乎正圆的形态</li>
+          <li><strong>配色：</strong>主体橘色 <code>#E8A050</code>，额头白色宽纹，腹部白，尾尖白，眼睛琥珀黄 <code>#D4900A</code></li>
+          <li><strong>标志性姿态：</strong>坐着不动；离开时永远向左走。健三的记录册专门有一栏记录"裁决方向"。</li>
+          <li><strong>设计要点：</strong>议长在旁边，总觉得事情没那么难。他的存在本身是一种最不占地方的陪伴。每晚陪冬子在灯台旁坐着，是唯一固定日程。律到岛第三天，议长坐在律脚边 12 秒后向左离开——这是岛对律最轻的接纳仪式。</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ─────────────────────────────────────────
+         第4节：图块视觉设计规范
+         ───────────────────────────────────────── -->
+    <section id="tile-design">
+      <h1>四、图块视觉设计规范</h1>
+
+      <h2>4.1 图块基础规格</h2>
+      <table>
+        <thead><tr><th>规格项目</th><th>数值</th></tr></thead>
+        <tbody>
+          <tr><td>画布尺寸 @2x</td><td>128 × 128 px</td></tr>
+          <tr><td>实际绘制区 @2x</td><td>112 × 112 px（四周各留 8px 透明出血）</td></tr>
+          <tr><td>基础形状</td><td>圆角矩形（圆角半径 24px），自然形态图块使用有机轮廓</td></tr>
+          <tr><td>轮廓线宽度</td><td>2px，颜色 = 主色加深 32%，禁止纯黑</td></tr>
+          <tr><td>底部阴影</td><td><code>0 4px 0 rgba(0,0,0,0.10)</code>，烘焙进图层</td></tr>
+          <tr><td>纸纹叠加</td><td>6% 不透明度轻纸纹底，全部图块统一（模拟手绘纸感）</td></tr>
+          <tr><td>最小识别尺寸</td><td>缩至 32×32px 时，主题图案轮廓仍清晰可辨</td></tr>
+        </tbody>
+      </table>
+
+      <h2>4.2 图块设计原则</h2>
+      <ul>
+        <li><strong>有机形状优先：</strong>图块形状来源于自然物体（贝壳/叶片/花朵/鱼形），非几何图形。即使使用圆角矩形作底，也要在表面绘制清晰的自然主题插图。</li>
+        <li><strong>剪影识别度：</strong>在 32×32px 大小下，每个图块的主题插图仍需可辨认。</li>
+        <li><strong>色彩饱和度分布：</strong>图块主色饱和度 60–75%，高光区饱和度降低 15%，阴影区饱和度提升 10% 同时明度降低 25%。</li>
+        <li><strong>禁止跨图块复用色相（同章节内）：</strong>相邻图块色相差 ≥ 30°。</li>
+      </ul>
+
+      <h2>4.3 图块状态视觉规范</h2>
+      <table>
+        <thead><tr><th>状态</th><th>视觉效果</th><th>技术方案</th></tr></thead>
+        <tbody>
+          <tr><td>默认（Normal）</td><td>标准色，无特效，底部烘焙阴影</td><td>静态 PNG</td></tr>
+          <tr><td>高亮（Highlighted）</td><td>白色内发光 <code>rgba(255,255,255,0.4)</code>，scale(1.06)，轮廓线变亮</td><td>Runtime Shader 或独立帧</td></tr>
+          <tr><td>消除（Disappearing）</td><td>先 scale(1.12) 再缩至 0，旋转 ±12°，散出 4–6 个主题微型粒子</td><td>Spine 序列帧，12帧@30fps</td></tr>
+          <tr><td>特殊块待机（Special Idle）</td><td>持续呼吸发光（2.0–2.8s 周期），光晕颜色对应类型</td><td>Spine 循环动画</td></tr>
+        </tbody>
+      </table>
+
+      <h2>4.4 五种战术特殊图块视觉定义</h2>
+      <table>
+        <thead><tr><th>图块类型</th><th>自然主题（游戏内名）</th><th>视觉主色</th><th>特效描述</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>光波块（Wave）</td>
+            <td><strong>闪光金枪鱼</strong> — 流线形，表面金属光泽</td>
+            <td><span class="swatch" style="background:#7ECDE8"></span><code>#7ECDE8</code> 银蓝</td>
+            <td>激活时鱼形残影横扫全行/列，电光为浅蓝而非强白；消除时蓝色线状粒子沿路径扩散</td>
+          </tr>
+          <tr>
+            <td>光链块（Chain）</td>
+            <td><strong>彩虹鱼（热带鱼）</strong> — 色彩条纹清晰</td>
+            <td>七彩渐变</td>
+            <td>表面色彩条纹缓慢流动（非闪烁）；消除时彩色鱼鳞粒子扩散；多段连锁时绿色光链轨迹 <code>#4A7D55</code></td>
+          </tr>
+          <tr>
+            <td>穿透块（Pierce）</td>
+            <td><strong>河豚</strong> — 鼓胀圆球形状，眼睛瞪大</td>
+            <td><span class="swatch" style="background:#F5A840"></span><code>#F5A840</code> 橙黄</td>
+            <td>激活时河豚夸张膨胀再"啵"一声爆开，散出气泡粒子（非火焰，保持治愈感）</td>
+          </tr>
+          <tr>
+            <td>置换块（Swap）</td>
+            <td><strong>萤火虫提灯</strong> — 竹制提灯造型，内部温暖光芒</td>
+            <td><span class="swatch" style="background:#F5C842"></span><code>#F5C842</code> 金色</td>
+            <td>提灯内光芒呼吸式脉冲（2s 周期）；连接时金色光粒子沿路径如萤火虫飞行；强调治愈不强调爆炸</td>
+          </tr>
+          <tr>
+            <td>连锁块（Cascade）</td>
+            <td><strong>藤蔓/苔藓扩散图块（障碍）</strong> — 用于 Ch6 扩散障碍</td>
+            <td><span class="swatch" style="background:#4A7D55"></span><code>#4A7D55</code> 苔藓绿</td>
+            <td>障碍蔓延时绿色藤蔓动画缓慢扩展至相邻格；消除时藤蔓收缩碎裂，散出叶片碎粒子</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>4.5 障碍图块视觉</h2>
+      <table>
+        <thead><tr><th>章节解锁</th><th>障碍类型</th><th>视觉描述</th></tr></thead>
+        <tbody>
+          <tr><td>第2章</td><td>冰封块（1–3层）</td><td>蓝白半透明冰晶覆盖，1层轻薄；3层完全遮盖，冰面有裂纹；消融时冰晶碎裂粒子下落</td></tr>
+          <tr><td>第3章</td><td>锁链块</td><td>圆形锁扣+铁链缠绕，深棕铁色 <code>#4A3020</code>；消除时锁链断开飞散</td></tr>
+          <tr><td>第3章</td><td>传送门（成对出现）</td><td>漩涡形圆圈，对应色渐变旋转；图块进入时有涟漪水波扩散动画</td></tr>
+          <tr><td>第4章</td><td>单路径约束</td><td>路径以浅色虚线标注，不遮挡图块主体；约束解除时虚线淡出</td></tr>
+          <tr><td>第5章</td><td>重力下落/方块滑落</td><td>图块落下时有轻微拉伸动画（squash and stretch）；落点有小尘土粒子</td></tr>
+          <tr><td>第6章</td><td>扩散障碍（藤蔓/苔藓）</td><td>见特殊图块"连锁块"视觉定义</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr>
+
+    <!-- ─────────────────────────────────────────
+         第5节：界面视觉语言
+         ───────────────────────────────────────── -->
+    <section id="ui-design">
+      <h1>五、界面视觉语言</h1>
+
+      <h2>5.1 整体 UI 风格定义</h2>
+      <p><strong>木牌系 UI（Wood Sign UI）</strong>：所有 UI 元素的材质参考来自 AC 中的木质告示牌、竹简、晒干的贝壳和天然石板。扁平化+软阴影，禁止拟物化极度写实。</p>
+
+      <h4>禁止使用的视觉元素</h4>
+      <ul>
+        <li>金属光泽（无铬钢、无铝合金边框）</li>
+        <li>硬边几何（无直角矩形，无菱形）</li>
+        <li>霓虹色（无荧光绿、电蓝、紫外色）</li>
+        <li>阴影过强（所有 UI 阴影透明度 ≤ 15%）</li>
+        <li>纯黑色 <code>#000000</code>（任何地方均替换为深棕 <code>#3A2810</code> 或深蓝 <code>#1E2E50</code>）</li>
+      </ul>
+
+      <h2>5.2 对话框与弹窗</h2>
+      <ul>
+        <li><strong>形状：</strong>圆角矩形，圆角半径 20px</li>
+        <li><strong>背景材质：</strong>米色木纹底 <code>#E8D8B4</code> + 顶部轻量手绘木纹线条（3–5条横向波浪纹，透明度 15%）</li>
+        <li><strong>边框：</strong>4px 深棕木框线 <code>#8B6030</code>，外侧有 1px 米白高光 <code>#F7EDD8</code></li>
+        <li><strong>顶部装饰：</strong>对话框顶部中央有一枚竹钉图案（圆形 <code>#7A5030</code>，直径 16px）</li>
+        <li><strong>正文字体：</strong>思源圆体 Regular，<code>#3A2810</code> 深棕，行高 1.6</li>
+        <li><strong>NPC 对话气泡（情感台词）：</strong>圆角气泡底部有小三角尾巴指向 NPC，背景轻木纹，字体同上</li>
+      </ul>
+
+      <h2>5.3 按钮规范</h2>
+      <h4>主要按钮（确认/开始）</h4>
+      <ul>
+        <li>形状：宽度自适应，高度 48px，圆角 24px（药丸形）</li>
+        <li>背景：珊瑚橙渐变（顶 <code>#F0997A</code> → 底 <code>#E8866A</code>）</li>
+        <li>文字：月光白 <code>#F5F0E8</code>，思源圆体 Semi-Bold，16px</li>
+        <li>边框：2px 深珊瑚 <code>#B85A40</code>，底部有 3px 深珊瑚色偏移（AC式"按钮有重量感"）</li>
+        <li>点击态：整体下移 2px，颜色整体加深 8%</li>
+      </ul>
+      <h4>次要按钮（取消/关闭）</h4>
+      <ul>
+        <li>背景：米色木牌色 <code>#E8D8B4</code></li>
+        <li>文字：深棕 <code>#5A3820</code></li>
+        <li>边框：2px <code>#B89060</code></li>
+      </ul>
+      <h4>图标按钮（道具类）</h4>
+      <ul>
+        <li>形状：56×56px 圆形</li>
+        <li>背景：米白 <code>#F7EDD8</code> 圆形底 + 主题色图标</li>
+        <li>边框：3px 棕色木纹圈 <code>#C4955A</code></li>
+        <li>悬停/高亮：圆形变为主题色底色，图标变为白色</li>
+      </ul>
+
+      <h2>5.4 HUD 元素规范</h2>
+      <h4>步数计数器</h4>
+      <ul>
+        <li>形状：叶形或扇贝形容器（非矩形）</li>
+        <li>背景：深珊瑚 <code>#C85A40</code>（低步数时变红 <code>#C82020</code>）</li>
+        <li>数字：月光白，Bold，28px，思源圆体</li>
+        <li>位置：屏幕右上角</li>
+      </ul>
+      <h4>进度条</h4>
+      <ul>
+        <li>形状：竹节形进度条（分段样式，每段为一节竹），圆角 5px</li>
+        <li>填充色：竹叶绿 <code>#7DBE77</code></li>
+        <li>底色：深棕木 <code>#8B6030</code></li>
+        <li>分隔线：2px 暗棕 <code>#5A3820</code></li>
+      </ul>
+      <h4>连击气泡（Combo Popup）</h4>
+      <ul>
+        <li>字体：思源圆体 Bold，连击数字 32–48px（随连击层级增大），颜色 <code>#F5C842</code> 金色</li>
+        <li>气泡形状：对话气泡轮廓，圆角矩形，底部有小三角尖（指向发生连击的区域）</li>
+        <li>背景：深珊瑚 <code>#C85A40</code>，边框月光白 <code>#F5F0E8</code> 3px</li>
+        <li>入场动画：从下往上弹出，spring 曲线，轻微 overshooting（scale 1.2 → 1.0）</li>
+      </ul>
+
+      <h2>5.5 货币图标视觉</h2>
+      <h4>沙滩币（唯一货币）</h4>
+      <ul>
+        <li>形状：圆形，直径 32px</li>
+        <li>图案：扇贝正视图，放射状细线，主色 <code>#F5C842</code> 金黄</li>
+        <li>边框：2px 深金 <code>#B8902A</code></li>
+        <li>质感：表面有轻微贝壳光泽渐变</li>
+        <li><strong>设计说明：</strong>Glow Island 单货币设计，无硬货币。唯一付费点是步数续关。图标简洁暖调，非奢华宝石感。</li>
+      </ul>
+
+      <h2>5.6 字体规范</h2>
+      <table>
+        <thead><tr><th>层级</th><th>字体</th><th>字重/大小</th><th>颜色</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>标题</td><td>思源圆体（Source Han Rounded CN）</td><td>Bold · 22px</td><td><code>#3A2810</code></td><td>关卡名、章节标题</td></tr>
+          <tr><td>正文</td><td>思源圆体</td><td>Regular · 15px</td><td><code>#3A2810</code> · 行高 1.65</td><td>NPC 对话、说明文字</td></tr>
+          <tr><td>UI 辅助</td><td>思源圆体</td><td>Light · 12px</td><td><code>#7A6040</code></td><td>标签、提示</td></tr>
+          <tr><td>按钮文字</td><td>思源圆体</td><td>Semi-Bold · 16px</td><td><code>#F5F0E8</code></td><td>主按钮文字</td></tr>
+          <tr><td>连击数字</td><td>思源圆体</td><td>Bold · 32–48px</td><td><code>#F5C842</code></td><td>随连击层级增大</td></tr>
+          <tr><td>步数/分数</td><td>思源圆体</td><td>Semi-Bold · 20px</td><td>月光白</td><td>HUD计数</td></tr>
+          <tr><td>英文 fallback</td><td>SF Pro Rounded / Nunito</td><td>—</td><td>—</td><td>仅用于无中文替代的场景</td></tr>
+        </tbody>
+      </table>
+
+      <h2>5.7 图标风格</h2>
+      <ul>
+        <li>风格：轻手绘线面结合，有轻微线条不规则感（模拟铅笔起稿）</li>
+        <li><span class="tag warn">禁止</span> 锐利的几何矢量图标（无 Material Icon 风格）</li>
+        <li><span class="tag ok">推荐</span> 图标内有一个主题自然元素（树叶/贝壳/花朵）作为设计基元</li>
+        <li>色彩：图标使用章节主色，单色原则（不超过 2 色）</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <!-- ─────────────────────────────────────────
+         第6节：环境设计（6章区域）
+         ───────────────────────────────────────── -->
+    <section id="environment">
+      <h1>六、环境设计（六章区域）</h1>
+
+      <h2>6.1 整体环境风格原则</h2>
+      <ul>
+        <li><strong>棋盘背景：</strong>可透视的渐变底图，透明度 20–35%，不干扰图块识别</li>
+        <li><strong>区域场景图：</strong>45° 俯视，手绘水彩风格（全岛地图视角）</li>
+        <li><strong>过渡动画背景：</strong>章节开始/结束时的全屏场景插画</li>
+        <li><strong>色彩引导情感：</strong>饱和度随修复阶段上升，视觉苏醒先于对话</li>
+        <li><strong>行动优于台词：</strong>健三递茶；梅子把碗放在最显眼处；冬子不敲门放下食物就走</li>
+        <li><strong>灯塔作为情感锚：</strong>每次修复，灯塔窗里的光多一点点</li>
+      </ul>
+
+      <h2>6.2 各章节区域详细设定</h2>
+
+      <h3>第1章 — 海边码头（海边の波止場）</h3>
+      <p><strong>情绪基调：</strong>悠闲的南海小渔村午后，初抵褪色之岛</p>
+      <ul>
+        <li><strong>修复前：</strong>褪色木桩码头，绳索松垂，木板灰朽，海面无反射，阴天；行李箱卡在木栈道缝里的隐喻</li>
+        <li><strong>修复后关键元素：</strong>弯曲木码头 <code>#C4955A</code> 带轻微木纹；两侧竹制灯笼（圆形，<code>#EE8C55</code>橙光）；停靠小木船（船头挂贝壳风铃）；告示板上手写便条「欢迎来到輝島，请随便走走」无署名</li>
+        <li><strong>棋盘背景：</strong>浅蓝绿渐变 <code>#A8DDD8 → #C8EEE8</code>，顶部有海浪简略线条装饰（低透明度）</li>
+        <li><strong>标志性时刻场景：</strong>夕阳版，天空橙红渐变 <code>#F4A261 → #EE6A30</code>，海面金色光道，健三在远处码头系绳（背对观看者）</li>
+      </ul>
+
+      <h3>第2章 — 中央小镇（中央の町）</h3>
+      <p><strong>情绪基调：</strong>翠竹掩映的宁静村庄，生活气息回归</p>
+      <ul>
+        <li><strong>修复前：</strong>石板路泥泞，屋檐破损，喷泉干涸，店铺门牌字迹模糊</li>
+        <li><strong>修复后关键元素：</strong>石板路清扫（梅子工作室的门能完全打开）；喷泉修复（第一次出水时水柱歪了一下，然后直了）；店铺门牌修缮（字迹还是老式的，没有换成新的）；小镇中央座椅修缮（健三第一个来坐）</li>
+        <li><strong>棋盘背景：</strong>竹叶绿渐变 <code>#C8E8C0 → #E0F0D8</code>，背景有竹节轮廓装饰（透明度 10%）</li>
+        <li><strong>标志性时刻场景：</strong>喷泉出水，一片落叶绕水柱旋一圈飘走，律在旁边站了很久</li>
+      </ul>
+
+      <h3>第3章 — 花田山坡（花畑の丘）</h3>
+      <p><strong>情绪基调：</strong>花瓣飘落的温柔坡田清晨</p>
+      <ul>
+        <li><strong>修复前：</strong>野花枯黄，花田小径荒芜，瞭望台破损，山坡石阶断裂，薄雾灰调</li>
+        <li><strong>修复后关键元素：</strong>花田小径清理（夏帆说路好走多了）；瞭望台修复（可以看见灯塔了，虽然灯还是灭的）；野花圃重整（夏帆认真告诉每株花「工程结束了，谢谢配合」）；山坡石阶修缮（ひなた带律走完每一阶）</li>
+        <li><strong>棋盘背景：</strong>樱粉渐变 <code>#F8E8E8 → #FFF5F5</code>，边缘散落花瓣剪影（5–7个随机位置，低透明度）</li>
+        <li><strong>标志性时刻场景：</strong>夏帆递来半开的花束，律闻了一下，眼睛酸了——山风吹过，玻璃感裂开了一条缝</li>
+      </ul>
+
+      <h3>第4章 — 森林露营地（森のキャンプ地）</h3>
+      <p><strong>情绪基调：</strong>树荫遮蔽的静谧营地，第一个不赶时间的夜晚</p>
+      <ul>
+        <li><strong>修复前：</strong>帐篷架生锈倒塌，篝火台积灰，营地小径木牌褪色</li>
+        <li><strong>修复后关键元素：</strong>营地帐篷架修复（第一晚律自己住进去了）；篝火台清理（当晚就生了火）；小径木牌修缮（夏帆的字迹，路名都是花的名字）；营地瞭望点（可以看见灯塔和冬子家的灯）</li>
+        <li><strong>棋盘背景：</strong>深林绿渐变 <code>#3D5040 → #5A7058</code>，有极淡松针剪影（透明度 8%）</li>
+        <li><strong>标志性时刻场景：</strong>篝火夜，律仰头看星，把帽子放在膝盖上，什么事也没做。远处冬子家厨房有灯光。议长在营地边绕了一圈，向左走了。</li>
+      </ul>
+
+      <h3>第5章 — 温泉山谷（温泉の谷）</h3>
+      <p><strong>情绪基调：</strong>热气从石缝漫上来的温柔午后</p>
+      <ul>
+        <li><strong>修复前：</strong>温泉石道杂草丛生，木亭腐朽，护栏断裂，山谷入口牌坊倒斜</li>
+        <li><strong>修复后关键元素：</strong>温泉石道修复（热气又能顺着石缝漫出来了）；木亭修缮（ひなた说「渉以前在这里教我钓鱼的」）；护栏修复（健三来看了看，说「挺结实的，好」）；山谷入口牌坊（门牌是冬子用渉的字体描的）</li>
+        <li><strong>棋盘背景：</strong>暖金橙渐变 <code>#F0D8B0 → #E8C890</code>，有水面波纹纹理（低透明度），温泉雾气薄薄的薰衣草粉色调叠加</li>
+        <li><strong>标志性时刻场景：</strong>钓鱼台旁，热气漫上来，渉的第三册日记摊在两人中间，ひなた说「还行」，两字分量因前面的对话完全不同</li>
+      </ul>
+
+      <h3>第6章 — 夜晚灯塔（夜の灯台）</h3>
+      <p><strong>情绪基调：</strong>深夜孤岛，一束光切开黑暗</p>
+      <ul>
+        <li><strong>修复前：</strong>灯塔外壁斑驳，灯室玻璃蒙尘，铁锈楼梯扭曲，礁石上寸草不生，漆黑</li>
+        <li><strong>修复后关键元素：</strong>灯塔外壁修缮（白色重新出来了，是老白，不是新刷的那种白）；灯室清洁（ひなた一个人清的）；灯具修复（健三找来的零件）；点灯仪式（律把点火装置递给ひなた，她握住，停了一下，点亮了）</li>
+        <li><strong>棋盘背景：</strong>深夜蓝渐变 <code>#0E1830 → #1E2E50</code>，顶部有稀疏星点装饰（8–12颗，静态）</li>
+        <li><strong>标志性时刻场景：</strong>全岛俯视，灯塔光柱 <code>#F5C842</code> 缓慢旋转，将所有已修复区域依次照亮，全岛色彩在光柱扫过时饱和度瞬间提升再恢复。冬子在塔底说「渉さん、見えてますよ。」议长坐在她旁边，抬头看着那道光。律和ひなた站在光里，什么都没说，什么都说了。</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <!-- ─────────────────────────────────────────
+         第7节：动画规范
+         ───────────────────────────────────────── -->
+    <section id="animation">
+      <h1>七、动画规范</h1>
+
+      <h2>7.1 动画核心原则（Animal Crossing 式）</h2>
+      <p>Animal Crossing 动画特征：<strong>弹性、呼吸感、物理质感</strong>。所有动画都像是实际重量的物体在互动，而非数字 UI 元素在切换。</p>
+      <p><strong>四个关键词：</strong>慢起快落（ease-out）/ 轻微过冲（slight overshoot）/ 呼吸感（breathing）/ 弹性（spring）</p>
+
+      <h2>7.2 角色动画规范</h2>
+      <h4>待机动画（所有 NPC 和山田律）</h4>
+      <ul>
+        <li>上身/头部轻微上下浮动：振幅 2–3px，周期 2.5–3s，ease-in-out</li>
+        <li>眼睛每 4–6 秒眨一次：眼皮从上方降下，动画 0.15s</li>
+        <li>偶发动作（每 8–12 秒随机触发一次）：左右轻摇头（旋转 ±5°）/ 手臂小幅摆动（仅前臂，±8°）/ 短暂"嗯？"抬头动作</li>
+      </ul>
+      <h4>对话动画</h4>
+      <ul>
+        <li>嘴巴开合循环：0.3s 周期，嘴形在"闭合"和"半张"之间切换</li>
+        <li>身体轻微前倾：向玩家方向倾斜 3–5°，配合说话节奏</li>
+        <li>眼睛轻微眯起（亲密感）：比待机状态眯 10%</li>
+      </ul>
+      <h4>反应动画</h4>
+      <ul>
+        <li>开心：全身跳起（向上 12px）再落下，弹性曲线，头顶出现星星/花瓣粒子（3–5 个）</li>
+        <li>惊讶：头部向后仰，身体后退 2px，眼睛变圆（瞬间放大），头顶出现"！"图案</li>
+      </ul>
+
+      <h4>DragonBones 骨骼动画目标列表</h4>
+      <ul>
+        <li>山田律 — 全身骨骼动画 idle/talk/react/篝火夜仰星动作</li>
+        <li>磯部健三 — 骨骼动画含标志性背对码头系绳时刻、记录册翻写动作</li>
+        <li>桐島梅子 — 骨骼动画含蹲地圆形轮廓变形、揉陶土手部细节</li>
+        <li>海野夏帆 — 骨骼动画含蹲下观察植物姿态、递花束动作</li>
+        <li>丸山冬子 — 骨骼动画含灯塔点亮背影剪影、放食物于门口不敲门动作</li>
+        <li>丸山ひなた — 骨骼动画恋爱兴趣角色，含手账翻写、钓鱼台旁「还行」侧脸</li>
+        <li>议长（橘猫）— 骨骼动画含坐定/向左离去/抬头看灯塔光</li>
+      </ul>
+
+      <h2>7.3 图块动画规范</h2>
+      <h4>图块消除</h4>
+      <ul>
+        <li>帧 1–3：图块 scale 从 1.0 → 1.14（32ms）</li>
+        <li>帧 4–7：图块 scale 从 1.14 → 0，同时旋转 ±12°（随机方向）</li>
+        <li>同时散出：4–6 个小粒子，形状为该图块的主题元素缩小版（贝壳块散出小贝壳，花朵块散出小花瓣），粒子运动方向随机，衰减消失（总时长 0.3s）</li>
+      </ul>
+      <h4>连击气泡入场</h4>
+      <ul>
+        <li>Spring 曲线：stiffness=280, damping=22</li>
+        <li>从触发图块上方 12px 位置出现，向上浮动 24px</li>
+        <li>出现时 scale 0 → 1.2 → 1.0（带轻微过冲）</li>
+        <li>悬停 1.2s 后向上淡出（0.4s, ease-in）</li>
+      </ul>
+      <h4>图块高亮（连接状态）</h4>
+      <ul>
+        <li>进入高亮：scale 1.0 → 1.06，0.2s ease-out，内发光从 0 → 目标亮度</li>
+        <li>退出高亮：scale 1.06 → 1.0，0.15s ease-in</li>
+        <li>保持高亮中：极慢速脉动，振幅 ±0.02 scale，周期 1.5s</li>
+      </ul>
+      <h4>特殊块待机呼吸</h4>
+      <ul>
+        <li>萤火虫提灯块：内光芒 scale 0.85 → 1.15 → 0.85，周期 2.0s，颜色从 <code>#F5C842</code> → <code>#FFE580</code></li>
+        <li>彩虹鱼块：颜色条纹沿鱼身向尾方向缓慢流动，速度 20px/s，不停歇</li>
+        <li>河豚块：轻微膨胀收缩，scale 0.95 → 1.05，周期 2.8s，带轻微不规则性</li>
+        <li>金枪鱼块：身体轻微左右摆动（±3°），周期 1.8s</li>
+      </ul>
+
+      <h2>7.4 UI 动画规范</h2>
+      <table>
+        <thead><tr><th>动画类型</th><th>参数</th></tr></thead>
+        <tbody>
+          <tr><td>弹窗出现</td><td>背景遮罩 0→0.5 (0.3s ease-out)；弹窗本体 scale 0.7→1.05→1.0 (0.4s spring)</td></tr>
+          <tr><td>弹窗关闭</td><td>弹窗本体 scale 1.0→0.85 + 透明度 1→0 (0.25s ease-in)；背景遮罩 0.3s 淡出</td></tr>
+          <tr><td>章节过渡</td><td>白色圆形从中央向外扩散（AC 经典手法），0.5s cover + 0.5s reveal；全屏时显示下一章节主题图标居中 0.3s</td></tr>
+          <tr><td>修复完成</td><td>区域图片 crossfade 0.8s ease-in-out；白色光波从区域中心向外扩散（0.6s）；s4 满修复额外金色粒子雨 2.5s</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr>
+
+    <!-- ─────────────────────────────────────────
+         第8节：特殊视觉规则
+         ───────────────────────────────────────── -->
+    <section id="special-rules">
+      <h1>八、特殊视觉规则</h1>
+
+      <h2>8.1 视觉降噪原则（认知负担控制清单）</h2>
+      <ul>
+        <li>棋盘区域内，同屏运动元素不超过 3 个（排除消除动画）</li>
+        <li>所有背景装饰透明度 ≤ 15%，不与图块色相重叠</li>
+        <li>特殊块持续动画不超过 2 种同时在棋盘中出现（程序控制刷新频率）</li>
+        <li>HUD 元素总宽度 ≤ 棋盘宽度的 20%（不侵占核心游戏区域）</li>
+        <li>字体不超过 2 种字重混用于同一界面</li>
+        <li>特殊块动画不遮挡棋盘连接路径（VFX 层低于 HUD 层，高于背景层）</li>
+      </ul>
+
+      <h2>8.2 刻意规避的视觉元素</h2>
+      <table>
+        <thead><tr><th>规避项</th><th>原因</th></tr></thead>
+        <tbody>
+          <tr><td>霓虹/赛博颜色（<code>#00FFFF</code> 类）</td><td>与暖色日式调性完全冲突</td></tr>
+          <tr><td>金属高光（铬钢感渐变）</td><td>破坏手绘有机质感</td></tr>
+          <tr><td>像素艺术风格</td><td>目标受众审美期待更现代</td></tr>
+          <tr><td>过度粒子效果（屏幕碎片满天飞）</td><td>增加认知负担，破坏"轻盈"感</td></tr>
+          <tr><td>3D透视UI（拟物化极度写实）</td><td>与扁平有机风格冲突</td></tr>
+          <tr><td>纯黑色 <code>#000000</code></td><td>任何地方均替换为深棕 <code>#3A2810</code> 或深蓝 <code>#1E2E50</code></td></tr>
+          <tr><td>竞技感、紧迫感视觉（警报红、闪烁提示）</td><td>与治愈调性冲突；低步数警示仅用颜色变化，无闪烁</td></tr>
+          <tr><td>强制视觉弹窗打断（侵入式购买提示）</td><td>破坏沉浸感；付费引导轻量化</td></tr>
+        </tbody>
+      </table>
+
+      <h2>8.3 叙事视觉特殊规则</h2>
+      <ul>
+        <li><strong>修复饱和度叙事：</strong>s0 褪色草稿→s4 完整水彩，视觉上的苏醒先于对话，颜色本身在说故事</li>
+        <li><strong>灯塔作为全局情感锚：</strong>每个章节的瞭望点都能看见灯塔，灯塔灯室随章节进度亮度微微提升</li>
+        <li><strong>声音先于视觉：</strong>晨风里的远处风铃声预示修复，早于场景更新（音频设计节点对应）</li>
+        <li><strong>行动优于台词：</strong>健三递茶/梅子把碗放在最显眼处/冬子不敲门放食物——这些场景的视觉演出不依赖大量对话文字，靠动作叙事</li>
+        <li><strong>石刻谜题视觉一致性：</strong>三块风化石刻（Ch1码头/Ch3山坡/Ch5灯台基石）字体和风化程度需完全一致，均采用手刻刀痕风格，深灰 <code>#6A6A6A</code> 刻槽，石板底色与所在章节环境色协调</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <!-- ─────────────────────────────────────────
+         第9节：审核清单
+         ───────────────────────────────────────── -->
+    <section id="checklist">
+      <h1>九、审核清单</h1>
+      <p>本文档通过以下审核维度，可进入 <strong>in-review</strong> 状态：</p>
+
+      <ul class="checklist">
+        <li>风格参考图与治愈/日式离岛目标受众匹配（非竞技、非暗黑风格）— Animal Crossing × 日式治愈，调性一致</li>
+        <li>色调方案有明确主色/辅色/强调色（章节配色对应情感阶段）— 六章配色表已完成，情感标注到位</li>
+        <li>字体层级清晰（正文/标题/UI三级层次）— 思源圆体三级层次（22px/15px/12px）已定义</li>
+        <li>动画风格与引擎能力匹配（2D帧动画/DragonBones/Tween，Web Canvas）— 动画系统分三轨：DragonBones骨骼/Spine序列帧/Tween，目标列表已完整</li>
+        <li>art-style-guide.json 包含 art_overview 字段（供 art-concept 节点读取）— 已包含 dimension/style_keywords/color_palette/animation_system</li>
+        <li>HTML 导航标签、章节标题、标签、说明文字全部使用中文（zh-CN）</li>
+        <li>游戏内专有名词保留日文（輝島/山田律/丸山ひなた/磯部健三/桐島梅子/海野夏帆/丸山冬子/丸山渉/議長）</li>
+        <li>JSON 字段名保持英文 snake_case</li>
+        <li>NPC 角色信息与 worldbuilding.json 对齐（6章/NPC章节分配/议长橘猫/ひなた Ch5）</li>
+        <li>主角名称统一为 山田律（非"Saki"）</li>
+        <li>单货币设计确认（仅沙滩币，无硬货币 UI）</li>
+      </ul>
+
+      <h3>待后续节点处理的事项</h3>
+      <ul>
+        <li>具体图块主题插图（20种图块的详细视觉）— 由 <strong>art-spec-design</strong> 节点处理</li>
+        <li>概念图生成 — 由 <strong>art-concept</strong> 节点读取 art-style-guide.json 中的 art_overview 字段处理</li>
+        <li>角色最终线稿 — 由 <strong>character-art-gen</strong> 节点处理</li>
+        <li>环境场景图 — 由 <strong>environment-art-gen</strong> 节点处理</li>
+        <li>连击/消除 VFX 详细动效 — 由 <strong>vfx-art-gen</strong> 节点处理</li>
+      </ul>
+    </section>
+
+    <div class="footer">
+      輝島（Kagayaki-jima）— 美术方向文档 v2.1 · 2026-05-13 · Glow Island
+    </div>
+
   </div>
 </body>
 </html>

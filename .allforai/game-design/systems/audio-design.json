@@ -1,1137 +1,969 @@
 {
-  "schema": "audio-design-v1",
-  "generated_at": "2026-05-08T12:00:00Z",
+  "schema": "audio-design-v2",
+  "generated_at": "2026-05-13T00:00:00Z",
   "project": "glow-island",
-  "area": "輝島 (Kagayaki-jima)",
+  "language_note": "HTML输出使用中文(zh-CN)；游戏内专有名词保留日文；JSON字段名保留英文snake_case",
+  "area": "輝島（Kagayaki-jima）",
+
   "audio_identity": {
     "genre": "acoustic + ambient + light electronic",
-    "mood": "healing, unhurried, quietly joyful",
+    "mood": "治愈、不急不忙、静静地喜悦",
+    "style_reference": "どうぶつの森（Animal Crossing）治愈调性——轻松愉快、岛屿氛围、无压迫感",
     "key_instruments": [
-      "acoustic guitar",
-      "koto (琴)",
-      "soft piano",
-      "ocean ambience",
-      "wind chimes",
-      "wooden geta on stone",
-      "birdsong",
-      "cicada",
-      "gentle hand percussion",
-      "light ambient pads"
+      "acoustic guitar（指弹，主旋律）",
+      "koto（琴，日式弦乐）",
+      "soft piano（轻柔钢琴）",
+      "ocean ambience（海浪环境音，持续底层）",
+      "wind chimes（风铃）",
+      "wooden geta on stone（木屐踏石声）",
+      "birdsong（鸟鸣）",
+      "cicada（蝉声，夏日氛围）",
+      "gentle hand percussion（轻柔手鼓）",
+      "light ambient pads（轻量环境pad）",
+      "shamisen（三味线，偶尔点缀）"
     ],
     "forbidden_sounds": [
-      "aggressive percussion",
-      "distorted bass",
-      "high-BPM electronic",
-      "triumphant brass fanfares",
-      "urgent alarm sounds",
-      "harsh buzzer tones",
-      "rapid-fire drum machines",
-      "EDM drops"
+      "aggressive percussion（激进打击乐）",
+      "distorted bass（失真低音）",
+      "high-BPM electronic（高BPM电子音乐）",
+      "triumphant brass fanfares（胜利铜管号角）",
+      "urgent alarm sounds（紧迫警报音）",
+      "harsh buzzer tones（刺耳蜂鸣）",
+      "rapid-fire drum machines（快速鼓机）",
+      "EDM drops（EDM高潮段）"
     ],
     "aesthetic_references": [
-      "どうぶつの森 (Animal Crossing) — K.K. Slider acoustic warmth",
-      "天天爱消除 (Happy Match) — satisfying short SFX, escalating combo tones",
-      "Joe Hisaishi — space and breath in melodic lines",
-      "Nujabes — understated groove without aggression"
+      "どうぶつの森（Animal Crossing）— K.K. Slider声学温暖感",
+      "天天爱消除 — 满足感短音效、递进Combo音调",
+      "Joe Hisaishi — 旋律中的空间与呼吸",
+      "Nujabes — 不具攻击性的低调律动"
     ]
   },
+
+  "combo_audio_system": {
+    "description": "Combo计时器音频反馈系统——核心爽快感来源。每次消除有轻柔击中音；Combo计时器运行时背景节拍逐渐加速（tempo变化，不切歌）；Combo等级提升时有对应音效；Combo断连时有轻微下行音效（非惩罚性，仅提示）。",
+    "timer_window_ms": 2000,
+    "levels": [
+      {
+        "combo_count": 1,
+        "level_label": "基础消除",
+        "sfx_key": "sfx_tile_connect",
+        "feel": "轻柔共鸣钟声——像轻触的小铃，满足但不刺耳",
+        "bgm_tempo_effect": "无变化（基础BPM）"
+      },
+      {
+        "combo_count": 2,
+        "level_label": "Combo x2",
+        "sfx_key": "sfx_combo_lv1",
+        "feel": "两个上行音符——温暖俏皮，音乐性的「Yes」",
+        "bgm_tempo_effect": "背景节拍微加速（+5%）"
+      },
+      {
+        "combo_count": 3,
+        "level_label": "Combo x3 / 连锁触发",
+        "sfx_key": "sfx_combo_lv2",
+        "feel": "三个上行音符，更明亮——旋律随连击生长",
+        "bgm_tempo_effect": "背景节拍加速（+10%），触发连锁图块（cascade）生成"
+      },
+      {
+        "combo_count": 4,
+        "level_label": "Combo x4 / 光链触发",
+        "sfx_key": "sfx_combo_lv3",
+        "feel": "五声音阶级联上行，欢快——满溢的共鸣、明亮与温暖",
+        "bgm_tempo_effect": "背景节拍加速（+15%），触发光链图块（light_chain）生成"
+      },
+      {
+        "combo_count": 6,
+        "level_label": "Combo x6 / 光波触发",
+        "sfx_key": "sfx_combo_lv4_wave",
+        "feel": "完整八音符瀑布+钟鸣——最高爽快感时刻，如岛屿呼吸",
+        "bgm_tempo_effect": "背景节拍加速（+20%），触发光波图块（wave）生成——重磅奖励",
+        "note": "光波触发时BGM intensity层自动激活，持续至combo断连后3秒"
+      }
+    ],
+    "combo_break": {
+      "sfx_key": "sfx_combo_break",
+      "feel": "轻微下行单音——非惩罚性，只是温柔提示Combo已断",
+      "sonic_description": "单个下行音符（A→G或D→C），钢琴音色，200ms，音量0.5。绝不使用错误音/蜂鸣音。",
+      "design_note": "断连不等于失败，音效必须温柔，不打断治愈调性"
+    }
+  },
+
   "sfx_catalogue": [
     {
-      "key": "sfx_connect",
+      "key": "sfx_tile_connect",
       "design_label": "tile_connect",
-      "event": "Two tiles successfully connected via path",
-      "feel": "Soft resonant chime — like a small bell touched briefly; gentle, satisfying, never harsh",
-      "sonic_description": "Short 80ms attack, 600ms decay. Tuned to D major pentatonic. Slight reverb tail suggests open space.",
+      "event": "两个图块通过路径成功连接",
+      "feel": "轻柔共鸣钟声——像轻触的小铃；满足感，从不刺耳",
+      "sonic_description": "短促80ms起音，600ms衰减。调音至D大调五声音阶。淡淡混响尾音，暗示开阔空间。",
       "loop": false,
       "spatial_3d": false,
       "priority": "high",
       "volume_relative": 0.85,
-      "pitch_variance": "±3 semitones randomized per call for naturalness",
-      "verified_in_audio_config": true,
+      "pitch_variance": "随机±3半音，增加自然感",
       "audio_config_enum": "SFXKey.TILE_CONNECT",
       "milestone_gate": "alpha"
     },
     {
-      "key": "sfx_disappear",
+      "key": "sfx_tile_clear",
       "design_label": "tile_clear",
-      "event": "Tile pair clears from the board",
-      "feel": "Light sparkle burst — crystalline, airy, brief shimmer of light",
-      "sonic_description": "High-frequency shimmer 200–4000 Hz, 350ms total. Soft pitch-up envelope. Suggests dissolution into light.",
+      "event": "图块对从棋盘消除",
+      "feel": "轻盈闪光爆发——晶莹、空灵、短暂的光芒",
+      "sonic_description": "高频闪烁200–4000 Hz，350ms总时长。柔和上扬音调包络。暗示消融于光中。",
       "loop": false,
       "spatial_3d": false,
       "priority": "high",
       "volume_relative": 0.8,
-      "pitch_variance": "±2 semitones",
-      "verified_in_audio_config": true,
-      "audio_config_enum": "SFXKey.TILE_DISAPPEAR",
+      "pitch_variance": "±2半音",
+      "audio_config_enum": "SFXKey.TILE_CLEAR",
       "milestone_gate": "alpha"
     },
     {
-      "key": "sfx_combo1",
+      "key": "sfx_combo_lv1",
       "design_label": "combo_x2",
-      "event": "x2 combo chain achieved",
-      "feel": "Two ascending notes — warmly playful, a musical 'yes'",
-      "sonic_description": "Two notes, interval of a perfect fifth (D→A). Koto pluck timbre. 400ms total. Second note slightly louder.",
+      "event": "Combo x2连击达成",
+      "feel": "两个上行音符——温暖俏皮，音乐性的「好」",
+      "sonic_description": "两个音符，纯五度音程（D→A）。琴（koto）拨弦音色。400ms总时长。第二个音符略响。",
       "loop": false,
       "spatial_3d": false,
       "priority": "high",
       "volume_relative": 0.9,
-      "pitch_variance": "none — must feel consistent to train player expectation",
-      "verified_in_audio_config": true,
+      "pitch_variance": "无——必须一致以训练玩家预期",
       "audio_config_enum": "SFXKey.COMBO_LV1",
       "milestone_gate": "alpha"
     },
     {
-      "key": "sfx_combo2",
+      "key": "sfx_combo_lv2",
       "design_label": "combo_x3",
-      "event": "x3 combo chain achieved",
-      "feel": "Three ascending notes, brighter — the melody grows with each chain",
-      "sonic_description": "Three notes ascending D→F#→A (major triad). Mixed koto + soft piano. 600ms. Third note has shimmer tail.",
+      "event": "Combo x3连击达成",
+      "feel": "三个上行音符，更明亮——旋律随连击生长",
+      "sonic_description": "三个上行音符D→F#→A（大三和弦）。琴+轻柔钢琴混合。600ms。第三个音符有闪烁尾音。",
       "loop": false,
       "spatial_3d": false,
       "priority": "high",
       "volume_relative": 0.95,
-      "pitch_variance": "none",
-      "verified_in_audio_config": true,
+      "pitch_variance": "无",
       "audio_config_enum": "SFXKey.COMBO_LV2",
       "milestone_gate": "alpha"
     },
     {
-      "key": "sfx_combo3",
-      "design_label": "combo_x4_plus",
-      "event": "x4+ combo chain achieved",
-      "feel": "Cascade of notes, celebratory — full pentatonic run upward, warm and radiant",
-      "sonic_description": "6-note pentatonic cascade D→E→F#→A→B→D'. Acoustic guitar + koto + chime layer. 900ms. Ends with resonant sustain.",
+      "key": "sfx_combo_lv3",
+      "design_label": "combo_x4",
+      "event": "Combo x4连击达成（光链图块触发门槛）",
+      "feel": "五声音阶级联上行，欢快——温暖而明亮，满溢共鸣",
+      "sonic_description": "6音五声音阶D→E→F#→A→B→D'。木吉他+琴+风铃叠层。900ms。以共鸣延音结束。",
       "loop": false,
       "spatial_3d": false,
       "priority": "critical",
       "volume_relative": 1.0,
-      "pitch_variance": "none",
-      "verified_in_audio_config": true,
+      "pitch_variance": "无",
       "audio_config_enum": "SFXKey.COMBO_LV3",
       "milestone_gate": "alpha"
     },
     {
-      "key": "sfx_special_bomb",
-      "design_label": "special_bomb",
-      "event": "Bomb special block activates",
-      "feel": "Muffled pop + resonant chime — earthy, satisfying, not explosive",
-      "sonic_description": "Low soft pop (like cork from bottle, ~200Hz), immediately followed by upward chime (750ms total). Natural, organic.",
+      "key": "sfx_combo_lv4_wave",
+      "design_label": "combo_x6_wave",
+      "event": "Combo x6达成——光波图块生成（重磅奖励）",
+      "feel": "完整八音符瀑布+清澈钟鸣——最高爽快感，如岛屿苏醒",
+      "sonic_description": "8音完整八度上行D→E→F#→G→A→B→C#→D'。钢琴+琴+木吉他+风铃全叠层。1200ms。清澈钟声在最高音处响起，持续共鸣500ms。",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "critical",
+      "volume_relative": 1.0,
+      "pitch_variance": "无",
+      "audio_config_enum": "SFXKey.COMBO_LV4_WAVE",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_combo_break",
+      "design_label": "combo_break",
+      "event": "Combo计时器超时，连击断连",
+      "feel": "轻微下行单音——温柔提示，绝非惩罚，不打断治愈调性",
+      "sonic_description": "单个下行音（D→C），钢琴轻触音色，200ms，音量0.5。无金属质感，无蜂鸣。",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "medium",
+      "volume_relative": 0.5,
+      "pitch_variance": "无",
+      "audio_config_enum": "SFXKey.COMBO_BREAK",
+      "forbidden_note": "绝对禁止使用错误音、蜂鸣或任何800Hz以上的刺耳音调",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_special_cascade",
+      "design_label": "special_cascade",
+      "event": "连锁图块（cascade）激活——Combo=3时生成，玩家配对后自动链消最多5对",
+      "feel": "橙红波纹扩散+节奏递进的清脆音——加速连击感，越来越爽",
+      "sonic_description": "低沉启动音（橙红波纹）：低频温暖冲击，150ms。随后每次自动配对触发节奏递进清脆音（D调钟声，每次间隔300ms，音量递增5%）。5连锁最后一击：钢琴+琴叠层共鸣，300ms。",
       "loop": false,
       "spatial_3d": false,
       "priority": "high",
       "volume_relative": 0.9,
-      "pitch_variance": "none",
-      "verified_in_audio_config": true,
-      "audio_config_enum": "SFXKey.SPECIAL_BOMB",
+      "pitch_variance": "每次自动配对音+1半音递进（体现加速感）",
+      "audio_config_enum": "SFXKey.SPECIAL_CASCADE",
       "milestone_gate": "alpha"
     },
     {
-      "key": "sfx_special_windmill",
-      "design_label": "special_line_clear",
-      "event": "Windmill/line-clear special block activates",
-      "feel": "Swoosh + clear tone — a gentle sweep across the board, airy and satisfying",
-      "sonic_description": "Soft whoosh (filtered white noise, 300ms) transitioning into a clear single bell tone (A4, 400ms decay). Suggests horizontal motion.",
+      "key": "sfx_special_light_chain",
+      "design_label": "special_light_chain",
+      "event": "光链图块（light_chain）激活——Combo=4时生成，扫全图自动匹配最多数量图块类型",
+      "feel": "金色扫描音+连续「叮」声——每对一叮，如连串金色光环依次闭合",
+      "sonic_description": "金色脉冲两下（各200ms，金属光泽质感）→ 扫描波横扫音（450ms，从左到右pan移动）→ 每对自动消除触发一声短促「叮」（E5调，80ms，可叠加）→ 最后一对额外余音（300ms共鸣）。",
       "loop": false,
       "spatial_3d": false,
       "priority": "high",
-      "volume_relative": 0.88,
-      "pitch_variance": "none",
-      "verified_in_audio_config": true,
-      "audio_config_enum": "SFXKey.SPECIAL_WINDMILL",
-      "milestone_gate": "alpha"
-    },
-    {
-      "key": "sfx_special_light",
-      "design_label": "special_auto_connect",
-      "event": "Light/auto-connect special block activates",
-      "feel": "Shimmer + connection chain — magical, sequential, like tiny links of light snapping together",
-      "sonic_description": "High shimmer swell (200ms), followed by 4 rapid mini-chimes in sequence (each 80ms). Total ~600ms. Sparkle-chain character.",
-      "loop": false,
-      "spatial_3d": false,
-      "priority": "high",
-      "volume_relative": 0.9,
-      "pitch_variance": "±1 semitone on chain chimes",
-      "verified_in_audio_config": true,
-      "audio_config_enum": "SFXKey.SPECIAL_LIGHT",
+      "volume_relative": 0.95,
+      "pitch_variance": "扫描音无，每对叮声±1半音随机",
+      "audio_config_enum": "SFXKey.SPECIAL_LIGHT_CHAIN",
       "milestone_gate": "alpha"
     },
     {
       "key": "sfx_special_wave",
-      "design_label": "special_reshuffle",
-      "event": "Wave/reshuffle special block activates",
-      "feel": "Swirl + rearrange whoosh — oceanic, circular, like the board breathing and resetting",
-      "sonic_description": "Circular whoosh (filtered noise panning left→right→center, 400ms). Followed by soft wave-crash tail (300ms). Ocean character intentional.",
+      "design_label": "special_wave",
+      "event": "光波图块（wave）激活——Combo=6时生成，清除3×3区域内所有障碍层并赋予5秒自由路径增益",
+      "feel": "暖白涟漪+障碍碎裂+持续低沉环境光音——如岛屿深呼吸一次",
+      "sonic_description": "暖白涟漪扩散：钢琴清澈钟鸣（C5，400ms）同时触发。障碍碎裂音：短促有机破碎声（不刺耳，像沙砾落水）×多层叠加，总500ms。5秒增益期：极低沉环境光pad（几乎感觉不到，但在）。增益结束：光晕渐退对应一声轻微叹气式pad消散。",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "critical",
+      "volume_relative": 1.0,
+      "pitch_variance": "无",
+      "audio_config_enum": "SFXKey.SPECIAL_WAVE",
+      "duration_note": "0.5s初始动画+5s增益期环境音+0.3s渐退，总约6s",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_special_pierce",
+      "design_label": "special_pierce",
+      "event": "穿透图块（pierce）激活——关卡预置，赋予8秒路径穿越增益",
+      "feel": "蓝白光箭爆发——锐利但不刺耳，如清风穿林",
+      "sonic_description": "激活音：蓝白光箭爆发，高频锐利音（E6，150ms，快速衰减）。增益期间连线：每次穿越路径有特殊穿梭音（像丝绸划过，200ms，音量0.7）。8秒后增益结束：边缘光晕渐退配合短促pad消散（200ms）。",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.9,
+      "pitch_variance": "穿梭音±2半音随机",
+      "audio_config_enum": "SFXKey.SPECIAL_PIERCE",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_special_swap",
+      "design_label": "special_swap",
+      "event": "置换图块（swap）激活——关卡预置，玩家选择任意两格互换内容",
+      "feel": "双螺旋旋转+弹性咔哒——操控感强，精准战术满足感",
+      "sonic_description": "选择模式进入：两个绿色螺旋启动音（双声道分离，左右各一，各150ms）。计时器倒数：极轻柔的节拍tick（10秒，每秒一下，音量0.3）。置换完成：弹性「咔哒」声（物理质感，中频温暖，250ms）。超时未选择：极轻柔提示音，图块保留原位。",
       "loop": false,
       "spatial_3d": false,
       "priority": "high",
       "volume_relative": 0.85,
-      "pitch_variance": "none",
-      "verified_in_audio_config": true,
-      "audio_config_enum": "SFXKey.SPECIAL_WAVE",
+      "pitch_variance": "无",
+      "audio_config_enum": "SFXKey.SPECIAL_SWAP",
       "milestone_gate": "alpha"
     },
     {
       "key": "sfx_level_complete",
       "design_label": "level_complete",
-      "event": "Level successfully completed",
-      "feel": "Ascending arpeggio, warm — a gentle moment of accomplishment, not triumphant fanfare",
-      "sonic_description": "D major arpeggio D→F#→A→D' (4-note, 1.2s total). Acoustic guitar + soft piano. Ends with gentle sustain pad. Warm, not loud.",
+      "event": "关卡成功完成",
+      "feel": "上行琶音，温暖——温柔的成就感，不是凯旋号角",
+      "sonic_description": "D大调琶音D→F#→A→D'（4音，1.2s总时长）。木吉他+轻柔钢琴。以温柔延音pad结束。温暖，不响亮。",
       "loop": false,
       "spatial_3d": false,
       "priority": "critical",
       "volume_relative": 0.95,
-      "pitch_variance": "none",
-      "verified_in_audio_config": true,
+      "pitch_variance": "无",
       "audio_config_enum": "SFXKey.LEVEL_COMPLETE",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_level_fail",
+      "design_label": "level_fail",
+      "event": "关卡步数耗尽，关卡失败",
+      "feel": "轻柔下行音——温柔的「没关系」，绝非刺耳失败音",
+      "sonic_description": "下行3音（D→B→G），钢琴轻触，800ms，音量0.7。加淡淡的单声道轻微海浪声（暗示岛屿仍在等待）。绝不使用游戏结束蜂鸣。",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.7,
+      "pitch_variance": "无",
+      "forbidden_note": "绝对禁止蜂鸣、游戏失败buzzer或任何惩罚性音调",
+      "audio_config_enum": "SFXKey.LEVEL_FAIL",
       "milestone_gate": "alpha"
     },
     {
       "key": "sfx_area_restore",
       "design_label": "area_restore",
-      "event": "Chapter area restoration ceremony completes",
-      "feel": "Multi-layer swell, emotional peak — the island breathes back to life; tears welcome",
-      "sonic_description": "8-12 seconds. Begins with solo koto note, piano joins at 2s, acoustic guitar at 4s, ambient nature sounds rise at 6s. Peak at 9s with full gentle ensemble, decays to silence. Non-looping.",
+      "event": "章节区域修复仪式完成",
+      "feel": "多层渐进涌现，情感高峰——岛屿重新呼吸；允许感动",
+      "sonic_description": "8–12秒。从琴独奏一音开始，钢琴在2s加入，木吉他在4s加入，自然环境音在6s涌现。9s时全体轻柔合奏达到高峰，随后衰减至寂静。非循环。",
       "loop": false,
       "spatial_3d": false,
       "priority": "critical",
       "volume_relative": 1.0,
-      "pitch_variance": "none",
+      "pitch_variance": "无",
       "duration_seconds": 10,
-      "verified_in_audio_config": true,
       "audio_config_enum": "SFXKey.AREA_RESTORE",
+      "restoration_variants": {
+        "chapter_1_variant": "吉他独奏+单声风铃",
+        "chapter_2_variant": "琴+吉他",
+        "chapter_3_variant": "钢琴+吉他+鸟鸣",
+        "chapter_4_variant": "钢琴+吉他+环境pad",
+        "chapter_5_variant": "全合奏（除铃声）",
+        "chapter_6_variant": "全合奏含远处铃声（触发sfx_lighthouse_on）"
+      },
       "milestone_gate": "beta"
     },
     {
       "key": "sfx_lighthouse_on",
       "design_label": "lighthouse_final",
-      "event": "Final lighthouse illumination — game's emotional climax",
-      "feel": "Full ambient swell + distant bell — the island restored; a moment of profound peace",
-      "sonic_description": "20-30 seconds. Solo piano intro (0-5s), koto joins (5-10s), ocean ambience rises (10-15s), full ensemble with wind chimes, guitar, ambient pads (15-22s), distant bell resonates and all fades to gentle ocean sound (22-28s). One-time play only, no loop.",
+      "event": "灯塔最终点亮——游戏情感巅峰",
+      "feel": "全体环境渐进涌现+远处钟声——岛屿修复完成；深沉的平静",
+      "sonic_description": "20–30秒。钢琴独奏引入（0-5s），琴加入（5-10s），海浪声涌现（10-15s），木吉他加入（12-15s），风铃叠层（15-18s），环境pad全开（18-22s），远处钟声共鸣（22-25s），一切渐退至仅余海浪声（25-28s）。仅播放一次，不循环。",
       "loop": false,
       "spatial_3d": false,
       "priority": "critical",
       "volume_relative": 1.0,
-      "pitch_variance": "none",
+      "pitch_variance": "无",
       "duration_seconds": 25,
       "one_time_play": true,
-      "verified_in_audio_config": true,
       "audio_config_enum": "SFXKey.LIGHTHOUSE_ON",
+      "production_note": "此音效在玩家一生中仅播放一次。前置2秒近乎寂静。必须让每一秒都值得。灯光扫过岛屿的瞬间——是物の哀れ（物哀）的声音呈现。",
       "milestone_gate": "gold"
+    },
+    {
+      "key": "sfx_diary_unlock",
+      "design_label": "diary_unlock",
+      "event": "灯台守日记碎片解锁",
+      "feel": "老旧书页翻动+单音钢琴——如触及遥远的记忆",
+      "sonic_description": "书页翻动声（有机纸质感，200ms）随即一声轻柔钢琴单音（E4，600ms衰减，加轻reverb）。温柔而略带神秘感。",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "high",
+      "volume_relative": 0.75,
+      "pitch_variance": "无",
+      "audio_config_enum": "SFXKey.DIARY_UNLOCK",
+      "milestone_gate": "alpha"
+    },
+    {
+      "key": "sfx_tool_use",
+      "design_label": "tool_use",
+      "event": "使用场外沙滩币道具（重排/预判/续关）",
+      "feel": "沙滩币叮响+轻盈滑动——轻松愉快，不沉重",
+      "sonic_description": "硬币叮响（高亮金属质感，300ms），随即轻盈滑动音（纸张质感，150ms）。整体明亮但不过于响亮。",
+      "loop": false,
+      "spatial_3d": false,
+      "priority": "medium",
+      "volume_relative": 0.8,
+      "pitch_variance": "±1半音",
+      "audio_config_enum": "SFXKey.TOOL_USE",
+      "milestone_gate": "alpha"
     }
   ],
+
   "ui_sounds": [
     {
       "key": "ui_button_tap",
-      "event": "Any interactive button pressed",
-      "feel": "Soft organic click — like pressing a smooth wooden button; warm, tactile, never harsh",
-      "sonic_description": "Short 60ms transient. Muted wooden tap timbre (~400Hz). Slight presence boost at 2kHz for clarity.",
+      "event": "任意可交互按钮按下",
+      "feel": "柔和有机点击——像按下光滑木质按钮；温暖、触感真实、从不刺耳",
+      "sonic_description": "短促60ms瞬态。哑音木质音色（~400Hz）。2kHz轻微提亮以增加清晰度。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "medium",
       "volume_relative": 0.7,
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_menu_open",
-      "event": "Menu or panel slides into view",
-      "feel": "Paper slide or gentle whoosh — like unfolding a hand-drawn map; organic, unhurried",
-      "sonic_description": "200ms soft swoosh, gentle high-frequency content. Paper texture character. Slight low-end warmth.",
+      "event": "菜单或面板滑入视图",
+      "feel": "纸张滑动或轻柔呼出——如展开手绘地图；有机、从容",
+      "sonic_description": "200ms柔和嗖声，轻微高频内容。纸张质感。略微低频温暖感。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "low",
       "volume_relative": 0.6,
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_menu_close",
-      "event": "Menu or panel closes/slides away",
-      "feel": "Gentle reverse whoosh — same paper texture, direction reversed; feels like folding away",
-      "sonic_description": "180ms soft reverse swoosh. Mirror of menu_open with slight pitch-down tail.",
+      "event": "菜单或面板关闭/滑出",
+      "feel": "轻柔反向嗖声——同样纸张质感，方向反转；如折叠收起",
+      "sonic_description": "180ms柔和反向嗖声。ui_menu_open的镜像，略微下行尾音。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "low",
       "volume_relative": 0.55,
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_shop_item_select",
-      "event": "Shop item highlighted or selected",
-      "feel": "Coin shimmer — light metallic ring; pleasant, suggests value without being garish",
-      "sonic_description": "High metallic shimmer, 300ms. Slight pitch bend up. Suggests small coin spinning to rest.",
+      "event": "商店道具高亮或选中（沙滩币道具）",
+      "feel": "硬币闪光——轻盈金属环音；愉悦，暗示价值，不浮夸",
+      "sonic_description": "高频金属闪光，300ms。轻微上扬音调。暗示小硬币旋转落定。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "medium",
       "volume_relative": 0.75,
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_dialogue_advance",
-      "event": "Dialogue text advances (per character or per tap)",
-      "feel": "Subtle text-reveal tick — like a typewriter but softer; organic, never irritating at rapid pace",
-      "sonic_description": "Very short 30ms soft click. Low volume. Slightly randomized pitch ±2 semitones to avoid robotic repetition. No metallic quality.",
+      "event": "对话文字推进（每字或每次点击）",
+      "feel": "微妙文字显现滴答声——像打字机但更柔和；有机，快速重复时从不烦人",
+      "sonic_description": "极短30ms柔和点击声。音量很低。随机音调±2半音避免机械重复感。无金属质感。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "low",
       "volume_relative": 0.4,
-      "pitch_variance": "±2 semitones randomized",
+      "pitch_variance": "±2半音随机",
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_error_cannot_do",
-      "event": "Invalid action attempted (no valid path, board locked, etc.)",
-      "feel": "Gentle low tone — a soft 'no' that does not scold; like a hollow wooden knock",
-      "sonic_description": "80ms low hollow tap (~180Hz). No sharp attack. Slight warmth. EXPLICITLY NOT a buzzer or alarm.",
+      "event": "无效操作（无合法路径、棋盘锁定等）",
+      "feel": "轻柔低沉音——温柔的「不行」，不责备；像空心木头轻敲",
+      "sonic_description": "80ms低频空心敲击（~180Hz）。无锐利起音。略带温暖感。明确禁止蜂鸣或警报。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "medium",
       "volume_relative": 0.65,
-      "forbidden_note": "Must not use buzzer, harsh click, or any tone above 800Hz",
+      "forbidden_note": "绝对禁止蜂鸣、刺耳点击或任何800Hz以上的音调",
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_notification_badge",
-      "event": "Notification dot/badge appears on icon",
-      "feel": "Soft single chime — one note, minimal, gentle attention without urgency",
-      "sonic_description": "Single C5 chime, 400ms decay. Soft attack. Not piercing. Like a distant door bell.",
+      "event": "通知点/徽章出现在图标上",
+      "feel": "柔和单声铃音——一个音符，极简，温柔引起注意不产生紧迫感",
+      "sonic_description": "单声C5铃音，400ms衰减。柔和起音。不刺穿。像远处门铃。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "low",
       "volume_relative": 0.5,
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_island_map_open",
-      "event": "Island map screen opens",
-      "feel": "Ambient swell in — as if stepping outside and hearing the island for the first time again",
-      "sonic_description": "600ms gentle ambient pad swell. Ocean breath character. Feels like opening a door to the outside.",
+      "event": "島地图界面打开",
+      "feel": "环境涌现——如再次走出门外，第一次听到岛屿的声音",
+      "sonic_description": "600ms轻柔环境pad涌现。海洋呼吸质感。像打开一扇通往室外的门。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "medium",
       "volume_relative": 0.7,
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_chapter_unlock",
-      "event": "New chapter becomes available",
-      "feel": "Reveal magic shimmer — something new has appeared; wonder, not excitement",
-      "sonic_description": "Rising shimmer 400ms + soft chime at peak. Pentatonic scale fragment. Sparkle character without aggression.",
+      "event": "新章节解锁",
+      "feel": "揭示魔幻闪光——有新事物出现；惊奇感，不是兴奋感",
+      "sonic_description": "上行闪光400ms+顶点处柔和铃音。五声音阶片段。闪烁质感，无攻击性。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "high",
       "volume_relative": 0.85,
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_material_collect",
-      "event": "Craft material or collectible picked up",
-      "feel": "Small satisfying plop — like a smooth pebble dropped into calm water; immediately delightful",
-      "sonic_description": "Short 120ms water-drop plop. Soft low-mid thud with high shimmer tail. Organic, physical.",
+      "event": "收集工艺材料或收藏品",
+      "feel": "小小满足感扑通——像光滑鹅卵石落入平静水面；立即令人愉悦",
+      "sonic_description": "短促120ms水滴落扑通声。柔和低中频冲击带高频闪光尾音。有机、物理感。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "medium",
       "volume_relative": 0.75,
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_daily_reward_open",
-      "event": "Daily login reward opened",
-      "feel": "Warmth swell — like morning light arriving; a small moment of being cared for",
-      "sonic_description": "800ms warm pad swell. Major chord. Acoustic guitar strum at onset. Ends with gentle shimmer. Not loud.",
+      "event": "每日登录奖励打开",
+      "feel": "温暖涌现——如晨光到来；被关怀的小小时刻",
+      "sonic_description": "800ms温暖pad涌现。大调和弦。起音处木吉他拨弦。以轻柔闪光结束。不响亮。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "medium",
       "volume_relative": 0.8,
       "milestone_gate": "alpha"
     },
     {
       "key": "ui_hinata_moment",
-      "event": "ひなた NPC moment or special interaction beat",
-      "feel": "Soft single-note resonance — intimate, present, as if she is just beside you",
-      "sonic_description": "Single note, soft piano or koto. E4 or A4, 800ms sustain. No attack transient. Pure, quiet, personal.",
+      "event": "ひなた NPC情感时刻或特殊互动节点",
+      "feel": "柔和单音共鸣——亲密、临在，如她就在你身边",
+      "sonic_description": "单音，轻柔钢琴或琴。E4或A4，800ms延音。无起音瞬态。纯净、安静、私密。",
       "loop": false,
-      "spatial_3d": false,
       "priority": "high",
       "volume_relative": 0.6,
       "milestone_gate": "beta"
     }
   ],
+
   "bgm_chapters": [
     {
       "chapter": 1,
-      "area": "漁港 (Harbor)",
-      "bgm_key": "bgm_chapter1_seaside",
+      "area": "海边码头（漁港・Fishing Harbor）",
+      "bgm_key": "bgm_chapter1_harbor",
       "audio_config_enum": "BGMKey.CHAPTER_1",
-      "emotional_tone": "Curious, slightly melancholic — the feeling of arriving somewhere unfamiliar but quietly beautiful",
-      "emotional_arc_stage": "burnout → discovery",
+      "emotional_tone": "好奇、略带忧郁——抵达一个陌生但静静美丽之处的感觉",
+      "emotional_arc_stage": "燃尽 → 着陆",
       "instruments": [
-        "acoustic guitar (fingerpicked, primary melody)",
-        "ocean wave field recording (continuous ambient bed)",
-        "occasional distant seagull",
-        "soft wind chime on phrase endings",
-        "sparse piano counter-melody"
+        "acoustic guitar（指弹，主旋律）",
+        "ocean wave field recording（持续环境底层）",
+        "occasional distant seagull（偶尔的远处海鸥）",
+        "soft wind chime on phrase endings（乐句结尾的柔风铃）",
+        "sparse piano counter-melody（稀疏钢琴对位旋律）"
       ],
       "bpm": 62,
-      "bpm_range": "60-64",
-      "key_signature": "G major / E minor",
+      "bpm_range": "60–64",
+      "key_signature": "G大调 / E小调",
       "looping": true,
-      "loop_point_note": "Loop seamlessly at phrase end; ocean waves provide natural crossfade camouflage",
-      "adaptive_notes": "Base layer = ocean ambience only. Melody layer (guitar) fades in after 10s of active play. Intensity layer activates on 3+ combo — adds soft percussion (hand drum, very subtle).",
-      "production_notes": "Morning light character. Music should have gaps and breathing room. Ocean waves audible during silences. Never dense.",
+      "loop_point_note": "在乐句结尾无缝循环；海浪提供自然过渡掩护",
+      "adaptive_notes": "底层=海浪环境音。旋律层（吉他）在10秒活跃游玩后淡入。强度层在Combo 3+时激活——加入轻柔打击乐（手鼓，极微妙）。",
+      "production_notes": "晨光质感。音乐必须有间隙和呼吸空间。寂静时海浪可听。从不密集。",
       "milestone_gate": "alpha"
     },
     {
       "chapter": 2,
-      "area": "陶芸工房 (Pottery Studio)",
+      "area": "中央小镇（陶芸工房・Pottery Studio）",
       "bgm_key": "bgm_chapter2_town",
       "audio_config_enum": "BGMKey.CHAPTER_2",
-      "emotional_tone": "Focused, rhythmic — the meditative repetition of craft; hands working, mind quiet",
-      "emotional_arc_stage": "discovery → early healing",
+      "emotional_tone": "专注、有节奏——手工艺冥想式的重复；双手在工作，心灵安静",
+      "emotional_arc_stage": "着陆 → 归属萌芽",
       "instruments": [
-        "koto (primary melody, plucked patterns)",
-        "soft hand percussion (light clay-tapping rhythm, 2-3 hit pattern)",
-        "low ambient hum (pottery wheel ambience)",
-        "occasional wooden block accent",
-        "sparse acoustic guitar at phrase ends"
+        "koto（琴，主旋律，拨弦模式）",
+        "soft hand percussion（轻柔手鼓，2–3拍节型）",
+        "low ambient hum（陶轮环境低鸣）",
+        "occasional wooden block accent（偶尔木块重音）",
+        "sparse acoustic guitar at phrase ends（乐句结尾稀疏木吉他）"
       ],
       "bpm": 72,
-      "bpm_range": "70-74",
-      "key_signature": "D pentatonic",
+      "bpm_range": "70–74",
+      "key_signature": "D五声音阶",
       "looping": true,
-      "loop_point_note": "Loop point aligns with 4-bar koto phrase end",
-      "adaptive_notes": "Base layer = pottery wheel hum + occasional clay sounds. Melody layer = koto. Intensity layer on 3+ combo = adds hand percussion becomes more prominent.",
-      "production_notes": "Rhythmic but never urgent. Repetitive koto patterns should feel hypnotic, not monotonous. Clay-work rhythm is the heartbeat.",
+      "loop_point_note": "循环点与4小节琴乐句结尾对齐",
+      "adaptive_notes": "底层=陶轮低鸣+偶尔陶土声。旋律层=琴。强度层在Combo 3+时=手鼓更突出。",
+      "production_notes": "有节奏但从不紧迫。重复的琴模式应感觉催眠，而非单调。陶艺节律是心跳。",
       "milestone_gate": "alpha"
     },
     {
       "chapter": 3,
-      "area": "海辺の森 (Coastal Forest)",
+      "area": "花田山坡（花畑・Flower Hillside）",
       "bgm_key": "bgm_chapter3_flower",
       "audio_config_enum": "BGMKey.CHAPTER_3",
-      "emotional_tone": "Wonder, expansive — stepping into dappled light; the forest is ancient and welcoming",
-      "emotional_arc_stage": "healing — mid journey",
+      "emotional_tone": "惊奇、宽广——走入斑驳光影；森林古老而欢迎",
+      "emotional_arc_stage": "情绪解冻 → 第一次被看见",
       "instruments": [
-        "soft piano (primary melody, wide intervals suggesting space)",
-        "wind ambience field recording (continuous)",
-        "birdsong (multiple species, natural rhythm)",
-        "light guitar harmonics (periodic)",
-        "distant cicada (summer character)",
-        "long reverb on all melodic elements"
+        "soft piano（轻柔钢琴，主旋律，宽音程暗示空间）",
+        "wind ambience field recording（持续风声环境）",
+        "birdsong（多种鸟鸣，自然节律）",
+        "light guitar harmonics（周期性吉他泛音）",
+        "distant cicada（夏日蝉鸣）",
+        "long reverb on all melodic elements（所有旋律元素加长混响）"
       ],
       "bpm": 58,
-      "bpm_range": "56-60",
-      "key_signature": "A major",
+      "bpm_range": "56–60",
+      "key_signature": "A大调",
       "looping": true,
-      "loop_point_note": "Long loop (4-5 minutes) to avoid obvious repetition; birdsong variation ensures freshness",
-      "adaptive_notes": "Base layer = wind + birdsong field recording. Melody layer = piano with heavy reverb. Intensity layer = adds guitar harmonics and brief cicada swell.",
-      "production_notes": "Most spacious of all chapters. Piano notes should decay fully before next note. Heavy reverb suggests cathedral-like forest canopy. Sunlight-through-leaves quality.",
+      "loop_point_note": "长循环（4–5分钟）避免明显重复；鸟鸣变化保持新鲜感",
+      "adaptive_notes": "底层=风声+鸟鸣现场录音。旋律层=加重混响的钢琴。强度层=加吉他泛音和短暂蝉鸣涌现。",
+      "production_notes": "所有章节中最具空间感。钢琴音符应完全衰减后再奏下一音。重混响暗示森林树冠大教堂般空间。阳光透叶质感。",
       "milestone_gate": "alpha"
     },
     {
       "chapter": 4,
-      "area": "石畳の小道 (Stone Path)",
-      "bgm_key": "bgm_chapter4_forest",
+      "area": "森林露营地（キャンプ地・Camping Ground）",
+      "bgm_key": "bgm_chapter4_camping",
       "audio_config_enum": "BGMKey.CHAPTER_4",
-      "emotional_tone": "Introspective, quiet — walking alone with thoughts; finding peace in solitude",
-      "emotional_arc_stage": "healing → connection",
+      "emotional_tone": "内省、安静——独处时的思绪漫游；在孤独中找到平静",
+      "emotional_arc_stage": "安静 → 第一次不需要做任何事",
       "instruments": [
-        "solo piano (minimal, widely spaced chords — OR —",
-        "solo acoustic guitar (fingerpicked, choose one primary)",
-        "distant wind ambience (very low in mix)",
-        "occasional sound of footsteps on stone (subtle, not metronomic)",
-        "silence as a compositional element"
+        "solo piano（极简，宽间距和弦）或",
+        "solo acoustic guitar（指弹，二选一作为主旋律）",
+        "distant wind ambience（极低混音的远处风声）",
+        "occasional footstep on path（偶尔路径脚步声，不做节拍）",
+        "silence as compositional element（寂静作为作曲元素）"
       ],
       "bpm": 52,
-      "bpm_range": "50-54",
-      "key_signature": "C major / A minor",
+      "bpm_range": "50–54",
+      "key_signature": "C大调 / A小调",
       "looping": true,
-      "loop_point_note": "Long silences are intentional and part of the composition. Loop should not feel abrupt.",
-      "adaptive_notes": "Base layer = minimal wind ambience, mostly silence. Melody layer = solo instrument, very sparse. Intensity layer on 3+ combo = adds second instrument (the one not chosen as primary) very softly.",
-      "production_notes": "MOST MINIMAL chapter. Silences must not feel like audio dropout — use very subtle ambient room tone underneath. Production note: do NOT fill all the space. Less is more.",
+      "loop_point_note": "长寂静是有意为之，是作品的一部分。循环不应感觉突兀。",
+      "adaptive_notes": "底层=极简风声，大部分是寂静。旋律层=独奏乐器，极稀疏。强度层在Combo 3+时=非常轻柔地加入另一件乐器。",
+      "production_notes": "最简约章节。寂静不应感觉像音频中断——用极微妙的室内环境音作底。制作注意：不要填满所有空间。少即是多。",
       "milestone_gate": "alpha"
     },
     {
       "chapter": 5,
-      "area": "崖の展望台 (Cliff Lookout)",
+      "area": "温泉山谷（温泉谷・Hot Spring Valley）",
       "bgm_key": "bgm_chapter5_hotspring",
       "audio_config_enum": "BGMKey.CHAPTER_5",
-      "emotional_tone": "Awe, slightly tense — standing at the edge of everything; beauty and vertigo together",
-      "emotional_arc_stage": "connection → resilience",
+      "emotional_tone": "放松、和解——温泉热气漫上来；第一次钓到鱼的「还行」",
+      "emotional_arc_stage": "接受 → 和解",
       "instruments": [
-        "layered ambient pads (low, slowly evolving)",
-        "koto (intermittent, like thoughts arriving unbidden)",
-        "wind field recording (stronger here — coastal cliff)",
-        "distant ocean below (low rumble, felt more than heard)",
-        "sparse piano phrases at 'star appearance' moments"
+        "layered ambient pads（叠层环境pad，低沉缓慢演变）",
+        "koto（琴，断续出现，如思绪不经意涌来）",
+        "wind field recording（更强的风声——山谷地形）",
+        "water flow ambience（温泉流水环境音）",
+        "sparse piano phrases at emotional moments（情感时刻稀疏钢琴乐句）"
       ],
       "bpm": 68,
-      "bpm_range": "66-70",
-      "key_signature": "F# minor",
+      "bpm_range": "66–70",
+      "key_signature": "F#小调",
       "looping": true,
-      "loop_point_note": "Music builds slowly over session duration. Hour-long ambient variation recommended.",
-      "adaptive_notes": "Base layer = ambient pads + wind. Melody layer = koto intermittent phrases. Intensity layer = piano joins + ambient layers swell at dusk transition moment.",
-      "production_notes": "Must feel like a long-exposure photograph. Slow-building. Session-length variation important. Stars appearing at dusk is a visual trigger — music should swell subtly at this moment.",
+      "loop_point_note": "音乐在游戏会话期间缓慢积累。推荐小时级环境变奏。",
+      "adaptive_notes": "底层=环境pad+风声+流水。旋律层=断续琴乐句。强度层=傍晚过渡时刻钢琴加入+环境层涌现。",
+      "production_notes": "如长曝光照片般缓慢积累。热气漫上来的视觉触发器对应音乐微微涌现。",
       "milestone_gate": "beta"
     },
     {
       "chapter": 6,
-      "area": "輝く灯台 (Glowing Lighthouse)",
+      "area": "夜晚灯塔（夜の灯台・Lighthouse at Night）",
       "bgm_key": "bgm_chapter6_lighthouse",
       "audio_config_enum": "BGMKey.CHAPTER_6",
-      "emotional_tone": "Emotional climax — from quiet arrival to radiant restoration; every instrument earned",
-      "emotional_arc_stage": "resilience → restoration",
+      "emotional_tone": "情感巅峰——从安静抵达到光辉修复；每件乐器都是赢得的",
+      "emotional_arc_stage": "觉醒 → 修复",
       "instruments": [
-        "solo piano (start — intimate, sparse)",
-        "acoustic guitar (joins at mid-point)",
-        "koto (joins approaching climax)",
-        "wind chimes (climax layer)",
-        "ocean ambience (always present, swells at climax)",
-        "ambient pads (builds from nothing to full)",
-        "distant bell (finale moment only)"
+        "solo piano（开始——私密、稀疏）",
+        "acoustic guitar（中段加入）",
+        "koto（临近高潮时加入）",
+        "wind chimes（高潮叠层）",
+        "ocean ambience（始终存在，高潮时涌现）",
+        "ambient pads（从零积累至全开）",
+        "distant bell（仅用于最终时刻）"
       ],
       "bpm": 64,
-      "bpm_range": "62-66",
-      "key_signature": "D major",
+      "bpm_range": "62–66",
+      "key_signature": "D大调",
       "looping": false,
-      "loop_point_note": "Non-looping by design. Ends with natural silence. If level not finished, loops a short ambient section (ocean + piano only) quietly.",
-      "adaptive_notes": "Dynamic structure: quiet start → gradual build → radiant finish. All adaptive layers are used in final chapter. The lighthouse activation (sfx_lighthouse_on) is the emotional peak and should be preceded by 2s of near-silence.",
-      "production_notes": "The only chapter where full ensemble is justified. Every instrument is added slowly, as if being restored along with the island. Nothing added before it is earned.",
+      "loop_point_note": "设计上不循环。以自然寂静结束。若关卡未完成，轻柔循环一段环境短节（仅海浪+钢琴）。",
+      "adaptive_notes": "动态结构：安静开始 → 渐进积累 → 光辉结束。所有自适应层在最终章使用。灯塔点亮（sfx_lighthouse_on）前置2秒近乎寂静。",
+      "production_notes": "唯一值得全体合奏的章节。每件乐器慢慢加入，如同随岛屿一起被修复。没有乐器在被赢得之前加入。",
       "milestone_gate": "gold"
     }
   ],
+
   "bgm_scenes": [
     {
       "scene": "main_menu",
-      "description": "Main menu / island map overview",
+      "description": "主菜单 / 島地图总览",
       "bgm_key": "bgm_menu",
       "audio_config_enum": "BGMKey.MAIN_MENU",
       "instruments": [
-        "acoustic guitar (gentle picking, primary)",
-        "distant ocean field recording",
-        "occasional wind chime",
-        "sparse piano accent"
+        "acoustic guitar（轻柔指弹，主旋律）",
+        "distant ocean field recording（远处海洋现场录音）",
+        "occasional wind chime（偶尔风铃）",
+        "sparse piano accent（稀疏钢琴点缀）"
       ],
       "bpm": 60,
-      "duration": "loop",
-      "emotional_tone": "Gentle invitation — the island is waiting, peaceful, no urgency",
+      "duration": "循环",
+      "emotional_tone": "温柔邀请——岛屿在等待，平静，无紧迫感",
       "looping": true,
-      "production_notes": "Should feel like the opening credits of a Studio Ghibli film. Player should feel safe and welcomed.",
+      "production_notes": "应感觉像吉卜力工作室电影开场字幕。玩家应感到安全和被欢迎。",
       "milestone_gate": "alpha"
     },
     {
       "scene": "level_complete_sting",
-      "description": "Short non-looping stinger played on level clear screen",
+      "description": "关卡通关界面播放的短暂非循环音效段落",
       "instruments": [
-        "acoustic guitar arpeggio",
-        "soft piano",
-        "single wind chime accent at peak"
+        "acoustic guitar arpeggio（木吉他琶音）",
+        "soft piano（轻柔钢琴）",
+        "single wind chime accent at peak（顶点处单声风铃点缀）"
       ],
       "bpm": 72,
       "duration_seconds": 5,
-      "duration_range": "4-6 seconds",
-      "emotional_tone": "Warm accomplishment — gentle, not triumphant; satisfaction without fanfare",
+      "duration_range": "4–6秒",
+      "emotional_tone": "温暖成就感——轻柔，不是凯旋；满足而非炫耀",
       "looping": false,
-      "key_signature": "D major",
-      "production_notes": "4-note ascending arpeggio + single resonant chord hold. Fades naturally to silence. Transitions to BGM resume after.",
+      "key_signature": "D大调",
+      "production_notes": "4音上行琶音+单声共鸣和弦延音。自然衰减至寂静。之后过渡至BGM恢复。",
       "milestone_gate": "alpha"
     },
     {
       "scene": "restoration_ceremony",
-      "description": "Chapter restoration ceremony — played when chapter's island area is visually restored",
+      "description": "章节修复仪式——当章节岛屿区域视觉修复时播放",
       "instruments": [
-        "koto (solo opening)",
-        "piano (joins at 2s)",
-        "acoustic guitar (joins at 4s)",
-        "nature ambience (rises at 6s)",
-        "full gentle ensemble (peak at 8-9s)"
+        "koto独奏开场",
+        "钢琴在2s加入",
+        "木吉他在4s加入",
+        "自然环境音在6s涌现",
+        "轻柔全体合奏在8–9s达到高峰"
       ],
       "bpm": 60,
       "duration_seconds": 10,
-      "duration_range": "8-12 seconds",
-      "emotional_tone": "Emotional release — the island is alive again; earned, quiet, profound",
+      "duration_range": "8–12秒",
+      "emotional_tone": "情感释放——岛屿再次鲜活；赢得的、安静的、深刻的",
       "looping": false,
-      "key_signature": "G major",
-      "production_notes": "One sting per chapter unlock. The full 6-chapter journey should feel like progressively more instruments are joining. Ch1 restoration = simplest, Ch6 = most layered.",
+      "key_signature": "G大调",
+      "production_notes": "每次章节解锁一段。六章修复之旅应感觉乐器越来越多地加入。第1章最简单，第6章最丰富。",
       "restoration_variants": {
-        "chapter_1_variant": "Solo guitar + single wind chime",
-        "chapter_2_variant": "Koto + guitar",
-        "chapter_3_variant": "Piano + guitar + birdsong",
-        "chapter_4_variant": "Piano + guitar + ambient pads",
-        "chapter_5_variant": "Full ensemble minus bell",
-        "chapter_6_variant": "Full ensemble including distant bell (triggers sfx_lighthouse_on)"
+        "chapter_1_variant": "吉他独奏+单声风铃",
+        "chapter_2_variant": "琴+吉他",
+        "chapter_3_variant": "钢琴+吉他+鸟鸣",
+        "chapter_4_variant": "钢琴+吉他+环境pad",
+        "chapter_5_variant": "全合奏除铃声",
+        "chapter_6_variant": "全合奏含远处铃声（触发sfx_lighthouse_on）"
       },
       "milestone_gate": "beta"
     },
     {
       "scene": "lighthouse_finale",
-      "description": "One-time lighthouse illumination sequence — game's ultimate emotional climax",
+      "description": "一次性灯塔点亮序列——游戏终极情感巅峰",
       "instruments": [
-        "solo piano (0-5s)",
-        "koto joins (5-10s)",
-        "ocean ambience rises (10-15s)",
-        "acoustic guitar joins (12-15s)",
-        "wind chimes added (15-18s)",
-        "ambient pads at full (18-22s)",
-        "distant bell resonates (22-25s)",
-        "all fades to ocean only (25-28s)"
+        "钢琴独奏（0–5s）",
+        "琴加入（5–10s）",
+        "海浪声涌现（10–15s）",
+        "木吉他加入（12–15s）",
+        "风铃叠层（15–18s）",
+        "环境pad全开（18–22s）",
+        "远处铃声共鸣（22–25s）",
+        "一切渐退至仅余海浪声（25–28s）"
       ],
       "bpm": 64,
       "duration_seconds": 25,
-      "duration_range": "20-30 seconds",
-      "emotional_tone": "The island restored — quiet triumph, tears welcome, no words needed",
+      "duration_range": "20–30秒",
+      "emotional_tone": "岛屿修复——安静的胜利，允许流泪，无需言语",
       "looping": false,
-      "key_signature": "D major",
+      "key_signature": "D大调",
       "one_time_play": true,
-      "production_notes": "This plays ONCE in the player's lifetime. Preceded by 2s near-silence. Must earn every second. Should work as a standalone piece. The moment the lighthouse light sweeps across the island — this is Japanese concept of 物の哀れ (mono no aware) rendered in sound.",
+      "production_notes": "此段在玩家一生中仅播放一次。前置2秒近乎寂静。必须赢得每一秒。应作为独立作品运作。灯塔光芒扫过岛屿的瞬间——物の哀れ（物哀）以声音呈现。",
       "milestone_gate": "gold"
     }
   ],
-  "voice_style": {
+
+  "npc_voice_style": {
     "full_voice_acting": false,
-    "murmur_style": "japanese_wordless_minimal",
-    "hinata_audio": "1-2_syllables_optional",
-    "narration_mode": "text_only_with_ambient_swell",
-    "delivery_philosophy": "Sound suggests emotion. Words carry meaning. Never both at once.",
-    "律_yamada_ritz": {
-      "character": "山田律 (Player character — protagonist)",
-      "voice_approach": "No voice. Internal monologue is text only.",
-      "audio_cue": "Ambient music swells subtly during key journal/reflection moments",
-      "chapter_complete_murmur": "Optional faint exhale or 'ん...' — delivered via text typing effect with subtle breath audio",
-      "notes": "律 is the player's vessel. Voice would break immersion. Silence is character."
-    },
-    "hinata": {
-      "character": "ひなた (Island companion)",
-      "syllables_max": 2,
-      "allowed_vocalizations": [
-        { "text": "律さん…", "note": "Soft, two-syllable call — appears in emotional chapter moments" },
-        { "text": "うん", "note": "Single affirmative murmur — warmth, acceptance" },
-        { "text": "ふふ", "note": "Soft laugh — two syllables, gentle, not loud" }
-      ],
-      "audio_cue": "ui_hinata_moment plays simultaneously",
-      "notes": "Voice recorded breathy, warm, close-mic. Never projected. Feels like the person next to you speaking, not performing.",
-      "milestone_gate": "beta"
-    },
-    "npc_磯部健三": {
-      "character": "磯部健三 (Harbor fisherman — gruff warmth)",
-      "vocalizations": [
-        { "text": "はは", "note": "Gruff warm laugh — occasional, earned, not frequent" }
-      ],
-      "timbre": "Low, resonant, chest voice. Warm despite roughness.",
-      "milestone_gate": "beta"
-    },
-    "npc_桐島梅子": {
-      "character": "桐島梅子 (Pottery studio proprietor)",
-      "vocalizations": [
-        { "text": "[contented hum]", "note": "Wordless melody hum while working — no specific syllables, just warmth" }
-      ],
-      "timbre": "Mid-range, calm, slightly raspy with age. Like someone who has found their place.",
-      "milestone_gate": "beta"
-    },
-    "npc_海野夏帆": {
-      "character": "海野夏帆 (Forest botanist — curious)",
-      "vocalizations": [
-        { "text": "あっ", "note": "Surprised exclamation when discovering rare plants — bright, genuine" }
-      ],
-      "timbre": "Bright, higher register, enthusiastic but not loud.",
-      "milestone_gate": "beta"
-    },
-    "npc_丸山冬子": {
-      "character": "丸山冬子 (Stone path hermit — near silence)",
-      "vocalizations": [
-        { "text": "…ありがとう", "note": "Single rare vocalization — extremely quiet, deeply sincere. Triggers only once in the game." }
-      ],
-      "timbre": "Almost a whisper. Elderly. Fragile but not weak.",
-      "milestone_gate": "gold"
-    },
-    "npc_丸山渉": {
-      "character": "丸山渉 (Absent — appears only through journal)",
-      "vocalizations": [],
-      "audio_approach": "Journal reading = text only. Ambient music swells during journal entries. No voice ever.",
-      "notes": "Absence is presence. The swelling ambient music IS his voice.",
-      "milestone_gate": "gold"
-    }
+    "style": "Animal Crossing式嘟嘟声——每个NPC音色不同，体现性格；不做全语音",
+    "design_philosophy": "声音暗示情感。文字承载意义。永不同时使用两者。NPC对话框配合嘟嘟声，像跟一个真实的人交谈，而非观看配音剧。",
+    "characters": [
+      {
+        "character_id": "ritsu",
+        "name_jp": "山田律",
+        "role": "主角（玩家扮演）",
+        "voice_approach": "无声音。内心独白仅为文字。",
+        "audio_cue": "关键日记/反思时刻，环境音乐微微涌现",
+        "notes": "律是玩家的载体。配音会破坏代入感。寂静即人物。",
+        "milestone_gate": "alpha"
+      },
+      {
+        "character_id": "hinata",
+        "name_jp": "丸山ひなた",
+        "role": "岛屿伴侣，主要情感线",
+        "voice_type": "温柔细腻的嘟嘟声，略带气声，偶尔有轻微起伏",
+        "timbre": "中高音区，近距离收音，感觉像身边的人在说话而非在表演。气声感，温柔，从不大声。",
+        "allowed_vocalizations": [
+          { "text": "律さん…", "note": "柔和两音节呼唤——出现在情感章节时刻" },
+          { "text": "うん", "note": "单音节肯定喃喃——温暖，接纳" },
+          { "text": "ふふ", "note": "轻柔笑声——两音节，温柔，不响亮" }
+        ],
+        "audio_cue": "ui_hinata_moment同步播放",
+        "idle_trigger_notes": "ひなた台词气泡在关卡间隙弹出时，配合轻柔嘟嘟声（与台词字数相匹配的短促嘟嘟节奏）",
+        "milestone_gate": "beta"
+      },
+      {
+        "character_id": "kenzo",
+        "name_jp": "磯部健三",
+        "role": "老渔夫，Ch1向导",
+        "voice_type": "低沉温厚的嘟嘟声——胸腔共鸣，话少但每声都有分量",
+        "timbre": "低沉、共鸣强、胸腔音。温暖尽管粗犷。像海浪敲击码头木桩。",
+        "allowed_vocalizations": [
+          { "text": "はは", "note": "粗犷温暖的笑——偶尔，赢得的，不频繁" }
+        ],
+        "idle_trigger_notes": "健三台词气泡：低沉节奏嘟嘟声，每句话对应4–6个嘟嘟，间距较宽，不急不忙",
+        "milestone_gate": "beta"
+      },
+      {
+        "character_id": "umeko",
+        "name_jp": "桐島梅子",
+        "role": "陶艺工匠，Ch2",
+        "voice_type": "清脆欢快的叮叮声——中音区，偶尔带陶艺敲击质感的余音",
+        "timbre": "中音区，平静，略带岁月磨砺的沙哑感。像已经找到自己位置的人。",
+        "allowed_vocalizations": [
+          { "text": "[满足的哼鸣]", "note": "工作时无词旋律哼鸣——无特定音节，只是温暖" }
+        ],
+        "idle_trigger_notes": "梅子台词气泡：清脆有节律的叮叮声，稍快于健三，带轻微高频混响（陶艺工房空间感）",
+        "milestone_gate": "beta"
+      },
+      {
+        "character_id": "naho",
+        "name_jp": "海野夏帆",
+        "role": "自然向导，Ch3",
+        "voice_type": "温柔细腻、略带沙哑的低语嘟嘟声——话少，每声都像在给自己勇气",
+        "timbre": "明亮高音区，充满热情但不响亮。发现稀有植物时的真实惊叹。",
+        "allowed_vocalizations": [
+          { "text": "あっ", "note": "发现稀有植物时的惊叹——明亮、真诚" }
+        ],
+        "idle_trigger_notes": "夏帆台词气泡：温柔低语嘟嘟声，节奏较慢（话少），带轻微自然空间混响（花田山坡环境感）",
+        "milestone_gate": "beta"
+      },
+      {
+        "character_id": "fuyuko",
+        "name_jp": "丸山冬子",
+        "role": "灯台守遗孀，Ch6",
+        "voice_type": "明亮活泼、偶尔带颤音的嘟嘟声——像老人说话时偶然流露的颤动",
+        "timbre": "几乎是低语。年迈。脆弱但不软弱。每个音节都是珍贵的。",
+        "allowed_vocalizations": [
+          { "text": "…ありがとう", "note": "单次极稀有发声——极安静，深深真诚。游戏中仅触发一次。" }
+        ],
+        "idle_trigger_notes": "冬子台词气泡：极轻柔的颤音嘟嘟声，最少量（她话最少），带灯塔空间的远混响感",
+        "milestone_gate": "gold"
+      },
+      {
+        "character_id": "chairman_cat",
+        "name_jp": "议长（橘猫）",
+        "role": "岛上老居民，贯穿全章",
+        "voice_type": "低沉温厚的呼噜声——橘猫质感，存在即陪伴",
+        "timbre": "猫咪低沉呼噜，非常安静，只在「选中」某人时出现。",
+        "allowed_vocalizations": [
+          { "text": "[低沉呼噜]", "note": "议长出现在某人身边时——安静陪伴的声音呈现" }
+        ],
+        "idle_trigger_notes": "议长出现时：不配嘟嘟声，改用极轻柔猫咪呼噜音（2–3秒，音量0.3）",
+        "milestone_gate": "beta"
+      }
+    ]
   },
-  "adaptive_system": {
-    "description": "Three-layer adaptive music system that responds to player engagement without ever jarring",
+
+  "adaptive_bgm_system": {
+    "description": "三层自适应音乐系统——响应玩家参与度，从不产生突兀感",
     "layers": [
       {
         "name": "base",
-        "description": "Always playing — ambient/environmental sounds specific to each chapter area",
-        "examples": ["ocean waves", "pottery wheel hum", "wind in forest", "cliff wind", "silence + room tone"],
+        "description": "始终播放——每章区域特有的环境/自然声音",
+        "examples": ["海浪声", "陶轮低鸣", "森林风声", "山谷流水声", "寂静+室内环境底音"],
         "volume": "always_on",
-        "crossfade_behavior": "always_playing"
+        "crossfade_behavior": "始终播放"
       },
       {
         "name": "melody",
-        "description": "Primary musical melody layer — instruments carrying the chapter theme",
-        "trigger_condition": "fade_in after 10+ seconds of active puzzle engagement",
+        "description": "主旋律层——承载章节主题的乐器",
+        "trigger_condition": "活跃解谜参与10秒以上后淡入",
         "fade_in_seconds": 3,
-        "fade_out_condition": "player pauses or exits level — 5 second fade out",
-        "volume": "fades in to 0.8 of full",
-        "notes": "Ensures first moments in a level are peaceful ambient only. Music rewards engagement."
+        "fade_out_condition": "玩家暂停或退出关卡——5秒淡出",
+        "volume": "淡入至0.8满音量",
+        "notes": "确保关卡初始时刻是平静的纯环境音。音乐奖励参与感。"
       },
       {
         "name": "intensity",
-        "description": "Additional layer activated by combo chains — adds texture and energy",
-        "trigger_condition": "3+ consecutive combo chains achieved",
+        "description": "由Combo链激活的额外层——增加质感和能量",
+        "trigger_condition": "达成3+连续Combo链",
         "fade_in_seconds": 0.5,
-        "fade_out_condition": "3 seconds after last combo ends",
+        "fade_out_condition": "最后一次Combo结束后3秒",
         "fade_out_seconds": 3,
-        "volume": "fades in to 0.6 of full",
-        "notes": "Subtle. Should feel like the music notices the combo, not react frantically. Small percussion or secondary instrument."
+        "volume": "淡入至0.6满音量",
+        "notes": "微妙。应感觉像音乐「注意到」了Combo，而非慌乱响应。小打击乐或辅助乐器。"
       }
     ],
+    "bgm_tempo_acceleration": {
+      "description": "Combo计时器运行时背景节拍逐渐加速——不切歌，是tempo变化",
+      "implementation_note": "通过AudioManager的BPM参数动态调整播放速率。Combo断连时在2秒内平滑回归原始BPM。",
+      "max_acceleration_percent": 20,
+      "acceleration_curve": "linear（随Combo等级线性递增）",
+      "smooth_return_seconds": 2
+    },
     "crossfade_rules": {
       "chapter_transition_seconds": 2,
-      "cut_policy": "never_hard_cut",
-      "transition_method": "fade_out_current_then_fade_in_new",
-      "exception": "lighthouse_finale — always fades in from near-silence, no previous music overlap"
+      "cut_policy": "永不硬切",
+      "transition_method": "当前渐出后新BGM渐入",
+      "exception": "lighthouse_finale——始终从近乎寂静渐入，不与先前音乐重叠"
     },
     "low_resource_mode": {
-      "trigger": "low_battery OR low_data_mode OR player_setting",
-      "behavior": "base_layer_only",
-      "bitrate": "lower_bitrate_variants",
-      "notes": "Ambient base layer alone should always feel complete and appropriate. Never silent."
+      "trigger": "低电量 或 省流量模式 或 玩家设置",
+      "behavior": "仅播放底层",
+      "bitrate": "低码率变体",
+      "notes": "仅底层也应感觉完整且恰当。从不静音。"
     },
     "session_variation": {
-      "description": "Long sessions should feel different from short sessions",
-      "mechanism": "Hour-long ambient variations on base layer. Melody layer uses variant recordings. Time-of-day parameter (if device clock available) shifts ambience warmth.",
+      "description": "长游戏会话应与短会话感觉不同",
+      "mechanism": "底层使用小时级环境变奏。旋律层使用变体录音。若设备时钟可用，时间参数调整环境温暖度。",
       "time_of_day": {
-        "morning": "brighter reverb, more birdsong",
-        "afternoon": "cicada louder, warmer tone",
-        "evening": "cooler reverb, softer dynamics",
-        "night": "most minimal, stars/silence character"
+        "morning": "更明亮混响，更多鸟鸣",
+        "afternoon": "蝉鸣更响，音调更温暖",
+        "evening": "更冷混响，动态更柔和",
+        "night": "最简约，星空/寂静质感"
       }
     }
   },
-  "asset_list": [
-    {
-      "asset_id": "bgm_menu",
-      "type": "bgm",
-      "description": "Main menu / island map BGM",
-      "format": "ogg + mp3",
-      "duration": "loop (3-5 min)",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
+
+  "technical_specs": {
+    "platform_priority": "Web优先（Cocos Creator web-mobile导出），移动端后期适配",
+    "formats": {
+      "primary": "OGG Vorbis",
+      "fallback": "MP3（iOS Safari兼容）",
+      "dual_format_required": true
     },
-    {
-      "asset_id": "bgm_chapter1_seaside",
-      "type": "bgm",
-      "description": "Chapter 1 — Harbor BGM (3 adaptive layers)",
-      "format": "ogg + mp3",
-      "duration": "loop (3-4 min)",
-      "layers": ["base_ocean", "melody_guitar", "intensity_percussion"],
-      "milestone_gate": "alpha",
-      "status": "spec_only"
+    "bitrates": {
+      "bgm_streaming": "128 kbps OGG / 128 kbps MP3",
+      "sfx_preloaded": "96 kbps OGG / 96 kbps MP3",
+      "voice_clips": "96 kbps OGG / 96 kbps MP3",
+      "low_resource_mode": "64 kbps OGG"
     },
-    {
-      "asset_id": "bgm_chapter2_town",
-      "type": "bgm",
-      "description": "Chapter 2 — Pottery Studio BGM (3 adaptive layers)",
-      "format": "ogg + mp3",
-      "duration": "loop (3-4 min)",
-      "layers": ["base_wheel_hum", "melody_koto", "intensity_hand_perc"],
-      "milestone_gate": "alpha",
-      "status": "spec_only"
+    "loading_strategy": {
+      "preload_group_alpha": ["所有SFX音效", "UI音效", "主菜单BGM"],
+      "stream_on_demand": ["章节BGM（按章节解锁时加载）", "修复仪式音效段"],
+      "lazy_load": ["灯塔终曲（Ch6解锁时下载）", "所有语音片段"]
     },
-    {
-      "asset_id": "bgm_chapter3_flower",
-      "type": "bgm",
-      "description": "Chapter 3 — Coastal Forest BGM (3 adaptive layers)",
-      "format": "ogg + mp3",
-      "duration": "loop (4-5 min)",
-      "layers": ["base_wind_birds", "melody_piano", "intensity_harmonics"],
-      "milestone_gate": "alpha",
-      "status": "spec_only"
+    "cocos_creator_integration": {
+      "bgm_api": "AudioManager.playBGM(key: BGMKey, fadeDuration: number)",
+      "sfx_api": "AudioManager.playSFX(key: SFXKey)",
+      "chapter_api": "AudioManager.playChapterBGM(chapterId: number)",
+      "tempo_api": "AudioManager.setBGMTempo(multiplier: number, transitionSeconds: number)",
+      "fade_behavior": "所有BGM过渡使用tween音量渐变——无硬切",
+      "volume_persistence": "BGM和SFX音量持久化至sys.localStorage",
+      "file_path_convention": "audio/bgm/{BGMKey} 和 audio/sfx/{SFXKey}",
+      "adaptive_system_note": "当前AudioManager.ts支持单BGM源。三层自适应系统需扩展为多源或使用专用AdaptiveBGMManager类。建议里程碑：beta。Combo tempo加速需要新增setBGMTempo API。"
     },
-    {
-      "asset_id": "bgm_chapter4_forest",
-      "type": "bgm",
-      "description": "Chapter 4 — Stone Path BGM (3 adaptive layers)",
-      "format": "ogg + mp3",
-      "duration": "loop (5-6 min)",
-      "layers": ["base_silence_room_tone", "melody_solo_instrument", "intensity_second_instrument"],
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "bgm_chapter5_hotspring",
-      "type": "bgm",
-      "description": "Chapter 5 — Cliff Lookout BGM (3 adaptive layers)",
-      "format": "ogg + mp3",
-      "duration": "loop (5-6 min, hour variant recommended)",
-      "layers": ["base_cliff_wind_pads", "melody_koto_intermittent", "intensity_piano_swell"],
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "bgm_chapter6_lighthouse",
-      "type": "bgm",
-      "description": "Chapter 6 — Lighthouse BGM (dynamic, non-looping main + ambient fallback loop)",
-      "format": "ogg + mp3",
-      "duration": "non-loop main: 8-10 min + ambient fallback loop: 2 min",
-      "layers": ["dynamic_swell_main", "ambient_fallback_loop"],
-      "milestone_gate": "gold",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sting_level_complete",
-      "type": "sting",
-      "description": "Level complete stinger",
-      "format": "ogg + mp3",
-      "duration": "5s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sting_restoration_ch1",
-      "type": "sting",
-      "description": "Chapter 1 restoration ceremony sting",
-      "format": "ogg + mp3",
-      "duration": "10s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sting_restoration_ch2",
-      "type": "sting",
-      "description": "Chapter 2 restoration ceremony sting",
-      "format": "ogg + mp3",
-      "duration": "10s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sting_restoration_ch3",
-      "type": "sting",
-      "description": "Chapter 3 restoration ceremony sting",
-      "format": "ogg + mp3",
-      "duration": "10s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sting_restoration_ch4",
-      "type": "sting",
-      "description": "Chapter 4 restoration ceremony sting",
-      "format": "ogg + mp3",
-      "duration": "10s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sting_restoration_ch5",
-      "type": "sting",
-      "description": "Chapter 5 restoration ceremony sting",
-      "format": "ogg + mp3",
-      "duration": "12s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sting_restoration_ch6",
-      "type": "sting",
-      "description": "Chapter 6 restoration / lighthouse finale sting",
-      "format": "ogg + mp3",
-      "duration": "25s",
-      "milestone_gate": "gold",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_connect",
-      "type": "sfx",
-      "description": "Tile connect chime",
-      "format": "ogg + mp3",
-      "duration": "0.7s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_disappear",
-      "type": "sfx",
-      "description": "Tile clear sparkle",
-      "format": "ogg + mp3",
-      "duration": "0.35s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_combo1",
-      "type": "sfx",
-      "description": "x2 combo two-note",
-      "format": "ogg + mp3",
-      "duration": "0.4s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_combo2",
-      "type": "sfx",
-      "description": "x3 combo three-note",
-      "format": "ogg + mp3",
-      "duration": "0.6s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_combo3",
-      "type": "sfx",
-      "description": "x4+ combo cascade",
-      "format": "ogg + mp3",
-      "duration": "0.9s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_special_bomb",
-      "type": "sfx",
-      "description": "Bomb special block",
-      "format": "ogg + mp3",
-      "duration": "0.75s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_special_windmill",
-      "type": "sfx",
-      "description": "Line clear special block",
-      "format": "ogg + mp3",
-      "duration": "0.7s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_special_light",
-      "type": "sfx",
-      "description": "Auto-connect special block",
-      "format": "ogg + mp3",
-      "duration": "0.6s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_special_wave",
-      "type": "sfx",
-      "description": "Reshuffle special block",
-      "format": "ogg + mp3",
-      "duration": "0.7s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_level_complete",
-      "type": "sfx",
-      "description": "Level complete arpeggio",
-      "format": "ogg + mp3",
-      "duration": "1.2s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_area_restore",
-      "type": "sfx",
-      "description": "Area restoration swell",
-      "format": "ogg + mp3",
-      "duration": "10s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "sfx_lighthouse_on",
-      "type": "sfx",
-      "description": "Lighthouse finale swell + bell",
-      "format": "ogg + mp3",
-      "duration": "25s",
-      "milestone_gate": "gold",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_button_tap",
-      "type": "ui_sfx",
-      "description": "Button tap click",
-      "format": "ogg + mp3",
-      "duration": "0.06s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_menu_open",
-      "type": "ui_sfx",
-      "description": "Menu open whoosh",
-      "format": "ogg + mp3",
-      "duration": "0.2s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_menu_close",
-      "type": "ui_sfx",
-      "description": "Menu close reverse whoosh",
-      "format": "ogg + mp3",
-      "duration": "0.18s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_shop_item_select",
-      "type": "ui_sfx",
-      "description": "Shop item selection shimmer",
-      "format": "ogg + mp3",
-      "duration": "0.3s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_dialogue_advance",
-      "type": "ui_sfx",
-      "description": "Dialogue text tick",
-      "format": "ogg + mp3",
-      "duration": "0.03s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_error_cannot_do",
-      "type": "ui_sfx",
-      "description": "Error soft hollow tap",
-      "format": "ogg + mp3",
-      "duration": "0.08s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_notification_badge",
-      "type": "ui_sfx",
-      "description": "Notification single chime",
-      "format": "ogg + mp3",
-      "duration": "0.4s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_island_map_open",
-      "type": "ui_sfx",
-      "description": "Island map ambient swell",
-      "format": "ogg + mp3",
-      "duration": "0.6s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_chapter_unlock",
-      "type": "ui_sfx",
-      "description": "Chapter unlock shimmer",
-      "format": "ogg + mp3",
-      "duration": "0.4s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_material_collect",
-      "type": "ui_sfx",
-      "description": "Material collect plop",
-      "format": "ogg + mp3",
-      "duration": "0.12s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_daily_reward_open",
-      "type": "ui_sfx",
-      "description": "Daily reward warmth swell",
-      "format": "ogg + mp3",
-      "duration": "0.8s",
-      "milestone_gate": "alpha",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "ui_hinata_moment",
-      "type": "ui_sfx",
-      "description": "ひなた character moment resonance",
-      "format": "ogg + mp3",
-      "duration": "0.8s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "voice_hinata_ritsu_san",
-      "type": "voice",
-      "description": "ひなた — '律さん…' whisper",
-      "format": "ogg + mp3",
-      "duration": "0.8s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "voice_hinata_un",
-      "type": "voice",
-      "description": "ひなた — 'うん' affirmative murmur",
-      "format": "ogg + mp3",
-      "duration": "0.3s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "voice_hinata_fufu",
-      "type": "voice",
-      "description": "ひなた — 'ふふ' soft laugh",
-      "format": "ogg + mp3",
-      "duration": "0.5s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "voice_isobe_haha",
-      "type": "voice",
-      "description": "磯部健三 — 'はは' warm laugh",
-      "format": "ogg + mp3",
-      "duration": "0.6s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "voice_kirima_hum",
-      "type": "voice",
-      "description": "桐島梅子 — contented wordless hum",
-      "format": "ogg + mp3",
-      "duration": "2.0s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "voice_umino_a",
-      "type": "voice",
-      "description": "海野夏帆 — 'あっ' surprised exclamation",
-      "format": "ogg + mp3",
-      "duration": "0.3s",
-      "milestone_gate": "beta",
-      "status": "spec_only"
-    },
-    {
-      "asset_id": "voice_maruyama_fuyu_arigatou",
-      "type": "voice",
-      "description": "丸山冬子 — '…ありがとう' near-whisper (one-time)",
-      "format": "ogg + mp3",
-      "duration": "1.2s",
-      "milestone_gate": "gold",
-      "status": "spec_only"
+    "mobile_considerations": {
+      "audio_unlock": "首次用户交互后解锁Web Audio API（移动端要求）",
+      "background_audio": "应用切至后台时暂停BGM，返回时恢复（移动端电池优化）",
+      "haptic_sfx_pairing": "关键SFX（combo升级、关卡完成）建议配合触感反馈（移动端）"
     }
+  },
+
+  "asset_list": [
+    { "asset_id": "bgm_menu", "type": "bgm", "description": "主菜单/岛地图BGM", "format": "ogg + mp3", "duration": "循环（3–5分钟）", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "bgm_chapter1_harbor", "type": "bgm", "description": "第1章——海边码头BGM（3自适应层）", "format": "ogg + mp3", "duration": "循环（3–4分钟）", "layers": ["base_ocean", "melody_guitar", "intensity_percussion"], "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "bgm_chapter2_town", "type": "bgm", "description": "第2章——中央小镇BGM（3自适应层）", "format": "ogg + mp3", "duration": "循环（3–4分钟）", "layers": ["base_wheel_hum", "melody_koto", "intensity_hand_perc"], "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "bgm_chapter3_flower", "type": "bgm", "description": "第3章——花田山坡BGM（3自适应层）", "format": "ogg + mp3", "duration": "循环（4–5分钟）", "layers": ["base_wind_birds", "melody_piano", "intensity_harmonics"], "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "bgm_chapter4_camping", "type": "bgm", "description": "第4章——森林露营地BGM（3自适应层）", "format": "ogg + mp3", "duration": "循环（5–6分钟）", "layers": ["base_silence_room_tone", "melody_solo_instrument", "intensity_second_instrument"], "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "bgm_chapter5_hotspring", "type": "bgm", "description": "第5章——温泉山谷BGM（3自适应层）", "format": "ogg + mp3", "duration": "循环（5–6分钟，建议小时变奏）", "layers": ["base_valley_wind_water_pads", "melody_koto_intermittent", "intensity_piano_swell"], "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "bgm_chapter6_lighthouse", "type": "bgm", "description": "第6章——夜晚灯塔BGM（动态非循环主体+环境备用循环）", "format": "ogg + mp3", "duration": "非循环主体8–10分钟+环境备用循环2分钟", "layers": ["dynamic_swell_main", "ambient_fallback_loop"], "milestone_gate": "gold", "status": "spec_only" },
+    { "asset_id": "sting_level_complete", "type": "sting", "description": "关卡通关音效段", "format": "ogg + mp3", "duration": "5s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sting_restoration_ch1", "type": "sting", "description": "第1章修复仪式音效段", "format": "ogg + mp3", "duration": "10s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sting_restoration_ch2", "type": "sting", "description": "第2章修复仪式音效段", "format": "ogg + mp3", "duration": "10s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sting_restoration_ch3", "type": "sting", "description": "第3章修复仪式音效段", "format": "ogg + mp3", "duration": "10s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sting_restoration_ch4", "type": "sting", "description": "第4章修复仪式音效段", "format": "ogg + mp3", "duration": "10s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sting_restoration_ch5", "type": "sting", "description": "第5章修复仪式音效段", "format": "ogg + mp3", "duration": "12s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sting_restoration_ch6", "type": "sting", "description": "第6章修复/灯塔终曲音效段", "format": "ogg + mp3", "duration": "25s", "milestone_gate": "gold", "status": "spec_only" },
+    { "asset_id": "sfx_tile_connect", "type": "sfx", "description": "图块连接铃声", "format": "ogg + mp3", "duration": "0.7s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_tile_clear", "type": "sfx", "description": "图块消除闪光", "format": "ogg + mp3", "duration": "0.35s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_combo_lv1", "type": "sfx", "description": "Combo x2两音符", "format": "ogg + mp3", "duration": "0.4s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_combo_lv2", "type": "sfx", "description": "Combo x3三音符", "format": "ogg + mp3", "duration": "0.6s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_combo_lv3", "type": "sfx", "description": "Combo x4六音级联", "format": "ogg + mp3", "duration": "0.9s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_combo_lv4_wave", "type": "sfx", "description": "Combo x6八音瀑布+钟鸣（光波触发）", "format": "ogg + mp3", "duration": "1.2s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_combo_break", "type": "sfx", "description": "Combo断连下行单音", "format": "ogg + mp3", "duration": "0.2s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_special_cascade", "type": "sfx", "description": "连锁图块激活音效", "format": "ogg + mp3", "duration": "0.15s启动+0.3s/次×5", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_special_light_chain", "type": "sfx", "description": "光链图块激活音效", "format": "ogg + mp3", "duration": "0.8s+0.08s/对", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_special_wave", "type": "sfx", "description": "光波图块激活音效（含5秒增益期环境音）", "format": "ogg + mp3", "duration": "6s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_special_pierce", "type": "sfx", "description": "穿透图块激活音效（含8秒增益期穿梭音）", "format": "ogg + mp3", "duration": "0.15s激活+穿梭时触发", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_special_swap", "type": "sfx", "description": "置换图块激活+选择+置换完成音效", "format": "ogg + mp3", "duration": "0.15s+tick×10+0.25s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_level_complete", "type": "sfx", "description": "关卡完成琶音", "format": "ogg + mp3", "duration": "1.2s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_level_fail", "type": "sfx", "description": "关卡失败下行音", "format": "ogg + mp3", "duration": "0.8s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_area_restore", "type": "sfx", "description": "区域修复涌现", "format": "ogg + mp3", "duration": "10s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "sfx_lighthouse_on", "type": "sfx", "description": "灯塔终曲涌现+远铃", "format": "ogg + mp3", "duration": "25s", "milestone_gate": "gold", "status": "spec_only" },
+    { "asset_id": "sfx_diary_unlock", "type": "sfx", "description": "日记碎片解锁书页翻动+钢琴", "format": "ogg + mp3", "duration": "0.8s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "sfx_tool_use", "type": "sfx", "description": "场外道具使用沙滩币叮响", "format": "ogg + mp3", "duration": "0.45s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_button_tap", "type": "ui_sfx", "description": "按钮点击", "format": "ogg + mp3", "duration": "0.06s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_menu_open", "type": "ui_sfx", "description": "菜单打开嗖声", "format": "ogg + mp3", "duration": "0.2s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_menu_close", "type": "ui_sfx", "description": "菜单关闭反向嗖声", "format": "ogg + mp3", "duration": "0.18s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_shop_item_select", "type": "ui_sfx", "description": "商店道具选中闪光", "format": "ogg + mp3", "duration": "0.3s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_dialogue_advance", "type": "ui_sfx", "description": "对话文字滴答声", "format": "ogg + mp3", "duration": "0.03s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_error_cannot_do", "type": "ui_sfx", "description": "无效操作轻柔空心敲击", "format": "ogg + mp3", "duration": "0.08s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_notification_badge", "type": "ui_sfx", "description": "通知徽章单声铃", "format": "ogg + mp3", "duration": "0.4s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_island_map_open", "type": "ui_sfx", "description": "岛地图环境涌现", "format": "ogg + mp3", "duration": "0.6s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_chapter_unlock", "type": "ui_sfx", "description": "章节解锁闪光", "format": "ogg + mp3", "duration": "0.4s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_material_collect", "type": "ui_sfx", "description": "材料收集扑通声", "format": "ogg + mp3", "duration": "0.12s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_daily_reward_open", "type": "ui_sfx", "description": "每日奖励温暖涌现", "format": "ogg + mp3", "duration": "0.8s", "milestone_gate": "alpha", "status": "spec_only" },
+    { "asset_id": "ui_hinata_moment", "type": "ui_sfx", "description": "ひなた角色时刻共鸣", "format": "ogg + mp3", "duration": "0.8s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "voice_hinata_ritsu_san", "type": "voice", "description": "ひなた——「律さん…」低语", "format": "ogg + mp3", "duration": "0.8s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "voice_hinata_un", "type": "voice", "description": "ひなた——「うん」肯定喃喃", "format": "ogg + mp3", "duration": "0.3s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "voice_hinata_fufu", "type": "voice", "description": "ひなた——「ふふ」轻柔笑声", "format": "ogg + mp3", "duration": "0.5s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "voice_kenzo_haha", "type": "voice", "description": "磯部健三——「はは」温暖粗犷笑声", "format": "ogg + mp3", "duration": "0.6s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "voice_umeko_hum", "type": "voice", "description": "桐島梅子——满足无词哼鸣", "format": "ogg + mp3", "duration": "2.0s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "voice_naho_a", "type": "voice", "description": "海野夏帆——「あっ」惊叹", "format": "ogg + mp3", "duration": "0.3s", "milestone_gate": "beta", "status": "spec_only" },
+    { "asset_id": "voice_fuyuko_arigatou", "type": "voice", "description": "丸山冬子——「…ありがとう」近低语（仅一次）", "format": "ogg + mp3", "duration": "1.2s", "milestone_gate": "gold", "status": "spec_only" }
   ],
+
   "total_asset_count": {
     "bgm_files": 7,
-    "sting_files": 7,
-    "gameplay_sfx": 12,
+    "sting_files": 6,
+    "gameplay_sfx": 15,
     "ui_sfx": 12,
     "voice_clips": 7,
-    "total": 45
-  },
-  "audio_manager_integration": {
-    "bgm_api": "AudioManager.playBGM(key: BGMKey, fadeDuration: number)",
-    "sfx_api": "AudioManager.playSFX(key: SFXKey)",
-    "chapter_api": "AudioManager.playChapterBGM(chapterId: number)",
-    "fade_behavior": "All BGM transitions use tween-based volume fade — no hard cuts",
-    "volume_persistence": "BGM and SFX volumes persisted to sys.localStorage",
-    "file_path_convention": "audio/bgm/{BGMKey} and audio/sfx/{SFXKey}",
-    "adaptive_system_note": "Current AudioManager.ts supports single BGM source. Adaptive 3-layer system requires extending to multi-source or using a dedicated AdaptiveBGMManager class. Suggested sprint: beta milestone."
+    "total": 47
   }
 }

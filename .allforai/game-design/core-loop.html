@@ -3,136 +3,155 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glow Island — 核心循环设计（Core Loop）</title>
+  <title>Glow Island — 核心循环设计 v4.1</title>
   <style>
     :root {
-      --bg: #0f1117;
-      --surface: #1a1d26;
-      --border: #2a2d3a;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --accent: #7dd3fc;
-      --accent2: #86efac;
-      --heading: #f8fafc;
-      --code-bg: #12141c;
-      --tag-bg: #1e3a5f;
+      --bg: #fdf8f0;
+      --surface: #fff9f0;
+      --surface2: #fef3e2;
+      --border: #e8d5b0;
+      --border-soft: #f0e2c8;
+      --text: #3d2b1a;
+      --muted: #8a6f52;
+      --accent: #c47b2a;
+      --accent2: #2a8a6e;
+      --accent3: #d4871e;
+      --accent4: #b85c2a;
+      --heading: #1e1208;
+      --code-bg: #fef7ed;
+      --tag-bg: #fde8c4;
+      --warm-white: #fffdf9;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.75;
-      padding: 0 1rem 4rem;
+      line-height: 1.8;
+      padding: 0 1rem 5rem;
     }
     .page-header {
-      background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 2.5rem 2rem 2rem;
-      margin: 0 -1rem 2.5rem;
+      background: linear-gradient(135deg, #3d1f08 0%, #5c2e10 40%, #7a3d18 70%, #5c2e10 100%);
+      border-bottom: 3px solid var(--accent);
+      padding: 3rem 2rem 2.5rem;
+      margin: 0 -1rem 3rem;
       text-align: center;
     }
     .page-header .project-tag {
       display: inline-block;
-      background: var(--tag-bg);
-      color: var(--accent);
+      background: rgba(255,220,150,0.18);
+      color: #ffd890;
       font-size: 0.72rem;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      padding: 0.25rem 0.75rem;
+      padding: 0.3rem 1rem;
       border-radius: 999px;
-      border: 1px solid rgba(125,211,252,0.25);
-      margin-bottom: 0.9rem;
+      border: 1px solid rgba(255,220,150,0.35);
+      margin-bottom: 1rem;
     }
     .page-header h1 {
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 700;
-      color: var(--heading);
-      text-shadow: 0 0 40px rgba(125,211,252,0.2);
+      color: #fff9f0;
+      text-shadow: 0 2px 24px rgba(196,123,42,0.5);
+      margin-bottom: 0.5rem;
+    }
+    .page-header .subtitle {
+      color: rgba(255,230,180,0.75);
+      font-size: 0.9rem;
+    }
+    .version-badge {
+      display: inline-block;
+      background: rgba(196,123,42,0.25);
+      color: #ffd890;
+      border: 1px solid rgba(255,200,100,0.45);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-left: 0.5rem;
+      vertical-align: middle;
     }
     .container {
-      max-width: 860px;
+      max-width: 920px;
       margin: 0 auto;
     }
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3, h4 {
       color: var(--heading);
-      margin-top: 2rem;
-      margin-bottom: 0.6rem;
+      margin-top: 2.5rem;
+      margin-bottom: 0.7rem;
       font-weight: 600;
       line-height: 1.35;
     }
-    h1 { font-size: 1.75rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
-    h2 { font-size: 1.35rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
-    h3 { font-size: 1.1rem; color: var(--accent2); }
-    h4 { font-size: 1rem; color: var(--muted); }
-    p { margin: 0.6rem 0 0.9rem; }
+    h1 { font-size: 1.8rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+    h2 { font-size: 1.4rem; border-left: 4px solid var(--accent); padding-left: 0.85rem; margin-top: 3rem; color: var(--accent4); }
+    h3 { font-size: 1.1rem; color: var(--accent2); margin-top: 1.8rem; }
+    h4 { font-size: 1rem; color: var(--accent3); margin-top: 1.2rem; }
+    p { margin: 0.7rem 0 1rem; }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
     strong { color: var(--heading); font-weight: 600; }
     em { color: var(--accent2); font-style: normal; }
     blockquote {
       border-left: 3px solid var(--accent);
-      padding: 0.5rem 1rem;
-      background: var(--surface);
-      border-radius: 0 6px 6px 0;
-      margin: 1rem 0;
+      padding: 0.7rem 1.3rem;
+      background: var(--surface2);
+      border-radius: 0 8px 8px 0;
+      margin: 1.2rem 0;
       color: var(--muted);
+      font-size: 0.92rem;
     }
     code {
-      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
-      font-size: 0.87em;
-      background: var(--code-bg);
-      color: var(--accent2);
-      padding: 0.15em 0.4em;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 0.86em;
+      background: var(--tag-bg);
+      color: var(--accent4);
+      padding: 0.15em 0.45em;
       border-radius: 4px;
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-soft);
     }
     pre {
       background: var(--code-bg);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 1.2rem 1.4rem;
+      padding: 1.2rem 1.5rem;
       overflow-x: auto;
-      margin: 1rem 0 1.4rem;
-    }
-    pre code {
-      background: none;
-      border: none;
-      padding: 0;
+      margin: 1rem 0 1.5rem;
       font-size: 0.85rem;
+      line-height: 1.7;
       color: var(--text);
     }
     ul, ol {
-      padding-left: 1.6rem;
-      margin: 0.5rem 0 1rem;
+      padding-left: 1.8rem;
+      margin: 0.6rem 0 1.1rem;
     }
-    li { margin: 0.3rem 0; }
-    li > ul, li > ol { margin: 0.2rem 0; }
+    li { margin: 0.35rem 0; }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 1.2rem 0;
-      font-size: 0.9rem;
+      margin: 1.3rem 0;
+      font-size: 0.88rem;
     }
     th {
-      background: var(--surface);
-      color: var(--accent);
+      background: var(--surface2);
+      color: var(--accent4);
       font-weight: 600;
-      padding: 0.6rem 0.9rem;
+      padding: 0.65rem 1rem;
       text-align: left;
       border: 1px solid var(--border);
     }
     td {
-      padding: 0.55rem 0.9rem;
+      padding: 0.6rem 1rem;
       border: 1px solid var(--border);
       vertical-align: top;
+      background: var(--warm-white);
     }
-    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-    tr:hover td { background: rgba(125,211,252,0.04); }
+    tr:nth-child(even) td { background: var(--surface2); }
+    tr:hover td { background: #fdeecf; }
     hr {
       border: none;
       border-top: 1px solid var(--border);
-      margin: 2rem 0;
+      margin: 2.5rem 0;
     }
     .footer {
       text-align: center;
@@ -143,134 +162,30 @@
       border-top: 1px solid var(--border);
     }
 
-    /* Core loop diagram styles */
-    .loop-diagram {
-      background: var(--code-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.8rem 2rem;
-      margin: 1.2rem 0 1.6rem;
-      font-family: "JetBrains Mono", "Fira Code", monospace;
-      font-size: 0.88rem;
-    }
-    .loop-node {
-      display: inline-block;
-      background: var(--surface);
-      border: 1px solid var(--accent);
-      border-radius: 6px;
-      padding: 0.4rem 1rem;
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-    .loop-arrow {
-      display: block;
-      color: var(--muted);
-      padding: 0.2rem 0 0.2rem 2.5rem;
-      font-size: 0.95rem;
-    }
-    .loop-row {
-      display: flex;
+    /* ---- Section number ---- */
+    .sec-num {
+      display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
-      margin: 0.5rem 0;
-      flex-wrap: wrap;
-    }
-    .loop-row .loop-node { flex-shrink: 0; }
-    .loop-connector {
-      color: var(--accent);
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-
-    /* Combo tier badges */
-    .combo-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-      margin: 1rem 0;
-    }
-    .combo-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.85rem 1rem;
-      text-align: center;
-    }
-    .combo-card .tier { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-    .combo-card .mult { font-size: 1.1rem; color: var(--accent2); font-weight: 600; }
-    .combo-card .label { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
-    .combo-card .effects { font-size: 0.75rem; color: var(--text); margin-top: 0.4rem; line-height: 1.4; }
-    .combo-card.tier-4 { border-color: var(--accent); background: rgba(125,211,252,0.07); }
-
-    /* Motivation loop */
-    .motivation-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin: 1rem 0;
-    }
-    .motivation-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem 1.2rem;
-    }
-    .motivation-card .type-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      margin-bottom: 0.4rem;
-    }
-    .motivation-card h4 {
-      margin-top: 0;
-      color: var(--heading);
-      font-size: 0.95rem;
-    }
-    .motivation-card p {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin: 0.3rem 0 0;
-    }
-
-    /* Section number badge */
-    .section-num {
-      display: inline-block;
+      justify-content: center;
       background: var(--tag-bg);
       color: var(--accent);
+      border: 1px solid var(--border);
       border-radius: 50%;
-      width: 1.6rem;
-      height: 1.6rem;
-      line-height: 1.6rem;
-      text-align: center;
-      font-size: 0.78rem;
+      width: 1.8rem;
+      height: 1.8rem;
+      font-size: 0.82rem;
       font-weight: 700;
       margin-right: 0.5rem;
       vertical-align: middle;
+      flex-shrink: 0;
     }
 
-    /* Principle list */
-    .principle-list {
-      list-style: none;
-      padding: 0;
-    }
-    .principle-list li {
-      background: var(--surface);
-      border-left: 3px solid var(--accent2);
-      border-radius: 0 6px 6px 0;
-      padding: 0.55rem 1rem;
-      margin: 0.5rem 0;
-      font-size: 0.92rem;
-    }
-    .principle-list li strong { color: var(--accent2); }
-
-    /* No-system badges */
+    /* ---- Badges ---- */
     .badge-row {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.65rem;
       flex-wrap: wrap;
-      margin: 0.75rem 0 1.2rem;
+      margin: 0.85rem 0 1.3rem;
     }
     .badge {
       display: inline-block;
@@ -278,371 +193,944 @@
       padding: 0.3rem 0.85rem;
       font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
     }
-    .badge-green { background: rgba(134,239,172,0.12); color: #86efac; border: 1px solid rgba(134,239,172,0.3); }
-    .badge-blue  { background: rgba(125,211,252,0.12); color: #7dd3fc; border: 1px solid rgba(125,211,252,0.3); }
-    .badge-red   { background: rgba(252,165,165,0.12); color: #fca5a5; border: 1px solid rgba(252,165,165,0.3); }
-    .badge-yellow{ background: rgba(253,224,71,0.12);  color: #fde047; border: 1px solid rgba(253,224,71,0.3);  }
+    .badge-amber  { background: rgba(196,123,42,0.1);  color: #8a4e10; border: 1px solid rgba(196,123,42,0.35); }
+    .badge-green  { background: rgba(42,138,110,0.1);  color: #1a5c48; border: 1px solid rgba(42,138,110,0.35); }
+    .badge-warm   { background: rgba(212,135,30,0.1);  color: #7a4200; border: 1px solid rgba(212,135,30,0.3); }
+    .badge-red    { background: rgba(184,92,42,0.1);   color: #7a2a00; border: 1px solid rgba(184,92,42,0.3); }
+
+    /* ---- Combo cards ---- */
+    .combo-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+      margin: 1.1rem 0;
+    }
+    .combo-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      text-align: center;
+    }
+    .combo-card .tier { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+    .combo-card .mult { font-size: 1.1rem; color: var(--accent4); font-weight: 700; margin: 0.2rem 0; }
+    .combo-card .label { font-size: 0.75rem; color: var(--muted); }
+    .combo-card .effects { font-size: 0.76rem; color: var(--text); margin-top: 0.55rem; line-height: 1.6; }
+    .combo-card.tier-3 { border-color: var(--accent3); background: rgba(212,135,30,0.06); }
+    .combo-card.tier-4 { border-color: var(--accent); background: rgba(196,123,42,0.08); }
+    .combo-card.tier-6 { border-color: #b85c2a; background: rgba(184,92,42,0.08); }
+
+    /* ---- Loop diagram ---- */
+    .loop-diagram {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+      margin: 1.2rem 0 1.6rem;
+      font-size: 0.88rem;
+    }
+    .loop-node {
+      display: inline-block;
+      background: var(--warm-white);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 0.38rem 0.9rem;
+      color: var(--accent4);
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+    .loop-connector { color: var(--muted); font-size: 1.1rem; margin: 0 0.3rem; }
+
+    /* ---- Special tile cards ---- */
+    .special-tile-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.6rem 1.9rem;
+      margin: 1.6rem 0;
+      position: relative;
+    }
+    .special-tile-card.wave-tile    { border-left: 5px solid #e8c875; }
+    .special-tile-card.chain-tile   { border-left: 5px solid #d4a820; }
+    .special-tile-card.pierce-tile  { border-left: 5px solid #5a9fd4; }
+    .special-tile-card.swap-tile    { border-left: 5px solid #4aac84; }
+    .special-tile-card.cascade-tile { border-left: 5px solid #d4622a; }
+
+    .tile-header {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-bottom: 1.1rem;
+    }
+    .tile-icon {
+      width: 3.2rem;
+      height: 3.2rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+    .tile-icon.wave-i    { background: rgba(232,200,117,0.18); border: 1px solid rgba(232,200,117,0.5); }
+    .tile-icon.chain-i   { background: rgba(212,168,32,0.15);  border: 1px solid rgba(212,168,32,0.45); }
+    .tile-icon.pierce-i  { background: rgba(90,159,212,0.15);  border: 1px solid rgba(90,159,212,0.4); }
+    .tile-icon.swap-i    { background: rgba(74,172,132,0.15);  border: 1px solid rgba(74,172,132,0.4); }
+    .tile-icon.cascade-i { background: rgba(212,98,42,0.15);   border: 1px solid rgba(212,98,42,0.4); }
+
+    .tile-title { font-size: 1.2rem; font-weight: 700; color: var(--heading); }
+    .tile-subtitle { font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; }
+    .tile-generation-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      margin-top: 0.25rem;
+    }
+    .gen-combo { background: rgba(196,123,42,0.12); color: #7a4010; border: 1px solid rgba(196,123,42,0.3); }
+    .gen-preset { background: rgba(42,138,110,0.1); color: #1a5c48; border: 1px solid rgba(42,138,110,0.3); }
+
+    .tile-props {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+    .tile-prop {
+      background: var(--surface2);
+      border: 1px solid var(--border-soft);
+      border-radius: 9px;
+      padding: 0.75rem 1rem;
+    }
+    .tile-prop-label {
+      font-size: 0.71rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    .tile-prop-value { font-size: 0.87rem; color: var(--text); line-height: 1.6; }
+    .tile-prop.full-width { grid-column: 1 / -1; }
+    .tile-prop.parity-prop { grid-column: 1 / -1; background: rgba(42,138,110,0.07); border-color: rgba(42,138,110,0.2); }
+    .parity-label { color: var(--accent2); font-weight: 700; }
+
+    /* ---- UI Assist cards ---- */
+    .assist-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.3rem 0;
+    }
+    .assist-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.3rem 1.4rem;
+      text-align: center;
+    }
+    .assist-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .assist-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.25rem;
+    }
+    .assist-cost {
+      display: inline-block;
+      background: rgba(196,123,42,0.12);
+      color: var(--accent4);
+      border: 1px solid rgba(196,123,42,0.3);
+      border-radius: 6px;
+      padding: 0.18rem 0.65rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin: 0.35rem 0 0.6rem;
+    }
+    .assist-trigger {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .assist-effect {
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-top: 0.6rem;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    /* ---- Callouts ---- */
+    .callout {
+      border-radius: 10px;
+      padding: 1.1rem 1.4rem;
+      margin: 1.2rem 0;
+      font-size: 0.92rem;
+    }
+    .callout-amber {
+      background: rgba(196,123,42,0.07);
+      border: 1px solid rgba(196,123,42,0.28);
+      border-left: 4px solid var(--accent);
+    }
+    .callout-green {
+      background: rgba(42,138,110,0.07);
+      border: 1px solid rgba(42,138,110,0.28);
+      border-left: 4px solid var(--accent2);
+    }
+    .callout-warm {
+      background: rgba(212,135,30,0.06);
+      border: 1px solid rgba(212,135,30,0.25);
+      border-left: 4px solid var(--accent3);
+    }
+    .callout-title { font-weight: 700; margin-bottom: 0.45rem; }
+    .callout-amber .callout-title { color: var(--accent4); }
+    .callout-green .callout-title { color: var(--accent2); }
+    .callout-warm  .callout-title { color: var(--accent3); }
+
+    /* ---- Chapter timeline ---- */
+    .chapter-timeline {
+      position: relative;
+      padding-left: 2.5rem;
+      margin: 1.5rem 0;
+    }
+    .chapter-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.85rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #c47b2a, #2a8a6e, #d4871e, #b85c2a);
+    }
+    .chapter-item {
+      position: relative;
+      margin-bottom: 1.5rem;
+      background: var(--warm-white);
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      padding: 1rem 1.3rem;
+    }
+    .chapter-item::before {
+      content: '';
+      position: absolute;
+      left: -1.77rem;
+      top: 1.1rem;
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .chapter-item:nth-child(2)::before { background: #4a8fd4; box-shadow: 0 0 0 2px #4a8fd4; }
+    .chapter-item:nth-child(3)::before { background: #2a8a6e; box-shadow: 0 0 0 2px #2a8a6e; }
+    .chapter-item:nth-child(4)::before { background: #5a9fd4; box-shadow: 0 0 0 2px #5a9fd4; }
+    .chapter-item:nth-child(5)::before { background: #4aac84; box-shadow: 0 0 0 2px #4aac84; }
+    .chapter-item:nth-child(6)::before { background: #b85c2a; box-shadow: 0 0 0 2px #b85c2a; }
+    .chapter-num {
+      font-size: 0.71rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.15rem;
+    }
+    .chapter-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading);
+    }
+    .chapter-detail {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+      line-height: 1.6;
+    }
+    .chapter-tiles {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.55rem;
+    }
+    .tile-badge {
+      display: inline-block;
+      border-radius: 4px;
+      padding: 0.18rem 0.6rem;
+      font-size: 0.73rem;
+      font-weight: 600;
+    }
+    .tb-cascade { background: rgba(212,98,42,0.12);  color: #8a3010; border: 1px solid rgba(212,98,42,0.3); }
+    .tb-chain   { background: rgba(212,168,32,0.12); color: #7a5800; border: 1px solid rgba(212,168,32,0.3); }
+    .tb-wave    { background: rgba(232,200,117,0.2); color: #7a5800; border: 1px solid rgba(232,200,117,0.5); }
+    .tb-pierce  { background: rgba(90,159,212,0.12); color: #1a4870; border: 1px solid rgba(90,159,212,0.3); }
+    .tb-swap    { background: rgba(74,172,132,0.12); color: #1a5c48; border: 1px solid rgba(74,172,132,0.3); }
+    .tb-new     { font-size: 0.65rem; vertical-align: middle; margin-left: 2px; color: #d4621a; font-weight: 700; }
+
+    /* ---- Summary table color hints ---- */
+    .color-wave    { color: #8a6800; font-weight: 600; }
+    .color-chain   { color: #7a5000; font-weight: 600; }
+    .color-pierce  { color: #1a4878; font-weight: 600; }
+    .color-swap    { color: #1a5c48; font-weight: 600; }
+    .color-cascade { color: #8a3010; font-weight: 600; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 640px) {
+      .combo-row { grid-template-columns: repeat(2, 1fr); }
+      .tile-props { grid-template-columns: 1fr; }
+      .tile-prop.full-width, .tile-prop.parity-prop { grid-column: 1; }
+      .assist-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <div class="page-header">
     <div class="project-tag">Glow Island · 核心循环设计</div>
-    <h1>Core Loop Design — 核心循环设计文档</h1>
+    <h1>核心循环设计文档 <span class="version-badge">v4.1</span></h1>
+    <p class="subtitle">版本：4.1 &nbsp;|&nbsp; 修订日期：2026-05-13 &nbsp;|&nbsp; 修订内容：语言策略修复——所有界面文本统一使用中文（zh-CN）</p>
   </div>
+
   <div class="container">
 
-    <blockquote>
-      <p>版本：2.0 &nbsp;|&nbsp; 日期：2026-05-08 &nbsp;|&nbsp; 状态：已确认 &nbsp;|&nbsp; 来源：GDD v2.1 + puzzle-mechanics-spec v2.0</p>
-    </blockquote>
+    <div class="callout callout-amber">
+      <div class="callout-title">v4.0 修订说明</div>
+      <p>旧系统（炸弹、行消、自动连、重排作为棋盘图块）全部移除。炸弹/行消消除单格导致奇偶失衡的问题从根源解决：新5种特殊图块由设计本身保证奇偶安全，无需引擎运行时自动修正。旧重排和自动连功能移入UI层，成为花费<strong>沙滩币</strong>的场外辅助道具。</p>
+    </div>
 
-    <hr />
+    <hr>
 
-    <!-- ═══════════════════════════════════════════════════ -->
-    <h2 id="core-loop">1. 核心循环（Core Loop）</h2>
+    <!-- ════════════════════════════════════════════ -->
+    <h2 id="s1"><span class="sec-num">1</span> 核心机制概述</h2>
 
-    <p>每局关卡时长 <strong>30 秒 – 3 分钟</strong>，以步数制驱动，无倒计时压力。</p>
+    <p>Glow Island 的关卡玩法是<strong>节奏驱动的连连看</strong>（Combo-driven Mahjong Connect）。核心匹配规则与传统连连看一致：选中两个<strong>相同图块</strong>，连接路径<strong>最多转弯2次</strong>即可消除。叠加<strong>Combo计时器</strong>——快速连续匹配可维持连击链，音效节奏随连击加速，产生心流式爽快消除感。</p>
 
     <div class="loop-diagram">
-      <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;row-gap:0.8rem;">
+      <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;row-gap:0.8rem;">
         <span class="loop-node">选关</span>
         <span class="loop-connector">→</span>
-        <span class="loop-node">连连看（30s–3min）</span>
+        <span class="loop-node">观察棋盘</span>
         <span class="loop-connector">→</span>
-        <span class="loop-node">材料奖励</span>
+        <span class="loop-node">配对消除</span>
         <span class="loop-connector">→</span>
-        <span class="loop-node">岛屿修复进度</span>
+        <span class="loop-node">Combo累积</span>
         <span class="loop-connector">→</span>
-        <span class="loop-node">章节解锁</span>
+        <span class="loop-node">特殊块触发</span>
+        <span class="loop-connector">→</span>
+        <span class="loop-node">关卡结算</span>
       </div>
-      <div style="margin-top:1.2rem;color:var(--muted);font-size:0.82rem;line-height:1.8;">
-        <div>选关 &nbsp;→&nbsp; 进入关卡（律翻出旧物 / 走进荒芜角落）</div>
-        <div style="padding-left:1.5rem;">↓ 观察棋盘布局（图块颜色 / 位置 / 特殊块分布）</div>
-        <div style="padding-left:1.5rem;">↓ 规划连接路径（同色记忆碎片连线，路径可弯折，最短2个）</div>
-        <div style="padding-left:1.5rem;">↓ 触发消除 → 即时反馈（音效 + 粒子特效 + 连击计数）</div>
-        <div style="padding-left:1.5rem;">↓ 连击积累 → 触发特殊块生成 / 光能加成</div>
-        <div style="padding-left:1.5rem;">↓ 消除目标图块 / 达成关卡目标</div>
-        <div style="padding-left:1.5rem;">↓ 关卡结算（星级评定 / 材料掉落 / 光能积累）</div>
-        <div style="padding-left:1.5rem;">↓ 返回輝島世界地图 → <strong style="color:var(--accent)">章节解锁 / 下一关</strong></div>
+      <div style="margin-top:1.3rem;color:var(--muted);font-size:0.85rem;line-height:2.1;">
+        <div>进入关卡 → 棋盘由偶数个图块构成（每种类型数量均为偶数，保证全部可配对消除）</div>
+        <div style="padding-left:1.5rem;">↓ 选择两个<strong style="color:var(--accent4)">相同图块</strong>，路径≤2次转弯，成功则消除，消耗1步</div>
+        <div style="padding-left:1.5rem;">↓ 消除触发即时反馈（音效 + 粒子特效）并将Combo计时器重置为2000ms</div>
+        <div style="padding-left:1.5rem;">↓ 在计时器归零前继续消除 → Combo链累积 → 倍率上升 → 音效节奏加快</div>
+        <div style="padding-left:1.5rem;">↓ Combo=3生成连锁 / Combo=4生成光链 / Combo=6生成光波（重磅奖励）</div>
+        <div style="padding-left:1.5rem;">↓ 特殊图块激活 → 战术效果触发 → 奇偶天然安全（无需自动修正）</div>
+        <div style="padding-left:1.5rem;">↓ 所有图块消除完毕 → 关卡通关 → 材料奖励 + 叙事解锁</div>
       </div>
     </div>
 
-    <hr />
-
-    <!-- ═══════════════════════════════════════════════════ -->
-    <h2 id="meta-loop">2. 元循环（Meta Loop）</h2>
-
-    <p>局外周期：单次修复动画 30 秒 – 2 分钟，区域完整修复跨越数天游玩。</p>
-
-    <div class="loop-diagram">
-      <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;row-gap:0.8rem;">
-        <span class="loop-node" style="border-color:var(--accent2);color:var(--accent2);">关卡</span>
-        <span class="loop-connector" style="color:var(--accent2);">→</span>
-        <span class="loop-node" style="border-color:var(--accent2);color:var(--accent2);">材料</span>
-        <span class="loop-connector" style="color:var(--accent2);">→</span>
-        <span class="loop-node" style="border-color:var(--accent2);color:var(--accent2);">修复</span>
-        <span class="loop-connector" style="color:var(--accent2);">→</span>
-        <span class="loop-node" style="border-color:var(--accent2);color:var(--accent2);">叙事</span>
-        <span class="loop-connector" style="color:var(--accent2);">→</span>
-        <span class="loop-node" style="border-color:var(--accent2);color:var(--accent2);">下一章节</span>
-      </div>
-      <div style="margin-top:1.2rem;color:var(--muted);font-size:0.82rem;line-height:1.8;">
-        <div>通关关卡</div>
-        <div style="padding-left:1.5rem;">↓ 获得材料掉落（浮木/绳索/花种/陶片/温泉石等，对应章节主题）+ 光能积累</div>
-        <div style="padding-left:1.5rem;">↓ 材料自动轻合成（无复杂配方，系统自动聚合同类材料）</div>
-        <div style="padding-left:1.5rem;">↓ 区域修复进度条推进</div>
-        <div style="padding-left:1.5rem;">↓ 达到阶段阈值 → 触发渐进式修复动画（4阶段之一）</div>
-        <div style="padding-left:1.5rem;">↓ Glow图块光能积累满阈值 → 触发区域"点亮"视觉特效</div>
-        <div style="padding-left:1.5rem;">↓ 章节完整修复 → 解锁 NPC 标志性时刻动画 + 丸山渉记忆日志碎片 + 下一章节入口</div>
-        <div style="padding-left:1.5rem;">↓ <strong style="color:var(--accent2)">解锁新关卡包 → 新图块种类 / 新棋盘主题 / 新障碍类型</strong></div>
-      </div>
-    </div>
-
-    <h3>元循环层级（Layers）</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th><th>层级</th><th>触发频率</th><th>玩家所得</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>1</td><td>puzzle（局内）</td><td>每局 30s–3min</td><td>步数消耗、连击反馈、即时爽快感</td></tr>
-        <tr><td>2</td><td>material_reward（材料）</td><td>每关结算后</td><td>浮木/绳索/花种/陶片等资源</td></tr>
-        <tr><td>3</td><td>island_restoration（修复）</td><td>每 4–8 关一次可见变化</td><td>渐进式视觉修复动画、区域点亮</td></tr>
-        <tr><td>4</td><td>narrative_unlock（叙事）</td><td>每章节完成</td><td>NPC 时刻动画、渉的记忆日志、情感线推进</td></tr>
-      </tbody>
-    </table>
-
-    <hr />
-
-    <!-- ═══════════════════════════════════════════════════ -->
-    <h2 id="session-design">3. 会话设计原则（Session Design）</h2>
-
-    <div class="badge-row">
-      <span class="badge badge-green">步数制（Currency: Steps）</span>
-      <span class="badge badge-red">无倒计时（No Timer）</span>
-      <span class="badge badge-red">无体力系统（No Energy）</span>
-      <span class="badge badge-blue">失败零惩罚（No Resource Loss）</span>
-      <span class="badge badge-yellow">禅境模式（Zen Mode）</span>
-    </div>
-
-    <ul class="principle-list">
-      <li><strong>步数制，非时间制</strong>：每关有步数上限，压力来自策略而非焦虑——就像律在岛上慢慢生活，没有截止日期</li>
-      <li><strong>连线自由度</strong>：路径可弯折绕行（最多2次转弯），非直线限制，增加策略空间</li>
-      <li><strong>即时反馈</strong>：每次连接触发专属音效和粒子效果，形成上瘾性微奖励循环</li>
-      <li><strong>失败宽容</strong>：步数耗尽仅回到关卡起点，不扣材料、不消耗体力——岛不会因为你慢一点就放弃你</li>
-      <li><strong>禅境出口</strong>：每章2–3个禅境关，关闭步数上限和失败判定，提供零压力消除体验</li>
-      <li><strong>无体力门控</strong>：随时进出，无需等待体力恢复，真正自由游玩节奏</li>
+    <h3>基础配对规则</h3>
+    <ul>
+      <li><strong>同种图块</strong>才能配对，不同图块不可连接</li>
+      <li>连接路径<strong>最多转弯2次</strong>（L型或Z型路径），路径不能穿越其他图块</li>
+      <li>特殊障碍（冰封块、锁链等）阻断路径，需先清除才能连通</li>
+      <li>棋盘生成时保证每种图块数量为<strong>偶数</strong>；特殊图块激活不破坏此保证</li>
     </ul>
 
-    <table>
-      <thead>
-        <tr><th>维度</th><th>设定</th><th>设计意图</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>局内货币</td><td>步数（Steps）</td><td>策略压力而非时间焦虑</td></tr>
-        <tr><td>最短会话</td><td>30 秒</td><td>碎片时间友好</td></tr>
-        <tr><td>典型会话</td><td>90 秒</td><td>单关完成感</td></tr>
-        <tr><td>最长会话</td><td>3 分钟</td><td>挑战关上限</td></tr>
-        <tr><td>计时器</td><td>无</td><td>消除时间焦虑</td></tr>
-        <tr><td>体力系统</td><td>无</td><td>兑现治愈承诺</td></tr>
-        <tr><td>失败惩罚</td><td>无资源扣除</td><td>岛不放弃玩家</td></tr>
-      </tbody>
-    </table>
+    <hr>
 
-    <hr />
+    <!-- ════════════════════════════════════════════ -->
+    <h2 id="s2"><span class="sec-num">2</span> Combo 连击系统</h2>
 
-    <!-- ═══════════════════════════════════════════════════ -->
-    <h2 id="combo-system">4. 连击系统（Combo System）</h2>
-
-    <blockquote>
-      <p>参考手感：<strong>天天爱消除</strong>——每次成功匹配有清晰爽快的视觉+音效反馈，连击链产生渐进增强的爆炸/粒子特效。</p>
-    </blockquote>
-
-    <p>连续匹配之间间隔 <code>&lt; 2000ms</code> 视为同一连击链，超时或无可用匹配对时重置。</p>
+    <blockquote><strong>节奏设计目标：</strong>每次成功配对有清晰爽快的视觉+音效反馈，连击链产生渐进增强的特效。Combo不仅提升得分，更会在关键阈值自动生成高价值特殊图块，形成「越连越爽、越爽越多奖励」的正向飞轮。</blockquote>
 
     <div class="combo-row">
       <div class="combo-card">
         <div class="tier">×1</div>
         <div class="mult">×1.0</div>
         <div class="label">Combo 1</div>
-        <div class="effects">基础消除<br>清脆单音</div>
+        <div class="effects">基础消除<br>清脆单音<br>基础粒子</div>
       </div>
       <div class="combo-card">
         <div class="tier">×2</div>
         <div class="mult">×1.5</div>
         <div class="label">Combo 2</div>
-        <div class="effects">音效增强<br>粒子提升</div>
+        <div class="effects">音效增强<br>粒子提升<br>节奏加快</div>
       </div>
-      <div class="combo-card">
+      <div class="combo-card tier-3">
         <div class="tier">×3</div>
         <div class="mult">×2.0</div>
         <div class="label">Combo 3</div>
-        <div class="effects">音效增强<br>特效升级<br>炸弹块生成</div>
+        <div class="effects">橙红波纹<br>节奏鼓点<br>连锁图块生成</div>
       </div>
       <div class="combo-card tier-4">
         <div class="tier">×4</div>
         <div class="mult">×3.0</div>
-        <div class="label">Combo 4+</div>
-        <div class="effects">音效增强<br>特效升级<br>屏幕震动<br>粒子爆发</div>
+        <div class="label">Combo 4</div>
+        <div class="effects">屏幕震动<br>粒子爆发<br>光链图块生成</div>
+      </div>
+    </div>
+
+    <div class="combo-card tier-6" style="max-width:260px;margin:0 auto 1.5rem;">
+      <div class="tier">×6</div>
+      <div class="mult">×3.0+</div>
+      <div class="label">Combo 6 — 重磅奖励</div>
+      <div class="effects" style="font-size:0.82rem;">全屏特效爆发<br>暖白光波生成<br>障碍清除利器</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Combo 数</th>
+          <th>得分倍率</th>
+          <th>特殊块自动生成</th>
+          <th>视觉/音效反馈</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td><td>×1.0</td>
+          <td>—</td>
+          <td>清脆单音，基础粒子爆发</td>
+        </tr>
+        <tr>
+          <td>2</td><td>×1.5</td>
+          <td>—</td>
+          <td>音效升调，粒子体积增大</td>
+        </tr>
+        <tr>
+          <td>3</td><td>×2.0</td>
+          <td><strong class="color-cascade">连锁（cascade）</strong> 在最近消除位生成</td>
+          <td>全屏微震，橙红波纹扩散</td>
+        </tr>
+        <tr>
+          <td>4</td><td>×3.0</td>
+          <td><strong class="color-chain">光链（light_chain）</strong> 在最近消除位生成</td>
+          <td>屏幕震动 + 金色光环脉冲</td>
+        </tr>
+        <tr>
+          <td>5</td><td>×3.0</td>
+          <td>—</td>
+          <td>粒子爆发 + 节奏鼓点</td>
+        </tr>
+        <tr>
+          <td>6+</td><td>×3.0</td>
+          <td><strong class="color-wave">光波（wave）</strong> 在最近消除位生成（重磅奖励）</td>
+          <td>全屏温暖白光爆发，障碍清除预告特效</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Combo计时窗口：<code>2000 ms</code>。连续两次配对间隔 &lt; 2000ms 视为同一Combo链；超时归零。</p>
+
+    <hr>
+
+    <!-- ════════════════════════════════════════════ -->
+    <h2 id="s3"><span class="sec-num">3</span> 步数制</h2>
+
+    <div class="badge-row">
+      <span class="badge badge-amber">步数制（每次配对消耗1步）</span>
+      <span class="badge badge-red">无倒计时</span>
+      <span class="badge badge-red">无体力系统</span>
+      <span class="badge badge-green">失败零惩罚</span>
+      <span class="badge badge-warm">禅境模式</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>维度</th><th>设定</th><th>设计意图</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>步数消耗</td><td>每次配对消耗1步；特殊块激活不额外消耗步数</td><td>策略压力而非时间焦虑</td></tr>
+        <tr><td>会话时长</td><td>最短30秒 / 典型90秒 / 最长3分钟</td><td>碎片时间友好，单关完成感</td></tr>
+        <tr><td>倒计时</td><td>无</td><td>消除时间焦虑</td></tr>
+        <tr><td>体力系统</td><td>无</td><td>兑现治愈承诺，随时进出</td></tr>
+        <tr><td>失败惩罚</td><td>无资源扣除，随时重试</td><td>降低挫败感，鼓励再尝试</td></tr>
+        <tr><td>续关</td><td>步数耗尽 → 弹出续关选项（30沙滩币+5步）</td><td>唯一付费点，非强制</td></tr>
+        <tr><td>购买提示</td><td>连续失败2次内不弹出；第3次后场景化提示</td><td>非侵入式，尊重玩家节奏</td></tr>
+        <tr><td>禅境模式</td><td>每章2–3个禅境关，无步数上限，无失败判定</td><td>零压力消除体验</td></tr>
+      </tbody>
+    </table>
+
+    <hr>
+
+    <!-- ════════════════════════════════════════════ -->
+    <h2 id="s4"><span class="sec-num">4</span> 特殊图块——5种战术型棋盘图块</h2>
+
+    <div class="callout callout-green">
+      <div class="callout-title">v4.0 奇偶安全原则（大幅简化）</div>
+      <p>新5种特殊图块<strong>由设计层面天然保证奇偶安全</strong>，无需引擎运行时自动修正：光波仅清除障碍层（不触碰匹配图块）；光链只消除完整配对（始终偶数消除）；穿透不移除任何图块；置换只交换位置不增减图块；连锁只自动匹配合法图块对（始终偶数消除）。奇偶校验仅在关卡生成时执行一次即可。</p>
+    </div>
+
+    <h3>汇总对比</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>图块</th>
+          <th>生成方式</th>
+          <th>触发条件</th>
+          <th>核心效果</th>
+          <th>奇偶安全</th>
+          <th>Combo交互</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong class="color-wave">光波</strong></td>
+          <td>Combo=6 / 预置</td>
+          <td>配对两个光波</td>
+          <td>清除3×3范围障碍层 + 5秒自由路径区</td>
+          <td>不触碰匹配图块，天然安全</td>
+          <td>+1次，重置计时器</td>
+        </tr>
+        <tr>
+          <td><strong class="color-chain">光链</strong></td>
+          <td>Combo=4 / 预置</td>
+          <td>配对两个光链</td>
+          <td>自动匹配全场最多类型图块的所有配对</td>
+          <td>仅完整对消除，始终偶数</td>
+          <td>每对+1次，最后一对重置</td>
+        </tr>
+        <tr>
+          <td><strong class="color-pierce">穿透</strong></td>
+          <td>仅关卡预置</td>
+          <td>配对两个穿透</td>
+          <td>8秒路径可穿越任意格子</td>
+          <td>不移除图块，零影响</td>
+          <td>+1次，重置计时器</td>
+        </tr>
+        <tr>
+          <td><strong class="color-swap">置换</strong></td>
+          <td>仅关卡预置</td>
+          <td>配对两个置换</td>
+          <td>选择任意两格互换内容（10秒选择窗口）</td>
+          <td>只改位置不增减，零影响</td>
+          <td>+1次，重置计时器</td>
+        </tr>
+        <tr>
+          <td><strong class="color-cascade">连锁</strong></td>
+          <td>Combo=3 / 预置</td>
+          <td>配对两个连锁</td>
+          <td>自动连续匹配最近合法对，最多5次，间隔0.3s</td>
+          <td>仅合法配对消除，始终偶数</td>
+          <td>每次自动匹配+1次，最后重置</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- WAVE -->
+    <div class="special-tile-card wave-tile">
+      <div class="tile-header">
+        <div class="tile-icon wave-i">🌟</div>
+        <div>
+          <div class="tile-title">光波（Wave）</div>
+          <div class="tile-subtitle">id: wave &nbsp;·&nbsp; 图标：涟漪光环，暖白色</div>
+          <div>
+            <span class="tile-generation-tag gen-combo">Combo=6 自动生成</span>
+            <span class="tile-generation-tag gen-preset" style="margin-left:0.4rem;">关卡预置</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile-props">
+        <div class="tile-prop">
+          <div class="tile-prop-label">触发条件</div>
+          <div class="tile-prop-value">将两个光波图块配对连线时激活。</div>
+        </div>
+        <div class="tile-prop">
+          <div class="tile-prop-label">Combo 交互</div>
+          <div class="tile-prop-value">激活计入Combo链（+1次），重置计时器。</div>
+        </div>
+        <div class="tile-prop full-width">
+          <div class="tile-prop-label">效果说明</div>
+          <div class="tile-prop-value">清除以两个光波连线中点为中心的 <strong>3×3范围内所有障碍层</strong>（冰封块、锁链、藤蔓、木箱等）。匹配图块本身<strong>不被移除</strong>，只清除障碍层。同时赋予<strong>「自由路径区」5秒增益</strong>：在已清除区域内，连线可自由穿越任意图块（忽略占据限制）。</div>
+        </div>
+        <div class="tile-prop parity-prop">
+          <div class="tile-prop-label"><span class="parity-label">奇偶安全说明</span></div>
+          <div class="tile-prop-value">障碍物不是配对图块——清除障碍对任何图块的数量奇偶性均无影响。匹配图块完全不被触动。<strong>天然零奇偶风险</strong>，无需任何修正逻辑。</div>
+        </div>
+        <div class="tile-prop full-width">
+          <div class="tile-prop-label">视觉特效</div>
+          <div class="tile-prop-value">暖白色涟漪光环向外扩散 → 3×3范围障碍物碎裂消散 → 清除区域持续5秒柔和光晕（提示自由路径增益期）→ 5秒后光晕渐退。音效：清澈钟鸣声 + 障碍碎裂声 + 持续低沉环境光音。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIGHT CHAIN -->
+    <div class="special-tile-card chain-tile">
+      <div class="tile-header">
+        <div class="tile-icon chain-i">⛓</div>
+        <div>
+          <div class="tile-title">光链（Light Chain）</div>
+          <div class="tile-subtitle">id: light_chain &nbsp;·&nbsp; 图标：链式光环，金色连环</div>
+          <div>
+            <span class="tile-generation-tag gen-combo">Combo=4 自动生成</span>
+            <span class="tile-generation-tag gen-preset" style="margin-left:0.4rem;">关卡预置</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile-props">
+        <div class="tile-prop">
+          <div class="tile-prop-label">触发条件</div>
+          <div class="tile-prop-value">将两个光链图块配对连线时激活。</div>
+        </div>
+        <div class="tile-prop">
+          <div class="tile-prop-label">Combo 交互</div>
+          <div class="tile-prop-value">每次自动匹配的配对各计入Combo链（+1次）。多对同时消除时Combo可急速飙升。最后一次自动配对完成后重置计时器。</div>
+        </div>
+        <div class="tile-prop full-width">
+          <div class="tile-prop-label">效果说明</div>
+          <div class="tile-prop-value">扫描全棋盘，找出<strong>当前数量最多的图块类型</strong>，然后自动匹配该类型所有可组成的配对——连线从所有实例同时射出，飞向各自配对目标，同时消失。若该类型数量为奇数，最后一个单块不被消除（保持偶数消除原则）。</div>
+        </div>
+        <div class="tile-prop parity-prop">
+          <div class="tile-prop-label"><span class="parity-label">奇偶安全说明</span></div>
+          <div class="tile-prop-value">只消除完整配对（成双消除），<strong>始终移除偶数数量图块</strong>。奇数个时留下最后1块，不破坏奇偶性。天然安全，无需修正。</div>
+        </div>
+        <div class="tile-prop full-width">
+          <div class="tile-prop-label">视觉特效</div>
+          <div class="tile-prop-value">金色光环脉冲两下 → 扫描波横扫棋盘 → 目标类型所有图块同时高亮为金色 → 连线同时从各实例射出飞向配对目标 → 链式消失配合渐进加强的连续音效。音效：金色扫描音 + 连续「叮」声（每对一声，节奏感强）。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIERCE -->
+    <div class="special-tile-card pierce-tile">
+      <div class="tile-header">
+        <div class="tile-icon pierce-i">⚡</div>
+        <div>
+          <div class="tile-title">穿透（Pierce）</div>
+          <div class="tile-subtitle">id: pierce &nbsp;·&nbsp; 图标：光箭，蓝白渐变，穿透感</div>
+          <div>
+            <span class="tile-generation-tag gen-preset">仅关卡预置（战略性谜题元素）</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile-props">
+        <div class="tile-prop">
+          <div class="tile-prop-label">触发条件</div>
+          <div class="tile-prop-value">将两个穿透图块配对连线时激活。</div>
+        </div>
+        <div class="tile-prop">
+          <div class="tile-prop-label">Combo 交互</div>
+          <div class="tile-prop-value">激活计入Combo链（+1次），重置计时器。穿透模式期间正常配对各自计入Combo。</div>
+        </div>
+        <div class="tile-prop full-width">
+          <div class="tile-prop-label">效果说明</div>
+          <div class="tile-prop-value">赋予玩家<strong>「穿透模式」增益，持续8秒</strong>。在穿透模式下，连线路径可穿越棋盘上任意已占据的格子（包括匹配图块和障碍物）。<strong>同种图块匹配规则不变</strong>——仍需连接相同类型图块，只是路径路由限制临时解除。</div>
+        </div>
+        <div class="tile-prop parity-prop">
+          <div class="tile-prop-label"><span class="parity-label">奇偶安全说明</span></div>
+          <div class="tile-prop-value">穿透模式<strong>不移除任何图块</strong>，只修改路径路由规则。奇偶完全不受影响。</div>
+        </div>
+        <div class="tile-prop full-width">
+          <div class="tile-prop-label">视觉特效</div>
+          <div class="tile-prop-value">蓝白光箭爆发 → 屏幕四角持续蓝色边缘光晕（增益存续标志）→ 增益期间的连线呈现为发光光束而非普通连线 → 8秒后边缘光晕渐退，连线恢复正常样式。音效：穿透激活的锐利音效 + 穿透连线时的特殊穿梭音。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SWAP -->
+    <div class="special-tile-card swap-tile">
+      <div class="tile-header">
+        <div class="tile-icon swap-i">🔀</div>
+        <div>
+          <div class="tile-title">置换（Swap）</div>
+          <div class="tile-subtitle">id: swap &nbsp;·&nbsp; 图标：双向箭头，绿色旋转</div>
+          <div>
+            <span class="tile-generation-tag gen-preset">仅关卡预置（高技巧战术元素）</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile-props">
+        <div class="tile-prop">
+          <div class="tile-prop-label">触发条件</div>
+          <div class="tile-prop-value">将两个置换图块配对连线时激活，进入「选择模式」。</div>
+        </div>
+        <div class="tile-prop">
+          <div class="tile-prop-label">Combo 交互</div>
+          <div class="tile-prop-value">配对置换图块计入Combo链（+1次），重置计时器。置换操作本身不额外计为一次配对。</div>
+        </div>
+        <div class="tile-prop full-width">
+          <div class="tile-prop-label">效果说明</div>
+          <div class="tile-prop-value">玩家在棋盘上<strong>选择任意两个格子</strong>——它们的内容（图块/障碍/空格）互换位置。可交换：图块+图块（同种或不同种）、图块+障碍、图块+空格。完成选择后立即交换，游戏恢复正常。玩家有<strong>10秒</strong>完成选择；若超时未选择，置换图块保留在棋盘上，等待玩家再次配对触发。</div>
+        </div>
+        <div class="tile-prop parity-prop">
+          <div class="tile-prop-label"><span class="parity-label">奇偶安全说明</span></div>
+          <div class="tile-prop-value">只交换位置，<strong>不增减任何图块</strong>。总计数不变，奇偶完全不受影响。</div>
+        </div>
+        <div class="tile-prop full-width">
+          <div class="tile-prop-label">视觉特效</div>
+          <div class="tile-prop-value">两个绿色旋转螺旋出现在被选中的格子上 → 两个螺旋相向加速旋转 → 图块互换位置时产生弹性「咔哒」特效 → 绿色光晕渐退。棋盘角落显示10秒选择倒计时进度条。音效：选中音 + 置换完成的满足感「咔哒」声。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASCADE -->
+    <div class="special-tile-card cascade-tile">
+      <div class="tile-header">
+        <div class="tile-icon cascade-i">🔥</div>
+        <div>
+          <div class="tile-title">连锁（Cascade）</div>
+          <div class="tile-subtitle">id: cascade &nbsp;·&nbsp; 图标：连环波纹，橙红渐变</div>
+          <div>
+            <span class="tile-generation-tag gen-combo">Combo=3 自动生成</span>
+            <span class="tile-generation-tag gen-preset" style="margin-left:0.4rem;">关卡预置</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile-props">
+        <div class="tile-prop">
+          <div class="tile-prop-label">触发条件</div>
+          <div class="tile-prop-value">将两个连锁图块配对连线时激活。</div>
+        </div>
+        <div class="tile-prop">
+          <div class="tile-prop-label">Combo 交互</div>
+          <div class="tile-prop-value">每次自动配对各计入Combo链（+1次）。完整5连锁 = 瞬间+5 Combo，极具爽快感。最后一次自动配对完成后重置计时器。</div>
+        </div>
+        <div class="tile-prop full-width">
+          <div class="tile-prop-label">效果说明</div>
+          <div class="tile-prop-value">引擎自动执行<strong>连锁配对</strong>——找到当前路径最短的合法配对，自动连线消除，再从新棋盘状态找下一个最短合法配对，持续进行。终止条件：<strong>完成5次自动配对</strong>，或棋盘已无合法配对。每次自动配对之间有<strong>0.3秒延迟</strong>，让玩家看清连锁过程。</div>
+        </div>
+        <div class="tile-prop parity-prop">
+          <div class="tile-prop-label"><span class="parity-label">奇偶安全说明</span></div>
+          <div class="tile-prop-value">只执行路径可连通的合法配对（完整图块对），<strong>始终偶数消除</strong>。不产生孤立块，天然安全。</div>
+        </div>
+        <div class="tile-prop full-width">
+          <div class="tile-prop-label">视觉特效</div>
+          <div class="tile-prop-value">橙红波纹向外扩展 → 引擎锁定第一目标对（聚光灯效果高亮）→ 自动连线消除 → 0.3s后锁定下一对 → 循环往复，节奏逐渐加快，音效强度逐渐增强，形成加速连击感。音效：连锁启动低沉音 + 每次自动消除节奏递进的清脆音。</div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- ════════════════════════════════════════════ -->
+    <h2 id="s5"><span class="sec-num">5</span> 场外辅助——3种沙滩币消耗道具</h2>
+
+    <div class="callout callout-warm">
+      <div class="callout-title">场外辅助说明</div>
+      <p>场外辅助不占用棋盘格子，通过UI按钮触发，是玩家遇困时的<strong>主动求助手段</strong>，非自动机制。花费沙滩币（游戏内货币），不影响棋盘图块奇偶性。旧版「重排」和「自动连」的功能在此以更清晰的付费方式呈现。</p>
+    </div>
+
+    <div class="assist-grid">
+      <div class="assist-card">
+        <div class="assist-icon">🌊</div>
+        <div class="assist-name">重排</div>
+        <div class="assist-cost">30 沙滩币</div>
+        <div class="assist-trigger">触发：引擎检测到无合法配对时弹出引导 / 玩家随时主动点击</div>
+        <div class="assist-effect">打乱棋盘上所有图块的位置，保证新布局中至少存在一个合法配对。图块种类数量完全不变，仅位置改变。随机打乱后无配对则最多重排3次直到有配对。</div>
+      </div>
+      <div class="assist-card">
+        <div class="assist-icon">💡</div>
+        <div class="assist-name">预判</div>
+        <div class="assist-cost">10 沙滩币</div>
+        <div class="assist-trigger">触发：玩家主动点击『预判』按钮</div>
+        <div class="assist-effect">高亮显示当前棋盘上最优的下一步连接序列（综合Combo延续和步数效率的最佳配对路径）。高亮持续3秒后自动消失。</div>
+      </div>
+      <div class="assist-card">
+        <div class="assist-icon">➕</div>
+        <div class="assist-name">续关</div>
+        <div class="assist-cost">30 沙滩币</div>
+        <div class="assist-trigger">触发：步数耗尽时弹出结算界面，提供续关选项</div>
+        <div class="assist-effect">立即补充 +5步，关卡继续进行。同一关卡可多次续关（多次付费）。这是游戏的<strong>主要付费转化点</strong>。</div>
       </div>
     </div>
 
     <table>
       <thead>
-        <tr><th>连击数</th><th>乘数</th><th>窗口（ms）</th><th>特殊块生成</th><th>视觉效果</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>1</td><td>×1.0</td><td rowspan="4" style="vertical-align:middle;text-align:center;">2000 ms</td><td>—</td><td>清脆单音，基础粒子</td></tr>
-        <tr><td>2</td><td>×1.5</td><td>—</td><td>音效增强</td></tr>
-        <tr><td>3</td><td>×2.0</td><td>炸弹块（Bomb）必定生成</td><td>特效升级，全屏微震</td></tr>
-        <tr><td>4+</td><td>×3.0</td><td>风车块（Windmill）必定生成</td><td>屏幕震动 + 粒子爆发</td></tr>
-      </tbody>
-    </table>
-
-    <h3>连击重置条件</h3>
-    <ul>
-      <li>连续两次匹配间隔超过 <code>2000ms</code></li>
-      <li>棋盘当前无任何可用匹配对</li>
-    </ul>
-
-    <hr />
-
-    <!-- ═══════════════════════════════════════════════════ -->
-    <h2 id="special-blocks">5. 四种特殊图块（Special Blocks）</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>图块</th>
-          <th>ID</th>
-          <th>触发方式</th>
-          <th>效果</th>
-          <th>视觉表现</th>
-          <th>动画时长</th>
-        </tr>
+        <tr><th>辅助道具</th><th>触发方式</th><th>效果</th><th>沙滩币消耗</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>炸弹（Bomb）</strong></td>
-          <td><code>bomb</code></td>
-          <td>3连击自动生成 / 关卡预置</td>
-          <td>以炸弹块为中心的 <strong>3×3 范围</strong>内所有图块消除（含障碍物及覆盖层）</td>
-          <td>橙色闪光球体，爆炸粒子+冲击波环扩散，3×3范围逐格飞散</td>
-          <td>0.5 s</td>
+          <td><strong>重排</strong></td>
+          <td>无合法配对时提示 / 随时主动触发</td>
+          <td>打乱所有图块位置，保证有合法配对</td>
+          <td>30</td>
         </tr>
         <tr>
-          <td><strong>风车（Windmill）</strong></td>
-          <td><code>windmill</code></td>
-          <td>4连击自动生成 / 关卡预置</td>
-          <td>清除风车块所在<strong>整行+整列</strong>所有图块（十字消除，同时触发）</td>
-          <td>旋转风车纹理，横竖双光柱同时扫过，图块向两侧飞散</td>
-          <td>0.4 s</td>
+          <td><strong>预判</strong></td>
+          <td>随时主动触发</td>
+          <td>高亮最优下一步连接序列，持续3秒</td>
+          <td>10</td>
         </tr>
         <tr>
-          <td><strong>灯光（Light / Lantern）</strong></td>
-          <td><code>lantern</code></td>
-          <td>仅关卡预置（不可连击生成）</td>
-          <td><strong>自动寻路</strong>连接距离最近的同类型图块，无需玩家操作，连接成功后双方消除</td>
-          <td>橙色光晕持续脉冲，发光连线高速飞向目标，双方光点爆发消除</td>
-          <td>0.3 s</td>
-        </tr>
-        <tr>
-          <td><strong>海浪（Wave）</strong></td>
-          <td><code>wave</code></td>
-          <td>仅关卡预置（不可连击生成）</td>
-          <td><strong>重新随机排列</strong>棋盘上所有图块位置（保持各类型图块数量不变）；重排后无可用匹配则再次重排，最多3次</td>
-          <td>蓝色水波纹从中心扩散，全棋盘漩涡式上扬后重新落下，配合哗海浪音效</td>
-          <td>0.8 s</td>
+          <td><strong>续关</strong></td>
+          <td>步数耗尽后弹出</td>
+          <td>补充+5步，关卡继续</td>
+          <td>30</td>
         </tr>
       </tbody>
     </table>
 
-    <blockquote>
-      <p>所有特殊块激活动画不可跳过（0.3–0.8s），保持节奏感。障碍物被清除时有专属碎裂/断链粒子效果。</p>
-    </blockquote>
+    <hr>
 
-    <hr />
+    <!-- ════════════════════════════════════════════ -->
+    <h2 id="s6"><span class="sec-num">6</span> 章节机制解锁时间表</h2>
 
-    <!-- ═══════════════════════════════════════════════════ -->
-    <h2 id="chapter-mechanics">6. 章节机制解锁表（Chapter Mechanics Unlock）</h2>
+    <blockquote>特殊图块按章节逐步解锁，让玩家在每章专注掌握一种新能力，避免信息过载。场外三种辅助道具全程可用。</blockquote>
 
+    <div class="chapter-timeline">
+      <div class="chapter-item">
+        <div class="chapter-num">第1章 · 海边码头</div>
+        <div class="chapter-title">到来——基础连连看 + Combo + 连锁初登场</div>
+        <div class="chapter-detail">
+          棋盘：8×8 标准矩形 | 障碍：无<br>
+          新增机制：基础连连看规则（≤2次转弯配对） + Combo计时器（2000ms） + 倍率系统<br>
+          前3关手势引导教学；连锁（cascade）通过Combo=3生成，教学关演示自动连锁消除
+        </div>
+        <div class="chapter-tiles">
+          <span class="tile-badge tb-cascade">连锁 cascade <span class="tb-new">NEW</span></span>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-num">第2章 · 中央小镇</div>
+        <div class="chapter-title">扎根——冰封障碍 + 光链解锁</div>
+        <div class="chapter-detail">
+          棋盘：9×9 标准矩形 | 障碍：冰封块（1层）、杂草<br>
+          新增机制：冰封块（ice_block）——被相邻配对消除时破冰1层<br>
+          光链（light_chain）通过Combo=4生成；演示扫全图自动匹配同类型图块的链消效果
+        </div>
+        <div class="chapter-tiles">
+          <span class="tile-badge tb-cascade">连锁 cascade</span>
+          <span class="tile-badge tb-chain">光链 light_chain <span class="tb-new">NEW</span></span>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-num">第3章 · 花田山坡</div>
+        <div class="chapter-title">感受——锁链传送门 + 光波解锁</div>
+        <div class="chapter-detail">
+          棋盘：8×8起，异形棋盘开始引入 | 障碍：冰封块（2层）、锁链、传送门、杂草<br>
+          新增机制：锁链（chain_lock，1–2环）——配对时计链消耗；传送门（portal）——路径可穿越<br>
+          光波（wave）通过Combo=6生成；本章锁链/传送门障碍让wave的3×3清除能力发挥核心价值
+        </div>
+        <div class="chapter-tiles">
+          <span class="tile-badge tb-cascade">连锁 cascade</span>
+          <span class="tile-badge tb-chain">光链 light_chain</span>
+          <span class="tile-badge tb-wave">光波 wave <span class="tb-new">NEW</span></span>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-num">第4章 · 森林露营地</div>
+        <div class="chapter-title">栖息——单路径通道 + 穿透解锁</div>
+        <div class="chapter-detail">
+          棋盘：8×8异形 | 障碍：冰封块（3层）、锁链（3环）、传送门、单路径通道、木箱<br>
+          新增机制：单路径通道（single_path_corridor）——路径只能走指定通道<br>
+          穿透（pierce）关卡预置引入；紧密通道布局让pierce的路径穿越能力成为关键战术
+        </div>
+        <div class="chapter-tiles">
+          <span class="tile-badge tb-cascade">连锁 cascade</span>
+          <span class="tile-badge tb-chain">光链 light_chain</span>
+          <span class="tile-badge tb-wave">光波 wave</span>
+          <span class="tile-badge tb-pierce">穿透 pierce <span class="tb-new">NEW</span></span>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-num">第5章 · 温泉山谷</div>
+        <div class="chapter-title">接受——重力系统 + 置换解锁（五种特殊块全解锁）</div>
+        <div class="chapter-detail">
+          棋盘：9×9异形 | 障碍：冰封块、锁链、传送门、单路径通道、水流<br>
+          新增机制：重力下落（tile_fall）——图块消除后上方图块向下填补；方块滑落；局部旋转（挑战关）<br>
+          置换（swap）关卡预置引入；重力机制改变图块布局，swap的位置互换在重力章节提供精准战术控制<br>
+          五种特殊图块全部解锁
+        </div>
+        <div class="chapter-tiles">
+          <span class="tile-badge tb-cascade">连锁 cascade</span>
+          <span class="tile-badge tb-chain">光链 light_chain</span>
+          <span class="tile-badge tb-wave">光波 wave</span>
+          <span class="tile-badge tb-pierce">穿透 pierce</span>
+          <span class="tile-badge tb-swap">置换 swap <span class="tb-new">NEW</span></span>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-num">第6章 · 夜晚灯塔</div>
+        <div class="chapter-title">点亮——扩散障碍 + 全机制综合挑战</div>
+        <div class="chapter-detail">
+          棋盘：10×10异形 | 障碍：全部类型 + 扩散障碍（藤蔓/苔藓）<br>
+          新增机制：扩散障碍——每N步向相邻格扩展1格（仅阻断路径，不改变图块数量，不影响奇偶）<br>
+          全20种图块解锁；80%有效格被占触发视觉警告；五种特殊图块综合运用
+        </div>
+        <div class="chapter-tiles">
+          <span class="tile-badge tb-cascade">连锁 cascade</span>
+          <span class="tile-badge tb-chain">光链 light_chain</span>
+          <span class="tile-badge tb-wave">光波 wave</span>
+          <span class="tile-badge tb-pierce">穿透 pierce</span>
+          <span class="tile-badge tb-swap">置换 swap</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>章节解锁时间表汇总</h3>
     <table>
       <thead>
         <tr>
           <th>章节</th>
           <th>区域</th>
-          <th>棋盘尺寸</th>
+          <th>棋盘</th>
           <th>新增机制</th>
           <th>可用特殊块</th>
-          <th>障碍类型</th>
+          <th>主要障碍</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>Ch1</strong></td>
-          <td>海边码头</td>
-          <td>6×6</td>
-          <td><em>基础连连看 + 连击系统（combo）</em>；炸弹块（3连击生成）；前3关无压力引导</td>
-          <td>bomb</td>
+          <td>Ch1</td><td>海边码头</td><td>8×8</td>
+          <td>基础连连看、Combo系统</td>
+          <td>连锁</td>
           <td>—</td>
         </tr>
         <tr>
-          <td><strong>Ch2</strong></td>
-          <td>中央小镇</td>
-          <td>7×7</td>
-          <td><em>冰封块（ice_block，1层引入）</em>；杂草障碍（weed）；风车块（4连击）解锁</td>
-          <td>bomb, windmill</td>
+          <td>Ch2</td><td>中央小镇</td><td>9×9</td>
+          <td>冰封块（1层）</td>
+          <td>连锁、光链</td>
           <td>ice_block, weed</td>
         </tr>
         <tr>
-          <td><strong>Ch3</strong></td>
-          <td>花田山坡</td>
-          <td>8×8</td>
-          <td><em>锁链（chain_lock，1–2环）+ 传送门（portal）</em>；冰封块升级至2层；灯光块（lantern）关卡预置解锁</td>
-          <td>bomb, windmill, lantern</td>
+          <td>Ch3</td><td>花田山坡</td><td>8×8异形</td>
+          <td>锁链、传送门，冰封升2层</td>
+          <td>连锁、光链、光波</td>
           <td>ice_block, chain_lock, portal, weed</td>
         </tr>
         <tr>
-          <td><strong>Ch4</strong></td>
-          <td>森林露营地</td>
-          <td>8×8</td>
-          <td><em>单路径通道（single_path_corridor）</em>；冰封块升至3层；锁链升至3环；木箱障碍（wooden_crate）；海浪块（wave）解锁</td>
-          <td>bomb, windmill, lantern, wave</td>
-          <td>ice_block, chain_lock, portal, single_path_corridor, wooden_crate</td>
+          <td>Ch4</td><td>森林露营地</td><td>8×8异形</td>
+          <td>单路径通道，冰封3层，锁链3环</td>
+          <td>连锁、光链、光波、穿透</td>
+          <td>ice_block, chain_lock, portal, single_path, wooden_crate</td>
         </tr>
         <tr>
-          <td><strong>Ch5</strong></td>
-          <td>温泉山谷</td>
-          <td>9×9</td>
-          <td><em>重力系统（tile_fall / tile_slide / board_rotate）</em>；水流障碍（water_current）；board_rotate 仅用于挑战关</td>
-          <td>bomb, windmill, lantern, wave</td>
-          <td>+ water_current；重力事件: tile_fall, tile_slide, board_rotate</td>
+          <td>Ch5</td><td>温泉山谷</td><td>9×9异形</td>
+          <td>重力下落、滑落、局部旋转（挑战关）</td>
+          <td>连锁、光链、光波、穿透、置换</td>
+          <td>+ water_current; 重力事件</td>
         </tr>
         <tr>
-          <td><strong>Ch6</strong></td>
-          <td>夜晚灯塔</td>
-          <td>10×10</td>
-          <td><em>扩散障碍（spreading_obstacle：藤蔓/苔藓）</em>；所有机制组合挑战；20种图块全解锁；占80%可用格触发视觉警告</td>
-          <td>bomb, windmill, lantern, wave</td>
-          <td>全部 + spreading_obstacle；事件: tile_fall, tile_slide, board_rotate, water_flow, vine_spread</td>
+          <td>Ch6</td><td>夜晚灯塔</td><td>10×10异形</td>
+          <td>扩散障碍（藤蔓/苔藓），全机制组合</td>
+          <td>全5种</td>
+          <td>全部 + spreading_obstacle</td>
         </tr>
       </tbody>
     </table>
 
-    <hr />
+    <hr>
 
-    <!-- ═══════════════════════════════════════════════════ -->
-    <h2 id="player-motivation">7. 玩家动机循环（Player Motivation Loop）</h2>
-
-    <blockquote>
-      <p>基于 Bartle 玩家分类与自我决定理论（Deci &amp; Ryan），Glow Island 针对核心受众设计了双轴动机引擎。</p>
-    </blockquote>
-
-    <div class="motivation-grid">
-      <div class="motivation-card">
-        <div class="type-label">Bartle Type — Explorer</div>
-        <h4>探索者：治愈体验驱动</h4>
-        <p>岛屿修复的渐进视觉变化、丸山渉记忆日志的碎片解锁、每章色调与叙事的情绪递进——让探索型玩家持续有"下一个发现"的期待感。</p>
-        <p style="margin-top:0.5rem;color:var(--accent2);">设计响应：每4–8关触发一次可见视觉变化；修复动画总有一个温柔小细节（一只猫、晾衣绳上多了一件衣服）。</p>
-      </div>
-      <div class="motivation-card">
-        <div class="type-label">Bartle Type — Achiever</div>
-        <h4>成就者：岛屿修复完成感</h4>
-        <p>星级评定、剩余步数奖励、连击乘数系统——让成就型玩家在每局都有具体可量化的目标，并通过章节进度条感受宏观成长。</p>
-        <p style="margin-top:0.5rem;color:var(--accent2);">设计响应：3星通关 = 剩余步数≥40%上限；连击×3.0触发全屏爽快感；每章完整修复解锁标志性NPC时刻动画。</p>
-      </div>
-      <div class="motivation-card">
-        <div class="type-label">SDT — Autonomy（自主）</div>
-        <h4>自主感：无门控自由游玩</h4>
-        <p>无体力系统、无倒计时、随时进出、禅境模式自由选择——玩家的节奏由玩家掌控，治愈承诺从设计层面兑现。</p>
-        <p style="margin-top:0.5rem;color:var(--accent2);">核心功能：F-004 无体力自由游玩；禅境关每章2–3个；步数制不强迫速度。</p>
-      </div>
-      <div class="motivation-card">
-        <div class="type-label">SDT — Competence（胜任）</div>
-        <h4>胜任感：平滑难度曲线</h4>
-        <p>前15关纯净入门，每关引入1个新概念；4种特殊块赋予策略感；失败不惩罚资源，降低挫败感，让玩家在每局都能找到"我做到了"的时刻。</p>
-        <p style="margin-top:0.5rem;color:var(--accent2);">失败设计：连续2次失败内不弹出购买提示；第3次失败后场景化非侵入提示助攻器。</p>
-      </div>
+    <div class="footer">
+      Glow Island · 核心循环设计 v4.1 · 輝島（Kagayaki-jima）· 修订日期 2026-05-13<br>
+      修订要点：语言策略修复——所有章节标签、界面文本统一使用中文（zh-CN）；游戏内专有名词（人名/地名）保留日文；JSON字段键名保留英文snake_case
     </div>
-
-    <h3>情感循环完整路径</h3>
-    <div class="loop-diagram">
-      <div style="color:var(--muted);font-size:0.85rem;line-height:2.1;">
-        <div><span style="color:var(--accent)">律抵达輝島（到来·悠闲）</span></div>
-        <div style="padding-left:2rem;">↓ 每局连连看 → 连击爽快感 → 材料掉落</div>
-        <div style="padding-left:2rem;">↓ 修复进度推进 → 岛屿渐进视觉变化（玩家感知"我让它改变了"）</div>
-        <div style="padding-left:2rem;">↓ NPC时刻动画 + 渉的记忆日志解锁 → 情感共鸣</div>
-        <div style="padding-left:2rem;">↓ 律与ひなた情感线一点点清晰 → 叙事驱动进度</div>
-        <div style="padding-left:2rem;">↓ 第6章灯塔点亮 → 律与岛互相唤醒</div>
-        <div style="padding-left:2rem;color:var(--accent2);">↓ <strong>玩家情感成就感 → 留存 + 分享 + 复玩</strong></div>
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="footer">Glow Island · Core Loop Design v2.0 · 輝島 · 2026-05-08</div>
   </div>
 </body>
 </html>

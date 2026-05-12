@@ -1,6 +1,7 @@
 {
-  "schema": "retention-hook-v1",
-  "generated_at": "2026-05-08T12:00:00Z",
+  "schema": "retention-hook-v2",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "revision_notes": "v2 — 语言策略修复：HTML所有导航/标题/标签改为中文(zh-CN)，游戏内专有名词保留日文，JSON字段名保留英文snake_case。新增friend_progress_phase2数据结构预留。",
   "design_constraints": {
     "no_stamina_gate": true,
     "no_countdown_timers": true,
@@ -469,6 +470,42 @@
       { "day": 14, "gift": "wataru_memory_fragment_02 + rare_material_x2" },
       { "day": 30, "gift": "hinata_personal_revelation + lighthouse_new_angle_unlock" }
     ]
+  },
+  "friend_progress_phase2": {
+    "phase": "phase_2_reserved",
+    "description": "好友进度展示系统——Phase 2实现，Phase 1数据结构已预留。展示朋友打到第几章，轻社交无竞技压力。",
+    "platform_integration": ["game_center_ios", "google_play_friends_android"],
+    "data_fields": {
+      "friend_id": "string",
+      "friend_display_name": "string",
+      "current_chapter": "integer",
+      "current_level": "integer",
+      "island_restoration_stage": "integer",
+      "fragments_collected": "integer",
+      "last_active_at": "iso8601_timestamp"
+    },
+    "ui_design": {
+      "display_mode": "soft_leaderboard_no_rank",
+      "show_progress_not_score": true,
+      "competitive_pressure": false,
+      "unlock_condition": "day_7_milestone",
+      "opt_in_required": true
+    },
+    "phase1_placeholder": {
+      "soft_leaderboard": {
+        "description": "D7解锁的可选软排行榜——仅展示同伴岛屿进度，无名次竞争",
+        "metric": "total_restoration_materials",
+        "rank_display": false,
+        "friend_count_display": false
+      }
+    },
+    "optional_feature_phase2": {
+      "island_postcard": {
+        "description": "可选：互送「岛屿明信片」——叙事文化道具，不含竞技内容",
+        "item_type": "narrative_cultural_prop",
+        "competitive_element": false
+      }
+    }
   },
   "competitor_analysis": {
     "note": "参考比較。Glow Islandはすべての項目で差別化された立場を取る。",

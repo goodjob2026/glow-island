@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art QA Report — Glow Island | Alpha+Beta Milestone</title>
+  <style>
+    /* ============================================================
+       BASE / RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d1117;
+      --card:        #161b22;
+      --border:      #30363d;
+      --teal:        #7EC8E3;
+      --teal-dark:   #5BA3C9;
+      --gold:        #F5A623;
+      --coral:       #FF8A80;
+      --text:        #e6edf3;
+      --text-muted:  #8b949e;
+      --green:       #1a7f37;
+      --green-bg:    #0d2e1a;
+      --amber:       #9a6700;
+      --amber-bg:    #2d1f00;
+      --purple:      #8250df;
+      --purple-bg:   #1e0f3f;
+      --red:         #cf222e;
+      --orange:      #bc4c00;
+      --yellow:      #9a6700;
+      --blue:        #0550ae;
+      --radius:      8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 32px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+    h1 { font-size: 26px; font-weight: 700; color: var(--text); }
+    h2 { font-size: 18px; font-weight: 600; color: var(--teal); margin-bottom: 16px; }
+    h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 12px; }
+    p  { color: var(--text-muted); }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .page-header-meta {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    /* ============================================================
+       BADGES
+    ============================================================ */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+
+    .badge-conditional {
+      background: var(--amber-bg);
+      color: #e3a000;
+      border: 1px solid var(--amber);
+    }
+
+    .badge-pass {
+      background: var(--green-bg);
+      color: #3fb950;
+      border: 1px solid var(--green);
+    }
+
+    .badge-deferred {
+      background: var(--purple-bg);
+      color: #a371f7;
+      border: 1px solid var(--purple);
+    }
+
+    /* ============================================================
+       EXECUTIVE SUMMARY
+    ============================================================ */
+    .exec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .exec-grid { grid-template-columns: 1fr; }
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .stat-label { color: var(--text-muted); font-size: 13px; }
+    .stat-value { font-weight: 600; color: var(--text); }
+
+    .progress-wrap {
+      background: #21262d;
+      border-radius: 4px;
+      height: 10px;
+      overflow: hidden;
+      margin: 4px 0 12px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(to right, var(--teal), var(--teal-dark));
+    }
+
+    .quick-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .stat-chip {
+      background: #21262d;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 16px;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .stat-chip-num { font-size: 22px; font-weight: 700; color: var(--teal); }
+    .stat-chip-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+    /* ============================================================
+       RADAR CHART
+    ============================================================ */
+    .radar-section {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .radar-svg-wrap {
+      flex-shrink: 0;
+    }
+
+    .radar-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .radar-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .radar-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+    }
+
+    .radar-legend-score {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--teal);
+      min-width: 34px;
+    }
+
+    .radar-legend-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* ============================================================
+       TABLES
+    ============================================================ */
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead tr { background: #21262d; }
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #1c2128; }
+
+    .decision-pass   { color: #3fb950; font-weight: 600; }
+    .decision-cond   { color: #e3a000; font-weight: 600; }
+    .decision-defer  { color: #a371f7; font-weight: 600; }
+
+    /* ============================================================
+       SCORE BARS
+    ============================================================ */
+    .score-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 6px 0;
+    }
+
+    .score-bar-track {
+      flex: 1;
+      background: #21262d;
+      border-radius: 4px;
+      height: 8px;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(to right, var(--teal), var(--teal-dark));
+    }
+
+    .score-num {
+      font-weight: 700;
+      color: var(--teal);
+      font-size: 15px;
+      min-width: 36px;
+    }
+
+    .score-max { color: var(--text-muted); font-size: 12px; }
+
+    /* ============================================================
+       DIMENSION SUBSECTIONS
+    ============================================================ */
+    .dimension-card {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .dimension-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .dimension-title { font-size: 15px; font-weight: 600; color: var(--text); }
+
+    .finding-list { list-style: none; margin-top: 12px; }
+
+    .finding-list li {
+      display: flex;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid #21262d;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .finding-list li:last-child { border-bottom: none; }
+
+    .fi-icon { font-size: 14px; flex-shrink: 0; width: 18px; }
+
+    .reco-box {
+      background: #111827;
+      border-left: 3px solid var(--teal);
+      border-radius: 0 6px 6px 0;
+      padding: 10px 14px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .reco-box strong { color: var(--teal); }
+
+    /* ============================================================
+       GAP PRIORITY BADGES
+    ============================================================ */
+    .p1 { background: #2d0a0f; color: #f85149; border: 1px solid var(--red);    border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+    .p2 { background: #2d1500; color: #f0883e; border: 1px solid var(--orange); border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+    .p3 { background: var(--amber-bg); color: #e3a000; border: 1px solid var(--amber);  border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+    .p4 { background: #031a3d; color: #388bfd; border: 1px solid var(--blue);   border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+
+    .blocking-yes { color: #f85149; font-weight: 600; font-size: 12px; }
+    .blocking-no  { color: var(--text-muted); font-size: 12px; }
+
+    /* ============================================================
+       INCONSISTENCY TABLE
+    ============================================================ */
+    .mismatch { color: #e3a000; }
+    .path-code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: #21262d;
+      border-radius: 3px;
+      padding: 2px 6px;
+      color: var(--text);
+    }
+
+    /* ============================================================
+       RECOMMENDATIONS
+    ============================================================ */
+    .reco-list { list-style: none; }
+
+    .reco-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+
+    .reco-item:last-child { border-bottom: none; }
+
+    .reco-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .reco-body { flex: 1; }
+    .reco-title { font-weight: 600; color: var(--text); font-size: 14px; margin-bottom: 4px; }
+    .reco-meta  { color: var(--text-muted); font-size: 12px; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+      padding-top: 18px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    /* ============================================================
+       SECTION DIVIDER
+    ============================================================ */
+    .section-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--teal-dark);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE HEADER
+============================================================ -->
+<header class="page-header">
+  <div>
+    <h1>Art QA Report — Glow Island</h1>
+    <p class="page-header-meta">Alpha + Beta Milestone &nbsp;|&nbsp; 2026-05-09 &nbsp;|&nbsp; Reviewed by art-qa node v0.8.1</p>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+    <span class="badge badge-conditional">&#9650; CONDITIONAL PASS</span>
+    <span class="badge badge-pass">Alpha + Beta</span>
+  </div>
+</header>
+
+<!-- ============================================================
+     1. EXECUTIVE SUMMARY
+============================================================ -->
+<section>
+  <div class="section-num">Section 1</div>
+  <h2>Executive Summary</h2>
+
+  <div class="exec-grid">
+    <!-- Left: coverage + categories -->
+    <div>
+      <h3>Asset Coverage</h3>
+      <div class="stat-row">
+        <span class="stat-label">Generated</span>
+        <span class="stat-value">114 / 343</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-fill" style="width:33%"></div>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">33% — Alpha + Beta tier scope achieved; 229 assets remain for subsequent iterations.</p>
+
+      <h3>Category Status</h3>
+      <table style="margin-top:4px;">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tiles</td>
+            <td><span class="badge badge-pass" style="font-size:11px;padding:3px 10px;">PASS</span></td>
+          </tr>
+          <tr>
+            <td>Characters</td>
+            <td><span class="badge badge-conditional" style="font-size:11px;padding:3px 10px;">CONDITIONAL</span></td>
+          </tr>
+          <tr>
+            <td>Environments</td>
+            <td><span class="badge badge-pass" style="font-size:11px;padding:3px 10px;">PASS</span></td>
+          </tr>
+          <tr>
+            <td>UI Icons</td>
+            <td><span class="badge badge-pass" style="font-size:11px;padding:3px 10px;">PASS</span></td>
+          </tr>
+          <tr>
+            <td>VFX</td>
+            <td><span class="badge badge-deferred" style="font-size:11px;padding:3px 10px;">DEFERRED — Gold</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Right: quick stats -->
+    <div>
+      <h3>Quick Stats</h3>
+      <div class="quick-stats">
+        <div class="stat-chip">
+          <div class="stat-chip-num">24</div>
+          <div class="stat-chip-lbl">Tiles</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-num">15</div>
+          <div class="stat-chip-lbl">Characters</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-num">45</div>
+          <div class="stat-chip-lbl">Environments</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-num">30</div>
+          <div class="stat-chip-lbl">UI Icons</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-num" style="color:#a371f7;">0</div>
+          <div class="stat-chip-lbl">VFX (8 defer)</div>
+        </div>
+        <div class="stat-chip" style="border-color:var(--teal);">
+          <div class="stat-chip-num">114</div>
+          <div class="stat-chip-lbl">Total Generated</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-num" style="color:var(--text-muted);">229</div>
+          <div class="stat-chip-lbl">Remaining</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-num" style="color:var(--gold);">343</div>
+          <div class="stat-chip-lbl">Full Spec</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding:14px;background:#111827;border-radius:6px;border:1px solid var(--border);">
+        <p style="font-size:13px;color:var(--text);">
+          <strong style="color:var(--teal);">Overall Verdict:</strong>
+          All Alpha + Beta milestone categories are at or above acceptance threshold.
+          Two known naming inconsistencies (tiles, NPCs) are non-blocking for art review
+          but must be resolved before LevelLoader.ts integration. VFX deferred to gold
+          milestone pending Spine toolchain setup.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     2. RADAR CHART
+============================================================ -->
+<section>
+  <div class="section-num">Section 2</div>
+  <h2>Quality Radar — 5 Dimensions</h2>
+
+  <div class="radar-section">
+    <div class="radar-svg-wrap">
+      <!--
+        Pentagon radar chart
+        Center: (200,200), r_max = 150 (score = 5)
+        Axes at angles: -90, -90+72, -90+144, -90+216, -90+288
+         = -90, -18, 54, 126, 198 degrees
+        Scores: 4.0, 4.5, 4.0, 3.5, 2.5
+
+        Polygon point for score s at angle a:
+          x = 200 + (s/5)*150 * cos(a * pi/180)
+          y = 200 + (s/5)*150 * sin(a * pi/180)
+
+        Axis 0 (Style Consistency,   4.0, -90°): x=200+0.8*150*0=200,       y=200+0.8*150*(-1)=80
+        Axis 1 (Color Compliance,    4.5, -18°): x=200+0.9*150*cos(-18)=200+0.9*150*0.9511=328.0, y=200+0.9*150*sin(-18)=200+0.9*150*(-0.309)=158.3
+        Axis 2 (Func Legibility,     4.0,  54°): x=200+0.8*150*cos(54)=200+0.8*150*0.5878=270.5, y=200+0.8*150*sin(54)=200+0.8*150*0.8090=297.1
+        Axis 3 (Char Consistency,    3.5, 126°): x=200+0.7*150*cos(126)=200+0.7*150*(-0.5878)=138.3, y=200+0.7*150*sin(126)=200+0.7*150*0.8090=284.9
+        Axis 4 (Asset Coverage,      2.5, 198°): x=200+0.5*150*cos(198)=200+0.5*150*(-0.9511)=128.7, y=200+0.5*150*sin(198)=200+0.5*150*(-0.309)=176.8
+
+        Grid rings at 1,2,3,4,5 (r = 30,60,90,120,150)
+        Full pentagon points (score=5) for each axis:
+          A0(-90°): 200, 50
+          A1(-18°): 200+150*0.9511=342.7, 200+150*(-0.309)=153.6
+          A2( 54°): 200+150*0.5878=288.2, 200+150*0.8090=321.3
+          A3(126°): 200+150*(-0.5878)=111.8, 200+150*0.8090=321.3
+          A4(198°): 200+150*(-0.9511)=57.3, 200+150*(-0.309)=153.6
+      -->
+      <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background -->
+        <rect width="400" height="400" fill="#0d1117" rx="8"/>
+
+        <!-- Grid rings: r=30,60,90,120,150 -->
+        <!-- Ring r=30 -->
+        <polygon points="200,170 228.5,190.7 217.6,223.3 182.4,223.3 171.5,190.7"
+                 fill="none" stroke="#21262d" stroke-width="1"/>
+        <!-- Ring r=60 -->
+        <polygon points="200,140 257.1,181.4 235.3,246.5 164.7,246.5 142.9,181.4"
+                 fill="none" stroke="#21262d" stroke-width="1"/>
+        <!-- Ring r=90 -->
+        <polygon points="200,110 285.6,172.1 252.9,269.8 147.1,269.8 114.4,172.1"
+                 fill="none" stroke="#21262d" stroke-width="1"/>
+        <!-- Ring r=120 -->
+        <polygon points="200,80 314.1,162.7 270.6,293.1 129.4,293.1 85.9,162.7"
+                 fill="none" stroke="#30363d" stroke-width="1"/>
+        <!-- Ring r=150 (score=5) -->
+        <polygon points="200,50 342.7,153.6 288.2,321.3 111.8,321.3 57.3,153.6"
+                 fill="none" stroke="#30363d" stroke-width="1.5"/>
+
+        <!-- Axis lines -->
+        <line x1="200" y1="200" x2="200"  y2="50"    stroke="#30363d" stroke-width="1.5"/>
+        <line x1="200" y1="200" x2="342.7" y2="153.6" stroke="#30363d" stroke-width="1.5"/>
+        <line x1="200" y1="200" x2="288.2" y2="321.3" stroke="#30363d" stroke-width="1.5"/>
+        <line x1="200" y1="200" x2="111.8" y2="321.3" stroke="#30363d" stroke-width="1.5"/>
+        <line x1="200" y1="200" x2="57.3"  y2="153.6" stroke="#30363d" stroke-width="1.5"/>
+
+        <!-- Score polygon (data shape) -->
+        <!-- Points computed above -->
+        <polygon
+          points="200,80 328.0,158.3 270.5,297.1 138.3,284.9 128.7,176.8"
+          fill="rgba(126,200,227,0.25)"
+          stroke="#7EC8E3"
+          stroke-width="2.5"
+          stroke-linejoin="round"/>
+
+        <!-- Vertex dots -->
+        <circle cx="200"   cy="80"    r="5" fill="#7EC8E3"/>
+        <circle cx="328.0" cy="158.3" r="5" fill="#7EC8E3"/>
+        <circle cx="270.5" cy="297.1" r="5" fill="#7EC8E3"/>
+        <circle cx="138.3" cy="284.9" r="5" fill="#7EC8E3"/>
+        <circle cx="128.7" cy="176.8" r="5" fill="#7EC8E3"/>
+
+        <!-- Axis labels -->
+        <text x="200" y="38" text-anchor="middle" fill="#e6edf3" font-size="12" font-family="sans-serif" font-weight="600">Style</text>
+        <text x="200" y="50" text-anchor="middle" fill="#8b949e" font-size="10" font-family="sans-serif">Consistency</text>
+
+        <text x="360" y="152" text-anchor="start" fill="#e6edf3" font-size="12" font-family="sans-serif" font-weight="600">Color</text>
+        <text x="360" y="165" text-anchor="start" fill="#8b949e" font-size="10" font-family="sans-serif">Compliance</text>
+
+        <text x="300" y="340" text-anchor="middle" fill="#e6edf3" font-size="12" font-family="sans-serif" font-weight="600">Functional</text>
+        <text x="300" y="353" text-anchor="middle" fill="#8b949e" font-size="10" font-family="sans-serif">Legibility</text>
+
+        <text x="105" y="340" text-anchor="middle" fill="#e6edf3" font-size="12" font-family="sans-serif" font-weight="600">Character</text>
+        <text x="105" y="353" text-anchor="middle" fill="#8b949e" font-size="10" font-family="sans-serif">Consistency</text>
+
+        <text x="40" y="148" text-anchor="end" fill="#e6edf3" font-size="12" font-family="sans-serif" font-weight="600">Asset</text>
+        <text x="40" y="161" text-anchor="end" fill="#8b949e" font-size="10" font-family="sans-serif">Coverage</text>
+
+        <!-- Score value labels near vertex dots -->
+        <text x="200"   y="76"    text-anchor="middle" fill="#7EC8E3" font-size="11" font-weight="700" font-family="sans-serif">4.0</text>
+        <text x="340"   y="155"   text-anchor="start"  fill="#7EC8E3" font-size="11" font-weight="700" font-family="sans-serif">4.5</text>
+        <text x="274"   y="313"   text-anchor="start"  fill="#7EC8E3" font-size="11" font-weight="700" font-family="sans-serif">4.0</text>
+        <text x="120"   y="300"   text-anchor="end"    fill="#7EC8E3" font-size="11" font-weight="700" font-family="sans-serif">3.5</text>
+        <text x="117"   y="172"   text-anchor="end"    fill="#7EC8E3" font-size="11" font-weight="700" font-family="sans-serif">2.5</text>
+
+        <!-- Grid score labels (inner ring = 1, 2, 3, 4 on vertical axis) -->
+        <text x="204" y="169" fill="#8b949e" font-size="9" font-family="sans-serif">1</text>
+        <text x="204" y="139" fill="#8b949e" font-size="9" font-family="sans-serif">2</text>
+        <text x="204" y="109" fill="#8b949e" font-size="9" font-family="sans-serif">3</text>
+        <text x="204" y="79"  fill="#8b949e" font-size="9" font-family="sans-serif">4</text>
+
+        <!-- Center dot -->
+        <circle cx="200" cy="200" r="3" fill="#30363d"/>
+      </svg>
+    </div>
+
+    <!-- Legend -->
+    <div class="radar-legend">
+      <div class="radar-legend-item">
+        <div class="radar-dot"></div>
+        <span class="radar-legend-score">4.0</span>
+        <div>
+          <div class="radar-legend-label">Style Consistency</div>
+          <div style="font-size:11px;color:var(--text-muted);">AC aesthetic unified across tiles, chars, BG</div>
+        </div>
+      </div>
+      <div class="radar-legend-item">
+        <div class="radar-dot"></div>
+        <span class="radar-legend-score">4.5</span>
+        <div>
+          <div class="radar-legend-label">Color Compliance</div>
+          <div style="font-size:11px;color:var(--text-muted);">Warm pastels aligned to art-tokens.json</div>
+        </div>
+      </div>
+      <div class="radar-legend-item">
+        <div class="radar-dot"></div>
+        <span class="radar-legend-score">4.0</span>
+        <div>
+          <div class="radar-legend-label">Functional Legibility</div>
+          <div style="font-size:11px;color:var(--text-muted);">Specials/UI icons readable at 32px test</div>
+        </div>
+      </div>
+      <div class="radar-legend-item">
+        <div class="radar-dot"></div>
+        <span class="radar-legend-score">3.5</span>
+        <div>
+          <div class="radar-legend-label">Character Consistency</div>
+          <div style="font-size:11px;color:var(--text-muted);">5 NPCs unified ratio; ID naming mismatch</div>
+        </div>
+      </div>
+      <div class="radar-legend-item">
+        <div class="radar-dot" style="background:#e3a000;"></div>
+        <span class="radar-legend-score" style="color:#e3a000;">2.5</span>
+        <div>
+          <div class="radar-legend-label">Asset Coverage</div>
+          <div style="font-size:11px;color:var(--text-muted);">114/343 — Alpha+Beta tier; 229 remaining</div>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;padding:12px;background:#111827;border-radius:6px;border:1px solid var(--border);">
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">OVERALL SCORE</div>
+        <div style="font-size:28px;font-weight:700;color:var(--teal);">3.7 <span style="font-size:14px;color:var(--text-muted);">/ 5.0</span></div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Weighted average (coverage -0.3 drag)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3. CATEGORY REVIEW TABLE
+============================================================ -->
+<section>
+  <div class="section-num">Section 3</div>
+  <h2>Category Review</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Generated</th>
+          <th>Target</th>
+          <th>Coverage</th>
+          <th>Style Score</th>
+          <th>Compliance</th>
+          <th>Decision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Tiles</strong></td>
+          <td>24</td>
+          <td>120+</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="progress-wrap" style="width:80px;margin:0;">
+                <div class="progress-fill" style="width:20%"></div>
+              </div>
+              <span style="font-size:12px;color:var(--text-muted);">20%</span>
+            </div>
+          </td>
+          <td>4 / 5</td>
+          <td><span style="color:#3fb950;font-weight:600;">PASS</span></td>
+          <td class="decision-pass">&#10003; Alpha Ready</td>
+        </tr>
+        <tr>
+          <td><strong>Characters</strong></td>
+          <td>15</td>
+          <td>54</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="progress-wrap" style="width:80px;margin:0;">
+                <div class="progress-fill" style="width:28%"></div>
+              </div>
+              <span style="font-size:12px;color:var(--text-muted);">28%</span>
+            </div>
+          </td>
+          <td>3.5 / 5</td>
+          <td><span style="color:#e3a000;font-weight:600;">CONDITIONAL</span></td>
+          <td class="decision-cond">&#9888; ID Sync Needed</td>
+        </tr>
+        <tr>
+          <td><strong>Environments</strong></td>
+          <td>45</td>
+          <td>91</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="progress-wrap" style="width:80px;margin:0;">
+                <div class="progress-fill" style="width:49%"></div>
+              </div>
+              <span style="font-size:12px;color:var(--text-muted);">49%</span>
+            </div>
+          </td>
+          <td>4.5 / 5</td>
+          <td><span style="color:#3fb950;font-weight:600;">PASS</span></td>
+          <td class="decision-pass">&#10003; Beta Ready</td>
+        </tr>
+        <tr>
+          <td><strong>UI Icons</strong></td>
+          <td>30</td>
+          <td>78</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="progress-wrap" style="width:80px;margin:0;">
+                <div class="progress-fill" style="width:38%"></div>
+              </div>
+              <span style="font-size:12px;color:var(--text-muted);">38%</span>
+            </div>
+          </td>
+          <td>4 / 5</td>
+          <td><span style="color:#3fb950;font-weight:600;">PASS</span></td>
+          <td class="decision-pass">&#10003; Alpha Ready</td>
+        </tr>
+        <tr>
+          <td><strong>VFX</strong></td>
+          <td>0</td>
+          <td>8</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="progress-wrap" style="width:80px;margin:0;">
+                <div class="progress-fill" style="width:0%"></div>
+              </div>
+              <span style="font-size:12px;color:var(--text-muted);">0%</span>
+            </div>
+          </td>
+          <td>N/A</td>
+          <td><span style="color:#a371f7;font-weight:600;">DEFERRED</span></td>
+          <td class="decision-defer">&#9655; Gold Milestone</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     4. DIMENSION DETAILS
+============================================================ -->
+<section>
+  <div class="section-num">Section 4</div>
+  <h2>Dimension Details</h2>
+
+  <!-- 4a Style Consistency -->
+  <div class="dimension-card">
+    <div class="dimension-header">
+      <span class="dimension-title">4a. Style Consistency</span>
+      <div class="score-bar-row" style="width:260px;">
+        <div class="score-bar-track">
+          <div class="score-bar-fill" style="width:80%"></div>
+        </div>
+        <span class="score-num">4.0</span>
+        <span class="score-max">/ 5</span>
+      </div>
+    </div>
+    <ul class="finding-list">
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — All four completed categories share Animal Crossing rounded, warm-pastel visual language consistently.</span></li>
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — Tile special blocks (bomb, light, wave, windmill) maintain consistent line weight and rounded corner treatment with base tiles.</span></li>
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — Character portraits share proportions (chibi approx. 3-head ratio) across all 5 NPCs plus protagonist hinata.</span></li>
+      <li><span class="fi-icon">&#9651;</span><span><strong>GAP</strong> — VFX are placeholder only; no style samples exist yet, creating risk of visual language divergence at gold milestone.</span></li>
+    </ul>
+    <div class="reco-box"><strong>Recommendation:</strong> Generate 1–2 VFX key-frame reference images at beta milestone to enable early style alignment check before full Spine production.</div>
+  </div>
+
+  <!-- 4b Color Compliance -->
+  <div class="dimension-card">
+    <div class="dimension-header">
+      <span class="dimension-title">4b. Color Compliance</span>
+      <div class="score-bar-row" style="width:260px;">
+        <div class="score-bar-track">
+          <div class="score-bar-fill" style="width:90%"></div>
+        </div>
+        <span class="score-num">4.5</span>
+        <span class="score-max">/ 5</span>
+      </div>
+    </div>
+    <ul class="finding-list">
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — Base tile palette aligned with chapter color tokens (teal/gold/pink/green/red/navy) as defined in art-tokens.json.</span></li>
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — UI icons use flat warm-pastel palette consistent with art-direction-v2.html color identity (#7EC8E3, #F5A623, #FF8A80).</span></li>
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — Chapter backgrounds show distinct color themes per chapter; ch01 harbor teal vs ch03 forest green vs ch05 cliff amber — good differentiation.</span></li>
+      <li><span class="fi-icon">&#9651;</span><span><strong>MINOR</strong> — ch06 lighthouse backgrounds (before/after/overview) appear slightly cooler in tone compared to the warm gold direction in the art brief; golden-hour palette underrepresented.</span></li>
+    </ul>
+    <div class="reco-box"><strong>Recommendation:</strong> Fine-tune ch06 background color grading in next art iteration — shift warm/golden hue balance toward art-direction #F5A623 anchor.</div>
+  </div>
+
+  <!-- 4c Functional Legibility -->
+  <div class="dimension-card">
+    <div class="dimension-header">
+      <span class="dimension-title">4c. Functional Legibility</span>
+      <div class="score-bar-row" style="width:260px;">
+        <div class="score-bar-track">
+          <div class="score-bar-fill" style="width:80%"></div>
+        </div>
+        <span class="score-num">4.0</span>
+        <span class="score-max">/ 5</span>
+      </div>
+    </div>
+    <ul class="finding-list">
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — special_bomb, special_light, special_wave, special_windmill are visually distinct from one another at 32px test size; no look-alike pairs detected.</span></li>
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — UI icons (ic_star_full, ic_home, ic_currency_beach_coin, ic_currency_glowstone) legible at 32px target display size.</span></li>
+      <li><span class="fi-icon">&#9651;</span><span><strong>CONCERN</strong> — tile_01–tile_20 at 64px game canvas: with 20 base tiles sharing the same warm-pastel palette, some adjacent tiles may appear similar to players; systematic diversity check is needed.</span></li>
+    </ul>
+    <div class="reco-box"><strong>Recommendation:</strong> Generate a side-by-side comparison sheet of all 20 base tiles at 64px to identify look-alike pairs and flag for color-differentiation pass in next iteration.</div>
+  </div>
+
+  <!-- 4d Character Consistency -->
+  <div class="dimension-card">
+    <div class="dimension-header">
+      <span class="dimension-title">4d. Character Consistency</span>
+      <div class="score-bar-row" style="width:260px;">
+        <div class="score-bar-track">
+          <div class="score-bar-fill" style="width:70%"></div>
+        </div>
+        <span class="score-num">3.5</span>
+        <span class="score-max">/ 5</span>
+      </div>
+    </div>
+    <ul class="finding-list">
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — All 5 NPCs (kenzo, umeko, naho, fuyuko + protagonist hinata) share chibi proportion system confirmed from file inventory.</span></li>
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — 3 expression variants per NPC (default, happy, serious) show consistent readable emotional range across all characters.</span></li>
+      <li><span class="fi-icon">&#9888;</span><span><strong>ISSUE</strong> — Generated file names (npc_kenzo_*, npc_umeko_*, npc_naho_*, npc_fuyuko_*) do not match inventory IDs (npc_ahai_xxx convention); art-spec-design revision required to reconcile.</span></li>
+      <li><span class="fi-icon">&#9888;</span><span><strong>ISSUE</strong> — Protagonist uses a different prefix pattern (hinata_* without "npc_" prefix), creating minor structural inconsistency in the characters folder.</span></li>
+    </ul>
+    <div class="reco-box"><strong>Recommendation:</strong> Rename character files OR update art-asset-inventory.json IDs before next milestone — this is <em>blocking</em> for LevelLoader.ts NPC asset loading pipeline.</div>
+  </div>
+
+  <!-- 4e Asset Coverage -->
+  <div class="dimension-card">
+    <div class="dimension-header">
+      <span class="dimension-title">4e. Asset Coverage</span>
+      <div class="score-bar-row" style="width:260px;">
+        <div class="score-bar-track">
+          <div class="score-bar-fill" style="width:50%;background:linear-gradient(to right, #e3a000, #9a6700);"></div>
+        </div>
+        <span class="score-num" style="color:#e3a000;">2.5</span>
+        <span class="score-max">/ 5</span>
+      </div>
+    </div>
+    <ul class="finding-list">
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — All alpha milestone assets generated: tiles batch_1 (24 tiles), all 15 characters, key chapter backgrounds, UI batch_1 (30 icons).</span></li>
+      <li><span class="fi-icon">&#10003;</span><span><strong>PASS</strong> — Beta milestone environments complete: all 45 background/island files (14 chapter BGs + 31 island zone sprites) confirmed present.</span></li>
+      <li><span class="fi-icon">&#9651;</span><span><strong>GAP</strong> — 229 remaining assets not yet generated; milestone was alpha+beta scope so this is expected, not a defect.</span></li>
+      <li><span class="fi-icon">&#9651;</span><span><strong>GAP BREAKDOWN</strong> — Tile chapter variants: ~96 | UI batch 2–3: ~48 | NPC accessories/items: ~30 | VFX: 8 | Misc: ~47.</span></li>
+    </ul>
+    <div class="reco-box"><strong>Recommendation:</strong> Plan next tile-art-gen run for chapter 2–6 variants (~96 tiles); plan ui-art-gen run for batch 2–3 (~48 icons). Both are P2 priority for the next sprint cycle.</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     5. GAP LIST TABLE
+============================================================ -->
+<section>
+  <div class="section-num">Section 5</div>
+  <h2>Gap List — Sorted by Priority</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Priority</th>
+          <th>Asset Group</th>
+          <th>Count</th>
+          <th>Current State</th>
+          <th>Blocking?</th>
+          <th>Next Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="p1">P1</span></td>
+          <td><strong>Tile theme name realignment</strong> (tile_01–20 → t01_shell etc.)</td>
+          <td>20</td>
+          <td>Generated with temp names</td>
+          <td><span class="blocking-yes">&#9679; art-spec-design</span></td>
+          <td>Rename per art-asset-inventory IDs</td>
+        </tr>
+        <tr>
+          <td><span class="p1">P1</span></td>
+          <td><strong>NPC ID sync</strong> (npc_kenzo → npc_ahai convention)</td>
+          <td>15</td>
+          <td>Generated with temp names</td>
+          <td><span class="blocking-yes">&#9679; LevelLoader.ts</span></td>
+          <td>Rename files OR update inventory</td>
+        </tr>
+        <tr>
+          <td><span class="p2">P2</span></td>
+          <td><strong>Tile chapter variants</strong> (ch2–6, 16 tiles each)</td>
+          <td>~96</td>
+          <td>Not generated</td>
+          <td><span class="blocking-no">Level variety</span></td>
+          <td>Next tile-art-gen run</td>
+        </tr>
+        <tr>
+          <td><span class="p2">P2</span></td>
+          <td><strong>UI batch 2–3</strong> (shop, map, achievement icons)</td>
+          <td>~48</td>
+          <td>Not generated</td>
+          <td><span class="blocking-no">ShopScene.ts</span></td>
+          <td>Next ui-art-gen run</td>
+        </tr>
+        <tr>
+          <td><span class="p3">P3</span></td>
+          <td><strong>NPC accessories &amp; item icons</strong></td>
+          <td>~30</td>
+          <td>Not generated</td>
+          <td><span class="blocking-no">Shop/Inventory</span></td>
+          <td>Gold milestone planning</td>
+        </tr>
+        <tr>
+          <td><span class="p3">P3</span></td>
+          <td><strong>VFX Spine animations</strong></td>
+          <td>8</td>
+          <td>Placeholder only</td>
+          <td><span class="blocking-no">VFX team</span></td>
+          <td>Gold milestone — Spine tools required</td>
+        </tr>
+        <tr>
+          <td><span class="p4">P4</span></td>
+          <td><strong>Chapter background sunset/dawn variants</strong></td>
+          <td>~6</td>
+          <td>Not generated</td>
+          <td><span class="blocking-no">Atmosphere</span></td>
+          <td>Polish pass post-gold</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     6. INCONSISTENCY RECORDS
+============================================================ -->
+<section>
+  <div class="section-num">Section 6</div>
+  <h2>Inconsistency Records — File Name vs Inventory ID</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Inventory ID</th>
+          <th>Expected Path</th>
+          <th>Actual Path</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="path-code">t01_shell</code></td>
+          <td><code class="path-code">tiles/t01_shell.png</code></td>
+          <td><code class="path-code">tiles/tile_01.png</code></td>
+          <td><span class="mismatch">&#9888; Name mismatch — theme (石 vs 贝壳)</span></td>
+        </tr>
+        <tr>
+          <td><code class="path-code">t02_shell</code></td>
+          <td><code class="path-code">tiles/t02_shell.png</code></td>
+          <td><code class="path-code">tiles/tile_02.png</code></td>
+          <td><span class="mismatch">&#9888; Name mismatch — sequential through tile_20</span></td>
+        </tr>
+        <tr>
+          <td><code class="path-code">npc_ahai_default</code></td>
+          <td><code class="path-code">characters/npc_ahai_default.png</code></td>
+          <td><code class="path-code">characters/npc_kenzo_default.png</code></td>
+          <td><span class="mismatch">&#9888; Name mismatch — character ID divergence</span></td>
+        </tr>
+        <tr>
+          <td><code class="path-code">npc_ahai_happy</code></td>
+          <td><code class="path-code">characters/npc_ahai_happy.png</code></td>
+          <td><code class="path-code">characters/npc_kenzo_happy.png</code></td>
+          <td><span class="mismatch">&#9888; Name mismatch — all 3 expressions affected</span></td>
+        </tr>
+        <tr>
+          <td><code class="path-code">npc_ahai_serious</code></td>
+          <td><code class="path-code">characters/npc_ahai_serious.png</code></td>
+          <td><code class="path-code">characters/npc_kenzo_serious.png</code></td>
+          <td><span class="mismatch">&#9888; Name mismatch — all 3 expressions affected</span></td>
+        </tr>
+        <tr>
+          <td><code class="path-code">hinata_default</code></td>
+          <td><code class="path-code">characters/hinata_default.png</code></td>
+          <td><code class="path-code">characters/hinata_default.png</code></td>
+          <td><span style="color:#3fb950;">&#10003; Matches — but no npc_ prefix (minor)</span></td>
+        </tr>
+        <tr>
+          <td><code class="path-code">zone_harbor_s0</code></td>
+          <td><code class="path-code">island/zone_harbor_s0.png</code></td>
+          <td><code class="path-code">island/zone_harbor_s0.png</code></td>
+          <td><span style="color:#3fb950;">&#10003; Matches — harbor zone confirmed present</span></td>
+        </tr>
+        <tr>
+          <td><code class="path-code">zone_pottery_s*</code></td>
+          <td><code class="path-code">island/zone_pottery_s0–s4.png</code></td>
+          <td><code class="path-code">island/zone_pottery_s0–s4.png</code></td>
+          <td><span style="color:#3fb950;">&#10003; Matches — pottery zone (ch02 theme approximation)</span></td>
+        </tr>
+        <tr>
+          <td><code class="path-code">ch02_village_*</code></td>
+          <td><code class="path-code">backgrounds/ch02_village_*.png</code></td>
+          <td><code class="path-code">backgrounds/ch02_pottery_*.png</code></td>
+          <td><span class="mismatch">&#9888; Theme name mismatch — "pottery" vs "village" in GDD</span></td>
+        </tr>
+        <tr>
+          <td><code class="path-code">vfx_match_star</code></td>
+          <td><code class="path-code">vfx/vfx_match_star.atlas</code></td>
+          <td><em style="color:var(--text-muted);">Not present — placeholder only</em></td>
+          <td><span class="decision-defer">&#9655; DEFERRED — Gold milestone</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:12px;font-size:12px;color:var(--text-muted);">
+    Note: All remaining 8 VFX Spine assets follow the same deferred state — not listed individually above.
+    Full mismatch audit for tile_03–tile_20 follows the same pattern as tile_01–02.
+  </p>
+</section>
+
+<!-- ============================================================
+     7. NEXT ITERATION RECOMMENDATIONS
+============================================================ -->
+<section>
+  <div class="section-num">Section 7</div>
+  <h2>Next Iteration Recommendations — Priority Ordered</h2>
+
+  <ul class="reco-list">
+    <li class="reco-item">
+      <div class="reco-num">1</div>
+      <div class="reco-body">
+        <div class="reco-title">Resolve naming mismatches — tiles and NPCs</div>
+        <div class="reco-meta">
+          <span class="p1">P1</span> &nbsp;|&nbsp; Est. 1 sprint &nbsp;|&nbsp;
+          <strong style="color:#f85149;">Blocking for code integration</strong>
+        </div>
+        <p style="margin-top:6px;font-size:13px;">
+          Either rename generated files to match inventory IDs (tile_01.png → t01_shell.png, npc_kenzo_* → npc_ahai_*),
+          OR update art-asset-inventory.json to match the generated naming convention. Decision must involve both art-spec-design
+          and engineering (LevelLoader.ts asset loading). Whichever direction is chosen, apply consistently across all 20 tiles
+          and 15 character files before next code-art integration point.
+        </p>
+      </div>
+    </li>
+    <li class="reco-item">
+      <div class="reco-num">2</div>
+      <div class="reco-body">
+        <div class="reco-title">Generate tile chapter variants (ch2–6)</div>
+        <div class="reco-meta">
+          <span class="p2">P2</span> &nbsp;|&nbsp; Est. 2 sprints &nbsp;|&nbsp; Adds visual variety across 136 levels
+        </div>
+        <p style="margin-top:6px;font-size:13px;">
+          Currently only chapter 1 base tiles are available. Chapter subfolders (chapter1–6) exist but are empty.
+          Run the next tile-art-gen batch for chapters 2–6 (~96 additional tiles) to enable per-chapter visual theming
+          in the puzzle grid and increase player perceived variety.
+        </p>
+      </div>
+    </li>
+    <li class="reco-item">
+      <div class="reco-num">3</div>
+      <div class="reco-body">
+        <div class="reco-title">UI batch 2–3 — shop, map, and achievement icons</div>
+        <div class="reco-meta">
+          <span class="p2">P2</span> &nbsp;|&nbsp; Est. 1 sprint &nbsp;|&nbsp; Required for ShopScene.ts and AchievementScene.ts
+        </div>
+        <p style="margin-top:6px;font-size:13px;">
+          30 icons confirmed present (batch 1). Batch 2–3 (~48 icons) needed for shop UI, world map overlay, and
+          achievement panel. Without these, placeholder boxes will appear in beta test builds. Prioritize
+          shop-related icons (ic_shop_*, ic_bundle_*) as they directly affect monetization funnel testing.
+        </p>
+      </div>
+    </li>
+    <li class="reco-item">
+      <div class="reco-num">4</div>
+      <div class="reco-body">
+        <div class="reco-title">VFX Spine production — gold milestone</div>
+        <div class="reco-meta">
+          <span class="p3">P3</span> &nbsp;|&nbsp; Est. 3 sprints &nbsp;|&nbsp; Requires Spine 2D specialist + toolchain
+        </div>
+        <p style="margin-top:6px;font-size:13px;">
+          All 8 VFX assets are currently placeholder. Spine 2D animation toolchain must be set up before production
+          can begin. Recommend generating 1–2 VFX key-frame reference images at beta milestone to enable early
+          style alignment review and reduce rework risk at gold.
+        </p>
+      </div>
+    </li>
+    <li class="reco-item">
+      <div class="reco-num">5</div>
+      <div class="reco-body">
+        <div class="reco-title">Color grading pass on ch06 lighthouse backgrounds</div>
+        <div class="reco-meta">
+          <span class="p4">P4</span> &nbsp;|&nbsp; Polish pass &nbsp;|&nbsp; Non-blocking
+        </div>
+        <p style="margin-top:6px;font-size:13px;">
+          ch06_lighthouse_before/after/overview backgrounds appear slightly cool relative to the warm golden-hour
+          aesthetic specified in art-direction-v2.html. Apply a warm color grading pass (shift toward #F5A623
+          anchor) in a polish iteration. Low priority — does not affect alpha or beta functionality.
+        </p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  Generated by meta-skill art-qa node v0.8.1 &nbsp;|&nbsp; Glow Island Alpha + Beta Milestone &nbsp;|&nbsp; 2026-05-09
+</footer>
+
+</body>
+</html>

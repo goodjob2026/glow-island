@@ -1,0 +1,778 @@
+{
+  "spec_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-09T00:00:00Z",
+  "vfx_approach": "hybrid_png_spine",
+  "animation_style": "ease-out cubic with 10% overshoot bounce (Animal Crossing 动森弹跳)",
+  "color_identity": {
+    "teal": "#7EC8E3",
+    "gold": "#F5A623",
+    "coral_pink": "#FF8A80",
+    "warm_white": "#FFFDF5",
+    "navy": "#2A3650",
+    "note": "All VFX should feel luminous and nature-themed — 光と水の日本小島"
+  },
+  "vfx_assets": [
+    {
+      "asset_id": "fx_tile_disappear",
+      "name": "图块消除特效",
+      "type": "png_sequence",
+      "trigger": "任意图块消除时（每对图块被成功消除）",
+      "canvas": "160x160",
+      "frame_count": 12,
+      "fps": 30,
+      "duration_s": 0.4,
+      "color_palette": [
+        "#7EC8E3",
+        "#FF8A80",
+        "#F5A623",
+        "#7DBE77",
+        "#E05050",
+        "#2A3650"
+      ],
+      "color_variant_names": ["teal", "pink", "gold", "green", "red", "navy"],
+      "color_variant_note": "每种色彩变体对应一组12帧PNG序列（共6组×12帧=72个PNG文件）。在运行时根据消除图块的 primary_color 属性选择最近似的变体。",
+      "animation_curve": "ease-out cubic with 10% overshoot at frame 3 — scale peaks at 1.15x before collapsing, mimicking Animal Crossing bounce-pop",
+      "keyframes": [
+        {
+          "frame": 1,
+          "time_s": 0.00,
+          "desc": "图块原始尺寸 160×160，完全不透明，外缘开始出现柔和光晕（半径8px，白色10%透明度）"
+        },
+        {
+          "frame": 2,
+          "time_s": 0.033,
+          "desc": "整体缩放1.08x，光晕扩散至18px，颜色转变为色彩变体的主色调，透明度100%"
+        },
+        {
+          "frame": 3,
+          "time_s": 0.067,
+          "desc": "ease-out cubic过冲顶峰：缩放1.15x（上下微压扁，水平略宽，squash形变），透明度100%，光晕亮度最高"
+        },
+        {
+          "frame": 4,
+          "time_s": 0.100,
+          "desc": "缩放回落至0.9x，开始向内收缩，从边缘分裂出4-6个小粒子向四周散射（速度120px/s）"
+        },
+        {
+          "frame": 5,
+          "time_s": 0.133,
+          "desc": "缩放0.72x，主体透明度95%，粒子已扩散至40px半径，粒子本身开始淡出（透明度80%）"
+        },
+        {
+          "frame": 6,
+          "time_s": 0.167,
+          "desc": "缩放0.6x，主体透明度85%，粒子散射至65px半径（共6颗），每颗粒子8x8px小星点"
+        },
+        {
+          "frame": 7,
+          "time_s": 0.200,
+          "desc": "缩放0.45x，主体透明度70%，粒子散射至90px，粒子开始变小（6x6px），透明度60%"
+        },
+        {
+          "frame": 8,
+          "time_s": 0.233,
+          "desc": "缩放0.32x，主体透明度55%，粒子散射至115px，透明度45%，颜色向白色过渡"
+        },
+        {
+          "frame": 9,
+          "time_s": 0.267,
+          "desc": "缩放0.25x，主体透明度40%，粒子散射至最大半径130px，粒子透明度30%"
+        },
+        {
+          "frame": 10,
+          "time_s": 0.300,
+          "desc": "缩放0.12x，主体透明度20%，粒子散射停止（惯性减速），透明度15%"
+        },
+        {
+          "frame": 11,
+          "time_s": 0.333,
+          "desc": "缩放0.04x，主体透明度8%，粒子几乎不可见（透明度5%），全部向白色最终过渡"
+        },
+        {
+          "frame": 12,
+          "time_s": 0.367,
+          "desc": "缩放0，主体完全消失，粒子完全淡出，画布清空"
+        }
+      ],
+      "spine_bones": null,
+      "spine_animations": null,
+      "sfx_pairing": {
+        "sfx_key": "sfx_disappear",
+        "sync_point": "frame 1 (0.00s) — sfx与VFX同步开始，高频闪烁声350ms，在frame 3前达到峰值"
+      },
+      "files": [
+        "assets/effects/frames/fx_tile_disappear_teal_f01@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f02@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f03@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f04@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f05@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f06@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f07@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f08@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f09@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f10@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f11@2x.png",
+        "assets/effects/frames/fx_tile_disappear_teal_f12@2x.png",
+        "assets/effects/frames/fx_tile_disappear_pink_f01@2x.png … fx_tile_disappear_pink_f12@2x.png",
+        "assets/effects/frames/fx_tile_disappear_gold_f01@2x.png … fx_tile_disappear_gold_f12@2x.png",
+        "assets/effects/frames/fx_tile_disappear_green_f01@2x.png … fx_tile_disappear_green_f12@2x.png",
+        "assets/effects/frames/fx_tile_disappear_red_f01@2x.png … fx_tile_disappear_red_f12@2x.png",
+        "assets/effects/frames/fx_tile_disappear_navy_f01@2x.png … fx_tile_disappear_navy_f12@2x.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "6种颜色变体分别输出独立PNG序列。画布160×160，背景透明。第3帧的1.15x scale过冲是动森弹跳曲线的核心，必须保留。粒子散射方向建议：45°/135°/225°/315°为主4颗 + 0°/180°辅助2颗，呈雪花状。每颗粒子为纯色小圆点（对应变体主色，末端渐变白色）。"
+    },
+
+    {
+      "asset_id": "fx_combo_popup",
+      "name": "连击气泡",
+      "type": "spine_skeleton",
+      "trigger": "连击数≥3时，在最后消除的图块位置上方弹出",
+      "canvas": "220x110",
+      "frame_count": null,
+      "fps": null,
+      "duration_s": 0.9,
+      "color_palette": [
+        "#F5A623",
+        "#FFFDF5",
+        "#FF8A80",
+        "#7EC8E3"
+      ],
+      "animation_curve": "ease-out cubic with 10% overshoot — 气泡从0快速弹出到1.1x后settle至1.0x，退场时快速收缩消失",
+      "keyframes": [
+        {
+          "frame": 1,
+          "time_s": 0.00,
+          "desc": "气泡从scale 0开始，透明度0"
+        },
+        {
+          "frame": null,
+          "time_s": 0.08,
+          "desc": "scale 1.1x (过冲顶峰)，透明度100%，气泡完全弹出，内部文字/数字同步出现"
+        },
+        {
+          "frame": null,
+          "time_s": 0.16,
+          "desc": "scale settle到1.0x，轻微晃动停止，在画面停留（持续约0.6s）"
+        },
+        {
+          "frame": null,
+          "time_s": 0.75,
+          "desc": "气泡开始向上漂移（+20px），同时透明度开始降低"
+        },
+        {
+          "frame": null,
+          "time_s": 0.90,
+          "desc": "scale 0.7x，透明度0，气泡完全消失，漂移至起点上方30px处"
+        }
+      ],
+      "spine_bones": [
+        "root",
+        "bubble_body",
+        "bubble_tail",
+        "text_number",
+        "sparkle_left",
+        "sparkle_right",
+        "glow_ring"
+      ],
+      "spine_animations": [
+        "popup_in",
+        "popup_idle",
+        "popup_out",
+        "combo_x3",
+        "combo_x4",
+        "combo_x5plus"
+      ],
+      "sfx_pairing": {
+        "sfx_key": "sfx_combo1",
+        "sync_point": "sfx_combo1于0.00s同步（x3连击）/ sfx_combo2（x4）/ sfx_combo3（x5+），气泡弹出与音符上升曲线同步",
+        "sfx_variants": {
+          "combo_x3": "sfx_combo1 (400ms, 双音)",
+          "combo_x4": "sfx_combo2 (600ms, 三音)",
+          "combo_x5plus": "sfx_combo3 (900ms, 六音级联)"
+        }
+      },
+      "files": [
+        "assets/effects/spine/fx_combo_popup.skel",
+        "assets/effects/spine/fx_combo_popup.atlas",
+        "assets/effects/spine/fx_combo_popup.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "气泡形状：圆角矩形 + 下方指向尾巴（指向消除图块位置）。内部显示连击数字（x3/x4/x5+），字体风格圆润可爱。不同连击级别可通过换皮方式实现：x3=金色, x4=珊瑚粉, x5+=彩虹渐变。气泡尾巴方向需根据屏幕位置动态翻转（图块在上半屏时尾巴朝下，反之亦然）。"
+    },
+
+    {
+      "asset_id": "fx_firefly_chain",
+      "name": "萤火光链效果",
+      "type": "spine_skeleton",
+      "trigger": "T-Glow萤火提灯块连接成功时，沿连接路径生成光链",
+      "canvas": "1080x1920_fullscreen_overlay",
+      "frame_count": null,
+      "fps": null,
+      "duration_s": 1.2,
+      "color_palette": [
+        "#FFFDF5",
+        "#F5A623",
+        "#7EC8E3",
+        "#FFE8A0"
+      ],
+      "animation_curve": "ease-out cubic — 萤火沿路径流动，速度先快后慢，在目标位置形成光晕驻留",
+      "keyframes": [
+        {
+          "frame": null,
+          "time_s": 0.00,
+          "desc": "在起始萤火提灯块位置，1-3只萤火虫（8px发光圆点，暖白色）从提灯块中心飞出"
+        },
+        {
+          "frame": null,
+          "time_s": 0.15,
+          "desc": "萤火虫沿连接路径飞行，路径上留下渐淡的光轨（trail宽2px，暖白到金色渐变），每只萤火虫有独立的轻微抖动"
+        },
+        {
+          "frame": null,
+          "time_s": 0.35,
+          "desc": "萤火虫抵达目标图块，路径光链完全可见（从起点到终点持续亮着），整条链发出脉冲式呼吸光效"
+        },
+        {
+          "frame": null,
+          "time_s": 0.60,
+          "desc": "光链亮度达到峰值，路径节点处出现小型星光闪烁（4角星，金色，每个节点1颗）"
+        },
+        {
+          "frame": null,
+          "time_s": 0.80,
+          "desc": "萤火虫在目标位置开始循环飞舞（idle loop），光链亮度开始缓慢衰减至50%"
+        },
+        {
+          "frame": null,
+          "time_s": 1.20,
+          "desc": "整体淡出（透明度→0），光链和萤火虫全部消失"
+        }
+      ],
+      "spine_bones": [
+        "root",
+        "path_anchor_start",
+        "path_anchor_mid_1",
+        "path_anchor_mid_2",
+        "path_anchor_end",
+        "firefly_1",
+        "firefly_2",
+        "firefly_3",
+        "trail_segment_1",
+        "trail_segment_2",
+        "trail_segment_3",
+        "trail_segment_4",
+        "glow_halo"
+      ],
+      "spine_animations": [
+        "firefly_fly_along_path",
+        "firefly_idle_hover",
+        "chain_pulse",
+        "chain_fade_out"
+      ],
+      "sfx_pairing": {
+        "sfx_key": "sfx_special_light",
+        "sync_point": "0.00s — 200ms高频闪烁音与萤火虫飞出同步；4个mini-chime音效分别对应0.35s/0.50s/0.65s/0.80s的路径节点星光闪烁"
+      },
+      "files": [
+        "assets/effects/spine/fx_firefly_chain.skel",
+        "assets/effects/spine/fx_firefly_chain.atlas",
+        "assets/effects/spine/fx_firefly_chain.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "全屏叠加层（1080×1920），使用加法混合模式（additive blend）确保光效与背景自然融合。路径可以是折线（直角/曲线均可）。萤火虫需要基于实际连接路径的骨骼IK或程序化动画 — 动画团队可设计为参数化路径：传入起点/中间节点/终点坐标，动态计算萤火运动轨迹。光链颜色：暖白(#FFFDF5)为主，金色(#FFE8A0)为尾迹，与萤火提灯块的光晕颜色保持一致。"
+    },
+
+    {
+      "asset_id": "fx_area_restore",
+      "name": "区域修复光效",
+      "type": "spine_skeleton",
+      "trigger": "区域修复阶段切换时（每个章节区域的s0→s1→s2→s3→s4修复动画）",
+      "canvas": "400x400",
+      "frame_count": null,
+      "fps": null,
+      "duration_s": 10.0,
+      "color_palette": [
+        "#7EC8E3",
+        "#F5A623",
+        "#FFFDF5",
+        "#7DBE77",
+        "#FFE8A0"
+      ],
+      "animation_curve": "ease-in-out — 从中心缓慢扩散，在0-3s建立，3-8s持续仪式感，8-10s恢宏淡出",
+      "keyframes": [
+        {
+          "frame": null,
+          "time_s": 0.00,
+          "desc": "光效从区域中心点开始：单束垂直光柱（2px，暖白色）向上升起，透明度0→100%"
+        },
+        {
+          "frame": null,
+          "time_s": 0.50,
+          "desc": "光柱扩散为圆形光环（半径40px），与地面相切处出现金色粒子群（小圆点，向外发散）"
+        },
+        {
+          "frame": null,
+          "time_s": 1.50,
+          "desc": "光环扩散至半径100px，区域轮廓线以光效描边（teal #7EC8E3，宽3px），花瓣/萤火粒子开始在区域内漂浮"
+        },
+        {
+          "frame": null,
+          "time_s": 3.00,
+          "desc": "完整仪式状态：光环覆盖整个400×400区域，中心光柱达到最亮（向上延伸200px），粒子密度最高（约25颗），颜色开始循环（teal↔gold↔white）"
+        },
+        {
+          "frame": null,
+          "time_s": 5.00,
+          "desc": "solo koto音效已持续，光效进入呼吸模式（亮度±20%周期2s），粒子持续漂浮"
+        },
+        {
+          "frame": null,
+          "time_s": 8.00,
+          "desc": "光环开始缓慢收缩（100px→0），光柱高度降低，粒子数量减少"
+        },
+        {
+          "frame": null,
+          "time_s": 10.00,
+          "desc": "全部透明度归0，区域恢复到新状态静止画面"
+        }
+      ],
+      "spine_bones": [
+        "root",
+        "center_pillar",
+        "light_ring_inner",
+        "light_ring_outer",
+        "petal_1",
+        "petal_2",
+        "petal_3",
+        "petal_4",
+        "petal_5",
+        "petal_6",
+        "border_glow",
+        "particle_emitter_center",
+        "particle_emitter_ring"
+      ],
+      "spine_animations": [
+        "restore_intro",
+        "restore_ceremony_loop",
+        "restore_outro",
+        "petal_float_loop"
+      ],
+      "sfx_pairing": {
+        "sfx_key": "sfx_area_restore",
+        "sync_point": "0.00s完全同步 — solo koto单音与光柱升起同帧开始；钢琴于2s加入对应光环扩散至100px；吉他于4s加入对应粒子最密集时刻；8s开始淡出对应光效收缩阶段"
+      },
+      "files": [
+        "assets/effects/spine/fx_area_restore.skel",
+        "assets/effects/spine/fx_area_restore.atlas",
+        "assets/effects/spine/fx_area_restore.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "持续时长10s与sfx_area_restore的8-12s范围对齐。花瓣/粒子类型按章节主题变化：ch1=海浪水珠, ch2=陶瓷碎光, ch3=樱花瓣, ch4=松针/苔藓孢子, ch5=水汽泡泡, ch6=金色星光（此处可通过运行时颜色替换实现，避免多套Spine资产）。光效使用加法混合。区域中心点为骨骼root的位置，由代码动态设置至对应区域位置。"
+    },
+
+    {
+      "asset_id": "fx_pufferfish_pop",
+      "name": "河豚爆炸特效",
+      "type": "spine_skeleton",
+      "trigger": "T-Bomb炸弹块（河豚块）激活时，在河豚块位置播放",
+      "canvas": "640x640",
+      "frame_count": null,
+      "fps": null,
+      "duration_s": 0.8,
+      "color_palette": [
+        "#F5A623",
+        "#FFFDF5",
+        "#FF8A80",
+        "#7EC8E3",
+        "#FFE8A0"
+      ],
+      "animation_curve": "ease-out cubic with 15% overshoot — 河豚快速膨胀到1.3x后爆开，碎片向四周飞散",
+      "keyframes": [
+        {
+          "frame": null,
+          "time_s": 0.00,
+          "desc": "河豚从静止(1.0x)开始快速膨胀，同时皮肤表面出现闪烁光点（白色，约20颗）"
+        },
+        {
+          "frame": null,
+          "time_s": 0.10,
+          "desc": "膨胀至1.3x（过冲顶峰），整体亮度flash（白色闪光覆盖0.05s），刺棘（spine）向外张开"
+        },
+        {
+          "frame": null,
+          "time_s": 0.15,
+          "desc": "爆炸瞬间：河豚本体分裂为8-10块圆弧片段，每块向不同方向飞出（速度300-500px/s），同时释放一圈圆形冲击波（从中心向外扩散，直径最终达320px）"
+        },
+        {
+          "frame": null,
+          "time_s": 0.30,
+          "desc": "碎片飞至最远处（半径约200px），冲击波透明度降至30%，粒子群（金色小星点，约30颗）填满爆炸区域"
+        },
+        {
+          "frame": null,
+          "time_s": 0.50,
+          "desc": "碎片开始淡出（透明度50%），粒子开始消散，冲击波消失"
+        },
+        {
+          "frame": null,
+          "time_s": 0.80,
+          "desc": "全部效果归0，640×640画布清空"
+        }
+      ],
+      "spine_bones": [
+        "root",
+        "pufferfish_body",
+        "spine_top",
+        "spine_right",
+        "spine_bottom",
+        "spine_left",
+        "chunk_1",
+        "chunk_2",
+        "chunk_3",
+        "chunk_4",
+        "chunk_5",
+        "chunk_6",
+        "chunk_7",
+        "chunk_8",
+        "shockwave_ring",
+        "flash_overlay",
+        "particle_emitter"
+      ],
+      "spine_animations": [
+        "inflate",
+        "explode",
+        "chunks_scatter",
+        "shockwave_expand",
+        "fade_out"
+      ],
+      "sfx_pairing": {
+        "sfx_key": "sfx_special_bomb",
+        "sync_point": "0.10s — 低频软爆声(~200Hz cork pop)与白色闪光同帧；0.15s随即接上扬音钟声(upward chime)与冲击波扩散同步"
+      },
+      "files": [
+        "assets/effects/spine/fx_pufferfish_pop.skel",
+        "assets/effects/spine/fx_pufferfish_pop.atlas",
+        "assets/effects/spine/fx_pufferfish_pop.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "河豚爆炸风格应保持可爱感，避免暴力感 — 碎片形状为圆弧/扇形（不是尖锐碎片），颜色为暖橙色+金色，无血迹或深色调。冲击波为圆形亮线（ring stroke），非实心圆，线宽4px，颜色gold #F5A623。整体特效覆盖范围恰好等于T-Bomb的消除范围（周围3×3格子），640px画布足够容纳。闪光overlay建议使用单帧white sprite叠加0.05s。"
+    },
+
+    {
+      "asset_id": "fx_tuna_dash",
+      "name": "金枪鱼闪电横扫",
+      "type": "spine_skeleton",
+      "trigger": "T-Lightning闪电块（金枪鱼块）激活时，根据消除方向播放行版或列版",
+      "canvas": "row: 1080x160 / col: 160x1920",
+      "frame_count": null,
+      "fps": null,
+      "duration_s": 0.5,
+      "color_palette": [
+        "#7EC8E3",
+        "#FFFDF5",
+        "#F5A623",
+        "#5BBFB5"
+      ],
+      "animation_curve": "ease-out cubic (fast start, quick decelerate) — 金枪鱼以极速冲出后快速离开画面，留下光轨",
+      "keyframes": [
+        {
+          "frame": null,
+          "time_s": 0.00,
+          "desc": "金枪鱼从激活图块位置出现，瞬间加速（ease-in加速阶段极短约0.02s），向目标方向冲刺"
+        },
+        {
+          "frame": null,
+          "time_s": 0.05,
+          "desc": "金枪鱼已达到最高速度，身后拖出长光轨（teal→white渐变，宽8px，长160px），沿整行/列高速移动"
+        },
+        {
+          "frame": null,
+          "time_s": 0.15,
+          "desc": "金枪鱼扫过中间区域（行版：屏幕中心/列版：画面中段），光轨依然可见，路径上每个消除图块位置爆发小型星光（金色，3x3颗粒）"
+        },
+        {
+          "frame": null,
+          "time_s": 0.30,
+          "desc": "金枪鱼即将冲出屏幕边缘，速度开始ease-out降低，光轨开始淡出"
+        },
+        {
+          "frame": null,
+          "time_s": 0.40,
+          "desc": "金枪鱼完全冲出画面，留下完整光轨路径（全程可见，透明度约60%），光轨各处星光仍在闪烁"
+        },
+        {
+          "frame": null,
+          "time_s": 0.50,
+          "desc": "光轨完全淡出，全部星光消失，特效结束"
+        }
+      ],
+      "spine_bones": [
+        "root",
+        "tuna_body",
+        "tuna_head",
+        "tuna_tail_fin",
+        "tuna_pectoral_fin",
+        "trail_segment_1",
+        "trail_segment_2",
+        "trail_segment_3",
+        "trail_segment_4",
+        "trail_segment_5",
+        "motion_blur_overlay",
+        "tile_burst_emitter"
+      ],
+      "spine_animations": [
+        "dash_horizontal",
+        "dash_vertical",
+        "trail_fade",
+        "tile_burst"
+      ],
+      "sfx_pairing": {
+        "sfx_key": "sfx_special_windmill",
+        "sync_point": "0.00s — soft whoosh(300ms滤波白噪声)与金枪鱼冲出同步开始；0.30s clear bell tone(A4音)与金枪鱼冲出屏幕边缘同步"
+      },
+      "files": [
+        "assets/effects/spine/fx_tuna_dash_row.skel",
+        "assets/effects/spine/fx_tuna_dash_row.atlas",
+        "assets/effects/spine/fx_tuna_dash_row.png",
+        "assets/effects/spine/fx_tuna_dash_col.skel",
+        "assets/effects/spine/fx_tuna_dash_col.atlas",
+        "assets/effects/spine/fx_tuna_dash_col.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "两套Spine骨骼：fx_tuna_dash_row（横向，1080×160）和fx_tuna_dash_col（纵向，160×1920）。金枪鱼朝向：行版默认从左向右冲，列版默认从上到下冲，激活块位置可根据棋盘位置决定冲刺方向（从激活块向两侧分别触发或选最优方向）。光轨使用加法混合（additive）。金枪鱼造型：侧视图，流线型，鱼背蓝色(#5BBFB5)，鱼腹银白，单眼大而圆润（Animal Crossing风格）。运动残影（motion blur）通过3-4层半透明鱼体骨骼offset实现。"
+    },
+
+    {
+      "asset_id": "fx_rainbow_burst",
+      "name": "彩虹鱼爆发特效",
+      "type": "spine_skeleton",
+      "trigger": "T-Rainbow彩虹鱼块消除时，在消除位置播放",
+      "canvas": "320x320",
+      "frame_count": null,
+      "fps": null,
+      "duration_s": 0.8,
+      "color_palette": [
+        "#FF8A80",
+        "#F5A623",
+        "#FFE873",
+        "#7DBE77",
+        "#7EC8E3",
+        "#A78BFA"
+      ],
+      "animation_curve": "ease-out cubic with 10% overshoot — 彩虹爆发从中心快速向四周扩散，颜色轮换呈现彩虹弧",
+      "keyframes": [
+        {
+          "frame": null,
+          "time_s": 0.00,
+          "desc": "彩虹鱼块中心出现白色flash（0.03s），随即爆发出6条彩色光束向正六边形6个方向扩散（红橙黄绿蓝紫，每条60°间隔）"
+        },
+        {
+          "frame": null,
+          "time_s": 0.08,
+          "desc": "6条光束扩散至40px，与此同时6条弧形彩虹带从中心向外卷展（类似折叠的彩虹伞打开），弧带宽8px"
+        },
+        {
+          "frame": null,
+          "time_s": 0.20,
+          "desc": "彩虹弧展开完成（半径120px圆形区域），形成一个完整的彩虹圆环；中心出现金色星爆（12芒星，scale 0.5x→1.2x过冲）"
+        },
+        {
+          "frame": null,
+          "time_s": 0.35,
+          "desc": "彩虹圆环达到最大亮度，中心星爆settle至1.0x，周围30颗小彩色粒子向四周散射（颜色各异）"
+        },
+        {
+          "frame": null,
+          "time_s": 0.55,
+          "desc": "圆环透明度开始降低（100%→60%），粒子开始淡出，颜色开始向白色过渡"
+        },
+        {
+          "frame": null,
+          "time_s": 0.80,
+          "desc": "全部效果归0，320×320画布清空"
+        }
+      ],
+      "spine_bones": [
+        "root",
+        "center_flash",
+        "star_burst_12",
+        "ray_red",
+        "ray_orange",
+        "ray_yellow",
+        "ray_green",
+        "ray_blue",
+        "ray_purple",
+        "arc_red",
+        "arc_orange",
+        "arc_yellow",
+        "arc_green",
+        "arc_blue",
+        "arc_purple",
+        "ring_outer",
+        "particle_emitter"
+      ],
+      "spine_animations": [
+        "burst_intro",
+        "rainbow_unfold",
+        "ring_expand",
+        "star_pop",
+        "fade_out"
+      ],
+      "sfx_pairing": {
+        "sfx_key": "sfx_special_wave",
+        "sync_point": "0.00s — 圆形whoosh(400ms，左→右→中心panning)与彩虹爆发同步；0.35s soft wave-crash tail与彩虹圆环最亮时刻对应"
+      },
+      "files": [
+        "assets/effects/spine/fx_rainbow_burst.skel",
+        "assets/effects/spine/fx_rainbow_burst.atlas",
+        "assets/effects/spine/fx_rainbow_burst.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "彩虹鱼块消除范围是同色系所有图块（全局清除），建议在每个被消除图块位置播放一个缩小版(0.5x)的同款特效，或仅在消除中心播放一个1.5x放大版作为视觉锚点。彩虹弧颜色严格按照可见光谱顺序（红橙黄绿蓝紫），且每条弧的颜色饱和度要高（80%饱和度），与游戏整体柔和色调形成短暂的视觉高潮对比。中心星爆金色对应金枪鱼、河豚等特殊块的统一视觉语言。"
+    },
+
+    {
+      "asset_id": "fx_lighthouse_beam",
+      "name": "灯塔光柱特效",
+      "type": "spine_skeleton",
+      "trigger": "第6章每8步自动触发（行扫版0.6s）/ 第6章最终修复标志性时刻（全岛版4.0s）",
+      "canvas": "1080x1920_fullscreen",
+      "frame_count": null,
+      "fps": null,
+      "duration_s": null,
+      "duration_variants": {
+        "row_sweep": 0.6,
+        "island_full": 4.0
+      },
+      "color_palette": [
+        "#F5A623",
+        "#FFFDF5",
+        "#FFE8A0",
+        "#2A3650",
+        "#FFD700"
+      ],
+      "animation_curve": "ease-in-out — 行扫版：快速扫过；全岛版：从无到有缓慢建立，4s内展现全岛被光照亮的仪式感",
+      "keyframes": [
+        {
+          "frame": null,
+          "time_s": 0.00,
+          "desc": "[行扫版] 灯塔位置（屏幕上方）出现光源点（白色圆，直径20px），光柱从灯塔向棋盘方向射出（初始宽度4px）"
+        },
+        {
+          "frame": null,
+          "time_s": 0.10,
+          "desc": "[行扫版] 光柱扫过当前行，宽度扩展至8px，扫描线以0.6s/1080px速度从左到右扫过（或按灯塔旋转方向），路径上有轻微光晕"
+        },
+        {
+          "frame": null,
+          "time_s": 0.40,
+          "desc": "[行扫版] 光柱扫过全行，图块闪烁标记（各消除图块短暂白色高亮），光柱开始淡出"
+        },
+        {
+          "frame": null,
+          "time_s": 0.60,
+          "desc": "[行扫版] 完全淡出，特效结束"
+        },
+        {
+          "frame": null,
+          "time_s": 0.00,
+          "desc": "[全岛版] 灯塔顶端光源开始旋转（旋转周期4s），光柱从灯塔向外发散，初始覆盖角度2°"
+        },
+        {
+          "frame": null,
+          "time_s": 0.50,
+          "desc": "[全岛版] 光柱展宽至15°，照射范围逐步覆盖全岛地图，被照射区域出现柔和金色暖光叠加"
+        },
+        {
+          "frame": null,
+          "time_s": 1.50,
+          "desc": "[全岛版] 光柱旋转至覆盖全屏90°扇形，全岛各区域出现闪烁的小星光（对应修复区域），sfx_lighthouse_on进入高潮段"
+        },
+        {
+          "frame": null,
+          "time_s": 2.50,
+          "desc": "[全岛版] 亮度峰值 — 全屏金色光幕叠加（透明度30%，gold #FFD700），灯塔光柱达到最宽（30°），画面最亮时刻"
+        },
+        {
+          "frame": null,
+          "time_s": 3.50,
+          "desc": "[全岛版] 金色光幕开始淡出，光柱开始收窄，星光陆续消失"
+        },
+        {
+          "frame": null,
+          "time_s": 4.00,
+          "desc": "[全岛版] 光柱收回至灯塔，保留一个持续旋转的微弱光点（循环动画，非此特效管理），特效结束"
+        }
+      ],
+      "spine_bones": [
+        "root",
+        "lighthouse_tip",
+        "beam_shaft",
+        "beam_cone_inner",
+        "beam_cone_outer",
+        "beam_dust_particles",
+        "island_glow_overlay",
+        "star_emitter_ch1_zone",
+        "star_emitter_ch2_zone",
+        "star_emitter_ch3_zone",
+        "star_emitter_ch4_zone",
+        "star_emitter_ch5_zone",
+        "star_emitter_ch6_zone",
+        "vignette_frame"
+      ],
+      "spine_animations": [
+        "beam_sweep_row",
+        "beam_island_buildup",
+        "beam_island_peak",
+        "beam_island_fadeout",
+        "dust_float_loop",
+        "star_twinkle_loop"
+      ],
+      "sfx_pairing": {
+        "sfx_key": "sfx_lighthouse_on",
+        "sync_point": "[行扫版] 无特定sfx，使用背景BGM的微弱ambient swell；[全岛版] 0.00s完全同步sfx_lighthouse_on（20-30s情感高潮音效）— solo piano(0-5s)与光柱建立同步；koto(5-10s)与光覆盖全岛同步；ensemble peak(15-22s)对应全屏金色光幕；distant bell(22-25s)对应光效完成时刻",
+        "note": "全岛版特效时长4.0s，但sfx_lighthouse_on时长25s，两者是并行播放关系（sfx更长，为后续静止画面提供情感延续）"
+      },
+      "files": [
+        "assets/effects/spine/fx_lighthouse_beam_row.skel",
+        "assets/effects/spine/fx_lighthouse_beam_row.atlas",
+        "assets/effects/spine/fx_lighthouse_beam_row.png",
+        "assets/effects/spine/fx_lighthouse_beam_island.skel",
+        "assets/effects/spine/fx_lighthouse_beam_island.atlas",
+        "assets/effects/spine/fx_lighthouse_beam_island.png"
+      ],
+      "status": "spec_ready_pending_production",
+      "production_notes": "两套完全独立的Spine资产：fx_lighthouse_beam_row（轻量级，每8步触发，需高性能）和fx_lighthouse_beam_island（重量级，一生仅触发一次，可牺牲性能换质感）。全岛版的金色光幕overlay建议使用单独的全屏精灵（1080×1920，gold渐变，加法混合），由Spine骨骼动画控制alpha即可。光柱颜色：内核暖白(#FFFDF5)，外晕金色(#F5A623)，最外层deep blue(#2A3650)渐变透明（模拟夜空中光柱的Tyndall效应）。全岛版是游戏情感最高峰，动画团队应把最多精力投入此资产。"
+    }
+  ],
+
+  "production_priority": [
+    {
+      "milestone": "alpha",
+      "assets": ["fx_tile_disappear", "fx_combo_popup"],
+      "notes": "核心消除反馈，alpha测试必需。fx_tile_disappear的png_sequence可最快交付。"
+    },
+    {
+      "milestone": "beta",
+      "assets": ["fx_firefly_chain", "fx_area_restore", "fx_pufferfish_pop", "fx_tuna_dash"],
+      "notes": "特殊块机制和区域修复是beta核心体验。fx_pufferfish_pop和fx_tuna_dash与T-Bomb/T-Lightning游戏机制绑定。"
+    },
+    {
+      "milestone": "gold",
+      "assets": ["fx_rainbow_burst", "fx_lighthouse_beam"],
+      "notes": "fx_lighthouse_beam_island是游戏情感最高峰，gold发布前必须达到最高质量标准。fx_rainbow_burst配套T-Rainbow机制，同属gold阶段完善。"
+    }
+  ],
+
+  "global_production_notes": {
+    "blend_mode": "全部VFX优先使用加法混合(additive blend)，使光效与深色/暖色背景自然融合；粒子散射类使用alpha blend",
+    "animation_curve_reference": "动森弹跳曲线 = ease-out cubic，t∈[0,1], f(t) = 1 - (1-t)³，过冲10-15%时在curve末端追加小幅回弹（参考Animal Crossing物品弹出动画）",
+    "color_constraint": "所有VFX颜色必须在art-direction-v2.html定义的色彩体系内，暖色主导（teal/gold/coral），避免纯冷色调（纯蓝/纯紫）",
+    "spine_version": "Spine 3.8 compatible（对应Cocos Creator 3.x Spine插件）",
+    "atlas_packing": "每个Spine asset的atlas图集建议不超过2048×2048，多图块效果尽量合并到同一atlas",
+    "max_simultaneous_vfx": "同时播放VFX上限：fx_tile_disappear可8个并发，特殊块VFX最多3个并发，fx_lighthouse_beam_island最多1个（全局唯一）",
+    "spine_not_available": "当前Spine工具不可用，所有Spine类型资产状态均为spec_ready_pending_production，等待工具环境建立后进入生产阶段"
+  }
+}

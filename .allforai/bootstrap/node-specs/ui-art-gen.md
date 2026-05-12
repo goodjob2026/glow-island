@@ -1,73 +1,85 @@
 ---
 node: ui-art-gen
+capability: game-design
 discipline_owner: ui-artist
-discipline_reviewers: [art-director, ux-designer]
 human_gate: true
-blocked_by: [art-spec-design]
+hard_blocked_by: [concept-freeze]
 unlocks: [art-qa]
+approval_record_path: .allforai/game-design/approval-records.json
 exit_artifacts:
-  - game-client/assets/resources/sprites/ui/ic_home@2x.png
-  - game-client/assets/resources/sprites/ui/ic_star_full@2x.png
+  - path: .allforai/game-design/ui-art-review.html
+  - path: .allforai/game-design/systems/ui-art-spec.json
+review_checklist:
+  - UI 组件状态完整（normal/pressed/disabled/locked）
+  - HUD 信息层级清晰，不遮挡关键棋盘区域（z-index正确）
+  - 屏幕布局规格与 Cocos Creator 分辨率适配（9:16基准+安全区）
+  - 图标与整体美术方向一致，Atlas 打包无越界
+  - UI mockup 通过可读性QA
 ---
 
-# Task: UI 美术生成（UI Art Generation）
+# Goal
 
-## Context Pull
-- 读取 `.allforai/game-design/art-pipeline-config.json`（若存在且 status=final）：
-  - `style`：
-    - `pixel` → 简单几何图标优先程序化 SVG + 像素化后处理；复杂图标 AI 生图后降采样
-    - `vector` → 全部优先 SVG 直接生成，仅质感类图标调用 AI 生图
-    - 其他（cartoon/realistic/hand_drawn）→ 沿用现有 flux→generate_image 工具优先级
-  - `toolchain.aseprite_available`：`true` 时像素图标后处理可用 Aseprite CLI，否则用 Python PIL
-  - 缺失 → 使用现有工具优先级
-- 读取 `sprites/ui/ui-asset-manifest.json` — 30 个图标完整规格
-- 读取 `art-direction-v2.html` — UI 视觉语言（圆角、描边、颜色规范）
-- 读取 `art-tokens.json` — 颜色系统，验证图标颜色符合 token
+Generate UI art assets for all entries in `.allforai/concept-contract.json` `canonical_registry.ui[]` and `canonical_registry.other[]`.
 
-## 样本策略（Sample Strategy）
+> **Non-interactive execution.** All design decisions are recorded in `.allforai/`.
+> Do NOT use AskUserQuestion or request user input.
 
-**每个类别取 1–2 个代表性图标，共生成约 8 张样本。**
+> **Output language (mandatory):** All HTML navigation tabs, section headings, labels, captions,
+> and descriptive text MUST be in Chinese (zh-CN). In-game proper nouns (place/character/item names)
+> keep the game world's native language (Japanese). JSON field keys stay English snake_case.
 
-### 必须生成（每次执行）
-按类别各取最高频使用的图标：
+## Inputs
 
-| 类别 | 生成目标 | 原因 |
-|------|---------|------|
-| navigation | `ic_home`, `ic_back_arrow` | 出现频率最高 |
-| booster | `ic_hint`, `ic_shuffle` | 游戏内最常见道具 |
-| currency | `ic_currency_beach_coin`, `ic_currency_glowstone` | HUD 核心元素 |
-| progress | `ic_star_full`, `ic_lock` | 关卡选择核心状态 |
+- `.allforai/concept-contract.json` — `canonical_registry.ui[]` and `canonical_registry.other[]` (authoritative asset IDs and `file_prefix` values; do not invent your own names)
+- `.allforai/game-design/art-pipeline-config.json` — all remaining config sections and `toolchain.detected_capabilities`
+- `.allforai/game-design/art-asset-inventory.json` — current asset states (skip assets with `current_state == "locked"`)
+- `.allforai/game-design/asset-registry.json` — canonical registry built by concept-freeze
 
-共 **8 张**，覆盖所有类别，供 ux-designer 验证可读性，art-director 验证风格。
+## Sub-Skill Invocation
 
-### 可选生成（双重审批通过后）
-- 剩余 22 个图标（ic_close, ic_menu, ic_info, ic_check, ic_map, ic_add_steps,
-  ic_item_bomb/lightning/rainbow, ic_material_*, ic_star_empty/half,
-  ic_progress_cap, ic_glow_energy, ic_share, ic_milestone_flag,
-  ic_sound_on/off）
+Read and follow each sub-skill SKILL.md in order. Each sub-skill defines its own output contract — follow it exactly.
 
-### SVG 源文件
-纯矢量图标（home, close, check 等简单形状）优先手工或程序化生成 SVG，
-而非 AI 生图。AI 生图适合质感类图标（货币、道具）。
+### Step 0 — Source Resolution (per asset, before Pre-Spec)
 
-## Prompt 构造规则
+For each asset in `canonical_registry.ui[]` and `canonical_registry.other[]`, check its `source_strategy` from `asset-registry.json`:
 
-```
-final_prompt = "Mobile game UI icon, " + asset.description_cn
-             + ", flat line-fill hybrid design, rounded corners"
-             + ", " + asset.default_color + " dominant"
-             + ", Animal Crossing aesthetic, white background, 512x512"
-```
+- **`existing_asset_pack`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/asset-pack-search-spec/SKILL.md` — search and select candidate pack
+  2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → fall back to `ai_generated` for this asset and proceed to Step 1
+  3. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/existing-asset-adaptation-spec/SKILL.md` — adapt to spec
+  4. Mark asset `current_state: adapted`; skip Step 1 and Step 2 for this asset.
 
-## 工具优先级
-1. `flux_generate_image` (square, 512×512) — 质感类图标（货币、道具）
-2. `generate_image` (1:1) — 功能类图标（导航、状态）
-3. 降级：程序化生成 SVG 占位（纯几何形状图标）
+- **`adapt_existing_asset`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → fall back to `ai_generated` and proceed to Step 1
+  2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/existing-asset-adaptation-spec/SKILL.md` — adapt to spec
+  3. Mark asset `current_state: adapted`; skip Step 1 and Step 2 for this asset.
 
-## 状态回写
-更新 art-asset-inventory.json 的 ui_* 条目，并在 `ai_generated` 中
-记录每个图标的实际文件路径（ui 类目当前为目录级聚合，需拆分为图标级追踪）。
+- **`existing_3d_source_asset` / `user_provided_asset`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → halt with UPSTREAM_DEFECT
+  2. Proceed to Step 1.
 
-## HTML 输出
-`ui-art-review.html` — 图标网格展示，4×2 规格卡（图标 + ID + 颜色值 + 使用场景），
-供 ux-designer 验证对比度和识别度。
+- **`ai_generated` / `hybrid` / `placeholder_only`:** skip Step 0, proceed directly to Step 1.
+
+### Step 1 — Pre-Spec
+
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-ui/00-env/ui-registry/SKILL.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-ui/10-design/hud-information-design/SKILL.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-ui/20-spec/component-state-spec/SKILL.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-ui/20-spec/screen-layout-spec/SKILL.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/visual-style-tokens/SKILL.md`
+
+Skip for assets that completed Step 0 and are already marked `adapted`.
+
+### Step 2 — Generate
+
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-ui/30-generate/ui-mockup-generation/SKILL.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/icon-generation/SKILL.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/portrait-generation/SKILL.md` — when `concept_art.needed=true`
+
+Skip for assets already marked `adapted`.
+
+## Completion Condition
+
+`.allforai/game-design/systems/ui-art-spec.json` exists AND `.allforai/game-design/ui-art-review.html` exists AND all `canonical_registry.ui[]` and `canonical_registry.other[]` entries have `current_state != "placeholder"`.
+
+If any sub-skill returns `UPSTREAM_DEFECT` → halt and report the defect. Do not advance to `art-qa`.

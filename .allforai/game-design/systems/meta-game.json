@@ -1,455 +1,551 @@
 {
   "schema": "meta-game-v1",
-  "generated_at": "2026-05-08T12:00:00Z",
-  "island_map": {
-    "total_areas": 6,
-    "visual_states": ["desolate", "stirring", "blooming", "radiant"],
-    "lighthouse_always_visible": true,
-    "lighthouse_note": "Visible on the horizon from Ch1 onward. Never locked from view, always unreachable until Ch6. Serves as narrative north star.",
-    "areas": [
-      {
-        "chapter": 1,
-        "area_id": "harbor",
-        "area_name_jp": "漁港",
-        "area_name_en": "Harbor",
-        "material": "浮木",
-        "material_en": "Driftwood",
-        "theme": "A once-bustling fishing harbor now silent and salt-worn. Wooden docks are warped, nets tangled in rusted moorings, the fish-market stalls closed with peeling paint. The smell of brine still lingers — the sea never left, only the people did.",
-        "full_restoration_visual": "At dusk, the restored fishing lanterns ignite one by one across the harbor. Warm amber-orange light reflects in the water in long rippling columns. The silhouettes of repaired boats sway gently. An NPC fisherman hangs a lantern from his bow. The harbor hums with the low murmur of evening tide.",
-        "hinata_unlock_line_jp": "次は山の向こうに工房があるんです。おじいちゃんがよく、あそこの土は魂を持っていると言っていました。",
-        "visual_states_detail": {
-          "desolate": "Greyscale palette. Splintered wooden docks, overturned boats half-submerged. Nets drag in still water. A broken lantern pole stands askew. The fish-market awning is torn. No NPCs. Low-contrast fog at the water edge.",
-          "stirring": "A single lantern has been re-hung and flickers weakly. One boat is upright and cleaned. Driftwood has been cleared from the dock boards. A pile of gathered materials is visible near the market stall. Colour begins to return — muted sea-blue, weathered gold.",
-          "blooming": "Three boats are restored and moored neatly. The fish-market stalls are open with cloth awnings in dusty red and cream. Two NPC fishermen move along the dock. Seagulls circle overhead. The water shimmers with hints of teal and green.",
-          "radiant": "Full evening scene. Fishing lanterns illuminate the entire harbor in warm amber. Water surface reflects lantern light in dancing columns. The market stall serves grilled fish. The old fisherman NPC sits on the dock edge watching the light on the water. Stars begin to emerge above."
+  "version": "2.0",
+  "generated_at": "2026-05-13T00:00:00+08:00",
+  "project": "glow-island",
+  "language": "zh-CN",
+
+  "meta_game_philosophy": "元游戏层即岛屿地图本身。没有独立技能树或元进度系统；玩家的进度感来自岛屿视觉的逐步修复——废墟变为有色彩、有光、有声音的生活之地。这不是一个让人变好的系统，而是一个不催人的系统。",
+
+  "systems": [
+    {
+      "system_id": "island_map_progression",
+      "system_name": "岛屿地图视觉进度系统",
+      "player_motivation": "目睹荒废的輝島一步步恢复生机，色彩饱和度随修复进度上升，玩家能直观感受到自己做的事情正在改变这个世界。",
+      "session_bridge": "每次通关后返回岛屿地图，有概率触发小视觉变化（建筑细节变化、新物件出现、光效微调），章末必有一次大变化。",
+      "long_term_goal": "完整点亮灯塔，让輝島重新出现在地图上。Ch1至Ch6共6阶段修复，最终点灯为全游戏的情感高潮。",
+      "progression_refs": ["progression-curve-design", "chapter_structure"],
+      "reward_model": {
+        "type": "visual_restoration",
+        "description": "每N关触发一次岛屿视觉小变化（N≈5–10关，由progression-curve-design确定）；每章30关完成后触发一次大变化（新区域解锁或灯塔亮度提升）。",
+        "small_change_trigger_interval_levels": "5–10",
+        "big_change_trigger": "chapter_completion",
+        "visual_saturation_rule": "修复前灰白色调，每次修复后饱和度上升一阶，Ch6点灯后达到最高饱和度"
+      },
+      "reset_or_season_rule": "无重置。视觉状态永久保留并随进度单向推进。D30+后进入季节循环（春夏秋冬），叠加季节视觉效果但不重置修复状态。",
+      "content_refresh_rule": "章末大变化为计划内内容；章内小变化由关卡节点触发；季节视觉效果D30+循环补充新鲜感。",
+      "ui_surfaces": ["island_map_screen", "chapter_completion_cutscene", "level_result_screen"],
+      "economy_refs": ["beach_coins"],
+      "social_refs": ["friend_progress_phase2"],
+      "art_requirements": ["island_map_stage_sprites", "restoration_vfx", "lighthouse_glow_stages"],
+      "audio_requirements": ["restoration_sfx", "chapter_complete_sting", "ambient_layer_per_stage"],
+      "runtime_system_refs": ["level_progress_tracker", "island_visual_state_manager"],
+      "telemetry_signals": ["level_completed", "island_visual_stage_changed", "chapter_completed"],
+      "state": "draft",
+      "consumer_refs": ["level-design", "art-direction", "audio-design"]
+    },
+    {
+      "system_id": "chapter_visual_stages",
+      "system_name": "章节视觉阶段（6章×4阶段）",
+      "player_motivation": "每章都有清晰的视觉前后对比，让玩家感受到「这个地方因为我而不同了」。",
+      "session_bridge": "每次进入游戏，玩家先看到当前岛屿状态，直观判断自己上次离开时的进度。",
+      "long_term_goal": "全6章视觉修复完成，形成完整的岛屿画卷。",
+      "chapters": [
+        {
+          "chapter_id": 1,
+          "chapter_name": "到来",
+          "area": "海边码头",
+          "area_jp": "漁港",
+          "levels": "1–30",
+          "visual_stages": [
+            {
+              "stage": 1,
+              "trigger_level": 1,
+              "name": "荒废",
+              "description": "码头木板腐朽，灯笼熄灭，渔船搁浅在泥沙中，整体灰白色调，饱和度极低。"
+            },
+            {
+              "stage": 2,
+              "trigger_level": 8,
+              "name": "兆头",
+              "description": "码头栈板修缮完成，轮子不再卡住；健三的鱼竿重新架上去了，出现第一抹暖色。"
+            },
+            {
+              "stage": 3,
+              "trigger_level": 18,
+              "name": "萌芽",
+              "description": "灯笼点亮，码头第一次有了颜色；告示板修复，一张手写便条贴着「欢迎来到輝島，请随便走走」，无署名。"
+            },
+            {
+              "stage": 4,
+              "trigger_level": 30,
+              "name": "章末大变化",
+              "description": "渔船归位，码头完整修复，暖色灯光映在海面上；第一次能从码头隐约看见远处灯塔的轮廓，灯还是灭的。律第一次深吸一口气——不是因为要做什么，只是因为想。"
+            }
+          ],
+          "narrative_triggers": [
+            { "level": 1, "type": "npc_dialogue", "content": "健三把热茶放在律旁边，说「坐吧，铃声一会儿会停的」。铃声没有停。但律坐下来了。" },
+            { "level": 5, "type": "hinata_beat", "beat_id": "ch1-b", "content": "客房割裂的窗户被悄悄换上新玻璃，只留下一片木屑。" },
+            { "level": 10, "type": "hinata_beat", "beat_id": "ch1-a", "content": "门口出现一根精心保养的旧钓竿，没有留言，只有沙上的浅浅脚印。" },
+            { "level": 20, "type": "mystery_stone", "content": "码头附近出现风化石刻「りつ」。律觉得是游客随手刻的，继续走了。" },
+            { "level": 30, "type": "chapter_climax", "content": "章末情感高潮：律在日记里写下「海风里有一种不急的味道，我想待久一点」。岛屿视觉大变化。" }
+          ],
+          "npc_idle_lines": [
+            "律在码头反复调整行李箱的摆放角度，健三路过看了一眼，说：「能走就行。」然后继续去收网。",
+            "健三把一件海上漂来的东西放在码头木箱上，贴上手写标签，写着「来处不明，应是需要找到它的人的东西」。",
+            "议长在码头坐了一会儿，然后向左走了。健三在档案里记下：「山田律，通过，用时12秒。」"
+          ]
         },
-        "restoration_stages": [
-          {
-            "stage": 1,
-            "state": "stirring",
-            "materials_required": [{"material": "浮木", "quantity": 15}],
-            "levels_required": 5,
-            "narrative_beat": "Ritsu clears the dock of driftwood and re-hangs the first lantern."
-          },
-          {
-            "stage": 2,
-            "state": "blooming",
-            "materials_required": [{"material": "浮木", "quantity": 35}],
-            "levels_required": 11,
-            "narrative_beat": "The fish market reopens. Hinata brings a pot of warm tea to the dock."
-          },
-          {
-            "stage": 3,
-            "state": "radiant",
-            "materials_required": [{"material": "浮木", "quantity": 60}],
-            "levels_required": 22,
-            "narrative_beat": "All lanterns lit at dusk. The harbor feels alive again for the first time in years."
-          }
-        ]
-      },
-      {
-        "chapter": 2,
-        "area_id": "pottery_studio",
-        "area_name_jp": "陶芸工房",
-        "area_name_en": "Pottery Studio",
-        "material": "陶土",
-        "material_en": "Clay",
-        "theme": "A hilltop pottery studio behind the harbor, once famous across the island for its glazed work. The kiln has been cold for years. Clay-dust coats every surface. Half-finished pieces sit on shelves, abandoned mid-form — time frozen at the moment someone stopped caring.",
-        "full_restoration_visual": "The kiln fires up for the first time in years. The door glows a deep, pulsing orange from within. Heat shimmer rises from the chimney. Two NPCs, a potter and an apprentice, watch with quiet reverence as the kiln temperature climbs. The warm orange light spills across the courtyard against the evening sky.",
-        "hinata_unlock_line_jp": "海辺の森、覚えてます？子どもの頃よく走り回っていたんです。今はどうなっているのか、怖くて見に行けなくて。",
-        "visual_states_detail": {
-          "desolate": "Muted terracotta and ash grey. The kiln is cold and cracked at its base. Pottery shards litter the floor. Shelves carry dusty half-thrown forms. The wooden door hangs on one hinge. A potter's wheel sits still, clay dried hard on its surface.",
-          "stirring": "The floor has been swept. The potter's wheel is cleaned and turning slowly. Fresh clay has been brought in — a mound sits ready beside the wheel. The kiln's exterior has been patched and soot removed. Warm earthy tones begin to emerge.",
-          "blooming": "Three shelves bear completed, glazed pottery in soft blue and cream. An NPC potter works at the wheel, focused and slow. A second NPC stacks pieces for firing. The courtyard has a display table with finished pieces. Warm terracotta and leaf-green palette.",
-          "radiant": "The kiln glows orange, door ajar, heat-light playing across the entire studio. Finished glazed pieces line the windowsill. The potter pauses their work and bows slightly toward the kiln, a private moment. The scent of warm clay and wood-smoke is implicit in every visual cue."
+        {
+          "chapter_id": 2,
+          "chapter_name": "扎根",
+          "area": "渔村中央小镇",
+          "area_jp": "漁村",
+          "levels": "31–60",
+          "visual_stages": [
+            {
+              "stage": 1,
+              "trigger_level": 31,
+              "name": "荒废",
+              "description": "石板路泥泞，喷泉干涸，店铺门牌褪色，梅子工作室的门卡住无法完全打开。"
+            },
+            {
+              "stage": 2,
+              "trigger_level": 38,
+              "name": "兆头",
+              "description": "石板路清扫，梅子工作室的门可以打开了；店铺门牌开始修缮，字迹老式，没有换成新的。"
+            },
+            {
+              "stage": 3,
+              "trigger_level": 50,
+              "name": "萌芽",
+              "description": "喷泉修复，第一次出水时水柱歪了一下，然后直了；小镇中央座椅修缮完成，健三第一个来坐，说「挺好的」。"
+            },
+            {
+              "stage": 4,
+              "trigger_level": 60,
+              "name": "章末大变化",
+              "description": "一片落叶绕着水柱旋了一圈，飘走了。律在喷泉边站了好一会儿，什么事也没做——那种安静不是空白，是某件一直搁着的事突然不需要搁了。灯塔在远处更清晰了一点。"
+            }
+          ],
+          "narrative_triggers": [
+            { "level": 33, "type": "npc_dialogue", "content": "梅子工作室里，律的脸碗在最显眼处——「做着做着就做了这个，放在最显眼的地方。」" },
+            { "level": 40, "type": "hinata_beat", "beat_id": "ch2-a", "content": "邮箱里出现麻布包裹的陶器碎片，署名只有一个名字。" },
+            { "level": 50, "type": "hinata_beat", "beat_id": "ch2-b", "content": "陶艺体验：ひなた不说话，只是把律的手挪到正确的位置。轆轤转动声充满工房。" },
+            { "level": 55, "type": "npc_dialogue", "content": "梅子把律随手捏的小泥块烧好了——歪歪的，一边厚一边薄。「不平的东西，有时候比较稳。」" },
+            { "level": 60, "type": "chapter_climax", "content": "章末情感高潮：律日记「不是高兴，是像某件一直搁着的事突然不需要搁了。我没有改这个说法。」" }
+          ],
+          "npc_idle_lines": [
+            "梅子把律第一次来时随手捏的小泥块烧好了——歪歪的，一边厚一边薄。她把它放到律的碗旁边，只说：「不平的东西，有时候比较稳。」",
+            "健三在小镇中央座椅上坐了很久，什么都没说，只是看着喷泉。然后站起来，说了句「挺好的」，走了。",
+            "议长在梅子工作室门口坐了一会儿，梅子给它端了碗水，什么都没说。"
+          ]
         },
-        "restoration_stages": [
-          {
-            "stage": 1,
-            "state": "stirring",
-            "materials_required": [{"material": "陶土", "quantity": 18}],
-            "levels_required": 5,
-            "narrative_beat": "Ritsu clears the studio and finds 渉's old glazing notes pinned to the wall."
-          },
-          {
-            "stage": 2,
-            "state": "blooming",
-            "materials_required": [{"material": "陶土", "quantity": 40}],
-            "levels_required": 12,
-            "narrative_beat": "The first new pots are finished. Hinata picks up a small one and turns it in her hands."
-          },
-          {
-            "stage": 3,
-            "state": "radiant",
-            "materials_required": [{"material": "陶土", "quantity": 65}],
-            "levels_required": 24,
-            "narrative_beat": "The kiln fires for the first time in years. The island smells different tonight."
-          }
-        ]
-      },
-      {
-        "chapter": 3,
-        "area_id": "coastal_forest",
-        "area_name_jp": "海辺の森",
-        "area_name_en": "Coastal Forest",
-        "material": "苔と種",
-        "material_en": "Moss & Seeds",
-        "theme": "A narrow forest between the hillside and the sea cliffs, once threaded with paths that children ran through in summer. The undergrowth is choked and overgrown, the path signs weathered to illegibility. But the trees are still tall — they only needed someone to clear the way beneath them.",
-        "full_restoration_visual": "Cherry blossom trees the player cleared and planted along the restored path erupt in bloom simultaneously. The path becomes a tunnel of white and pale pink petals. A single petal drifts down and lands on Hinata's hair. She doesn't notice — she's looking ahead at the light through the trees.",
-        "hinata_unlock_line_jp": "石畳の小道、もうずっと誰も歩いていないと思う。でも、きっとまだそこにあるはずだから。",
-        "visual_states_detail": {
-          "desolate": "Overgrown in dark blue-green shadow. The path is invisible beneath dense undergrowth. A rusted path-sign points nowhere. Fallen branches block progress. The light barely penetrates the canopy. Moss covers everything indiscriminately — not the good kind of moss.",
-          "stirring": "A narrow path has been cleared — just wide enough to walk single-file. New moss has been placed deliberately at path edges, soft and bright green. A single seedling in a cleared patch reaches toward filtered light. The forest feels breathable again.",
-          "blooming": "The path is wide and clearly defined, bordered by young ferns and placed stones. Two NPC children run through — a deliberate echo of 渉's memory. Dappled light plays through fresh leaf growth. The palette is soft green, cream, and gold.",
-          "radiant": "Cherry blossom trees in full bloom create a canopy arch over the path. Petals drift continuously. The path glows with filtered pink-white light. At the far end of the path, barely visible, the cliff begins — the next chapter foreshadowed in the beauty."
+        {
+          "chapter_id": 3,
+          "chapter_name": "感受",
+          "area": "花田山坡",
+          "area_jp": "花畑の丘",
+          "levels": "61–90",
+          "visual_stages": [
+            {
+              "stage": 1,
+              "trigger_level": 61,
+              "name": "荒废",
+              "description": "花田小径杂草丛生，瞭望台破损，野花圃荒乱，山坡石阶崩塌，整体绿灰色调，生机微弱。"
+            },
+            {
+              "stage": 2,
+              "trigger_level": 68,
+              "name": "兆头",
+              "description": "花田小径清理完成，夏帆说路好走多了；异形棋盘开始出现（海湾/岛屿轮廓），环境与玩法同步变化。"
+            },
+            {
+              "stage": 3,
+              "trigger_level": 78,
+              "name": "萌芽",
+              "description": "瞭望台修复，可以看见灯塔了，虽然灯还是灭的；夏帆认真地告诉每株花「工程结束了，谢谢配合」。"
+            },
+            {
+              "stage": 4,
+              "trigger_level": 90,
+              "name": "章末大变化",
+              "description": "山坡石阶全部修缮完成；夏帆递来半开的花束，律闻了一下，眼睛酸了。「在东京五年，我没有闻过任何有气味的下午。」灯塔轮廓更清晰，有隐约暖色光晕。"
+            }
+          ],
+          "narrative_triggers": [
+            { "level": 63, "type": "hinata_beat", "beat_id": "ch3-a", "content": "黄昏时分，律在森林入口发现ひなた一人坐在石头上。两人都没说话，一起等到日完全落下。" },
+            { "level": 70, "type": "mystery_stone", "content": "花田山坡另一块石头：「二〇二六」——字体与码头那块完全相同，风化程度一致。夏帆「无意中」提到，渉「好像知道你会来」。" },
+            { "level": 75, "type": "npc_dialogue", "content": "夏帆带律走花田：「半开的花，已经是花了。」" },
+            { "level": 80, "type": "hinata_beat", "beat_id": "ch3-b", "content": "修复后的森林中发现ひなた留下的素描：森林全景，律的背影被小心描在角落里。" },
+            { "level": 90, "type": "chapter_climax", "content": "章末情感高潮：夏帆递花，律眼睛酸了，五年来情绪解冻，那道玻璃裂开了一条缝——不大，但是有了。" }
+          ],
+          "npc_idle_lines": [
+            "夏帆带律走花田，律注意到一株还没开完的野花，说是不是该等它开完？夏帆说：「半开的花，已经是花了。」",
+            "夏帆第一次和律说话：「那棵松树，你经过的时候它在颤抖，是因为今天风很大。」停了一下，低下头，小声说：「是我想告诉你的，不是树。」",
+            "议长在花田路上坐着，夏帆在旁边做了一会儿记录，什么都没说。"
+          ]
         },
-        "restoration_stages": [
-          {
-            "stage": 1,
-            "state": "stirring",
-            "materials_required": [{"material": "苔と種", "quantity": 20}],
-            "levels_required": 5,
-            "narrative_beat": "Ritsu cuts through the first overgrown section. Finds an old path-marker stone half-buried."
-          },
-          {
-            "stage": 2,
-            "state": "blooming",
-            "materials_required": [{"material": "苔と種", "quantity": 45}],
-            "levels_required": 13,
-            "narrative_beat": "The full path is walkable. Hinata walks it quietly beside Ritsu without speaking."
-          },
-          {
-            "stage": 3,
-            "state": "radiant",
-            "materials_required": [{"material": "苔と種", "quantity": 70}],
-            "levels_required": 26,
-            "narrative_beat": "The cherry blossoms all open at once. Hinata stops mid-path and looks up for a long moment."
-          }
-        ]
-      },
-      {
-        "chapter": 4,
-        "area_id": "stone_path",
-        "area_name_jp": "石畳の小道",
-        "area_name_en": "Stone Path",
-        "material": "石畳石",
-        "material_en": "Paving Stones",
-        "theme": "The old paved road that once connected the forest to the cliffs — a civic project from the island's prosperous years. Many stones have sunk, cracked, or been displaced. Weeds grow in the gaps. But the stones themselves are still there, just waiting to be placed back where they belong.",
-        "full_restoration_visual": "At twilight, the newly restored stone lanterns along the path flicker on in sequence — first one, then the next, then the next — until the whole path glows in a warm amber chain stretching from forest to cliff. The effect is of a landing strip for stars.",
-        "hinata_unlock_line_jp": "崖に出ると、空が全部見えるんです。晴れた夜は、星が落ちてくるみたいで。",
-        "visual_states_detail": {
-          "desolate": "Cracked and sunken paving stones, half-buried in soil. The stone lanterns are toppled or dark, their glass cracked. Weeds push through every joint. The path's edges have eroded into the surrounding grass. Cold grey-blue palette.",
-          "stirring": "Stones have been levelled in the first section. A single lantern has been re-erected and its glass replaced, unlit but intact. The path edges are trimmed. The stonework's beauty — its careful hand-laying — begins to show through again.",
-          "blooming": "Most of the path is restored and level. Stone lanterns stand upright with new glass at regular intervals. An NPC elder walks the path slowly, tapping a cane, clearly pleased. Moss is growing in the joints deliberately — the soft, chosen kind.",
-          "radiant": "All lanterns alight at twilight in sequence. The amber chain of light stretches the full path length. The stones glow warm underfoot. The path feels ancient and cared-for simultaneously — like it was always meant to exist exactly this way."
+        {
+          "chapter_id": 4,
+          "chapter_name": "栖息",
+          "area": "森林露营地",
+          "area_jp": "森のキャンプ地",
+          "levels": "91–120",
+          "visual_stages": [
+            {
+              "stage": 1,
+              "trigger_level": 91,
+              "name": "荒废",
+              "description": "营地帐篷架生锈，篝火台积灰，山路木牌腐朽，整体阴暗色调，只有树缝间漏出的光。"
+            },
+            {
+              "stage": 2,
+              "trigger_level": 98,
+              "name": "兆头",
+              "description": "营地帐篷架修复，律自己住进去了；篝火台清理，当晚就生了火，营地第一次有了人的温度。"
+            },
+            {
+              "stage": 3,
+              "trigger_level": 108,
+              "name": "萌芽",
+              "description": "小径木牌修缮，夏帆的字迹，路名都是花的名字；某个岔路口出现ひなた留下的符号木板，木板下压着一束半干的野花。"
+            },
+            {
+              "stage": 4,
+              "trigger_level": 120,
+              "name": "章末大变化",
+              "description": "营地瞭望点修复，可以同时看见灯塔和冬子家的灯。律仰头看星空，把帽子放在膝盖上。日记：「今天没有工作要交，没有人等我回邮件。星星很多。我不知道我还记不记得怎么浪费时间。」那晚冬子的厨房飘来饭香。"
+            }
+          ],
+          "narrative_triggers": [
+            { "level": 93, "type": "hinata_beat", "beat_id": "ch4-a", "content": "石板路上有两种脚印，其中一种在岔路口折向律不知道的方向。藤蔓之后，消失了。" },
+            { "level": 100, "type": "mystery_note", "content": "律在营地把两块石刻的位置画在日记里，想找出规律，找不到。那晚他把纸合上，没再想。" },
+            { "level": 108, "type": "hinata_beat", "beat_id": "ch4-b", "content": "客房桌上出现一封无署名的信：手绘岛屿地图，点线指向灯塔，余白一句话：「いつか、見えるようになります。」" },
+            { "level": 115, "type": "npc_dialogue", "content": "议长在营地边上绕了一圈，走的时候向左走。冬子的厨房飘来饭香，律没有去找原因。" },
+            { "level": 120, "type": "chapter_climax", "content": "章末情感高潮：篝火夜晚，第一次不赶时间，脑子安静下来，那种安静不是空白——是许久不在的一种清醒。" }
+          ],
+          "npc_idle_lines": [
+            "律独行的夜里在营地写日记，画面闪一行字：「我不知道什么叫够了。也不知道从什么时候起，开始觉得这样也行。」",
+            "议长在营地边上绕了一圈，走的时候向左走。",
+            "营地山路上有一块ひなた留下的木板，上面是她自创的符号——律完全看不懂，但他莫名其妙地跟着符号走，绕开了一段很陡的坡路。"
+          ]
         },
-        "restoration_stages": [
-          {
-            "stage": 1,
-            "state": "stirring",
-            "materials_required": [{"material": "石畳石", "quantity": 22}],
-            "levels_required": 5,
-            "narrative_beat": "Ritsu levels the first section of path. Finds a stone with a name carved in it — 丸山."
-          },
-          {
-            "stage": 2,
-            "state": "blooming",
-            "materials_required": [{"material": "石畳石", "quantity": 50}],
-            "levels_required": 14,
-            "narrative_beat": "The path connects fully. Hinata traces the carved name on the stone with one finger."
-          },
-          {
-            "stage": 3,
-            "state": "radiant",
-            "materials_required": [{"material": "石畳石", "quantity": 80}],
-            "levels_required": 28,
-            "narrative_beat": "The lanterns light at dusk. Ritsu and Hinata stand at the path's end together without words."
-          }
-        ]
-      },
-      {
-        "chapter": 5,
-        "area_id": "cliff_lookout",
-        "area_name_jp": "崖の展望台",
-        "area_name_en": "Cliff Lookout",
-        "material": "崖の石英",
-        "material_en": "Cliff Quartz",
-        "theme": "A stone viewing platform at the island's highest point, weathered but structurally sound. The railing has fallen away on one side. The engraved information plaques are unreadable. But the view — the unbounded sea and open sky — has never once changed. It is the most honest place on the island.",
-        "full_restoration_visual": "At chapter end, a time-lapse sequence plays: the sky darkens over the restored lookout, clouds dissipate, and stars emerge one by one until the full night sky is blazing overhead. The Milky Way arcs above the cliff. In the corner of the frame, the distant lighthouse beam sweeps past once — a promise of what comes next.",
-        "hinata_unlock_line_jp": "灯台には、おじいちゃんの全てが詰まってる気がして。ひとりでは、まだ上がれなかったんです。",
-        "visual_states_detail": {
-          "desolate": "Crumbling stone railing, missing sections. The wooden viewing bench is rotted. The information plaques are blank with weathering. Overgrown with wind-resistant scrub. The sky above is perpetually overcast in this state — the view is there but grey and obscured.",
-          "stirring": "The dangerous railing section has been temporarily blocked with rope. The bench is cleared and structurally sound. Quartz fragments have been gathered and placed at the platform edge, catching what light exists. The sky begins to show through cloud gaps.",
-          "blooming": "A new stone railing is in place, fitted with quartz inlays that catch sunlight. The bench is restored. An NPC couple sits at the viewpoint looking at the horizon. The sky is clear, the sea blue. The view shows, in the far distance, the lighthouse on its rock.",
-          "radiant": "Night-time star-field time-lapse. The repaired quartz railing catches starlight and seems to glow faintly from within. The platform is silent except for wind. The lighthouse beam sweeps across the frame from the distance — first appearance of the active lighthouse visual."
+        {
+          "chapter_id": 5,
+          "chapter_name": "接受",
+          "area": "温泉山谷",
+          "area_jp": "温泉の谷",
+          "levels": "121–150",
+          "visual_stages": [
+            {
+              "stage": 1,
+              "trigger_level": 121,
+              "name": "荒废",
+              "description": "温泉石道堵塞，热气散不出来，木亭朽败，山谷入口牌坊倒塌，一片寂静。"
+            },
+            {
+              "stage": 2,
+              "trigger_level": 128,
+              "name": "兆头",
+              "description": "温泉石道修复，热气顺着石缝漫出来了；木亭修缮，ひなた说「渉以前在这里教我钓鱼的」。"
+            },
+            {
+              "stage": 3,
+              "trigger_level": 138,
+              "name": "萌芽",
+              "description": "温泉池边护栏修复，健三来看了看，说「挺结实的，好」；山谷入口牌坊修复，门牌是冬子用渉的字体描的。"
+            },
+            {
+              "stage": 4,
+              "trigger_level": 150,
+              "name": "章末大变化",
+              "description": "律第一次钓到鱼。ひなた侧过脸，眼角带着一丝笑，说了两个字：「还行。」律日记：「当客户说还行，我不高兴了三天。她说了同样两个字，我想记住很久。」灯塔轮廓清晰，温暖的光从灯室向外渗出。"
+            }
+          ],
+          "narrative_triggers": [
+            { "level": 123, "type": "hinata_beat", "beat_id": "ch5-a", "content": "钓鱼课：ひなた钓3条，律一条没有。她默默把一条放进律的桶。" },
+            { "level": 130, "type": "mystery_stone", "content": "灯台基石处发现第三块石刻：「灯を見る人」——律重新想起前两块，第一次将三块联系在一起。「りつ、二〇二六、灯を見る人」——但从不组合成完整的话。ひなた说「他从来没有跟我说过这件事」，两人都沉默了。" },
+            { "level": 138, "type": "hinata_beat", "beat_id": "ch5-b", "content": "ひなた在木亭里朗读渉的日记一节：「それでも灯台は消していない。光は、待っているものだと思うから。」" },
+            { "level": 145, "type": "npc_dialogue", "content": "ひなた把渉的第三册日记给律看：「他从来没有跟我说过这件事。」渔夫戒攥在她掌心，两人沉默了很久。" },
+            { "level": 150, "type": "chapter_climax", "content": "章末情感高潮：「还行」两个字。前面那句话「有些事不是为了证明你会」，让这两个字的重量完全不同了。" }
+          ],
+          "npc_idle_lines": [
+            "健三来看了看护栏，说「挺结实的，好」，然后去看了一眼温泉，点了点头，走了。",
+            "ひなた把渉的第三册日记给律看：「他从来没有跟我说过这件事。」渔夫戒攥在她掌心，两人沉默了很久。",
+            "议长在山谷入口坐了一会儿，然后跟着热气走进了温泉区。"
+          ]
         },
-        "restoration_stages": [
-          {
-            "stage": 1,
-            "state": "stirring",
-            "materials_required": [{"material": "崖の石英", "quantity": 25}],
-            "levels_required": 5,
-            "narrative_beat": "Ritsu makes the lookout safe. Hinata comes for the first time in years, stops at the railing."
-          },
-          {
-            "stage": 2,
-            "state": "blooming",
-            "materials_required": [{"material": "崖の石英", "quantity": 55}],
-            "levels_required": 15,
-            "narrative_beat": "The new railing is set with quartz. Hinata says she used to come here with her grandfather."
-          },
-          {
-            "stage": 3,
-            "state": "radiant",
-            "materials_required": [{"material": "崖の石英", "quantity": 85}],
-            "levels_required": 30,
-            "narrative_beat": "Stars emerge in time-lapse. The distant lighthouse beam sweeps across for the first time."
-          }
-        ]
+        {
+          "chapter_id": 6,
+          "chapter_name": "点亮",
+          "area": "夜晚灯塔",
+          "area_jp": "夜の灯台",
+          "levels": "151–180",
+          "visual_stages": [
+            {
+              "stage": 1,
+              "trigger_level": 151,
+              "name": "荒废",
+              "description": "灯塔外壁发黑，灯室封闭积灰，周围杂草覆盖，黑暗中灯塔是整个岛上最沉默的地方。"
+            },
+            {
+              "stage": 2,
+              "trigger_level": 158,
+              "name": "兆头",
+              "description": "灯塔外壁修缮，白色重新出来了，不是新刷的那种白，是老白；ひなた一个人清洁灯室，积了很多年的灰。"
+            },
+            {
+              "stage": 3,
+              "trigger_level": 168,
+              "name": "萌芽",
+              "description": "灯具修复，健三找来零件；冬子每晚在灯塔旁说话，议长陪着。律路过时每次都能听到「律今天很努力」。"
+            },
+            {
+              "stage": 4,
+              "trigger_level": 180,
+              "name": "章末大变化·点灯",
+              "description": "律递出点火装置，ひなた握住，停了一下，点亮了。暖黄光柱从塔顶扫出，照过所有已修复的地方——花田、小镇、码头、营地——最后落在夜海上，拉出一条长长的金色水线。冬子说：「渉さん、見えてますよ。」议长抬头看那道光。律和ひなた站在光里，什么都没说，什么都说了。岛重新出现在地图上。"
+            }
+          ],
+          "narrative_triggers": [
+            { "level": 153, "type": "hinata_beat", "beat_id": "ch6-a", "content": "律第一次到达灯塔底部，看见ひなた单手抚着灯塔石壁、仰头看上方，她没有注意到律，然后转身离开了。" },
+            { "level": 160, "type": "npc_dialogue", "content": "冬子从储物间拿出ひなた小时候的雨衣：「放在这里好多年了，她准备好了，我就还给她。」" },
+            { "level": 168, "type": "memory_fragment", "content": "渉「不寄出的信」最后一段：「灯台の光は、来るべき人を呼ぶのではない。来ようとしている人に、ここに灯りがあることを、知らせるだけだ。」" },
+            { "level": 175, "type": "npc_dialogue", "content": "健三在档案里写最后一条记录，把笔放下，站着看了很久灯塔。那是第七本记录册的最后一页。" },
+            { "level": 180, "type": "chapter_climax_ending", "content": "点灯仪式。ひなた握住点火装置停了一下，点亮了。什么都没说，什么都说了。灯亮后第二天：一切照常。这才是最深的治愈——世界已经在替你留着那个位置了。" }
+          ],
+          "npc_idle_lines": [
+            "冬子在灯塔旁坐着，说了些什么，议长在旁边听着。律路过时每次都能听到「律今天很努力」。",
+            "健三站在码头，看着灯塔的方向，站了两分钟，说「那先走了」，走了。",
+            "点灯后第二天，健三已经在倒茶，说「坐吧」，什么都没提。梅子工作室的碗还在最显眼处。"
+          ]
+        }
+      ],
+      "progression_refs": ["chapter_structure", "level_design"],
+      "reward_model": {
+        "type": "visual_milestone",
+        "description": "每章4个视觉阶段，玩家通过关卡直接驱动视觉变化，修复感即是奖励本身。"
       },
-      {
-        "chapter": 6,
-        "area_id": "lighthouse",
-        "area_name_jp": "輝く灯台",
-        "area_name_en": "Lighthouse",
-        "material_primary": "灯油",
-        "material_secondary": "硝子",
-        "material_primary_en": "Lamp Oil",
-        "material_secondary_en": "Glass",
-        "theme": "The lighthouse at the island's seaward edge — visible from everywhere, reached by none until now. The lens is intact but fogged and cracked in places. The mechanism that rotates the beam is seized with rust. The keeper's cottage at its base has been empty since 渉 died. Everything here is a form of grief waiting to be resolved.",
-        "full_restoration_visual": "The lighthouse beam activates for the first time in years and sweeps slowly across the dark sea. The beam is warm gold, not harsh white. Ships far out respond — tiny lights blinking acknowledgement. Inside the lantern room, the rotating lens mechanism turns smooth and sure. Hinata is in the room when it starts, and her face in the rotating light is the emotional climax of the game.",
-        "hinata_unlock_line_jp": null,
-        "visual_states_detail": {
-          "desolate": "The lighthouse tower stands intact but dark, its lens chamber black. The keeper's cottage windows are boarded. The path up to the lighthouse door is overgrown. Oil stains mark where the lamp last burned, decades cold. The lighthouse is the only structure in the game that feels haunted rather than merely abandoned.",
-          "stirring": "The path to the lighthouse door has been cleared. The cottage boards have been removed from one window — warm empty interior visible. The lens chamber has been accessed; the cracked glass panels are stacked, awaiting replacement. Oil lanterns around the base have been lit — small lights around the dark tower.",
-          "blooming": "The cottage is inhabited — Hinata has moved back in. Light in the cottage windows at night. The exterior path is fully restored. The lens chamber glass has been replaced; it catches light during the day and scatters prismatic color. The beam is not yet active — the mechanism is being repaired.",
-          "radiant": "The beam activates. Warm gold light sweeps across sea and island. Every previously restored area catches the beam for one second each as it passes — the harbor lanterns, the kiln glow, the cherry blossoms, the stone path lanterns, the cliff quartz — all briefly illuminated by the lighthouse. The island is whole."
+      "reset_or_season_rule": "永久不重置，视觉状态只向前。",
+      "content_refresh_rule": "6章×4阶段=24个视觉节点，季节系统D30+叠加。",
+      "ui_surfaces": ["island_map_screen", "chapter_select_screen"],
+      "economy_refs": [],
+      "social_refs": ["friend_progress_phase2"],
+      "art_requirements": ["chapter_before_after_sprites", "stage_transition_vfx"],
+      "audio_requirements": ["restoration_ambient_per_stage", "chapter_completion_music"],
+      "runtime_system_refs": ["chapter_visual_state_manager"],
+      "telemetry_signals": ["chapter_stage_advanced", "chapter_completed"],
+      "state": "draft",
+      "consumer_refs": ["art-direction", "level-design"]
+    },
+    {
+      "system_id": "narrative_unlock_system",
+      "system_name": "叙事解锁系统",
+      "player_motivation": "解锁剧情片段、NPC对话和日记碎片是核心回归动力。玩家想知道下一个故事节点是什么。",
+      "session_bridge": "通关特定关卡后触发剧情，轻量文字气泡或过场动画，在关卡结算界面后自然呈现，不打断游戏节奏。",
+      "long_term_goal": "集齐渉的24块日记碎片，解锁最终幕后故事：渉为什么会知道律会来。",
+      "unlock_types": [
+        {
+          "type": "npc_dialogue",
+          "description": "通关特定关卡后解锁与NPC的新对话片段",
+          "trigger": "level_completion",
+          "delivery": "post_session_text_bubble"
         },
-        "restoration_stages": [
-          {
-            "stage": 1,
-            "state": "stirring",
-            "materials_required": [
-              {"material": "灯油", "quantity": 20},
-              {"material": "硝子", "quantity": 10}
-            ],
-            "levels_required": 5,
-            "narrative_beat": "The path to the lighthouse is cleared. Ritsu reads 渉's last journal entry inside the cottage."
-          },
-          {
-            "stage": 2,
-            "state": "blooming",
-            "materials_required": [
-              {"material": "灯油", "quantity": 45},
-              {"material": "硝子", "quantity": 25}
-            ],
-            "levels_required": 15,
-            "narrative_beat": "Hinata moves back into the cottage. She and Ritsu work on the lens mechanism together."
-          },
-          {
-            "stage": 3,
-            "state": "radiant",
-            "materials_required": [
-              {"material": "灯油", "quantity": 80},
-              {"material": "硝子", "quantity": 45}
-            ],
-            "levels_required": 30,
-            "narrative_beat": "The beam sweeps across the sea. Hinata watches from the lantern room. The island is whole."
-          }
-        ]
-      }
-    ]
-  },
-  "chapter_unlock_ceremony": {
-    "description": "Six-step transition sequence triggered when a chapter's final level is completed.",
-    "steps": [
-      {
-        "step": 1,
-        "action": "final_level_complete",
-        "duration_seconds": 0,
-        "detail": "Level complete screen fades. Star count displayed briefly then fades to black."
+        {
+          "type": "wataru_memory_fragment",
+          "description": "渉的日记碎片，每章解锁数条，揭开岛屿谜题层",
+          "trigger": "level_milestone_or_daily_reward",
+          "total_fragments": 24,
+          "delivery": "memory_journal_book_ui",
+          "complete_reward": "epilogue_scene_hinata_reveals_grandfather_story"
+        },
+        {
+          "type": "hinata_story_beat",
+          "description": "律与ひなた的情感演出，共12个节点，贯穿6章",
+          "trigger": "chapter_restoration_milestone",
+          "total_beats": 12,
+          "beat_ids": ["ch1-a","ch1-b","ch2-a","ch2-b","ch3-a","ch3-b","ch4-a","ch4-b","ch5-a","ch5-b","ch6-a","ch6-b"],
+          "delivery": "post_session_cutscene_or_environment_change"
+        },
+        {
+          "type": "island_visual_restoration",
+          "description": "每N关触发场景变化（废墟→修复→焕新），视觉进度即叙事进度",
+          "trigger": "level_interval_n_or_chapter_completion",
+          "delivery": "island_map_visual_update"
+        },
+        {
+          "type": "mystery_stone_discovery",
+          "description": "三块风化石刻，分布于Ch1/Ch3/Ch5，合起来指向律本人",
+          "total_stones": 3,
+          "stone_texts": ["りつ（Ch1码头）", "二〇二六（Ch3山坡）", "灯を見る人（Ch5灯台基石）"],
+          "resolution": "游戏永远不确认这是命运还是巧合，答案属于玩家自己"
+        }
+      ],
+      "pacing_rule": "每章30关内分布3–5个剧情触发点，章末必有一个情感高潮+视觉大变化。",
+      "npc_idle_system": {
+        "description": "NPC在关卡间隙随机触发日常台词（非剧情推进，纯氛围），轻量文字气泡，温暖但不打断游戏节奏。",
+        "trigger": "random_inter_level_probability",
+        "blocking": false,
+        "dismissal": "自动消失或点击跳过"
       },
-      {
-        "step": 2,
-        "action": "area_restoration_animation",
-        "duration_seconds": 3,
-        "detail": "Chapter N area transitions to its radiant state with a full-area glow animation. Signature visual plays: harbor lanterns / kiln fire / cherry blossoms / stone lanterns / star time-lapse / lighthouse beam."
+      "progression_refs": ["level-design", "chapter_structure"],
+      "reward_model": {
+        "type": "story_unlock",
+        "description": "剧情内容本身即奖励，无额外资源掉落。玩家因好奇心驱动回归，而非资源激励。"
       },
-      {
-        "step": 3,
-        "action": "camera_pan_to_next_area",
-        "duration_seconds": 2,
-        "detail": "Camera pulls back to island map, then pans to the adjacent locked area. Fog lifts in a soft 2-second dissolve to reveal the area silhouette in muted tones. Soft swell music rises."
+      "reset_or_season_rule": "解锁后永久保留，可在日记/回忆录界面重看。",
+      "content_refresh_rule": "6章内容固定，季节台词D30+循环补充。",
+      "ui_surfaces": ["post_level_cutscene", "memory_journal_ui", "npc_idle_bubble", "chapter_map_screen"],
+      "economy_refs": [],
+      "social_refs": [],
+      "art_requirements": ["cutscene_illustrations", "npc_idle_portrait_sprites", "memory_journal_ui"],
+      "audio_requirements": ["dialogue_sfx", "chapter_climax_music", "memory_fragment_reveal_sting"],
+      "runtime_system_refs": ["narrative_trigger_manager", "memory_fragment_collector"],
+      "telemetry_signals": ["narrative_unlock_triggered", "memory_fragment_collected", "hinata_beat_triggered"],
+      "state": "draft",
+      "consumer_refs": ["character-arc-design", "level-design", "ui-art-gen"]
+    },
+    {
+      "system_id": "daily_reward_system",
+      "system_name": "每日签到·岛屿礼物系统",
+      "player_motivation": "每天回来看看码头的礼物箱，不是因为要资源，而是因为岛屿的声音让人想待在这里。",
+      "session_bridge": "每日首次进入游戏，码头礼物箱有新内容。Day 1–7精确设计，Day 8–30随机池+里程碑，Day 30+季节循环。",
+      "long_term_goal": "D30里程碑解锁ひなた亲口讲述渉的故事——系统与叙事深度融合。",
+      "cadence": {
+        "week_1": "精确叙事：每天一个岛屿物件+叙事风味文字，Day 3提示第一块日记碎片，Day 6解锁律的第一篇日记，Day 7 ひなた码头礼物。",
+        "week_2_to_4": "维持期：材料偏稀有，每周1–2次日记碎片提示，Day 14/21/28有特殊事件。",
+        "d30_plus": "季节循环：春夏秋冬各30天，限定材料+ひなた季节台词+视觉特效叠加。"
       },
-      {
-        "step": 4,
-        "action": "hinata_hint_line",
-        "duration_seconds": 5,
-        "detail": "Hinata's character portrait appears at lower third. She delivers a single spoken line (Japanese) with subtitle. Line teases the next chapter's theme without spoiling the story beat.",
-        "lines_per_chapter_completed": {
-          "ch1_to_ch2": "次は山の向こうに工房があるんです。おじいちゃんがよく、あそこの土は魂を持っていると言っていました。",
-          "ch2_to_ch3": "海辺の森、覚えてます？子どもの頃よく走り回っていたんです。今はどうなっているのか、怖くて見に行けなくて。",
-          "ch3_to_ch4": "石畳の小道、もうずっと誰も歩いていないと思う。でも、きっとまだそこにあるはずだから。",
-          "ch4_to_ch5": "崖に出ると、空が全部見えるんです。晴れた夜は、星が落ちてくるみたいで。",
-          "ch5_to_ch6": "灯台には、おじいちゃんの全てが詰まってる気がして。ひとりでは、まだ上がれなかったんです。"
+      "design_constraints": {
+        "no_stamina_gate": true,
+        "no_countdown_timers": true,
+        "streak_break_response": "软欢迎回来：缺席1–3天标准礼物+额外材料；缺席4–7天稀有材料+日记碎片提示；缺席8天以上章节素材包+ひなた欢迎回来手记。",
+        "opt_in_notification": "第3天游戏后温和询问，不强制，可随时一步关闭",
+        "max_notifications_per_day": 1,
+        "notification_silence_after_d30": "除非缺席3天以上，否则不推送"
+      },
+      "seasons": [
+        { "season": "spring", "name": "春霞の島", "exclusive_material": "桜の花びら", "visual_effect": "cherry_blossom_petals_overlay" },
+        { "season": "summer", "name": "熱波の島", "exclusive_material": "夏蛍の光石", "visual_effect": "firefly_glow_evening" },
+        { "season": "autumn", "name": "紅葉の島", "exclusive_material": "紅葉の枝", "visual_effect": "autumn_leaves_wind_scatter" },
+        { "season": "winter", "name": "冬凪の島", "exclusive_material": "冬の霜草", "visual_effect": "frost_morning_mist" }
+      ],
+      "progression_refs": ["chapter_structure"],
+      "reward_model": {
+        "type": "narrative_material_blend",
+        "description": "礼物是岛屿的声音，不是纯粹的数值资源。每个礼物都有叙事风味文字，即使是最普通的材料也被包裹在岛屿的温度里。"
+      },
+      "reset_or_season_rule": "签到记录按自然日重置，但缺签不惩罚。季节每30天轮换。",
+      "content_refresh_rule": "D1–D7精确内容；D8–D30随机池；D30+季节循环。",
+      "ui_surfaces": ["dock_gift_box_screen", "daily_login_notification", "welcome_back_screen"],
+      "economy_refs": ["beach_coins", "chapter_materials"],
+      "social_refs": [],
+      "art_requirements": ["dock_gift_box_sprite", "seasonal_vfx_overlays"],
+      "audio_requirements": ["gift_open_sfx", "seasonal_ambient_music"],
+      "runtime_system_refs": ["daily_login_tracker", "gift_calendar_manager"],
+      "telemetry_signals": ["daily_login", "gift_opened", "streak_broken", "welcome_back_triggered"],
+      "state": "draft",
+      "consumer_refs": ["retention-hook-design", "monetization-design"]
+    },
+    {
+      "system_id": "friend_progress_system",
+      "system_name": "好友进度展示（Phase 2预留）",
+      "player_motivation": "轻社交，无竞技压力：看朋友打到哪章，感受到「我不是一个人在这个岛上」。",
+      "session_bridge": "Phase 1：数据结构字段已预留，UI不实现。Phase 2：岛屿地图上显示好友的当前章节进度气泡。",
+      "long_term_goal": "若有若无的社交连接，增强归属感，不引入竞争机制。",
+      "phase_1_spec": {
+        "note": "Phase 1仅设计数据结构，不实现UI。以下字段在后端预留，供Phase 2使用。",
+        "friend_data_schema": {
+          "user_id": "string",
+          "display_name": "string",
+          "current_chapter": "integer (1–6)",
+          "current_level": "integer (1–180)",
+          "island_stage": "integer (1–24, 对应6章×4视觉阶段)",
+          "last_active_at": "ISO8601 timestamp",
+          "opt_in_social": "boolean",
+          "avatar_preset_id": "string"
         }
       },
+      "phase_2_spec": {
+        "platform": ["Game Center (iOS)", "Google Play Games (Android)"],
+        "ui_placement": "岛屿地图界面，好友进度气泡叠加在对应章节区域",
+        "display_format": "头像+当前章节名称，不显示具体关卡数（避免比较压力）",
+        "interaction": "点击好友气泡可发送鼓励表情（无竞争性语言）",
+        "privacy": "完全可选，默认不显示好友信息"
+      },
+      "design_constraints": {
+        "no_pvp": true,
+        "no_ranking": true,
+        "no_forced_social": true,
+        "allowed_social": "opt_in_soft_encouragement_only"
+      },
+      "progression_refs": ["chapter_structure"],
+      "reward_model": { "type": "soft_social_presence", "description": "好友进度不产生资源奖励，仅提供存在感和温和的同伴激励。" },
+      "reset_or_season_rule": "无重置，跟随玩家进度实时更新。",
+      "content_refresh_rule": "随好友游戏进度自动更新。",
+      "ui_surfaces": ["island_map_screen_phase2"],
+      "economy_refs": [],
+      "social_refs": ["game_center", "google_play_games"],
+      "art_requirements": ["friend_progress_bubble_sprite_phase2"],
+      "audio_requirements": [],
+      "runtime_system_refs": ["friend_data_api_phase2"],
+      "telemetry_signals": ["friend_progress_viewed_phase2", "encouragement_sent_phase2"],
+      "state": "draft",
+      "consumer_refs": ["platform-integration-phase2"]
+    },
+    {
+      "system_id": "lighthouse_meta_goal",
+      "system_name": "灯塔元目标（远景锚点）",
+      "player_motivation": "从Ch1开始，地平线上就隐约可见灯塔的轮廓——近而不可达，光而未点。随着修复进度，灯塔越来越清晰，光越来越强，形成六章贯穿的视觉驱动力。",
+      "session_bridge": "每次打开岛屿地图，灯塔的视觉状态实时反映当前总体进度。",
+      "long_term_goal": "Ch6完成时点亮灯塔，岛重新出现在地图上——这是整个游戏唯一的、不可逆的大结局时刻。",
+      "lighthouse_visibility_stages": [
+        { "chapter": 1, "state": "distant_silhouette_fog", "description": "浓雾中仅见轮廓，灯完全熄灭" },
+        { "chapter": 2, "state": "silhouette_clearing", "description": "薄雾中形状渐显，仍无光" },
+        { "chapter": 3, "state": "visible_shape_faint_glow", "description": "轮廓清晰，灯室有隐约暖光透出" },
+        { "chapter": 4, "state": "clear_with_warm_light", "description": "灯塔清晰，光晕可见，但灯尚未点亮" },
+        { "chapter": 5, "state": "clear_outline_warm_light", "description": "灯塔完整，暖光充盈灯室，准备就绪感" },
+        { "chapter": 6, "state": "fully_restored_beacon", "description": "灯亮，光柱扫过夜海，岛重新出现在地图上" }
+      ],
+      "design_principle": "灯塔不只是目标，它是情感锚点——每次修复，灯塔窗里的光多一点点；声音设计上，晨风里的远处风铃声预示修复，早于场景更新。",
+      "progression_refs": ["chapter_structure"],
+      "reward_model": { "type": "visual_emotional_anchor", "description": "灯塔本身即奖励，无额外资源产出。" },
+      "reset_or_season_rule": "Ch6点灯后永久保持点亮状态（lighthouse_glow_always_on）。",
+      "content_refresh_rule": "固定内容，随章节进度单向推进。",
+      "ui_surfaces": ["island_map_screen", "chapter_completion_cutscene"],
+      "economy_refs": [],
+      "social_refs": [],
+      "art_requirements": ["lighthouse_stage_sprites", "beacon_light_vfx"],
+      "audio_requirements": ["lighthouse_ambient_per_stage", "beacon_activation_sfx"],
+      "runtime_system_refs": ["lighthouse_visual_state_manager"],
+      "telemetry_signals": ["lighthouse_stage_updated", "lighthouse_lit"],
+      "state": "draft",
+      "consumer_refs": ["art-direction", "audio-design"]
+    }
+  ],
+
+  "design_exclusions": {
+    "excluded_systems": [
       {
-        "step": 5,
-        "action": "unlock_next_chapter_levels",
-        "duration_seconds": 1,
-        "detail": "New chapter area glows gold briefly. Three level nodes appear with a soft unlocking chime. First 3 levels of the new chapter become available."
+        "system": "独立技能树",
+        "reason": "岛屿地图本身就是视觉化元进度展示，不需要额外系统"
       },
       {
-        "step": 6,
-        "action": "memory_fragment_unlock",
-        "duration_seconds": 3,
-        "detail": "A journal page floats up from the restored area with a paper-rustle sound. '渉の記憶 — 第N章' appears briefly. The page folds into the Memory Room icon. A soft notification confirms: 'Memory Room に記録が追加されました'."
+        "system": "限时活动/时间限制元玩法",
+        "reason": "保持治愈调性，排除一切时间压力"
+      },
+      {
+        "system": "PvP/排行榜",
+        "reason": "治愈游戏核心价值观：不催人，不比较"
+      },
+      {
+        "system": "体力/生命值系统",
+        "reason": "无体力是产品核心差异化承诺"
+      },
+      {
+        "system": "强制社交/公会义务",
+        "reason": "社交完全可选，好友功能Phase 2才实现且仅为软激励"
       }
     ]
   },
-  "memory_fragment_system": {
-    "total_fragments": 6,
-    "trigger": "chapter_restoration_complete",
-    "collection_location": "memory_room",
-    "all_collected_reward": "special_illustration",
-    "all_collected_reward_detail": "A full-page illustrated scene of 渉 and young ひなた at the lighthouse, warm evening light, drawn in the game's pastoral illustration style. Viewable in the Memory Room as a seventh 'page'. No gameplay reward — pure narrative closure.",
-    "presentation": {
-      "style": "journal_page_turn",
-      "visual": "black_ink_aged_paper",
-      "animation": "page_turn_2s",
-      "typography": "brushstroke-style Japanese font, slightly uneven baseline to suggest handwriting",
-      "paper_texture": "aged cream with soft edge vignette, faint horizontal ruled lines",
-      "ink_color": "#1a1008"
-    },
-    "access": "Memory Room accessible from island map at any time. Locked fragments shown as sealed envelopes.",
-    "fragments": [
-      {
-        "fragment_id": "ch1-harbor",
-        "chapter": 1,
-        "theme": "Harbor mornings — the smell of the sea, the fishermen's rhythm",
-        "prose_jp": "夜明け前の漁港が好きだった。まだ暗いうちから灯籠の明かりが水に揺れて、漁師たちが言葉少なに網を整える。あの静けさの中に、島の心拍があった。海の匂いと、人が働く音と。それだけで十分だった。",
-        "prose_char_count": 92,
-        "unlock_trigger": "chapter_1_restoration_complete",
-        "visual_prompt": "An aged journal page. Harbor at pre-dawn, ink-wash style. A single lantern reflected in dark water. A fisherman's silhouette at dock edge."
-      },
-      {
-        "fragment_id": "ch2-pottery",
-        "chapter": 2,
-        "theme": "The patience of craft — a potter's lesson applied to life",
-        "prose_jp": "土は急かされるのを嫌う。焦れば割れる。ただ手のひらで包んで、回しながら待てばいい。人も同じかもしれない。壊れかけた心を直す方法も、きっとそれに近い——急がずに、ただそばにいることだ。",
-        "prose_char_count": 88,
-        "unlock_trigger": "chapter_2_restoration_complete",
-        "visual_prompt": "A potter's wheel in ink wash. Hands cupping wet clay, unhurried. Kiln light visible in background doorway."
-      },
-      {
-        "fragment_id": "ch3-forest",
-        "chapter": 3,
-        "theme": "Young Hinata running through the forest — she didn't know he was watching",
-        "prose_jp": "ひなたは気づいていなかっただろう、私が木の陰から見ていたことを。あの子は夏の森を風みたいに走っていた。笑い声が枝の間に消えて、また戻ってくる。ただそれを見ていた。あれが幸せというものだった。",
-        "prose_char_count": 95,
-        "unlock_trigger": "chapter_3_restoration_complete",
-        "visual_prompt": "Ink-wash forest path. A child's figure in motion blur between trees, small and bright against the deep greens. An older figure's shadow in the foreground, still, watching."
-      },
-      {
-        "fragment_id": "ch4-stone-path",
-        "chapter": 4,
-        "theme": "A solitary walk when the island was empty — what he heard in the silence",
-        "prose_jp": "人が去った後も、石畳は残っていた。ひとりで歩くと、足音がよく響いた。静かな島は寂しくもあったが、正直でもあった。風の音、草の揺れ、遠い波。それらは誰かのためでなく、ただそこにあり続けていた。",
-        "prose_char_count": 93,
-        "unlock_trigger": "chapter_4_restoration_complete",
-        "visual_prompt": "Empty stone path in ink-wash. No figures. Stone lanterns dark. Wind-bent grass at the edges. The path continues into the frame's distance."
-      },
-      {
-        "fragment_id": "ch5-cliff",
-        "chapter": 5,
-        "theme": "Stars from the cliff — smallness as relief, not loneliness",
-        "prose_jp": "星空の下に立つと、自分がどれほど小さいか分かる。若い頃はそれが怖かった。でも年を取るにつれて、あの小ささが楽になってきた。何も抱えなくていい、という感覚。ただの点として、宇宙の中にいる安心感。",
-        "prose_char_count": 95,
-        "unlock_trigger": "chapter_5_restoration_complete",
-        "visual_prompt": "Ink-wash cliff edge at night. A single figure, very small, under an enormous star field. The Milky Way rendered in fine spatter. The figure faces the sky, not the sea."
-      },
-      {
-        "fragment_id": "ch6-letter",
-        "chapter": 6,
-        "theme": "The letter to Ritsu — why he chose this particular stranger, the hope",
-        "prose_jp": "あなたのことを新聞で読んだとき、理由は分からないが確信した。疲れた人間にしか、壊れた場所の美しさは見えない。島はあなたを必要としている。そして、もしかしたらあなたも、島を必要としているのかもしれないと思った。",
-        "prose_char_count": 103,
-        "unlock_trigger": "chapter_6_restoration_complete",
-        "visual_prompt": "The letter itself, ink-wash. 渉's handwriting, careful and old. A lighthouse drawn small in the margin. The salutation visible: '山田律様へ'. The final line trails off, unfinished."
-      }
-    ]
-  },
-  "material_system": {
-    "types": [
-      {"id": "driftwood", "name_jp": "浮木", "name_en": "Driftwood", "chapter": 1, "drop_source": "ch1_levels", "rarity": "common"},
-      {"id": "clay", "name_jp": "陶土", "name_en": "Clay", "chapter": 2, "drop_source": "ch2_levels", "rarity": "common"},
-      {"id": "moss_seeds", "name_jp": "苔と種", "name_en": "Moss & Seeds", "chapter": 3, "drop_source": "ch3_levels", "rarity": "common"},
-      {"id": "paving_stones", "name_jp": "石畳石", "name_en": "Paving Stones", "chapter": 4, "drop_source": "ch4_levels", "rarity": "common"},
-      {"id": "cliff_quartz", "name_jp": "崖の石英", "name_en": "Cliff Quartz", "chapter": 5, "drop_source": "ch5_levels", "rarity": "common"},
-      {"id": "lamp_oil", "name_jp": "灯油", "name_en": "Lamp Oil", "chapter": 6, "drop_source": "ch6_levels", "rarity": "common"},
-      {"id": "glass", "name_jp": "硝子", "name_en": "Glass", "chapter": 6, "drop_source": "ch6_levels", "rarity": "uncommon"}
-    ],
-    "drop_mechanics": {
-      "normal_drop_source": "level_completion",
-      "normal_drop_quantity": {"min": 2, "max": 5},
-      "normal_drop_quantity_note": "Randomised 2-5 units per level completion. Higher chapter levels yield toward the upper range.",
-      "rare_drop_trigger": "combo_chain_4_plus",
-      "rare_drop_chance": 0.15,
-      "rare_drop_quantity": {"min": 3, "max": 8},
-      "rare_drop_note": "A 4+ combo chain during a level generates a 15% chance of a rare material bonus drop at level end. Visually: a glowing material icon pulses during the chain."
-    },
-    "soft_cap_per_type": 99,
-    "soft_cap_behaviour": "At 99, material icons display a soft gold border. Overflow during active play is permitted — materials collected mid-level are granted in full even if they briefly exceed 99. No hard block.",
-    "no_decay": true,
-    "no_expiry": true,
-    "no_energy_system": true,
-    "material_display": "Materials shown in a panel on the island map screen. Each type has a small illustrated icon matching its chapter aesthetic.",
-    "total_restoration_costs_summary": {
-      "ch1_harbor": {"浮木_total": 110},
-      "ch2_pottery": {"陶土_total": 123},
-      "ch3_forest": {"苔と種_total": 135},
-      "ch4_stone_path": {"石畳石_total": 152},
-      "ch5_cliff": {"崖の石英_total": 165},
-      "ch6_lighthouse": {"灯油_total": 145, "硝子_total": 80}
+
+  "meta_layer_summary": {
+    "description": "Glow Island的元游戏层是一个有机整体：岛屿地图视觉进度+叙事解锁+每日礼物+远景灯塔锚点，四个系统共同服务于同一个玩家体验目标——让玩家感受到这里有自己的位置，不需要解释，不需要表演振作，不需要赶路。",
+    "core_loop_connection": "每一场连连看通关 → 岛屿视觉小变化/叙事触发点 → 玩家想打下一关 → 形成内驱力驱动的回路，资源系统（沙滩币/续关）是辅助而非驱动力。",
+    "phase_roadmap": {
+      "phase_1": "Web demo：岛屿地图视觉进度+叙事解锁+每日礼物（D1–D7精确）+灯塔远景锚点。好友功能数据结构预留，UI不实现。",
+      "phase_2": "iOS+Android打包：接入Game Center/Google Play，实现好友进度展示UI，季节系统完整运营。"
     }
-  },
-  "map_interaction_design": {
-    "tap_restored_area": "Shows area name, restoration percentage, and a visual breakdown of stages completed. A small animated vignette of the area's current visual state plays.",
-    "tap_locked_area": "Shows fog-silhouette with area name visible but story text hidden. A 'locked' icon with the chapter number. Tap again shows: 'Complete [previous chapter] to reveal.'",
-    "tap_lighthouse_any_chapter": "Ch1-5: Shows lighthouse silhouette on the horizon with a soft pulse. Hinata's voice line: 'いつかあそこまで、一緒に行けたらいいですね。' Ch6: Lighthouse becomes interactive.",
-    "fog_lift_animation": {
-      "duration_seconds": 2,
-      "style": "Fog dissolves from center outward. Area silhouette solidifies from grey to desaturated colour.",
-      "music": "Soft swell — single sustained note on a koto, rising."
-    },
-    "lighthouse_always_visible": true,
-    "lighthouse_on_horizon_note": "Lighthouse is rendered in the island map background from Ch1. It is visually present but placed at the map's far edge — no tap target until Ch6 unlock. It functions as a constant horizon-line goal.",
-    "restoration_progress_panel": {
-      "shows": ["area_name_jp", "area_name_en", "current_visual_state", "stage_1_complete", "stage_2_complete", "stage_3_complete", "materials_held", "materials_needed_next_stage"],
-      "access": "Tap area on island map"
-    }
-  },
-  "no_battle_pass": true,
-  "no_seasonal_events": true,
-  "no_energy_system": true,
-  "no_timers": true,
-  "no_pvp": true,
-  "design_rationale": {
-    "philosophy": "Glow Island is designed as a finite, timeless experience — a complete arc with a beginning, middle, and end. Every system supports this rather than fighting against it.",
-    "why_timeless": "Seasonal content and battle passes create FOMO — a low-grade anxiety that the player will miss something irreversible. This is antithetical to a game about a burned-out protagonist recovering. The meta-game must be the opposite of the conditions that caused the burnout: no deadlines, no expiring content, no competitive pressure. The island waits for the player. It will always wait.",
-    "errc_framework": {
-      "eliminate": ["FOMO pressure", "time-gated content", "daily login anxiety", "competitive leaderboards", "expiring materials", "energy systems", "battle pass FOMO"],
-      "reduce": ["External motivation mechanisms", "Engagement as obligation"],
-      "raise": ["Intrinsic motivation through narrative", "Completionist satisfaction", "Emotional investment in characters"],
-      "create": ["Finite narrative arc as primary engagement driver", "Memory fragment collection as completionist reward", "No-pressure restoration loop that respects player time"]
-    },
-    "engagement_source": "narrative_completion",
-    "engagement_source_detail": "The primary engagement hook is 渉's story — a dead man who chose a stranger to inherit his love for an island. The desire to know why he chose Ritsu, and to read his final journal entry, is a stronger pull than any daily reward. The player earns emotional payoff, not currency.",
-    "fomo_replacement": "completionist_satisfaction + narrative_closure",
-    "fomo_replacement_detail": "FOMO (fear of missing out on limited-time content) is replaced by JOMO (joy of missing out on pressure) and replaced with completionist satisfaction. The six memory fragments create a finite, fully achievable collection. All 6 collected unlocks a special illustration — not a gameplay advantage, just beauty and closure. Players who want to see 渉's full story have a clear, achievable path that will never expire.",
-    "finite_endpoint_design": "The lighthouse beam activation is designed as the natural end of the restoration arc. After this moment, the island is whole. The game does not extend past this — there is no post-game grind. The 'end state' is a living, restored island that the player can revisit and walk through at leisure. The endpoint is not a locked door; it is an open, warm room.",
-    "long_term_replayability": "Players who want to replay start fresh on a new island. The emotional experience of reading 渉's fragments for the first time is irreplaceable — but the second playthrough reveals small details in the fragments that were invisible the first time, creating a New Game+ quality without explicit mechanics.",
-    "no_battlepass_rationale_summary": "A battle pass would require seasonal theming, which would require Kagayaki-jima to be re-decorated seasonally — destroying the sense of a real place with real history. The island should feel as though it was always there, not as though it's being dressed for a marketing event."
   }
 }

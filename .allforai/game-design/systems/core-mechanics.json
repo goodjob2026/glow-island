@@ -1,32 +1,215 @@
 {
-  "version": "2.0",
-  "core_loop": {
-    "type": "match-connect puzzle",
-    "session_duration_s": { "min": 30, "typical": 90, "max": 180 },
-    "currency": "steps",
-    "no_timer": true,
-    "no_energy": true
-  },
-  "meta_loop": {
-    "layers": ["puzzle", "material_reward", "island_restoration", "narrative_unlock"]
-  },
+  "version": "4.0",
+  "generated_at": "2026-05-12T00:00:00+08:00",
+  "revision_notes": "v4.0 — 特殊图块系统彻底重设计。旧系统（炸弹bomb、行消row_clear、自动连auto_chain、重排reshuffle作为棋盘图块）全部移除——炸弹/行消消除单格导致奇偶失衡的根本问题，由本次设计消除：新5种战术型棋盘特殊图块均不消除单格匹配图块，奇偶安全由设计保证而非引擎自动修正。旧auto_chain和reshuffle移入UI层成为场外沙滩币辅助道具。新增5种棋盘特殊图块：连锁cascade（Combo=3生成）、光链light_chain（Combo=4生成）、光波wave（Combo=6重磅奖励）、穿透pierce（仅关卡预置，高难路径神器）、置换swap（仅关卡预置，高技巧战术操作）。新增3种场外沙滩币辅助：重排/预判/续关。奇偶保证原则大幅简化：仅在关卡生成时确保，特殊块设计层面天然安全，无需运行时自动修正逻辑。",
+
+  "core_mechanic": "连连看路径匹配（≤2次转弯，同种图块）+ 节奏驱动连击系统。每次成功配对重置/延长Combo计时器，形成节奏感而非解谜感——目标是让玩家处于『快速流畅消除』的心流状态，而非长时间思考。",
+
   "combo_system": {
-    "window_ms": 2000,
-    "thresholds": [1, 2, 3, 4],
-    "multipliers": [1.0, 1.5, 2.0, 3.0]
+    "description": "每次配对成功延续Combo链，超时则归零。音效节奏随Combo级别加快，视觉特效随级别增强，形成正向反馈闭环。",
+    "timer": {
+      "window_ms": 2000,
+      "description": "连续两次配对间隔 < 2000ms 视为同一Combo链；超时归零。特殊块激活不中断计时器（详见各特殊块combo_interaction字段）。"
+    },
+    "multiplier_curve": {
+      "thresholds": [1, 2, 3, 4],
+      "multipliers": [1.0, 1.5, 2.0, 3.0],
+      "description": "Combo数1/2/3/4+对应得分倍率1.0×/1.5×/2.0×/3.0×。倍率仅影响评分，不影响关卡通过条件。"
+    },
+    "special_tile_generation": {
+      "combo_3": "必定在消除位附近生成一个连锁图块（cascade）",
+      "combo_4": "必定生成一个光链图块（light_chain）",
+      "combo_6": "必定生成一个光波图块（wave）——重磅奖励，清除全区域障碍"
+    },
+    "reset_conditions": [
+      "连续两次配对间隔超过2000ms",
+      "棋盘当前无任何可用配对（引擎自动检测）",
+      "连锁（cascade）自动链的最后一次自动配对后重置计时器",
+      "光链（light_chain）最后一次自动配对后重置计时器",
+      "光波（wave）激活后重置计时器",
+      "穿透（pierce）激活后重置计时器",
+      "置换（swap）激活后重置计时器"
+    ]
   },
-  "special_blocks": [
-    {"type": "bomb", "effect": "3x3_clear"},
-    {"type": "windmill", "effect": "row_and_column_clear"},
-    {"type": "light", "effect": "auto_connect_nearest"},
-    {"type": "wave", "effect": "reshuffle_board"}
+
+  "step_system": {
+    "description": "步数制：每次配对消耗1步，步数耗尽则关卡失败。特殊块激活不额外消耗步数（视为配对的附带效果）。",
+    "continue_cost": "步数耗尽时可花费30沙滩币购买+5步续关（见ui_assists）",
+    "failure_penalty": "失败不扣除材料/沙滩币，随时重试",
+    "zen_mode": "每章2-3个禅境关，关闭步数上限和失败判定，零压力消除体验"
+  },
+
+  "board_design": {
+    "parity_rule_summary": "棋盘上每种图块类型的数量必须为偶数，确保所有图块都有配对可消除。奇偶保证仅在关卡生成时执行——新特殊图块系统由设计层面天然保证不破坏奇偶，无需运行时自动修正。",
+    "sizes": {
+      "ch1_2": "标准矩形（8×8 / 9×9）",
+      "ch3_plus": "异形棋盘（海湾/岛屿轮廓），有效格数仍为偶数"
+    },
+    "tile_types": {
+      "count": 20,
+      "unlock_schedule": "Ch1解锁12种基础图块；Ch2+每章解锁2-3种新图块；Ch6全20种解锁",
+      "pair_guarantee": "棋盘生成时每种图块数量强制为偶数，总图块数为偶数"
+    }
+  },
+
+  "solvability_guarantee": {
+    "parity_rule": "每种图块类型在棋盘上的数量必须是偶数（0, 2, 4, 6...）。这是关卡可解性的基本前提。",
+    "check_timing": "仅在关卡生成时执行一次强制奇偶校验。若不满足则重新生成布局，直到满足为止。",
+    "design_principle": "v4.0新系统中，奇偶安全由特殊图块的设计本身保证，不依赖运行时自动修正：(1) 光波wave——仅清除障碍层，不消除任何匹配图块，奇偶完全不受影响；(2) 光链light_chain——只消除完整配对，始终偶数消除；(3) 穿透pierce——不消除任何图块，仅修改路由规则；(4) 置换swap——只交换位置，不增减图块；(5) 连锁cascade——自动找到合法配对消除，始终偶数消除。当玩家遇到无法继续的局面（路径受阻而非真无解），引导使用场外『重排』UI辅助（花费30沙滩币）。",
+    "reshuffle_as_rescue": "真正的玩家救场机制是场外『重排』UI按钮（30沙滩币），而非引擎自动修正。重排打乱所有图块位置并保证新布局存在合法配对，是对玩家友好的主动解困手段。"
+  },
+
+  "special_tiles": [
+    {
+      "id": "wave",
+      "name_cn": "光波",
+      "icon_hint": "涟漪光环，暖白色",
+      "generation": "Combo=6时在最近消除位生成（重磅奖励）；关卡编辑器可预置",
+      "trigger": "玩家将两个光波图块配对连线时激活",
+      "effect": "清除以两个光波连线中点为中心的3×3区域内所有障碍层（冰封、锁链、藤蔓、木箱等）。匹配图块本身不移除，只清除障碍层。同时赋予『自由路径区』5秒增益：在已清除区域内，连线路径可自由穿越任意图块（忽略占据限制）。",
+      "parity_safety": "障碍物不是配对图块，清除障碍不影响任何图块数量的奇偶性。匹配图块完全不被触动。天然零奇偶风险。",
+      "combo_interaction": "激活计入Combo链（+1次），重置计时器。",
+      "vfx_hint": "暖白色涟漪光环向外扩散 → 3×3范围障碍物碎裂消散 → 清除区域持续5秒柔和光晕（提示自由路径增益有效期）→ 5秒后光晕渐退。音效：清澈钟鸣声 + 障碍碎裂声 + 持续低沉环境光音。动画总时长：0.5s初始动画+5s增益期。"
+    },
+    {
+      "id": "light_chain",
+      "name_cn": "光链",
+      "icon_hint": "链式光环，金色连环",
+      "generation": "Combo=4时在最近消除位生成；关卡编辑器可预置",
+      "trigger": "玩家将两个光链图块配对连线时激活",
+      "effect": "扫描全棋盘，找出当前数量最多的图块类型，然后自动匹配该类型所有可组成的配对——连线从所有实例同时射出，飞向各自配对目标，同时消失。若该类型数量为奇数，最后一个单块不被消除（保持偶数消除原则）。",
+      "parity_safety": "只消除完整配对（成双消除），始终移除偶数数量图块。奇数个时留下最后1块，不破坏奇偶性。天然安全。",
+      "combo_interaction": "每次自动匹配的配对各计入Combo链（+1次）。多对同时消除时Combo可急速飙升。最后一次自动配对完成后重置计时器。",
+      "vfx_hint": "金色光环脉冲两下 → 扫描波横扫棋盘 → 目标类型所有图块同时高亮为金色 → 连线同时从各实例射出飞向配对目标 → 链式消失配合渐进加强的连续音效。音效：金色扫描音 + 连续「叮」声（每对一声）。动画总时长：0.8s（含扫描+消除）。"
+    },
+    {
+      "id": "pierce",
+      "name_cn": "穿透",
+      "icon_hint": "光箭，蓝白渐变，穿透感",
+      "generation": "仅关卡编辑器预置（战略性谜题元素）",
+      "trigger": "玩家将两个穿透图块配对连线时激活",
+      "effect": "赋予玩家『穿透模式』增益，持续8秒。在穿透模式下，连线路径可穿越棋盘上任意已占据的格子（包括匹配图块和障碍物）。同种图块匹配规则不变——仍需连接相同类型图块，只是路径路由限制临时解除。",
+      "parity_safety": "穿透模式不移除任何图块，只修改路径路由规则。奇偶完全不受影响。",
+      "combo_interaction": "激活计入Combo链（+1次），重置计时器。穿透模式期间正常配对各自计入Combo。",
+      "vfx_hint": "蓝白光箭爆发 → 屏幕四角持续蓝色边缘光晕（增益存续标志）→ 增益期间的连线呈现为发光光束而非普通连线 → 8秒后边缘光晕渐退，连线恢复正常样式。音效：穿透激活的锐利音效 + 穿透连线时的特殊穿梭音。"
+    },
+    {
+      "id": "swap",
+      "name_cn": "置换",
+      "icon_hint": "双向箭头，绿色旋转",
+      "generation": "仅关卡编辑器预置（高技巧战术元素）",
+      "trigger": "玩家将两个置换图块配对连线时激活",
+      "effect": "玩家进入『选择模式』，在棋盘上选择任意两个格子——它们的内容（图块/障碍/空格）互换位置。可交换：图块+图块（同种或不同种）、图块+障碍、图块+空格。完成选择后立即交换，游戏恢复正常。玩家有10秒完成选择；若10秒内未选择，置换图块保留在棋盘上（不触发效果，等待玩家再次配对）。",
+      "parity_safety": "只交换位置，不增减任何图块。总计数不变，奇偶完全不受影响。",
+      "combo_interaction": "配对置换图块计入Combo链（+1次），重置计时器。置换操作本身不计为配对（不再次+1 Combo）。",
+      "vfx_hint": "两个绿色旋转螺旋出现在被选中的格子上 → 两个螺旋相向旋转加速 → 图块互换位置时产生弹性『咔哒』特效 → 绿色光晕渐退。10秒选择计时器以棋盘角落小进度条显示。音效：选中音 + 置换完成的满足感『咔哒』声。"
+    },
+    {
+      "id": "cascade",
+      "name_cn": "连锁",
+      "icon_hint": "连环波纹，橙红渐变",
+      "generation": "Combo=3时在最近消除位生成；关卡编辑器可预置",
+      "trigger": "玩家将两个连锁图块配对连线时激活",
+      "effect": "引擎自动执行连锁配对——找到当前路径最短的合法配对，自动连线消除，再从新棋盘状态找下一个最短合法配对，自动消除，持续进行。终止条件：完成5次自动配对，或棋盘上已无合法配对（路径可连通的同种图块对）。每次自动配对之间有0.3秒延迟，让玩家看清连锁过程。",
+      "parity_safety": "只执行路径可连通的合法配对（完整图块对），始终偶数消除。不产生孤立块，天然安全。",
+      "combo_interaction": "每次自动配对各计入Combo链（+1次）。完整5连锁 = 瞬间+5 Combo，Combo飙升极具爽快感。最后一次自动配对完成后重置计时器。",
+      "vfx_hint": "橙红波纹向外扩展 → 引擎锁定第一目标对（聚光灯效果高亮）→ 自动连线消除 → 0.3s后锁定下一对 → 循环往复，节奏逐渐加快，音效强度逐渐增强，形成加速连击感。音效：连锁启动低沉音 + 每次自动消除节奏递进的清脆音。"
+    }
   ],
-  "chapter_mechanics_unlock": {
-    "ch1": "basic_tiles_combo",
-    "ch2": "ice_block",
-    "ch3": "chain_lock_portal",
-    "ch4": "single_path_corridor",
-    "ch5": "gravity_slide_rotate",
-    "ch6": "spreading_obstacle"
-  }
+
+  "ui_assists": {
+    "description": "场外沙滩币消耗辅助，不占用棋盘格子，通过UI按钮触发。是玩家遇困时的主动求助手段，非自动机制。",
+    "assists": [
+      {
+        "id": "reshuffle",
+        "name_cn": "重排",
+        "icon_hint": "旋涡/波浪按钮",
+        "trigger": "两种触发途径：(1) 引擎检测到棋盘当前无任何合法配对时，弹出提示并引导玩家点击；(2) 玩家主动点击『重排』按钮（随时可用）",
+        "effect": "打乱棋盘上所有图块的位置，并保证新布局中至少存在一个合法配对。图块种类数量保持完全不变，仅位置改变。若第一次随机打乱后无合法配对，引擎最多重排3次直到出现配对。",
+        "cost_beach_coins": 30,
+        "parity_note": "不增减图块，天然奇偶安全。"
+      },
+      {
+        "id": "hint",
+        "name_cn": "预判",
+        "icon_hint": "眼睛/灯泡按钮",
+        "trigger": "玩家主动点击『预判』按钮",
+        "effect": "高亮显示当前棋盘上最优的下一步连接序列（兼顾Combo延续和步数效率的最佳配对路径）。高亮持续3秒后自动消失。",
+        "cost_beach_coins": 10,
+        "parity_note": "仅显示提示，不移除任何图块，无奇偶影响。"
+      },
+      {
+        "id": "continue",
+        "name_cn": "续关",
+        "icon_hint": "步数+5弹窗按钮",
+        "trigger": "步数耗尽时弹出结算界面，提供续关选项",
+        "effect": "立即补充+5步，关卡继续进行。玩家可在同一关卡多次续关（多次付费）。",
+        "cost_beach_coins": 30,
+        "parity_note": "不影响棋盘状态，无奇偶影响。"
+      }
+    ]
+  },
+
+  "chapter_unlocks": [
+    {
+      "chapter": 1,
+      "area": "海边码头",
+      "board_size": "8×8",
+      "mechanics": ["基础连连看", "连击系统（Combo）"],
+      "special_tiles_available": ["cascade"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": [],
+      "notes": "前3关手势引导教学；连锁（cascade）通过Combo=3生成，教学关演示自动链消原理。场外三种辅助全程可用。"
+    },
+    {
+      "chapter": 2,
+      "area": "中央小镇",
+      "board_size": "9×9",
+      "mechanics": ["冰封块（ice_block，1层）"],
+      "special_tiles_available": ["cascade", "light_chain"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": ["ice_block", "weed"],
+      "notes": "光链（light_chain）通过Combo=4生成；演示扫全图自动匹配同类型图块的链消效果；冰封块需配对同位图块才能破冰。"
+    },
+    {
+      "chapter": 3,
+      "area": "花田山坡",
+      "board_size": "8×8（异形开始）",
+      "mechanics": ["锁链（chain_lock，1-2环）", "传送门（portal）"],
+      "special_tiles_available": ["cascade", "light_chain", "wave"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": ["ice_block", "chain_lock", "portal", "weed"],
+      "notes": "光波（wave）通过Combo=6生成；本章有锁链/传送门等障碍，wave的3×3障碍清除能力在此发挥核心价值。冰封块升至2层。"
+    },
+    {
+      "chapter": 4,
+      "area": "森林露营地",
+      "board_size": "8×8（异形）",
+      "mechanics": ["单路径通道（single_path_corridor）"],
+      "special_tiles_available": ["cascade", "light_chain", "wave", "pierce"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": ["ice_block", "chain_lock", "portal", "single_path_corridor", "wooden_crate"],
+      "notes": "穿透（pierce）关卡预置引入；本章紧密通道布局让pierce的路径穿越能力成为关键战术。冰封块升至3层；锁链升至3环。"
+    },
+    {
+      "chapter": 5,
+      "area": "温泉山谷",
+      "board_size": "9×9（异形）",
+      "mechanics": ["重力下落（tile_fall）", "方块滑落（tile_slide）", "局部旋转（board_rotate，仅挑战关）"],
+      "special_tiles_available": ["cascade", "light_chain", "wave", "pierce", "swap"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": ["ice_block", "chain_lock", "portal", "single_path_corridor", "water_current"],
+      "notes": "置换（swap）关卡预置引入；重力机制改变图块布局，swap的位置互换能力在重力章节提供精准战术控制。五种特殊图块全部解锁。"
+    },
+    {
+      "chapter": 6,
+      "area": "夜晚灯塔",
+      "board_size": "10×10（异形）",
+      "mechanics": ["扩散障碍（spreading_obstacle：藤蔓/苔藓）", "全机制组合挑战"],
+      "special_tiles_available": ["cascade", "light_chain", "wave", "pierce", "swap"],
+      "ui_assists_available": ["reshuffle", "hint", "continue"],
+      "obstacles": ["ice_block", "chain_lock", "portal", "single_path_corridor", "water_current", "vine_spread"],
+      "notes": "全20种图块解锁；扩散障碍每N步扩展一格（不影响图块奇偶，障碍不是配对图块）；80%有效格被占触发视觉警告；全五种特殊图块综合运用。"
+    }
+  ]
 }

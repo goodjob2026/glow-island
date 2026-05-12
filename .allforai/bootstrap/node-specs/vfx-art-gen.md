@@ -1,88 +1,85 @@
 ---
 node: vfx-art-gen
+capability: game-design
 discipline_owner: vfx-artist
-discipline_reviewers: [art-director, technical-artist]
 human_gate: true
-blocked_by: [art-spec-design]
+hard_blocked_by: [concept-freeze]
 unlocks: [art-qa]
+approval_record_path: .allforai/game-design/approval-records.json
 exit_artifacts:
-  - .allforai/game-design/systems/vfx-asset-spec.json
+  - path: .allforai/game-design/vfx-art-review.html
+  - path: .allforai/game-design/systems/vfx-asset-spec.json
+review_checklist:
+  - 特效帧序列完整（消除特效/combo升级特效/道具使用特效各自完整）
+  - 粒子参数与引擎兼容（Cocos Creator粒子系统支持）
+  - combo层级特效视觉清晰，不遮挡关键棋盘信息（z-index分层正确）
+  - 特效循环无闪烁（帧序列首尾衔接流畅）
+  - 高combo等级特效炫酷程度明显高于低等级（爽快感梯度）
 ---
 
-# Task: 特效美术规格生成（VFX Art Generation）
+# Goal
 
-## Context Pull
-- 读取 `.allforai/game-design/art-pipeline-config.json`（若存在且 status=final）：
-  - `vfx.approach`：
-    - `sprite_sheet`（帧序列）→ 本节点重点产出 PNG 帧规格 + 样本帧，Spine 规格为次要
-    - `spine_fx` → 本节点重点产出 Spine FX 骨骼规格（与角色同骨骼系统），PNG 帧为参考
-    - `shader`（引擎粒子）→ 本节点产出参数文档（粒子数/颜色/时长），无需 PNG 资产
-    - 缺失 → 默认 `sprite_sheet`
-  - `vfx.spine_fx`：`true` 时在规格书中标注 Spine FX 兼容格式要求
-  - 缺失 → 使用现有 Spine+PNG 混合方案
-- 读取 `art-asset-inventory.json` — category=vfx 条目（8 个 Spine 动画）
-- 读取 `art-direction-v2.html` — 动画风格参数（动森弹跳曲线）
-- 读取 `systems/audio-design.json` — SFX 与 VFX 配合时序
+Generate VFX art assets for all entries in `.allforai/concept-contract.json` `canonical_registry.vfx[]`.
 
-## 重要说明
+> **Non-interactive execution.** All design decisions are recorded in `.allforai/`.
+> Do NOT use AskUserQuestion or request user input.
 
-VFX 资产为 Spine 骨骼动画或 PNG 帧序列，**无法直接由 FLUX/Imagen 生成完整资产**。
-本节点的职责是：
-1. 生成每个 VFX 的**关键帧参考图**（AI 生图，供动画师参考）
-2. 输出完整的 `vfx-asset-spec.json`（Spine 制作规格书）
-3. 生成一个代表性 VFX 的**PNG 帧序列样本**（`fx_tile_disappear` 消除特效）
+> **Output language (mandatory):** All HTML navigation tabs, section headings, labels, captions,
+> and descriptive text MUST be in Chinese (zh-CN). In-game proper nouns (place/character/item names)
+> keep the game world's native language (Japanese). JSON field keys stay English snake_case.
 
-## 样本策略（Sample Strategy）
+## Inputs
 
-### 必须生成（每次执行）
+- `.allforai/concept-contract.json` — `canonical_registry.vfx[]` (authoritative asset IDs and `file_prefix` values; do not invent your own names)
+- `.allforai/game-design/art-pipeline-config.json` — `vfx` configuration and `toolchain.detected_capabilities`
+- `.allforai/game-design/art-asset-inventory.json` — current asset states (skip assets with `current_state == "locked"`)
+- `.allforai/game-design/asset-registry.json` — canonical registry built by concept-freeze
 
-**关键帧参考图（AI 生图）：**
-- `fx_tile_disappear` — 消除特效关键帧 × 3（起始/中间/消失）
-- `fx_combo_popup` — 连击弹出特效关键帧 × 2（弹出/消散）
+## Sub-Skill Invocation
 
-共 **5 张参考图**，供动画师感知风格。
+Read and follow each sub-skill SKILL.md in order. Each sub-skill defines its own output contract — follow it exactly.
 
-**PNG 帧样本（程序化）：**
-- 基于 `fx_tile_disappear` 规格，生成 `assets/effects/frames/fx_tile_disappear_f01.png`
-  作为帧序列占位（纯色块，展示尺寸和裁切规范）
+### Step 0 — Source Resolution (per asset, before Pre-Spec)
 
-### 可选生成（审批后）
-- `fx_area_restore`、`fx_firefly_chain` 等关键帧参考图
-- 完整 Spine 工程文件（需 Spine 软件和 technical-artist 配合，gold milestone）
+For each asset in `canonical_registry.vfx[]`, check its `source_strategy` from `asset-registry.json`:
 
-## vfx-asset-spec.json 输出规格
+- **`existing_asset_pack`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/asset-pack-search-spec/SKILL.md` — search and select candidate pack
+  2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → fall back to `ai_generated` for this asset and proceed to Step 1
+  3. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/existing-asset-adaptation-spec/SKILL.md` — adapt to spec
+  4. Mark asset `current_state: adapted`; skip Step 1 and Step 2 for this asset.
 
-```json
-{
-  "spec_version": "1.0",
-  "vfx_assets": [
-    {
-      "asset_id": "fx_tile_disappear",
-      "type": "png_sequence",
-      "frame_count": 12,
-      "frame_size": "128x128",
-      "fps": 24,
-      "loop": false,
-      "color_palette": ["#7EC8E3", "#FFFFFF", "#F0F8FF"],
-      "animation_curve": "ease-out cubic (动森弹跳)",
-      "keyframes": [
-        { "frame": 1, "desc": "tile normal size, full opacity" },
-        { "frame": 4, "desc": "scale 1.3x squash" },
-        { "frame": 8, "desc": "scale 0.5x collapse" },
-        { "frame": 12, "desc": "opacity 0, particle scatter" }
-      ],
-      "spine_bones": [],
-      "reference_images": ["<AI 生成的参考图路径>"],
-      "status": "spec_ready_pending_production"
-    }
-  ]
-}
-```
+- **`adapt_existing_asset`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → fall back to `ai_generated` and proceed to Step 1
+  2. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/existing-asset-adaptation-spec/SKILL.md` — adapt to spec
+  3. Mark asset `current_state: adapted`; skip Step 1 and Step 2 for this asset.
 
-## 工具优先级
-- 参考图生成：`flux_generate_image` (square) → `generate_image` (1:1)
-- 帧序列：程序化（Python PIL / canvas，不调用 AI 生图）
+- **`existing_3d_source_asset` / `user_provided_asset`:**
+  1. `${CLAUDE_PLUGIN_ROOT}/skills/game-art/40-qa/asset-license-provenance-qa/SKILL.md` — verify license; if FAIL → halt with UPSTREAM_DEFECT
+  2. Proceed to Step 1.
 
-## HTML 输出
-`vfx-art-review.html` — 每个 VFX 的关键帧参考图 + Spine 规格摘要 + 制作工时估算，
-供 technical-artist 评估 Spine 制作可行性，vfx-artist 确认风格方向。
+- **`ai_generated` / `hybrid` / `placeholder_only`:** skip Step 0, proceed directly to Step 1.
+
+### Step 1 — Pre-Spec
+
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/20-spec/vfx-spec/SKILL.md` — always
+
+Skip for assets that completed Step 0 and are already marked `adapted`.
+
+### Step 2 — Generate
+
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/vfx-generation/SKILL.md` — always (orchestrates all VFX sub-skills internally)
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/particle-system/SKILL.md` — when `vfx.approach` includes `particle`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/sprite-vfx-generation/SKILL.md` — when `vfx.approach` includes `sprite` or `spritesheet`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/shader-vfx-generation/SKILL.md` — when `vfx.approach` includes `shader`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/trail-generation/SKILL.md` — when `vfx.approach` includes `trail`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/screen-effect-generation/SKILL.md` — when `vfx.approach` includes `screen` or `postprocess`
+- `${CLAUDE_PLUGIN_ROOT}/skills/game-art/30-generate/light-pulse-generation/SKILL.md` — when `vfx.approach` includes `light`
+
+Skip for assets already marked `adapted`.
+
+## Completion Condition
+
+`.allforai/game-design/systems/vfx-asset-spec.json` exists AND `.allforai/game-design/vfx-art-review.html` exists AND all `canonical_registry.vfx[]` entries have `current_state != "placeholder"`.
+
+If any sub-skill returns `UPSTREAM_DEFECT` → halt and report the defect. Do not advance to `art-qa`.
