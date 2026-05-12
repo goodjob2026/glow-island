@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "source": "product-concept",
+  "detected_at": "2026-05-12T00:00:00Z",
+  "resolved": false,
+  "changes": [
+    {
+      "type": "feature_modified",
+      "area": "special_tiles",
+      "summary": "4种特殊图块（炸弹/行清/自动连锁/重洗）→ 5种战术棋盘图块（光波/光链/穿透/置换/连锁）+ 3种场外沙滩币辅助（重排/预判/续关）",
+      "affected_nodes": [
+        "core-loop-design",
+        "puzzle-design",
+        "level-design",
+        "implement-special-mechanics"
+      ],
+      "severity": "high"
+    },
+    {
+      "type": "feature_modified",
+      "area": "monetization",
+      "summary": "双货币体系（沙滩币+丹青石）→ 单货币（沙滩币），唯一付费点为步数续关",
+      "affected_nodes": [
+        "monetization-design",
+        "implement-shop-iap"
+      ],
+      "severity": "high"
+    },
+    {
+      "type": "feature_modified",
+      "area": "protagonist_profile",
+      "summary": "律职业从「东京广告公司创意总监」改为「东京上班族」，去掉广告行业背景",
+      "affected_nodes": [
+        "worldbuilding",
+        "character-arc-design"
+      ],
+      "severity": "medium"
+    },
+    {
+      "type": "feature_modified",
+      "area": "npc_tone",
+      "summary": "NPC从「奇葩/有趣」风格改为「温暖/治愈」风格，重治愈美学，类《小森林》",
+      "affected_nodes": [
+        "worldbuilding",
+        "character-arc-design"
+      ],
+      "severity": "medium"
+    },
+    {
+      "type": "feature_added",
+      "area": "romance_line",
+      "summary": "新增律×ひなた 6章暧昧情感线beats（hinata_ambiguous_beat），含手账符号语法、气味/声音感官系统",
+      "affected_nodes": [
+        "character-arc-design",
+        "worldbuilding"
+      ],
+      "severity": "medium"
+    },
+    {
+      "type": "feature_modified",
+      "area": "mystery_truth",
+      "summary": "渉状态统一为「已病逝」（非失踪），邀请机制改为冬子按遗愿发送垃圾邮件+船票，石刻拆分为3块分散在Ch1/Ch3/Ch5",
+      "affected_nodes": [
+        "worldbuilding",
+        "character-arc-design"
+      ],
+      "severity": "medium"
+    },
+    {
+      "type": "feature_added",
+      "area": "foreshadowing",
+      "summary": "新增Ch1-4各一句NPC台词铺垫「还行」重量（健三/梅子/夏帆/律日记）",
+      "affected_nodes": [
+        "worldbuilding"
+      ],
+      "severity": "low"
+    }
+  ]
+}

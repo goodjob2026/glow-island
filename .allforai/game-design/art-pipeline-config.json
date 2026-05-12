@@ -1,0 +1,334 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "status": "final",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "dimension": "2d",
+  "engine": "cocos-creator",
+  "platform": "web-canvas-2d",
+  "animation_system": "dragonbones+frame+tween",
+
+  "toolchain": {
+    "primary_generation": "ai_text_prompt",
+    "image_generation_apis": ["google-imagen-4", "openrouter-gpt-image"],
+    "animation_tool": "dragonbones-pro",
+    "atlas_packer": "cocos-creator-auto-atlas",
+    "detected_capabilities": {
+      "google_imagen_4": true,
+      "openrouter_gpt_image": true,
+      "dragonbones_pro": true,
+      "cocos_auto_atlas": true,
+      "node_runtime": true,
+      "node_version": "v26.0.0",
+      "python3": true,
+      "python_version": "3.14.4",
+      "ffmpeg": true,
+      "ffmpeg_version": "8.1.1",
+      "imagemagick": false,
+      "blender": false,
+      "blender_required": false,
+      "playwright_mcp": true,
+      "detection_run_at": "2026-05-13T00:00:00Z",
+      "detection_verdict": "validated",
+      "registry_path": ".allforai/game-design/art/tools/production-tool-capability-registry.json"
+    }
+  },
+
+  "active_nodes": [
+    "tile-art-gen",
+    "character-art-gen",
+    "environment-art-gen",
+    "ui-art-gen",
+    "vfx-art-gen"
+  ],
+
+  "tileset": {
+    "tile_size_px": 128,
+    "tile_size_2x": 256,
+    "atlas_max_px": 2048,
+    "tile_pattern_count": 20,
+    "tile_pattern_ch1_unlock": 12,
+    "tile_pattern_note": "Ch1 unlocks 12 base tiles; each subsequent chapter unlocks 2-3 new tile patterns; 20 total unlocked by Ch6",
+    "special_block_types": ["wave", "light_chain", "pierce", "swap", "cascade"],
+    "special_block_colors": {
+      "wave": "#7ECDE8",
+      "light_chain": "#F0C4C4",
+      "pierce": "#F5A840",
+      "swap": "#F5C842",
+      "cascade": "#4A7D55"
+    },
+    "special_block_atlas": "special_blocks_atlas",
+    "special_block_atlas_note": "All 5 special block types share a dedicated atlas separate from chapter tile atlases",
+    "chapter_theme_variants": 6,
+    "atlas_policy": "per_chapter",
+    "atlas_policy_note": "One sprite atlas per chapter (6 atlases); special blocks atlas is chapter-independent; UI elements have their own atlas",
+    "canvas_bleed_px": 8,
+    "effective_draw_area_px": 112,
+    "corner_radius_2x": 24,
+    "outline_width_px": 2,
+    "outline_style": "primary_color_darkened_32pct",
+    "paper_texture_overlay_opacity": 0.06,
+    "saturation_stages": {
+      "s0_before_repair": { "saturation": "8-15%", "brightness": "42-48%", "label": "褪色枯岛" },
+      "s1": { "saturation": "28-38%", "label": "轮廓找回淡彩" },
+      "s2": { "saturation": "48-58%", "label": "生活气息色彩" },
+      "s3": { "saturation": "62-72%", "label": "角色回归满生命力" },
+      "s4_full": { "saturation": "75-88%", "label": "完整水彩光效全开" }
+    },
+    "format": "png",
+    "compression": "none",
+    "resolution_design": "2x",
+    "resolution_fallback": "1x"
+  },
+
+  "character": {
+    "canvas_size_px": { "width": 256, "height": 512 },
+    "dragonbones_fps": 30,
+    "idle_loop_seconds": 2.0,
+    "idle_breath_amplitude_px": 3,
+    "blink_interval_seconds": 5,
+    "blink_duration_seconds": 0.15,
+    "random_action_interval_seconds": [8, 12],
+    "animation_sets": ["idle", "happy", "surprised", "sad", "wave"],
+    "expression_count": 5,
+    "expression_types": [
+      "default",
+      "happy",
+      "thinking",
+      "surprised",
+      "react_jump"
+    ],
+    "npc_count": 5,
+    "protagonist_count": 1,
+    "romantic_interest_count": 1,
+    "total_skeletal_characters": 7,
+    "characters": [
+      { "id": "ritsu", "name": "山田律", "role": "protagonist", "signature_color": null, "animation_sets": ["idle", "happy", "surprised", "sad", "wave", "react_jump"] },
+      { "id": "hinata", "name": "丸山ひなた", "role": "romantic_interest", "signature_color": "#F0C4C4", "animation_sets": ["idle", "happy", "surprised", "sad", "wave"] },
+      { "id": "kenzo", "name": "磯部健三", "role": "npc", "chapter": 1, "signature_color": "#4A6D9A", "animation_sets": ["idle", "happy", "surprised", "sad", "wave"] },
+      { "id": "umeko", "name": "桐島梅子", "role": "npc", "chapter": 2, "signature_color": "#7DBE77", "animation_sets": ["idle", "happy", "surprised", "sad", "wave"] },
+      { "id": "naho", "name": "海野夏帆", "role": "npc", "chapter": 3, "signature_color": "#3D6645", "animation_sets": ["idle", "happy", "surprised", "sad", "wave"] },
+      { "id": "fuyuko", "name": "丸山冬子", "role": "npc", "chapter": 6, "signature_color": "#2A4060", "animation_sets": ["idle", "happy", "surprised", "sad", "wave"] },
+      { "id": "chairman", "name": "议长（橘猫）", "role": "npc", "chapter": "all", "signature_color": "#2A3650", "animation_sets": ["idle", "happy", "surprised", "wave"] }
+    ],
+    "proportion": "head_body_ratio_1to1.5_chibi",
+    "head_shape": "circular_40pct_of_height",
+    "silhouette_policy": "unique_single_color_silhouette_readable_at_any_resolution",
+    "format": "png"
+  },
+
+  "environment": {
+    "background_size_px": { "width": 1920, "height": 1080 },
+    "chapter_count": 6,
+    "states_per_chapter": ["before", "in_progress", "restored"],
+    "total_backgrounds": 18,
+    "parallax_layers": 3,
+    "parallax_layer_labels": ["sky_far", "midground", "foreground_elements"],
+    "chapters": [
+      { "id": 1, "scene": "海边码头", "primary_hue": "#5BBFB5", "board_bg": "#A8DDD8 → #C8EEE8", "brightness": "dim" },
+      { "id": 2, "scene": "中央小镇", "primary_hue": "#7DBE77", "board_bg": "#C8E8C0 → #E0F0D8", "brightness": "warm" },
+      { "id": 3, "scene": "花田山坡", "primary_hue": "#F0C4C4", "board_bg": "#F8E8E8 → #FFF5F5", "brightness": "warm" },
+      { "id": 4, "scene": "森林露营地", "primary_hue": "#4A7D55", "board_bg": "#3D5040 → #5A7058", "brightness": "dim" },
+      { "id": 5, "scene": "温泉山谷", "primary_hue": "#C4955A", "board_bg": "#F0D8B0 → #E8C890", "brightness": "warm" },
+      { "id": 6, "scene": "夜晚灯塔", "primary_hue": "#1E2E50", "board_bg": "#0E1830 → #1E2E50", "brightness": "dim" }
+    ],
+    "saturation_restoration": "crossfade_0.8s_per_stage",
+    "format": "jpg",
+    "board_shape_evolution": {
+      "ch1_2": "standard_rectangle_8x8_9x9",
+      "ch3_plus": "irregular_shaped_bay_island_outline"
+    }
+  },
+
+  "ui": {
+    "icon_size_px": 64,
+    "icon_button_size_px": 56,
+    "card_width_px": 320,
+    "hud_height_px": 80,
+    "hud_max_width_pct_of_board": 20,
+    "font_scale": "2x",
+    "font_family_primary": "思源圆体",
+    "font_family_fallback": ["SF Pro Rounded", "Nunito"],
+    "dialog_corner_radius_px": 20,
+    "button_corner_radius_px": 24,
+    "shadow_max_opacity": 0.15,
+    "shadow_style": "0 4px 0 rgba(0,0,0,0.10)",
+    "paradigm": "flat_plus_soft_shadow_wood_sign_ui",
+    "ui_palette": {
+      "background_sand": "#F7EDD8",
+      "dialog_wood": "#E8D8B4",
+      "border_brown": "#8B6030",
+      "text_dark": "#3A2810",
+      "button_primary_top": "#F0997A",
+      "button_primary_bottom": "#E8866A",
+      "combo_bubble_bg": "#C85A40",
+      "combo_text": "#F5C842",
+      "progress_fill": "#7DBE77",
+      "soft_currency": "#F5C842",
+      "hard_currency_start": "#5BBFB5",
+      "hard_currency_end": "#3A9E94"
+    },
+    "atlas": "ui_elements_atlas",
+    "format": "png"
+  },
+
+  "vfx": {
+    "combo_particle_budget": 200,
+    "vfx_atlas_max_px": 1024,
+    "lighthouse_glow_frames": 24,
+    "match_burst_frames": 8,
+    "special_block_activation_frames": 12,
+    "special_block_vfx": {
+      "wave": {
+        "style": "warm_white_ripple_expanding_ring",
+        "duration_ms": 500,
+        "aura_duration_s": 5,
+        "color": "#FFFFFF warm glow"
+      },
+      "light_chain": {
+        "style": "gold_pulse_scan_wave_chain_lines",
+        "duration_ms": 800,
+        "color": "#F5C842"
+      },
+      "pierce": {
+        "style": "blue_white_arrow_burst_edge_glow",
+        "duration_s": 8,
+        "color": "#7ECDE8"
+      },
+      "swap": {
+        "style": "green_spiral_rotation_elastic_snap",
+        "duration_s": 10,
+        "color": "#4A7D55"
+      },
+      "cascade": {
+        "style": "orange_red_ripple_auto_chain_sequenced",
+        "inter_pair_delay_ms": 300,
+        "color": "#4A7D55"
+      }
+    },
+    "tile_match_vfx": {
+      "scale_burst_frames": 3,
+      "disappear_seconds": 0.25,
+      "rotation_range_degrees": 12,
+      "particle_count_per_tile": [4, 6],
+      "particle_theme": "chapter_accent_color_themed"
+    },
+    "combo_bubble_vfx": {
+      "spring_stiffness": 280,
+      "spring_damping": 22,
+      "appear_offset_y_px": 12,
+      "float_distance_px": 24,
+      "scale_sequence": "0→1.2→1.0",
+      "hover_duration_s": 1.2,
+      "fade_out_s": 0.4
+    },
+    "chapter_transition_vfx": {
+      "style": "white_circle_expand_from_center",
+      "cover_duration_s": 0.5,
+      "reveal_duration_s": 0.5
+    },
+    "restoration_complete_vfx": {
+      "style": "crossfade_plus_white_light_wave_from_center",
+      "crossfade_s": 0.8,
+      "light_wave_s": 0.6,
+      "full_restore_extra": "golden_particle_rain_2.5s"
+    },
+    "lighthouse_beam_vfx": {
+      "color": "#F5C842",
+      "sweep_frames": 24,
+      "style": "rotating_golden_beam_saturation_spike"
+    },
+    "special_block_idle_glow": {
+      "period_s": [2.0, 2.8],
+      "style": "breathing_pulse",
+      "board_occlusion": false
+    }
+  },
+
+  "motion_design": {
+    "idle_breath_amplitude_px": 3,
+    "idle_breath_loop_seconds": 2.0,
+    "idle_breath_easing": "ease-in-out",
+    "tile_match_disappear_seconds": 0.25,
+    "tile_match_burst_frames": 3,
+    "tile_match_scale_sequence": "1.0→1.14→0",
+    "tile_highlight_enter_scale": 1.06,
+    "tile_highlight_pulse_amplitude": 0.02,
+    "tile_highlight_pulse_period_s": 1.5,
+    "combo_pop_seconds": 0.1,
+    "chapter_transition_seconds": 1.2,
+    "ui_card_slide_seconds": 0.3,
+    "dialog_appear_seconds": 0.4,
+    "dialog_appear_style": "scale_0.7→1.05→1.0_spring",
+    "dialog_dismiss_seconds": 0.25,
+    "dialog_dismiss_style": "scale_1.0→0.85_opacity_fade_ease-in",
+    "saturation_restore_crossfade_seconds": 0.8,
+    "hud_toggle_fade_seconds": 0.2,
+    "step_counter_warning_color_transition": "coral_to_red",
+    "currency_pulse_frequency_hz": 0.8
+  },
+
+  "batch_config": {
+    "tile_batch_size": 20,
+    "character_batch_size": 8,
+    "environment_batch_size": 6,
+    "ui_batch_size": 30,
+    "vfx_batch_size": 15,
+    "tile_batch_note": "One batch covers all 20 tile pattern variants; chapter color variants processed per-atlas",
+    "character_batch_note": "7 characters total; batched 8 per run (one batch)",
+    "environment_batch_note": "6 chapters × 3 states = 18 backgrounds; batched 6 per chapter run",
+    "ui_batch_note": "All HUD, dialog, button, icon assets in one batch of up to 30 items",
+    "vfx_batch_note": "15 items: 5 special-block activation fx + 5 idle glows + match burst + combo bubble + chapter transition + restoration wave + lighthouse beam"
+  },
+
+  "atlas_policy": {
+    "chapter_atlases": 6,
+    "chapter_atlas_naming": "tiles_ch{N}_atlas",
+    "special_blocks_atlas": "special_blocks_atlas",
+    "ui_atlas": "ui_elements_atlas",
+    "vfx_atlas": "vfx_atlas",
+    "character_atlas": "characters_atlas",
+    "max_atlas_size_px": 2048,
+    "vfx_atlas_max_px": 1024,
+    "resolution": "2x_design_1x_fallback"
+  },
+
+  "quality_gates": {
+    "min_qa_score": 3,
+    "max_qa_score": 5,
+    "style_consistency_check": true,
+    "atlas_pack_check": true,
+    "runtime_import_check": true,
+    "silhouette_readability_check": true,
+    "prohibited_styles_check": true,
+    "prohibited_styles": [
+      "pixel_art",
+      "hyper_realistic_3d",
+      "neon_cyberpunk_palette",
+      "metallic_chrome_gradients",
+      "pure_black_000000",
+      "sharp_corner_geometric_ui",
+      "material_icon_sharp_vector",
+      "excessive_particle_debris",
+      "high_contrast_alert_tones"
+    ],
+    "color_contrast_policy": {
+      "adjacent_chapter_tile_hue_diff_min_degrees": 30,
+      "same_chapter_tile_brightness_diff_min": 20,
+      "min_tile_saturation_pct": 20,
+      "background_decoration_max_opacity": 0.15,
+      "all_tiles_readable_in_grayscale": true
+    }
+  },
+
+  "design_decisions": {
+    "animation_method_rationale": "Characters use DragonBones skeletal animation for expressive idle and emotional reactions without large sprite sheet memory cost. Tile icons are static PNG with VFX-only match effects to keep atlas size minimal. Special blocks use 12-frame frame animation per unique activation. UI uses Cocos tween for all spring/scale transitions. VFX are particle-only (no separate sprite sheets) with atlas strip frames only for lighthouse and restoration effects.",
+    "tile_count_decision": "20 total tile patterns (12 unlocked Ch1, +2-3 per chapter). Matches core-mechanics.json board_design.tile_types.count=20.",
+    "special_block_count_decision": "5 special block types: wave, light_chain, pierce, swap, cascade — exactly matching core-mechanics.json special_tiles array. light_chain replaces 'chain' from concept doc to match the actual design (v4.0 revision).",
+    "chapter_count": 6,
+    "npc_count_decision": "5 named NPCs (Kenzo, Umeko, Naho, Fuyuko, Chairman) + 1 protagonist (Ritsu) + 1 romantic interest (Hinata) = 7 total skeletal characters. character.npc_count=5 covers named NPCs only; total_skeletal_characters=7.",
+    "image_gen_api_selection": "google-imagen-4 as primary for high quality watercolor/painterly 2D output matching hand-drawn-watercolor style keyword; openrouter-gpt-image as fallback/secondary for style variation and batch diversity.",
+    "atlas_per_chapter_rationale": "Web-canvas-2d platform requires careful memory management; per-chapter atlas allows progressive loading as player advances, keeping active VRAM footprint small. Special blocks atlas is global since all 5 types may appear across chapters.",
+    "vfx_particle_budget_200": "200 particles per combo burst is sufficient for healing aesthetic without the 'excessive particle debris' prohibited style. Matches the 4-6 particles per tile guideline in art-style-guide.json animation_direction.combo_vfx."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "verdict": "pass",
+  "state": "validated",
+  "summary": {
+    "total_asset_groups": 7,
+    "total_assets": 70,
+    "strategies_assigned": 70,
+    "strategies_validated": 70,
+    "strategies_pending": 0,
+    "blocked": 0
+  },
+  "strategy_distribution": {
+    "llm_image_generation": 70,
+    "3d_assisted_render": 0,
+    "existing_asset_pack": 0,
+    "existing_3d_source_asset": 0,
+    "user_provided_asset": 0,
+    "adapt_existing_asset": 0,
+    "hybrid": 0,
+    "placeholder_only": 0
+  },
+  "license_review_required": false,
+  "license_issues": [],
+  "style_conflicts": [],
+  "budget_issues": [],
+  "validation_checks": [
+    {"check": "every_asset_group_has_primary_strategy", "result": "pass"},
+    {"check": "every_asset_group_has_fallback_strategy", "result": "pass"},
+    {"check": "every_asset_group_has_license_requirements", "result": "pass"},
+    {"check": "every_asset_group_has_quality_gates", "result": "pass"},
+    {"check": "every_asset_group_has_adaptation_requirements", "result": "pass"},
+    {"check": "every_asset_group_has_downstream_routes", "result": "pass"},
+    {"check": "existing_packs_routed_through_license_qa", "result": "not_applicable"},
+    {"check": "strategy_consistent_with_style_guide", "result": "pass"},
+    {"check": "strategy_consistent_with_runtime_constraints", "result": "pass"},
+    {"check": "tools_available_for_chosen_strategy", "result": "pass"}
+  ],
+  "warnings": [],
+  "next_actions": [
+    "concept-freeze node: COMPLETED — asset-registry.json updated with source_strategy, concept-contract.json created",
+    "tile-art-gen: UNBLOCKED — can proceed with llm_image_generation strategy for all 25 tile assets",
+    "character-art-gen: UNBLOCKED — can proceed with llm_image_generation + DragonBones rig for 7 characters",
+    "environment-art-gen: UNBLOCKED — can proceed with llm_image_generation for 18 backgrounds + 2 props",
+    "ui-art-gen: UNBLOCKED — can proceed with llm_image_generation for 10 UI elements",
+    "vfx-art-gen: UNBLOCKED — can proceed with llm_image_generation for 8 VFX assets"
+  ]
+}

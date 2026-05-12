@@ -1,0 +1,4307 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "source": {
+    "art_asset_inventory": ".allforai/game-design/art-asset-inventory.json",
+    "art_pipeline_config": ".allforai/game-design/art-pipeline-config.json",
+    "art_style_guide": ".allforai/game-design/art-style-guide.json",
+    "concept_contract": ".allforai/concept-contract.json",
+    "used_concept_contract": true
+  },
+  "output_root": ".allforai/game-design",
+  "style_context": {
+    "dimension": "2d",
+    "style": "hand_drawn"
+  },
+  "assets": [
+    {
+      "asset_id": "tile_tuna",
+      "type": "tile",
+      "name": "金枪鱼",
+      "file_prefix": "tile_tuna",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_tuna.json",
+        "source": ".allforai/game-design/art/source/tile_tuna.png",
+        "output": ".allforai/game-design/art/tile_tuna.png",
+        "preview": ".allforai/game-design/previews/tile_tuna.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_tuna_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_tuna_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_tuna_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_tuna_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_tuna_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_tuna_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_octopus",
+      "type": "tile",
+      "name": "章鱼",
+      "file_prefix": "tile_octopus",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_octopus.json",
+        "source": ".allforai/game-design/art/source/tile_octopus.png",
+        "output": ".allforai/game-design/art/tile_octopus.png",
+        "preview": ".allforai/game-design/previews/tile_octopus.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_octopus_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_octopus_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_octopus_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_octopus_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_octopus_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_octopus_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_starfish",
+      "type": "tile",
+      "name": "海星",
+      "file_prefix": "tile_starfish",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_starfish.json",
+        "source": ".allforai/game-design/art/source/tile_starfish.png",
+        "output": ".allforai/game-design/art/tile_starfish.png",
+        "preview": ".allforai/game-design/previews/tile_starfish.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_starfish_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_starfish_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_starfish_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_starfish_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_starfish_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_starfish_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_hermit_crab",
+      "type": "tile",
+      "name": "寄居蟹",
+      "file_prefix": "tile_hermit_crab",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_hermit_crab.json",
+        "source": ".allforai/game-design/art/source/tile_hermit_crab.png",
+        "output": ".allforai/game-design/art/tile_hermit_crab.png",
+        "preview": ".allforai/game-design/previews/tile_hermit_crab.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_hermit_crab_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_hermit_crab_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_hermit_crab_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_hermit_crab_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_hermit_crab_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_hermit_crab_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_lanternfish",
+      "type": "tile",
+      "name": "灯笼鱼",
+      "file_prefix": "tile_lanternfish",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_lanternfish.json",
+        "source": ".allforai/game-design/art/source/tile_lanternfish.png",
+        "output": ".allforai/game-design/art/tile_lanternfish.png",
+        "preview": ".allforai/game-design/previews/tile_lanternfish.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_lanternfish_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_lanternfish_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_lanternfish_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_lanternfish_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_lanternfish_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_lanternfish_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_pufferfish",
+      "type": "tile",
+      "name": "河豚",
+      "file_prefix": "tile_pufferfish",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_pufferfish.json",
+        "source": ".allforai/game-design/art/source/tile_pufferfish.png",
+        "output": ".allforai/game-design/art/tile_pufferfish.png",
+        "preview": ".allforai/game-design/previews/tile_pufferfish.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_pufferfish_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_pufferfish_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_pufferfish_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_pufferfish_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_pufferfish_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_pufferfish_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_whale",
+      "type": "tile",
+      "name": "鲸鱼",
+      "file_prefix": "tile_whale",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_whale.json",
+        "source": ".allforai/game-design/art/source/tile_whale.png",
+        "output": ".allforai/game-design/art/tile_whale.png",
+        "preview": ".allforai/game-design/previews/tile_whale.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_whale_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_whale_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_whale_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_whale_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_whale_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_whale_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_coral",
+      "type": "tile",
+      "name": "珊瑚",
+      "file_prefix": "tile_coral",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_coral.json",
+        "source": ".allforai/game-design/art/source/tile_coral.png",
+        "output": ".allforai/game-design/art/tile_coral.png",
+        "preview": ".allforai/game-design/previews/tile_coral.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_coral_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_coral_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_coral_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_coral_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_coral_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_coral_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_conch",
+      "type": "tile",
+      "name": "海螺",
+      "file_prefix": "tile_conch",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_conch.json",
+        "source": ".allforai/game-design/art/source/tile_conch.png",
+        "output": ".allforai/game-design/art/tile_conch.png",
+        "preview": ".allforai/game-design/previews/tile_conch.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_conch_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_conch_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_conch_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_conch_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_conch_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_conch_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_shell",
+      "type": "tile",
+      "name": "贝壳",
+      "file_prefix": "tile_shell",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_shell.json",
+        "source": ".allforai/game-design/art/source/tile_shell.png",
+        "output": ".allforai/game-design/art/tile_shell.png",
+        "preview": ".allforai/game-design/previews/tile_shell.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_shell_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_shell_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_shell_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_shell_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_shell_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_shell_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_crab",
+      "type": "tile",
+      "name": "螃蟹",
+      "file_prefix": "tile_crab",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_crab.json",
+        "source": ".allforai/game-design/art/source/tile_crab.png",
+        "output": ".allforai/game-design/art/tile_crab.png",
+        "preview": ".allforai/game-design/previews/tile_crab.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_crab_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_crab_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_crab_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_crab_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_crab_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_crab_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_turtle",
+      "type": "tile",
+      "name": "海龟",
+      "file_prefix": "tile_turtle",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_turtle.json",
+        "source": ".allforai/game-design/art/source/tile_turtle.png",
+        "output": ".allforai/game-design/art/tile_turtle.png",
+        "preview": ".allforai/game-design/previews/tile_turtle.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_turtle_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_turtle_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_turtle_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_turtle_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_turtle_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_turtle_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_jellyfish",
+      "type": "tile",
+      "name": "水母",
+      "file_prefix": "tile_jellyfish",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_jellyfish.json",
+        "source": ".allforai/game-design/art/source/tile_jellyfish.png",
+        "output": ".allforai/game-design/art/tile_jellyfish.png",
+        "preview": ".allforai/game-design/previews/tile_jellyfish.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_jellyfish_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_jellyfish_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_jellyfish_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_jellyfish_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_jellyfish_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_jellyfish_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_flying_fish",
+      "type": "tile",
+      "name": "飞鱼",
+      "file_prefix": "tile_flying_fish",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_flying_fish.json",
+        "source": ".allforai/game-design/art/source/tile_flying_fish.png",
+        "output": ".allforai/game-design/art/tile_flying_fish.png",
+        "preview": ".allforai/game-design/previews/tile_flying_fish.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_flying_fish_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_flying_fish_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_flying_fish_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_flying_fish_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_flying_fish_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_flying_fish_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_dolphin",
+      "type": "tile",
+      "name": "海豚",
+      "file_prefix": "tile_dolphin",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_dolphin.json",
+        "source": ".allforai/game-design/art/source/tile_dolphin.png",
+        "output": ".allforai/game-design/art/tile_dolphin.png",
+        "preview": ".allforai/game-design/previews/tile_dolphin.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_dolphin_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_dolphin_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_dolphin_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_dolphin_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_dolphin_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_dolphin_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_seagull",
+      "type": "tile",
+      "name": "海鸥",
+      "file_prefix": "tile_seagull",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_seagull.json",
+        "source": ".allforai/game-design/art/source/tile_seagull.png",
+        "output": ".allforai/game-design/art/tile_seagull.png",
+        "preview": ".allforai/game-design/previews/tile_seagull.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_seagull_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_seagull_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_seagull_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_seagull_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_seagull_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_seagull_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_coconut_palm",
+      "type": "tile",
+      "name": "椰子树",
+      "file_prefix": "tile_coconut_palm",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_coconut_palm.json",
+        "source": ".allforai/game-design/art/source/tile_coconut_palm.png",
+        "output": ".allforai/game-design/art/tile_coconut_palm.png",
+        "preview": ".allforai/game-design/previews/tile_coconut_palm.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_coconut_palm_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_coconut_palm_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_coconut_palm_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_coconut_palm_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_coconut_palm_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_coconut_palm_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_lighthouse",
+      "type": "tile",
+      "name": "灯塔",
+      "file_prefix": "tile_lighthouse",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_lighthouse.json",
+        "source": ".allforai/game-design/art/source/tile_lighthouse.png",
+        "output": ".allforai/game-design/art/tile_lighthouse.png",
+        "preview": ".allforai/game-design/previews/tile_lighthouse.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_lighthouse_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_lighthouse_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_lighthouse_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_lighthouse_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_lighthouse_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_lighthouse_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_fishing_boat",
+      "type": "tile",
+      "name": "渔船",
+      "file_prefix": "tile_fishing_boat",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_fishing_boat.json",
+        "source": ".allforai/game-design/art/source/tile_fishing_boat.png",
+        "output": ".allforai/game-design/art/tile_fishing_boat.png",
+        "preview": ".allforai/game-design/previews/tile_fishing_boat.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_fishing_boat_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_fishing_boat_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_fishing_boat_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_fishing_boat_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_fishing_boat_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_fishing_boat_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_buoy",
+      "type": "tile",
+      "name": "浮标",
+      "file_prefix": "tile_buoy",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_buoy.json",
+        "source": ".allforai/game-design/art/source/tile_buoy.png",
+        "output": ".allforai/game-design/art/tile_buoy.png",
+        "preview": ".allforai/game-design/previews/tile_buoy.png",
+        "atlas": ".allforai/game-design/atlases/tiles_ch1_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "ch1",
+          "kind": "state",
+          "file_prefix": "tile_buoy_ch1",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch2",
+          "kind": "state",
+          "file_prefix": "tile_buoy_ch2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch3",
+          "kind": "state",
+          "file_prefix": "tile_buoy_ch3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch4",
+          "kind": "state",
+          "file_prefix": "tile_buoy_ch4",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch5",
+          "kind": "state",
+          "file_prefix": "tile_buoy_ch5",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "ch6",
+          "kind": "state",
+          "file_prefix": "tile_buoy_ch6",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Style specificity (hand-drawn watercolor, warm pastel, 128×128px with 8px bleed) precludes existing asset packs.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "128×128px PNG, 8px transparent bleed, 24px corner radius, paper texture overlay, chapter palette compliance",
+        "adaptation_requirements": "Apply chapter palette per variant; pack into chapter atlases",
+        "handoff_requirements": "PNG per chapter variant + chapter atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_wave_block",
+      "type": "tile",
+      "name": "光波特殊块",
+      "file_prefix": "tile_wave_block",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_wave_block.json",
+        "source": ".allforai/game-design/art/source/tile_wave_block.png",
+        "output": ".allforai/game-design/art/tile_wave_block.png",
+        "preview": ".allforai/game-design/previews/tile_wave_block.png",
+        "atlas": ".allforai/game-design/atlases/special_blocks_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "frame_01",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_01",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_02",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_02",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_03",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_03",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_04",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_04",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_05",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_05",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_06",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_06",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_07",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_07",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_08",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_08",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_09",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_09",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_10",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_10",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_11",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_11",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_12",
+          "kind": "animation",
+          "file_prefix": "tile_wave_block_frame_12",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "5 custom tactical special-block designs with unique color identity and frame animation. No suitable asset pack matches project-specific mechanics (light_wave, light_chain, pierce, swap, cascade).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "12-frame animation strip, 128×128px, style-consistent with base tiles, special color per block type",
+        "adaptation_requirements": "Generate frame strip; slice into individual frames",
+        "handoff_requirements": "PNG frame strips + atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_light_chain_block",
+      "type": "tile",
+      "name": "光链特殊块",
+      "file_prefix": "tile_light_chain_block",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_light_chain_block.json",
+        "source": ".allforai/game-design/art/source/tile_light_chain_block.png",
+        "output": ".allforai/game-design/art/tile_light_chain_block.png",
+        "preview": ".allforai/game-design/previews/tile_light_chain_block.png",
+        "atlas": ".allforai/game-design/atlases/special_blocks_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "frame_01",
+          "kind": "animation",
+          "file_prefix": "tile_light_chain_block_frame_01",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_12",
+          "kind": "animation",
+          "file_prefix": "tile_light_chain_block_frame_12",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "5 custom tactical special-block designs with unique color identity and frame animation. No suitable asset pack matches project-specific mechanics (light_wave, light_chain, pierce, swap, cascade).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "12-frame animation strip, 128×128px, style-consistent with base tiles, special color per block type",
+        "adaptation_requirements": "Generate frame strip; slice into individual frames",
+        "handoff_requirements": "PNG frame strips + atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_pierce_block",
+      "type": "tile",
+      "name": "穿透特殊块",
+      "file_prefix": "tile_pierce_block",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_pierce_block.json",
+        "source": ".allforai/game-design/art/source/tile_pierce_block.png",
+        "output": ".allforai/game-design/art/tile_pierce_block.png",
+        "preview": ".allforai/game-design/previews/tile_pierce_block.png",
+        "atlas": ".allforai/game-design/atlases/special_blocks_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "frame_01",
+          "kind": "animation",
+          "file_prefix": "tile_pierce_block_frame_01",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_12",
+          "kind": "animation",
+          "file_prefix": "tile_pierce_block_frame_12",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "5 custom tactical special-block designs with unique color identity and frame animation. No suitable asset pack matches project-specific mechanics (light_wave, light_chain, pierce, swap, cascade).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "12-frame animation strip, 128×128px, style-consistent with base tiles, special color per block type",
+        "adaptation_requirements": "Generate frame strip; slice into individual frames",
+        "handoff_requirements": "PNG frame strips + atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_swap_block",
+      "type": "tile",
+      "name": "置换特殊块",
+      "file_prefix": "tile_swap_block",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_swap_block.json",
+        "source": ".allforai/game-design/art/source/tile_swap_block.png",
+        "output": ".allforai/game-design/art/tile_swap_block.png",
+        "preview": ".allforai/game-design/previews/tile_swap_block.png",
+        "atlas": ".allforai/game-design/atlases/special_blocks_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "frame_01",
+          "kind": "animation",
+          "file_prefix": "tile_swap_block_frame_01",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_12",
+          "kind": "animation",
+          "file_prefix": "tile_swap_block_frame_12",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "5 custom tactical special-block designs with unique color identity and frame animation. No suitable asset pack matches project-specific mechanics (light_wave, light_chain, pierce, swap, cascade).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "12-frame animation strip, 128×128px, style-consistent with base tiles, special color per block type",
+        "adaptation_requirements": "Generate frame strip; slice into individual frames",
+        "handoff_requirements": "PNG frame strips + atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "tile_cascade_block",
+      "type": "tile",
+      "name": "连锁特殊块",
+      "file_prefix": "tile_cascade_block",
+      "state": "planned",
+      "owner_node": "tile-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/tile_cascade_block.json",
+        "source": ".allforai/game-design/art/source/tile_cascade_block.png",
+        "output": ".allforai/game-design/art/tile_cascade_block.png",
+        "preview": ".allforai/game-design/previews/tile_cascade_block.png",
+        "atlas": ".allforai/game-design/atlases/special_blocks_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "frame_01",
+          "kind": "animation",
+          "file_prefix": "tile_cascade_block_frame_01",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_12",
+          "kind": "animation",
+          "file_prefix": "tile_cascade_block_frame_12",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via tile-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "5 custom tactical special-block designs with unique color identity and frame animation. No suitable asset pack matches project-specific mechanics (light_wave, light_chain, pierce, swap, cascade).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "12-frame animation strip, 128×128px, style-consistent with base tiles, special color per block type",
+        "adaptation_requirements": "Generate frame strip; slice into individual frames",
+        "handoff_requirements": "PNG frame strips + atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "char_ritsu",
+      "type": "character",
+      "name": "山田律",
+      "file_prefix": "char_ritsu",
+      "state": "planned",
+      "owner_node": "character-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/char_ritsu.json",
+        "source": ".allforai/game-design/art/source/char_ritsu.png",
+        "output": ".allforai/game-design/art/char_ritsu.png",
+        "preview": ".allforai/game-design/previews/char_ritsu.png",
+        "atlas": ".allforai/game-design/atlases/characters_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "idle",
+          "kind": "animation",
+          "file_prefix": "char_ritsu_idle",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "happy",
+          "kind": "animation",
+          "file_prefix": "char_ritsu_happy",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "surprised",
+          "kind": "animation",
+          "file_prefix": "char_ritsu_surprised",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "sad",
+          "kind": "animation",
+          "file_prefix": "char_ritsu_sad",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "wave",
+          "kind": "animation",
+          "file_prefix": "char_ritsu_wave",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "react_jump",
+          "kind": "animation",
+          "file_prefix": "char_ritsu_react_jump",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via character-art-gen (manual DragonBones)"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Custom project-specific characters with unique designs; high style specificity (chibi-anime watercolor, DragonBones rig layers). LLM generates base layer sheets; manual DragonBones rigging completes animation.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "Style match: chibi 1:1.5 head-body ratio, watercolor hand-drawn, unique silhouette readable at any resolution",
+        "adaptation_requirements": "Split into DragonBones bone layers after LLM generation; rig in DragonBones Pro",
+        "handoff_requirements": "PNG layer sheets + DragonBones .dbproj file per character",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "char_hinata",
+      "type": "character",
+      "name": "丸山ひなた",
+      "file_prefix": "char_hinata",
+      "state": "planned",
+      "owner_node": "character-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/char_hinata.json",
+        "source": ".allforai/game-design/art/source/char_hinata.png",
+        "output": ".allforai/game-design/art/char_hinata.png",
+        "preview": ".allforai/game-design/previews/char_hinata.png",
+        "atlas": ".allforai/game-design/atlases/characters_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "idle",
+          "kind": "animation",
+          "file_prefix": "char_hinata_idle",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "happy",
+          "kind": "animation",
+          "file_prefix": "char_hinata_happy",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "surprised",
+          "kind": "animation",
+          "file_prefix": "char_hinata_surprised",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "sad",
+          "kind": "animation",
+          "file_prefix": "char_hinata_sad",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "wave",
+          "kind": "animation",
+          "file_prefix": "char_hinata_wave",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via character-art-gen (manual DragonBones)"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Custom project-specific characters with unique designs; high style specificity (chibi-anime watercolor, DragonBones rig layers). LLM generates base layer sheets; manual DragonBones rigging completes animation.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "Style match: chibi 1:1.5 head-body ratio, watercolor hand-drawn, unique silhouette readable at any resolution",
+        "adaptation_requirements": "Split into DragonBones bone layers after LLM generation; rig in DragonBones Pro",
+        "handoff_requirements": "PNG layer sheets + DragonBones .dbproj file per character",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "char_kenzo",
+      "type": "character",
+      "name": "磯部健三",
+      "file_prefix": "char_kenzo",
+      "state": "planned",
+      "owner_node": "character-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/char_kenzo.json",
+        "source": ".allforai/game-design/art/source/char_kenzo.png",
+        "output": ".allforai/game-design/art/char_kenzo.png",
+        "preview": ".allforai/game-design/previews/char_kenzo.png",
+        "atlas": ".allforai/game-design/atlases/characters_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "idle",
+          "kind": "animation",
+          "file_prefix": "char_kenzo_idle",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "happy",
+          "kind": "animation",
+          "file_prefix": "char_kenzo_happy",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "surprised",
+          "kind": "animation",
+          "file_prefix": "char_kenzo_surprised",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "sad",
+          "kind": "animation",
+          "file_prefix": "char_kenzo_sad",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "wave",
+          "kind": "animation",
+          "file_prefix": "char_kenzo_wave",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via character-art-gen (manual DragonBones)"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Custom project-specific characters with unique designs; high style specificity (chibi-anime watercolor, DragonBones rig layers). LLM generates base layer sheets; manual DragonBones rigging completes animation.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "Style match: chibi 1:1.5 head-body ratio, watercolor hand-drawn, unique silhouette readable at any resolution",
+        "adaptation_requirements": "Split into DragonBones bone layers after LLM generation; rig in DragonBones Pro",
+        "handoff_requirements": "PNG layer sheets + DragonBones .dbproj file per character",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "char_umeko",
+      "type": "character",
+      "name": "桐島梅子",
+      "file_prefix": "char_umeko",
+      "state": "planned",
+      "owner_node": "character-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/char_umeko.json",
+        "source": ".allforai/game-design/art/source/char_umeko.png",
+        "output": ".allforai/game-design/art/char_umeko.png",
+        "preview": ".allforai/game-design/previews/char_umeko.png",
+        "atlas": ".allforai/game-design/atlases/characters_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "idle",
+          "kind": "animation",
+          "file_prefix": "char_umeko_idle",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "happy",
+          "kind": "animation",
+          "file_prefix": "char_umeko_happy",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "surprised",
+          "kind": "animation",
+          "file_prefix": "char_umeko_surprised",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "sad",
+          "kind": "animation",
+          "file_prefix": "char_umeko_sad",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "wave",
+          "kind": "animation",
+          "file_prefix": "char_umeko_wave",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via character-art-gen (manual DragonBones)"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Custom project-specific characters with unique designs; high style specificity (chibi-anime watercolor, DragonBones rig layers). LLM generates base layer sheets; manual DragonBones rigging completes animation.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "Style match: chibi 1:1.5 head-body ratio, watercolor hand-drawn, unique silhouette readable at any resolution",
+        "adaptation_requirements": "Split into DragonBones bone layers after LLM generation; rig in DragonBones Pro",
+        "handoff_requirements": "PNG layer sheets + DragonBones .dbproj file per character",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "char_natsuka",
+      "type": "character",
+      "name": "海野夏帆",
+      "file_prefix": "char_natsuka",
+      "state": "planned",
+      "owner_node": "character-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/char_natsuka.json",
+        "source": ".allforai/game-design/art/source/char_natsuka.png",
+        "output": ".allforai/game-design/art/char_natsuka.png",
+        "preview": ".allforai/game-design/previews/char_natsuka.png",
+        "atlas": ".allforai/game-design/atlases/characters_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "idle",
+          "kind": "animation",
+          "file_prefix": "char_natsuka_idle",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "happy",
+          "kind": "animation",
+          "file_prefix": "char_natsuka_happy",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "surprised",
+          "kind": "animation",
+          "file_prefix": "char_natsuka_surprised",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "sad",
+          "kind": "animation",
+          "file_prefix": "char_natsuka_sad",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "wave",
+          "kind": "animation",
+          "file_prefix": "char_natsuka_wave",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via character-art-gen (manual DragonBones)"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Custom project-specific characters with unique designs; high style specificity (chibi-anime watercolor, DragonBones rig layers). LLM generates base layer sheets; manual DragonBones rigging completes animation.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "Style match: chibi 1:1.5 head-body ratio, watercolor hand-drawn, unique silhouette readable at any resolution",
+        "adaptation_requirements": "Split into DragonBones bone layers after LLM generation; rig in DragonBones Pro",
+        "handoff_requirements": "PNG layer sheets + DragonBones .dbproj file per character",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "char_fuyuko",
+      "type": "character",
+      "name": "丸山冬子",
+      "file_prefix": "char_fuyuko",
+      "state": "planned",
+      "owner_node": "character-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/char_fuyuko.json",
+        "source": ".allforai/game-design/art/source/char_fuyuko.png",
+        "output": ".allforai/game-design/art/char_fuyuko.png",
+        "preview": ".allforai/game-design/previews/char_fuyuko.png",
+        "atlas": ".allforai/game-design/atlases/characters_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "idle",
+          "kind": "animation",
+          "file_prefix": "char_fuyuko_idle",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "happy",
+          "kind": "animation",
+          "file_prefix": "char_fuyuko_happy",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "surprised",
+          "kind": "animation",
+          "file_prefix": "char_fuyuko_surprised",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "sad",
+          "kind": "animation",
+          "file_prefix": "char_fuyuko_sad",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "wave",
+          "kind": "animation",
+          "file_prefix": "char_fuyuko_wave",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via character-art-gen (manual DragonBones)"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Custom project-specific characters with unique designs; high style specificity (chibi-anime watercolor, DragonBones rig layers). LLM generates base layer sheets; manual DragonBones rigging completes animation.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "Style match: chibi 1:1.5 head-body ratio, watercolor hand-drawn, unique silhouette readable at any resolution",
+        "adaptation_requirements": "Split into DragonBones bone layers after LLM generation; rig in DragonBones Pro",
+        "handoff_requirements": "PNG layer sheets + DragonBones .dbproj file per character",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "char_gicho",
+      "type": "character",
+      "name": "議長（橘猫）",
+      "file_prefix": "char_gicho",
+      "state": "planned",
+      "owner_node": "character-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/char_gicho.json",
+        "source": ".allforai/game-design/art/source/char_gicho.png",
+        "output": ".allforai/game-design/art/char_gicho.png",
+        "preview": ".allforai/game-design/previews/char_gicho.png",
+        "atlas": ".allforai/game-design/atlases/characters_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "idle",
+          "kind": "animation",
+          "file_prefix": "char_gicho_idle",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "happy",
+          "kind": "animation",
+          "file_prefix": "char_gicho_happy",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "surprised",
+          "kind": "animation",
+          "file_prefix": "char_gicho_surprised",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "wave",
+          "kind": "animation",
+          "file_prefix": "char_gicho_wave",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via character-art-gen (manual DragonBones)"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Custom project-specific characters with unique designs; high style specificity (chibi-anime watercolor, DragonBones rig layers). LLM generates base layer sheets; manual DragonBones rigging completes animation.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "Style match: chibi 1:1.5 head-body ratio, watercolor hand-drawn, unique silhouette readable at any resolution",
+        "adaptation_requirements": "Split into DragonBones bone layers after LLM generation; rig in DragonBones Pro",
+        "handoff_requirements": "PNG layer sheets + DragonBones .dbproj file per character",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch1_before",
+      "type": "background",
+      "name": "第一章·海边码头（修复前）",
+      "file_prefix": "bg_ch1_before",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch1_before.json",
+        "source": ".allforai/game-design/art/source/bg_ch1_before.jpg",
+        "output": ".allforai/game-design/art/bg_ch1_before.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch1_before.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch1_progress",
+      "type": "background",
+      "name": "第一章·海边码头（修复中）",
+      "file_prefix": "bg_ch1_progress",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch1_progress.json",
+        "source": ".allforai/game-design/art/source/bg_ch1_progress.jpg",
+        "output": ".allforai/game-design/art/bg_ch1_progress.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch1_progress.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch1_restored",
+      "type": "background",
+      "name": "第一章·海边码头（修复后）",
+      "file_prefix": "bg_ch1_restored",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch1_restored.json",
+        "source": ".allforai/game-design/art/source/bg_ch1_restored.jpg",
+        "output": ".allforai/game-design/art/bg_ch1_restored.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch1_restored.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch2_before",
+      "type": "background",
+      "name": "第二章·中央小镇（修复前）",
+      "file_prefix": "bg_ch2_before",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch2_before.json",
+        "source": ".allforai/game-design/art/source/bg_ch2_before.jpg",
+        "output": ".allforai/game-design/art/bg_ch2_before.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch2_before.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch2_progress",
+      "type": "background",
+      "name": "第二章·中央小镇（修复中）",
+      "file_prefix": "bg_ch2_progress",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch2_progress.json",
+        "source": ".allforai/game-design/art/source/bg_ch2_progress.jpg",
+        "output": ".allforai/game-design/art/bg_ch2_progress.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch2_progress.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch2_restored",
+      "type": "background",
+      "name": "第二章·中央小镇（修复后）",
+      "file_prefix": "bg_ch2_restored",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch2_restored.json",
+        "source": ".allforai/game-design/art/source/bg_ch2_restored.jpg",
+        "output": ".allforai/game-design/art/bg_ch2_restored.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch2_restored.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch3_before",
+      "type": "background",
+      "name": "第三章·花田山坡（修复前）",
+      "file_prefix": "bg_ch3_before",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch3_before.json",
+        "source": ".allforai/game-design/art/source/bg_ch3_before.jpg",
+        "output": ".allforai/game-design/art/bg_ch3_before.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch3_before.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch3_progress",
+      "type": "background",
+      "name": "第三章·花田山坡（修复中）",
+      "file_prefix": "bg_ch3_progress",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch3_progress.json",
+        "source": ".allforai/game-design/art/source/bg_ch3_progress.jpg",
+        "output": ".allforai/game-design/art/bg_ch3_progress.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch3_progress.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch3_restored",
+      "type": "background",
+      "name": "第三章·花田山坡（修复后）",
+      "file_prefix": "bg_ch3_restored",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch3_restored.json",
+        "source": ".allforai/game-design/art/source/bg_ch3_restored.jpg",
+        "output": ".allforai/game-design/art/bg_ch3_restored.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch3_restored.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch4_before",
+      "type": "background",
+      "name": "第四章·森林露营地（修复前）",
+      "file_prefix": "bg_ch4_before",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch4_before.json",
+        "source": ".allforai/game-design/art/source/bg_ch4_before.jpg",
+        "output": ".allforai/game-design/art/bg_ch4_before.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch4_before.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch4_progress",
+      "type": "background",
+      "name": "第四章·森林露营地（修复中）",
+      "file_prefix": "bg_ch4_progress",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch4_progress.json",
+        "source": ".allforai/game-design/art/source/bg_ch4_progress.jpg",
+        "output": ".allforai/game-design/art/bg_ch4_progress.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch4_progress.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch4_restored",
+      "type": "background",
+      "name": "第四章·森林露营地（修复后）",
+      "file_prefix": "bg_ch4_restored",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch4_restored.json",
+        "source": ".allforai/game-design/art/source/bg_ch4_restored.jpg",
+        "output": ".allforai/game-design/art/bg_ch4_restored.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch4_restored.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch5_before",
+      "type": "background",
+      "name": "第五章·温泉山谷（修复前）",
+      "file_prefix": "bg_ch5_before",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch5_before.json",
+        "source": ".allforai/game-design/art/source/bg_ch5_before.jpg",
+        "output": ".allforai/game-design/art/bg_ch5_before.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch5_before.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch5_progress",
+      "type": "background",
+      "name": "第五章·温泉山谷（修复中）",
+      "file_prefix": "bg_ch5_progress",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch5_progress.json",
+        "source": ".allforai/game-design/art/source/bg_ch5_progress.jpg",
+        "output": ".allforai/game-design/art/bg_ch5_progress.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch5_progress.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch5_restored",
+      "type": "background",
+      "name": "第五章·温泉山谷（修复后）",
+      "file_prefix": "bg_ch5_restored",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch5_restored.json",
+        "source": ".allforai/game-design/art/source/bg_ch5_restored.jpg",
+        "output": ".allforai/game-design/art/bg_ch5_restored.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch5_restored.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch6_before",
+      "type": "background",
+      "name": "第六章·夜晚灯塔（修复前）",
+      "file_prefix": "bg_ch6_before",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch6_before.json",
+        "source": ".allforai/game-design/art/source/bg_ch6_before.jpg",
+        "output": ".allforai/game-design/art/bg_ch6_before.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch6_before.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch6_progress",
+      "type": "background",
+      "name": "第六章·夜晚灯塔（修复中）",
+      "file_prefix": "bg_ch6_progress",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch6_progress.json",
+        "source": ".allforai/game-design/art/source/bg_ch6_progress.jpg",
+        "output": ".allforai/game-design/art/bg_ch6_progress.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch6_progress.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "bg_ch6_restored",
+      "type": "background",
+      "name": "第六章·夜晚灯塔（修复后）",
+      "file_prefix": "bg_ch6_restored",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/bg_ch6_restored.json",
+        "source": ".allforai/game-design/art/source/bg_ch6_restored.jpg",
+        "output": ".allforai/game-design/art/bg_ch6_restored.jpg",
+        "preview": ".allforai/game-design/previews/bg_ch6_restored.jpg",
+        "atlas": null
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states). Hand-drawn watercolor style with exact chapter palette and saturation progression unique to Glow Island.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "1920×1080px JPG, chapter-palette compliant, 3 restoration state progression (before/in_progress/restored)",
+        "adaptation_requirements": "Saturation crossfade between states; parallax layer decomposition optional",
+        "handoff_requirements": "JPG per state per chapter; optional parallax layer PNGs",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "ui_hud_bar",
+      "type": "ui",
+      "name": "HUD底栏",
+      "file_prefix": "ui_hud_bar",
+      "state": "planned",
+      "owner_node": "ui-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/ui_hud_bar.json",
+        "source": ".allforai/game-design/art/source/ui_hud_bar.png",
+        "output": ".allforai/game-design/art/ui_hud_bar.png",
+        "preview": ".allforai/game-design/previews/ui_hud_bar.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via ui-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific UI panels and icons with custom wood-sign aesthetic, island palette, and Cocos Creator layout requirements.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, wood-sign UI style, island palette compliant, atlas-packable",
+        "adaptation_requirements": "Scale to target size; pack into ui_elements_atlas",
+        "handoff_requirements": "PNG sprites + ui_elements_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "ui_card_level",
+      "type": "ui",
+      "name": "关卡卡片",
+      "file_prefix": "ui_card_level",
+      "state": "planned",
+      "owner_node": "ui-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/ui_card_level.json",
+        "source": ".allforai/game-design/art/source/ui_card_level.png",
+        "output": ".allforai/game-design/art/ui_card_level.png",
+        "preview": ".allforai/game-design/previews/ui_card_level.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via ui-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific UI panels and icons with custom wood-sign aesthetic, island palette, and Cocos Creator layout requirements.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, wood-sign UI style, island palette compliant, atlas-packable",
+        "adaptation_requirements": "Scale to target size; pack into ui_elements_atlas",
+        "handoff_requirements": "PNG sprites + ui_elements_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "ui_btn_shuffle",
+      "type": "ui",
+      "name": "重排按钮",
+      "file_prefix": "ui_btn_shuffle",
+      "state": "planned",
+      "owner_node": "ui-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/ui_btn_shuffle.json",
+        "source": ".allforai/game-design/art/source/ui_btn_shuffle.png",
+        "output": ".allforai/game-design/art/ui_btn_shuffle.png",
+        "preview": ".allforai/game-design/previews/ui_btn_shuffle.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "normal",
+          "kind": "state",
+          "file_prefix": "ui_btn_shuffle_normal",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "pressed",
+          "kind": "state",
+          "file_prefix": "ui_btn_shuffle_pressed",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "disabled",
+          "kind": "state",
+          "file_prefix": "ui_btn_shuffle_disabled",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Manual creation via ui-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "UI buttons are project-specific (wood-sign UI paradigm, pill-shape 24px corners, custom palette). No generic UI pack matches healing aesthetic + specific color system.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, 3-state variants (normal/pressed/disabled), style: flat+soft-shadow wood-sign UI",
+        "adaptation_requirements": "Generate base state; derive pressed (darken 15%) and disabled (desaturate 50%) states",
+        "handoff_requirements": "PNG per state; packed into ui_elements_atlas",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "ui_btn_hint",
+      "type": "ui",
+      "name": "预判按钮",
+      "file_prefix": "ui_btn_hint",
+      "state": "planned",
+      "owner_node": "ui-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/ui_btn_hint.json",
+        "source": ".allforai/game-design/art/source/ui_btn_hint.png",
+        "output": ".allforai/game-design/art/ui_btn_hint.png",
+        "preview": ".allforai/game-design/previews/ui_btn_hint.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "normal",
+          "kind": "state",
+          "file_prefix": "ui_btn_hint_normal",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "pressed",
+          "kind": "state",
+          "file_prefix": "ui_btn_hint_pressed",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "disabled",
+          "kind": "state",
+          "file_prefix": "ui_btn_hint_disabled",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Manual creation via ui-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "UI buttons are project-specific (wood-sign UI paradigm, pill-shape 24px corners, custom palette). No generic UI pack matches healing aesthetic + specific color system.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, 3-state variants (normal/pressed/disabled), style: flat+soft-shadow wood-sign UI",
+        "adaptation_requirements": "Generate base state; derive pressed (darken 15%) and disabled (desaturate 50%) states",
+        "handoff_requirements": "PNG per state; packed into ui_elements_atlas",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "ui_btn_continue",
+      "type": "ui",
+      "name": "续关按钮",
+      "file_prefix": "ui_btn_continue",
+      "state": "planned",
+      "owner_node": "ui-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/ui_btn_continue.json",
+        "source": ".allforai/game-design/art/source/ui_btn_continue.png",
+        "output": ".allforai/game-design/art/ui_btn_continue.png",
+        "preview": ".allforai/game-design/previews/ui_btn_continue.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "normal",
+          "kind": "state",
+          "file_prefix": "ui_btn_continue_normal",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "pressed",
+          "kind": "state",
+          "file_prefix": "ui_btn_continue_pressed",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "disabled",
+          "kind": "state",
+          "file_prefix": "ui_btn_continue_disabled",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Manual creation via ui-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "UI buttons are project-specific (wood-sign UI paradigm, pill-shape 24px corners, custom palette). No generic UI pack matches healing aesthetic + specific color system.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, 3-state variants (normal/pressed/disabled), style: flat+soft-shadow wood-sign UI",
+        "adaptation_requirements": "Generate base state; derive pressed (darken 15%) and disabled (desaturate 50%) states",
+        "handoff_requirements": "PNG per state; packed into ui_elements_atlas",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "ui_panel_shop",
+      "type": "ui",
+      "name": "商店面板",
+      "file_prefix": "ui_panel_shop",
+      "state": "planned",
+      "owner_node": "ui-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/ui_panel_shop.json",
+        "source": ".allforai/game-design/art/source/ui_panel_shop.png",
+        "output": ".allforai/game-design/art/ui_panel_shop.png",
+        "preview": ".allforai/game-design/previews/ui_panel_shop.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via ui-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific UI panels and icons with custom wood-sign aesthetic, island palette, and Cocos Creator layout requirements.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, wood-sign UI style, island palette compliant, atlas-packable",
+        "adaptation_requirements": "Scale to target size; pack into ui_elements_atlas",
+        "handoff_requirements": "PNG sprites + ui_elements_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "ui_panel_npc_dialogue",
+      "type": "ui",
+      "name": "NPC对话框",
+      "file_prefix": "ui_panel_npc_dialogue",
+      "state": "planned",
+      "owner_node": "ui-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/ui_panel_npc_dialogue.json",
+        "source": ".allforai/game-design/art/source/ui_panel_npc_dialogue.png",
+        "output": ".allforai/game-design/art/ui_panel_npc_dialogue.png",
+        "preview": ".allforai/game-design/previews/ui_panel_npc_dialogue.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via ui-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific UI panels and icons with custom wood-sign aesthetic, island palette, and Cocos Creator layout requirements.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, wood-sign UI style, island palette compliant, atlas-packable",
+        "adaptation_requirements": "Scale to target size; pack into ui_elements_atlas",
+        "handoff_requirements": "PNG sprites + ui_elements_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "ui_coin_icon",
+      "type": "ui",
+      "name": "沙滩币图标",
+      "file_prefix": "ui_coin_icon",
+      "state": "planned",
+      "owner_node": "ui-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/ui_coin_icon.json",
+        "source": ".allforai/game-design/art/source/ui_coin_icon.png",
+        "output": ".allforai/game-design/art/ui_coin_icon.png",
+        "preview": ".allforai/game-design/previews/ui_coin_icon.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via ui-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific UI panels and icons with custom wood-sign aesthetic, island palette, and Cocos Creator layout requirements.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, wood-sign UI style, island palette compliant, atlas-packable",
+        "adaptation_requirements": "Scale to target size; pack into ui_elements_atlas",
+        "handoff_requirements": "PNG sprites + ui_elements_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "ui_star_icon",
+      "type": "ui",
+      "name": "星星图标",
+      "file_prefix": "ui_star_icon",
+      "state": "planned",
+      "owner_node": "ui-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/ui_star_icon.json",
+        "source": ".allforai/game-design/art/source/ui_star_icon.png",
+        "output": ".allforai/game-design/art/ui_star_icon.png",
+        "preview": ".allforai/game-design/previews/ui_star_icon.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "empty",
+          "kind": "state",
+          "file_prefix": "ui_star_icon_empty",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "filled",
+          "kind": "state",
+          "file_prefix": "ui_star_icon_filled",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "half",
+          "kind": "state",
+          "file_prefix": "ui_star_icon_half",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via ui-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific UI panels and icons with custom wood-sign aesthetic, island palette, and Cocos Creator layout requirements.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, wood-sign UI style, island palette compliant, atlas-packable",
+        "adaptation_requirements": "Scale to target size; pack into ui_elements_atlas",
+        "handoff_requirements": "PNG sprites + ui_elements_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "ui_lighthouse_progress",
+      "type": "ui",
+      "name": "灯塔进度条",
+      "file_prefix": "ui_lighthouse_progress",
+      "state": "planned",
+      "owner_node": "ui-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/ui_lighthouse_progress.json",
+        "source": ".allforai/game-design/art/source/ui_lighthouse_progress.png",
+        "output": ".allforai/game-design/art/ui_lighthouse_progress.png",
+        "preview": ".allforai/game-design/previews/ui_lighthouse_progress.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "empty",
+          "kind": "state",
+          "file_prefix": "ui_lighthouse_progress_empty",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "quarter",
+          "kind": "state",
+          "file_prefix": "ui_lighthouse_progress_quarter",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "half",
+          "kind": "state",
+          "file_prefix": "ui_lighthouse_progress_half",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "three_quarters",
+          "kind": "state",
+          "file_prefix": "ui_lighthouse_progress_three_quarters",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "full",
+          "kind": "state",
+          "file_prefix": "ui_lighthouse_progress_full",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Manual creation via ui-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific UI panels and icons with custom wood-sign aesthetic, island palette, and Cocos Creator layout requirements.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, wood-sign UI style, island palette compliant, atlas-packable",
+        "adaptation_requirements": "Scale to target size; pack into ui_elements_atlas",
+        "handoff_requirements": "PNG sprites + ui_elements_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "vfx_combo_burst",
+      "type": "vfx",
+      "name": "连击爆炸特效",
+      "file_prefix": "vfx_combo_burst",
+      "state": "planned",
+      "owner_node": "vfx-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/vfx_combo_burst.json",
+        "source": ".allforai/game-design/art/source/vfx_combo_burst.png",
+        "output": ".allforai/game-design/art/vfx_combo_burst.png",
+        "preview": ".allforai/game-design/previews/vfx_combo_burst.png",
+        "atlas": ".allforai/game-design/atlases/vfx_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "x2",
+          "kind": "rarity",
+          "file_prefix": "vfx_combo_burst_x2",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "x3",
+          "kind": "rarity",
+          "file_prefix": "vfx_combo_burst_x3",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "x5",
+          "kind": "rarity",
+          "file_prefix": "vfx_combo_burst_x5",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via vfx-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific VFX tied to game mechanics (combo burst, match disappear, chapter restore). Style must match healing aesthetic (no excessive particle debris, warm palette).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG frame strips, vfx_atlas compliant (max 1024px), healing-aesthetic VFX (warm palette, no neon/harsh tones)",
+        "adaptation_requirements": "Generate frame sheets; slice to individual frames for atlas",
+        "handoff_requirements": "PNG frames + vfx_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "vfx_match_disappear",
+      "type": "vfx",
+      "name": "消除特效",
+      "file_prefix": "vfx_match_disappear",
+      "state": "planned",
+      "owner_node": "vfx-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/vfx_match_disappear.json",
+        "source": ".allforai/game-design/art/source/vfx_match_disappear.png",
+        "output": ".allforai/game-design/art/vfx_match_disappear.png",
+        "preview": ".allforai/game-design/previews/vfx_match_disappear.png",
+        "atlas": ".allforai/game-design/atlases/vfx_atlas.json"
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via vfx-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific VFX tied to game mechanics (combo burst, match disappear, chapter restore). Style must match healing aesthetic (no excessive particle debris, warm palette).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG frame strips, vfx_atlas compliant (max 1024px), healing-aesthetic VFX (warm palette, no neon/harsh tones)",
+        "adaptation_requirements": "Generate frame sheets; slice to individual frames for atlas",
+        "handoff_requirements": "PNG frames + vfx_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "vfx_lighthouse_glow",
+      "type": "vfx",
+      "name": "灯塔光晕特效",
+      "file_prefix": "vfx_lighthouse_glow",
+      "state": "planned",
+      "owner_node": "vfx-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/vfx_lighthouse_glow.json",
+        "source": ".allforai/game-design/art/source/vfx_lighthouse_glow.png",
+        "output": ".allforai/game-design/art/vfx_lighthouse_glow.png",
+        "preview": ".allforai/game-design/previews/vfx_lighthouse_glow.png",
+        "atlas": ".allforai/game-design/atlases/vfx_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "frame_01",
+          "kind": "animation",
+          "file_prefix": "vfx_lighthouse_glow_frame_01",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_24",
+          "kind": "animation",
+          "file_prefix": "vfx_lighthouse_glow_frame_24",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via vfx-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific VFX tied to game mechanics (combo burst, match disappear, chapter restore). Style must match healing aesthetic (no excessive particle debris, warm palette).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG frame strips, vfx_atlas compliant (max 1024px), healing-aesthetic VFX (warm palette, no neon/harsh tones)",
+        "adaptation_requirements": "Generate frame sheets; slice to individual frames for atlas",
+        "handoff_requirements": "PNG frames + vfx_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "vfx_wave_clear",
+      "type": "vfx",
+      "name": "光波清除特效",
+      "file_prefix": "vfx_wave_clear",
+      "state": "planned",
+      "owner_node": "vfx-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/vfx_wave_clear.json",
+        "source": ".allforai/game-design/art/source/vfx_wave_clear.png",
+        "output": ".allforai/game-design/art/vfx_wave_clear.png",
+        "preview": ".allforai/game-design/previews/vfx_wave_clear.png",
+        "atlas": ".allforai/game-design/atlases/vfx_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "frame_01",
+          "kind": "animation",
+          "file_prefix": "vfx_wave_clear_frame_01",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_08",
+          "kind": "animation",
+          "file_prefix": "vfx_wave_clear_frame_08",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via vfx-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific VFX tied to game mechanics (combo burst, match disappear, chapter restore). Style must match healing aesthetic (no excessive particle debris, warm palette).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG frame strips, vfx_atlas compliant (max 1024px), healing-aesthetic VFX (warm palette, no neon/harsh tones)",
+        "adaptation_requirements": "Generate frame sheets; slice to individual frames for atlas",
+        "handoff_requirements": "PNG frames + vfx_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "vfx_chapter_restore",
+      "type": "vfx",
+      "name": "章节修复特效",
+      "file_prefix": "vfx_chapter_restore",
+      "state": "planned",
+      "owner_node": "vfx-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/vfx_chapter_restore.json",
+        "source": ".allforai/game-design/art/source/vfx_chapter_restore.png",
+        "output": ".allforai/game-design/art/vfx_chapter_restore.png",
+        "preview": ".allforai/game-design/previews/vfx_chapter_restore.png",
+        "atlas": ".allforai/game-design/atlases/vfx_atlas.json"
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via vfx-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific VFX tied to game mechanics (combo burst, match disappear, chapter restore). Style must match healing aesthetic (no excessive particle debris, warm palette).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG frame strips, vfx_atlas compliant (max 1024px), healing-aesthetic VFX (warm palette, no neon/harsh tones)",
+        "adaptation_requirements": "Generate frame sheets; slice to individual frames for atlas",
+        "handoff_requirements": "PNG frames + vfx_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "vfx_combo_multiplier_x2",
+      "type": "vfx",
+      "name": "连击倍率×2",
+      "file_prefix": "vfx_combo_multiplier_x2",
+      "state": "planned",
+      "owner_node": "vfx-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/vfx_combo_multiplier_x2.json",
+        "source": ".allforai/game-design/art/source/vfx_combo_multiplier_x2.png",
+        "output": ".allforai/game-design/art/vfx_combo_multiplier_x2.png",
+        "preview": ".allforai/game-design/previews/vfx_combo_multiplier_x2.png",
+        "atlas": ".allforai/game-design/atlases/vfx_atlas.json"
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via vfx-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific VFX tied to game mechanics (combo burst, match disappear, chapter restore). Style must match healing aesthetic (no excessive particle debris, warm palette).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG frame strips, vfx_atlas compliant (max 1024px), healing-aesthetic VFX (warm palette, no neon/harsh tones)",
+        "adaptation_requirements": "Generate frame sheets; slice to individual frames for atlas",
+        "handoff_requirements": "PNG frames + vfx_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "vfx_combo_multiplier_x3",
+      "type": "vfx",
+      "name": "连击倍率×3",
+      "file_prefix": "vfx_combo_multiplier_x3",
+      "state": "planned",
+      "owner_node": "vfx-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/vfx_combo_multiplier_x3.json",
+        "source": ".allforai/game-design/art/source/vfx_combo_multiplier_x3.png",
+        "output": ".allforai/game-design/art/vfx_combo_multiplier_x3.png",
+        "preview": ".allforai/game-design/previews/vfx_combo_multiplier_x3.png",
+        "atlas": ".allforai/game-design/atlases/vfx_atlas.json"
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via vfx-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific VFX tied to game mechanics (combo burst, match disappear, chapter restore). Style must match healing aesthetic (no excessive particle debris, warm palette).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG frame strips, vfx_atlas compliant (max 1024px), healing-aesthetic VFX (warm palette, no neon/harsh tones)",
+        "adaptation_requirements": "Generate frame sheets; slice to individual frames for atlas",
+        "handoff_requirements": "PNG frames + vfx_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "vfx_combo_multiplier_x5",
+      "type": "vfx",
+      "name": "连击倍率×5",
+      "file_prefix": "vfx_combo_multiplier_x5",
+      "state": "planned",
+      "owner_node": "vfx-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/vfx_combo_multiplier_x5.json",
+        "source": ".allforai/game-design/art/source/vfx_combo_multiplier_x5.png",
+        "output": ".allforai/game-design/art/vfx_combo_multiplier_x5.png",
+        "preview": ".allforai/game-design/previews/vfx_combo_multiplier_x5.png",
+        "atlas": ".allforai/game-design/atlases/vfx_atlas.json"
+      },
+      "variants": [],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via vfx-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific VFX tied to game mechanics (combo burst, match disappear, chapter restore). Style must match healing aesthetic (no excessive particle debris, warm palette).",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG frame strips, vfx_atlas compliant (max 1024px), healing-aesthetic VFX (warm palette, no neon/harsh tones)",
+        "adaptation_requirements": "Generate frame sheets; slice to individual frames for atlas",
+        "handoff_requirements": "PNG frames + vfx_atlas JSON",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "prop_notebook",
+      "type": "prop",
+      "name": "ひなた手账",
+      "file_prefix": "prop_notebook",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/prop_notebook.json",
+        "source": ".allforai/game-design/art/source/prop_notebook.png",
+        "output": ".allforai/game-design/art/prop_notebook.png",
+        "preview": ".allforai/game-design/previews/prop_notebook.png",
+        "atlas": ".allforai/game-design/atlases/ui_elements_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "closed",
+          "kind": "state",
+          "file_prefix": "prop_notebook_closed",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "open",
+          "kind": "state",
+          "file_prefix": "prop_notebook_open",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific narrative props (ひなた's notebook, lighthouse lamp). Deeply tied to character identity and story.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, style-consistent with character and environment art, optional frame animation for lighthouse lamp",
+        "adaptation_requirements": "For prop_lighthouse_lamp: generate frame strip and slice",
+        "handoff_requirements": "PNG variants + atlas reference",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    },
+    {
+      "asset_id": "prop_lighthouse_lamp",
+      "type": "prop",
+      "name": "灯塔灯",
+      "file_prefix": "prop_lighthouse_lamp",
+      "state": "planned",
+      "owner_node": "environment-art-gen",
+      "consumers": [
+        "art-qa"
+      ],
+      "paths": {
+        "spec": ".allforai/game-design/specs/prop_lighthouse_lamp.json",
+        "source": ".allforai/game-design/art/source/prop_lighthouse_lamp.png",
+        "output": ".allforai/game-design/art/prop_lighthouse_lamp.png",
+        "preview": ".allforai/game-design/previews/prop_lighthouse_lamp.png",
+        "atlas": ".allforai/game-design/atlases/vfx_atlas.json"
+      },
+      "variants": [
+        {
+          "variant_id": "frame_01",
+          "kind": "animation",
+          "file_prefix": "prop_lighthouse_lamp_frame_01",
+          "state": "planned",
+          "paths": {}
+        },
+        {
+          "variant_id": "frame_08",
+          "kind": "animation",
+          "file_prefix": "prop_lighthouse_lamp_frame_08",
+          "state": "planned",
+          "paths": {}
+        }
+      ],
+      "dependencies": [
+        "vfx_lighthouse_glow"
+      ],
+      "validation": {
+        "last_checked_at": "2026-05-13T00:00:00Z",
+        "checks_passed": [],
+        "checks_failed": [],
+        "next_action": "Generate via environment-art-gen"
+      },
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "source_strategy_meta": {
+        "strategy_reason": "Project-specific narrative props (ひなた's notebook, lighthouse lamp). Deeply tied to character identity and story.",
+        "license_requirements": "project_owned",
+        "quality_requirements": "PNG, style-consistent with character and environment art, optional frame animation for lighthouse lamp",
+        "adaptation_requirements": "For prop_lighthouse_lamp: generate frame strip and slice",
+        "handoff_requirements": "PNG variants + atlas reference",
+        "state": "validated",
+        "decided_at": "2026-05-13T00:00:00Z"
+      }
+    }
+  ],
+  "indexes": {
+    "by_type": {
+      "tile": [
+        "tile_tuna",
+        "tile_octopus",
+        "tile_starfish",
+        "tile_hermit_crab",
+        "tile_lanternfish",
+        "tile_pufferfish",
+        "tile_whale",
+        "tile_coral",
+        "tile_conch",
+        "tile_shell",
+        "tile_crab",
+        "tile_turtle",
+        "tile_jellyfish",
+        "tile_flying_fish",
+        "tile_dolphin",
+        "tile_seagull",
+        "tile_coconut_palm",
+        "tile_lighthouse",
+        "tile_fishing_boat",
+        "tile_buoy",
+        "tile_wave_block",
+        "tile_light_chain_block",
+        "tile_pierce_block",
+        "tile_swap_block",
+        "tile_cascade_block"
+      ],
+      "character": [
+        "char_ritsu",
+        "char_hinata",
+        "char_kenzo",
+        "char_umeko",
+        "char_natsuka",
+        "char_fuyuko",
+        "char_gicho"
+      ],
+      "background": [
+        "bg_ch1_before",
+        "bg_ch1_progress",
+        "bg_ch1_restored",
+        "bg_ch2_before",
+        "bg_ch2_progress",
+        "bg_ch2_restored",
+        "bg_ch3_before",
+        "bg_ch3_progress",
+        "bg_ch3_restored",
+        "bg_ch4_before",
+        "bg_ch4_progress",
+        "bg_ch4_restored",
+        "bg_ch5_before",
+        "bg_ch5_progress",
+        "bg_ch5_restored",
+        "bg_ch6_before",
+        "bg_ch6_progress",
+        "bg_ch6_restored"
+      ],
+      "ui": [
+        "ui_hud_bar",
+        "ui_card_level",
+        "ui_btn_shuffle",
+        "ui_btn_hint",
+        "ui_btn_continue",
+        "ui_panel_shop",
+        "ui_panel_npc_dialogue",
+        "ui_coin_icon",
+        "ui_star_icon",
+        "ui_lighthouse_progress"
+      ],
+      "vfx": [
+        "vfx_combo_burst",
+        "vfx_match_disappear",
+        "vfx_lighthouse_glow",
+        "vfx_wave_clear",
+        "vfx_chapter_restore",
+        "vfx_combo_multiplier_x2",
+        "vfx_combo_multiplier_x3",
+        "vfx_combo_multiplier_x5"
+      ],
+      "prop": [
+        "prop_notebook",
+        "prop_lighthouse_lamp"
+      ]
+    },
+    "by_state": {
+      "planned": [
+        "tile_tuna",
+        "tile_octopus",
+        "tile_starfish",
+        "tile_hermit_crab",
+        "tile_lanternfish",
+        "tile_pufferfish",
+        "tile_whale",
+        "tile_coral",
+        "tile_conch",
+        "tile_shell",
+        "tile_crab",
+        "tile_turtle",
+        "tile_jellyfish",
+        "tile_flying_fish",
+        "tile_dolphin",
+        "tile_seagull",
+        "tile_coconut_palm",
+        "tile_lighthouse",
+        "tile_fishing_boat",
+        "tile_buoy",
+        "tile_wave_block",
+        "tile_light_chain_block",
+        "tile_pierce_block",
+        "tile_swap_block",
+        "tile_cascade_block",
+        "char_ritsu",
+        "char_hinata",
+        "char_kenzo",
+        "char_umeko",
+        "char_natsuka",
+        "char_fuyuko",
+        "char_gicho",
+        "bg_ch1_before",
+        "bg_ch1_progress",
+        "bg_ch1_restored",
+        "bg_ch2_before",
+        "bg_ch2_progress",
+        "bg_ch2_restored",
+        "bg_ch3_before",
+        "bg_ch3_progress",
+        "bg_ch3_restored",
+        "bg_ch4_before",
+        "bg_ch4_progress",
+        "bg_ch4_restored",
+        "bg_ch5_before",
+        "bg_ch5_progress",
+        "bg_ch5_restored",
+        "bg_ch6_before",
+        "bg_ch6_progress",
+        "bg_ch6_restored",
+        "ui_hud_bar",
+        "ui_card_level",
+        "ui_btn_shuffle",
+        "ui_btn_hint",
+        "ui_btn_continue",
+        "ui_panel_shop",
+        "ui_panel_npc_dialogue",
+        "ui_coin_icon",
+        "ui_star_icon",
+        "ui_lighthouse_progress",
+        "vfx_combo_burst",
+        "vfx_match_disappear",
+        "vfx_lighthouse_glow",
+        "vfx_wave_clear",
+        "vfx_chapter_restore",
+        "vfx_combo_multiplier_x2",
+        "vfx_combo_multiplier_x3",
+        "vfx_combo_multiplier_x5",
+        "prop_notebook",
+        "prop_lighthouse_lamp"
+      ]
+    },
+    "by_consumer": {
+      "art-qa": [
+        "tile_tuna",
+        "tile_octopus",
+        "tile_starfish",
+        "tile_hermit_crab",
+        "tile_lanternfish",
+        "tile_pufferfish",
+        "tile_whale",
+        "tile_coral",
+        "tile_conch",
+        "tile_shell",
+        "tile_crab",
+        "tile_turtle",
+        "tile_jellyfish",
+        "tile_flying_fish",
+        "tile_dolphin",
+        "tile_seagull",
+        "tile_coconut_palm",
+        "tile_lighthouse",
+        "tile_fishing_boat",
+        "tile_buoy",
+        "tile_wave_block",
+        "tile_light_chain_block",
+        "tile_pierce_block",
+        "tile_swap_block",
+        "tile_cascade_block",
+        "char_ritsu",
+        "char_hinata",
+        "char_kenzo",
+        "char_umeko",
+        "char_natsuka",
+        "char_fuyuko",
+        "char_gicho",
+        "bg_ch1_before",
+        "bg_ch1_progress",
+        "bg_ch1_restored",
+        "bg_ch2_before",
+        "bg_ch2_progress",
+        "bg_ch2_restored",
+        "bg_ch3_before",
+        "bg_ch3_progress",
+        "bg_ch3_restored",
+        "bg_ch4_before",
+        "bg_ch4_progress",
+        "bg_ch4_restored",
+        "bg_ch5_before",
+        "bg_ch5_progress",
+        "bg_ch5_restored",
+        "bg_ch6_before",
+        "bg_ch6_progress",
+        "bg_ch6_restored",
+        "ui_hud_bar",
+        "ui_card_level",
+        "ui_btn_shuffle",
+        "ui_btn_hint",
+        "ui_btn_continue",
+        "ui_panel_shop",
+        "ui_panel_npc_dialogue",
+        "ui_coin_icon",
+        "ui_star_icon",
+        "ui_lighthouse_progress",
+        "vfx_combo_burst",
+        "vfx_match_disappear",
+        "vfx_lighthouse_glow",
+        "vfx_wave_clear",
+        "vfx_chapter_restore",
+        "vfx_combo_multiplier_x2",
+        "vfx_combo_multiplier_x3",
+        "vfx_combo_multiplier_x5",
+        "prop_notebook",
+        "prop_lighthouse_lamp"
+      ]
+    }
+  }
+}

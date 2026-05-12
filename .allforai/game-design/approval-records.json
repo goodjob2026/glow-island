@@ -11,10 +11,12 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T19:11:22.948795+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -31,10 +33,12 @@
       "discipline_reviewers": [
         "systems-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T19:11:37.407313+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -53,10 +57,12 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T19:12:01.677849+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -71,10 +77,12 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T19:12:22.322102+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -90,12 +98,12 @@
         "lead-designer",
         "numeric-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "revision-requested",
       "updated_at": "2026-05-13T00:00:00.000Z",
       "approved_by": [],
       "approved_at": null,
       "reviewer_notes": "",
-      "revision_notes": "",
+      "revision_notes": "我想要增加一个系统，像沙漏一样，满了可以领取的，可以得到沙滩币，这样免费玩家也可以得到一些，只要经常打开领取就可以了",
       "unlocks": [
         "retention-hook-design",
         "progression-curve-design"
@@ -109,12 +117,12 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "revision-requested",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
       "approved_by": [],
       "approved_at": null,
       "reviewer_notes": "",
-      "revision_notes": "",
+      "revision_notes": "我很喜欢雪，冬天的温泉能不能给点雪的元素？所以是不是要求给这个岛一个时间，这样可以感受到，日夜，4季变换，让场景更有活力",
       "unlocks": [
         "meta-game-design"
       ],
@@ -127,12 +135,12 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "revision-requested",
       "updated_at": "2026-05-12T18:15:32.570805+00:00",
       "approved_by": [],
       "approved_at": null,
       "reviewer_notes": "",
-      "revision_notes": "",
+      "revision_notes": "不上Game Center / Google Play，自建简单服务端， 不在中国上架的话，Apple ID + Google + 邮箱登录",
       "unlocks": [
         "game-design-finalize"
       ],
@@ -145,10 +153,12 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T19:20:46.668739+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -163,10 +173,12 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T19:21:24.977537+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -181,10 +193,12 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T19:21:41.055626+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -217,10 +231,12 @@
       "discipline_reviewers": [
         "lead-designer"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T19:22:49.545410+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -236,10 +252,12 @@
       "discipline_reviewers": [
         "art-director"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00Z",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T19:23:20.252179+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [
@@ -329,10 +347,12 @@
         "art-director",
         "technical-artist"
       ],
-      "gate_status": "in-review",
+      "gate_status": "approved",
       "updated_at": "2026-05-13T00:00:00.000000+00:00",
-      "approved_by": [],
-      "approved_at": null,
+      "approved_by": [
+        "discipline_owner"
+      ],
+      "approved_at": "2026-05-12T19:23:37.125507+00:00",
       "reviewer_notes": "",
       "revision_notes": "",
       "unlocks": [

@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "frozen_at": "2026-05-13T00:00:00Z",
+  "project": {
+    "genre": "casual-mobile puzzle",
+    "target_platform": "web-mobile (Cocos Creator 3.x)",
+    "dimension": "2d",
+    "style": "hand_drawn",
+    "animation_system": "dragonbones+frame+tween"
+  },
+  "canonical_registry": {
+    "characters": [
+      { "asset_id": "char_ritsu",  "name": "山田律",     "file_prefix": "char_ritsu"  },
+      { "asset_id": "char_hinata", "name": "丸山ひなた", "file_prefix": "char_hinata" },
+      { "asset_id": "char_kenzo",  "name": "磯部健三",   "file_prefix": "char_kenzo"  },
+      { "asset_id": "char_umeko", "name": "桐島梅子",   "file_prefix": "char_umeko"  },
+      { "asset_id": "char_natsuka","name": "海野夏帆",   "file_prefix": "char_natsuka"},
+      { "asset_id": "char_fuyuko", "name": "丸山冬子",   "file_prefix": "char_fuyuko" },
+      { "asset_id": "char_gicho",  "name": "议长·橘猫",  "file_prefix": "char_gicho"  }
+    ],
+    "tiles": [
+      { "asset_id": "tile_tuna",          "name": "金枪鱼",     "file_prefix": "tile_tuna"          },
+      { "asset_id": "tile_octopus",       "name": "章鱼",       "file_prefix": "tile_octopus"       },
+      { "asset_id": "tile_starfish",      "name": "海星",       "file_prefix": "tile_starfish"      },
+      { "asset_id": "tile_hermit_crab",   "name": "寄居蟹",     "file_prefix": "tile_hermit_crab"   },
+      { "asset_id": "tile_lanternfish",   "name": "灯笼鱼",     "file_prefix": "tile_lanternfish"   },
+      { "asset_id": "tile_pufferfish",    "name": "河豚",       "file_prefix": "tile_pufferfish"    },
+      { "asset_id": "tile_whale",         "name": "鲸鱼",       "file_prefix": "tile_whale"         },
+      { "asset_id": "tile_coral",         "name": "珊瑚",       "file_prefix": "tile_coral"         },
+      { "asset_id": "tile_conch",         "name": "海螺",       "file_prefix": "tile_conch"         },
+      { "asset_id": "tile_shell",         "name": "贝壳",       "file_prefix": "tile_shell"         },
+      { "asset_id": "tile_crab",          "name": "螃蟹",       "file_prefix": "tile_crab"          },
+      { "asset_id": "tile_turtle",        "name": "海龟",       "file_prefix": "tile_turtle"        },
+      { "asset_id": "tile_jellyfish",     "name": "水母",       "file_prefix": "tile_jellyfish"     },
+      { "asset_id": "tile_flying_fish",   "name": "飞鱼",       "file_prefix": "tile_flying_fish"   },
+      { "asset_id": "tile_dolphin",       "name": "海豚",       "file_prefix": "tile_dolphin"       },
+      { "asset_id": "tile_seagull",       "name": "海鸥",       "file_prefix": "tile_seagull"       },
+      { "asset_id": "tile_coconut_palm",  "name": "椰子树",     "file_prefix": "tile_coconut_palm"  },
+      { "asset_id": "tile_lighthouse",    "name": "灯塔",       "file_prefix": "tile_lighthouse"    },
+      { "asset_id": "tile_fishing_boat",  "name": "渔船",       "file_prefix": "tile_fishing_boat"  },
+      { "asset_id": "tile_buoy",          "name": "浮标",       "file_prefix": "tile_buoy"          },
+      { "asset_id": "tile_wave_block",    "name": "光波特殊块", "file_prefix": "tile_wave_block"    },
+      { "asset_id": "tile_light_chain_block", "name": "光链特殊块", "file_prefix": "tile_light_chain_block" },
+      { "asset_id": "tile_pierce_block",  "name": "穿透特殊块", "file_prefix": "tile_pierce_block"  },
+      { "asset_id": "tile_swap_block",    "name": "置换特殊块", "file_prefix": "tile_swap_block"    },
+      { "asset_id": "tile_cascade_block", "name": "连锁特殊块", "file_prefix": "tile_cascade_block" }
+    ],
+    "environments": [],
+    "ui": [
+      { "asset_id": "ui_hud_bar",             "name": "HUD底栏",      "file_prefix": "ui_hud_bar"             },
+      { "asset_id": "ui_card_level",          "name": "关卡卡片",     "file_prefix": "ui_card_level"          },
+      { "asset_id": "ui_btn_shuffle",         "name": "重排按钮",     "file_prefix": "ui_btn_shuffle"         },
+      { "asset_id": "ui_btn_hint",            "name": "预判按钮",     "file_prefix": "ui_btn_hint"            },
+      { "asset_id": "ui_btn_continue",        "name": "续关按钮",     "file_prefix": "ui_btn_continue"        },
+      { "asset_id": "ui_panel_shop",          "name": "商店面板",     "file_prefix": "ui_panel_shop"          },
+      { "asset_id": "ui_panel_npc_dialogue",  "name": "NPC对话框",    "file_prefix": "ui_panel_npc_dialogue"  },
+      { "asset_id": "ui_coin_icon",           "name": "沙滩币图标",   "file_prefix": "ui_coin_icon"           },
+      { "asset_id": "ui_star_icon",           "name": "星星图标",     "file_prefix": "ui_star_icon"           },
+      { "asset_id": "ui_lighthouse_progress", "name": "灯塔进度条",   "file_prefix": "ui_lighthouse_progress" }
+    ],
+    "vfx": [
+      { "asset_id": "vfx_combo_burst",          "name": "连击爆炸特效",  "file_prefix": "vfx_combo_burst"          },
+      { "asset_id": "vfx_match_disappear",      "name": "消除特效",      "file_prefix": "vfx_match_disappear"      },
+      { "asset_id": "vfx_lighthouse_glow",      "name": "灯塔光晕特效",  "file_prefix": "vfx_lighthouse_glow"      },
+      { "asset_id": "vfx_wave_clear",           "name": "光波清除特效",  "file_prefix": "vfx_wave_clear"           },
+      { "asset_id": "vfx_chapter_restore",      "name": "章节修复特效",  "file_prefix": "vfx_chapter_restore"      },
+      { "asset_id": "vfx_combo_multiplier_x2",  "name": "连击倍率×2",   "file_prefix": "vfx_combo_multiplier_x2"  },
+      { "asset_id": "vfx_combo_multiplier_x3",  "name": "连击倍率×3",   "file_prefix": "vfx_combo_multiplier_x3"  },
+      { "asset_id": "vfx_combo_multiplier_x5",  "name": "连击倍率×5",   "file_prefix": "vfx_combo_multiplier_x5"  }
+    ],
+    "other": [
+      { "asset_id": "bg_ch1_before",     "name": "第一章·海边码头（修复前）", "file_prefix": "bg_ch1_before"     },
+      { "asset_id": "bg_ch1_progress",   "name": "第一章·海边码头（修复中）", "file_prefix": "bg_ch1_progress"   },
+      { "asset_id": "bg_ch1_restored",   "name": "第一章·海边码头（修复后）", "file_prefix": "bg_ch1_restored"   },
+      { "asset_id": "bg_ch2_before",     "name": "第二章·中央小镇（修复前）", "file_prefix": "bg_ch2_before"     },
+      { "asset_id": "bg_ch2_progress",   "name": "第二章·中央小镇（修复中）", "file_prefix": "bg_ch2_progress"   },
+      { "asset_id": "bg_ch2_restored",   "name": "第二章·中央小镇（修复后）", "file_prefix": "bg_ch2_restored"   },
+      { "asset_id": "bg_ch3_before",     "name": "第三章·花田山坡（修复前）", "file_prefix": "bg_ch3_before"     },
+      { "asset_id": "bg_ch3_progress",   "name": "第三章·花田山坡（修复中）", "file_prefix": "bg_ch3_progress"   },
+      { "asset_id": "bg_ch3_restored",   "name": "第三章·花田山坡（修复后）", "file_prefix": "bg_ch3_restored"   },
+      { "asset_id": "bg_ch4_before",     "name": "第四章·森林露营地（修复前）","file_prefix": "bg_ch4_before"    },
+      { "asset_id": "bg_ch4_progress",   "name": "第四章·森林露营地（修复中）","file_prefix": "bg_ch4_progress"  },
+      { "asset_id": "bg_ch4_restored",   "name": "第四章·森林露营地（修复后）","file_prefix": "bg_ch4_restored"  },
+      { "asset_id": "bg_ch5_before",     "name": "第五章·温泉山谷（修复前）", "file_prefix": "bg_ch5_before"     },
+      { "asset_id": "bg_ch5_progress",   "name": "第五章·温泉山谷（修复中）", "file_prefix": "bg_ch5_progress"   },
+      { "asset_id": "bg_ch5_restored",   "name": "第五章·温泉山谷（修复后）", "file_prefix": "bg_ch5_restored"   },
+      { "asset_id": "bg_ch6_before",     "name": "第六章·夜晚灯塔（修复前）", "file_prefix": "bg_ch6_before"     },
+      { "asset_id": "bg_ch6_progress",   "name": "第六章·夜晚灯塔（修复中）", "file_prefix": "bg_ch6_progress"   },
+      { "asset_id": "bg_ch6_restored",   "name": "第六章·夜晚灯塔（修复后）", "file_prefix": "bg_ch6_restored"   },
+      { "asset_id": "prop_notebook",       "name": "ひなた手账",  "file_prefix": "prop_notebook"       },
+      { "asset_id": "prop_lighthouse_lamp","name": "灯塔灯",     "file_prefix": "prop_lighthouse_lamp" }
+    ]
+  },
+  "active_art_nodes": [
+    "tile-art-gen",
+    "character-art-gen",
+    "environment-art-gen",
+    "ui-art-gen",
+    "vfx-art-gen"
+  ],
+  "human_gates_approved": [
+    "worldbuilding",
+    "core-loop-design",
+    "character-arc-design",
+    "ftue-design",
+    "level-design",
+    "puzzle-design",
+    "progression-curve-design",
+    "art-direction",
+    "art-spec-design",
+    "vfx-art-gen"
+  ],
+  "_notes": {
+    "gate_check": "All art-pipeline prerequisite nodes (worldbuilding → core-loop-design → art-direction → art-concept → art-spec-design) are approved. Non-art nodes (monetization-design, retention-hook-design, meta-game-design, audio-design) have pending/revision-requested status but do not block concept-freeze per workflow hard_blocked_by definition.",
+    "file_prefix_policy": "Asset IDs in this project already embed type prefixes (tile_*, char_*, ui_*, vfx_*, bg_*, prop_*). Canonical file_prefix values preserve the inventory-assigned prefixes to maintain consistency with the existing asset-registry.json built by art-spec-design. No renaming applied.",
+    "background_grouping": "Background and prop assets have type 'background' and 'prop' respectively (not in concept-contract's explicit type list), so grouped under 'other' with their inventory file_prefix values preserved.",
+    "total_assets": 70
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "state": "validated",
+  "strategy_groups": [
+    {
+      "asset_group": "tiles_base",
+      "asset_kind": "tile",
+      "asset_ids": [
+        "tile_tuna","tile_octopus","tile_starfish","tile_hermit_crab","tile_lanternfish",
+        "tile_pufferfish","tile_whale","tile_coral","tile_conch","tile_shell","tile_crab",
+        "tile_turtle","tile_jellyfish","tile_flying_fish","tile_dolphin","tile_seagull",
+        "tile_coconut_palm","tile_lighthouse","tile_fishing_boat","tile_buoy"
+      ],
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "selection_reason": "20 unique marine/island tile designs with 6 chapter color variants each. Hand-drawn watercolor style (128×128px, 8px bleed, 24px corner radius, paper texture overlay 6%) is too style-specific for any existing asset pack. Google Imagen 4 (primary) + OpenRouter GPT-Image (fallback) available via MCP.",
+      "license_requirements": "project_owned",
+      "quality_requirements": "128×128px PNG; 8px transparent bleed; 24px corner radius; chapter palette compliance; saturation 20-88% per stage; grayscale-distinguishable",
+      "adaptation_requirements": "Apply chapter palette crossfade per variant (ch1-ch6); pack per-chapter into tiles_ch{N}_atlas",
+      "downstream_skill_refs": ["tile-art-gen", "atlas-packaging", "art-qa"],
+      "handoff_requirements": "PNG per chapter variant; chapter atlas JSON (tiles_ch1_atlas through tiles_ch6_atlas)",
+      "state": "validated"
+    },
+    {
+      "asset_group": "tiles_special",
+      "asset_kind": "tile",
+      "asset_ids": [
+        "tile_wave_block","tile_light_chain_block","tile_pierce_block",
+        "tile_swap_block","tile_cascade_block"
+      ],
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "selection_reason": "5 custom tactical special-block types with unique color identity (#7ECDE8, #F0C4C4, #F5A840, #F5C842, #4A7D55) and 12-frame animation strips. Game-mechanic-specific designs (light_wave = silver-blue tuna ripple, light_chain = rainbow fish, pierce = pufferfish burst, swap = firefly lantern, cascade = moss vine) cannot be sourced from generic packs.",
+      "license_requirements": "project_owned",
+      "quality_requirements": "12-frame animation strip at 30fps; 128×128px per frame; special block atlas separate from chapter atlases",
+      "adaptation_requirements": "Generate full 12-frame strip per block type; slice into atlas frames; pack into special_blocks_atlas",
+      "downstream_skill_refs": ["tile-art-gen", "atlas-packaging", "art-qa"],
+      "handoff_requirements": "PNG frame strips + special_blocks_atlas JSON",
+      "state": "validated"
+    },
+    {
+      "asset_group": "characters",
+      "asset_kind": "character",
+      "asset_ids": [
+        "char_ritsu","char_hinata","char_kenzo","char_umeko",
+        "char_natsuka","char_fuyuko","char_gicho"
+      ],
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "selection_reason": "7 custom project-specific characters with unique designs, chibi 1:1.5 head-body ratio, watercolor style, distinct signature colors, and DragonBones skeletal animation rig requirements. Style specificity precludes any existing character pack. LLM generates layered base art; manual DragonBones rigging completes skeletal animation.",
+      "license_requirements": "project_owned",
+      "quality_requirements": "256×512px base canvas (char_gicho 192×192px); DragonBones-compatible layer decomposition; unique single-color silhouette readable at any resolution; watercolor hand-drawn style",
+      "adaptation_requirements": "Decompose generated image into DragonBones bone layers (head, torso, arms, legs, accessories); rig in DragonBones Pro; export idle/happy/surprised/sad/wave animations",
+      "downstream_skill_refs": ["character-art-gen", "art-qa"],
+      "handoff_requirements": "PNG layer sheets per character + DragonBones .dbproj file + animation export JSON",
+      "state": "validated"
+    },
+    {
+      "asset_group": "backgrounds",
+      "asset_kind": "background",
+      "asset_ids": [
+        "bg_ch1_before","bg_ch1_progress","bg_ch1_restored",
+        "bg_ch2_before","bg_ch2_progress","bg_ch2_restored",
+        "bg_ch3_before","bg_ch3_progress","bg_ch3_restored",
+        "bg_ch4_before","bg_ch4_progress","bg_ch4_restored",
+        "bg_ch5_before","bg_ch5_progress","bg_ch5_restored",
+        "bg_ch6_before","bg_ch6_progress","bg_ch6_restored"
+      ],
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "selection_reason": "18 project-specific backgrounds (6 chapters × 3 restoration states: before/in_progress/restored). Exact chapter palette progressions and saturation restoration storytelling unique to Glow Island. 1920×1080px JPG format for web-canvas-2d platform.",
+      "license_requirements": "project_owned",
+      "quality_requirements": "1920×1080px JPG; chapter-palette compliant; saturation stage compliance (s0-s4); 3-state progressive restoration visual",
+      "adaptation_requirements": "Generate 'before' state first; derive 'in_progress' and 'restored' by saturation increase; apply chapter primary_hue",
+      "downstream_skill_refs": ["environment-art-gen", "art-qa"],
+      "handoff_requirements": "JPG per state per chapter (18 files total)",
+      "state": "validated"
+    },
+    {
+      "asset_group": "ui_elements",
+      "asset_kind": "ui",
+      "asset_ids": [
+        "ui_hud_bar","ui_card_level","ui_btn_shuffle","ui_btn_hint","ui_btn_continue",
+        "ui_panel_shop","ui_panel_npc_dialogue","ui_coin_icon","ui_star_icon",
+        "ui_lighthouse_progress"
+      ],
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "selection_reason": "Project-specific UI with wood-sign aesthetic (flat+soft-shadow, #E8D8B4 wood, #8B6030 border, pill-shape buttons 24px corners). Island palette and healing philosophy cannot be matched by generic mobile UI packs.",
+      "license_requirements": "project_owned",
+      "quality_requirements": "PNG; wood-sign UI style; island palette (#F7EDD8, #E8866A, #F5C842); button 3-state variants; atlas-packable for ui_elements_atlas",
+      "adaptation_requirements": "Generate base state; derive pressed (darken 15%) and disabled (desaturate 50%) states for buttons; pack all into ui_elements_atlas",
+      "downstream_skill_refs": ["ui-art-gen", "atlas-packaging", "art-qa"],
+      "handoff_requirements": "PNG sprites per state + ui_elements_atlas JSON",
+      "state": "validated"
+    },
+    {
+      "asset_group": "vfx",
+      "asset_kind": "vfx",
+      "asset_ids": [
+        "vfx_combo_burst","vfx_match_disappear","vfx_lighthouse_glow",
+        "vfx_wave_clear","vfx_chapter_restore","vfx_combo_multiplier_x2",
+        "vfx_combo_multiplier_x3","vfx_combo_multiplier_x5"
+      ],
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "selection_reason": "Project-specific VFX tied to mechanics (combo burst, match disappear, chapter restore). Must match healing aesthetic (no excessive particle debris, warm palette #F5C842, prohibited: neon/harsh tones). Generic VFX packs are typically too intense for healing aesthetic.",
+      "license_requirements": "project_owned",
+      "quality_requirements": "PNG frame strips; vfx_atlas max 1024px; warm palette compliance; healing aesthetic (4-6 particles per tile, not excessive)",
+      "adaptation_requirements": "Generate frame sheets; slice to individual frames; pack into vfx_atlas",
+      "downstream_skill_refs": ["vfx-art-gen", "atlas-packaging", "art-qa"],
+      "handoff_requirements": "PNG frame sheets + vfx_atlas JSON",
+      "state": "validated"
+    },
+    {
+      "asset_group": "props",
+      "asset_kind": "prop",
+      "asset_ids": ["prop_notebook","prop_lighthouse_lamp"],
+      "source_strategy": "llm_image_generation",
+      "fallback_strategy": "adapt_existing_asset",
+      "selection_reason": "Narrative props deeply tied to character identity (ひなた's notebook with custom symbol system, lighthouse lamp as story climax object). Style-specific and story-critical; cannot be sourced generically.",
+      "license_requirements": "project_owned",
+      "quality_requirements": "PNG; style-consistent with character and environment art; prop_lighthouse_lamp requires 8-frame animation strip",
+      "adaptation_requirements": "For prop_lighthouse_lamp: generate frame strip and slice for atlas. For prop_notebook: generate open/closed variants",
+      "downstream_skill_refs": ["environment-art-gen", "art-qa"],
+      "handoff_requirements": "PNG variants; prop_lighthouse_lamp frame strip + atlas reference",
+      "state": "validated"
+    }
+  ],
+  "global_strategy_summary": {
+    "dominant_strategy": "llm_image_generation",
+    "primary_tool": "google_imagen_4 (via MCP ai-gateway)",
+    "fallback_tool": "openrouter_gpt_image (via MCP ai-gateway)",
+    "no_assets_using": ["existing_asset_pack", "existing_3d_source_asset", "user_provided_asset", "placeholder_only"],
+    "rationale": "All 70 assets are project-specific with high style specificity (hand-drawn watercolor, healing aesthetic, custom character designs, specific palettes and measurements). No suitable licensed source packs exist that match the required style. LLM image generation with project-specific prompts is the correct strategy for all asset groups.",
+    "license_policy": "All assets project_owned — no third-party license review required",
+    "total_assets": 70,
+    "total_groups": 7
+  }
+}

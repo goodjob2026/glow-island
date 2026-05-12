@@ -1,0 +1,324 @@
+{
+  "schema_version": "2.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "language_policy": "HTML输出语言: zh-CN（导航/标题/标签/说明文字）; 游戏内专有名词保留日文; JSON字段名保持英文snake_case",
+  "art_overview": {
+    "dimension": "2d",
+    "style_keywords": [
+      "animal-crossing",
+      "japanese-healing-island",
+      "hand-drawn-watercolor",
+      "soft-rounded-organic",
+      "warm-pastel-palette",
+      "chibi-anime-proportions",
+      "flat-plus-soft-shadow",
+      "nature-element-tiles",
+      "restoration-color-progression"
+    ],
+    "color_palette": {
+      "primary": "#E8866A (Coral Warm — 主按钮/强调色)",
+      "secondary": "#F7EDD8 (Island Sand — UI底板/对话框背景)",
+      "accent": "#F5C842 (Golden Hour — 灯塔高光/连击反馈/发光特效)",
+      "night_mode": "#1E2E50 (Night Indigo — 第6章夜空底色/月光蓝调)"
+    },
+    "animation_system": "dragonbones+spine-frame+tween"
+  },
+  "visual_style": {
+    "genre_reference": "Animal Crossing: New Horizons（どうぶつの森 あつまれ）× 日式离岛美学 (Wytchwood水彩质感, A Short Hike户外构图)",
+    "tone": "圆润手绘、柔暖治愈；随岛屿修复进度从褪色枯岛逐步点亮的日式离岛世界；「温暖从不宣告，只是发生」",
+    "healing_philosophy": "輝島不是一个让人变好的地方，它只是一个不催你的地方。视觉语言服务于这个理念：颜色不宣告，慢慢亮起；NPC不欢迎，只是做自己的事。",
+    "prohibited_styles": [
+      "像素艺术风格 (pixel art)",
+      "写实3D拟物化 (hyper-realistic 3D)",
+      "霓虹/赛博配色 (#00FFFF类)",
+      "金属铬钢高光渐变",
+      "纯黑色 (#000000) — 替换为深棕 #3A2810 或深蓝 #1E2E50",
+      "锐利直角几何UI",
+      "Material Icon 风格锐利矢量图标",
+      "过度粒子特效 (屏幕碎片满天飞)",
+      "强对比警示色调 (竞技感/紧迫感视觉)",
+      "侵入式弹窗视觉 (购买提示强闪烁)"
+    ],
+    "silhouette_language": "大圆角 (≥16px)，有机自然轮廓；每个NPC单色剪影在任意分辨率下可识别；图块主题插图在32×32px下轮廓仍清晰；轮廓线为主色加深32%，禁止纯黑"
+  },
+  "color_system": {
+    "global_palette": {
+      "island_sand": "#F7EDD8",
+      "coral_warm": "#E8866A",
+      "coral_soft": "#F2A98A",
+      "ocean_teal": "#5BBFB5",
+      "bamboo_green": "#7DBE77",
+      "sakura_pink": "#F0C4C4",
+      "driftwood": "#C4955A",
+      "warm_dune": "#E2C48A",
+      "golden_hour": "#F5C842",
+      "dusk_orange": "#EE8C55",
+      "night_indigo": "#1E2E50",
+      "moonlight": "#F5F0E8",
+      "forest_moss": "#4A7D55",
+      "torii_red": "#C8402A",
+      "stone_blue": "#8EA0AA",
+      "lavender_soft": "#D4A8C8"
+    },
+    "chapter_palette_progression": [
+      {
+        "chapter": 1,
+        "chapter_name": "到来",
+        "arc_keyword": "逃离·着陆",
+        "scene": "海边码头（海边の波止場）",
+        "npc": "磯部健三（Isobe Kenzo）",
+        "emotion": "陌生感 · 第一次真正呼吸",
+        "primary_hue": "#5BBFB5",
+        "secondary_hue": "#F7EDD8",
+        "accent_hue": "#EE8C55",
+        "brightness_level": "dim",
+        "saturation_restored": "s0→s1",
+        "saturation_range": "8-15% → 28-38%",
+        "board_bg_gradient": "#A8DDD8 → #C8EEE8"
+      },
+      {
+        "chapter": 2,
+        "chapter_name": "扎根",
+        "arc_keyword": "温暖·归属萌芽",
+        "scene": "中央小镇（中央の町）",
+        "npc": "桐島梅子（Kirishima Umeko）",
+        "emotion": "归属感初现 · 某件一直搁着的事突然不需要搁了",
+        "primary_hue": "#7DBE77",
+        "secondary_hue": "#C4955A",
+        "accent_hue": "#F5C842",
+        "brightness_level": "warm",
+        "saturation_restored": "s1→s2",
+        "saturation_range": "28-38% → 48-58%",
+        "board_bg_gradient": "#C8E8C0 → #E0F0D8"
+      },
+      {
+        "chapter": 3,
+        "chapter_name": "感受",
+        "arc_keyword": "情绪解冻·第一次被看见",
+        "scene": "花田山坡（花畑の丘）",
+        "npc": "海野夏帆（Umino Naho）",
+        "emotion": "情绪松动 · 五年来第一次闻到有气味的下午",
+        "primary_hue": "#F0C4C4",
+        "secondary_hue": "#7DBE77",
+        "accent_hue": "#FFFFFF",
+        "brightness_level": "warm",
+        "saturation_restored": "s2→s3",
+        "saturation_range": "48-58% → 62-72%",
+        "board_bg_gradient": "#F8E8E8 → #FFF5F5"
+      },
+      {
+        "chapter": 4,
+        "chapter_name": "栖息",
+        "arc_keyword": "安静·独处·第一次不需要做任何事",
+        "scene": "森林露营地（森のキャンプ地）",
+        "npc": null,
+        "npc_note": "独处章节，无主NPC；ひなた符号木板痕迹在场；议长（橘猫）营地旁出现",
+        "emotion": "安静 · 独处 · 第一次不赶时间",
+        "primary_hue": "#4A7D55",
+        "secondary_hue": "#C4955A",
+        "accent_hue": "#F5C842",
+        "brightness_level": "dim",
+        "saturation_restored": "s2→s3",
+        "saturation_range": "48-58% → 62-72%",
+        "board_bg_gradient": "#3D5040 → #5A7058"
+      },
+      {
+        "chapter": 5,
+        "chapter_name": "接受",
+        "arc_keyword": "放下·和解·第一次被「还行」说得心里暖",
+        "scene": "温泉山谷（温泉の谷）",
+        "npc": "丸山ひなた（Maruyama Hinata）",
+        "npc_note": "核心章节，恋爱线最深；「还行」两字的重量",
+        "emotion": "放松 · 和解 · 第一次钓到鱼",
+        "primary_hue": "#C4955A",
+        "secondary_hue": "#D4A8C8",
+        "accent_hue": "#F5C842",
+        "brightness_level": "warm",
+        "saturation_restored": "s3→s4",
+        "saturation_range": "62-72% → 75-88%",
+        "board_bg_gradient": "#F0D8B0 → #E8C890"
+      },
+      {
+        "chapter": 6,
+        "chapter_name": "点亮",
+        "arc_keyword": "孤独中的温暖·觉醒",
+        "scene": "夜晚灯塔（夜の灯台）",
+        "npc": "丸山冬子（Maruyama Fuyuko）",
+        "emotion": "孤独中的温暖 · 一切安静下来之后，光出现了",
+        "primary_hue": "#1E2E50",
+        "secondary_hue": "#8EA0AA",
+        "accent_hue": "#F5C842",
+        "brightness_level": "dim",
+        "saturation_restored": "s4 full",
+        "saturation_range": "75-88%，灯塔光柱扫过时瞬间提升至100%再恢复",
+        "board_bg_gradient": "#0E1830 → #1E2E50"
+      }
+    ],
+    "saturation_restoration_stages": {
+      "s0_before_repair": "HSL饱和度8-15% 亮度42-48% — 褪色枯岛，铅笔草稿感",
+      "s1": "饱和度28-38% — 轮廓找回，淡彩涂色",
+      "s2": "饱和度48-58% — 生活气息，色彩入稿",
+      "s3": "饱和度62-72% — 角色回归，满生命力",
+      "s4_full": "饱和度75-88% — 完整水彩，光效全开"
+    },
+    "ui_palette": {
+      "background_sand": "#F7EDD8",
+      "dialog_wood": "#E8D8B4",
+      "border_brown": "#8B6030",
+      "border_highlight": "#F7EDD8",
+      "text_dark": "#3A2810",
+      "text_muted": "#7A6040",
+      "button_primary_top": "#F0997A",
+      "button_primary_bottom": "#E8866A",
+      "button_primary_border": "#B85A40",
+      "button_secondary_bg": "#E8D8B4",
+      "button_secondary_text": "#5A3820",
+      "button_secondary_border": "#B89060",
+      "moonlight_white": "#F5F0E8",
+      "step_counter_bg": "#C85A40",
+      "step_counter_danger": "#C82020",
+      "progress_fill": "#7DBE77",
+      "progress_bg": "#8B6030",
+      "combo_bubble_bg": "#C85A40",
+      "combo_text": "#F5C842",
+      "currency_sand_coin": "#F5C842",
+      "currency_note": "单货币设计——仅沙滩币（IAP购买），无硬货币UI。唯一付费点为步数续关。"
+    },
+    "special_block_colors": {
+      "wave_tile": "#7ECDE8 (银蓝 — 闪光金枪鱼，全行/列横扫电光，浅蓝非强白)",
+      "chain_tile": "七彩渐变 (彩虹鱼/热带鱼，色彩条纹缓慢流动；多段连锁绿色光链轨迹 #4A7D55)",
+      "pierce_tile": "#F5A840 (橙黄 — 河豚，膨胀爆开气泡粒子，非火焰保持治愈感)",
+      "swap_tile": "#F5C842 (金色 — 萤火虫提灯，呼吸脉冲金色光芒，金粒子沿路径飞行)",
+      "cascade_tile": "#4A7D55 (苔藓深绿 — 藤蔓/苔藓扩散障碍，Ch6解锁，消除时叶片碎粒子散出)"
+    }
+  },
+  "typography": {
+    "font_primary_zh": "思源圆体（Source Han Rounded CN）",
+    "font_fallback_en": "SF Pro Rounded / Nunito",
+    "font_hierarchy": {
+      "heading": "思源圆体 Bold · 22px · #3A2810 — 关卡名、章节标题",
+      "body": "思源圆体 Regular · 15px · #3A2810 · 行高1.65 — NPC对话、说明文字",
+      "ui_button": "思源圆体 Semi-Bold · 16px · #F5F0E8 — 主按钮文字",
+      "ui_label": "思源圆体 Light · 12px · #7A6040 — 标签、辅助信息",
+      "combo_number": "思源圆体 Bold · 32-48px · #F5C842 — 随连击层级增大",
+      "hud_counter": "思源圆体 Semi-Bold · 20px · 月光白 — 步数/分数"
+    },
+    "font_style_note": "圆润无衬线；禁止尖角衬线体；连击数字随combo层级从32px增至48px；低步数时步数计数器颜色变化（#C85A40→#C82020），无闪烁"
+  },
+  "character_design_principles": {
+    "protagonist": {
+      "name_jp": "山田律",
+      "name_romaji": "Yamada Ritsu",
+      "note": "主角非'Saki'——山田律是29岁东京上班族，Q版偏写实过渡比例（头身比1:1.5），区别于AC圆头动物村民",
+      "proportion": "头身比1:1.5；头部接近正圆形占全身高38%；眼睛水滴形，瞳仁65%（略带内敛疲惫感，与NPC开朗眼神有区分）；身体圆筒形无腰线；四肢短圆",
+      "signature_item": "略皱的日记笔记本（灰绿色封面）",
+      "expression_range": "默认（嘴角平直放松）/ 开心（眼角上弯嘴微开略带意外感）/ 思考（单眼眯起嘴角歪斜食指点嘴角）"
+    },
+    "npc_signature_colors": {
+      "磯部健三_Isobe_Kenzo": {
+        "chapter": 1,
+        "scene": "海边码头",
+        "color": "#4A6D9A",
+        "description": "靛蓝布衣（做旧感）+ 宽沿破损草帽 + 鱼竿，皮肤深褐#9A6840，无腮红，多数时候背对码头看海"
+      },
+      "桐島梅子_Kirishima_Umeko": {
+        "chapter": 2,
+        "scene": "中央小镇",
+        "color": "#7DBE77",
+        "description": "草绿围裙 + #F0C4C4浅粉底碎花裙，皮肤浅#F5D4B0，明显圆形深粉腮红，手常有陶土痕迹"
+      },
+      "海野夏帆_Umino_Naho": {
+        "chapter": 3,
+        "scene": "花田山坡",
+        "color": "#3D6645",
+        "description": "深绿探险上衣 + 米色宽松长裤，渔夫帽帽沿低压遮眼（说话弯路的视觉隐喻），皮肤中#E8B882"
+      },
+      "丸山ひなた_Maruyama_Hinata": {
+        "chapter": 5,
+        "scene": "温泉山谷（核心章节）",
+        "color": "#F0C4C4",
+        "description": "浅樱粉圆领短袖 + 浅米白裙 + 珊瑚色帽带草帽，随身手账（深蓝布面边角起毛），皮肤浅#F5D4B0，淡圆粉腮红；指尖有极淡蓝灰墨水粒子（亲密感演出时刻，透明度20%）"
+      },
+      "丸山冬子_Maruyama_Fuyuko": {
+        "chapter": 6,
+        "scene": "夜晚灯塔",
+        "color": "#2A4060",
+        "description": "藏青外罩衫 + 浅灰内搭 + 棕色布腰带#C4955A，微弯腰等待姿态，皮肤中#E8B882，点灯时刻背对观看者（背影剪影即情感高峰）"
+      },
+      "議長_Gichou_橘猫": {
+        "chapter": "贯穿全章",
+        "scene": "全岛",
+        "color": "#E8A050",
+        "description": "橘猫体型圆润，额头白色宽纹，腹部白，尾尖白，眼睛琥珀黄#D4900A；坐定时近乎正圆；离开时永远向左走；每晚陪冬子在灯台旁"
+      }
+    }
+  },
+  "animation_direction": {
+    "system": "dragonbones + spine-frame + tween (Web Canvas 2D / Cocos Creator)",
+    "core_principles": "弹性(spring) / 呼吸感(breathing) / 慢起快落(ease-out) / 轻微过冲(slight-overshoot)",
+    "character_idle": "上身/头部轻微上下浮动 振幅2-3px 周期2.5-3s ease-in-out；眨眼每4-6s一次0.15s；随机偶发动作每8-12s：左右摇头±5°/手臂摆动±8°/短暂抬头",
+    "combo_vfx": "连击气泡 spring曲线 stiffness=280 damping=22；从触发图块上方12px出现向上浮动24px；scale 0→1.2→1.0带轻微过冲；悬停1.2s后向上淡出0.4s；combo不遮挡棋盘路径",
+    "tile_disappear": "帧1-3: scale 1.0→1.14(32ms)；帧4-7: scale→0 旋转±12°(随机)；同时散出4-6个主题微型粒子(贝壳块→小贝壳/花朵块→小花瓣) 总时长0.3s",
+    "tile_highlight": "进入 scale 1.0→1.06 0.2s ease-out + 内发光；保持中极慢脉动 ±0.02scale 周期1.5s；退出 scale 1.06→1.0 0.15s ease-in",
+    "special_block_idle": {
+      "swap_glow_lantern": "内光芒 scale 0.85→1.15→0.85 周期2.0s 颜色#F5C842→#FFE580",
+      "chain_rainbow_fish": "色彩条纹沿鱼身向尾方向缓慢流动 20px/s 不停歇",
+      "pierce_pufferfish": "轻微膨胀收缩 scale 0.95→1.05 周期2.8s 带轻微不规则性",
+      "wave_tuna": "身体轻微左右摆动 ±3° 周期1.8s"
+    },
+    "ui_transitions": "弹窗出现: 背景遮罩0→0.5(0.3s ease-out) + 弹窗scale 0.7→1.05→1.0(0.4s spring)；弹窗关闭: scale 1.0→0.85透明度1→0(0.25s ease-in)；章节过渡: 白色圆形从中央扩散AC经典手法(0.5s cover+0.5s reveal)；修复完成: crossfade 0.8s + 白色光波从中心扩散0.6s；s4满修复额外金色粒子雨2.5s",
+    "dragonbones_targets": [
+      "山田律 — 全身骨骼动画 idle/talk/react/篝火夜仰星",
+      "磯部健三 — 骨骼含标志性背对码头系绳背影、记录册翻写",
+      "桐島梅子 — 骨骼含蹲地圆形轮廓变形、揉陶土手部细节",
+      "海野夏帆 — 骨骼含蹲下观察植物、递花束动作",
+      "丸山冬子 — 骨骼含灯塔点亮背影剪影、不敲门放食物",
+      "丸山ひなた — 骨骼含手账翻写、钓鱼台旁侧脸「还行」",
+      "議長（橘猫）— 骨骼含坐定/向左离去/抬头看灯塔光"
+    ],
+    "spine_frame_targets": [
+      "图块消除特效 — 12帧@30fps scale+旋转+粒子散射",
+      "特殊块激活 — 河豚膨胀爆开气泡散出",
+      "特殊块激活 — 金枪鱼残影横扫全行/列",
+      "特殊块激活 — 彩虹鱼鳞粒子扩散",
+      "特殊块激活 — 萤火虫提灯金色光粒子沿路径飞行",
+      "修复完成光波扩散",
+      "章节过渡白圆扩散"
+    ],
+    "tween_targets": [
+      "UI弹窗出现/关闭 (scale+opacity spring tween)",
+      "图块高亮进入/退出 (scale 1.0→1.06)",
+      "图块高亮保持脉动 (scale ±0.02 周期1.5s)",
+      "连击气泡入场/淡出 (位移+opacity)",
+      "步数计数器颜色变化 (coral→red 低步数警示，无闪烁)",
+      "沙滩币图标光泽脉动",
+      "场景背景饱和度修复过渡 (crossfade 0.8s)",
+      "HUD元素淡入淡出"
+    ]
+  },
+  "ui_style": {
+    "paradigm": "扁平化+软阴影 (Flat + Soft Shadow)；木牌系UI (Wood Sign UI) — 材质参考AC木质告示牌/竹简/晒干贝壳/天然石板；卡片式布局",
+    "shadow_style": "图块底部阴影 0 4px 0 rgba(0,0,0,0.10) 烘焙进图层；所有UI阴影透明度≤15%；禁止强投影/金属光泽；仅软阴影营造层次感",
+    "layout_pattern": "卡片式UI；对话框圆角20px木纹底#E8D8B4+4px深棕边框#8B6030；按钮药丸形圆角24px；图标按钮56×56px圆形；HUD叶形/扇贝形容器；进度条竹节分段样式；HUD总宽度≤棋盘宽度20%",
+    "contrast_policy": "避免强对比警示感保持治愈调性；饱和度目标55-75%；相邻章节图块色相差≥30°；同章节内图块明度差≥20%；任意两种图块灰度模式下仍可区分；禁止纯灰色图块(最低饱和度≥20%)"
+  },
+  "technical_constraints": {
+    "platform": "web-canvas-2d",
+    "engine": "cocos-creator-3.x",
+    "resolution_design": "2x",
+    "resolution_fallback": "1x",
+    "tile_canvas_size_2x": "128×128px (实际绘制区112×112px，四周各留8px透明出血)",
+    "tile_corner_radius_2x": "24px 圆角矩形",
+    "tile_outline": "2px 主色加深32% (非纯黑)",
+    "paper_texture_overlay": "6%不透明度轻纸纹底，全部图块统一，模拟手绘纸感",
+    "atlas_policy": "按章节分图集(sprite atlas per chapter)；特殊块单独图集；UI元素独立图集；2x资产设计运行时降级1x；图块消除帧动画使用Spine序列帧12帧@30fps",
+    "vfx_layer_order": "背景层 < 棋盘图块层 < VFX消除层 < HUD层 (VFX不遮挡棋盘连接路径)"
+  },
+  "narrative_visual_rules": {
+    "stone_inscription_consistency": "三块风化石刻（Ch1码头/Ch3山坡/Ch5灯台基石）字体和风化程度完全一致：手刻刀痕风格，深灰#6A6A6A刻槽，石板底色与所在章节环境色协调。单独看各自无奇，合起来才浮现指向律的可能，但游戏永不确认。",
+    "lighthouse_as_anchor": "每个章节的瞭望点都能看见灯塔，灯塔灯室随章节进度亮度微微提升，灯亮之前始终以灭灯状态出现在背景中",
+    "saturation_storytelling": "视觉上的苏醒先于对话——颜色本身在说故事，不需要文字宣告治愈",
+    "action_over_dialogue": "健三递茶/梅子把碗放在最显眼处/冬子不敲门放食物——这些场景的视觉演出靠动作叙事，而非文字"
+  }
+}

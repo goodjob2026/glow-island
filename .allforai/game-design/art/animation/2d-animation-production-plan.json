@@ -1,0 +1,208 @@
+{
+  "schema_version": "1.0",
+  "project": "glow-island",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "animation_system": "dragonbones+frame+tween",
+  "engine": "cocos-creator",
+  "platform": "web-canvas-2d",
+
+  "asset_roles": [
+    {
+      "role": "characters",
+      "includes": [
+        "山田律 (protagonist)",
+        "丸山ひなた (romantic_interest)",
+        "磯部健三 (npc ch1)",
+        "桐島梅子 (npc ch2)",
+        "海野夏帆 (npc ch3)",
+        "丸山冬子 (npc ch6)",
+        "议长·橘猫 (npc all chapters)"
+      ],
+      "animation_method": "skeletal_animation",
+      "tool": "dragonbones-pro",
+      "fps": 30,
+      "animation_sets": ["idle", "happy", "surprised", "sad", "wave"],
+      "idle_spec": {
+        "type": "upper_body_head_float",
+        "amplitude_px": 3,
+        "period_seconds": 2.0,
+        "easing": "ease-in-out",
+        "blink_interval_s": 5,
+        "blink_duration_s": 0.15,
+        "random_action_interval_s": [8, 12]
+      },
+      "canvas_size_px": { "width": 256, "height": 512 },
+      "rationale": "Skeletal animation provides expressive idle breath and dialogue gestures at low memory cost compared to full frame-by-frame sprite sheets. DragonBones supports all required emotional reaction states.",
+      "export_format": "dragonbones_json + png_texture_atlas"
+    },
+    {
+      "role": "tile_icons",
+      "includes": [
+        "20 base tile pattern icons (fish, shells, flowers, island-themed illustrations)"
+      ],
+      "animation_method": "static",
+      "supplementary_animation": "vfx_only",
+      "tile_size_px": 128,
+      "tile_size_2x": 256,
+      "pose": "single_static_illustration",
+      "vfx_on_match": {
+        "method": "vfx_only",
+        "frames": 3,
+        "scale_sequence": "1.0→1.14→0",
+        "rotation_range_degrees": 12,
+        "particle_count": [4, 6],
+        "duration_seconds": 0.25
+      },
+      "rationale": "Tile icons need only one static pose; match/disappear effects are handled entirely by VFX overlay and tween, keeping the tile atlas lightweight. No per-tile animation frames needed.",
+      "export_format": "png"
+    },
+    {
+      "role": "special_blocks",
+      "includes": [
+        "wave (光波 — 涟漪光环, #7ECDE8)",
+        "light_chain (光链 — 金色连环, #F0C4C4)",
+        "pierce (穿透 — 蓝白光箭, #F5A840)",
+        "swap (置换 — 双向箭头绿, #F5C842)",
+        "cascade (连锁 — 橙红波纹, #4A7D55)"
+      ],
+      "animation_method": "frame_animation",
+      "fps": 30,
+      "idle_animation": {
+        "method": "vfx_tween",
+        "style": "breathing_pulse_glow",
+        "period_s": [2.0, 2.8],
+        "board_occlusion": false
+      },
+      "activation_animation": {
+        "frames": 12,
+        "method": "frame_animation",
+        "unique_per_type": true,
+        "activation_specs": {
+          "wave": "warm_white_ripple_expanding_outward_0.5s",
+          "light_chain": "gold_scan_wave_then_chain_lines_0.8s",
+          "pierce": "blue_white_arrow_burst_edge_glow_indicator_8s",
+          "swap": "green_dual_spiral_rotation_elastic_snap",
+          "cascade": "orange_red_ripple_sequential_auto_pairs_0.3s_interval"
+        }
+      },
+      "rationale": "Special blocks each have unique activation animations that are central to game-feel feedback. Frame animation at 30fps provides crisp, distinctive visual language per block type while fitting within the vfx_atlas.",
+      "export_format": "png_sprite_strip"
+    },
+    {
+      "role": "combo_effects",
+      "includes": [
+        "combo counter bubble (x2, x3, x4... display)",
+        "combo multiplier particle burst",
+        "combo chain reinforcement aura"
+      ],
+      "animation_method": "vfx_only",
+      "tool": "cocos-creator-particle-system",
+      "particle_budget": 200,
+      "combo_bubble_spec": {
+        "spring_stiffness": 280,
+        "spring_damping": 22,
+        "appear_offset_y_px": 12,
+        "float_distance_px": 24,
+        "scale_sequence": "0→1.2→1.0",
+        "hover_duration_s": 1.2,
+        "fade_out_s": 0.4
+      },
+      "rationale": "Pure particle system — no sprite sheets. Spring physics curves provide the tactile 'pop' feedback essential to the rhythm-combo game-feel. No atlas space consumed.",
+      "export_format": "particle_definition_json"
+    },
+    {
+      "role": "ui_elements",
+      "includes": [
+        "dialog boxes",
+        "buttons (primary, secondary)",
+        "HUD containers (leaf/scallop shape)",
+        "step counter",
+        "progress bar (bamboo segment style)",
+        "currency icons (beach coin, hard currency)",
+        "assist buttons (reshuffle, hint, continue)",
+        "card slide panels",
+        "chapter title cards"
+      ],
+      "animation_method": "ui_tween",
+      "tool": "cocos-creator-tween",
+      "tween_specs": {
+        "dialog_appear": { "scale": "0.7→1.05→1.0", "type": "spring", "duration_s": 0.4 },
+        "dialog_dismiss": { "scale": "1.0→0.85", "opacity": "1→0", "duration_s": 0.25, "easing": "ease-in" },
+        "card_slide": { "duration_s": 0.3 },
+        "tile_highlight_enter": { "scale": "1.0→1.06", "easing": "ease-out" },
+        "tile_highlight_pulse": { "amplitude": 0.02, "period_s": 1.5 },
+        "step_counter_warning": { "color_transition": "coral→red", "type": "tween" },
+        "currency_icon_pulse": { "frequency_hz": 0.8 },
+        "hud_toggle": { "duration_s": 0.2 }
+      },
+      "rationale": "All UI interactions use Cocos Creator's built-in tween system. No additional sprite sheets required for UI transitions — layout is done with scale/opacity tweens and spring physics.",
+      "export_format": "png + tween_config"
+    },
+    {
+      "role": "vfx_environment",
+      "includes": [
+        "lighthouse glow beam sweep",
+        "wave shimmer water surface",
+        "restoration complete light wave",
+        "chapter transition white circle expand",
+        "golden particle rain (full restoration)",
+        "sakura petal ambient drift",
+        "firefly ambient glow"
+      ],
+      "animation_method": "vfx_only",
+      "tool": "cocos-creator-particle-system",
+      "lighthouse_spec": {
+        "frames": 24,
+        "color": "#F5C842",
+        "style": "rotating_golden_beam",
+        "saturation_spike_on_sweep": true
+      },
+      "restoration_spec": {
+        "crossfade_s": 0.8,
+        "light_wave_s": 0.6,
+        "full_restore_extra": "golden_particle_rain_2.5s"
+      },
+      "chapter_transition_spec": {
+        "style": "white_circle_center_expand_AC_style",
+        "cover_s": 0.5,
+        "reveal_s": 0.5
+      },
+      "rationale": "Environment VFX use particle systems and shader-based effects — no large sprite atlases. Lighthouse sweep uses 24-frame strip in vfx_atlas. All others are procedural particle emission.",
+      "export_format": "particle_definition_json + 24frame_png_strip_for_lighthouse"
+    },
+    {
+      "role": "backgrounds",
+      "includes": [
+        "6 chapter backgrounds × 3 states (before/in_progress/restored) = 18 total",
+        "each with 3 parallax layers (sky_far, midground, foreground_elements)"
+      ],
+      "animation_method": "static",
+      "supplementary_animation": "saturation_tween_crossfade",
+      "background_size_px": { "width": 1920, "height": 1080 },
+      "saturation_restoration": {
+        "method": "crossfade_between_state_variants",
+        "duration_s": 0.8,
+        "stages": ["s0→s1→s2→s3→s4"],
+        "trigger": "level_clear_progress"
+      },
+      "parallax_scroll": {
+        "layers": 3,
+        "label": ["sky_far", "midground", "foreground_elements"],
+        "method": "cocos_tween_offset_on_device_tilt_or_scroll"
+      },
+      "rationale": "Backgrounds are static illustrations; the 'animation' of island restoration is achieved through crossfade between pre-rendered saturation stages. Parallax is handled by Cocos tween offset at runtime, not baked animation.",
+      "export_format": "jpg"
+    }
+  ],
+
+  "timing_contracts": {
+    "idle_breath": { "amplitude_px": 3, "loop_s": 2.0, "easing": "ease-in-out" },
+    "tile_match_disappear": { "duration_s": 0.25, "burst_frames": 3, "scale_burst": "1.0→1.14→0" },
+    "combo_counter_pop": { "duration_s": 0.1, "scale": "spring_overshoot" },
+    "chapter_transition": { "duration_s": 1.2, "style": "fade_plus_pan" },
+    "ui_card_slide": { "duration_s": 0.3 },
+    "special_block_activation": { "frames": 12, "fps": 30, "duration_s": 0.4 },
+    "restoration_crossfade": { "duration_s": 0.8 },
+    "lighthouse_sweep": { "frames": 24, "fps": 30 }
+  }
+}

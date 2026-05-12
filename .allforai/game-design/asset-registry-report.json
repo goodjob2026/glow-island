@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "verdict": "pass_with_warnings",
+  "run_phase": "concept-freeze",
+  "summary": {
+    "total_assets": 70,
+    "approved": 0,
+    "planned": 70,
+    "spec_ready": 0,
+    "generated": 0,
+    "needs_revision": 0,
+    "automation_limited": 0,
+    "not_applicable": 0,
+    "source_strategy_assigned": 70,
+    "concept_contract_used": true
+  },
+  "validation_checks": [
+    {"check": "every_inventory_asset_has_registry_entry", "result": "pass", "detail": "70/70 assets registered"},
+    {"check": "all_asset_ids_unique", "result": "pass"},
+    {"check": "all_file_prefixes_unique", "result": "pass"},
+    {"check": "all_paths_project_relative", "result": "pass"},
+    {"check": "all_states_in_lifecycle_enum", "result": "pass"},
+    {"check": "variant_prefixes_start_with_parent", "result": "pass"},
+    {"check": "dependencies_reference_existing_ids", "result": "pass"},
+    {"check": "concept_contract_prefixes_match_registry", "result": "pass", "detail": "Inventory file_prefix values preserved as canonical; concept-contract records same prefixes"},
+    {"check": "no_duplicate_asset_ids", "result": "pass"},
+    {"check": "source_strategy_assigned_to_all", "result": "pass", "detail": "All 70 assets have source_strategy=llm_image_generation"}
+  ],
+  "collisions": [],
+  "missing_required_fields": [],
+  "missing_files": [],
+  "prefix_conflicts": [],
+  "invalid_states": [],
+  "warnings": [
+    {
+      "type": "all_assets_planned",
+      "severity": "info",
+      "message": "All 70 assets are in 'planned' state — no generation has occurred yet. This is expected at concept-freeze phase.",
+      "affected_assets": "all"
+    },
+    {
+      "type": "approved_assets_zero",
+      "severity": "info",
+      "message": "No assets have been approved yet. Approval will occur after art-gen nodes and art-qa.",
+      "affected_assets": "all"
+    }
+  ],
+  "next_actions": [
+    "Proceed to tile-art-gen (25 tile assets, llm_image_generation strategy)",
+    "Proceed to character-art-gen (7 character assets, llm_image_generation + DragonBones rig)",
+    "Proceed to environment-art-gen (18 backgrounds + 2 props, llm_image_generation)",
+    "Proceed to ui-art-gen (10 UI elements, llm_image_generation)",
+    "Proceed to vfx-art-gen (8 VFX assets, llm_image_generation)"
+  ]
+}

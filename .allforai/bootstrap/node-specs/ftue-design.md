@@ -27,6 +27,12 @@ Execute ftue-design for this project.
 > and descriptive text MUST be in Chinese (zh-CN). In-game proper nouns (place/character/item names)
 > keep the game world's native language (Japanese). JSON field keys stay English snake_case.
 
+
+> **Design integrity (mandatory):** All mechanics, currencies, item names, and system
+> values in output documents MUST be sourced from the authoritative input files
+> (concept-baseline.json, core-mechanics.json). NEVER reference old/deprecated systems,
+> use "旧版"/"previously"/"replaced" in visible UI text, or include content for systems
+> absent from concept-baseline.json. See game-design.md §Design Integrity Rules.
 > Do NOT use AskUserQuestion or request user input. If a decision is ambiguous,
 > apply the most conservative interpretation derivable from the input contracts.
 
