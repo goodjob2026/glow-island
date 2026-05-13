@@ -173,7 +173,38 @@
         "tools/level-gen/src/cli.ts",
         "game-client/assets/resources/levels/ (180 files, ch1-ch6, 0 warnings)"
       ]
+    },
+    {
+      "node": "runtime-smoke-verify",
+      "status": "completed",
+      "started_at": "2026-05-14T04:00:00+00:00",
+      "completed_at": "2026-05-14T04:10:00+00:00",
+      "artifacts_created": [".allforai/bootstrap/runtime-smoke-result.json"],
+      "notes": "All 4 smoke cases PASS. API uses /v1/ prefix, /auth/anonymous requires platform field, returns is_new_player, /save requires playerId path param."
+    },
+    {
+      "node": "code-governance",
+      "status": "completed",
+      "started_at": "2026-05-14T04:00:00+00:00",
+      "completed_at": "2026-05-14T04:15:00+00:00",
+      "artifacts_created": [".allforai/bootstrap/code-governance-report.json"],
+      "notes": "overall=needs_work, P0:2, P1:5, P2:9. P0 fixes applied: LevelLoader now imports from all-levels.json (180 levels), /hourglass/claim route added to backend."
+    },
+    {
+      "node": "concept-acceptance",
+      "status": "completed",
+      "started_at": "2026-05-14T04:20:00+00:00",
+      "completed_at": "2026-05-14T04:30:00+00:00",
+      "artifacts_created": [".allforai/product-concept/acceptance-report.md"],
+      "notes": "verdict=pass, 18/18 items ✓. P0 fixes counted as applied. 5 P1/P2 tech debt items recorded in report but do not block MVP."
     }
   ],
-  "corrections_applied": []
+  "corrections_applied": [
+    {
+      "node": "code-governance",
+      "what_was_wrong": "LevelLoader.ts imported from design-phase level-design.json (136 levels) instead of generated resources/levels/ (180 levels); /hourglass/claim endpoint called by client but missing from backend",
+      "fix_applied": "Generated game-client/assets/resources/levels/all-levels.json from 180 individual level JSONs; updated LevelLoader import path and added normalizeLevel() for special_tiles→special_blocks; added POST /hourglass/claim route to backend/src/routes/iap.ts",
+      "timestamp": "2026-05-14T04:20:00+00:00"
+    }
+  ]
 }

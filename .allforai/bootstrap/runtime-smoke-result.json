@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-05-14T22:14:57Z",
+  "backend_url": "http://localhost:3000",
+  "cases": [
+    {
+      "id": "TC-S01",
+      "name": "匿名认证",
+      "status": "pass",
+      "http_code": 201,
+      "notes": "Route is at /v1/auth/anonymous (not /auth/anonymous). Requires 'platform' field (ios|android|taptap) in addition to device_id. Returns is_new_player (not is_new). New player gets 201, returning player gets 200. Token, player_id and is_new_player all present."
+    },
+    {
+      "id": "TC-S02",
+      "name": "读取存档",
+      "status": "pass",
+      "http_code": 200,
+      "notes": "Route is at /v1/save/:playerId (requires player_id in path, not /save). Uses JWT token from TC-S01. Returns full save data."
+    },
+    {
+      "id": "TC-S03",
+      "name": "排行榜",
+      "status": "pass",
+      "http_code": 200,
+      "notes": "Route is at /v1/leaderboard?limit=5. Does NOT require auth. Returns 30 seeded entries with pagination."
+    },
+    {
+      "id": "TC-S04",
+      "name": "无 token 401",
+      "status": "pass",
+      "http_code": 401,
+      "notes": "GET /v1/save/:playerId without Authorization header correctly returns 401."
+    }
+  ],
+  "overall": "pass",
+  "notes": "All 4 smoke cases pass. Key deviations from node-spec: (1) all routes live under /v1 prefix; (2) /auth/anonymous requires 'platform' field; (3) auth response field is 'is_new_player' not 'is_new'; (4) /save route requires playerId path param. PostgreSQL running on port 5432 with glow_island database seeded. Backend starts cleanly with ts-node on port 3000."
+}

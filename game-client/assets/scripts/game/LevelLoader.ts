@@ -1,5 +1,4 @@
-// Loads, validates, and converts level configs from bundled level-design data.
-// Production: swap hardcoded import for resources.load('data/level-design', JsonAsset)
+// Loads, validates, and converts level configs from generated level data.
 
 import { TileCell, TileType, ObstacleType } from '../puzzle/TileGrid';
 import { BoardGenerator } from '../puzzle/BoardGenerator';
@@ -45,26 +44,18 @@ export interface LevelConfig {
 // ------- Tile-type mapping ---------------------------------------------------
 
 const TILE_TYPE_MAP: Record<string, TileType> = {
-  tile_01: TileType.T01,
-  tile_02: TileType.T02,
-  tile_03: TileType.T03,
-  tile_04: TileType.T04,
-  tile_05: TileType.T05,
-  tile_06: TileType.T06,
-  tile_07: TileType.T07,
-  tile_08: TileType.T08,
-  tile_09: TileType.T09,
-  tile_10: TileType.T10,
-  tile_11: TileType.T11,
-  tile_12: TileType.T12,
-  tile_13: TileType.T13,
-  tile_14: TileType.T14,
-  tile_15: TileType.T15,
-  tile_16: TileType.T16,
-  tile_17: TileType.T17,
-  tile_18: TileType.T18,
-  tile_19: TileType.T19,
-  tile_20: TileType.T20,
+  // Generated format (T01) — matches enum string values directly
+  T01: TileType.T01, T02: TileType.T02, T03: TileType.T03, T04: TileType.T04,
+  T05: TileType.T05, T06: TileType.T06, T07: TileType.T07, T08: TileType.T08,
+  T09: TileType.T09, T10: TileType.T10, T11: TileType.T11, T12: TileType.T12,
+  T13: TileType.T13, T14: TileType.T14, T15: TileType.T15, T16: TileType.T16,
+  T17: TileType.T17, T18: TileType.T18, T19: TileType.T19, T20: TileType.T20,
+  // Legacy format (tile_01)
+  tile_01: TileType.T01, tile_02: TileType.T02, tile_03: TileType.T03, tile_04: TileType.T04,
+  tile_05: TileType.T05, tile_06: TileType.T06, tile_07: TileType.T07, tile_08: TileType.T08,
+  tile_09: TileType.T09, tile_10: TileType.T10, tile_11: TileType.T11, tile_12: TileType.T12,
+  tile_13: TileType.T13, tile_14: TileType.T14, tile_15: TileType.T15, tile_16: TileType.T16,
+  tile_17: TileType.T17, tile_18: TileType.T18, tile_19: TileType.T19, tile_20: TileType.T20,
 };
 
 const OBSTACLE_TYPE_MAP: Record<string, ObstacleType> = {
@@ -74,28 +65,32 @@ const OBSTACLE_TYPE_MAP: Record<string, ObstacleType> = {
   water_current: ObstacleType.WATER_CURRENT,
 };
 
-// ------- Bundled level data (MVP) -------------------------------------------
-// Production: replace with resources.load('data/level-design', cc.JsonAsset)
+// ------- Level data (180 generated levels) ----------------------------------
+
+interface RawLevelJson extends Omit<LevelConfig, 'special_blocks'> {
+  special_tiles?: SpecialBlockConfig[];
+  special_blocks?: SpecialBlockConfig[];
+}
+
+function normalizeLevel(raw: RawLevelJson): LevelConfig {
+  return {
+    ...raw,
+    special_blocks: raw.special_tiles ?? raw.special_blocks ?? [],
+  };
+}
 
 let _levelDataCache: LevelConfig[] | null = null;
 
 async function getBundledLevels(): Promise<LevelConfig[]> {
   if (_levelDataCache) return _levelDataCache;
-
-  // Dynamic import of the local design JSON.
-  // In a Cocos Creator project this should be replaced with:
-  //   const asset = await new Promise<cc.JsonAsset>(...) using resources.load
-  // For MVP, fall back to a minimal inline dataset if the import fails.
   try {
-    // Attempt dynamic import from project root via the engine bundle path.
-    // This path is relative to the Cocos web-mobile/native bundle output.
-    const json = await import('../../../../.allforai/game-design/level-design.json');
-    _levelDataCache = (json.default?.levels ?? json.levels ?? []) as LevelConfig[];
+    const json = await import('../../../resources/levels/all-levels.json');
+    const rawLevels = (json.default?.levels ?? json.levels ?? []) as RawLevelJson[];
+    _levelDataCache = rawLevels.map(normalizeLevel);
   } catch {
-    console.warn('[LevelLoader] Could not dynamically import level-design.json, using inline fallback.');
+    console.warn('[LevelLoader] Could not load all-levels.json, using inline fallback.');
     _levelDataCache = INLINE_FALLBACK_LEVELS;
   }
-
   return _levelDataCache;
 }
 

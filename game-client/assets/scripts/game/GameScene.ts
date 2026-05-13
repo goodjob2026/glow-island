@@ -177,6 +177,7 @@ export class GameScene extends Component {
   }
 
   onDestroy(): void {
+    this.unscheduleAll();
     this._tileGrid.off(TILE_GRID_EVENT.TILES_MATCHED, this._onTilesMatched, this);
     this._tileGrid.off(TILE_GRID_EVENT.TILES_SETTLED, this._onTilesSettled, this);
     this._tileGrid.off(TILE_GRID_EVENT.COMBO_CHANGED, this._onComboChanged, this);

@@ -13,7 +13,40 @@ interface IapVerifyBody {
 const VALID_PLATFORMS = ['ios', 'android', 'taptap']
 const VALID_SKUS = Object.keys(SKU_CONFIG)
 
+const HOURGLASS_BASE_COINS = 15
+const HOURGLASS_MONTHLY_CARD_COINS = 30
+
 export async function iapRoutes(app: FastifyInstance, prisma: PrismaClient): Promise<void> {
+  // POST /hourglass/claim
+  app.post(
+    '/hourglass/claim',
+    { preHandler: app.authenticate },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const playerId = request.jwtPayload.player_id
+      const body = request.body as { has_monthly_card?: boolean }
+
+      const coinsGranted = body.has_monthly_card ? HOURGLASS_MONTHLY_CARD_COINS : HOURGLASS_BASE_COINS
+
+      const save = await prisma.playerSave.findUnique({ where: { playerId } })
+      if (!save) {
+        return reply.status(404).send({ error: { code: 'SAVE_NOT_FOUND', message: 'Player save not found' } })
+      }
+
+      const currency = save.currency as { beach_coins: number; glowstone: number }
+      await prisma.playerSave.update({
+        where: { playerId },
+        data: {
+          currency: {
+            ...currency,
+            beach_coins: (currency.beach_coins ?? 0) + coinsGranted,
+          } as object,
+        },
+      })
+
+      return reply.send({ beach_coins_granted: coinsGranted })
+    }
+  )
+
   // POST /iap/verify
   app.post(
     '/iap/verify',

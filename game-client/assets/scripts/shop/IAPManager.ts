@@ -49,9 +49,9 @@ interface VerifyResponse {
   transaction_id: string
   sku_id: string
   status: 'verified'
-  beach_coins_granted: number
+  glowstone_granted: number
   items_granted: Array<{ type: string; item_id: string; quantity: number }>
-  updated_currency: { beach_coins: number }
+  updated_currency: { beach_coins: number; glowstone: number }
   monthly_card?: { active: boolean; expires_at: string }
 }
 

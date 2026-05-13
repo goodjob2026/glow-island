@@ -24,6 +24,18 @@ app.register(fastifyCors, { origin: '*' })
 // Register auth decorator at the root scope so all sub-instances inherit it
 registerAuthDecorator(app)
 
+// Global error handler — prevents raw Prisma/DB stack traces reaching clients
+app.setErrorHandler((error: { statusCode?: number; message: string }, request, reply) => {
+  app.log.error({ err: error, url: request.url, method: request.method }, 'Unhandled route error')
+  const statusCode = error.statusCode ?? 500
+  return reply.status(statusCode).send({
+    error: {
+      code: statusCode === 500 ? 'INTERNAL_ERROR' : error.message,
+      message: statusCode === 500 ? 'An internal error occurred' : error.message,
+    },
+  })
+})
+
 // Health check (no version prefix, no auth required)
 app.get('/health', async (_request, reply) => {
   let dbStatus: 'ok' | 'degraded' | 'down' = 'ok'

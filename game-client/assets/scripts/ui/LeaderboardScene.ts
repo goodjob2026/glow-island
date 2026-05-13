@@ -107,6 +107,7 @@ export class LeaderboardScene extends Component {
   }
 
   onDestroy(): void {
+    this.unscheduleAll();
     this.retryButton?.node.off(Button.EventType.CLICK, this._onRetry, this)
     this.backButton?.node.off(Button.EventType.CLICK, this._onBack, this)
   }
