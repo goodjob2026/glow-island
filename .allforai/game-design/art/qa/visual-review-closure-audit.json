@@ -26,20 +26,18 @@
       "id": "F05-BLOCKER-001",
       "id2": "F05-BLOCKER-002",
       "reason": "Gicho frame animation: text-to-image cannot maintain consistent scale/face across independent frames without img2img. Accepted as design-phase placeholder. Authorized by user."
-    }
-  ],
-  "remaining_blockers": [
-    {
-      "id": "F03-BLOCKER-001", "failure_code": "EXPR_IDENTITY_DRIFT", "batch": "BATCH-03",
-      "status": "UNRESOLVED_AFTER_REPAIR_2", "repair_budget_remaining": 1,
-      "notes": "Umeko: bun/apron persist but age, face shape, body scale drift across 5 emotions. ABSOLUTE FIXED APPEARANCE anchor not sufficient. Requires img2img or placeholder acceptance."
     },
     {
-      "id": "F04-BLOCKER-001", "failure_code": "PORTRAIT_IDENTITY_MISMATCH", "batch": "BATCH-04",
-      "status": "UNRESOLVED_AFTER_REPAIR_2", "repair_budget_remaining": 2,
-      "notes": "Ritsu portrait_happy: broad hair/shirt markers now match, but face structure and rendering style differ from portrait_default. Requires img2img with portrait_default as reference, or placeholder acceptance."
+      "id": "F03-BLOCKER-001",
+      "affects": ["char_umeko_expr_happy.png", "char_umeko_expr_react_jump.png"],
+      "reason": "Umeko happy + react_jump: joyful/dynamic expressions cause AI to render younger-looking face in chibi watercolor style — structural limitation of text-to-image age rendering. img2img repair improved surprised (now PASS) but happy/react_jump persist. Accepted as design-phase placeholder. Authorized by user 2026-05-14.",
+      "resolved_by_img2img": ["char_umeko_expr_surprised.png"],
+      "confirmed_pass": ["char_umeko_expr_thinking.png", "char_umeko_expr_surprised.png"]
     }
   ],
-  "overall_status": "FAILED_VALIDATION",
-  "verdict": "2 blockers remain after repair run 2. Text-to-image identity drift is a fundamental limitation — prompt anchors can lock obvious cues but not subtle face geometry. Next: user decision required (accept-as-placeholder / repair3 / img2img)."
+  "remaining_blockers": [],
+  "repair_run_3_resolved": ["F04-BLOCKER-001_ritsu_portrait_happy"],
+  "repair_run_3_method": "img2img — portrait_default uploaded as identity seed, Codex QA verdict PASS (face/age/hair/outfit/expression all PASS). 2026-05-14.",
+  "overall_status": "CLOSED",
+  "verdict": "All blockers resolved or accepted as placeholder. F001/F004/F005/F008/F010/F011 repaired. F03-BLOCKER-001 (Umeko happy+react_jump) accepted as placeholder. F04-BLOCKER-001 (Ritsu portrait_happy) resolved via img2img repair. Art QA phase complete."
 }

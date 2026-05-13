@@ -1,0 +1,8 @@
+[2026-05-13T21:21:17.263Z] === prepare_edit_session start ===
+[2026-05-13T21:21:19.133Z] Model selected: no_selector
+[2026-05-13T21:21:19.134Z] Uploading reference: /Users/aa/workspace/glow-island/.allforai/game-design/art/portraits/char_ritsu_portrait_default.png
+[2026-05-13T21:21:23.059Z] Upload result: {"ok":true,"verified":true}
+[2026-05-13T21:21:24.564Z] Submitting base prompt: "Keep this character EXACTLY as shown. Same face structure, s..."
+[2026-05-13T21:21:25.829Z]   [base] generating...
+[2026-05-13T21:21:30.942Z]   Base image ready.
+[2026-05-13T21:21:32.451Z] === session ready — waiting for run_edit_prompt calls ===
