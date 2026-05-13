@@ -17,13 +17,12 @@ npx tsc --noEmit  # TypeScript类型检查
 npm test          # 单元测试（如有）
 ```
 
-### 2. Cocos Creator WebGL构建
+### 2. Cocos Creator WebGL构建（CLI，无需 GUI Dashboard）
 ```bash
-cd game-client
-# 如果cocos-cli可用：
-npx @cocos/cocos-cli build --platform web-mobile --dest ./dist/webgl
-# 否则记录"需要通过Cocos Dashboard手动构建"
+COCOS_BIN="${COCOS_CREATOR_APP:-/Applications/CocosCreator.app}/Contents/MacOS/CocosCreator"
+"$COCOS_BIN" --project "$(pwd)/game-client" --build "platform=web-mobile"
 ```
+注意：standalone `tsc` 对 game-client 报的 `module 'cc'` 错误是引擎类型噪声，Cocos Creator CLI 构建环境内自动解决，**不算构建失败**，不需要修复。
 
 ### 3. 关卡编辑器构建
 ```bash

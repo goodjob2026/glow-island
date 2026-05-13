@@ -1,66 +1,22 @@
 {
-  "verified_at": "2026-05-08T00:00:00.000Z",
+  "verified_at": "2026-05-13T21:31:30.970811Z",
   "backend_tsc": "0 errors",
   "level_editor_tsc": "0 errors",
-  "game_client_check": "110 errors (all Cocos Creator engine-type errors — not fixable without CC SDK)",
-  "errors_fixed": [],
-  "game_client_error_categories": [
-    {
-      "category": "Missing Cocos Creator module types",
-      "description": "Cannot find module 'cc' or its corresponding type declarations",
-      "affected_files": [
-        "audio/AudioManager.ts",
-        "game/GameScene.ts",
-        "game/GameSession.ts",
-        "game/LevelLoader.ts",
-        "game/MaterialCollector.ts",
-        "meta/AreaRestorationEffect.ts",
-        "meta/ChapterNode.ts",
-        "meta/IslandMapScene.ts",
-        "prototype/PrototypeBoard.ts",
-        "puzzle/ComboTracker.ts",
-        "puzzle/TileGrid.ts",
-        "shop/CurrencyDisplay.ts",
-        "shop/PurchaseConfirmPopup.ts",
-        "shop/ShopScene.ts",
-        "ui/GameHUD.ts",
-        "ui/LeaderboardScene.ts",
-        "ui/LevelCompletePopup.ts",
-        "ui/MainMenuScene.ts",
-        "ui/SettingsPanel.ts"
-      ],
-      "root_cause": "Cocos Creator engine types (cc module) are only available inside the Cocos Creator project environment. They are not installed as npm packages.",
-      "fixable": false
-    },
-    {
-      "category": "Cocos Component base-class methods missing",
-      "description": "Properties 'scheduleOnce', 'emit', 'on', 'off', 'node' do not exist on component types",
-      "root_cause": "These methods are provided by the cc.Component and cc.EventTarget base classes, which are unavailable without the cc module types.",
-      "fixable": false
-    },
-    {
-      "category": "Target library too old for flatMap",
-      "description": "Property 'flatMap' does not exist on ObstacleConfig[]; requires ES2019 lib",
-      "affected_files": ["game/GameScene.ts", "game/LevelLoader.ts"],
-      "root_cause": "Compilation target is ES2017 but flatMap requires ES2019. Inside Cocos Creator, the tsconfig specifies appropriate lib targets.",
-      "fixable": false
-    },
-    {
-      "category": "Dynamic import module flag",
-      "description": "Dynamic imports are only supported when the --module flag is set to es2020 or later",
-      "affected_files": ["game/LevelLoader.ts"],
-      "root_cause": "LevelLoader.ts uses dynamic import() syntax, requiring --module commonjs or es2020+. Outside of Cocos Creator's build pipeline this cannot be satisfied with the standalone tsc invocation.",
-      "fixable": false
-    },
-    {
-      "category": "Missing @types/node",
-      "description": "Cannot find name 'process' / 'require'",
-      "root_cause": "Some scripts reference process.env without @types/node installed in the game-client package. These work inside Cocos Creator's build environment.",
-      "fixable": false
-    }
-  ],
-  "manual_required": [
-    "Cocos Creator WebGL build requires Cocos Dashboard GUI — install Cocos Dashboard 3.8.x, open the glow-island/game-client project, and use Build > WebGL to compile and verify game client TypeScript with proper CC engine types.",
-    "All 110 game client tsc errors are engine-type errors that resolve automatically when built inside Cocos Creator's project environment (which ships its own tsconfig and cc type declarations). They are not API contract issues and not fixable via standalone tsc."
-  ]
+  "game_client_build": {
+    "method": "Cocos Creator 3.8.8 CLI (headless, no GUI required)",
+    "command": "/Applications/CocosCreator.app/Contents/MacOS/CocosCreator --project game-client --build platform=web-mobile",
+    "status": "pass",
+    "platform": "web-mobile",
+    "output": "game-client/build/web-mobile/",
+    "output_files": [
+      "src/system.bundle.js",
+      "src/polyfills.bundle.js",
+      "src/chunks/bundle.js",
+      "assets/resources/index.js",
+      "assets/internal/index.js",
+      "assets/main/index.js"
+    ],
+    "output_size": "332K"
+  },
+  "note": "Previous compile-result.json incorrectly stated GUI Dashboard required. Cocos Creator 3.x CLI build confirmed working. TypeScript module cc errors from standalone tsc are engine-type noise only."
 }
