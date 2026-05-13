@@ -1,0 +1,181 @@
+{
+  "id": "6-21",
+  "schema_version": "3.0",
+  "chapter": 6,
+  "level": 21,
+  "level_role": "standard",
+  "grid_size": [
+    9,
+    9
+  ],
+  "shape": "lighthouse_contour",
+  "tile_types": [
+    "T19",
+    "T05",
+    "T15",
+    "T01",
+    "T02",
+    "T18",
+    "T12",
+    "T10"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 23
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 38,
+  "obstacles": [
+    {
+      "type": "chain_lock",
+      "position": [
+        7,
+        1
+      ],
+      "required_matches": 2
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        5,
+        0
+      ],
+      "variant": "moss",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        4,
+        0
+      ],
+      "layers": 2
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        6,
+        2
+      ],
+      "variant": "vine",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        0,
+        6
+      ],
+      "variant": "vine",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        3,
+        1
+      ],
+      "layers": 3
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "lantern_glass",
+    "amount": 6
+  },
+  "coin_reward": 41,
+  "grid_data": [
+    "T19",
+    "T05",
+    "T15",
+    "void",
+    "T01",
+    "void",
+    "T02",
+    "void",
+    "T19",
+    "T18",
+    "T05",
+    "T05",
+    "T12",
+    "T18",
+    "void",
+    "void",
+    "void",
+    "T02",
+    "T18",
+    "T10",
+    "T05",
+    "T01",
+    "T12",
+    "T12",
+    "T19",
+    "T01",
+    "T05",
+    "T02",
+    "T19",
+    "T15",
+    "T02",
+    "T10",
+    "T05",
+    "T15",
+    "T12",
+    "T01",
+    "T15",
+    "void",
+    "T12",
+    "T15",
+    "T18",
+    "T02",
+    "T15",
+    "T12",
+    "void",
+    "T15",
+    "T01",
+    "T01",
+    "T18",
+    "T19",
+    "T02",
+    "T12",
+    "T05",
+    "T15",
+    "T10",
+    "T15",
+    "T10",
+    "T19",
+    "T19",
+    "T01",
+    "T18",
+    "T12",
+    "void",
+    "void",
+    "T05",
+    "T10",
+    "T15",
+    "T15",
+    "T02",
+    "T15",
+    "T01",
+    "T19",
+    "T10",
+    "T10",
+    "T10",
+    "void",
+    "T02",
+    "T18",
+    "T18",
+    "void",
+    "void"
+  ]
+}

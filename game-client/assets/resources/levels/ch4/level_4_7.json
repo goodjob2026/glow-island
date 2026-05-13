@@ -1,0 +1,112 @@
+{
+  "id": "4-7",
+  "schema_version": "3.0",
+  "chapter": 4,
+  "level": 7,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "island_contour",
+  "tile_types": [
+    "T09",
+    "T16",
+    "T10",
+    "T14",
+    "T07",
+    "T13",
+    "T11"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 15
+    }
+  ],
+  "max_moves": 34,
+  "obstacles": [
+    {
+      "type": "ice_block",
+      "position": [
+        6,
+        3
+      ],
+      "layers": 2
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "torii_fragment",
+    "amount": 3
+  },
+  "coin_reward": 25,
+  "grid_data": [
+    "T09",
+    "T16",
+    "T10",
+    "T14",
+    "T07",
+    "T10",
+    "T09",
+    "T07",
+    "T13",
+    "T16",
+    "T14",
+    "T16",
+    "T07",
+    "T14",
+    "void",
+    "void",
+    "T13",
+    "T14",
+    "T16",
+    "T11",
+    "T11",
+    "T10",
+    "T09",
+    "void",
+    "T13",
+    "T11",
+    "T09",
+    "T16",
+    "T16",
+    "T09",
+    "T10",
+    "T11",
+    "T13",
+    "T14",
+    "T10",
+    "T09",
+    "T14",
+    "T13",
+    "void",
+    "T11",
+    "T07",
+    "T13",
+    "T07",
+    "T11",
+    "T09",
+    "T10",
+    "T09",
+    "T13",
+    "T16",
+    "T07",
+    "T07",
+    "T10",
+    "T10",
+    "T14",
+    "T16",
+    "T14",
+    "T07",
+    "void",
+    "T13",
+    "T11",
+    "T07",
+    "void",
+    "T07",
+    "T11"
+  ]
+}

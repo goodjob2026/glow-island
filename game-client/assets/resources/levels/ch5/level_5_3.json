@@ -1,0 +1,148 @@
+{
+  "id": "5-3",
+  "schema_version": "3.0",
+  "chapter": 5,
+  "level": 3,
+  "level_role": "standard",
+  "grid_size": [
+    9,
+    9
+  ],
+  "shape": "island_contour",
+  "tile_types": [
+    "T11",
+    "T15",
+    "T07",
+    "T13",
+    "T16",
+    "T06",
+    "T17",
+    "T04",
+    "T12"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 15
+    }
+  ],
+  "max_moves": 38,
+  "obstacles": [
+    {
+      "type": "water_current",
+      "position": [
+        1,
+        3
+      ],
+      "initial_direction": "left",
+      "change_interval_s": 8
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        4,
+        6
+      ],
+      "layers": 1
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        0,
+        2
+      ],
+      "required_matches": 3
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "rope_fiber",
+    "amount": 2
+  },
+  "coin_reward": 28,
+  "grid_data": [
+    "T11",
+    "T15",
+    "T15",
+    "T07",
+    "T13",
+    "T15",
+    "void",
+    "T07",
+    "T07",
+    "T16",
+    "T16",
+    "T06",
+    "T17",
+    "T13",
+    "T07",
+    "T13",
+    "T17",
+    "T17",
+    "T06",
+    "T04",
+    "T13",
+    "T06",
+    "T17",
+    "T13",
+    "T13",
+    "T12",
+    "T04",
+    "T13",
+    "T11",
+    "T13",
+    "T13",
+    "T07",
+    "T06",
+    "T13",
+    "void",
+    "void",
+    "T11",
+    "T12",
+    "T13",
+    "T16",
+    "T12",
+    "T15",
+    "T06",
+    "void",
+    "T16",
+    "T13",
+    "T13",
+    "T13",
+    "T13",
+    "T15",
+    "T13",
+    "T04",
+    "void",
+    "T13",
+    "T11",
+    "T13",
+    "T04",
+    "T12",
+    "T04",
+    "T15",
+    "T11",
+    "void",
+    "T12",
+    "void",
+    "T13",
+    "T17",
+    "T04",
+    "T07",
+    "T16",
+    "T12",
+    "T13",
+    "void",
+    "T06",
+    "T17",
+    "void",
+    "T11",
+    "T13",
+    "T13",
+    "T16",
+    "void",
+    "void"
+  ]
+}

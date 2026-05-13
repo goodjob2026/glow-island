@@ -1,0 +1,151 @@
+{
+  "id": "2-28",
+  "schema_version": "3.0",
+  "chapter": 2,
+  "level": 28,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "rectangle",
+  "tile_types": [
+    "T05",
+    "T01",
+    "T04",
+    "T08",
+    "T03"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 24
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    }
+  ],
+  "max_moves": 37,
+  "obstacles": [
+    {
+      "type": "ice_block",
+      "position": [
+        2,
+        6
+      ],
+      "layers": 1
+    },
+    {
+      "type": "weed",
+      "position": [
+        6,
+        0
+      ]
+    },
+    {
+      "type": "weed",
+      "position": [
+        7,
+        5
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        6,
+        4
+      ],
+      "layers": 1
+    },
+    {
+      "type": "weed",
+      "position": [
+        6,
+        5
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        7,
+        1
+      ],
+      "layers": 1
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "clay_shard",
+    "amount": 7
+  },
+  "coin_reward": 19,
+  "grid_data": [
+    "T05",
+    "T01",
+    "T04",
+    "T01",
+    "T04",
+    "T08",
+    "T08",
+    "T05",
+    "T04",
+    "T01",
+    "T01",
+    "T01",
+    "T01",
+    "T03",
+    "T01",
+    "T04",
+    "T01",
+    "T01",
+    "T05",
+    "T01",
+    "T08",
+    "T04",
+    "T05",
+    "T05",
+    "T08",
+    "T08",
+    "T08",
+    "T01",
+    "T03",
+    "T03",
+    "T08",
+    "T05",
+    "T03",
+    "T08",
+    "T04",
+    "T01",
+    "T05",
+    "T08",
+    "T03",
+    "T08",
+    "T04",
+    "T01",
+    "T01",
+    "T04",
+    "T05",
+    "T03",
+    "T03",
+    "T01",
+    "T05",
+    "T04",
+    "T03",
+    "T04",
+    "T08",
+    "T01",
+    "T05",
+    "T03",
+    "T04",
+    "T08",
+    "T04",
+    "T05",
+    "T05",
+    "T03",
+    "T03",
+    "T03"
+  ]
+}

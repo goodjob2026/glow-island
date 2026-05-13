@@ -1,0 +1,111 @@
+{
+  "id": "3-2",
+  "schema_version": "3.0",
+  "chapter": 3,
+  "level": 2,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "bay_contour",
+  "tile_types": [
+    "T10",
+    "T06",
+    "T12",
+    "T01",
+    "T03",
+    "T07",
+    "T04"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 10
+    }
+  ],
+  "max_moves": 31,
+  "obstacles": [
+    {
+      "type": "weed",
+      "position": [
+        4,
+        4
+      ]
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "pine_needle",
+    "amount": 2
+  },
+  "coin_reward": 15,
+  "grid_data": [
+    "T10",
+    "T10",
+    "void",
+    "T06",
+    "T12",
+    "void",
+    "T01",
+    "void",
+    "T03",
+    "T01",
+    "T01",
+    "void",
+    "T06",
+    "T01",
+    "T03",
+    "T12",
+    "T07",
+    "T07",
+    "T01",
+    "T03",
+    "T12",
+    "T04",
+    "T04",
+    "T10",
+    "T10",
+    "T06",
+    "T04",
+    "T06",
+    "T01",
+    "T06",
+    "T03",
+    "T12",
+    "T10",
+    "void",
+    "T01",
+    "T07",
+    "T03",
+    "T12",
+    "T06",
+    "T04",
+    "T04",
+    "T04",
+    "T12",
+    "T07",
+    "T04",
+    "T07",
+    "T07",
+    "T03",
+    "T06",
+    "T12",
+    "T07",
+    "T03",
+    "T10",
+    "T10",
+    "T10",
+    "T01",
+    "T03",
+    "T03",
+    "T07",
+    "T04",
+    "void",
+    "T03",
+    "T06",
+    "T12"
+  ]
+}

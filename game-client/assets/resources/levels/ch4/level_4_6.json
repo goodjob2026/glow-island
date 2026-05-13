@@ -1,0 +1,128 @@
+{
+  "id": "4-6",
+  "schema_version": "3.0",
+  "chapter": 4,
+  "level": 6,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "island_contour",
+  "tile_types": [
+    "T08",
+    "T14",
+    "T04",
+    "T09",
+    "T13",
+    "T05",
+    "T16",
+    "T03"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 12
+    }
+  ],
+  "max_moves": 33,
+  "obstacles": [
+    {
+      "type": "chain_lock",
+      "position": [
+        1,
+        0
+      ],
+      "required_matches": 2
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        4,
+        1
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        5,
+        2
+      ],
+      "layers": 2
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "torii_fragment",
+    "amount": 3
+  },
+  "coin_reward": 21,
+  "grid_data": [
+    "T08",
+    "T14",
+    "T08",
+    "T14",
+    "T04",
+    "T08",
+    "T08",
+    "T09",
+    "T09",
+    "void",
+    "T13",
+    "T05",
+    "T13",
+    "T16",
+    "void",
+    "T04",
+    "T05",
+    "T08",
+    "T08",
+    "T03",
+    "T14",
+    "T08",
+    "T08",
+    "T08",
+    "T05",
+    "T16",
+    "T04",
+    "T05",
+    "T16",
+    "T03",
+    "T08",
+    "T13",
+    "T08",
+    "T13",
+    "T14",
+    "T09",
+    "T04",
+    "T03",
+    "T08",
+    "T14",
+    "T13",
+    "void",
+    "T08",
+    "T05",
+    "T08",
+    "T03",
+    "T03",
+    "T14",
+    "T03",
+    "void",
+    "T09",
+    "void",
+    "T16",
+    "T09",
+    "T08",
+    "void",
+    "T04",
+    "T09",
+    "T16",
+    "T16",
+    "T08",
+    "T05",
+    "T04",
+    "T13"
+  ]
+}

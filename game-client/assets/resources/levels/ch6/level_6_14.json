@@ -1,0 +1,184 @@
+{
+  "id": "6-14",
+  "schema_version": "3.0",
+  "chapter": 6,
+  "level": 14,
+  "level_role": "standard",
+  "grid_size": [
+    9,
+    9
+  ],
+  "shape": "lighthouse_contour",
+  "tile_types": [
+    "T14",
+    "T20",
+    "T10",
+    "T06",
+    "T13",
+    "T09",
+    "T12",
+    "T18"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 18
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 39,
+  "obstacles": [
+    {
+      "type": "chain_lock",
+      "position": [
+        8,
+        7
+      ],
+      "required_matches": 3
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        0,
+        7
+      ],
+      "variant": "vine",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        5,
+        0
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        6,
+        5
+      ],
+      "variant": "vine",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        2,
+        1
+      ],
+      "required_matches": 2
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        2,
+        4
+      ]
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        5,
+        1
+      ],
+      "variant": "moss",
+      "spread_interval_moves": 3
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "lantern_glass",
+    "amount": 5
+  },
+  "coin_reward": 45,
+  "grid_data": [
+    "T14",
+    "void",
+    "void",
+    "T20",
+    "void",
+    "T10",
+    "void",
+    "T06",
+    "T20",
+    "T14",
+    "void",
+    "T06",
+    "void",
+    "T13",
+    "void",
+    "void",
+    "T10",
+    "T13",
+    "void",
+    "T09",
+    "T10",
+    "T13",
+    "T09",
+    "T12",
+    "T10",
+    "T09",
+    "T20",
+    "T18",
+    "T18",
+    "T09",
+    "T14",
+    "T18",
+    "T06",
+    "T06",
+    "T09",
+    "T13",
+    "T10",
+    "void",
+    "T12",
+    "T09",
+    "T13",
+    "T06",
+    "T13",
+    "T09",
+    "T10",
+    "T10",
+    "T12",
+    "T14",
+    "T18",
+    "T12",
+    "T12",
+    "T12",
+    "T12",
+    "void",
+    "T06",
+    "T18",
+    "T10",
+    "T06",
+    "T10",
+    "T09",
+    "T10",
+    "void",
+    "T10",
+    "T14",
+    "T18",
+    "T20",
+    "T13",
+    "T20",
+    "T20",
+    "T12",
+    "T13",
+    "T10",
+    "T14",
+    "T18",
+    "T20",
+    "T20",
+    "T18",
+    "T14",
+    "T06",
+    "T14",
+    "void"
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "id": "2-14",
+  "schema_version": "3.0",
+  "chapter": 2,
+  "level": 14,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "rectangle",
+  "tile_types": [
+    "T02",
+    "T08",
+    "T01",
+    "T06",
+    "T03"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 19
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    }
+  ],
+  "max_moves": 36,
+  "obstacles": [
+    {
+      "type": "weed",
+      "position": [
+        0,
+        2
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        3,
+        0
+      ],
+      "layers": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        0,
+        3
+      ],
+      "layers": 1
+    },
+    {
+      "type": "weed",
+      "position": [
+        4,
+        0
+      ]
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "clay_shard",
+    "amount": 4
+  },
+  "coin_reward": 15,
+  "grid_data": [
+    "T02",
+    "T08",
+    "T01",
+    "T06",
+    "T08",
+    "T01",
+    "T06",
+    "T02",
+    "T08",
+    "T08",
+    "T06",
+    "T06",
+    "T02",
+    "T08",
+    "T08",
+    "T03",
+    "T01",
+    "T01",
+    "T01",
+    "T03",
+    "T03",
+    "T03",
+    "T06",
+    "T03",
+    "T08",
+    "T01",
+    "T02",
+    "T08",
+    "T01",
+    "T02",
+    "T01",
+    "T03",
+    "T03",
+    "T02",
+    "T01",
+    "T06",
+    "T01",
+    "T02",
+    "T06",
+    "T03",
+    "T01",
+    "T01",
+    "T08",
+    "T02",
+    "T02",
+    "T06",
+    "T03",
+    "T03",
+    "T02",
+    "T08",
+    "T01",
+    "T06",
+    "T06",
+    "T01",
+    "T03",
+    "T08",
+    "T06",
+    "T02",
+    "T08",
+    "T02",
+    "T01",
+    "T01",
+    "T03",
+    "T06"
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "id": "1-30",
+  "schema_version": "3.0",
+  "chapter": 1,
+  "level": 30,
+  "level_role": "boss",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "rectangle",
+  "tile_types": [
+    "T02",
+    "T04",
+    "T03",
+    "T01"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 34
+    }
+  ],
+  "max_moves": 32,
+  "obstacles": [],
+  "special_tiles": [
+    {
+      "type": "cascade",
+      "position": [
+        1,
+        0
+      ]
+    },
+    {
+      "type": "cascade",
+      "position": [
+        7,
+        2
+      ]
+    }
+  ],
+  "board_events": [],
+  "material_reward": {
+    "type": "shell_fragment",
+    "amount": 10
+  },
+  "coin_reward": 22,
+  "grid_data": [
+    "T02",
+    "T04",
+    "T03",
+    "T04",
+    "T03",
+    "T03",
+    "T02",
+    "T03",
+    "T01",
+    "T02",
+    "T01",
+    "T03",
+    "T01",
+    "T04",
+    "T01",
+    "T02",
+    "T04",
+    "T02",
+    "T03",
+    "T03",
+    "T02",
+    "T02",
+    "T03",
+    "T01",
+    "T04",
+    "T03",
+    "T03",
+    "T03",
+    "T02",
+    "T04",
+    "T01",
+    "T01",
+    "T02",
+    "T01",
+    "T03",
+    "T02",
+    "T01",
+    "T04",
+    "T04",
+    "T03",
+    "T02",
+    "T04",
+    "T01",
+    "T01",
+    "T04",
+    "T02",
+    "T02",
+    "T04",
+    "T04",
+    "T04",
+    "T01",
+    "T02",
+    "T04",
+    "T02",
+    "T03",
+    "T01",
+    "T01",
+    "T03",
+    "T03",
+    "T01",
+    "T01",
+    "T04",
+    "T04",
+    "T02"
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "id": "3-15",
+  "schema_version": "3.0",
+  "chapter": 3,
+  "level": 15,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "bay_contour",
+  "tile_types": [
+    "T08",
+    "T07",
+    "T06",
+    "T05",
+    "T10",
+    "T09"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 24
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 32,
+  "obstacles": [
+    {
+      "type": "chain_lock",
+      "position": [
+        6,
+        1
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        7,
+        3
+      ],
+      "layers": 2
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        6,
+        0
+      ],
+      "layers": 2
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "pine_needle",
+    "amount": 4
+  },
+  "coin_reward": 22,
+  "grid_data": [
+    "T08",
+    "T07",
+    "T06",
+    "T05",
+    "T10",
+    "T06",
+    "void",
+    "void",
+    "T07",
+    "T10",
+    "T07",
+    "T07",
+    "T06",
+    "T07",
+    "T07",
+    "T07",
+    "T06",
+    "void",
+    "T09",
+    "T07",
+    "T09",
+    "T07",
+    "T06",
+    "T07",
+    "T06",
+    "T07",
+    "T09",
+    "T05",
+    "T09",
+    "T05",
+    "void",
+    "T08",
+    "T05",
+    "void",
+    "T07",
+    "T06",
+    "T05",
+    "T08",
+    "T10",
+    "T08",
+    "T10",
+    "T07",
+    "T09",
+    "T09",
+    "T07",
+    "T05",
+    "T09",
+    "T10",
+    "T05",
+    "T07",
+    "T10",
+    "T10",
+    "T08",
+    "T07",
+    "T06",
+    "void",
+    "T09",
+    "T08",
+    "T08",
+    "T07",
+    "T07",
+    "T05",
+    "T08",
+    "T10"
+  ]
+}

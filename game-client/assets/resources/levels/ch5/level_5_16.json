@@ -1,0 +1,180 @@
+{
+  "id": "5-16",
+  "schema_version": "3.0",
+  "chapter": 5,
+  "level": 16,
+  "level_role": "standard",
+  "grid_size": [
+    9,
+    9
+  ],
+  "shape": "island_contour",
+  "tile_types": [
+    "T16",
+    "T15",
+    "T02",
+    "T14",
+    "T06",
+    "T17",
+    "T03",
+    "T12"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 19
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 39,
+  "obstacles": [
+    {
+      "type": "chain_lock",
+      "position": [
+        6,
+        7
+      ],
+      "required_matches": 3
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        3,
+        2
+      ],
+      "layers": 2
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        6,
+        1
+      ],
+      "required_matches": 3
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        7,
+        1
+      ],
+      "layers": 3
+    },
+    {
+      "type": "water_current",
+      "position": [
+        2,
+        2
+      ],
+      "initial_direction": "left",
+      "change_interval_s": 8
+    },
+    {
+      "type": "water_current",
+      "position": [
+        6,
+        0
+      ],
+      "initial_direction": "left",
+      "change_interval_s": 8
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "rope_fiber",
+    "amount": 6
+  },
+  "coin_reward": 37,
+  "grid_data": [
+    "T16",
+    "T15",
+    "T02",
+    "T14",
+    "void",
+    "T16",
+    "T14",
+    "T06",
+    "T17",
+    "void",
+    "T15",
+    "T17",
+    "T02",
+    "T15",
+    "void",
+    "void",
+    "T06",
+    "T03",
+    "T06",
+    "T12",
+    "T17",
+    "T12",
+    "T02",
+    "T02",
+    "T17",
+    "void",
+    "T17",
+    "T15",
+    "void",
+    "T06",
+    "T03",
+    "T16",
+    "T02",
+    "T03",
+    "T17",
+    "T15",
+    "T17",
+    "T12",
+    "T14",
+    "T03",
+    "T06",
+    "T03",
+    "T14",
+    "T06",
+    "T06",
+    "T12",
+    "T02",
+    "T03",
+    "T02",
+    "T06",
+    "T15",
+    "T15",
+    "T03",
+    "T17",
+    "T06",
+    "T14",
+    "T02",
+    "T14",
+    "T12",
+    "T06",
+    "T16",
+    "T12",
+    "T16",
+    "T16",
+    "T03",
+    "T14",
+    "T15",
+    "T06",
+    "T14",
+    "void",
+    "T16",
+    "T12",
+    "void",
+    "T16",
+    "T12",
+    "void",
+    "T06",
+    "T06",
+    "T06",
+    "void",
+    "void"
+  ]
+}

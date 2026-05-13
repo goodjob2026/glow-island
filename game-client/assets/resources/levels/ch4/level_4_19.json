@@ -1,0 +1,149 @@
+{
+  "id": "4-19",
+  "schema_version": "3.0",
+  "chapter": 4,
+  "level": 19,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "island_contour",
+  "tile_types": [
+    "T09",
+    "T01",
+    "T06",
+    "T13",
+    "T03",
+    "T07",
+    "T16"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 21
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 36,
+  "obstacles": [
+    {
+      "type": "ice_block",
+      "position": [
+        4,
+        4
+      ],
+      "layers": 1
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        2,
+        2
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        4,
+        0
+      ]
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        6,
+        0
+      ]
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        5,
+        2
+      ]
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "torii_fragment",
+    "amount": 4
+  },
+  "coin_reward": 30,
+  "grid_data": [
+    "T09",
+    "T01",
+    "T06",
+    "T01",
+    "T06",
+    "void",
+    "T13",
+    "T03",
+    "T03",
+    "T06",
+    "T07",
+    "T01",
+    "T07",
+    "T01",
+    "T01",
+    "T09",
+    "T13",
+    "T06",
+    "T09",
+    "T06",
+    "T01",
+    "T03",
+    "T03",
+    "T06",
+    "T09",
+    "T03",
+    "T13",
+    "T06",
+    "T13",
+    "T16",
+    "void",
+    "T16",
+    "T09",
+    "T16",
+    "T13",
+    "T07",
+    "T16",
+    "T07",
+    "T13",
+    "void",
+    "T01",
+    "T16",
+    "T03",
+    "T13",
+    "T03",
+    "T13",
+    "void",
+    "T13",
+    "T07",
+    "T03",
+    "T16",
+    "T09",
+    "T07",
+    "T07",
+    "T16",
+    "T13",
+    "T07",
+    "void",
+    "T01",
+    "T16",
+    "T09",
+    "T06",
+    "T09",
+    "void"
+  ]
+}

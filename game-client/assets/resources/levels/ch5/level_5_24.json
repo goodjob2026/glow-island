@@ -1,0 +1,206 @@
+{
+  "id": "5-24",
+  "schema_version": "3.0",
+  "chapter": 5,
+  "level": 24,
+  "level_role": "standard",
+  "grid_size": [
+    9,
+    9
+  ],
+  "shape": "island_contour",
+  "tile_types": [
+    "T01",
+    "T12",
+    "T03",
+    "T14",
+    "T15",
+    "T18",
+    "T08",
+    "T11",
+    "T04"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 22
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 40,
+  "obstacles": [
+    {
+      "type": "water_current",
+      "position": [
+        5,
+        8
+      ],
+      "initial_direction": "down",
+      "change_interval_s": 8
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        8,
+        1
+      ],
+      "layers": 3
+    },
+    {
+      "type": "water_current",
+      "position": [
+        4,
+        6
+      ],
+      "initial_direction": "down",
+      "change_interval_s": 8
+    },
+    {
+      "type": "water_current",
+      "position": [
+        2,
+        4
+      ],
+      "initial_direction": "up",
+      "change_interval_s": 8
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        4,
+        0
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        3,
+        7
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        0,
+        7
+      ],
+      "layers": 3
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        1,
+        3
+      ],
+      "layers": 3
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        3,
+        0
+      ],
+      "required_matches": 3
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "rope_fiber",
+    "amount": 6
+  },
+  "coin_reward": 40,
+  "grid_data": [
+    "T01",
+    "T12",
+    "void",
+    "T01",
+    "void",
+    "T03",
+    "T01",
+    "T03",
+    "void",
+    "void",
+    "T14",
+    "void",
+    "T01",
+    "T15",
+    "T01",
+    "T18",
+    "T08",
+    "T11",
+    "T15",
+    "void",
+    "T08",
+    "T15",
+    "T15",
+    "T01",
+    "T04",
+    "T14",
+    "T08",
+    "T01",
+    "T01",
+    "T18",
+    "T04",
+    "T14",
+    "T04",
+    "T18",
+    "T01",
+    "T15",
+    "T12",
+    "T01",
+    "T12",
+    "T08",
+    "T08",
+    "T01",
+    "T01",
+    "void",
+    "T18",
+    "T04",
+    "T15",
+    "T03",
+    "T04",
+    "T12",
+    "T18",
+    "T11",
+    "void",
+    "T12",
+    "T01",
+    "T04",
+    "T12",
+    "T14",
+    "T01",
+    "T01",
+    "T18",
+    "T11",
+    "T03",
+    "T03",
+    "T01",
+    "void",
+    "T01",
+    "T01",
+    "T14",
+    "T03",
+    "T01",
+    "T01",
+    "T11",
+    "T08",
+    "T14",
+    "T11",
+    "T01",
+    "T11",
+    "void",
+    "T01",
+    "void"
+  ]
+}

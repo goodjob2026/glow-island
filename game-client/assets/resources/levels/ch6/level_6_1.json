@@ -1,0 +1,145 @@
+{
+  "id": "6-1",
+  "schema_version": "3.0",
+  "chapter": 6,
+  "level": 1,
+  "level_role": "standard",
+  "grid_size": [
+    9,
+    9
+  ],
+  "shape": "lighthouse_contour",
+  "tile_types": [
+    "T01",
+    "T19",
+    "T06",
+    "T14",
+    "T18",
+    "T16",
+    "T10",
+    "T05",
+    "T02",
+    "T11"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 13
+    }
+  ],
+  "max_moves": 36,
+  "obstacles": [
+    {
+      "type": "wooden_crate",
+      "position": [
+        6,
+        4
+      ]
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        2,
+        6
+      ]
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        5,
+        4
+      ]
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "lantern_glass",
+    "amount": 4
+  },
+  "coin_reward": 32,
+  "grid_data": [
+    "T01",
+    "T19",
+    "T06",
+    "void",
+    "void",
+    "T14",
+    "T18",
+    "T16",
+    "void",
+    "T19",
+    "T10",
+    "void",
+    "T10",
+    "T18",
+    "T01",
+    "T06",
+    "void",
+    "T14",
+    "T10",
+    "T05",
+    "T10",
+    "T06",
+    "T18",
+    "T18",
+    "T16",
+    "void",
+    "T05",
+    "void",
+    "T14",
+    "T06",
+    "T02",
+    "T14",
+    "T05",
+    "T18",
+    "T11",
+    "T05",
+    "T19",
+    "T02",
+    "T01",
+    "T11",
+    "T18",
+    "T16",
+    "T18",
+    "T02",
+    "T11",
+    "T02",
+    "T05",
+    "T18",
+    "T11",
+    "T19",
+    "T16",
+    "T02",
+    "T18",
+    "T16",
+    "T02",
+    "T11",
+    "T06",
+    "T10",
+    "T01",
+    "T06",
+    "T18",
+    "void",
+    "T01",
+    "void",
+    "T14",
+    "T18",
+    "T10",
+    "T05",
+    "void",
+    "T18",
+    "void",
+    "T18",
+    "T19",
+    "T14",
+    "T11",
+    "T18",
+    "void",
+    "T19",
+    "T16",
+    "T01",
+    "void"
+  ]
+}

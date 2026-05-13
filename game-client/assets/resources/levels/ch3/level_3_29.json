@@ -1,0 +1,157 @@
+{
+  "id": "3-29",
+  "schema_version": "3.0",
+  "chapter": 3,
+  "level": 29,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "bay_contour",
+  "tile_types": [
+    "T05",
+    "T07",
+    "T11",
+    "T12",
+    "T03",
+    "T08"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 31
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 40,
+  "obstacles": [
+    {
+      "type": "weed",
+      "position": [
+        3,
+        1
+      ]
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        3,
+        2
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        2,
+        1
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "weed",
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        7,
+        4
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        3,
+        0
+      ],
+      "layers": 2
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "pine_needle",
+    "amount": 7
+  },
+  "coin_reward": 24,
+  "grid_data": [
+    "T05",
+    "T05",
+    "T07",
+    "T11",
+    "T05",
+    "T12",
+    "T11",
+    "T05",
+    "T07",
+    "T05",
+    "T05",
+    "T07",
+    "T05",
+    "void",
+    "T07",
+    "void",
+    "T03",
+    "T07",
+    "T11",
+    "T12",
+    "T12",
+    "T05",
+    "void",
+    "T08",
+    "T11",
+    "T05",
+    "T05",
+    "T11",
+    "T12",
+    "T03",
+    "T08",
+    "T12",
+    "T08",
+    "T08",
+    "T11",
+    "T11",
+    "T03",
+    "T08",
+    "T05",
+    "void",
+    "T05",
+    "T12",
+    "T12",
+    "T08",
+    "T03",
+    "T07",
+    "void",
+    "void",
+    "T03",
+    "T03",
+    "T05",
+    "T11",
+    "T07",
+    "T08",
+    "T08",
+    "T05",
+    "T05",
+    "T03",
+    "T03",
+    "T05",
+    "T05",
+    "T05",
+    "T07",
+    "T12"
+  ]
+}

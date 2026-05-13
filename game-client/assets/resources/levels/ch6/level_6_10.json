@@ -1,0 +1,161 @@
+{
+  "id": "6-10",
+  "schema_version": "3.0",
+  "chapter": 6,
+  "level": 10,
+  "level_role": "standard",
+  "grid_size": [
+    9,
+    9
+  ],
+  "shape": "lighthouse_contour",
+  "tile_types": [
+    "T19",
+    "T07",
+    "T20",
+    "T01",
+    "T13",
+    "T03",
+    "T02",
+    "T16"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 23
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 39,
+  "obstacles": [
+    {
+      "type": "ice_block",
+      "position": [
+        3,
+        3
+      ],
+      "layers": 2
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        6,
+        1
+      ],
+      "required_matches": 2
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        2,
+        5
+      ]
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        7,
+        3
+      ],
+      "required_matches": 3
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "lantern_glass",
+    "amount": 5
+  },
+  "coin_reward": 47,
+  "grid_data": [
+    "T19",
+    "void",
+    "T07",
+    "T19",
+    "void",
+    "T20",
+    "T07",
+    "T20",
+    "T19",
+    "T01",
+    "T19",
+    "T07",
+    "void",
+    "T01",
+    "T13",
+    "T03",
+    "T02",
+    "T16",
+    "void",
+    "T01",
+    "T20",
+    "T02",
+    "T02",
+    "T07",
+    "T19",
+    "void",
+    "T16",
+    "T13",
+    "T13",
+    "T19",
+    "T01",
+    "T13",
+    "T19",
+    "T16",
+    "T01",
+    "T20",
+    "T16",
+    "T07",
+    "T16",
+    "T03",
+    "T13",
+    "T19",
+    "T16",
+    "void",
+    "T19",
+    "T19",
+    "T20",
+    "T03",
+    "T03",
+    "T20",
+    "T19",
+    "T13",
+    "void",
+    "T07",
+    "T01",
+    "T16",
+    "T13",
+    "T07",
+    "T03",
+    "T02",
+    "T02",
+    "T03",
+    "T03",
+    "T02",
+    "T07",
+    "T19",
+    "T16",
+    "T02",
+    "T13",
+    "T01",
+    "void",
+    "T03",
+    "T01",
+    "T20",
+    "void",
+    "T20",
+    "T02",
+    "void",
+    "void",
+    "void",
+    "void"
+  ]
+}

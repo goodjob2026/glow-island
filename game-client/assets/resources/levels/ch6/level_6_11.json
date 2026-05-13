@@ -1,0 +1,174 @@
+{
+  "id": "6-11",
+  "schema_version": "3.0",
+  "chapter": 6,
+  "level": 11,
+  "level_role": "standard",
+  "grid_size": [
+    9,
+    9
+  ],
+  "shape": "lighthouse_contour",
+  "tile_types": [
+    "T16",
+    "T02",
+    "T12",
+    "T01",
+    "T17",
+    "T20",
+    "T19",
+    "T08"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 18
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 38,
+  "obstacles": [
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        5,
+        5
+      ],
+      "variant": "moss",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        2,
+        3
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        3,
+        8
+      ]
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        4,
+        5
+      ],
+      "variant": "vine",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        4,
+        6
+      ]
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        5,
+        1
+      ],
+      "required_matches": 2
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "lantern_glass",
+    "amount": 6
+  },
+  "coin_reward": 39,
+  "grid_data": [
+    "T16",
+    "T02",
+    "T12",
+    "void",
+    "T01",
+    "T17",
+    "void",
+    "T16",
+    "T20",
+    "void",
+    "T02",
+    "T01",
+    "void",
+    "T16",
+    "T16",
+    "T17",
+    "T16",
+    "T19",
+    "T19",
+    "T20",
+    "T02",
+    "T20",
+    "T17",
+    "T01",
+    "T12",
+    "void",
+    "void",
+    "void",
+    "T16",
+    "T12",
+    "T16",
+    "T19",
+    "T17",
+    "T19",
+    "T01",
+    "T08",
+    "T17",
+    "T17",
+    "T20",
+    "T02",
+    "T19",
+    "T20",
+    "T08",
+    "T01",
+    "T12",
+    "T20",
+    "T19",
+    "T20",
+    "T20",
+    "T02",
+    "T12",
+    "T08",
+    "T19",
+    "void",
+    "T02",
+    "T01",
+    "T01",
+    "T12",
+    "T12",
+    "T17",
+    "T20",
+    "T02",
+    "T01",
+    "T08",
+    "T08",
+    "void",
+    "T08",
+    "T12",
+    "T20",
+    "void",
+    "T02",
+    "T08",
+    "T08",
+    "T17",
+    "void",
+    "void",
+    "T16",
+    "T20",
+    "T19",
+    "T20",
+    "void"
+  ]
+}

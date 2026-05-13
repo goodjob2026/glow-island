@@ -1,0 +1,149 @@
+{
+  "id": "5-8",
+  "schema_version": "3.0",
+  "chapter": 5,
+  "level": 8,
+  "level_role": "standard",
+  "grid_size": [
+    9,
+    9
+  ],
+  "shape": "island_contour",
+  "tile_types": [
+    "T14",
+    "T09",
+    "T17",
+    "T06",
+    "T07",
+    "T02",
+    "T03"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 21
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 39,
+  "obstacles": [
+    {
+      "type": "chain_lock",
+      "position": [
+        6,
+        0
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        2,
+        7
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        4,
+        2
+      ],
+      "required_matches": 2
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "rope_fiber",
+    "amount": 4
+  },
+  "coin_reward": 35,
+  "grid_data": [
+    "T14",
+    "void",
+    "T09",
+    "T09",
+    "T17",
+    "T14",
+    "void",
+    "T06",
+    "T07",
+    "T07",
+    "T17",
+    "T02",
+    "T09",
+    "T14",
+    "T02",
+    "T14",
+    "T03",
+    "T09",
+    "T07",
+    "void",
+    "T02",
+    "T09",
+    "T02",
+    "T03",
+    "T17",
+    "T17",
+    "T14",
+    "T09",
+    "T14",
+    "T14",
+    "T14",
+    "T09",
+    "T03",
+    "T03",
+    "T17",
+    "T07",
+    "T14",
+    "T17",
+    "T07",
+    "T02",
+    "T17",
+    "T07",
+    "T03",
+    "T06",
+    "T06",
+    "T02",
+    "T02",
+    "T06",
+    "T06",
+    "T06",
+    "T03",
+    "T07",
+    "void",
+    "T02",
+    "T17",
+    "T07",
+    "T14",
+    "T06",
+    "T02",
+    "T03",
+    "T06",
+    "T02",
+    "T06",
+    "T09",
+    "T07",
+    "T03",
+    "void",
+    "T03",
+    "void",
+    "void",
+    "T17",
+    "T07",
+    "T17",
+    "void",
+    "T03",
+    "void",
+    "T09",
+    "T06",
+    "T09",
+    "void",
+    "void"
+  ]
+}

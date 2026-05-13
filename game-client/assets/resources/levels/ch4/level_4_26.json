@@ -1,0 +1,159 @@
+{
+  "id": "4-26",
+  "schema_version": "3.0",
+  "chapter": 4,
+  "level": 26,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "island_contour",
+  "tile_types": [
+    "T07",
+    "T08",
+    "T16",
+    "T02",
+    "T10",
+    "T05",
+    "T04",
+    "T06"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 28
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 39,
+  "obstacles": [
+    {
+      "type": "chain_lock",
+      "position": [
+        3,
+        4
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        4,
+        6
+      ]
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        3,
+        6
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        7,
+        5
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        0,
+        3
+      ],
+      "layers": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        6,
+        3
+      ],
+      "layers": 1
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "torii_fragment",
+    "amount": 6
+  },
+  "coin_reward": 29,
+  "grid_data": [
+    "T07",
+    "T07",
+    "T08",
+    "T16",
+    "T16",
+    "T02",
+    "T07",
+    "T10",
+    "T05",
+    "T02",
+    "T07",
+    "T07",
+    "T04",
+    "T08",
+    "void",
+    "T10",
+    "T06",
+    "void",
+    "T07",
+    "T08",
+    "T04",
+    "T07",
+    "T10",
+    "void",
+    "T06",
+    "T05",
+    "T07",
+    "T07",
+    "T05",
+    "T04",
+    "T06",
+    "T06",
+    "T04",
+    "T16",
+    "T08",
+    "T02",
+    "T05",
+    "T16",
+    "T04",
+    "T02",
+    "T16",
+    "void",
+    "T10",
+    "T05",
+    "T08",
+    "T07",
+    "T04",
+    "T16",
+    "void",
+    "T07",
+    "T05",
+    "T02",
+    "T10",
+    "T06",
+    "T07",
+    "T07",
+    "T10",
+    "T02",
+    "T07",
+    "T07",
+    "void",
+    "T07",
+    "T06",
+    "T08"
+  ]
+}

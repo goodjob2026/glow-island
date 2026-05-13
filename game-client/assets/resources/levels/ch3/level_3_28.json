@@ -1,0 +1,165 @@
+{
+  "id": "3-28",
+  "schema_version": "3.0",
+  "chapter": 3,
+  "level": 28,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "bay_contour",
+  "tile_types": [
+    "T01",
+    "T07",
+    "T09",
+    "T10",
+    "T02",
+    "T12"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 23
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 38,
+  "obstacles": [
+    {
+      "type": "chain_lock",
+      "position": [
+        5,
+        5
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        0,
+        1
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        0,
+        3
+      ],
+      "layers": 2
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        0,
+        6
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        3,
+        6
+      ],
+      "layers": 1
+    },
+    {
+      "type": "weed",
+      "position": [
+        4,
+        1
+      ]
+    },
+    {
+      "type": "weed",
+      "position": [
+        2,
+        6
+      ]
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "pine_needle",
+    "amount": 6
+  },
+  "coin_reward": 28,
+  "grid_data": [
+    "T01",
+    "T07",
+    "T01",
+    "T09",
+    "T10",
+    "void",
+    "T02",
+    "T10",
+    "T01",
+    "void",
+    "T02",
+    "T02",
+    "T10",
+    "T12",
+    "T02",
+    "T09",
+    "T12",
+    "T09",
+    "T12",
+    "T07",
+    "T09",
+    "T12",
+    "T01",
+    "void",
+    "T02",
+    "T02",
+    "T07",
+    "T10",
+    "T02",
+    "T01",
+    "T07",
+    "T02",
+    "T02",
+    "T02",
+    "T02",
+    "T12",
+    "T10",
+    "T12",
+    "T12",
+    "void",
+    "T10",
+    "void",
+    "T07",
+    "T02",
+    "T02",
+    "T01",
+    "T07",
+    "T01",
+    "T02",
+    "T02",
+    "void",
+    "T12",
+    "T10",
+    "T10",
+    "T09",
+    "T02",
+    "T02",
+    "T07",
+    "T02",
+    "T09",
+    "T09",
+    "T07",
+    "T09",
+    "T01"
+  ]
+}

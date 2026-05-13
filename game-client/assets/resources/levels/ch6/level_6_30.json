@@ -1,0 +1,232 @@
+{
+  "id": "6-30",
+  "schema_version": "3.0",
+  "chapter": 6,
+  "level": 30,
+  "level_role": "boss",
+  "grid_size": [
+    9,
+    9
+  ],
+  "shape": "lighthouse_contour",
+  "tile_types": [
+    "T05",
+    "T20",
+    "T15",
+    "T19",
+    "T02",
+    "T14",
+    "T07",
+    "T01",
+    "T18"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 38
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 40,
+  "obstacles": [
+    {
+      "type": "chain_lock",
+      "position": [
+        7,
+        0
+      ],
+      "required_matches": 2
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        0,
+        7
+      ],
+      "variant": "vine",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        3,
+        8
+      ]
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        0,
+        8
+      ]
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        4,
+        2
+      ],
+      "variant": "vine",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        7,
+        7
+      ],
+      "required_matches": 2
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        3,
+        2
+      ]
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        6,
+        6
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        3,
+        7
+      ],
+      "layers": 3
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        2,
+        4
+      ]
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        7,
+        5
+      ],
+      "variant": "moss",
+      "spread_interval_moves": 3
+    }
+  ],
+  "special_tiles": [
+    {
+      "type": "cascade",
+      "position": [
+        2,
+        3
+      ]
+    },
+    {
+      "type": "cascade",
+      "position": [
+        2,
+        5
+      ]
+    }
+  ],
+  "board_events": [],
+  "material_reward": {
+    "type": "lantern_glass",
+    "amount": 11
+  },
+  "coin_reward": 79,
+  "grid_data": [
+    "void",
+    "T05",
+    "T20",
+    "T20",
+    "T15",
+    "T19",
+    "void",
+    "T20",
+    "T20",
+    "T02",
+    "void",
+    "void",
+    "T19",
+    "T14",
+    "T05",
+    "void",
+    "void",
+    "T05",
+    "void",
+    "T15",
+    "T02",
+    "T20",
+    "T07",
+    "T07",
+    "T14",
+    "void",
+    "T07",
+    "T07",
+    "T20",
+    "T20",
+    "T19",
+    "T20",
+    "T01",
+    "T02",
+    "T01",
+    "T14",
+    "void",
+    "T20",
+    "T20",
+    "T20",
+    "T20",
+    "T20",
+    "T02",
+    "T19",
+    "T20",
+    "void",
+    "T02",
+    "T14",
+    "T20",
+    "T05",
+    "T18",
+    "T20",
+    "T19",
+    "void",
+    "T05",
+    "T18",
+    "T15",
+    "T20",
+    "T15",
+    "T15",
+    "T01",
+    "T19",
+    "T07",
+    "T15",
+    "void",
+    "T18",
+    "T07",
+    "T18",
+    "T02",
+    "T18",
+    "T05",
+    "T01",
+    "T01",
+    "T01",
+    "T20",
+    "T20",
+    "T14",
+    "T18",
+    "T20",
+    "T14",
+    "void"
+  ]
+}

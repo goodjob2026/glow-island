@@ -1,0 +1,158 @@
+{
+  "id": "4-23",
+  "schema_version": "3.0",
+  "chapter": 4,
+  "level": 23,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "island_contour",
+  "tile_types": [
+    "T08",
+    "T10",
+    "T13",
+    "T04",
+    "T07",
+    "T14",
+    "T16",
+    "T01"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 28
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    },
+    {
+      "type": "free_chains",
+      "count": 1
+    }
+  ],
+  "max_moves": 39,
+  "obstacles": [
+    {
+      "type": "chain_lock",
+      "position": [
+        5,
+        0
+      ],
+      "required_matches": 3
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        4,
+        1
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        1,
+        7
+      ]
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        0,
+        7
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        3,
+        2
+      ],
+      "layers": 2
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        7,
+        0
+      ]
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "torii_fragment",
+    "amount": 6
+  },
+  "coin_reward": 34,
+  "grid_data": [
+    "T08",
+    "T10",
+    "T10",
+    "T13",
+    "T04",
+    "T07",
+    "T14",
+    "T07",
+    "T14",
+    "T16",
+    "T16",
+    "void",
+    "T13",
+    "T01",
+    "T10",
+    "T01",
+    "T08",
+    "T13",
+    "T08",
+    "T07",
+    "T07",
+    "T04",
+    "T01",
+    "T10",
+    "T07",
+    "T14",
+    "T01",
+    "T07",
+    "T07",
+    "T13",
+    "T16",
+    "void",
+    "T13",
+    "T07",
+    "T01",
+    "T01",
+    "T04",
+    "T07",
+    "void",
+    "T16",
+    "T14",
+    "T08",
+    "T07",
+    "T10",
+    "T04",
+    "T07",
+    "T16",
+    "T04",
+    "T07",
+    "T16",
+    "void",
+    "T14",
+    "T04",
+    "T10",
+    "void",
+    "T07",
+    "T07",
+    "T08",
+    "T07",
+    "T08",
+    "T07",
+    "void",
+    "T14",
+    "T13"
+  ]
+}

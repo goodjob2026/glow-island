@@ -1,0 +1,137 @@
+{
+  "id": "3-18",
+  "schema_version": "3.0",
+  "chapter": 3,
+  "level": 18,
+  "level_role": "standard",
+  "grid_size": [
+    8,
+    8
+  ],
+  "shape": "bay_contour",
+  "tile_types": [
+    "T06",
+    "T04",
+    "T08",
+    "T01",
+    "T03",
+    "T07"
+  ],
+  "objectives": [
+    {
+      "type": "clear_tiles",
+      "tile_type": "any",
+      "count": 19
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
+    }
+  ],
+  "max_moves": 33,
+  "obstacles": [
+    {
+      "type": "weed",
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "type": "weed",
+      "position": [
+        1,
+        0
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        6,
+        0
+      ],
+      "layers": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        4,
+        4
+      ],
+      "layers": 2
+    }
+  ],
+  "special_tiles": [],
+  "board_events": [],
+  "material_reward": {
+    "type": "pine_needle",
+    "amount": 6
+  },
+  "coin_reward": 24,
+  "grid_data": [
+    "T06",
+    "T06",
+    "T04",
+    "T08",
+    "T01",
+    "T01",
+    "T01",
+    "T01",
+    "T03",
+    "T08",
+    "T04",
+    "T04",
+    "T07",
+    "T01",
+    "T01",
+    "T04",
+    "void",
+    "T06",
+    "T08",
+    "T01",
+    "T03",
+    "T04",
+    "T03",
+    "T06",
+    "T03",
+    "T06",
+    "T03",
+    "T03",
+    "T04",
+    "T01",
+    "void",
+    "T07",
+    "T08",
+    "T07",
+    "T01",
+    "T07",
+    "T07",
+    "T06",
+    "T01",
+    "void",
+    "T08",
+    "T04",
+    "T03",
+    "T01",
+    "T06",
+    "T08",
+    "void",
+    "T01",
+    "T08",
+    "T03",
+    "T01",
+    "T01",
+    "T06",
+    "void",
+    "T01",
+    "T07",
+    "T01",
+    "T07",
+    "void",
+    "T01",
+    "T08",
+    "T01",
+    "T07",
+    "T04"
+  ]
+}
