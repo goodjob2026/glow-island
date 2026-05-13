@@ -1,4 +1,6 @@
-# BATCH-02 — Special Tactical Tiles Visual Acceptance
+# BATCH-02 — Special Tactical Tiles Visual Acceptance [RERUN]
+
+> **RERUN — Repair applied 2026-05-13**: All 5 special block frame_01 files resized from 512px to **128×128px** (sips batch resize). F004 (TILE_DIMENSION_WRONG) repair. Re-inspect mechanic markers at 128px size.
 
 **Batch ID**: BATCH-02-tiles-special
 **Task ID**: TASK-02

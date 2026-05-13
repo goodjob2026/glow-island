@@ -1,4 +1,6 @@
-# BATCH-04 — Character Portraits Visual Acceptance
+# BATCH-04 — Character Portraits Visual Acceptance [RERUN]
+
+> **RERUN — Repair applied 2026-05-13**: F008 (PORTRAIT_IDENTITY_MISMATCH) repair. char_hinata_portrait_happy regenerated via ChatGPT with explicit identity lock: brown hair tied back + sakura pink #F0C4C4 accents + worn notebook visible. Previous version had dark hair (wrong character). Check hinata happy now matches hinata default.
 
 **Batch ID**: BATCH-04-char-portraits
 **Task ID**: TASK-04

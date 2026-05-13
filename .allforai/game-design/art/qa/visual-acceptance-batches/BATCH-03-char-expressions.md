@@ -1,4 +1,6 @@
-# BATCH-03 — Character Expressions Visual Acceptance
+# BATCH-03 — Character Expressions Visual Acceptance [RERUN]
+
+> **RERUN — Repair applied 2026-05-13**: F005 (EXPR_IDENTITY_DRIFT) repair. char_ritsu (×5) and char_umeko (×5) fully regenerated via ChatGPT with explicit LOCKED IDENTITY anchors: ritsu=dark disheveled hair+blue-grey rolled-sleeve shirt+lanky build; umeko=updo bun+bamboo-green pottery apron+mature face with laugh lines. Check that each character now looks consistent across all 5 emotions. Other characters (hinata/kenzo/natsuka/fuyuko/gicho) unchanged.
 
 **Batch ID**: BATCH-03-char-expressions
 **Task ID**: TASK-03

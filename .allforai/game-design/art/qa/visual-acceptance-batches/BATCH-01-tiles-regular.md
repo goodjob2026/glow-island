@@ -1,4 +1,6 @@
-# BATCH-01 — Regular Tiles Visual Acceptance
+# BATCH-01 — Regular Tiles Visual Acceptance [RERUN]
+
+> **RERUN — Repair applied 2026-05-13**: All 20 regular tiles resized from 512/1024px to **128×128px** (sips batch resize). F001 (TILE_DIMENSION_WRONG) repair. Re-inspect dimension compliance and readability at target size.
 
 **Batch ID**: BATCH-01-tiles-regular
 **Task ID**: TASK-01

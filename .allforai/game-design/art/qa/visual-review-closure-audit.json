@@ -1,241 +1,45 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-05-13T00:00:00Z",
-  "project": "glow-island",
-  "skill": "game-art/40-qa/visual-acceptance-review",
-  "audit_mode": "closure_audit_only",
-  "auditor": "Claude Code (does NOT re-score visual quality; audits Codex report structure and repair routing only)",
-
-  "audit_id": "AUDIT-001",
-  "codex_review_ref": ".allforai/game-design/art/qa/codex-visual-review.json",
-  "codex_review_md_ref": ".allforai/game-design/art/qa/codex-visual-review.md",
-
-  "audit_verdict": "incomplete",
-
-  "checked_items": [
+  "audit_at": "2026-05-13T12:30:00Z",
+  "rerun_iteration": 3,
+  "codex_report": ".allforai/game-design/art/qa/codex-visual-review.json",
+  "codex_report_parseable": true,
+  "all_batches_have_evidence": true,
+  "checks": [
+    { "check": "codex_report_exists_and_parseable", "result": "PASS" },
+    { "check": "every_batch_has_inspected_evidence", "result": "PASS" },
+    { "check": "blocker_findings_have_artifact_id_code_evidence_repair", "result": "PASS" },
+    { "check": "previous_repair_was_executed", "result": "PASS",
+      "note": "Repair2 executed: umeko expressions (5 files) + ritsu portrait_happy regenerated with ABSOLUTE FIXED APPEARANCE anchors. Committed fdb65b5." },
+    { "check": "rerun_codex_after_repair", "result": "PASS",
+      "note": "Codex rerun completed (session 019e213d). BATCH-03 and BATCH-04 still FAIL. Ritsu expressions PASS. Hinata portrait PASS." },
+    { "check": "no_accepted_artifact_from_metadata_alone", "result": "PASS" },
+    { "check": "unresolved_blockers_marked_failed_validation", "result": "PENDING",
+      "note": "2 blockers remain (F03-BLOCKER-001, F04-BLOCKER-001). Decision required on repair3 vs. placeholder acceptance." }
+  ],
+  "resolved_all_iterations": ["F001", "F004", "F008", "F005_ritsu", "F005_gicho_PLACEHOLDER"],
+  "repair_run_1_resolved": ["F001", "F004", "F008"],
+  "repair_run_2_resolved": ["F005_ritsu_CONFIRMED", "F005_hinata_CONFIRMED"],
+  "repair_run_2_still_failing": ["F03-BLOCKER-001_umeko", "F04-BLOCKER-001_ritsu_portrait"],
+  "accepted_as_placeholder": [
     {
-      "check": "codex_report_exists_and_parseable",
-      "result": "PASS",
-      "note": "codex-visual-review.json and codex-visual-review.md both exist and are well-formed"
-    },
-    {
-      "check": "all_batches_reviewed",
-      "result": "PASS",
-      "note": "All 6 batch documents are listed in reviewed_batches. All 6 batch_summaries present."
-    },
-    {
-      "check": "total_inspected_count",
-      "result": "PASS",
-      "note": "total_inspected=85 matches expected asset count"
-    },
-    {
-      "check": "inspected_evidence_paths_exist",
-      "result": "PASS",
-      "note": "All 16 evidence contact sheet PNG files exist under .allforai/game-design/art/qa/codex-visual-evidence/ — Codex created real composite sheets before inspecting, not manifest-only review"
-    },
-    {
-      "check": "every_batch_has_inspected_count",
-      "result": "PASS",
-      "note": "assets_referenced and assets_inspected match per batch: 20/20, 5/5, 35/35, 10/10, 15/15, 6/6"
-    },
-    {
-      "check": "every_blocker_has_asset_id_failure_code_evidence_repair",
-      "result": "PARTIAL",
-      "note": "F001, F004, F005, F008, F011 have failure codes. F010 (ANIM_IDENTITY_DRIFT blocker) is missing failure_code field (null). All blockers have evidence_paths and repair_suggestion. All have affected_assets.",
-      "defects": ["F010 missing failure_code — should be ANIM_IDENTITY_DRIFT"]
-    },
-    {
-      "check": "every_major_has_asset_id_evidence_repair",
-      "result": "PARTIAL",
-      "note": "F002, F007, F013 are missing failure_code (null) but have evidence and repair. F009 uses PORTRAIT_DIMENSION_INCONSISTENT which is a defined minor code elevated to major due to content. F014 uses CROSS_FAMILY_PALETTE_MISMATCH (batch-local narrative code). All have evidence paths and repair suggestions.",
-      "defects": ["F002, F007, F013 have null failure_code — should map to closest standard code"]
-    },
-    {
-      "check": "codex_did_not_pass_from_specs_alone",
-      "result": "PASS",
-      "note": "Codex built composite contact sheets from actual PNGs before inspecting. Findings cite specific visual observations (e.g., 'side-facing heavier pose', 'guide marks', 'darker hair, different face design'). Evidence is grounded in visual inspection."
-    },
-    {
-      "check": "blocker_major_findings_require_feedback_and_repair",
-      "result": "INCOMPLETE",
-      "note": "6 blockers and 7 majors found. Per skill contract: blocker/major findings must be written to image-feedback-report.json, assets repaired or regenerated, affected batches rebuilt, Codex rerun. None of these steps have been executed yet. This is iteration 1."
-    },
-    {
-      "check": "no_asset_accepted_without_codex_inspection",
-      "result": "PASS",
-      "note": "overall_verdict=fail. No asset is marked accepted. No asset bypassed Codex visual inspection."
+      "id": "F05-BLOCKER-001",
+      "id2": "F05-BLOCKER-002",
+      "reason": "Gicho frame animation: text-to-image cannot maintain consistent scale/face across independent frames without img2img. Accepted as design-phase placeholder. Authorized by user."
     }
   ],
-
-  "missing_items": [
-    "F010 missing failure_code field (should be ANIM_IDENTITY_DRIFT)",
-    "F002, F007, F013 missing failure_code (should map to TILE_TEXT_ARTIFACT or closest defined code)",
-    "image-feedback-report.json not yet written for blocker/major findings",
-    "Repair/regeneration of affected assets not yet executed",
-    "Affected batch documents not yet rebuilt with repaired evidence",
-    "Codex CLI rerun for affected batches not yet executed",
-    "visual-repair-loop-report.json not yet written (required since blockers/majors found)"
-  ],
-
-  "blocking_codex_findings": [
+  "remaining_blockers": [
     {
-      "finding_id": "F001",
-      "task_id": "TASK-01",
-      "failure_code": "TILE_DIMENSION_WRONG",
-      "severity": "blocker",
-      "affected_assets": "all 20 regular tiles",
-      "evidence_path": ".allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-128.png",
-      "repair_route": "image-generation-contract",
-      "action": "Re-export or regenerate regular tiles at 128x128px canvas (or 2x at 256x256)"
+      "id": "F03-BLOCKER-001", "failure_code": "EXPR_IDENTITY_DRIFT", "batch": "BATCH-03",
+      "status": "UNRESOLVED_AFTER_REPAIR_2", "repair_budget_remaining": 1,
+      "notes": "Umeko: bun/apron persist but age, face shape, body scale drift across 5 emotions. ABSOLUTE FIXED APPEARANCE anchor not sufficient. Requires img2img or placeholder acceptance."
     },
     {
-      "finding_id": "F004",
-      "task_id": "TASK-02",
-      "failure_code": "TILE_DIMENSION_WRONG",
-      "severity": "blocker",
-      "affected_assets": "all 5 special tiles (frame_01)",
-      "evidence_path": ".allforai/game-design/art/qa/codex-visual-evidence/batch-02-special-tiles.png",
-      "repair_route": "image-generation-contract",
-      "action": "Re-export special tile frames at 128x128px canvas preserving mechanic markers"
-    },
-    {
-      "finding_id": "F005",
-      "task_id": "TASK-03",
-      "failure_code": "EXPR_IDENTITY_DRIFT",
-      "severity": "blocker",
-      "affected_assets": "char_ritsu (all 5 expressions), char_umeko (all 5 expressions)",
-      "evidence_path": ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-ritsu.png",
-      "repair_route": "image-generation-contract",
-      "action": "Regenerate all 5 ritsu and all 5 umeko expressions from locked character reference sheets with fixed hair, clothing, face proportions, and signature colors"
-    },
-    {
-      "finding_id": "F008",
-      "task_id": "TASK-04",
-      "failure_code": "PORTRAIT_IDENTITY_MISMATCH",
-      "severity": "blocker",
-      "affected_assets": "char_hinata_portrait_happy",
-      "evidence_path": ".allforai/game-design/art/qa/codex-visual-evidence/batch-04-portraits.png",
-      "repair_route": "image-generation-contract",
-      "action": "Regenerate char_hinata_portrait_happy from Hinata reference identity (sakura pink, brown tied hair, matching face)"
-    },
-    {
-      "finding_id": "F010",
-      "task_id": "TASK-05",
-      "failure_code": "ANIM_IDENTITY_DRIFT",
-      "severity": "blocker",
-      "affected_assets": "all 15 char_gicho animation frames",
-      "evidence_path": ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-idle.png",
-      "repair_route": "image-generation-contract",
-      "action": "Rebuild all 15 gicho animation frames from one locked model sheet; vary only the intended motion elements per frame"
-    },
-    {
-      "finding_id": "F011",
-      "task_id": "TASK-05",
-      "failure_code": "ANIM_LOOP_BREAK",
-      "severity": "blocker",
-      "affected_assets": "char_gicho_idle_f04 (breaks loop to f01)",
-      "evidence_path": ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-idle.png",
-      "repair_route": "image-generation-contract",
-      "action": "Rebuild idle set as subtle breathing loop; f04 must match f01 base pose closely"
+      "id": "F04-BLOCKER-001", "failure_code": "PORTRAIT_IDENTITY_MISMATCH", "batch": "BATCH-04",
+      "status": "UNRESOLVED_AFTER_REPAIR_2", "repair_budget_remaining": 2,
+      "notes": "Ritsu portrait_happy: broad hair/shirt markers now match, but face structure and rendering style differ from portrait_default. Requires img2img with portrait_default as reference, or placeholder acceptance."
     }
   ],
-
-  "major_codex_findings": [
-    {
-      "finding_id": "F002",
-      "task_id": "TASK-01",
-      "severity": "major",
-      "affected_assets": "tile_starfish, tile_hermit_crab, tile_lanternfish",
-      "repair_route": "image-generation-contract",
-      "action": "Regenerate with text, measurement guides, labels prohibited in negative prompt"
-    },
-    {
-      "finding_id": "F003",
-      "task_id": "TASK-01",
-      "severity": "minor",
-      "affected_assets": "tile_tuna, tile_lanternfish, tile_flying_fish, tile_dolphin, tile_crab",
-      "repair_route": "image-generation-contract",
-      "action": "Apply palette correction to s0 target (8-15% sat) or regenerate with ch1 s0 stage constraint"
-    },
-    {
-      "finding_id": "F006",
-      "task_id": "TASK-03",
-      "severity": "major",
-      "affected_assets": "char_ritsu_expr_react_jump, char_kenzo_expr_react_jump, char_gicho_expr_react_jump",
-      "repair_route": "image-generation-contract",
-      "action": "Regenerate react_jump variants with explicit energetic pose and full-body reaction cues"
-    },
-    {
-      "finding_id": "F007",
-      "task_id": "TASK-03",
-      "severity": "major",
-      "affected_assets": "char_hinata_react_jump, char_umeko x3, char_natsuka_surprised, char_fuyuko x2, char_gicho x2",
-      "repair_route": "image-generation-contract",
-      "action": "Regenerate all affected expressions with 'no text, no captions, no labels, no color codes, no punctuation overlays' negative prompt"
-    },
-    {
-      "finding_id": "F009",
-      "task_id": "TASK-04",
-      "severity": "major",
-      "affected_assets": "char_hinata_portrait_happy, char_fuyuko_portrait_react_jump",
-      "repair_route": "image-generation-contract",
-      "action": "Regenerate both at 1024x1024 with consistent portrait framing, no scene background, no baked text"
-    },
-    {
-      "finding_id": "F012",
-      "task_id": "TASK-05",
-      "severity": "major",
-      "affected_assets": "10 of 15 gicho frames",
-      "repair_route": "image-generation-contract",
-      "action": "Normalize canvas anchor, subject scale, and body orientation across all frames before motion generation"
-    },
-    {
-      "finding_id": "F013",
-      "task_id": "TASK-05",
-      "severity": "major",
-      "affected_assets": "char_gicho_idle_f02, char_gicho_happy_f01, char_gicho_happy_f02, char_gicho_wave_f04",
-      "repair_route": "image-generation-contract",
-      "action": "Regenerate or paint out baked titles, frame numbers, labels, and color codes from these 4 frames"
-    },
-    {
-      "finding_id": "F014",
-      "task_id": "TASK-06",
-      "severity": "major",
-      "affected_assets": "cross-family palette mismatch (tile saturation vs character line art)",
-      "repair_route": "image-generation-contract",
-      "action": "After tile palette correction (F003) and expression regeneration, rerun cross-family check to assess convergence"
-    }
-  ],
-
-  "feedback_report_refs": [
-    ".allforai/game-design/art/image-generation/image-feedback-report.json (NOT YET WRITTEN — required next step)"
-  ],
-
-  "repair_loop_refs": [
-    ".allforai/game-design/art/qa/visual-repair-loop-report.json (NOT YET WRITTEN — required since blockers/majors found)"
-  ],
-
-  "repair_priority_order": [
-    "1. HIGHEST: char_gicho all 15 frames (F010, F011, F012, F013) — complete rebuild from locked model sheet",
-    "2. HIGH: char_ritsu all 5 expressions + char_umeko all 5 expressions (F005) — regenerate from locked character refs",
-    "3. HIGH: All 25 tile source dimensions (F001, F004) — re-export at correct canvas size",
-    "4. HIGH: char_hinata_portrait_happy (F008) — regenerate from correct character reference",
-    "5. MEDIUM: Baked text removal from expressions (F007) and animation frames (F013)",
-    "6. MEDIUM: Baked measurement guide removal from tiles (F002)",
-    "7. MEDIUM: react_jump pose energy improvement (F006)",
-    "8. MEDIUM: Portrait 512px standardization (F009)",
-    "9. LOW: Ch1 saturation correction (F003) — apply after dimension fix",
-    "10. LOW: Cross-family style harmonization (F014) — recheck after 1-7 complete"
-  ],
-
-  "notes": [
-    "Codex built real contact sheet evidence before review — evidence is valid and grounded",
-    "BATCH-02 special tiles: mechanic markers are visually PRESENT and CORRECT — this is a significant positive finding; only dimension is failing",
-    "BATCH-03: Hinata, Kenzo, Natsuka, Fuyuko expressions are largely identity-consistent — only Ritsu and Umeko drift",
-    "BATCH-04: 8 of 10 portraits pass crop discipline and identity — only hinata_happy fails identity",
-    "BATCH-05: wave motion paw movement IS visible — ANIM_MOTION_ABSENT is NOT raised (positive finding)",
-    "Cross-family style: direction is close; not a complete style mismatch — harmonization possible",
-    "Audit verdict is incomplete because repair loop has not been executed. This is iteration 1 of the repair loop.",
-    "No batch was blocked by missing visual evidence or missing Codex capability — all evidence was inspected"
-  ]
+  "overall_status": "FAILED_VALIDATION",
+  "verdict": "2 blockers remain after repair run 2. Text-to-image identity drift is a fundamental limitation — prompt anchors can lock obvious cues but not subtle face geometry. Next: user decision required (accept-as-placeholder / repair3 / img2img)."
 }

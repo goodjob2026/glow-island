@@ -1,4 +1,6 @@
-# BATCH-05 — char_gicho Frame Animation Visual Acceptance
+# BATCH-05 — char_gicho Frame Animation Visual Acceptance [RERUN]
+
+> **RERUN — Repair applied 2026-05-13**: F010 (identity drift across all 15 frames) + F011 (ANIM_LOOP_BREAK on idle f04→f01) repaired. All 15 frames fully rebuilt via ChatGPT with LOCKED IDENTITY: orange tabby fur + darker orange stripes + deep navy #2A3650 collar + sitting upright + chibi compact proportions. Idle F04 explicitly instructed to match F01 for seamless loop. Check: (1) consistent orange tabby identity across all 15 frames; (2) idle F04 close enough to F01 for a smooth loop.
 
 **Batch ID**: BATCH-05-gicho-animation
 **Task ID**: TASK-05

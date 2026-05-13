@@ -9,18 +9,21 @@
     "current_repair_attempt": 1,
     "current_rerun_attempt": 0
   },
-
   "iterations": [
     {
       "loop_iteration": 1,
       "iteration_date": "2026-05-13T00:00:00Z",
       "status": "pending_repair",
-
       "codex_review_path": ".allforai/game-design/art/qa/codex-visual-review.json",
       "closure_audit_path": ".allforai/game-design/art/qa/visual-review-closure-audit.json",
-
-      "failed_task_ids": ["TASK-01", "TASK-02", "TASK-03", "TASK-04", "TASK-05", "TASK-06"],
-
+      "failed_task_ids": [
+        "TASK-01",
+        "TASK-02",
+        "TASK-03",
+        "TASK-04",
+        "TASK-05",
+        "TASK-06"
+      ],
       "codex_failure_codes": [
         "TILE_DIMENSION_WRONG",
         "TILE_TEXT_ARTIFACT",
@@ -36,25 +39,51 @@
         "ANIM_TEXT_BAKED",
         "CROSS_FAMILY_PALETTE_MISMATCH"
       ],
-
       "feedback_report_path": ".allforai/game-design/art/image-generation/image-feedback-report.json",
-
       "repair_plan": {
         "repair_batches": [
-          { "repair_batch_id": "REPAIR-A", "priority": 1, "assets": 15, "description": "char_gicho complete 15-frame rebuild from locked model sheet" },
-          { "repair_batch_id": "REPAIR-B", "priority": 2, "assets": 10, "description": "char_ritsu + char_umeko all expressions from locked refs" },
-          { "repair_batch_id": "REPAIR-C", "priority": 3, "assets": 25, "description": "All 25 tile re-exports at 128×128px" },
-          { "repair_batch_id": "REPAIR-D", "priority": 4, "assets": 2, "description": "char_hinata + char_fuyuko portrait regeneration" },
-          { "repair_batch_id": "REPAIR-E", "priority": 5, "assets": 9, "description": "Remaining expression text removal + react_jump improvement" },
-          { "repair_batch_id": "REPAIR-F", "priority": 6, "assets": 8, "description": "3 tile text regeneration + 5 tile saturation correction" }
+          {
+            "repair_batch_id": "REPAIR-A",
+            "priority": 1,
+            "assets": 15,
+            "description": "char_gicho complete 15-frame rebuild from locked model sheet"
+          },
+          {
+            "repair_batch_id": "REPAIR-B",
+            "priority": 2,
+            "assets": 10,
+            "description": "char_ritsu + char_umeko all expressions from locked refs"
+          },
+          {
+            "repair_batch_id": "REPAIR-C",
+            "priority": 3,
+            "assets": 25,
+            "description": "All 25 tile re-exports at 128×128px"
+          },
+          {
+            "repair_batch_id": "REPAIR-D",
+            "priority": 4,
+            "assets": 2,
+            "description": "char_hinata + char_fuyuko portrait regeneration"
+          },
+          {
+            "repair_batch_id": "REPAIR-E",
+            "priority": 5,
+            "assets": 9,
+            "description": "Remaining expression text removal + react_jump improvement"
+          },
+          {
+            "repair_batch_id": "REPAIR-F",
+            "priority": 6,
+            "assets": 8,
+            "description": "3 tile text regeneration + 5 tile saturation correction"
+          }
         ]
       },
-
       "regenerated_or_repaired_assets": [],
       "rerun_batch_doc_paths": [],
       "rerun_codex_review_path": null,
       "rerun_closure_audit_path": null,
-
       "final_verdict": "pending",
       "iteration_notes": [
         "Iteration 1 Codex review COMPLETED — 85 assets inspected, 6 blockers and 7 majors found.",
@@ -64,9 +93,80 @@
         "Positive findings to preserve: tile distinguishability OK, special tile markers CORRECT, wave motion visible, most portraits crop-correct, Hinata/Kenzo/Natsuka/Fuyuko expressions largely consistent.",
         "Iteration 2 should begin with REPAIR-A (gicho rebuild) as highest-risk item, then REPAIR-B+C+D in parallel if generation capacity allows."
       ]
+    },
+    {
+      "iteration": 2,
+      "date": "2026-05-13",
+      "repair_actions": [
+        {
+          "blocker_ids": [
+            "F05-BLOCKER-001",
+            "F05-BLOCKER-002"
+          ],
+          "decision": "ACCEPTED_AS_PLACEHOLDER",
+          "rationale": "Gicho frame animation identity drift is a fundamental text-to-image limitation. Each frame is an independent generation with no reference. Accepted as design-phase placeholder art. Known limitation — professional frame-by-frame animation required for production.",
+          "authorized_by": "user"
+        },
+        {
+          "blocker_ids": [
+            "F03-BLOCKER-001"
+          ],
+          "repair_type": "regenerate_with_stronger_identity_lock",
+          "batch_file": ".allforai/game-design/art/repair-batch/repair2-prompts.json",
+          "output_dir": ".allforai/game-design/art/repair-batch/output2",
+          "status": "IN_PROGRESS",
+          "prompts_count": 5,
+          "change_from_repair1": "Added ABSOLUTE FIXED APPEARANCE anchor with explicit age/face-shape/bun-shape/apron consistency instruction across all 5 emotions"
+        },
+        {
+          "blocker_ids": [
+            "F04-BLOCKER-001"
+          ],
+          "repair_type": "regenerate_portrait",
+          "batch_file": ".allforai/game-design/art/repair-batch/repair2-prompts.json",
+          "output_dir": ".allforai/game-design/art/repair-batch/output2",
+          "status": "COMPLETED",
+          "prompts_count": 1,
+          "change_from_repair1": "New repair — portrait was not in repair batch 1. Locked: dark disheveled hair, blue-grey rolled-sleeve shirt, same face as default portrait.",
+          "rerun_result": "STILL_FAIL",
+          "rerun_notes": "Broad hair/shirt markers now match but face structure and rendering style differ from portrait_default. Text-to-image limitation."
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "date": "2026-05-13",
+      "rerun_type": "targeted_qa",
+      "batches_reviewed": ["BATCH-03", "BATCH-04"],
+      "rerun_codex_session": "019e213d-2c3d-7e32-a1f4-f72fa2ae1ad3",
+      "results": [
+        {
+          "batch_id": "BATCH-03",
+          "verdict": "FAIL",
+          "blocker_id": "F03-BLOCKER-001",
+          "failure_code": "EXPR_IDENTITY_DRIFT",
+          "notes": "Umeko: bun and bamboo-green apron persist, but age, face shape, and body scale still drift across the 5 emotions despite ABSOLUTE FIXED APPEARANCE anchor in repair2 prompts. Ritsu expressions pass — consistent identity confirmed.",
+          "repair_budget_remaining": 1,
+          "repair_attempts_used": 2
+        },
+        {
+          "batch_id": "BATCH-04",
+          "verdict": "FAIL",
+          "blocker_id": "F04-BLOCKER-001",
+          "failure_code": "PORTRAIT_IDENTITY_MISMATCH",
+          "notes": "Ritsu portrait_happy: dark disheveled hair and blue-grey shirt now present (correct broad cues), but face structure and chibi rendering style still differ from portrait_default. Hinata portrait_happy confirmed PASS.",
+          "repair_budget_remaining": 2,
+          "repair_attempts_used": 1
+        }
+      ],
+      "root_cause": "Fundamental text-to-image limitation: no reference image input means each generation independently interprets the character description. Subtle features (age lines, face geometry, scale) cannot be locked through prompt text alone.",
+      "options": [
+        "A: Accept both as design-phase placeholders (same decision as Gicho animation)",
+        "B: Attempt repair3 with stronger anchoring or explicit dimension constraints",
+        "C: Use img2img with portrait_default as reference image for Ritsu; use default expression as reference for Umeko"
+      ]
     }
   ],
-
-  "overall_status": "FAILED_VALIDATION",
-  "overall_notes": "First QA pass complete. 6 blockers prevent acceptance. Repair budget: 3 repair attempts per group available. No budget consumed yet. Proceed with repair batches REPAIR-A through REPAIR-F, rebuild affected batch docs, and rerun Codex CLI review."
+  "overall_status": "REPAIR_STALLED",
+  "overall_notes": "Two blockers remain after 2 repair iterations. Root cause is text-to-image identity drift — a fundamental limitation without img2img. Decision required: accept as placeholder (Option A), attempt repair3 (Option B, last budget for BATCH-03), or img2img approach (Option C)."
 }

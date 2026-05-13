@@ -1,99 +1,90 @@
-# Codex Visual Acceptance Review
+# Codex Visual Review Rerun
 
-Review date: 2026-05-13
+Reviewed at: 2026-05-13T20:47:56+09:00
 
-Scope: visually inspected all 85 unique PNG assets referenced by the six visual acceptance batch documents. Cross-family references duplicate assets already present in earlier batches, but the cross-family batch was separately inspected as a style-comparison sheet.
+Overall verdict: **FAIL**
 
-Evidence sheets:
+Inspected batches: BATCH-01, BATCH-02, BATCH-03, BATCH-04, BATCH-05, BATCH-06.
 
-- `.allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-128.png`
-- `.allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-32.png`
-- `.allforai/game-design/art/qa/codex-visual-evidence/batch-02-special-tiles.png`
-- `.allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-*.png`
-- `.allforai/game-design/art/qa/codex-visual-evidence/batch-04-portraits.png`
-- `.allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-*.png`
-- `.allforai/game-design/art/qa/codex-visual-evidence/batch-06-cross-family.png`
+## Summary
 
-## Overall Verdict
+| Batch | Verdict | Blockers | Majors | Minors | Notes |
+|---|---:|---:|---:|---:|---|
+| BATCH-01 | FAIL | 0 | 1 | 0 | 128x128 repair passed, but some regular tiles contain baked-in annotation text. |
+| BATCH-02 | PASS | 0 | 0 | 0 | Special tile mechanic markers are readable and distinct. |
+| BATCH-03 | FAIL | 1 | 2 | 0 | Ritsu expression identity repair passed; Umeko still fails the locked ~55yo identity check; text/symbol artifacts and weak react_jump readability remain. |
+| BATCH-04 | FAIL | 1 | 1 | 1 | Hinata happy repair passed; Ritsu happy only matches broad hair/shirt markers and still fails default-portrait face/style continuity. |
+| BATCH-05 | FAIL | 2 | 1 | 0 | Gicho animation still fails idle loop closure and locked identity across frames. |
+| BATCH-06 | FAIL | 0 | 1 | 0 | Cross-family style is not yet coherent. |
 
-Fail. No batch was blocked from inspection, but every batch has at least one acceptance failure. The highest-risk areas are tile source dimensions, Ritsu/Umeko expression identity drift, Hinata portrait identity mismatch, and Gicho frame-animation continuity.
+Overall counts: **4 blockers**, **6 majors**.
 
 ## BATCH-01 Regular Tiles
 
-Verdict: Fail
+Verdict: **FAIL**
 
-Findings:
+The rerun dimension repair is successful. All 20 regular tile files were visually inspected and are 128x128. The tile subjects are visually distinct enough for a match-3 board.
 
-- F001 blocker, `TILE_DIMENSION_WRONG`: all 20 regular tile sources are 512x512 or 1024x1024, not the accepted 128x128 or 2x 256x256 tile canvas. Evidence: `batch-01-regular-tiles-128.png`. Repair: re-export or regenerate at the accepted tile canvas size.
-- F002 major, no mapped batch failure code: `tile_starfish`, `tile_hermit_crab`, and `tile_lanternfish` contain visible generated guide marks or measurement text. Evidence: `batch-01-regular-tiles-128.png`. Repair: regenerate with labels, measurement guides, and UI annotations prohibited.
-- F003 minor, no mapped batch failure code: `tile_tuna`, `tile_lanternfish`, `tile_flying_fish`, `tile_dolphin`, and `tile_crab` read more saturated and contrasty than the requested ch1 s0 stage. Evidence: `batch-01-regular-tiles-128.png`, `batch-06-cross-family.png`. Repair: palette-correct or regenerate with stricter s0 guidance.
+Failure: several tiles contain visible baked-in annotation text, including pixel-size labels or quality notes. Affected assets:
 
-Positive notes: the 20 subjects are mostly distinct at 128px, and the 32px contact sheet remains broadly readable.
+- `.allforai/game-design/art/tilesets/tile_octopus_ch1.png`
+- `.allforai/game-design/art/tilesets/tile_starfish_ch1.png`
+- `.allforai/game-design/art/tilesets/tile_hermit_crab_ch1.png`
+- `.allforai/game-design/art/tilesets/tile_lanternfish_ch1.png`
 
-## BATCH-02 Special Tiles
+Repair: regenerate or clean those PNGs with no labels, measurements, prompt notes, or quality annotations.
 
-Verdict: Fail
+## BATCH-02 Special Tactical Tiles
 
-Findings:
+Verdict: **PASS**
 
-- F004 blocker, `TILE_DIMENSION_WRONG`: all five special tile frame_01 sources are 512x512, not the accepted 128x128 or 2x 256x256 canvas. Evidence: `batch-02-special-tiles.png`. Repair: re-export to accepted tile size.
-
-Positive notes: the required mechanic markers are visible. Wave has concentric rings, light-chain has pink/gold chain links, pierce has a single directional arrow, swap has bidirectional arrows, and cascade has sequential dots.
+All five special tactical tiles were visually inspected at 128x128. The wave rings, chain links, directional pierce arrow, bidirectional swap arrows, and cascade dots are readable. The markers are mutually distinct and do not visually overlap with the regular tile subjects.
 
 ## BATCH-03 Character Expressions
 
-Verdict: Fail
+Verdict: **FAIL**
 
-Findings:
+Ritsu's regenerated set passes the rerun identity check: the dark disheveled hair, rolled light blue-grey shirt, lanky build, and expression changes stay consistent across all five emotions.
 
-- F005 blocker, `EXPR_IDENTITY_DRIFT`: Ritsu changes face, hair, apparent age, and costume details across emotions; Umeko changes age read, headwear, face proportions, and clothing details. Evidence: `batch-03-expressions-ritsu.png`, `batch-03-expressions-umeko.png`. Repair: regenerate from locked character sheets.
-- F006 major, `EXPR_EMOTION_AMBIGUOUS`: `char_ritsu_expr_react_jump`, `char_kenzo_expr_react_jump`, and `char_gicho_expr_react_jump` do not clearly read as energetic reaction-jump poses. Evidence: Ritsu, Kenzo, and Gicho expression sheets. Repair: strengthen pose energy and full-body reaction cues.
-- F007 major, no mapped batch failure code: multiple expression assets include punctuation, color-code strings, labels, or Japanese text. Affected examples include Hinata react_jump, Umeko default/thinking/surprised, Natsuka surprised, Fuyuko surprised/react_jump, and Gicho default/surprised. Repair: regenerate with text, captions, punctuation, and color codes prohibited.
+Blocker: Umeko still has `EXPR_IDENTITY_DRIFT`. The bamboo-green apron and updo/bun are present across all five emotions, but the same ~55-year-old woman is not locked. The default image reads as a mature broad-faced woman with stronger age lines; thinking and react_jump become much younger and smaller; the face shape, age, and body scale do not stay consistent.
 
-Positive notes: Hinata, Kenzo, Natsuka, Fuyuko, and Gicho generally preserve recognizable signature colors or identity cues across most non-failing expressions.
+Major: multiple expression images contain baked-in text, punctuation, symbols, or signature marks. Affected assets include:
+
+- `.allforai/game-design/art/expressions/char_hinata_expr_react_jump.png`
+- `.allforai/game-design/art/expressions/char_natsuka_expr_surprised.png`
+- `.allforai/game-design/art/expressions/char_fuyuko_expr_surprised.png`
+- `.allforai/game-design/art/expressions/char_fuyuko_expr_react_jump.png`
+- `.allforai/game-design/art/expressions/char_gicho_expr_default.png`
+- `.allforai/game-design/art/expressions/char_gicho_expr_surprised.png`
+
+Major: some react_jump emotions are ambiguous. Gicho happy and react_jump both read as closed-eye smiling busts, and Kenzo react_jump lacks the expected energetic reaction.
 
 ## BATCH-04 Character Portraits
 
-Verdict: Fail
+Verdict: **FAIL**
 
-Findings:
+Hinata happy now passes the rerun identity check. It shows brown hair tied back, sakura-pink accents, and a worn notebook, and reads as Hinata.
 
-- F008 blocker, `PORTRAIT_IDENTITY_MISMATCH`: `char_hinata_portrait_happy` reads as a different character than Hinata default and the Hinata expression set. Evidence: `batch-04-portraits.png`. Repair: regenerate from Hinata reference identity.
-- F009 major, `PORTRAIT_DIMENSION_INCONSISTENT`: the two 512x512 portraits are not visually equivalent to the 1024x1024 group. Hinata happy has different crop and identity; Fuyuko react_jump includes a scene background and baked Japanese text. Evidence: `batch-04-portraits.png`. Repair: regenerate both at 1024x1024 with consistent portrait framing and no text or scene background.
+Blocker: Ritsu default and happy portraits do not read as the same character. The happy portrait partially matches the broad requested markers, with dark disheveled hair and a blue-grey shirt, but it does not match the default portrait's face structure or rendering style. The default is a simplified chibi portrait with a rounder face, droopy eyes, flatter parted hair, and a pale blue-grey shirt; the happy portrait is a more realistic adult bust with a longer face, different eye/cheek structure, and a deeper open collar.
 
-Positive notes: most portraits show face and shoulders with centered faces and readable identities.
+Major: Fuyuko react_jump has a scene background and Japanese text, so it does not match the neutral dialogue portrait crop/style.
+
+Minor: portrait source dimensions are still inconsistent. Ritsu happy is 256x256 despite the batch doc listing 1024x1024, Hinata happy is now 1254x1254 instead of the listed 512x512, Fuyuko react_jump remains 512x512, and most other portraits are 1024x1024.
 
 ## BATCH-05 Gicho Animation
 
-Verdict: Fail
+Verdict: **FAIL**
 
-Findings:
+Blocker: idle loop closure fails. `char_gicho_idle_f04.png` is visibly smaller and proportionally different from `char_gicho_idle_f01.png`, so f04 to f01 would pop.
 
-- F010 blocker, `ANIM_IDENTITY_DRIFT`: Gicho changes body size, face design, crop, posture, stripe pattern, and collar rendering across frames and animation sets. Evidence: all four Gicho animation sheets. Repair: rebuild from one locked model sheet or draw-over base pose.
-- F011 blocker, `ANIM_LOOP_BREAK`: idle f04 is a side-facing heavier pose while idle f01 is front-facing, so f04 to f01 would visibly pop. Evidence: `batch-05-gicho-idle.png`. Repair: rebuild idle as a subtle breathing loop around one base pose.
-- F012 major, `ANIM_POSITION_JUMP`: adjacent frames jump between full-body, cropped bust, side view, standing, and lying compositions. Evidence: all four Gicho animation sheets. Repair: normalize canvas anchor, scale, and orientation before motion generation.
-- F013 major, no mapped batch failure code: several frames contain baked titles, frame numbers, labels, or color codes, including idle f02, happy f01, happy f02, and wave f04. Evidence: idle, happy, and wave sheets. Repair: regenerate or paint out text and numbers.
+Blocker: Gicho identity still drifts across the 15 frames. Head size, body width, collar thickness, facial structure, and scale change between frames and animation sets.
 
-Positive notes: the wave set does show visible paw movement, so `ANIM_MOTION_ABSENT` is not raised.
+Major: wave motion is present, but sequence continuity is unstable. `wave_f04` changes into a different lowered-paw pose, and the surprised sequence peaks at f02 then softens at f03 instead of escalating cleanly.
 
 ## BATCH-06 Cross-Family Style
 
-Verdict: Fail
+Verdict: **FAIL**
 
-Findings:
+The six representative assets do not yet feel like one coherent visual family. The tiles are muted watercolor icons, Ritsu is a tiny full-body chibi, Hinata reads cleaner anime, Kenzo reads like a storybook portrait, and Gicho reads more naturalistic. The palette is generally warm, but the rendering style, outline treatment, and proportions are inconsistent.
 
-- F014 major, `CROSS_FAMILY_PALETTE_MISMATCH`: the representative set shares a watercolor intent, but the tiles look more saturated and glossy while the character assets use cleaner anime line art. Evidence: `batch-06-cross-family.png`. Repair: unify palette, paper texture, outline softness, and watercolor surface treatment across families.
-
-Positive notes: the overall direction is close to the requested warm, gentle island aesthetic; this is a harmonization issue rather than a complete style mismatch.
-
-## Final Summary Table
-
-| Batch | Assets inspected | Verdict | Blocker | Major | Minor | Notes |
-|---|---:|---|---:|---:|---:|---|
-| BATCH-01 regular tiles | 20 | Fail | 1 | 1 | 1 | Distinct silhouettes, but dimensions and baked guide marks fail acceptance. |
-| BATCH-02 special tiles | 5 | Fail | 1 | 0 | 0 | Markers pass visually; dimensions fail. |
-| BATCH-03 expressions | 35 | Fail | 1 | 2 | 0 | Identity drift, text artifacts, weak react_jump poses. |
-| BATCH-04 portraits | 10 | Fail | 1 | 1 | 0 | Hinata happy mismatch; 512px portraits not equivalent. |
-| BATCH-05 Gicho animation | 15 | Fail | 2 | 2 | 0 | Identity drift, loop break, position jumps, baked labels. |
-| BATCH-06 cross-family | 6 | Fail | 0 | 1 | 0 | Style direction is close but not harmonized. |
-| Total unique PNGs | 85 | Fail | 6 | 7 | 1 | No blocked batches. |
+Repair: define one cross-family style target and normalize characters, portraits, and animation frames toward the same watercolor texture, saturation, colored-outline treatment, and chibi proportion language.
