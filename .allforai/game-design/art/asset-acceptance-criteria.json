@@ -1,0 +1,350 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "skill": "game-art/20-spec/asset-acceptance-criteria",
+  "mode": "define_project_runtime_standards",
+
+  "project_profile": {
+    "genre": "match-3 puzzle + visual novel narrative",
+    "view_mode": "board_grid (puzzle) + front-facing visual novel (dialogue)",
+    "target_platforms": ["web-canvas-2d", "mobile-web"],
+    "runtime": "cocos-creator-3x",
+    "engine": "cocos-creator",
+    "animation_system": "dragonbones+frame+tween",
+    "tile_size_px": 128,
+    "tile_size_2x_px": 256,
+    "atlas_max_px": 2048,
+    "specialization_ref": ".allforai/game-design/art/visual-style-tokens.json",
+    "style_description": "hand-drawn watercolor, warm pastel Japanese healing island aesthetic, chibi proportions, organic shapes, paper texture overlay"
+  },
+
+  "global_style_rules": {
+    "approved_style_keywords": [
+      "hand-drawn watercolor illustration",
+      "warm pastel palette",
+      "chibi anime proportions 1:1.5 head-body ratio",
+      "soft rounded organic shapes",
+      "flat shading with soft shadow",
+      "paper texture overlay 6% opacity",
+      "japanese healing island aesthetic",
+      "transparent or neutral background"
+    ],
+    "forbidden_styles": [
+      "pixel art",
+      "hyper-realistic 3D rendering",
+      "neon cyberpunk palette",
+      "metallic chrome gradients",
+      "pure black #000000",
+      "sharp geometric corners",
+      "Material Design sharp vector icons",
+      "excessive particle debris",
+      "high contrast alert tones",
+      "text labels baked into character art",
+      "motion blur",
+      "cropped limbs",
+      "Western cartoon style"
+    ],
+    "outline_rule": "primary color darkened 32%, never pure #000000",
+    "outline_width_px": 2,
+    "shadow_style": "0 4px 0 rgba(0,0,0,0.10)",
+    "shadow_max_opacity": 0.15
+  },
+
+  "asset_family_criteria": [
+    {
+      "asset_family": "tileset",
+      "applies_to_asset_ids": [
+        "tile_tuna", "tile_octopus", "tile_starfish", "tile_hermit_crab", "tile_lanternfish",
+        "tile_pufferfish", "tile_whale", "tile_coral", "tile_conch", "tile_shell",
+        "tile_crab", "tile_turtle", "tile_jellyfish", "tile_flying_fish", "tile_dolphin",
+        "tile_seagull", "tile_coconut_palm", "tile_lighthouse", "tile_fishing_boat", "tile_buoy"
+      ],
+      "applies_to_special": [
+        "tile_wave_block", "tile_light_chain_block", "tile_pierce_block", "tile_swap_block", "tile_cascade_block"
+      ],
+      "visual_acceptance": {
+        "readability_scale_px": [128, 64, 32],
+        "distinguishability_rules": [
+          "All 20 regular tiles must be visually distinct from one another when placed in a 5x4 contact sheet at 128x128px — no two tiles may be confused at a glance",
+          "All 5 special tiles must carry a unique mechanic marker: wave=teal concentric rings, light_chain=sakura pink + gold chain links, pierce=orange + directional arrow, swap=golden + bidirectional swap arrows, cascade=dark green + sequential dots",
+          "No special tile marker motif may appear on any regular tile",
+          "Each regular tile silhouette must be readable as a distinct shape at 32x32px downscale"
+        ],
+        "style_lock_rules": [
+          "Hand-drawn watercolor texture visible on all tiles",
+          "No pure black outlines — outline must be primary color darkened 32%",
+          "Organic soft corner shapes — no sharp geometric edges",
+          "Paper texture overlay must be present at approximately 6% opacity",
+          "Ch1 tiles are at saturation stage s0 (8-15% saturation, 42-48% brightness) — desaturated but not grayscale, warm undertone visible"
+        ],
+        "composition_rules": [
+          "Subject centered in tile canvas with 8px bleed zone intact",
+          "Subject does not extend beyond effective 112px draw area (at 128px canvas)",
+          "Background must be transparent or neutral — no baked drop shadows crossing tile boundary",
+          "Top-left ambient lighting — no hard shadow crossing tile boundary",
+          "Single tile framing — tile represents single marine/island subject, not a scene"
+        ],
+        "forbidden_failure_modes": [
+          "TILE_IDENTICAL_SILHOUETTE: two or more regular tiles share the same silhouette shape",
+          "TILE_SPECIAL_MARKER_ABSENT: special tile lacks its required mechanic visual marker",
+          "TILE_SPECIAL_MARKER_SHARED: special tile marker motif appears on a regular tile",
+          "TILE_PURE_BLACK_OUTLINE: outline uses pure #000000",
+          "TILE_SUBJECT_CROPPED: subject extends beyond bleed zone",
+          "TILE_PHOTOREALISTIC: tile exhibits photorealistic rendering style",
+          "TILE_WRONG_SATURATION: ch1 tile significantly above s0 saturation target (>25% saturation)",
+          "TILE_DIMENSION_WRONG: tile canvas is not 128x128px (or 2x at 256x256px)"
+        ]
+      },
+      "technical_acceptance": {
+        "format_rules": ["PNG with alpha channel", "Lossless compression"],
+        "atlas_rules": ["Must pack into 2048x2048 chapter atlas", "No atlas overflow"],
+        "pivot_anchor_rules": ["Center-center pivot for all regular tiles", "Center-center pivot for special blocks"],
+        "alpha_rules": ["Transparent background required", "No opaque white or grey background", "Alpha channel present"],
+        "runtime_import_rules": ["Must import cleanly into Cocos Creator 3.x", "No color profile errors"],
+        "performance_budget": ["Max 512x512px source before downscale to 128x128px for atlas"]
+      },
+      "evidence_required": {
+        "source_files": [
+          ".allforai/game-design/art/tilesets/tile_*.png (25 files)"
+        ],
+        "contact_sheets": [
+          ".allforai/game-design/art/tilesets/previews/ (existing preview directory — contact sheet to be generated)"
+        ],
+        "preview_maps": ["5x4 contact sheet of all 20 regular tiles at 128px", "1x5 contact sheet of all 5 special blocks"],
+        "animation_previews": ["frame_01 static evidence is acceptable for special blocks in this QA pass"],
+        "runtime_screenshots": [],
+        "import_reports": [".allforai/game-design/art/qa/runtime-import-check-report.json"]
+      },
+      "blocking_failure_codes": [
+        "TILE_IDENTICAL_SILHOUETTE",
+        "TILE_SPECIAL_MARKER_ABSENT",
+        "TILE_SPECIAL_MARKER_SHARED",
+        "TILE_SUBJECT_CROPPED",
+        "TILE_PHOTOREALISTIC",
+        "TILE_DIMENSION_WRONG"
+      ],
+      "repair_routes": [
+        { "failure_code": "TILE_IDENTICAL_SILHOUETTE", "owner": "image-generation-contract", "action": "regenerate with stronger distinguishing-feature prompt guidance" },
+        { "failure_code": "TILE_SPECIAL_MARKER_ABSENT", "owner": "image-generation-contract", "action": "regenerate special block with explicit mechanic marker in positive prompt" },
+        { "failure_code": "TILE_SPECIAL_MARKER_SHARED", "owner": "image-generation-contract", "action": "regenerate to remove shared marker motif from regular tile" },
+        { "failure_code": "TILE_SUBJECT_CROPPED", "owner": "image-generation-contract", "action": "regenerate with tighter subject scale and explicit padding guidance" },
+        { "failure_code": "TILE_PHOTOREALISTIC", "owner": "image-generation-contract", "action": "regenerate with stronger watercolor style negative prompt" },
+        { "failure_code": "TILE_DIMENSION_WRONG", "owner": "image-generation-contract", "action": "re-export or regenerate at correct canvas size" },
+        { "failure_code": "TILE_PURE_BLACK_OUTLINE", "owner": "image-generation-contract", "action": "regenerate with explicit outline color constraint" },
+        { "failure_code": "TILE_WRONG_SATURATION", "owner": "image-generation-contract", "action": "apply saturation correction or regenerate with ch1/s0 palette constraint" }
+      ]
+    },
+
+    {
+      "asset_family": "character_expression",
+      "applies_to_asset_ids": [
+        "char_ritsu_expr_default", "char_ritsu_expr_happy", "char_ritsu_expr_thinking", "char_ritsu_expr_surprised", "char_ritsu_expr_react_jump",
+        "char_hinata_expr_default", "char_hinata_expr_happy", "char_hinata_expr_thinking", "char_hinata_expr_surprised", "char_hinata_expr_react_jump",
+        "char_kenzo_expr_default", "char_kenzo_expr_happy", "char_kenzo_expr_thinking", "char_kenzo_expr_surprised", "char_kenzo_expr_react_jump",
+        "char_umeko_expr_default", "char_umeko_expr_happy", "char_umeko_expr_thinking", "char_umeko_expr_surprised", "char_umeko_expr_react_jump",
+        "char_natsuka_expr_default", "char_natsuka_expr_happy", "char_natsuka_expr_thinking", "char_natsuka_expr_surprised", "char_natsuka_expr_react_jump",
+        "char_fuyuko_expr_default", "char_fuyuko_expr_happy", "char_fuyuko_expr_thinking", "char_fuyuko_expr_surprised", "char_fuyuko_expr_react_jump",
+        "char_gicho_expr_default", "char_gicho_expr_happy", "char_gicho_expr_thinking", "char_gicho_expr_surprised", "char_gicho_expr_react_jump"
+      ],
+      "visual_acceptance": {
+        "readability_scale_px": [256, 128],
+        "distinguishability_rules": [
+          "Same character must be immediately identifiable across all 5 expression variants — hair style/color, clothing signature color, and body proportions must match",
+          "Each expression must be clearly readable: happy=visible smile/upturned eyes, thinking=tilted head/furrowed brow or finger-to-cheek, surprised=wide eyes/open mouth, react_jump=full body reaction energy visible even in bust/head crop, default=neutral relaxed",
+          "Different characters must not look interchangeable — each must carry signature identity markers: ritsu=rumpled shirt+relaxed hair, hinata=sakura pink+notebook visible or implied, kenzo=fisherman vest+grey sparse hair+weathered face, umeko=green apron+bun, natsuka=green vest+windswept hair, fuyuko=night blue kimono-style+upswept white hair, gicho=orange tabby cat",
+          "Character signature colors per spec must be present in costume: hinata=#F0C4C4, kenzo=#4A6D9A, umeko=#7DBE77, natsuka=#3D6645, fuyuko=#2A4060, gicho=#2A3650"
+        ],
+        "style_lock_rules": [
+          "Hand-drawn watercolor style consistent with tile family",
+          "Chibi proportions: head-body ratio approximately 1:1.5",
+          "Front-facing composition",
+          "Warm pastel palette — no neon or hyper-saturated colors",
+          "No text labels or dialogue baked into expression art",
+          "No motion blur"
+        ],
+        "composition_rules": [
+          "Character centered, full upper body visible (head to approximately waist)",
+          "No cropped limbs unless intentional at frame edge for animation",
+          "Consistent canvas size: 1024x1024px source (all confirmed)"
+        ],
+        "forbidden_failure_modes": [
+          "EXPR_IDENTITY_DRIFT: same character looks like different person across expressions",
+          "EXPR_EMOTION_AMBIGUOUS: two different emotions indistinguishable from each other",
+          "EXPR_WRONG_CHAR: character does not match expected identity markers",
+          "EXPR_STYLE_BREAK: photorealistic, neon, or non-watercolor rendering",
+          "EXPR_TEXT_BAKED: text labels baked into artwork",
+          "EXPR_LIMBS_CROPPED: important limbs cut off unintentionally",
+          "EXPR_SIGNATURE_COLOR_ABSENT: character's required signature color not present in costume"
+        ]
+      },
+      "technical_acceptance": {
+        "format_rules": ["PNG with alpha channel"],
+        "atlas_rules": ["Must pack into characters_atlas (2048x2048)"],
+        "pivot_anchor_rules": ["Center-bottom for full body; center-center for bust crop"],
+        "alpha_rules": ["Transparent or neutral background", "No baked drop shadows"],
+        "runtime_import_rules": ["Must import into Cocos Creator 3.x without color issues"],
+        "performance_budget": ["Source 1024x1024px is acceptable; atlas downscale to 256x256 render size"]
+      },
+      "evidence_required": {
+        "source_files": [".allforai/game-design/art/expressions/char_*.png (35 files)"],
+        "contact_sheets": ["Per-character 1x5 contact sheet showing all 5 emotions side by side"],
+        "preview_maps": [],
+        "animation_previews": [],
+        "runtime_screenshots": [],
+        "import_reports": []
+      },
+      "blocking_failure_codes": [
+        "EXPR_IDENTITY_DRIFT",
+        "EXPR_EMOTION_AMBIGUOUS",
+        "EXPR_WRONG_CHAR",
+        "EXPR_STYLE_BREAK"
+      ],
+      "repair_routes": [
+        { "failure_code": "EXPR_IDENTITY_DRIFT", "owner": "image-generation-contract", "action": "regenerate failed expressions with reference-locked identity prompt and character sheet ref" },
+        { "failure_code": "EXPR_EMOTION_AMBIGUOUS", "owner": "image-generation-contract", "action": "regenerate with stronger emotion-specific facial cue guidance" },
+        { "failure_code": "EXPR_WRONG_CHAR", "owner": "image-generation-contract", "action": "regenerate with corrected character description and signature color" },
+        { "failure_code": "EXPR_STYLE_BREAK", "owner": "image-generation-contract", "action": "regenerate with stronger watercolor style guidance and negative prompts" },
+        { "failure_code": "EXPR_TEXT_BAKED", "owner": "image-generation-contract", "action": "regenerate without text in prompt" },
+        { "failure_code": "EXPR_LIMBS_CROPPED", "owner": "image-generation-contract", "action": "regenerate with wider canvas framing guidance" },
+        { "failure_code": "EXPR_SIGNATURE_COLOR_ABSENT", "owner": "image-generation-contract", "action": "regenerate with explicit costume color constraint in prompt" }
+      ]
+    },
+
+    {
+      "asset_family": "portrait",
+      "applies_to_asset_ids": [
+        "char_fuyuko_portrait_default", "char_fuyuko_portrait_react_jump",
+        "char_gicho_portrait_default",
+        "char_hinata_portrait_default", "char_hinata_portrait_happy",
+        "char_kenzo_portrait_default",
+        "char_natsuka_portrait_default",
+        "char_ritsu_portrait_default", "char_ritsu_portrait_happy",
+        "char_umeko_portrait_default"
+      ],
+      "visual_acceptance": {
+        "readability_scale_px": [256, 128],
+        "distinguishability_rules": [
+          "Portrait must show face + shoulders, centered — face occupies at least 50% of canvas height",
+          "Character identity immediately recognizable from portrait crop alone",
+          "Portrait variant emotion matches its filename suffix (default=neutral, happy=smiling, react_jump=excited)"
+        ],
+        "style_lock_rules": [
+          "Same watercolor style as expression set",
+          "Portrait does not show chest below shoulder level",
+          "No background scene — neutral or gradient background only",
+          "Character signature color visible in crop area (hair color or clothing top)"
+        ],
+        "composition_rules": [
+          "Face centered horizontally",
+          "No head cropped at top",
+          "Shoulders visible at bottom of crop",
+          "No extreme perspective or angle — front-facing or slight 3/4"
+        ],
+        "forbidden_failure_modes": [
+          "PORTRAIT_FACE_CROPPED: face is cut off at top or sides",
+          "PORTRAIT_WRONG_CROP: shows body below chest or excludes shoulder",
+          "PORTRAIT_IDENTITY_MISMATCH: portrait does not match expected character",
+          "PORTRAIT_DIMENSION_INCONSISTENT: portrait dimensions differ unexpectedly within same character set"
+        ]
+      },
+      "technical_acceptance": {
+        "format_rules": ["PNG"],
+        "atlas_rules": ["Pack into characters_atlas"],
+        "pivot_anchor_rules": ["Center-center"],
+        "alpha_rules": ["Transparent or neutral background"],
+        "runtime_import_rules": ["Cocos Creator 3.x compatible"],
+        "performance_budget": [
+          "Dimension inconsistency flagged: fuyuko_react_jump and hinata_happy are 512x512 while others are 1024x1024 — note as technical warning, verify intentional"
+        ]
+      },
+      "evidence_required": {
+        "source_files": [".allforai/game-design/art/portraits/char_*_portrait_*.png (10 files)"],
+        "contact_sheets": ["1x10 portrait contact sheet or per-character grouping"],
+        "preview_maps": [],
+        "animation_previews": [],
+        "runtime_screenshots": [],
+        "import_reports": []
+      },
+      "blocking_failure_codes": [
+        "PORTRAIT_FACE_CROPPED",
+        "PORTRAIT_IDENTITY_MISMATCH"
+      ],
+      "repair_routes": [
+        { "failure_code": "PORTRAIT_FACE_CROPPED", "owner": "image-generation-contract", "action": "regenerate with tighter head framing and explicit 'show full face and shoulders' guidance" },
+        { "failure_code": "PORTRAIT_WRONG_CROP", "owner": "image-generation-contract", "action": "regenerate with portrait crop specification in prompt" },
+        { "failure_code": "PORTRAIT_IDENTITY_MISMATCH", "owner": "image-generation-contract", "action": "regenerate with correct character description" },
+        { "failure_code": "PORTRAIT_DIMENSION_INCONSISTENT", "owner": "image-generation-contract", "action": "re-export at consistent 1024x1024px — minor unless crop differs" }
+      ]
+    },
+
+    {
+      "asset_family": "animation",
+      "applies_to_asset_ids": [
+        "char_gicho_idle_f01", "char_gicho_idle_f02", "char_gicho_idle_f03", "char_gicho_idle_f04",
+        "char_gicho_happy_f01", "char_gicho_happy_f02", "char_gicho_happy_f03", "char_gicho_happy_f04",
+        "char_gicho_wave_f01", "char_gicho_wave_f02", "char_gicho_wave_f03", "char_gicho_wave_f04",
+        "char_gicho_surprised_f01", "char_gicho_surprised_f02", "char_gicho_surprised_f03"
+      ],
+      "visual_acceptance": {
+        "readability_scale_px": [192, 128],
+        "distinguishability_rules": [
+          "idle: f01→f04 form a smooth breathing loop — f04 must visually transition back to f01 without jarring jump (pose similarity between f04 and f01)",
+          "happy: f01→f04 show progressive happiness escalation or bounce motion — distinct from idle",
+          "wave: f01→f04 show clear arm/paw wave motion arc progression across frames",
+          "surprised: f01→f03 show clear shock/surprise escalation — eyes wide, body reaction",
+          "Each animation set must be distinguishable from each other — idle≠happy≠wave≠surprised"
+        ],
+        "style_lock_rules": [
+          "Orange tabby cat identity consistent across all 15 frames — same fur color, same round body, same dark navy collar (#2A3650)",
+          "Canvas size consistent at 192x192px spec (source at 1024x1024 is acceptable for QA)",
+          "Sitting upright base pose maintained for idle and happy; wave shows arm/paw lift; surprised shows body reaction",
+          "Hand-drawn watercolor consistent across all frames"
+        ],
+        "composition_rules": [
+          "Cat body centered and consistently positioned across frames in the same animation set",
+          "No jarring position jump between frames",
+          "No background scene — neutral transparent"
+        ],
+        "forbidden_failure_modes": [
+          "ANIM_LOOP_BREAK: idle f04 has jarring discontinuity with idle f01 (would cause visible pop in loop)",
+          "ANIM_IDENTITY_DRIFT: cat looks different (wrong color/size/species) across frames",
+          "ANIM_MOTION_ABSENT: wave animation shows no visible paw/arm motion across 4 frames",
+          "ANIM_SETS_INDISTINCT: two animation sets (e.g. idle and happy) are visually indistinguishable",
+          "ANIM_POSITION_JUMP: subject position jumps discontinuously between adjacent frames"
+        ]
+      },
+      "technical_acceptance": {
+        "format_rules": ["PNG with alpha or consistent background"],
+        "atlas_rules": ["Pack into characters_atlas at 192x192px target"],
+        "pivot_anchor_rules": ["Center-bottom for consistent sprite staging"],
+        "alpha_rules": ["Consistent background across all frames of same animation set"],
+        "runtime_import_rules": ["Frame sequence importable into Cocos Creator 3.x at 12fps"],
+        "performance_budget": ["15 frames total; source 1024x1024 OK for review; export at 192x192 for atlas"]
+      },
+      "evidence_required": {
+        "source_files": [".allforai/game-design/art/char_gicho/char_gicho_*.png (15 files)"],
+        "contact_sheets": [
+          "Per-animation-set contact strip: idle (4f), happy (4f), wave (4f), surprised (3f)",
+          "Frame numbered left-to-right in each strip"
+        ],
+        "preview_maps": [],
+        "animation_previews": ["Contact strips showing frame sequence left-to-right"],
+        "runtime_screenshots": [],
+        "import_reports": []
+      },
+      "blocking_failure_codes": [
+        "ANIM_LOOP_BREAK",
+        "ANIM_IDENTITY_DRIFT",
+        "ANIM_MOTION_ABSENT"
+      ],
+      "repair_routes": [
+        { "failure_code": "ANIM_LOOP_BREAK", "owner": "image-generation-contract", "action": "regenerate idle f04 to match f01 starting pose more closely" },
+        { "failure_code": "ANIM_IDENTITY_DRIFT", "owner": "image-generation-contract", "action": "regenerate drifted frames with locked character reference and cat identity constraints" },
+        { "failure_code": "ANIM_MOTION_ABSENT", "owner": "image-generation-contract", "action": "regenerate wave animation with explicit paw/arm motion arc guidance per frame" },
+        { "failure_code": "ANIM_SETS_INDISTINCT", "owner": "image-generation-contract", "action": "regenerate overlapping animation set with stronger emotion/pose differentiation" },
+        { "failure_code": "ANIM_POSITION_JUMP", "owner": "image-generation-contract", "action": "regenerate offending frame with consistent position guidance" }
+      ]
+    }
+  ]
+}

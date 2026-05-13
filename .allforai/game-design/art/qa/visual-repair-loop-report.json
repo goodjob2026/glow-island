@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "skill": "game-art/40-qa/visual-acceptance-review",
+  "budget": {
+    "max_repair_attempts_per_asset_group": 3,
+    "max_rerun_attempts_per_batch": 2,
+    "current_repair_attempt": 1,
+    "current_rerun_attempt": 0
+  },
+
+  "iterations": [
+    {
+      "loop_iteration": 1,
+      "iteration_date": "2026-05-13T00:00:00Z",
+      "status": "pending_repair",
+
+      "codex_review_path": ".allforai/game-design/art/qa/codex-visual-review.json",
+      "closure_audit_path": ".allforai/game-design/art/qa/visual-review-closure-audit.json",
+
+      "failed_task_ids": ["TASK-01", "TASK-02", "TASK-03", "TASK-04", "TASK-05", "TASK-06"],
+
+      "codex_failure_codes": [
+        "TILE_DIMENSION_WRONG",
+        "TILE_TEXT_ARTIFACT",
+        "TILE_WRONG_SATURATION",
+        "EXPR_IDENTITY_DRIFT",
+        "EXPR_EMOTION_AMBIGUOUS",
+        "EXPR_TEXT_BAKED",
+        "PORTRAIT_IDENTITY_MISMATCH",
+        "PORTRAIT_DIMENSION_INCONSISTENT",
+        "ANIM_IDENTITY_DRIFT",
+        "ANIM_LOOP_BREAK",
+        "ANIM_POSITION_JUMP",
+        "ANIM_TEXT_BAKED",
+        "CROSS_FAMILY_PALETTE_MISMATCH"
+      ],
+
+      "feedback_report_path": ".allforai/game-design/art/image-generation/image-feedback-report.json",
+
+      "repair_plan": {
+        "repair_batches": [
+          { "repair_batch_id": "REPAIR-A", "priority": 1, "assets": 15, "description": "char_gicho complete 15-frame rebuild from locked model sheet" },
+          { "repair_batch_id": "REPAIR-B", "priority": 2, "assets": 10, "description": "char_ritsu + char_umeko all expressions from locked refs" },
+          { "repair_batch_id": "REPAIR-C", "priority": 3, "assets": 25, "description": "All 25 tile re-exports at 128×128px" },
+          { "repair_batch_id": "REPAIR-D", "priority": 4, "assets": 2, "description": "char_hinata + char_fuyuko portrait regeneration" },
+          { "repair_batch_id": "REPAIR-E", "priority": 5, "assets": 9, "description": "Remaining expression text removal + react_jump improvement" },
+          { "repair_batch_id": "REPAIR-F", "priority": 6, "assets": 8, "description": "3 tile text regeneration + 5 tile saturation correction" }
+        ]
+      },
+
+      "regenerated_or_repaired_assets": [],
+      "rerun_batch_doc_paths": [],
+      "rerun_codex_review_path": null,
+      "rerun_closure_audit_path": null,
+
+      "final_verdict": "pending",
+      "iteration_notes": [
+        "Iteration 1 Codex review COMPLETED — 85 assets inspected, 6 blockers and 7 majors found.",
+        "Feedback report written to image-feedback-report.json covering all blocker/major findings.",
+        "Repair has NOT been executed yet — repair batches defined and prioritized.",
+        "Iteration 1 passes audit structure checks: Codex produced evidence-grounded JSON + MD, all batches inspected.",
+        "Positive findings to preserve: tile distinguishability OK, special tile markers CORRECT, wave motion visible, most portraits crop-correct, Hinata/Kenzo/Natsuka/Fuyuko expressions largely consistent.",
+        "Iteration 2 should begin with REPAIR-A (gicho rebuild) as highest-risk item, then REPAIR-B+C+D in parallel if generation capacity allows."
+      ]
+    }
+  ],
+
+  "overall_status": "FAILED_VALIDATION",
+  "overall_notes": "First QA pass complete. 6 blockers prevent acceptance. Repair budget: 3 repair attempts per group available. No budget consumed yet. Proceed with repair batches REPAIR-A through REPAIR-F, rebuild affected batch docs, and rerun Codex CLI review."
+}

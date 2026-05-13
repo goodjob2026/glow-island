@@ -1,0 +1,276 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "skill": "game-art/40-qa/visual-acceptance-review",
+  "total_assets": 85,
+  "total_batches": 6,
+  "output_root": ".allforai/game-design/art/qa",
+
+  "tasks": [
+    {
+      "task_id": "TASK-01",
+      "batch_doc_path": ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-01-tiles-regular.md",
+      "asset_family": "tileset",
+      "asset_kind": "regular_tile",
+      "asset_count": 20,
+      "image_paths": [
+        ".allforai/game-design/art/tilesets/tile_tuna_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_octopus_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_starfish_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_hermit_crab_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_lanternfish_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_pufferfish_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_whale_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_coral_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_conch_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_shell_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_crab_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_turtle_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_jellyfish_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_flying_fish_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_dolphin_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_seagull_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_coconut_palm_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_lighthouse_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_fishing_boat_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_buoy_ch1.png"
+      ],
+      "preview_paths": [".allforai/game-design/art/tilesets/previews/"],
+      "contract_refs": [
+        ".allforai/game-design/art/asset-acceptance-criteria.md#一、图块（Tileset）验收标准",
+        ".allforai/game-design/art/asset-acceptance-criteria.json#asset_family=tileset"
+      ],
+      "visual_questions": [
+        "Are all 20 regular tiles visually distinct from each other when viewed side by side?",
+        "Is each tile's subject clearly readable at a simulated 128x128px display size?",
+        "Does each tile silhouette remain distinguishable when mentally downscaled to 32x32px?",
+        "Do all tiles display hand-drawn watercolor style (not photorealistic, not pixel art)?",
+        "Are tiles appropriately desaturated for Ch1 (s0 stage: 8-15% saturation, warm undertone preserved)?",
+        "Is the subject centered in the tile canvas with no apparent cropping at edges?",
+        "Are outlines present and clearly not pure black (should be colored, darkened hue)?"
+      ],
+      "acceptance_criteria": "See asset-acceptance-criteria.md Section 一 and JSON asset_family=tileset",
+      "blocking_failure_codes": ["TILE_IDENTICAL_SILHOUETTE", "TILE_SPECIAL_MARKER_ABSENT", "TILE_SUBJECT_CROPPED", "TILE_PHOTOREALISTIC", "TILE_DIMENSION_WRONG"],
+      "task_risk": "high",
+      "visual_model": "codex-default"
+    },
+
+    {
+      "task_id": "TASK-02",
+      "batch_doc_path": ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-02-tiles-special.md",
+      "asset_family": "tileset",
+      "asset_kind": "special_tactical_tile",
+      "asset_count": 5,
+      "image_paths": [
+        ".allforai/game-design/art/tilesets/tile_wave_block_frame_01.png",
+        ".allforai/game-design/art/tilesets/tile_light_chain_block_frame_01.png",
+        ".allforai/game-design/art/tilesets/tile_pierce_block_frame_01.png",
+        ".allforai/game-design/art/tilesets/tile_swap_block_frame_01.png",
+        ".allforai/game-design/art/tilesets/tile_cascade_block_frame_01.png"
+      ],
+      "preview_paths": [],
+      "contract_refs": [
+        ".allforai/game-design/art/asset-acceptance-criteria.md#一、图块（Tileset）验收标准",
+        ".allforai/game-design/systems/tile-art-spec.json#special_blocks"
+      ],
+      "visual_questions": [
+        "Does tile_wave_block display visible concentric ring ripple pattern in teal-cyan (#7ECDE8)?",
+        "Does tile_light_chain_block display gold chain link pattern with sakura pink base?",
+        "Does tile_pierce_block display a single directional arrow (the ONLY tile with a direction indicator)?",
+        "Does tile_swap_block display bidirectional swap arrows on a golden-yellow (#F5C842) base?",
+        "Does tile_cascade_block display sequential step dots/chain pattern on dark forest green (#4A6D9A)?",
+        "Do all 5 special tiles look clearly different from each other AND from the 20 regular tiles?",
+        "Do any of the special tile motifs (rings, chains, arrows, sequential dots) appear on regular tiles?"
+      ],
+      "acceptance_criteria": "See asset-acceptance-criteria.md Section 一 Special Blocks table and JSON special_blocks criteria",
+      "blocking_failure_codes": ["TILE_SPECIAL_MARKER_ABSENT", "TILE_SPECIAL_MARKER_SHARED", "TILE_IDENTICAL_SILHOUETTE"],
+      "task_risk": "high",
+      "visual_model": "codex-default"
+    },
+
+    {
+      "task_id": "TASK-03",
+      "batch_doc_path": ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-03-char-expressions.md",
+      "asset_family": "character_expression",
+      "asset_kind": "expression_portrait",
+      "asset_count": 35,
+      "image_paths": [
+        ".allforai/game-design/art/expressions/char_ritsu_expr_default.png",
+        ".allforai/game-design/art/expressions/char_ritsu_expr_happy.png",
+        ".allforai/game-design/art/expressions/char_ritsu_expr_thinking.png",
+        ".allforai/game-design/art/expressions/char_ritsu_expr_surprised.png",
+        ".allforai/game-design/art/expressions/char_ritsu_expr_react_jump.png",
+        ".allforai/game-design/art/expressions/char_hinata_expr_default.png",
+        ".allforai/game-design/art/expressions/char_hinata_expr_happy.png",
+        ".allforai/game-design/art/expressions/char_hinata_expr_thinking.png",
+        ".allforai/game-design/art/expressions/char_hinata_expr_surprised.png",
+        ".allforai/game-design/art/expressions/char_hinata_expr_react_jump.png",
+        ".allforai/game-design/art/expressions/char_kenzo_expr_default.png",
+        ".allforai/game-design/art/expressions/char_kenzo_expr_happy.png",
+        ".allforai/game-design/art/expressions/char_kenzo_expr_thinking.png",
+        ".allforai/game-design/art/expressions/char_kenzo_expr_surprised.png",
+        ".allforai/game-design/art/expressions/char_kenzo_expr_react_jump.png",
+        ".allforai/game-design/art/expressions/char_umeko_expr_default.png",
+        ".allforai/game-design/art/expressions/char_umeko_expr_happy.png",
+        ".allforai/game-design/art/expressions/char_umeko_expr_thinking.png",
+        ".allforai/game-design/art/expressions/char_umeko_expr_surprised.png",
+        ".allforai/game-design/art/expressions/char_umeko_expr_react_jump.png",
+        ".allforai/game-design/art/expressions/char_natsuka_expr_default.png",
+        ".allforai/game-design/art/expressions/char_natsuka_expr_happy.png",
+        ".allforai/game-design/art/expressions/char_natsuka_expr_thinking.png",
+        ".allforai/game-design/art/expressions/char_natsuka_expr_surprised.png",
+        ".allforai/game-design/art/expressions/char_natsuka_expr_react_jump.png",
+        ".allforai/game-design/art/expressions/char_fuyuko_expr_default.png",
+        ".allforai/game-design/art/expressions/char_fuyuko_expr_happy.png",
+        ".allforai/game-design/art/expressions/char_fuyuko_expr_thinking.png",
+        ".allforai/game-design/art/expressions/char_fuyuko_expr_surprised.png",
+        ".allforai/game-design/art/expressions/char_fuyuko_expr_react_jump.png",
+        ".allforai/game-design/art/expressions/char_gicho_expr_default.png",
+        ".allforai/game-design/art/expressions/char_gicho_expr_happy.png",
+        ".allforai/game-design/art/expressions/char_gicho_expr_thinking.png",
+        ".allforai/game-design/art/expressions/char_gicho_expr_surprised.png",
+        ".allforai/game-design/art/expressions/char_gicho_expr_react_jump.png"
+      ],
+      "preview_paths": [],
+      "contract_refs": [
+        ".allforai/game-design/art/asset-acceptance-criteria.md#二、角色表情（Character Expressions）验收标准",
+        ".allforai/game-design/art/asset-acceptance-criteria.json#asset_family=character_expression"
+      ],
+      "visual_questions": [
+        "For each of the 7 characters: does the same character look like the same person across all 5 expressions?",
+        "For char_ritsu: disheveled dark hair, light blue-grey shirt, generally casual posture?",
+        "For char_hinata: sakura pink (#F0C4C4) in costume, notebook implied or visible?",
+        "For char_kenzo: fisherman vest in deep sea blue, grey sparse hair, weathered stocky face?",
+        "For char_umeko: green pottery apron (#7DBE77), hair bun, slight work-forward posture?",
+        "For char_natsuka: deep green outdoor vest (#3D6645), windswept free hair, head tilt?",
+        "For char_fuyuko: night blue kimono-style top (#2A4060), neat upswept white/grey hair, upright dignified posture?",
+        "For char_gicho: clearly an orange tabby cat with navy collar (#2A3650)?",
+        "Is happy clearly different from default (smile/eye-crinkle visible)?",
+        "Is thinking clearly different from default (head tilt or finger gesture)?",
+        "Is surprised clearly different from happy (wide eyes, open mouth or raised brow)?",
+        "Is react_jump clearly energetic/dynamic, different from surprised?",
+        "Is the art style hand-drawn watercolor for all 35 expressions?"
+      ],
+      "acceptance_criteria": "See asset-acceptance-criteria.md Section 二 and JSON asset_family=character_expression",
+      "blocking_failure_codes": ["EXPR_IDENTITY_DRIFT", "EXPR_EMOTION_AMBIGUOUS", "EXPR_WRONG_CHAR", "EXPR_STYLE_BREAK"],
+      "task_risk": "high",
+      "visual_model": "codex-default"
+    },
+
+    {
+      "task_id": "TASK-04",
+      "batch_doc_path": ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-04-char-portraits.md",
+      "asset_family": "portrait",
+      "asset_kind": "dialogue_portrait",
+      "asset_count": 10,
+      "image_paths": [
+        ".allforai/game-design/art/portraits/char_ritsu_portrait_default.png",
+        ".allforai/game-design/art/portraits/char_ritsu_portrait_happy.png",
+        ".allforai/game-design/art/portraits/char_hinata_portrait_default.png",
+        ".allforai/game-design/art/portraits/char_hinata_portrait_happy.png",
+        ".allforai/game-design/art/portraits/char_kenzo_portrait_default.png",
+        ".allforai/game-design/art/portraits/char_natsuka_portrait_default.png",
+        ".allforai/game-design/art/portraits/char_fuyuko_portrait_default.png",
+        ".allforai/game-design/art/portraits/char_fuyuko_portrait_react_jump.png",
+        ".allforai/game-design/art/portraits/char_gicho_portrait_default.png",
+        ".allforai/game-design/art/portraits/char_umeko_portrait_default.png"
+      ],
+      "preview_paths": [],
+      "contract_refs": [
+        ".allforai/game-design/art/asset-acceptance-criteria.md#三、角色立绘（Portraits）验收标准",
+        ".allforai/game-design/art/asset-acceptance-criteria.json#asset_family=portrait"
+      ],
+      "visual_questions": [
+        "Does each portrait show the face + shoulders (not wider body, not just face)?",
+        "Is the face centered horizontally in each portrait?",
+        "Is the top of the head visible and not cropped?",
+        "Are the shoulders visible at the lower portion of the frame?",
+        "Is the character identifiable in each portrait (matching their expression-set identity)?",
+        "For char_fuyuko_portrait_react_jump (512x512) vs char_fuyuko_portrait_default (1024x1024): does the different source size produce a different crop or composition?",
+        "For char_hinata_portrait_happy (512x512) vs char_hinata_portrait_default (1024x1024): same question — does crop or composition differ?",
+        "Is the art style consistent (watercolor) across all 10 portraits?"
+      ],
+      "acceptance_criteria": "See asset-acceptance-criteria.md Section 三 and JSON asset_family=portrait",
+      "blocking_failure_codes": ["PORTRAIT_FACE_CROPPED", "PORTRAIT_IDENTITY_MISMATCH"],
+      "task_risk": "medium",
+      "visual_model": "codex-default"
+    },
+
+    {
+      "task_id": "TASK-05",
+      "batch_doc_path": ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-05-gicho-animation.md",
+      "asset_family": "animation",
+      "asset_kind": "frame_animation",
+      "asset_count": 15,
+      "image_paths": [
+        ".allforai/game-design/art/char_gicho/char_gicho_idle_f01.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_idle_f02.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_idle_f03.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_idle_f04.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_happy_f01.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_happy_f02.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_happy_f03.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_happy_f04.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_wave_f01.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_wave_f02.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_wave_f03.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_wave_f04.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_surprised_f01.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_surprised_f02.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_surprised_f03.png"
+      ],
+      "preview_paths": [],
+      "contract_refs": [
+        ".allforai/game-design/art/asset-acceptance-criteria.md#四、帧动画（char_gicho Frame Animation）验收标准",
+        ".allforai/game-design/art/asset-acceptance-criteria.json#asset_family=animation"
+      ],
+      "visual_questions": [
+        "IDLE LOOP (f01-f04): Do the 4 idle frames form a smooth breathing loop? Is f04 similar enough to f01 to loop without a visible pop?",
+        "IDLE: Is there visible subtle motion between idle frames (slight up/down or pose variation)?",
+        "HAPPY (f01-f04): Is there visible happy/bouncy motion progression across the 4 happy frames?",
+        "HAPPY vs IDLE: Are the happy frames clearly different from the idle frames (more energy, visible smile/expression)?",
+        "WAVE (f01-f04): Is the paw/arm wave motion arc clearly visible and progressing across all 4 wave frames?",
+        "SURPRISED (f01-f03): Is the surprise escalating across 3 frames (widening eyes, body reaction)?",
+        "IDENTITY: Is the orange tabby cat with dark navy collar consistently identifiable across all 15 frames?",
+        "Are there any frames where the cat's appearance changes drastically (different fur color, different body proportion)?"
+      ],
+      "acceptance_criteria": "See asset-acceptance-criteria.md Section 四 and JSON asset_family=animation",
+      "blocking_failure_codes": ["ANIM_LOOP_BREAK", "ANIM_IDENTITY_DRIFT", "ANIM_MOTION_ABSENT"],
+      "task_risk": "high",
+      "visual_model": "codex-default"
+    },
+
+    {
+      "task_id": "TASK-06",
+      "batch_doc_path": ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-06-cross-family-style.md",
+      "asset_family": "cross_family",
+      "asset_kind": "style_coherence",
+      "asset_count": 6,
+      "image_paths": [
+        ".allforai/game-design/art/tilesets/tile_tuna_ch1.png",
+        ".allforai/game-design/art/tilesets/tile_jellyfish_ch1.png",
+        ".allforai/game-design/art/expressions/char_ritsu_expr_default.png",
+        ".allforai/game-design/art/expressions/char_hinata_expr_happy.png",
+        ".allforai/game-design/art/portraits/char_kenzo_portrait_default.png",
+        ".allforai/game-design/art/char_gicho/char_gicho_idle_f01.png"
+      ],
+      "preview_paths": [],
+      "contract_refs": [
+        ".allforai/game-design/art/asset-acceptance-criteria.md#全局风格规则",
+        ".allforai/game-design/art/visual-style-tokens.json"
+      ],
+      "visual_questions": [
+        "Do the tile and character assets feel like they belong to the same world and art style?",
+        "Is the hand-drawn watercolor aesthetic consistent across tile, expression, portrait, and animation families?",
+        "Do the color palettes feel harmonious (warm pastels) across all asset types?",
+        "Would tiles and characters look visually coherent placed together on a game board?",
+        "Does any asset family feel like it belongs to a different art style or game?"
+      ],
+      "acceptance_criteria": "See asset-acceptance-criteria.md Global Style Rules and visual-style-tokens.json",
+      "blocking_failure_codes": ["EXPR_STYLE_BREAK", "TILE_PHOTOREALISTIC"],
+      "task_risk": "high",
+      "visual_model": "codex-default"
+    }
+  ]
+}

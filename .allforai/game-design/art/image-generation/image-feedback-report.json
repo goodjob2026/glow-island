@@ -1,0 +1,306 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "source_review": ".allforai/game-design/art/qa/codex-visual-review.json",
+  "source_audit": ".allforai/game-design/art/qa/visual-review-closure-audit.json",
+  "iteration": 1,
+  "status": "pending_repair",
+
+  "feedback_items": [
+    {
+      "feedback_id": "FB-001",
+      "artifact_id": "all_25_tiles_source_dimensions",
+      "batch_id": "BATCH-01-tiles-regular",
+      "finding_id": "F001",
+      "failure_code": "TILE_DIMENSION_WRONG",
+      "severity": "blocker",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-128.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "All 20 regular tiles generated at 512×512px or 1024×1024px source. Tile spec requires 128×128px game canvas (or 2x at 256×256px for atlas)",
+      "requested_action": "Re-export all 20 regular tile PNGs at 128×128px canvas (or 256×256px 2x), centered, with 8px transparent bleed zone, preserving subject. Do not regenerate artwork — this is a re-export/resize operation.",
+      "assets_affected": [
+        "tile_tuna_ch1.png", "tile_octopus_ch1.png", "tile_starfish_ch1.png", "tile_hermit_crab_ch1.png",
+        "tile_lanternfish_ch1.png", "tile_pufferfish_ch1.png", "tile_whale_ch1.png", "tile_coral_ch1.png",
+        "tile_conch_ch1.png", "tile_shell_ch1.png", "tile_crab_ch1.png", "tile_turtle_ch1.png",
+        "tile_jellyfish_ch1.png", "tile_flying_fish_ch1.png", "tile_dolphin_ch1.png", "tile_seagull_ch1.png",
+        "tile_coconut_palm_ch1.png", "tile_lighthouse_ch1.png", "tile_fishing_boat_ch1.png", "tile_buoy_ch1.png"
+      ],
+      "output_dir": ".allforai/game-design/art/tilesets/"
+    },
+    {
+      "feedback_id": "FB-002",
+      "artifact_id": "tile_starfish_tile_hermit_crab_tile_lanternfish",
+      "batch_id": "BATCH-01-tiles-regular",
+      "finding_id": "F002",
+      "failure_code": "TILE_TEXT_ARTIFACT",
+      "severity": "major",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-128.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "tile_starfish, tile_hermit_crab, and tile_lanternfish contain visible generated measurement labels or guide text inside the artwork",
+      "requested_action": "Regenerate these 3 tiles with explicit negative prompt: 'no measurement guides, no text labels, no UI annotations, no dimension markers, no size labels, no bleed marks'. Keep all other generation parameters identical.",
+      "assets_affected": [
+        "tile_starfish_ch1.png", "tile_hermit_crab_ch1.png", "tile_lanternfish_ch1.png"
+      ],
+      "output_dir": ".allforai/game-design/art/tilesets/"
+    },
+    {
+      "feedback_id": "FB-003",
+      "artifact_id": "tile_ch1_saturation_correction",
+      "batch_id": "BATCH-01-tiles-regular",
+      "finding_id": "F003",
+      "failure_code": "TILE_WRONG_SATURATION",
+      "severity": "minor",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-128.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "tile_tuna, tile_lanternfish, tile_flying_fish, tile_dolphin, tile_crab read more saturated than ch1 s0 target (8-15% saturation, 42-48% brightness)",
+      "requested_action": "Apply palette desaturation correction to s0 target on these 5 tiles after dimension re-export. If palette correction produces unsatisfactory results, regenerate with 'muted desaturated watercolor, 8-15% color saturation, ch1 before-repair palette, no vivid colors' positive prompt addition.",
+      "assets_affected": [
+        "tile_tuna_ch1.png", "tile_lanternfish_ch1.png", "tile_flying_fish_ch1.png", "tile_dolphin_ch1.png", "tile_crab_ch1.png"
+      ],
+      "output_dir": ".allforai/game-design/art/tilesets/"
+    },
+    {
+      "feedback_id": "FB-004",
+      "artifact_id": "all_5_special_tiles_source_dimensions",
+      "batch_id": "BATCH-02-tiles-special",
+      "finding_id": "F004",
+      "failure_code": "TILE_DIMENSION_WRONG",
+      "severity": "blocker",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-02-special-tiles.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "All 5 special tile frame_01 sources are 512×512px. Mechanic markers are visually correct and distinct — only dimension fails.",
+      "requested_action": "Re-export all 5 special block frame_01 PNGs at 128×128px canvas. Preserve the mechanic markers (concentric rings / chain links / directional arrow / bidirectional arrows / sequential dots). Artwork does not need regeneration.",
+      "assets_affected": [
+        "tile_wave_block_frame_01.png", "tile_light_chain_block_frame_01.png",
+        "tile_pierce_block_frame_01.png", "tile_swap_block_frame_01.png", "tile_cascade_block_frame_01.png"
+      ],
+      "output_dir": ".allforai/game-design/art/tilesets/"
+    },
+    {
+      "feedback_id": "FB-005",
+      "artifact_id": "char_ritsu_all_expressions_char_umeko_all_expressions",
+      "batch_id": "BATCH-03-char-expressions",
+      "finding_id": "F005",
+      "failure_code": "EXPR_IDENTITY_DRIFT",
+      "severity": "blocker",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-ritsu.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-umeko.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "char_ritsu changes face shape, hair shape, age read, and costume details across 5 emotions. char_umeko changes age, headwear, face proportions, and costume details across 5 emotions.",
+      "requested_action": "Regenerate all 5 ritsu expressions and all 5 umeko expressions using locked character reference: (ritsu) 'young adult Japanese male, slightly disheveled dark hair, rolled-sleeve light blue-grey dress shirt, relaxed island-casual posture, chibi 1:1.5 head-body ratio, same face proportions across ALL variants'; (umeko) 'mature Japanese woman, bamboo green #7DBE77 pottery apron, practical hair bun, a few loose strands, clay-stained hands, chibi 1:1.5 ratio, same face proportions across ALL variants'. Add 'no text, no labels' to negative prompt.",
+      "assets_affected": [
+        "char_ritsu_expr_default.png", "char_ritsu_expr_happy.png", "char_ritsu_expr_thinking.png",
+        "char_ritsu_expr_surprised.png", "char_ritsu_expr_react_jump.png",
+        "char_umeko_expr_default.png", "char_umeko_expr_happy.png", "char_umeko_expr_thinking.png",
+        "char_umeko_expr_surprised.png", "char_umeko_expr_react_jump.png"
+      ],
+      "output_dir": ".allforai/game-design/art/expressions/"
+    },
+    {
+      "feedback_id": "FB-006",
+      "artifact_id": "react_jump_poses_ritsu_kenzo_gicho",
+      "batch_id": "BATCH-03-char-expressions",
+      "finding_id": "F006",
+      "failure_code": "EXPR_EMOTION_AMBIGUOUS",
+      "severity": "major",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-ritsu.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-kenzo.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-gicho.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "react_jump for ritsu, kenzo, and gicho reads as ordinary surprise or neutral bust rather than energetic full-body reaction pose",
+      "requested_action": "Regenerate react_jump for these 3 characters with: 'energetic jumping reaction pose, raised shoulders, arms up or spread, wide eyes, open mouth, full-body energy visible even in bust crop, dynamic pose'. Lock identity (hair, clothing, signature color). Note: ritsu also needs FB-005 regeneration — combine into single regeneration pass.",
+      "assets_affected": [
+        "char_ritsu_expr_react_jump.png", "char_kenzo_expr_react_jump.png", "char_gicho_expr_react_jump.png"
+      ],
+      "output_dir": ".allforai/game-design/art/expressions/"
+    },
+    {
+      "feedback_id": "FB-007",
+      "artifact_id": "expressions_with_baked_text",
+      "batch_id": "BATCH-03-char-expressions",
+      "finding_id": "F007",
+      "failure_code": "EXPR_TEXT_BAKED",
+      "severity": "major",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-hinata.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-umeko.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-natsuka.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-fuyuko.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-gicho.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "9 expression assets contain baked punctuation, color-code text, character labels, or Japanese text inside artwork",
+      "requested_action": "Regenerate affected expressions with negative prompt addition: 'no text, no captions, no labels, no color codes, no hex codes, no punctuation overlays, no character name, no Japanese text, no subtitle, no watermark'. Note: char_umeko assets also covered by FB-005 — combine. Affected: char_hinata_expr_react_jump, char_umeko_expr_default/thinking/surprised (combine with FB-005), char_natsuka_expr_surprised, char_fuyuko_expr_surprised/react_jump, char_gicho_expr_default/surprised.",
+      "assets_affected": [
+        "char_hinata_expr_react_jump.png",
+        "char_umeko_expr_default.png", "char_umeko_expr_thinking.png", "char_umeko_expr_surprised.png",
+        "char_natsuka_expr_surprised.png",
+        "char_fuyuko_expr_surprised.png", "char_fuyuko_expr_react_jump.png",
+        "char_gicho_expr_default.png", "char_gicho_expr_surprised.png"
+      ],
+      "output_dir": ".allforai/game-design/art/expressions/"
+    },
+    {
+      "feedback_id": "FB-008",
+      "artifact_id": "char_hinata_portrait_happy",
+      "batch_id": "BATCH-04-char-portraits",
+      "finding_id": "F008",
+      "failure_code": "PORTRAIT_IDENTITY_MISMATCH",
+      "severity": "blocker",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-04-portraits.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "char_hinata_portrait_happy shows a different character (darker hair, different face design, different age read) than Hinata default",
+      "requested_action": "Regenerate from Hinata reference identity: 'young adult Japanese woman, sakura pink #F0C4C4 clothing accent, brown hair tied back practical windswept, notebook carried or implied, graceful posture, portrait crop showing face and shoulders, happy smiling expression, chibi proportions, hand-drawn watercolor, 1024x1024px'. No text, no scene background.",
+      "assets_affected": ["char_hinata_portrait_happy.png"],
+      "output_dir": ".allforai/game-design/art/portraits/"
+    },
+    {
+      "feedback_id": "FB-009",
+      "artifact_id": "portrait_512px_inconsistency",
+      "batch_id": "BATCH-04-char-portraits",
+      "finding_id": "F009",
+      "failure_code": "PORTRAIT_DIMENSION_INCONSISTENT",
+      "severity": "major",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-04-portraits.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "char_hinata_portrait_happy and char_fuyuko_portrait_react_jump are 512×512px; all other portraits are 1024×1024px. Fuyuko react_jump also has scene background and baked Japanese text.",
+      "requested_action": "Regenerate both portraits at 1024×1024px. char_hinata_portrait_happy: cover also in FB-008. char_fuyuko_portrait_react_jump: 'elderly Japanese woman, night blue kimono-style top #2A4060, neat upswept white-grey hair, react_jump excited expression, portrait crop face and shoulders, neutral or gradient background, no scene background, no text, hand-drawn watercolor, 1024x1024px'.",
+      "assets_affected": [
+        "char_hinata_portrait_happy.png", "char_fuyuko_portrait_react_jump.png"
+      ],
+      "output_dir": ".allforai/game-design/art/portraits/"
+    },
+    {
+      "feedback_id": "FB-010",
+      "artifact_id": "char_gicho_all_15_frames_identity",
+      "batch_id": "BATCH-05-gicho-animation",
+      "finding_id": "F010",
+      "failure_code": "ANIM_IDENTITY_DRIFT",
+      "severity": "blocker",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-idle.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-happy.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-wave.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-surprised.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "All 15 gicho frames change body size, face design, crop, posture, stripe pattern, and collar rendering across adjacent frames and animation sets",
+      "requested_action": "Rebuild all 15 frames from one locked model sheet: 'orange tabby cat, sitting upright, round body, dark navy #2A3650 collar, cat ears, cat face, consistent size and crop 192x192px, transparent background, hand-drawn watercolor'. Vary ONLY the intended motion elements. Recommend: generate one locked 'gicho-base.png' then use it as reference image for all 15 frame generations. See char-gicho-frame-animation-spec.json for frame-by-frame motion descriptions.",
+      "assets_affected": [
+        "char_gicho_idle_f01.png", "char_gicho_idle_f02.png", "char_gicho_idle_f03.png", "char_gicho_idle_f04.png",
+        "char_gicho_happy_f01.png", "char_gicho_happy_f02.png", "char_gicho_happy_f03.png", "char_gicho_happy_f04.png",
+        "char_gicho_wave_f01.png", "char_gicho_wave_f02.png", "char_gicho_wave_f03.png", "char_gicho_wave_f04.png",
+        "char_gicho_surprised_f01.png", "char_gicho_surprised_f02.png", "char_gicho_surprised_f03.png"
+      ],
+      "output_dir": ".allforai/game-design/art/char_gicho/"
+    },
+    {
+      "feedback_id": "FB-011",
+      "artifact_id": "char_gicho_idle_loop_f04_to_f01",
+      "batch_id": "BATCH-05-gicho-animation",
+      "finding_id": "F011",
+      "failure_code": "ANIM_LOOP_BREAK",
+      "severity": "blocker",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-idle.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "idle f04 is a side-facing heavier pose while f01 is front-facing seated; looping f04→f01 would produce a visible pop",
+      "requested_action": "Covered by FB-010 full rebuild. When rebuilding idle: f01=neutral front-facing seated pose; f02=slight inhale/chest rise; f03=peak inhale/head slight tilt; f04=exhale returning close to f01 — f04 must be within ~5% position of f01. All 4 frames front-facing, same scale, same crop.",
+      "assets_affected": [
+        "char_gicho_idle_f01.png", "char_gicho_idle_f04.png"
+      ],
+      "output_dir": ".allforai/game-design/art/char_gicho/",
+      "parent_feedback": "FB-010"
+    },
+    {
+      "feedback_id": "FB-012",
+      "artifact_id": "gicho_baked_labels_4_frames",
+      "batch_id": "BATCH-05-gicho-animation",
+      "finding_id": "F013",
+      "failure_code": "ANIM_TEXT_BAKED",
+      "severity": "major",
+      "evidence_refs": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-idle.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-happy.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-wave.png"
+      ],
+      "root_cause": "image_generation",
+      "current_state": "char_gicho_idle_f02, char_gicho_happy_f01, char_gicho_happy_f02, char_gicho_wave_f04 contain baked titles, frame numbers, labels, or color codes",
+      "requested_action": "Covered by FB-010 full rebuild. When regenerating these frames, add to negative prompt: 'no text, no frame numbers, no titles, no labels, no color codes, no annotations, no watermark'.",
+      "assets_affected": [
+        "char_gicho_idle_f02.png", "char_gicho_happy_f01.png", "char_gicho_happy_f02.png", "char_gicho_wave_f04.png"
+      ],
+      "output_dir": ".allforai/game-design/art/char_gicho/",
+      "parent_feedback": "FB-010"
+    }
+  ],
+
+  "consolidated_repair_batches": [
+    {
+      "repair_batch_id": "REPAIR-A",
+      "priority": 1,
+      "description": "char_gicho complete animation rebuild — all 15 frames",
+      "feedback_ids": ["FB-010", "FB-011", "FB-012"],
+      "estimated_assets": 15,
+      "method": "generate locked base image, then use as reference for all 15 frame regenerations"
+    },
+    {
+      "repair_batch_id": "REPAIR-B",
+      "priority": 2,
+      "description": "char_ritsu all 5 expressions + char_umeko all 5 expressions — identity drift fix",
+      "feedback_ids": ["FB-005", "FB-006", "FB-007"],
+      "estimated_assets": 10,
+      "method": "regenerate from locked character reference with text-negative prompt"
+    },
+    {
+      "repair_batch_id": "REPAIR-C",
+      "priority": 3,
+      "description": "All 25 tile dimension re-exports at 128×128px",
+      "feedback_ids": ["FB-001", "FB-004"],
+      "estimated_assets": 25,
+      "method": "re-export/resize existing artwork; no regeneration needed for most tiles"
+    },
+    {
+      "repair_batch_id": "REPAIR-D",
+      "priority": 4,
+      "description": "char_hinata_portrait_happy + char_fuyuko_portrait_react_jump — identity fix + dimension fix",
+      "feedback_ids": ["FB-008", "FB-009"],
+      "estimated_assets": 2,
+      "method": "regenerate from correct character references at 1024×1024px"
+    },
+    {
+      "repair_batch_id": "REPAIR-E",
+      "priority": 5,
+      "description": "Remaining expression baked text removal + react_jump strengthening",
+      "feedback_ids": ["FB-006", "FB-007"],
+      "estimated_assets": 9,
+      "note": "Some assets overlap with REPAIR-B — combine into single generation pass where possible"
+    },
+    {
+      "repair_batch_id": "REPAIR-F",
+      "priority": 6,
+      "description": "3 tile text artifact regeneration + 5 tile saturation correction",
+      "feedback_ids": ["FB-002", "FB-003"],
+      "estimated_assets": 8,
+      "method": "regenerate 3 tiles with text-negative prompt; palette correct or regenerate 5 tiles for s0 saturation"
+    }
+  ]
+}

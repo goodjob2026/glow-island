@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "skill": "visual-qa/00-env/visual-model-capability-registry",
+
+  "codex_cli": {
+    "available": true,
+    "version": "codex-cli 0.130.0",
+    "binary_path": "/opt/homebrew/bin/codex",
+    "bridge_script": "/Users/aa/.claude/skills/collaborating-with-codex/scripts/codex_bridge.py",
+    "visual_capability_detected": true,
+    "visual_capability_source": "codex-cli default model (claude-sonnet-4-6 or equivalent multimodal)",
+    "multi_image_inspection_supported": true,
+    "evidence_grounded_reporting": true,
+    "structured_json_output": true
+  },
+
+  "available_visual_models": [
+    {
+      "model_id": "codex-default",
+      "display_name": "Codex CLI Default (multimodal)",
+      "vision_support": true,
+      "multi_image_batch": true,
+      "evidence_grounded": true,
+      "max_images_per_batch_recommended": 12,
+      "risk_capability": ["low", "medium", "high"],
+      "notes": "Codex CLI default model is multimodal and supports direct image inspection. Suitable for all risk tiers."
+    }
+  ],
+
+  "risk_tier_definitions": {
+    "high": [
+      "character identity and expression consistency across 5 emotions",
+      "tile distinguishability at 128x128px (20 regular + 5 special must be fully distinct)",
+      "small-icon readability and silhouette recognition at 32x32px downscale",
+      "animation frame continuity (idle loop closure, wave motion progression)",
+      "style consistency across all 85 assets (same world, same palette)"
+    ],
+    "medium": [
+      "portrait crop discipline (face+shoulder centering)",
+      "special block unique marker verification (no marker shared with regular tiles)",
+      "character-to-tile world coherence"
+    ],
+    "low": [
+      "file existence and PNG validity",
+      "non-empty and non-corrupt image check",
+      "broad background/alpha correctness"
+    ]
+  }
+}

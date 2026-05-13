@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-13T00:00:00Z",
+  "project": "glow-island",
+  "skill": "visual-qa/00-env/visual-model-capability-registry",
+  "mode": "detect_route_visual_models",
+
+  "codex_cli_available": true,
+  "codex_cli_version": "codex-cli 0.130.0",
+
+  "available_visual_models": [
+    {
+      "model_id": "codex-default",
+      "display_name": "Codex CLI Default (multimodal)",
+      "vision_support": true,
+      "multi_image_batch": true,
+      "max_images_per_batch_recommended": 12
+    }
+  ],
+
+  "batch_routes": [
+    {
+      "batch_id": "BATCH-01-tiles-regular",
+      "asset_family": "tileset",
+      "description": "20 regular tiles — readability, distinctness, art style compliance",
+      "task_risk": "high",
+      "minimum_capabilities": ["multi_image_inspection", "small_icon_readability", "distinguishability_check"],
+      "selected_visual_model": "codex-default",
+      "fallback_visual_model": null,
+      "model_reason": "Codex CLI default is multimodal and satisfies high-risk batch requirements for tile distinguishability at 128x128px and silhouette recognition.",
+      "blocked_state": null
+    },
+    {
+      "batch_id": "BATCH-02-tiles-special",
+      "asset_family": "tileset",
+      "description": "5 special tactical tiles — unique marker verification, no overlap with regular tile visual vocabulary",
+      "task_risk": "high",
+      "minimum_capabilities": ["multi_image_inspection", "distinguishability_check", "marker_verification"],
+      "selected_visual_model": "codex-default",
+      "fallback_visual_model": null,
+      "model_reason": "High-risk: each special tile must display a visually unique mechanic marker not shared with any regular tile. Multimodal codex-default satisfies requirement.",
+      "blocked_state": null
+    },
+    {
+      "batch_id": "BATCH-03-char-expressions",
+      "asset_family": "character_expression",
+      "description": "35 expression PNGs (7 chars × 5 emotions) — identity consistency across emotions per character",
+      "task_risk": "high",
+      "minimum_capabilities": ["multi_image_inspection", "character_identity_consistency", "emotion_distinction"],
+      "selected_visual_model": "codex-default",
+      "fallback_visual_model": null,
+      "model_reason": "High-risk: same character must look like same person across 5 emotions; emotions must be distinguishable. Codex-default multimodal handles this.",
+      "blocked_state": null
+    },
+    {
+      "batch_id": "BATCH-04-char-portraits",
+      "asset_family": "portrait",
+      "description": "10 portrait PNGs — crop discipline (face+shoulder), centering, art style",
+      "task_risk": "medium",
+      "minimum_capabilities": ["multi_image_inspection", "crop_discipline_check"],
+      "selected_visual_model": "codex-default",
+      "fallback_visual_model": null,
+      "model_reason": "Medium-risk: portrait crop is verifiable per-image. Codex-default is sufficient.",
+      "blocked_state": null
+    },
+    {
+      "batch_id": "BATCH-05-gicho-animation",
+      "asset_family": "animation",
+      "description": "15 char_gicho frame animation PNGs — loop closure (idle 4f), motion progression (wave 4f, happy 4f, surprised 3f)",
+      "task_risk": "high",
+      "minimum_capabilities": ["multi_image_inspection", "animation_frame_continuity", "loop_closure_check"],
+      "selected_visual_model": "codex-default",
+      "fallback_visual_model": null,
+      "model_reason": "High-risk: frame continuity and loop closure are sequential visual questions requiring side-by-side frame comparison. Codex-default multimodal handles this.",
+      "blocked_state": null
+    },
+    {
+      "batch_id": "BATCH-06-cross-family-style",
+      "asset_family": "cross_family",
+      "description": "Cross-family style coherence — tiles vs character expressions vs portraits share same palette/style world",
+      "task_risk": "high",
+      "minimum_capabilities": ["multi_image_inspection", "style_consistency_check"],
+      "selected_visual_model": "codex-default",
+      "fallback_visual_model": null,
+      "model_reason": "High-risk: Japanese healing island aesthetic must be consistent across all asset families. Requires comparing representative assets side by side.",
+      "blocked_state": null
+    }
+  ],
+
+  "validation": {
+    "every_batch_has_required_fields": true,
+    "high_risk_batches_use_capable_model": true,
+    "blocked_batches": [],
+    "status": "COMPLETED"
+  }
+}

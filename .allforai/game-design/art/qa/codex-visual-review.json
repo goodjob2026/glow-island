@@ -1,0 +1,309 @@
+{
+  "schema_version": "1.0",
+  "reviewed_batches": [
+    ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-01-tiles-regular.md",
+    ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-02-tiles-special.md",
+    ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-03-char-expressions.md",
+    ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-04-char-portraits.md",
+    ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-05-gicho-animation.md",
+    ".allforai/game-design/art/qa/visual-acceptance-batches/BATCH-06-cross-family-style.md"
+  ],
+  "inspected_evidence_paths": [
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-128.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-32.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-02-special-tiles.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-ritsu.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-hinata.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-kenzo.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-umeko.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-natsuka.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-fuyuko.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-gicho.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-04-portraits.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-idle.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-happy.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-wave.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-surprised.png",
+    ".allforai/game-design/art/qa/codex-visual-evidence/batch-06-cross-family.png"
+  ],
+  "findings": [
+    {
+      "id": "F001",
+      "batch": "BATCH-01-tiles-regular",
+      "severity": "blocker",
+      "failure_code": "TILE_DIMENSION_WRONG",
+      "affected_assets": [
+        "tile_tuna", "tile_octopus", "tile_starfish", "tile_hermit_crab", "tile_lanternfish",
+        "tile_pufferfish", "tile_whale", "tile_coral", "tile_conch", "tile_shell",
+        "tile_crab", "tile_turtle", "tile_jellyfish", "tile_flying_fish", "tile_dolphin",
+        "tile_seagull", "tile_coconut_palm", "tile_lighthouse", "tile_fishing_boat", "tile_buoy"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-128.png"
+      ],
+      "description": "All regular tile sources are 512x512 or 1024x1024, not the required 128x128 or 2x 256x256 tile canvas.",
+      "repair_suggestion": "Re-export or regenerate regular tiles to the accepted tile canvas size, preserving readable centered silhouettes."
+    },
+    {
+      "id": "F002",
+      "batch": "BATCH-01-tiles-regular",
+      "severity": "major",
+      "failure_code": null,
+      "affected_assets": [
+        "tile_starfish", "tile_hermit_crab", "tile_lanternfish"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-128.png"
+      ],
+      "description": "Several regular tiles include visible generated measurement labels or guide text inside the artwork, such as red size marks and bleed labels.",
+      "repair_suggestion": "Regenerate affected tiles with explicit negative prompt for labels, measurement guides, UI annotations, and text."
+    },
+    {
+      "id": "F003",
+      "batch": "BATCH-01-tiles-regular",
+      "severity": "minor",
+      "failure_code": null,
+      "affected_assets": [
+        "tile_tuna", "tile_lanternfish", "tile_flying_fish", "tile_dolphin", "tile_crab"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-01-regular-tiles-128.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-06-cross-family.png"
+      ],
+      "description": "Several ch1 regular tiles read more saturated and contrasty than the requested s0 muted warm stage.",
+      "repair_suggestion": "Apply palette correction toward 8-15% saturation and 42-48% brightness, or regenerate with stricter ch1/s0 guidance."
+    },
+    {
+      "id": "F004",
+      "batch": "BATCH-02-tiles-special",
+      "severity": "blocker",
+      "failure_code": "TILE_DIMENSION_WRONG",
+      "affected_assets": [
+        "tile_wave_block", "tile_light_chain_block", "tile_pierce_block", "tile_swap_block", "tile_cascade_block"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-02-special-tiles.png"
+      ],
+      "description": "All special tile frame_01 sources are 512x512, not the required 128x128 or 2x 256x256 tile canvas.",
+      "repair_suggestion": "Re-export special blocks to the accepted tile canvas while retaining the visible mechanic markers."
+    },
+    {
+      "id": "F005",
+      "batch": "BATCH-03-char-expressions",
+      "severity": "blocker",
+      "failure_code": "EXPR_IDENTITY_DRIFT",
+      "affected_assets": [
+        "char_ritsu_expr_default", "char_ritsu_expr_happy", "char_ritsu_expr_thinking", "char_ritsu_expr_surprised", "char_ritsu_expr_react_jump",
+        "char_umeko_expr_default", "char_umeko_expr_happy", "char_umeko_expr_thinking", "char_umeko_expr_surprised", "char_umeko_expr_react_jump"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-ritsu.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-umeko.png"
+      ],
+      "description": "Ritsu changes face shape, hair shape, age read, and costume details across emotions; Umeko changes age, headwear, face proportions, and costume details across the set.",
+      "repair_suggestion": "Regenerate expression variants from locked character sheets with fixed hair, clothing, face proportions, and signature costume colors."
+    },
+    {
+      "id": "F006",
+      "batch": "BATCH-03-char-expressions",
+      "severity": "major",
+      "failure_code": "EXPR_EMOTION_AMBIGUOUS",
+      "affected_assets": [
+        "char_ritsu_expr_react_jump", "char_kenzo_expr_react_jump", "char_gicho_expr_react_jump"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-ritsu.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-kenzo.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-gicho.png"
+      ],
+      "description": "Several react_jump assets read as ordinary surprise, neutral, or happy busts rather than energetic whole-body reaction poses.",
+      "repair_suggestion": "Regenerate react_jump variants with clear upward motion, raised shoulders or limbs, and stronger pose energy while keeping identity locked."
+    },
+    {
+      "id": "F007",
+      "batch": "BATCH-03-char-expressions",
+      "severity": "major",
+      "failure_code": null,
+      "affected_assets": [
+        "char_hinata_expr_react_jump",
+        "char_umeko_expr_default", "char_umeko_expr_thinking", "char_umeko_expr_surprised",
+        "char_natsuka_expr_surprised",
+        "char_fuyuko_expr_surprised", "char_fuyuko_expr_react_jump",
+        "char_gicho_expr_default", "char_gicho_expr_surprised"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-hinata.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-umeko.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-natsuka.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-fuyuko.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-03-expressions-gicho.png"
+      ],
+      "description": "Multiple expression assets contain baked punctuation, color-code text, character labels, or Japanese text inside the artwork.",
+      "repair_suggestion": "Regenerate with text, punctuation, captions, labels, and color-code strings prohibited."
+    },
+    {
+      "id": "F008",
+      "batch": "BATCH-04-char-portraits",
+      "severity": "blocker",
+      "failure_code": "PORTRAIT_IDENTITY_MISMATCH",
+      "affected_assets": [
+        "char_hinata_portrait_happy"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-04-portraits.png"
+      ],
+      "description": "Hinata happy portrait reads as a different character than Hinata default and the Hinata expression set: darker hair, different face design, and different age read.",
+      "repair_suggestion": "Regenerate from the Hinata reference identity with sakura-pink costume, brown tied hair, and matching face proportions."
+    },
+    {
+      "id": "F009",
+      "batch": "BATCH-04-char-portraits",
+      "severity": "major",
+      "failure_code": "PORTRAIT_DIMENSION_INCONSISTENT",
+      "affected_assets": [
+        "char_hinata_portrait_happy", "char_fuyuko_portrait_react_jump"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-04-portraits.png"
+      ],
+      "description": "The two 512x512 portraits are visually not equivalent to the 1024x1024 group. Hinata happy has a noticeably different crop and identity; Fuyuko react_jump includes a scene background and baked Japanese text.",
+      "repair_suggestion": "Re-export or regenerate both portraits at 1024x1024 with the same portrait framing rules and no baked text or scene background."
+    },
+    {
+      "id": "F010",
+      "batch": "BATCH-05-gicho-animation",
+      "severity": "blocker",
+      "failure_code": null,
+      "affected_assets": [
+        "char_gicho_idle_f01", "char_gicho_idle_f02", "char_gicho_idle_f03", "char_gicho_idle_f04",
+        "char_gicho_happy_f01", "char_gicho_happy_f02", "char_gicho_happy_f03", "char_gicho_happy_f04",
+        "char_gicho_wave_f01", "char_gicho_wave_f02", "char_gicho_wave_f03", "char_gicho_wave_f04",
+        "char_gicho_surprised_f01", "char_gicho_surprised_f02", "char_gicho_surprised_f03"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-idle.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-happy.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-wave.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-surprised.png"
+      ],
+      "description": "The Gicho frame set changes body size, face design, crop, posture, stripe pattern, and collar rendering across adjacent frames and animation sets.",
+      "repair_suggestion": "Regenerate animation frames from one locked model sheet or draw-over base pose, changing only the intended motion elements per frame."
+    },
+    {
+      "id": "F011",
+      "batch": "BATCH-05-gicho-animation",
+      "severity": "blocker",
+      "failure_code": "ANIM_LOOP_BREAK",
+      "affected_assets": [
+        "char_gicho_idle_f01", "char_gicho_idle_f04"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-idle.png"
+      ],
+      "description": "Idle f04 is a side-facing heavier pose while f01 is a front-facing seated pose, so f04 to f01 would visibly pop rather than loop.",
+      "repair_suggestion": "Rebuild idle as a subtle breathing cycle around one base pose, with f04 returning close to f01."
+    },
+    {
+      "id": "F012",
+      "batch": "BATCH-05-gicho-animation",
+      "severity": "major",
+      "failure_code": "ANIM_POSITION_JUMP",
+      "affected_assets": [
+        "char_gicho_idle_f02", "char_gicho_idle_f03", "char_gicho_idle_f04",
+        "char_gicho_happy_f02", "char_gicho_happy_f03", "char_gicho_happy_f04",
+        "char_gicho_wave_f02", "char_gicho_wave_f03",
+        "char_gicho_surprised_f02", "char_gicho_surprised_f03"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-idle.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-happy.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-wave.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-surprised.png"
+      ],
+      "description": "Several adjacent frames jump between full-body, cropped bust, side view, standing, and lying compositions rather than advancing smoothly.",
+      "repair_suggestion": "Normalize canvas anchor, subject scale, and body orientation before generating frame-to-frame motion."
+    },
+    {
+      "id": "F013",
+      "batch": "BATCH-05-gicho-animation",
+      "severity": "major",
+      "failure_code": "ANIM_IDENTITY_DRIFT",
+      "affected_assets": [
+        "char_gicho_idle_f02", "char_gicho_happy_f01", "char_gicho_happy_f02", "char_gicho_wave_f04"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-idle.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-happy.png",
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-05-gicho-wave.png"
+      ],
+      "description": "Several animation frames contain baked labels, frame numbers, color codes, or title text, making them unusable as clean animation frames.",
+      "repair_suggestion": "Regenerate or paint out labels and add negative prompt coverage for titles, numbers, frame labels, and color codes."
+    },
+    {
+      "id": "F014",
+      "batch": "BATCH-06-cross-family-style",
+      "severity": "major",
+      "failure_code": "CROSS_FAMILY_PALETTE_MISMATCH",
+      "affected_assets": [
+        "tile_tuna_ch1", "char_ritsu_expr_default", "char_hinata_expr_happy", "char_kenzo_portrait_default", "char_gicho_idle_f01"
+      ],
+      "evidence_paths": [
+        ".allforai/game-design/art/qa/codex-visual-evidence/batch-06-cross-family.png"
+      ],
+      "description": "The representative assets share a watercolor intent, but the tile rendering is more saturated and glossy while the character assets use cleaner anime line art. The group is close but not yet fully coherent.",
+      "repair_suggestion": "Unify palette and texture treatment across tiles and characters, especially by muting ch1 tiles and adding the same paper/watercolor surface treatment across families."
+    }
+  ],
+  "batch_summaries": [
+    {
+      "batch": "BATCH-01-tiles-regular",
+      "assets_referenced": 20,
+      "assets_inspected": 20,
+      "verdict": "fail",
+      "severity_counts": { "blocker": 1, "major": 1, "minor": 1 },
+      "notes": "Silhouettes are mostly distinguishable at 128px and still broadly readable at 32px, but tile dimensions and baked guide artifacts prevent acceptance."
+    },
+    {
+      "batch": "BATCH-02-tiles-special",
+      "assets_referenced": 5,
+      "assets_inspected": 5,
+      "verdict": "fail",
+      "severity_counts": { "blocker": 1, "major": 0, "minor": 0 },
+      "notes": "Mechanic markers are visually present and distinct; dimensions fail the tile canvas requirement."
+    },
+    {
+      "batch": "BATCH-03-char-expressions",
+      "assets_referenced": 35,
+      "assets_inspected": 35,
+      "verdict": "fail",
+      "severity_counts": { "blocker": 1, "major": 2, "minor": 0 },
+      "notes": "Most characters are recognizable, but Ritsu and Umeko drift materially across emotions; several assets include baked text or weak react_jump reads."
+    },
+    {
+      "batch": "BATCH-04-char-portraits",
+      "assets_referenced": 10,
+      "assets_inspected": 10,
+      "verdict": "fail",
+      "severity_counts": { "blocker": 1, "major": 1, "minor": 0 },
+      "notes": "Most portraits show face and shoulders, but Hinata happy mismatches identity and the 512x512 portraits are not visually equivalent to the rest."
+    },
+    {
+      "batch": "BATCH-05-gicho-animation",
+      "assets_referenced": 15,
+      "assets_inspected": 15,
+      "verdict": "fail",
+      "severity_counts": { "blocker": 2, "major": 2, "minor": 0 },
+      "notes": "Wave motion is visible, but frame-to-frame identity, scale, orientation, and idle loop continuity fail animation acceptance."
+    },
+    {
+      "batch": "BATCH-06-cross-family-style",
+      "assets_referenced": 6,
+      "assets_inspected": 6,
+      "verdict": "fail",
+      "severity_counts": { "blocker": 0, "major": 1, "minor": 0 },
+      "notes": "The families have a broadly compatible watercolor direction, but palette and line-rendering differences are visible in the representative sheet."
+    }
+  ],
+  "overall_verdict": "fail",
+  "total_inspected": 85
+}
