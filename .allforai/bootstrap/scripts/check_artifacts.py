@@ -16,7 +16,7 @@ import sys
 
 def check_node_artifacts(node: dict) -> dict:
     """Check if a node's exit_artifacts all exist."""
-    node_id = node.get("id", "?")
+    node_id = node.get("node_id") or node.get("id", "?")
     artifacts = node.get("exit_artifacts", [])
     results = []
     for path in artifacts:
@@ -42,7 +42,7 @@ def main():
     nodes = wf.get("nodes", [])
 
     if args.node_id:
-        node = next((n for n in nodes if n.get("id") == args.node_id), None)
+        node = next((n for n in nodes if (n.get("node_id") or n.get("id")) == args.node_id), None)
         if not node:
             print(f"Node '{args.node_id}' not found", file=sys.stderr)
             sys.exit(2)  # 2 = actual error (node not found), not "pending"
