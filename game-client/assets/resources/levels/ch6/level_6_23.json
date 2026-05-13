@@ -10,21 +10,20 @@
   ],
   "shape": "lighthouse_contour",
   "tile_types": [
-    "T13",
-    "T09",
-    "T06",
-    "T16",
-    "T15",
-    "T04",
-    "T19",
+    "T20",
+    "T14",
+    "T18",
+    "T11",
+    "T02",
     "T03",
-    "T18"
+    "T13",
+    "T08"
   ],
   "objectives": [
     {
       "type": "clear_tiles",
       "tile_type": "any",
-      "count": 24
+      "count": 28
     },
     {
       "type": "clear_ice",
@@ -40,34 +39,32 @@
     {
       "type": "ice_block",
       "position": [
-        3,
+        1,
+        2
+      ],
+      "layers": 3
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        0,
+        3
+      ]
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        0,
         0
       ],
-      "layers": 2
-    },
-    {
-      "type": "spreading_obstacle",
-      "position": [
-        4,
-        4
-      ],
-      "variant": "moss",
-      "spread_interval_moves": 3
-    },
-    {
-      "type": "spreading_obstacle",
-      "position": [
-        6,
-        8
-      ],
-      "variant": "moss",
+      "variant": "vine",
       "spread_interval_moves": 3
     },
     {
       "type": "chain_lock",
       "position": [
-        5,
-        3
+        1,
+        0
       ],
       "required_matches": 2
     },
@@ -77,140 +74,113 @@
         2,
         6
       ],
-      "variant": "vine",
-      "spread_interval_moves": 3
-    },
-    {
-      "type": "spreading_obstacle",
-      "position": [
-        2,
-        2
-      ],
       "variant": "moss",
       "spread_interval_moves": 3
-    },
-    {
-      "type": "ice_block",
-      "position": [
-        6,
-        4
-      ],
-      "layers": 2
     },
     {
       "type": "chain_lock",
       "position": [
-        8,
+        2,
+        0
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        7,
         6
-      ],
-      "required_matches": 3
-    },
-    {
-      "type": "ice_block",
-      "position": [
-        1,
-        2
-      ],
-      "layers": 3
-    },
-    {
-      "type": "spreading_obstacle",
-      "position": [
-        1,
-        3
-      ],
-      "variant": "moss",
-      "spread_interval_moves": 3
+      ]
     }
   ],
   "special_tiles": [],
   "board_events": [],
   "material_reward": {
     "type": "lantern_glass",
-    "amount": 6
+    "amount": 5
   },
-  "coin_reward": 52,
+  "coin_reward": 44,
   "grid_data": [
-    "T13",
+    "T20",
+    "T14",
+    "T18",
+    "T11",
     "void",
-    "T09",
-    "T13",
-    "T06",
-    "T06",
-    "T06",
-    "T06",
-    "T06",
-    "T16",
-    "T15",
-    "T15",
-    "T16",
-    "T04",
-    "T19",
-    "T06",
-    "T13",
-    "void",
-    "void",
-    "T06",
-    "T04",
+    "T02",
     "T03",
-    "T09",
-    "T18",
-    "T19",
-    "T15",
-    "T19",
-    "T06",
     "void",
-    "T06",
-    "T06",
+    "T20",
+    "T20",
+    "void",
+    "T20",
+    "T11",
+    "T11",
+    "T13",
+    "T03",
+    "T08",
+    "T20",
+    "T20",
+    "void",
+    "T20",
+    "T08",
+    "T14",
+    "T14",
+    "T20",
+    "T08",
+    "T03",
+    "T20",
+    "void",
+    "T11",
+    "T20",
+    "T14",
     "T18",
-    "T09",
-    "T06",
-    "T06",
-    "T16",
-    "T19",
+    "T02",
     "T13",
     "T18",
     "T18",
+    "T02",
+    "T13",
+    "T14",
+    "T14",
+    "T14",
+    "T11",
+    "T02",
+    "T08",
     "T03",
-    "T06",
-    "T06",
-    "T06",
-    "T19",
+    "void",
+    "T08",
     "T03",
+    "T08",
+    "T02",
+    "T13",
+    "T18",
+    "T11",
+    "T02",
+    "T13",
+    "T02",
     "T03",
     "T13",
-    "T15",
-    "T03",
-    "T19",
-    "T03",
-    "T16",
-    "T09",
+    "T08",
+    "T11",
     "void",
+    "T18",
     "void",
-    "T06",
-    "T06",
-    "T18",
-    "T09",
-    "T18",
+    "T20",
+    "T03",
     "T13",
-    "T04",
-    "T04",
-    "T15",
-    "T09",
+    "void",
+    "T18",
+    "T11",
+    "T03",
+    "void",
+    "T14",
+    "T20",
+    "T13",
     "void",
     "void",
-    "T06",
-    "T16",
-    "T04",
-    "void",
-    "void",
-    "T06",
-    "T16",
-    "void",
-    "T15",
-    "T06",
-    "T04",
-    "void",
+    "T02",
+    "T18",
+    "T08",
     "void"
   ]
 }

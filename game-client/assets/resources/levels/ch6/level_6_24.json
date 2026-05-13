@@ -10,21 +10,21 @@
   ],
   "shape": "lighthouse_contour",
   "tile_types": [
-    "T10",
-    "T20",
-    "T12",
-    "T03",
-    "T16",
-    "T08",
     "T02",
     "T13",
-    "T14"
+    "T10",
+    "T06",
+    "T19",
+    "T07",
+    "T20",
+    "T04",
+    "T05"
   ],
   "objectives": [
     {
       "type": "clear_tiles",
       "tile_type": "any",
-      "count": 23
+      "count": 28
     },
     {
       "type": "clear_ice",
@@ -32,43 +32,42 @@
     },
     {
       "type": "free_chains",
-      "count": 2
+      "count": 1
     }
   ],
   "max_moves": 40,
   "obstacles": [
     {
-      "type": "chain_lock",
-      "position": [
-        2,
-        5
-      ],
-      "required_matches": 1
-    },
-    {
-      "type": "chain_lock",
-      "position": [
-        3,
-        6
-      ],
-      "required_matches": 1
-    },
-    {
-      "type": "chain_lock",
+      "type": "wooden_crate",
       "position": [
         0,
-        7
+        4
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        7,
+        5
       ],
-      "required_matches": 3
+      "layers": 1
     },
     {
       "type": "spreading_obstacle",
       "position": [
-        2,
-        7
+        5,
+        8
       ],
-      "variant": "moss",
+      "variant": "vine",
       "spread_interval_moves": 3
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        6,
+        1
+      ],
+      "layers": 2
     },
     {
       "type": "spreading_obstacle",
@@ -80,108 +79,109 @@
       "spread_interval_moves": 3
     },
     {
-      "type": "chain_lock",
+      "type": "spreading_obstacle",
       "position": [
         1,
         2
       ],
-      "required_matches": 1
+      "variant": "vine",
+      "spread_interval_moves": 3
     },
     {
-      "type": "ice_block",
+      "type": "chain_lock",
       "position": [
-        8,
-        3
+        7,
+        1
       ],
-      "layers": 3
+      "required_matches": 1
     }
   ],
   "special_tiles": [],
   "board_events": [],
   "material_reward": {
     "type": "lantern_glass",
-    "amount": 5
+    "amount": 7
   },
-  "coin_reward": 49,
+  "coin_reward": 44,
   "grid_data": [
-    "T10",
-    "T20",
-    "T12",
-    "T03",
-    "T20",
-    "T16",
-    "T08",
-    "T12",
     "T02",
     "void",
-    "T08",
-    "T16",
-    "T13",
     "void",
-    "T02",
+    "T13",
     "T10",
-    "T08",
     "void",
-    "T02",
-    "T03",
-    "T12",
-    "T14",
-    "T08",
-    "T20",
-    "T08",
-    "T13",
-    "T13",
-    "T20",
-    "T14",
-    "T13",
-    "T16",
-    "T14",
-    "T16",
-    "T03",
-    "void",
-    "T10",
-    "T10",
-    "T10",
-    "T08",
-    "T14",
-    "T10",
-    "T12",
-    "T16",
-    "T14",
-    "T02",
-    "T13",
-    "void",
+    "T06",
     "T10",
     "T02",
     "T10",
-    "T14",
-    "T03",
+    "T13",
+    "T19",
     "T10",
+    "T07",
+    "T07",
     "void",
+    "T13",
+    "T07",
     "T20",
     "T10",
-    "T12",
     "T10",
-    "T16",
-    "T13",
-    "T10",
-    "T10",
+    "T04",
+    "T07",
+    "T07",
+    "T06",
     "void",
     "T02",
     "T10",
-    "T10",
-    "T10",
-    "void",
     "void",
     "T10",
+    "T02",
+    "T04",
+    "T13",
+    "T06",
     "T10",
-    "T10",
-    "T03",
-    "T10",
-    "void",
-    "T03",
-    "T12",
     "T20",
+    "T20",
+    "T06",
+    "T04",
+    "T10",
+    "T10",
+    "T05",
+    "T19",
+    "T20",
+    "T05",
+    "T06",
+    "T05",
+    "T05",
+    "T05",
+    "T04",
+    "T10",
+    "T02",
+    "void",
+    "T02",
+    "T19",
+    "T10",
+    "T19",
+    "T10",
+    "T10",
+    "T10",
+    "T13",
+    "T04",
+    "T20",
+    "void",
+    "T05",
+    "T06",
+    "T10",
+    "void",
+    "T10",
+    "void",
+    "T07",
+    "T13",
+    "T10",
+    "T19",
+    "T10",
+    "T20",
+    "T19",
+    "T04",
     "void",
     "void",
     "void"

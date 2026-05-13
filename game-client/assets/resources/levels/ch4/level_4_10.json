@@ -10,47 +10,58 @@
   ],
   "shape": "island_contour",
   "tile_types": [
+    "T05",
+    "T12",
+    "T08",
+    "T04",
     "T16",
-    "T14",
-    "T03",
-    "T02",
-    "T09",
-    "T15",
-    "T06"
+    "T02"
   ],
   "objectives": [
     {
       "type": "clear_tiles",
       "tile_type": "any",
-      "count": 19
+      "count": 22
+    },
+    {
+      "type": "clear_ice",
+      "count": 1
     },
     {
       "type": "free_chains",
       "count": 1
     }
   ],
-  "max_moves": 36,
+  "max_moves": 38,
   "obstacles": [
     {
       "type": "wooden_crate",
       "position": [
-        4,
-        6
+        1,
+        7
       ]
     },
     {
-      "type": "chain_lock",
+      "type": "ice_block",
       "position": [
         5,
-        0
+        3
       ],
-      "required_matches": 3
+      "layers": 3
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        5,
+        5
+      ],
+      "layers": 3
     },
     {
       "type": "chain_lock",
       "position": [
         0,
-        5
+        2
       ],
       "required_matches": 1
     }
@@ -61,71 +72,71 @@
     "type": "torii_fragment",
     "amount": 4
   },
-  "coin_reward": 27,
+  "coin_reward": 30,
   "grid_data": [
+    "T05",
+    "T12",
+    "T08",
+    "T04",
+    "T12",
+    "T04",
     "T16",
-    "T16",
+    "T02",
     "void",
-    "T14",
-    "T14",
-    "T03",
     "T02",
-    "T09",
+    "T02",
+    "T12",
+    "T05",
     "T16",
-    "T15",
-    "T03",
-    "T03",
     "T02",
-    "T14",
     "T16",
-    "T15",
-    "T15",
-    "T02",
-    "T02",
-    "T14",
-    "T02",
-    "T15",
+    "T05",
+    "T04",
+    "T04",
+    "T05",
+    "T05",
+    "T05",
+    "T08",
     "void",
-    "T14",
-    "T09",
-    "T06",
-    "T09",
+    "T08",
+    "T05",
+    "T05",
+    "T12",
+    "T04",
     "T16",
+    "T12",
+    "T05",
+    "T05",
+    "T08",
+    "T04",
+    "T05",
+    "T05",
+    "T05",
+    "T05",
+    "T12",
+    "T08",
+    "T05",
     "T02",
-    "T06",
-    "T03",
-    "T09",
-    "T03",
-    "T14",
-    "T09",
-    "T09",
-    "T06",
-    "T03",
-    "T06",
-    "T15",
-    "T14",
+    "T05",
+    "T08",
+    "T02",
     "void",
+    "void",
+    "T05",
+    "T05",
     "T16",
-    "T09",
+    "T16",
+    "T08",
     "T02",
     "T02",
-    "T06",
-    "T06",
-    "T14",
-    "T03",
-    "T15",
-    "T15",
+    "T04",
+    "void",
+    "void",
+    "T12",
+    "T12",
     "T16",
+    "T04",
     "T16",
-    "T14",
-    "T15",
-    "void",
-    "T14",
-    "void",
-    "T03",
-    "T09",
-    "T06",
-    "void",
-    "T06"
+    "T08"
   ]
 }

@@ -10,150 +10,159 @@
   ],
   "shape": "island_contour",
   "tile_types": [
+    "T04",
+    "T05",
+    "T01",
+    "T14",
+    "T10",
     "T07",
     "T08",
-    "T16",
-    "T02",
-    "T10",
-    "T05",
-    "T04",
-    "T06"
+    "T11"
   ],
   "objectives": [
     {
       "type": "clear_tiles",
       "tile_type": "any",
-      "count": 28
+      "count": 29
     },
     {
       "type": "clear_ice",
-      "count": 1
+      "count": 3
     },
     {
       "type": "free_chains",
       "count": 1
     }
   ],
-  "max_moves": 39,
+  "max_moves": 40,
   "obstacles": [
-    {
-      "type": "chain_lock",
-      "position": [
-        3,
-        4
-      ],
-      "required_matches": 1
-    },
-    {
-      "type": "wooden_crate",
-      "position": [
-        4,
-        6
-      ]
-    },
-    {
-      "type": "chain_lock",
-      "position": [
-        3,
-        6
-      ],
-      "required_matches": 1
-    },
-    {
-      "type": "wooden_crate",
-      "position": [
-        7,
-        5
-      ]
-    },
     {
       "type": "ice_block",
       "position": [
         0,
+        4
+      ],
+      "layers": 1
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        5,
+        2
+      ],
+      "required_matches": 2
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        4,
         3
+      ],
+      "layers": 3
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        5,
+        1
+      ],
+      "layers": 3
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        3,
+        3
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        4,
+        7
       ],
       "layers": 1
     },
     {
       "type": "ice_block",
       "position": [
-        6,
-        3
+        4,
+        2
       ],
-      "layers": 1
+      "layers": 2
     }
   ],
   "special_tiles": [],
   "board_events": [],
   "material_reward": {
     "type": "torii_fragment",
-    "amount": 6
+    "amount": 5
   },
-  "coin_reward": 29,
+  "coin_reward": 33,
   "grid_data": [
-    "T07",
-    "T07",
-    "T08",
-    "T16",
-    "T16",
-    "T02",
-    "T07",
-    "T10",
-    "T05",
-    "T02",
-    "T07",
-    "T07",
+    "void",
     "T04",
-    "T08",
-    "void",
+    "T05",
+    "T05",
+    "T01",
+    "T05",
+    "T14",
     "T10",
-    "T06",
-    "void",
     "T07",
     "T08",
     "T04",
-    "T07",
-    "T10",
-    "void",
-    "T06",
-    "T05",
-    "T07",
-    "T07",
-    "T05",
-    "T04",
-    "T06",
-    "T06",
-    "T04",
-    "T16",
+    "T01",
     "T08",
-    "T02",
-    "T05",
-    "T16",
-    "T04",
-    "T02",
-    "T16",
+    "T11",
     "void",
-    "T10",
-    "T05",
     "T08",
+    "T11",
+    "T11",
+    "T14",
     "T07",
+    "T11",
+    "T01",
+    "void",
+    "T11",
+    "T10",
+    "T11",
     "T04",
-    "T16",
-    "void",
+    "T14",
+    "T04",
     "T07",
+    "T01",
+    "T14",
+    "void",
     "T05",
-    "T02",
-    "T10",
-    "T06",
+    "T11",
+    "T08",
+    "T11",
+    "T05",
+    "T14",
+    "T08",
+    "T11",
+    "T04",
+    "T11",
+    "T11",
+    "T11",
     "T07",
-    "T07",
-    "T10",
-    "T02",
-    "T07",
-    "T07",
+    "T11",
+    "T01",
     "void",
+    "T10",
     "T07",
-    "T06",
-    "T08"
+    "T10",
+    "T10",
+    "T07",
+    "T14",
+    "T08",
+    "T11",
+    "T11",
+    "T01",
+    "T10",
+    "T04",
+    "void",
+    "T05",
+    "T11"
   ]
 }

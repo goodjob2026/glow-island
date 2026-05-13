@@ -10,75 +10,71 @@
   ],
   "shape": "lighthouse_contour",
   "tile_types": [
-    "T16",
-    "T02",
-    "T12",
-    "T01",
-    "T17",
+    "T14",
+    "T15",
+    "T18",
+    "T13",
+    "T11",
     "T20",
-    "T19",
+    "T02",
     "T08"
   ],
   "objectives": [
     {
       "type": "clear_tiles",
       "tile_type": "any",
-      "count": 18
+      "count": 24
     },
     {
-      "type": "free_chains",
+      "type": "clear_ice",
       "count": 1
     }
   ],
   "max_moves": 38,
   "obstacles": [
     {
-      "type": "spreading_obstacle",
+      "type": "wooden_crate",
       "position": [
         5,
-        5
-      ],
-      "variant": "moss",
-      "spread_interval_moves": 3
+        3
+      ]
     },
     {
-      "type": "chain_lock",
+      "type": "wooden_crate",
+      "position": [
+        4,
+        7
+      ]
+    },
+    {
+      "type": "wooden_crate",
       "position": [
         2,
-        3
+        6
+      ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        6,
+        6
       ],
-      "required_matches": 1
+      "layers": 2
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        4,
+        8
+      ],
+      "layers": 1
     },
     {
       "type": "wooden_crate",
       "position": [
         3,
-        8
-      ]
-    },
-    {
-      "type": "spreading_obstacle",
-      "position": [
-        4,
-        5
-      ],
-      "variant": "vine",
-      "spread_interval_moves": 3
-    },
-    {
-      "type": "wooden_crate",
-      "position": [
-        4,
         6
       ]
-    },
-    {
-      "type": "chain_lock",
-      "position": [
-        5,
-        1
-      ],
-      "required_matches": 2
     }
   ],
   "special_tiles": [],
@@ -87,88 +83,88 @@
     "type": "lantern_glass",
     "amount": 6
   },
-  "coin_reward": 39,
+  "coin_reward": 43,
   "grid_data": [
-    "T16",
-    "T02",
-    "T12",
+    "T14",
     "void",
-    "T01",
-    "T17",
-    "void",
-    "T16",
-    "T20",
-    "void",
-    "T02",
-    "T01",
-    "void",
-    "T16",
-    "T16",
-    "T17",
-    "T16",
-    "T19",
-    "T19",
-    "T20",
-    "T02",
-    "T20",
-    "T17",
-    "T01",
-    "T12",
+    "T14",
+    "T15",
+    "T14",
+    "T18",
+    "T13",
+    "T18",
     "void",
     "void",
+    "T18",
+    "T11",
+    "T11",
+    "T20",
     "void",
-    "T16",
-    "T12",
-    "T16",
-    "T19",
-    "T17",
-    "T19",
-    "T01",
-    "T08",
-    "T17",
-    "T17",
-    "T20",
-    "T02",
-    "T19",
-    "T20",
-    "T08",
-    "T01",
-    "T12",
-    "T20",
-    "T19",
-    "T20",
-    "T20",
-    "T02",
-    "T12",
-    "T08",
-    "T19",
+    "T14",
+    "T13",
     "void",
     "T02",
-    "T01",
-    "T01",
-    "T12",
-    "T12",
-    "T17",
+    "T13",
+    "T20",
+    "T13",
+    "T11",
+    "T08",
+    "T11",
+    "T15",
+    "T14",
+    "T13",
+    "T08",
+    "T18",
+    "T14",
+    "T18",
+    "T15",
+    "T02",
+    "void",
+    "T08",
+    "T14",
+    "T11",
+    "T02",
+    "T20",
+    "T15",
+    "T18",
     "T20",
     "T02",
-    "T01",
     "T08",
-    "T08",
-    "void",
-    "T08",
-    "T12",
     "T20",
-    "void",
+    "T11",
+    "T18",
+    "T08",
+    "T15",
+    "T11",
+    "T14",
+    "T20",
+    "T13",
+    "T08",
+    "T13",
+    "T13",
     "T02",
+    "T15",
     "T08",
+    "T20",
+    "T15",
+    "void",
+    "T18",
+    "void",
+    "T11",
     "T08",
-    "T17",
+    "T02",
+    "T02",
+    "void",
+    "T11",
+    "T11",
+    "void",
+    "T15",
+    "T11",
+    "T11",
+    "T02",
+    "T20",
     "void",
     "void",
-    "T16",
-    "T20",
-    "T19",
-    "T20",
     "void"
   ]
 }

@@ -10,51 +10,63 @@
   ],
   "shape": "bay_contour",
   "tile_types": [
+    "T03",
+    "T12",
     "T02",
-    "T04",
-    "T10",
-    "T07",
-    "T06"
+    "T09",
+    "T06",
+    "T11"
   ],
   "objectives": [
     {
       "type": "clear_tiles",
       "tile_type": "any",
-      "count": 18
-    },
-    {
-      "type": "clear_ice",
-      "count": 1
+      "count": 21
     },
     {
       "type": "free_chains",
       "count": 1
     }
   ],
-  "max_moves": 38,
+  "max_moves": 33,
   "obstacles": [
     {
       "type": "chain_lock",
       "position": [
-        0,
-        3
+        3,
+        5
       ],
       "required_matches": 1
     },
     {
-      "type": "ice_block",
+      "type": "weed",
       "position": [
-        2,
+        5,
         4
+      ]
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        0,
+        6
       ],
-      "layers": 2
+      "required_matches": 1
     },
     {
       "type": "weed",
       "position": [
-        0,
-        0
+        7,
+        3
       ]
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        1,
+        1
+      ],
+      "required_matches": 1
     }
   ],
   "special_tiles": [],
@@ -63,71 +75,71 @@
     "type": "pine_needle",
     "amount": 4
   },
-  "coin_reward": 22,
+  "coin_reward": 21,
   "grid_data": [
+    "T03",
+    "T12",
+    "T12",
     "T02",
-    "T04",
-    "T10",
+    "T12",
+    "void",
+    "T09",
+    "T06",
+    "T02",
+    "T03",
+    "T02",
+    "T06",
+    "T02",
+    "T09",
+    "T06",
+    "T02",
+    "T09",
+    "T11",
     "T02",
     "T02",
-    "T04",
+    "T12",
+    "T11",
+    "T03",
+    "T11",
     "T02",
     "void",
+    "T09",
     "T02",
-    "T10",
-    "T04",
+    "T12",
+    "T11",
+    "T03",
+    "T02",
     "T02",
     "void",
-    "T07",
-    "T06",
-    "T07",
-    "T07",
-    "T06",
-    "T10",
-    "T10",
-    "T06",
-    "T06",
+    "T11",
+    "T12",
+    "T03",
     "T02",
     "T02",
-    "T10",
+    "T11",
+    "T12",
+    "T06",
+    "T03",
+    "T12",
+    "T11",
+    "T02",
+    "T11",
+    "T06",
+    "T02",
+    "T09",
+    "T06",
     "void",
-    "T04",
-    "T10",
+    "T09",
+    "T02",
     "T02",
     "T06",
-    "T10",
-    "void",
-    "T07",
-    "T06",
-    "T10",
-    "T06",
-    "T07",
-    "T10",
+    "T03",
     "T02",
     "void",
-    "T04",
-    "T02",
-    "T02",
-    "T02",
-    "T07",
-    "T04",
-    "T04",
-    "T04",
-    "T02",
-    "T07",
-    "T07",
-    "T06",
-    "T04",
+    "T09",
     "void",
-    "T07",
-    "T04",
-    "T02",
-    "T02",
-    "T02",
     "T06",
-    "T10",
-    "T07",
-    "T02",
-    "T06"
+    "T09",
+    "T03"
   ]
 }

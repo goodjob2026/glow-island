@@ -10,33 +10,73 @@
   ],
   "shape": "lighthouse_contour",
   "tile_types": [
-    "T16",
-    "T15",
-    "T13",
-    "T05",
+    "T10",
+    "T06",
     "T14",
     "T17",
-    "T03",
-    "T06",
-    "T09"
+    "T19",
+    "T16",
+    "T15",
+    "T02"
   ],
   "objectives": [
     {
       "type": "clear_tiles",
       "tile_type": "any",
-      "count": 18
+      "count": 21
     },
     {
       "type": "clear_ice",
-      "count": 3
+      "count": 1
     },
     {
       "type": "free_chains",
       "count": 1
     }
   ],
-  "max_moves": 38,
+  "max_moves": 39,
   "obstacles": [
+    {
+      "type": "wooden_crate",
+      "position": [
+        7,
+        6
+      ]
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        7,
+        1
+      ],
+      "variant": "vine",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "spreading_obstacle",
+      "position": [
+        8,
+        5
+      ],
+      "variant": "vine",
+      "spread_interval_moves": 3
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        2,
+        1
+      ],
+      "required_matches": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        1,
+        2
+      ],
+      "layers": 3
+    },
     {
       "type": "ice_block",
       "position": [
@@ -46,51 +86,11 @@
       "layers": 3
     },
     {
-      "type": "ice_block",
-      "position": [
-        6,
-        3
-      ],
-      "layers": 3
-    },
-    {
-      "type": "ice_block",
-      "position": [
-        7,
-        1
-      ],
-      "layers": 1
-    },
-    {
       "type": "wooden_crate",
       "position": [
-        1,
-        8
+        0,
+        0
       ]
-    },
-    {
-      "type": "ice_block",
-      "position": [
-        5,
-        4
-      ],
-      "layers": 3
-    },
-    {
-      "type": "ice_block",
-      "position": [
-        7,
-        3
-      ],
-      "layers": 3
-    },
-    {
-      "type": "chain_lock",
-      "position": [
-        6,
-        2
-      ],
-      "required_matches": 2
     }
   ],
   "special_tiles": [],
@@ -99,88 +99,88 @@
     "type": "lantern_glass",
     "amount": 4
   },
-  "coin_reward": 41,
+  "coin_reward": 43,
   "grid_data": [
-    "T16",
-    "T15",
-    "T15",
-    "T13",
-    "T13",
+    "T10",
     "void",
-    "T15",
-    "T15",
-    "void",
-    "T16",
-    "T05",
-    "void",
-    "void",
-    "T15",
-    "T15",
-    "T14",
-    "T15",
-    "T17",
-    "T15",
-    "T14",
-    "T15",
-    "T03",
-    "T16",
-    "T05",
-    "T17",
-    "T05",
-    "void",
-    "T17",
-    "T16",
-    "T03",
+    "T10",
     "T06",
     "T14",
-    "T06",
-    "T15",
-    "T15",
-    "T14",
-    "T09",
-    "void",
-    "T15",
+    "T17",
+    "T19",
     "T16",
-    "T05",
+    "void",
+    "void",
+    "void",
+    "T16",
     "T14",
-    "T05",
-    "T17",
-    "T15",
-    "T15",
-    "T14",
-    "T17",
-    "T06",
+    "T10",
+    "T10",
     "T06",
     "T15",
-    "T06",
     "void",
     "T15",
+    "T02",
+    "T14",
+    "T15",
+    "T10",
+    "T02",
+    "T19",
+    "void",
+    "T17",
+    "T16",
+    "T16",
+    "T06",
+    "T14",
+    "T02",
+    "T02",
+    "T19",
+    "T02",
+    "T10",
+    "T15",
+    "void",
+    "T02",
+    "T02",
+    "T14",
+    "T02",
+    "T02",
+    "void",
+    "T14",
+    "T15",
+    "T06",
+    "T19",
+    "T10",
+    "T02",
+    "T02",
+    "T17",
+    "T19",
+    "void",
+    "T02",
+    "void",
+    "T15",
+    "T06",
+    "T14",
+    "T16",
+    "T06",
+    "T17",
+    "T06",
     "T16",
     "T15",
-    "T03",
-    "T13",
-    "T03",
-    "T15",
-    "T05",
-    "T09",
-    "void",
     "T17",
-    "T09",
+    "T16",
     "void",
-    "T13",
-    "T15",
-    "T09",
-    "void",
-    "T13",
+    "T19",
     "T06",
-    "T03",
-    "T03",
-    "T09",
-    "T13",
-    "T09",
-    "void",
-    "void",
     "T15",
+    "T10",
+    "T19",
+    "void",
+    "T16",
+    "T19",
+    "T14",
+    "T17",
+    "T17",
+    "T17",
     "void"
   ]
 }

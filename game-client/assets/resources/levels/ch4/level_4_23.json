@@ -10,20 +10,18 @@
   ],
   "shape": "island_contour",
   "tile_types": [
-    "T08",
-    "T10",
-    "T13",
-    "T04",
-    "T07",
     "T14",
-    "T16",
-    "T01"
+    "T09",
+    "T01",
+    "T02",
+    "T08",
+    "T11"
   ],
   "objectives": [
     {
       "type": "clear_tiles",
       "tile_type": "any",
-      "count": 28
+      "count": 31
     },
     {
       "type": "clear_ice",
@@ -34,24 +32,8 @@
       "count": 1
     }
   ],
-  "max_moves": 39,
+  "max_moves": 40,
   "obstacles": [
-    {
-      "type": "chain_lock",
-      "position": [
-        5,
-        0
-      ],
-      "required_matches": 3
-    },
-    {
-      "type": "chain_lock",
-      "position": [
-        4,
-        1
-      ],
-      "required_matches": 1
-    },
     {
       "type": "wooden_crate",
       "position": [
@@ -62,97 +44,120 @@
     {
       "type": "wooden_crate",
       "position": [
-        0,
-        7
+        7,
+        3
+      ]
+    },
+    {
+      "type": "wooden_crate",
+      "position": [
+        6,
+        4
       ]
     },
     {
       "type": "ice_block",
       "position": [
-        3,
+        0,
         2
       ],
-      "layers": 2
+      "layers": 1
     },
     {
       "type": "wooden_crate",
       "position": [
-        7,
-        0
+        4,
+        4
       ]
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        2,
+        6
+      ],
+      "layers": 2
+    },
+    {
+      "type": "chain_lock",
+      "position": [
+        6,
+        0
+      ],
+      "required_matches": 2
     }
   ],
   "special_tiles": [],
   "board_events": [],
   "material_reward": {
     "type": "torii_fragment",
-    "amount": 6
+    "amount": 5
   },
-  "coin_reward": 34,
+  "coin_reward": 30,
   "grid_data": [
-    "T08",
-    "T10",
-    "T10",
-    "T13",
-    "T04",
-    "T07",
-    "T14",
-    "T07",
-    "T14",
-    "T16",
-    "T16",
-    "void",
-    "T13",
-    "T01",
-    "T10",
-    "T01",
-    "T08",
-    "T13",
-    "T08",
-    "T07",
-    "T07",
-    "T04",
-    "T01",
-    "T10",
-    "T07",
-    "T14",
-    "T01",
-    "T07",
-    "T07",
-    "T13",
-    "T16",
-    "void",
-    "T13",
-    "T07",
-    "T01",
-    "T01",
-    "T04",
-    "T07",
-    "void",
-    "T16",
-    "T14",
-    "T08",
-    "T07",
-    "T10",
-    "T04",
-    "T07",
-    "T16",
-    "T04",
-    "T07",
-    "T16",
     "void",
     "T14",
-    "T04",
-    "T10",
+    "T09",
+    "T14",
+    "T01",
+    "T02",
     "void",
-    "T07",
-    "T07",
+    "T09",
+    "T09",
     "T08",
-    "T07",
+    "T14",
+    "T01",
+    "T02",
+    "T01",
     "T08",
-    "T07",
+    "T14",
+    "T14",
+    "T14",
+    "T11",
+    "T09",
+    "T02",
+    "T11",
+    "T14",
+    "T02",
+    "T08",
+    "T14",
+    "T01",
+    "T14",
+    "T14",
+    "T01",
+    "T14",
+    "T11",
+    "T11",
+    "T02",
+    "T11",
+    "T09",
+    "T11",
+    "T09",
+    "void",
+    "T01",
+    "T02",
+    "T08",
+    "T09",
+    "T11",
+    "T01",
+    "T14",
+    "T09",
+    "T08",
+    "T14",
+    "T14",
+    "T11",
+    "T08",
+    "T14",
+    "T14",
     "void",
     "T14",
-    "T13"
+    "void",
+    "T08",
+    "T02",
+    "T08",
+    "void",
+    "T01",
+    "T02",
+    "T14"
   ]
 }

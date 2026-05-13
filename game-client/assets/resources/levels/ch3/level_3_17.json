@@ -10,135 +10,143 @@
   ],
   "shape": "bay_contour",
   "tile_types": [
-    "T05",
-    "T11",
-    "T12",
     "T07",
+    "T02",
+    "T12",
+    "T04",
     "T08",
-    "T02"
+    "T10",
+    "T09"
   ],
   "objectives": [
     {
       "type": "clear_tiles",
       "tile_type": "any",
-      "count": 18
+      "count": 22
+    },
+    {
+      "type": "clear_ice",
+      "count": 2
     },
     {
       "type": "free_chains",
       "count": 1
     }
   ],
-  "max_moves": 32,
+  "max_moves": 38,
   "obstacles": [
+    {
+      "type": "ice_block",
+      "position": [
+        1,
+        0
+      ],
+      "layers": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        6,
+        2
+      ],
+      "layers": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        2,
+        2
+      ],
+      "layers": 1
+    },
+    {
+      "type": "ice_block",
+      "position": [
+        3,
+        7
+      ],
+      "layers": 2
+    },
     {
       "type": "chain_lock",
       "position": [
-        5,
+        2,
         1
       ],
       "required_matches": 1
-    },
-    {
-      "type": "weed",
-      "position": [
-        5,
-        5
-      ]
-    },
-    {
-      "type": "weed",
-      "position": [
-        5,
-        0
-      ]
-    },
-    {
-      "type": "chain_lock",
-      "position": [
-        1,
-        4
-      ],
-      "required_matches": 1
-    },
-    {
-      "type": "weed",
-      "position": [
-        0,
-        6
-      ]
     }
   ],
   "special_tiles": [],
   "board_events": [],
   "material_reward": {
     "type": "pine_needle",
-    "amount": 6
+    "amount": 4
   },
   "coin_reward": 18,
   "grid_data": [
-    "T05",
-    "T11",
-    "T12",
     "T07",
-    "T08",
-    "T08",
-    "T02",
     "void",
     "T02",
-    "T08",
     "T12",
-    "T08",
-    "T12",
-    "T07",
-    "T07",
-    "T07",
-    "T11",
-    "T05",
+    "T04",
+    "T04",
     "T02",
     "T08",
-    "T05",
-    "T05",
+    "T10",
+    "T09",
+    "T10",
+    "T02",
     "T07",
-    "T12",
-    "T05",
-    "T12",
-    "T08",
-    "T08",
-    "T08",
     "T08",
     "T12",
+    "T09",
+    "T04",
+    "T09",
     "T07",
-    "T11",
-    "T11",
-    "T05",
-    "T02",
-    "T11",
-    "T08",
-    "T08",
-    "T02",
-    "T08",
-    "T05",
-    "T08",
-    "T12",
-    "T08",
     "T07",
-    "T02",
-    "T08",
-    "T11",
-    "T08",
-    "T02",
-    "T08",
-    "void",
-    "void",
-    "T12",
-    "void",
-    "T08",
-    "void",
-    "T05",
-    "T11",
+    "T10",
+    "T10",
     "void",
     "T02",
-    "T11",
+    "T02",
+    "T10",
+    "T04",
+    "T09",
+    "T12",
+    "T08",
+    "T12",
+    "T04",
+    "void",
+    "T04",
+    "T09",
+    "T07",
+    "T09",
+    "T12",
+    "void",
+    "T10",
+    "T02",
+    "T12",
+    "T09",
+    "T08",
+    "T12",
+    "T07",
+    "T02",
+    "T07",
+    "T04",
+    "T08",
+    "T09",
+    "T12",
+    "T08",
+    "void",
+    "T08",
+    "T10",
+    "T08",
+    "T09",
+    "T04",
+    "T09",
+    "T02",
+    "T10",
+    "void",
     "T07"
   ]
 }
