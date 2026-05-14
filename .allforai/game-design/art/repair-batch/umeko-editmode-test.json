@@ -1,0 +1,18 @@
+{
+  "outputDir": "/Users/aa/workspace/glow-island/.allforai/game-design/art/repair-batch/output-editmode",
+  "sessionMode": "per-category",
+  "categoryConfig": {
+    "umeko_editmode": {
+      "editMode": {
+        "contextImage": "/Users/aa/workspace/glow-island/.allforai/game-design/art/expressions/char_umeko_expr_default.png",
+        "basePrompt": "Re-render this character exactly as shown: same approximately 55-year-old Japanese woman, same dark hair with grey streaks in practical updo bun, same bamboo green pottery apron over cream blouse, same round mature face with laugh lines. Warm pastel watercolor chibi style, 256x256, transparent background. Default neutral expression only — just reproduce her appearance faithfully.",
+        "maskRegion": [0.10, 0.30, 0.80, 0.48]
+      }
+    }
+  },
+  "categories": {
+    "umeko_editmode": [
+      "Happy expression: full warm genuine smile, eyes crinkled with deep satisfaction — the joy of an artisan whose work turned out right. Keep all facial features, age, hair, and clothing identical to the base image."
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+COCOS_APP="${COCOS_CREATOR_APP:-/Applications/CocosCreator.app}"
+COCOS_BIN="$COCOS_APP/Contents/MacOS/CocosCreator"
+
+if [[ ! -x "$COCOS_BIN" ]]; then
+  echo "Cocos Creator executable not found: $COCOS_BIN" >&2
+  exit 127
+fi
+
+case "${1:-}" in
+  --version|-v|version)
+    /usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$COCOS_APP/Contents/Info.plist"
+    ;;
+  --path)
+    echo "$COCOS_BIN"
+    ;;
+  *)
+    exec "$COCOS_BIN" "$@"
+    ;;
+esac

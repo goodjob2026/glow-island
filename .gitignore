@@ -48,3 +48,13 @@ __pycache__/
 .venv/
 venv/
 tools/*.egg-info/
+
+# ── AI art generation outputs (runtime, large binaries) ───────────────────────
+.allforai/game-design/art/repair-batch/output/
+.allforai/game-design/art/repair-batch/output-editmode/
+.allforai/game-design/art/repair-batch/output-img2img/
+.allforai/game-design/art/repair-batch/output2/
+
+# ── Local dev tooling ─────────────────────────────────────────────────────────
+.playwright-mcp/
+.claude/settings.json
