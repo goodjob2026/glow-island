@@ -7,7 +7,7 @@
 
 import {
     _decorator, Component, Node, Label, Color,
-    Sprite, UITransform, UIOpacity,
+    Sprite, UITransform, UIOpacity, Graphics,
     tween, Vec3, easing
 } from 'cc';
 
@@ -121,8 +121,13 @@ export class PrototypeBoard extends Component {
         const tile = new Node(`tile_${r}_${c}`);
         tile.addComponent(UITransform).setContentSize(CELL_SIZE, CELL_SIZE);
 
-        const sp = tile.addComponent(Sprite);
-        sp.color = TILE_COLORS[type];
+        const g = tile.addComponent(Graphics);
+        g.fillColor = TILE_COLORS[type];
+        g.lineWidth = 2;
+        g.strokeColor = new Color(0, 0, 0, 40);
+        g.rect(-CELL_SIZE / 2, -CELL_SIZE / 2, CELL_SIZE, CELL_SIZE);
+        g.fill();
+        g.stroke();
 
         const op = tile.addComponent(UIOpacity);
         op.opacity = 255;
