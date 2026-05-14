@@ -58,6 +58,9 @@ export class AreaRestorationEffect extends Component {
       // SFX: area restoration complete
       AudioManager.getInstance()?.playSFX(SFXKey.AREA_RESTORE);
       this._onFullyRestored(chapter);
+      // Narrative: trigger NPC dialog for this chapter
+      const narrativeChapter = this.chapter ?? 1;
+      this.node.emit('narrativeTrigger', { chapter: narrativeChapter, trigger: 'area_restore' });
     }
   }
 

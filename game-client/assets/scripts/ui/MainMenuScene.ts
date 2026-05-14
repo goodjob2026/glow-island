@@ -13,6 +13,7 @@ import {
 import { ProgressionManager } from '../meta/ProgressionManager'
 import { AudioManager } from '../audio/AudioManager'
 import { BGMKey } from '../audio/AudioConfig'
+import { ZenModeManager } from '../puzzle/ZenModeManager'
 
 const { ccclass, property } = _decorator
 
@@ -43,6 +44,9 @@ export class MainMenuScene extends Component {
 
   @property(Button)
   shopButton: Button | null = null
+
+  @property(Button)
+  zenModeButton: Button | null = null
 
   /** Label that shows the app version string (e.g. v1.0.3) */
   @property(Label)
@@ -92,6 +96,7 @@ export class MainMenuScene extends Component {
     this.leaderboardButton?.node.on(Button.EventType.CLICK, this._onLeaderboard, this)
     this.settingsButton?.node.on(Button.EventType.CLICK, this._onSettings, this)
     this.shopButton?.node.on(Button.EventType.CLICK, this._onShop, this)
+    this.zenModeButton?.node.on(Button.EventType.CLICK, this._onZenMode, this)
 
     // Load cloud progress (falls back to localStorage on failure)
     try {
@@ -117,6 +122,7 @@ export class MainMenuScene extends Component {
     this.leaderboardButton?.node.off(Button.EventType.CLICK, this._onLeaderboard, this)
     this.settingsButton?.node.off(Button.EventType.CLICK, this._onSettings, this)
     this.shopButton?.node.off(Button.EventType.CLICK, this._onShop, this)
+    this.zenModeButton?.node.off(Button.EventType.CLICK, this._onZenMode, this)
   }
 
   // -------------------------------------------------------------------------
@@ -154,6 +160,21 @@ export class MainMenuScene extends Component {
 
   private _onShop(): void {
     director.loadScene('ShopScene')
+  }
+
+  private _onZenMode(): void {
+    const mgr = ZenModeManager.getInstance();
+    if (!mgr || !mgr.consumeSlot()) {
+      this.node.emit('showToast', '今日禅境次数已用完，明天再来');
+      return;
+    }
+    mgr.enterZenMode();
+    director.loadScene('GameScene');
+  }
+
+  // Public alias for Inspector button binding
+  onZenModeButtonClick(): void {
+    this._onZenMode();
   }
 
   private _onSettings(): void {

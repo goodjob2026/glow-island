@@ -83,14 +83,32 @@ let _levelDataCache: LevelConfig[] | null = null;
 
 async function getBundledLevels(): Promise<LevelConfig[]> {
   if (_levelDataCache) return _levelDataCache;
-  try {
-    const json = await import('../../../resources/levels/all-levels.json');
-    const rawLevels = (json.default?.levels ?? json.levels ?? []) as RawLevelJson[];
-    _levelDataCache = rawLevels.map(normalizeLevel);
-  } catch {
-    console.warn('[LevelLoader] Could not load all-levels.json, using inline fallback.');
-    _levelDataCache = INLINE_FALLBACK_LEVELS;
-  }
+  // Load via Cocos resources bundle (runtime) or fall back to inline levels.
+  // Static JSON import from resources/ is not supported by the Cocos bundler;
+  // use cc.resources.load at runtime instead.
+  _levelDataCache = await new Promise<LevelConfig[]>((resolve) => {
+    try {
+      // @ts-ignore — cc is injected by Cocos Creator at runtime
+      const cc = (globalThis as any).cc;
+      if (cc?.resources) {
+        cc.resources.load('levels/all-levels', cc.JsonAsset, (_err: unknown, asset: any) => {
+          if (!_err && asset?.json) {
+            const rawLevels = (asset.json.levels ?? []) as RawLevelJson[];
+            resolve(rawLevels.map(normalizeLevel));
+          } else {
+            console.warn('[LevelLoader] Could not load all-levels.json via resources, using inline fallback.');
+            resolve(INLINE_FALLBACK_LEVELS);
+          }
+        });
+      } else {
+        // Editor / test environment — use inline fallback
+        resolve(INLINE_FALLBACK_LEVELS);
+      }
+    } catch {
+      console.warn('[LevelLoader] Unexpected error loading levels, using inline fallback.');
+      resolve(INLINE_FALLBACK_LEVELS);
+    }
+  });
   return _levelDataCache;
 }
 

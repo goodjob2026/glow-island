@@ -14,6 +14,14 @@
     "creator_version": "3.8.x",
     "engine": "cocos-creator"
   },
-  "keywords": ["cocos-creator", "game", "glow-island"],
-  "license": "UNLICENSED"
+  "keywords": [
+    "cocos-creator",
+    "game",
+    "glow-island"
+  ],
+  "license": "UNLICENSED",
+  "creator": {
+    "version": "3.8.8"
+  },
+  "uuid": "8735b3ed-b080-4f11-a28f-ea8fb94cffb5"
 }

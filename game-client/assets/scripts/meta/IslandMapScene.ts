@@ -13,6 +13,9 @@ import { ProgressionManager } from './ProgressionManager';
 import { AreaRestorationEffect, restorationEvents, EVENT_CHAPTER_FULLY_RESTORED } from './AreaRestorationEffect';
 import { AudioManager } from '../audio/AudioManager';
 import { SFXKey } from '../audio/AudioConfig';
+import { MemoryCapsuleManager } from './MemoryCapsuleManager';
+import { NarrativeManager } from './NarrativeManager';
+import { NPCDialog } from '../ui/NPCDialog';
 
 const { ccclass, property } = _decorator;
 
@@ -95,6 +98,9 @@ export class IslandMapScene extends Component {
   @property({ type: AreaRestorationEffect, tooltip: 'Shared AreaRestorationEffect component' })
   areaRestorationEffect: AreaRestorationEffect | null = null;
 
+  @property({ type: NPCDialog, tooltip: 'NPCDialog component for narrative lines on area restore' })
+  npcDialog: NPCDialog | null = null;
+
   // -----------------------------------------------------------------------
   // Cocos lifecycle
   // -----------------------------------------------------------------------
@@ -104,6 +110,31 @@ export class IslandMapScene extends Component {
 
     for (const chapterNode of this.chapterNodes) {
       chapterNode.node.on('chapter-tapped', this._onChapterTapped, this);
+    }
+
+    // Wire NarrativeManager: listen for narrativeTrigger emitted by AreaRestorationEffect
+    if (this.areaRestorationEffect) {
+      this.areaRestorationEffect.node.on(
+        'narrativeTrigger',
+        (data: { chapter: number; trigger: 'area_restore' | 'player_tap' | 'chapter_enter' }) => {
+          const narrative = NarrativeManager.getInstance();
+          if (!narrative) return;
+
+          // Show the first NPC line for this trigger
+          const npcLines = narrative.getNPCLines(data.chapter, data.trigger);
+          if (npcLines.length > 0 && npcLines[0].lines.length > 0) {
+            this.npcDialog?.showLine(npcLines[0].lines[0].text_zh);
+          }
+
+          // Unlock area_restore diary fragments for this chapter
+          narrative.getChapterFragments(data.chapter).forEach(f => {
+            if (f.unlock_condition === 'area_restore') {
+              narrative.unlockFragment(f.id);
+            }
+          });
+        },
+        this
+      );
     }
   }
 
@@ -118,6 +149,7 @@ export class IslandMapScene extends Component {
     for (const chapterNode of this.chapterNodes) {
       chapterNode.node.off('chapter-tapped', this._onChapterTapped, this);
     }
+    this.areaRestorationEffect?.node.off('narrativeTrigger', undefined, this);
   }
 
   // -----------------------------------------------------------------------
@@ -198,6 +230,11 @@ export class IslandMapScene extends Component {
   private _onChapterFullyRestored(chapterId: number): void {
     // Refresh visuals
     this._refreshAllChapterStates();
+
+    const capsule = MemoryCapsuleManager.getInstance()?.unlockForChapter(chapterId);
+    if (capsule) {
+      this.node.emit('memoryCapsuleUnlocked', capsule);
+    }
 
     if (chapterId === 6) {
       this._triggerLighthouseFinalEffect();
