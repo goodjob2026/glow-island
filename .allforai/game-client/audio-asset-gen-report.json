@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-05-15T00:00:00.000Z",
+  "sfx_count": 17,
+  "bgm_count": 8,
+  "audio_dir": "game-client/assets/resources/audio/",
+  "format": "mp3",
+  "type": "silence-placeholder",
+  "note": "占位静音文件。正式音效需由音效设计师提供并替换。AudioConfig.ts 实际包含 17 个 SFX（含 sfx_special_bomb/windmill/light），与任务规格中的 14 个不同，已按实际枚举生成。",
+  "sfx_files": [
+    "sfx_connect", "sfx_disappear", "sfx_combo1", "sfx_combo2", "sfx_combo3",
+    "sfx_special_bomb", "sfx_special_windmill", "sfx_special_light",
+    "sfx_special_wave", "sfx_special_light_chain", "sfx_special_pierce",
+    "sfx_special_swap", "sfx_special_cascade", "sfx_level_complete",
+    "sfx_area_restore", "sfx_lighthouse_on", "sfx_zen_complete"
+  ],
+  "bgm_files": [
+    "bgm_menu", "bgm_chapter1_seaside", "bgm_chapter2_town", "bgm_chapter3_flower",
+    "bgm_chapter4_forest", "bgm_chapter5_hotspring", "bgm_chapter6_lighthouse",
+    "bgm_zen_ambient"
+  ],
+  "loader_paths": {
+    "bgm": "audio/bgm/{key}",
+    "sfx": "audio/sfx/{key}"
+  },
+  "overall_status": "generated"
+}

@@ -13,7 +13,7 @@ export class ZenModeManager extends Component {
   private static _instance: ZenModeManager | null = null;
   private _active = false;
 
-  static getInstance(): ZenModeManager { return ZenModeManager._instance!; }
+  static getInstance(): ZenModeManager | null { return ZenModeManager._instance; }
 
   onLoad(): void {
     ZenModeManager._instance = this;

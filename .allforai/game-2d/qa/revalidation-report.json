@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "revalidated_at": "2026-05-15T06:00:00.000Z",
+  "tests_rerun": ["TC-001", "TC-002", "TC-003", "TC-004"],
+  "results": {
+    "TC-001": {"before": "fail", "after": "pass", "fixed": true},
+    "TC-002": {"before": "pass", "after": "pass", "fixed": false},
+    "TC-003": {"before": "pass", "after": "pass", "fixed": false},
+    "TC-004": {"before": "pass", "after": "pass", "fixed": false}
+  },
+  "overall_verdict": "pass",
+  "remaining_code_gaps": [],
+  "remaining_asset_gaps": [
+    "obstacle_weed",
+    "obstacle_wooden_crate",
+    "obstacle_water_current",
+    "audio_content",
+    "vfx_frames",
+    "chapter_specific_tile_art"
+  ]
+}

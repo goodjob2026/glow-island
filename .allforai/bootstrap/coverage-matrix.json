@@ -1,0 +1,192 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-14T17:00:00+08:00",
+  "total_nodes": 18,
+  "completed_nodes": 2,
+  "pending_nodes": 16,
+  "completion_rate": 11.1,
+  "transition_log_entries": 11,
+  "nodes": [
+    {
+      "node_id": "game-2d-runtime-profile",
+      "status": "pending",
+      "hard_blocked_by": [],
+      "unlocks": [
+        "game-2d-view-mode-runtime-contract"
+      ]
+    },
+    {
+      "node_id": "game-2d-view-mode-runtime-contract",
+      "status": "pending",
+      "hard_blocked_by": [
+        "game-2d-runtime-profile"
+      ],
+      "unlocks": [
+        "game-2d-core-loop-playable-contract"
+      ]
+    },
+    {
+      "node_id": "game-2d-core-loop-playable-contract",
+      "status": "pending",
+      "hard_blocked_by": [
+        "game-2d-view-mode-runtime-contract"
+      ],
+      "unlocks": [
+        "game-2d-asset-runtime-binding-contract"
+      ]
+    },
+    {
+      "node_id": "game-2d-asset-runtime-binding-contract",
+      "status": "pending",
+      "hard_blocked_by": [
+        "game-2d-core-loop-playable-contract"
+      ],
+      "unlocks": [
+        "game-2d-input-feedback-contract"
+      ]
+    },
+    {
+      "node_id": "game-2d-input-feedback-contract",
+      "status": "pending",
+      "hard_blocked_by": [
+        "game-2d-asset-runtime-binding-contract"
+      ],
+      "unlocks": [
+        "game-2d-session-flow-contract"
+      ]
+    },
+    {
+      "node_id": "game-2d-session-flow-contract",
+      "status": "pending",
+      "hard_blocked_by": [
+        "game-2d-input-feedback-contract"
+      ],
+      "unlocks": [
+        "game-2d-playable-slice-assembly"
+      ]
+    },
+    {
+      "node_id": "game-2d-playable-slice-assembly",
+      "status": "pending",
+      "hard_blocked_by": [
+        "game-2d-session-flow-contract"
+      ],
+      "unlocks": [
+        "game-2d-core-loop-playability-qa"
+      ]
+    },
+    {
+      "node_id": "game-2d-core-loop-playability-qa",
+      "status": "pending",
+      "hard_blocked_by": [
+        "game-2d-playable-slice-assembly"
+      ],
+      "unlocks": [
+        "game-2d-asset-binding-visual-qa",
+        "game-2d-session-completion-qa"
+      ]
+    },
+    {
+      "node_id": "game-2d-asset-binding-visual-qa",
+      "status": "pending",
+      "hard_blocked_by": [
+        "game-2d-core-loop-playability-qa"
+      ],
+      "unlocks": [
+        "game-2d-session-completion-qa"
+      ]
+    },
+    {
+      "node_id": "game-2d-session-completion-qa",
+      "status": "pending",
+      "hard_blocked_by": [
+        "game-2d-asset-binding-visual-qa"
+      ],
+      "unlocks": [
+        "game-2d-production-closure-qa"
+      ]
+    },
+    {
+      "node_id": "game-2d-production-closure-qa",
+      "status": "pending",
+      "hard_blocked_by": [
+        "game-2d-core-loop-playability-qa",
+        "game-2d-asset-binding-visual-qa",
+        "game-2d-session-completion-qa"
+      ],
+      "unlocks": [
+        "compile-verify"
+      ]
+    },
+    {
+      "node_id": "compile-verify",
+      "status": "completed",
+      "hard_blocked_by": [
+        "game-2d-production-closure-qa"
+      ],
+      "unlocks": [
+        "runtime-smoke-verify"
+      ]
+    },
+    {
+      "node_id": "runtime-smoke-verify",
+      "status": "completed",
+      "hard_blocked_by": [
+        "compile-verify"
+      ],
+      "unlocks": [
+        "competitive-research"
+      ]
+    },
+    {
+      "node_id": "competitive-research",
+      "status": "pending",
+      "hard_blocked_by": [
+        "runtime-smoke-verify"
+      ],
+      "unlocks": [
+        "launch-concept-finalize"
+      ]
+    },
+    {
+      "node_id": "launch-concept-finalize",
+      "status": "pending",
+      "hard_blocked_by": [
+        "competitive-research"
+      ],
+      "unlocks": [
+        "launch-gap-implementation",
+        "compliance-check"
+      ]
+    },
+    {
+      "node_id": "launch-gap-implementation",
+      "status": "pending",
+      "hard_blocked_by": [
+        "launch-concept-finalize"
+      ],
+      "unlocks": [
+        "launch-checklist"
+      ]
+    },
+    {
+      "node_id": "compliance-check",
+      "status": "pending",
+      "hard_blocked_by": [
+        "launch-concept-finalize"
+      ],
+      "unlocks": [
+        "launch-checklist"
+      ]
+    },
+    {
+      "node_id": "launch-checklist",
+      "status": "pending",
+      "hard_blocked_by": [
+        "launch-gap-implementation",
+        "compliance-check"
+      ],
+      "unlocks": []
+    }
+  ]
+}

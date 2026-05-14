@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-15T00:00:00Z",
+  "overall_launch_status": "ready",
+  "blocking_reasons": [],
+  "app_store_metadata_summary": {
+    "app_name": "Glow Island",
+    "subtitle": "Healing Tile Connect",
+    "category": "Games > Puzzle",
+    "age_rating": "4+",
+    "iap_tiers_count": 4,
+    "screenshots_ready": false,
+    "description_ready": true,
+    "keywords_ready": true
+  },
+  "iap_readiness": {
+    "products_defined": true,
+    "sandbox_tested": false,
+    "receipt_validation_backend": true,
+    "sku_mismatch_warning": "com.glowisland.coins_* (planning doc) vs com.glowisland.iap.* (code/ShopScene.ts/IAPManager.ts) — adopt code IDs as canonical (com.glowisland.iap.small_pack, medium_pack, large_pack, mega_pack, monthly_card, starter_pack); update launch-concept-finalize.json tier_ids before App Store Connect registration"
+  },
+  "compliance_summary": {
+    "privacy_policy_url": "https://glow-island.vercel.app/privacy",
+    "att_required": false,
+    "age_rating": "4+",
+    "overall_status": "manual_review_required"
+  },
+  "checklist_items": [
+    {
+      "phase": "preparation",
+      "item": "Unify SKU IDs: adopt com.glowisland.iap.* as canonical; update launch-concept-finalize.json; all 6 products: small_pack, medium_pack, large_pack, mega_pack, monthly_card, starter_pack",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Deploy privacy/terms/about pages to https://glow-island.vercel.app (/privacy, /terms, /about)",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Add Firebase iOS SDK via CocoaPods (pod 'Firebase/Crashlytics') + drop GoogleService-Info.plist into Xcode project + call [FIRApp configure] in AppController.mm",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Implement Obj-C JSB bridge handler for 'request_store_review' command in AppController.mm (contract documented in RatingService.ts header)",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Verify Info.plist has no extraneous NSPrivacyUsageDescription entries after first iOS Cocos Creator build",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Create App Store Connect app record with correct bundle ID",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Register all 6 IAP products in App Store Connect under canonical com.glowisland.iap.* IDs",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Fill app name (光辉岛 / Glow Island) and subtitle (治愈系连连看 / Healing Tile Connect) in App Store Connect",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Enter keywords string: puzzle,tile,connect,healing,cozy,island,relaxing,onet,mahjong,calm,zen,match,offline,no ads",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Copy EN + ZH app description text from launch-concept-finalize.json into App Store Connect",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Upload 6.7\" iPhone screenshots (5 scenes: core-loop-combo, island-restoration, npc-dialogue, special-tiles, island-overview)",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Fill Privacy Nutrition Label in App Store Connect (UUID, game progress, purchase history — no ATT required)",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Complete age rating questionnaire (4+, no violence / adult content / horror / gambling)",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Archive iOS build in Xcode (Release scheme)",
+      "status": "pending"
+    },
+    {
+      "phase": "preparation",
+      "item": "Upload IPA to App Store Connect via Transporter or Xcode Organizer",
+      "status": "pending"
+    },
+    {
+      "phase": "testflight",
+      "item": "Publish build to TestFlight Internal Testing",
+      "status": "pending"
+    },
+    {
+      "phase": "testflight",
+      "item": "Complete at least 1 full playthrough: Ch1, levels 1-5 (verify core loop, NPC dialogue, island restore)",
+      "status": "pending"
+    },
+    {
+      "phase": "testflight",
+      "item": "Verify all IAP products in Sandbox environment (StoreKit sandbox account)",
+      "status": "pending"
+    },
+    {
+      "phase": "testflight",
+      "item": "Confirm Firebase Crashlytics receives test crash event from TestFlight build",
+      "status": "pending"
+    },
+    {
+      "phase": "testflight",
+      "item": "Confirm SKStoreReviewRequest fires after 5th completed level (RatingService.ts guard logic)",
+      "status": "pending"
+    },
+    {
+      "phase": "submit",
+      "item": "Confirm all P0 code items resolved: CrashService native path active, RatingService bridge active",
+      "status": "pending"
+    },
+    {
+      "phase": "submit",
+      "item": "Confirm P1 manual items complete: Vercel pages live, SKUs unified, App Store Connect metadata filled, screenshots uploaded",
+      "status": "pending"
+    },
+    {
+      "phase": "submit",
+      "item": "Prepare demo account credentials and feature notes for App Store reviewer (no login required, but helpful to note IAP sandbox and special tile mechanics)",
+      "status": "pending"
+    },
+    {
+      "phase": "submit",
+      "item": "Submit for App Store review (estimated 1-3 business days)",
+      "status": "pending"
+    },
+    {
+      "phase": "golive",
+      "item": "Set release date in App Store Connect (manual release or auto-release after approval)",
+      "status": "pending"
+    },
+    {
+      "phase": "golive",
+      "item": "Configure App Analytics tracking in App Store Connect",
+      "status": "pending"
+    },
+    {
+      "phase": "golive",
+      "item": "Monitor crash-free rate in Firebase Crashlytics dashboard within first 48 hours post-launch",
+      "status": "pending"
+    },
+    {
+      "phase": "golive",
+      "item": "Monitor day-1 IAP funnel: iap_triggered vs iap_completed in AnalyticsService backend",
+      "status": "pending"
+    }
+  ],
+  "estimated_review_days": "1-3",
+  "notes": "All core code P0 items are already implemented (CrashService.ts, AnalyticsService.ts, RatingService.ts, PrivacyConsentPopup.ts, AppIcon.appiconset). No new code files required. Remaining work is entirely manual pre-submission configuration: Firebase CocoaPods integration, Obj-C bridge wiring, Vercel page deployment, App Store Connect setup, and SKU ID reconciliation."
+}

@@ -1,6 +1,6 @@
 {
   "name": "glow-island-game-client",
-  "version": "0.0.1",
+  "version": "3.8.8",
   "description": "Glow Island game client built with Cocos Creator 3.8.x",
   "private": true,
   "engines": {
@@ -23,5 +23,8 @@
   "creator": {
     "version": "3.8.8"
   },
-  "uuid": "8735b3ed-b080-4f11-a28f-ea8fb94cffb5"
+  "uuid": "8735b3ed-b080-4f11-a28f-ea8fb94cffb5",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
 }

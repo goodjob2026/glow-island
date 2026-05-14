@@ -1,0 +1,21 @@
+{
+  "assessed_at": "2026-05-15T00:00:00.000Z",
+  "scope": "PrototypeBoard tile visual upgrade",
+  "before": {
+    "style": "flat colored rectangles, no rounding, black stroke",
+    "animation": "scale to 1.3 then 0 (vanish)"
+  },
+  "after": {
+    "style": "rounded tiles with warm AC palette, inner glow highlight, soft colored stroke",
+    "animation": "elastic select bounce, fade+scale vanish"
+  },
+  "changes_applied": [
+    "TILE_COLORS updated to Animal Crossing warm palette",
+    "roundRect with r=CELL_SIZE*0.2",
+    "inner glow highlight (top-left)",
+    "soft same-hue stroke",
+    "backOut elastic select animation",
+    "vanish: scale+fade parallel"
+  ],
+  "deviations": []
+}

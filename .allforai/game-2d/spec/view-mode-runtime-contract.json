@@ -1,0 +1,352 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-14T00:00:00+08:00",
+  "generated_by": "game-2d-view-mode-runtime-contract",
+  "project": "glow-island",
+  "source_refs": [
+    ".allforai/game-2d/env/2d-runtime-profile.json",
+    ".allforai/game-design/game-design-doc.json",
+    ".allforai/game-design/design/program-development-node-handoff.json",
+    "game-client/assets/scenes/Prototype.scene",
+    "game-client/assets/scripts/game/GameScene.ts",
+    "game-client/assets/scripts/puzzle/TileGrid.ts",
+    "game-client/assets/scripts/ui/GameHUD.ts"
+  ],
+
+  "view_mode": "board_grid",
+  "view_mode_notes": "Fixed top-down grid of tiles on a portrait canvas. No camera scroll during gameplay. Cocos Creator 3.x Canvas component drives all scaling via SHOW_ALL / FIT_HEIGHT policy.",
+
+  "coordinate_system": {
+    "origin": "center",
+    "origin_notes": "Cocos Creator 3.x world-space origin is at Canvas center (anchorPoint 0.5,0.5). Confirmed by Prototype.scene Canvas UITransform._anchorPoint {x:0.5, y:0.5}.",
+    "x_direction": "right",
+    "y_direction": "up",
+    "y_direction_notes": "Cocos Creator 3.x uses Y-up in world space. UITransform positions expressed in design-space pixels relative to Canvas center.",
+    "unit": "pixels",
+    "design_space_origin_px": { "x": 0, "y": 0, "description": "Canvas center; positive-Y is upward" },
+    "tile_size_px": {
+      "w": 66,
+      "h": 66,
+      "derivation": "Board node ContentSize=528x528; 528/8cols=66px per tile (ch1-2 standard 8x8). For 9-col layout: 528/9≈58.7px. Art should target 66px base with 8px gutter.",
+      "gutter_px": 0,
+      "board_content_size_px": { "w": 528, "h": 528 },
+      "board_offset_from_center": { "x": 0, "y": -30, "description": "Board node positioned 30px below canvas center to give HUD space at top" }
+    },
+    "grid_dimensions": {
+      "cols_standard": 8,
+      "rows_standard": 8,
+      "cols_extended": 9,
+      "rows_extended": 9,
+      "note": "Ch1-2 use 8x8/9x9 rectangular grids; Ch3+ use irregular shaped boards (bay/island outline) where valid cell count is always even. TileGrid.initialize(rows, cols) drives runtime dimensions."
+    }
+  },
+
+  "camera": {
+    "type": "orthographic",
+    "type_notes": "Cocos Creator 3.x Canvas-based 2D rendering. No 3D perspective camera; all rendering through the Canvas UITransform stack.",
+    "fit_mode": "SHOW_ALL",
+    "fit_mode_notes": "2d-runtime-profile.json specifies design_scale_policy=SHOW_ALL (fit_height primary). Canvas alignCanvasWithScreen=true. On narrower viewports the canvas letterboxes on sides; on taller viewports it letterboxes top/bottom. This ensures the entire 750x1334 design space is always fully visible.",
+    "design_resolution": { "w": 750, "h": 1334 },
+    "canvas_content_size": { "w": 750, "h": 1334, "confirmed_by": "Prototype.scene Canvas UITransform._contentSize" },
+    "safe_area_insets": {
+      "top": 44,
+      "bottom": 34,
+      "left": 0,
+      "right": 0,
+      "notes": "iPhone notch/Dynamic Island top=44px; iPhone home indicator bottom=34px. UI elements (HUD labels, pause button) must not be placed within these insets. Board and game content are safe below y=+623 (667-44) design-space from center-top."
+    },
+    "camera_scroll": false,
+    "camera_zoom": false,
+    "camera_shake": {
+      "supported": true,
+      "trigger": "board_rotate_warning, wave_special_tile",
+      "implementation": "tween on Canvas or Camera node position, max amplitude 8px, duration ≤0.3s"
+    }
+  },
+
+  "layers": [
+    {
+      "name": "Background",
+      "owner": "art",
+      "z_order": 0,
+      "cocos_hierarchy_path": "Canvas > Background",
+      "content": "Full-bleed island/chapter environment art. One sprite per chapter theme (6 total). Watercolor style background illustration.",
+      "scale_policy": "stretch",
+      "scale_policy_notes": "Background fills the full 750x1334 canvas. Use Sprite scaleType=SLICED or a single full-bleed texture sized 750x1334 with anchor 0.5,0.5. Must cover canvas entirely with no black borders.",
+      "screenshot_acceptance_criteria": "Background fills the entire canvas with no black borders or white gaps at any viewport in the viewport_matrix. Chapter-themed illustration is fully visible and not clipped."
+    },
+    {
+      "name": "IslandDecor",
+      "owner": "art",
+      "z_order": 1,
+      "cocos_hierarchy_path": "Canvas > IslandDecor",
+      "content": "Decorative foreground elements: rocks, foliage, NPC ambient sprites, environmental particles (non-gameplay). Positioned in design space relative to canvas center.",
+      "scale_policy": "none",
+      "scale_policy_notes": "Decorative sprites use absolute design-space positions. They scale with the canvas SHOW_ALL transform but have no independent scale logic.",
+      "screenshot_acceptance_criteria": "Decorative elements are visible and correctly positioned relative to background. No z-fighting with Background or Board layers."
+    },
+    {
+      "name": "Board",
+      "owner": "gameplay",
+      "z_order": 2,
+      "cocos_hierarchy_path": "Canvas > Board",
+      "content": "TileGrid visual container. Node ContentSize=528x528, positioned at (0, -30) from canvas center. Children are tile view nodes in row-major order (row*cols+col index).",
+      "scale_policy": "none",
+      "scale_policy_notes": "Board node is a fixed-size container; tile cell views are sized to (board_w/cols) x (board_h/rows). Board does not scale independently — it inherits canvas SHOW_ALL. For variable grid sizes, recalculate tile size as 528/cols and 528/rows.",
+      "tile_indexing": "row-major, 0-indexed. tileContainer.children[row * cols + col]",
+      "grid_anchor": "center (0.5, 0.5) on Board node",
+      "screenshot_acceptance_criteria": "All active tile cells are visible within the 528x528 board area. No tile clips outside board boundaries. Board is centered horizontally with correct vertical offset (-30px from canvas center)."
+    },
+    {
+      "name": "TileConnectLine",
+      "owner": "gameplay",
+      "z_order": 3,
+      "cocos_hierarchy_path": "Canvas > Board > TileConnectLine (or Canvas > TileConnectLine)",
+      "content": "Path-drawing layer that renders the connection line between matched tile pairs (≤2-turn L/Z path). Rendered as a Graphics or sprite-based line, cleared after match animation completes.",
+      "scale_policy": "none",
+      "scale_policy_notes": "Path coordinates are in board local-space. Convert grid (row,col) to board local-space pixel using: x = (col + 0.5) * tile_w - board_w/2; y = board_h/2 - (row + 0.5) * tile_h.",
+      "screenshot_acceptance_criteria": "Connection line is visible over tiles during match animation (0.3s window). Line does not persist after animation completes. Line renders in front of tiles but behind VFX layer."
+    },
+    {
+      "name": "Obstacles",
+      "owner": "gameplay",
+      "z_order": 4,
+      "cocos_hierarchy_path": "Canvas > Board > Obstacles (child of Board node)",
+      "content": "Obstacle overlays: ice_block, weed, wooden_crate, water_current visual states. Rendered on top of base tile sprites as sprite overlays per cell.",
+      "scale_policy": "none",
+      "scale_policy_notes": "Obstacle sprites are sized per-tile and inherit Board node transforms. Each obstacle cell overlay is positioned at the same (row,col) as its tile.",
+      "screenshot_acceptance_criteria": "Obstacle sprites are fully visible over base tiles. Obstacle hit states (damage cracks, melt layers) are distinguishable at all target viewports."
+    },
+    {
+      "name": "VFX",
+      "owner": "art",
+      "z_order": 5,
+      "cocos_hierarchy_path": "Canvas > VFX",
+      "content": "Particle effects and animation overlays: tile disappear burst, combo glow ring, wave special 3x3 area clear, light_chain sweep, cascade chain animation. All VFX are transient and pooled.",
+      "scale_policy": "none",
+      "scale_policy_notes": "VFX nodes spawn at world-space coordinates derived from board tile positions. Use board-to-world coordinate conversion. VFX lifetime ≤1.5s; pool and recycle nodes.",
+      "screenshot_acceptance_criteria": "VFX are visible over gameplay tiles and obstacles. No VFX bleeds over HUD elements. Combo glow ring is visible around matched tiles during combo window."
+    },
+    {
+      "name": "SpecialBlockIndicator",
+      "owner": "gameplay",
+      "z_order": 6,
+      "cocos_hierarchy_path": "Canvas > Board > SpecialBlockIndicator (overlay on board)",
+      "content": "Visual badge/indicator rendered on tiles that have specialBlockType set (wave, light_chain, pierce, swap, cascade). Distinct icon badge overlaid on base tile sprite.",
+      "scale_policy": "none",
+      "scale_policy_notes": "Special block badge is sized at ~60% of tile size and positioned at tile center. z_order must be above base tile but below VFX.",
+      "screenshot_acceptance_criteria": "Special block indicator icon is clearly readable at tile size (≥66px). Icon does not obscure the base tile type sprite beyond 40% of tile area."
+    },
+    {
+      "name": "GameHUD",
+      "owner": "ui",
+      "z_order": 10,
+      "cocos_hierarchy_path": "Canvas > UI > GameHUD",
+      "content": "In-game HUD: ComboLabel (y=+520), ClearedLabel/objectiveCountLabel, objectiveProgressBar, movesLabel, pauseButton, shopButton. All positioned in design-space relative to canvas center.",
+      "scale_policy": "fit",
+      "scale_policy_notes": "HUD elements use Cocos Widget component to anchor to canvas edges. Top HUD elements anchor to top edge with safe_area_insets.top (44px) margin. Bottom HUD anchors with bottom safe area (34px). Horizontal centering uses Widget center anchor.",
+      "hud_top_zone_y_design": "+667 to +580 (from canvas center)",
+      "hud_bottom_zone_y_design": "-580 to -667 (from canvas center)",
+      "screenshot_acceptance_criteria": "All HUD labels and buttons are readable and not clipped at any viewport. ComboLabel at y=+520 is within safe area. ResetButton/bottom HUD respects bottom safe area. No HUD element overlaps the board gameplay area (y range -294 to +234 from canvas center with board at y=-30, size 528)."
+    },
+    {
+      "name": "NPCDialog",
+      "owner": "ui",
+      "z_order": 11,
+      "cocos_hierarchy_path": "Canvas > UI > NPCDialog",
+      "content": "NPC speech bubble and character portrait overlay. Appears at level start/end narrative beats and chapter events. Slides in from bottom edge.",
+      "scale_policy": "fit",
+      "scale_policy_notes": "Dialog panel anchored to bottom of canvas with safe area margin. Max width 700px, height ~280px. Character portrait sized 160x160px, positioned at bottom-left of dialog panel.",
+      "screenshot_acceptance_criteria": "NPC dialog is fully visible and not clipped. Character portrait is not obscured by system home indicator or notch area. Dialog text is legible at all target viewports."
+    },
+    {
+      "name": "SwapSelectionOverlay",
+      "owner": "gameplay",
+      "z_order": 12,
+      "cocos_hierarchy_path": "Canvas > SwapSelectionOverlay",
+      "content": "Semi-transparent overlay activated when SWAP special tile is triggered. Highlights selectable cells for the 10-second selection window. Deactivates on cell selection or timeout.",
+      "scale_policy": "fit",
+      "scale_policy_notes": "Overlay covers entire Board area (528x528 + margin). Alpha = 0.6 darken of non-selectable cells. Active cell highlights use coral_warm (#E8866A) glow ring.",
+      "screenshot_acceptance_criteria": "Overlay is visible over the board during swap selection. Non-selectable cells are visually dimmed. Selected cell highlight ring is distinguishable. Overlay does not cover HUD elements."
+    },
+    {
+      "name": "Popups",
+      "owner": "ui",
+      "z_order": 20,
+      "cocos_hierarchy_path": "Canvas > UI > Popups (LevelCompletePopup, FailPopup, PauseMenu)",
+      "content": "Modal popups: LevelCompletePopup (stars, score, rewards), FailPopup (continue/exit dialog), PauseMenu (settings, quit). Each popup has a dimmed backdrop layer.",
+      "scale_policy": "fit",
+      "scale_policy_notes": "Popup panels are center-anchored (0.5, 0.5) with max-width 680px. Backdrop sprite fills full canvas (750x1334) at alpha 0.7. Popups animate in via tween scale 0.8→1.0 + UIOpacity 0→255.",
+      "screenshot_acceptance_criteria": "Popup panel is fully visible and centered. Backdrop dims all underlying layers. Popup content (star icons, button labels, reward icons) is not clipped. Close/confirm buttons are within safe area."
+    },
+    {
+      "name": "ToastNotifications",
+      "owner": "ui",
+      "z_order": 21,
+      "cocos_hierarchy_path": "Canvas > UI > Toast",
+      "content": "Ephemeral toast messages (e.g. '今日禅境次数已用完，明天再来'). Auto-dismiss after 2.5s. Positioned at top-center or bottom-center of safe area.",
+      "scale_policy": "fit",
+      "scale_policy_notes": "Toast label node width ≤680px. Bottom toast: y = -580 (above bottom safe area). Top toast: y = +560 (below top safe area). UIOpacity fade-in 0.2s, hold 2s, fade-out 0.3s.",
+      "screenshot_acceptance_criteria": "Toast message text is fully visible and legible. Toast does not overlap critical HUD elements (combo label, moves counter). Auto-dismissed within 2.5s."
+    },
+    {
+      "name": "SystemOverlay",
+      "owner": "ui",
+      "z_order": 30,
+      "cocos_hierarchy_path": "Canvas > UI > SystemOverlay",
+      "content": "Highest z-order layer for loading screens, scene transitions (fade black), and error dialogs. Renders above all gameplay and UI content.",
+      "scale_policy": "stretch",
+      "scale_policy_notes": "Transition fade covers full canvas (750x1334) with a solid color (island_sand #F7EDD8 preferred over black). Loading spinner centered. SceneTransitionManager owns this node.",
+      "screenshot_acceptance_criteria": "Transition fade covers all underlying layers with no gaps. Loading spinner is centered. Fade-in and fade-out durations ≤0.4s."
+    }
+  ],
+
+  "viewport_scale_rules": [
+    {
+      "viewport_w": 375,
+      "viewport_h": 667,
+      "device": "iPhone SE (3rd gen)",
+      "category": "mobile",
+      "scale_factor": 0.500,
+      "scale_factor_derivation": "SHOW_ALL: scale = min(375/750, 667/1334) = min(0.500, 0.500) = 0.500. Perfect fit, no letterbox.",
+      "letterbox": "none",
+      "effective_canvas_px": { "w": 375, "h": 667 },
+      "tile_size_effective_px": 33,
+      "notes": "Minimum supported viewport. Tile size 33px effective — borderline readable. Art should have clear outlines at 32px as per art-style-guide silhouette_language rule."
+    },
+    {
+      "viewport_w": 390,
+      "viewport_h": 844,
+      "device": "iPhone 14",
+      "category": "mobile",
+      "scale_factor": 0.520,
+      "scale_factor_derivation": "SHOW_ALL: scale = min(390/750, 844/1334) = min(0.520, 0.632) = 0.520. Horizontal fit, vertical letterbox top+bottom.",
+      "letterbox": "top_bottom",
+      "letterbox_each_side_px": 16,
+      "effective_canvas_px": { "w": 390, "h": 693 },
+      "effective_canvas_offset_y": 75.5,
+      "tile_size_effective_px": 34,
+      "notes": "Primary target device. 34px effective tile size. Vertical letterbox ~75px each side fills with background color (island_sand #F7EDD8)."
+    },
+    {
+      "viewport_w": 390,
+      "viewport_h": 844,
+      "device": "iPhone 14 — FIT_HEIGHT override",
+      "category": "mobile",
+      "fit_mode_override": "FIT_HEIGHT",
+      "scale_factor": 0.632,
+      "scale_factor_derivation": "FIT_HEIGHT: scale = 844/1334 = 0.632. Canvas is 475px wide, 26px left+right clip (design edges not visible).",
+      "letterbox": "left_right_clip",
+      "effective_canvas_px": { "w": 475, "h": 844 },
+      "tile_size_effective_px": 42,
+      "notes": "FIT_HEIGHT gives larger tiles but clips 26px on each horizontal edge. Safe if UI stays within central 700px of 750px design width. Board (528px wide) is fully visible."
+    },
+    {
+      "viewport_w": 430,
+      "viewport_h": 932,
+      "device": "iPhone 14 Plus",
+      "category": "mobile",
+      "scale_factor": 0.573,
+      "scale_factor_derivation": "SHOW_ALL: scale = min(430/750, 932/1334) = min(0.573, 0.698) = 0.573. Horizontal fit, vertical letterbox.",
+      "letterbox": "top_bottom",
+      "letterbox_each_side_px": 83,
+      "effective_canvas_px": { "w": 430, "h": 764 },
+      "tile_size_effective_px": 38,
+      "notes": "Larger phone. 38px effective tile. More pronounced top/bottom letterbox due to tall aspect ratio."
+    },
+    {
+      "viewport_w": 768,
+      "viewport_h": 1024,
+      "device": "iPad (9th gen)",
+      "category": "tablet",
+      "scale_factor": 0.767,
+      "scale_factor_derivation": "SHOW_ALL: scale = min(768/750, 1024/1334) = min(1.024, 0.767) = 0.767. Vertical fit, horizontal letterbox.",
+      "letterbox": "left_right",
+      "letterbox_each_side_px": 97,
+      "effective_canvas_px": { "w": 575, "h": 1024 },
+      "tile_size_effective_px": 51,
+      "notes": "Tablet portrait. 51px effective tile size — comfortable readability. Horizontal letterbox 97px each side. Art assets still display at sub-1x design resolution."
+    },
+    {
+      "viewport_w": 1280,
+      "viewport_h": 800,
+      "device": "Desktop Chrome (landscape preview)",
+      "category": "desktop",
+      "scale_factor": 0.599,
+      "scale_factor_derivation": "SHOW_ALL: scale = min(1280/750, 800/1334) = min(1.707, 0.599) = 0.599. Vertical fit (landscape viewport), heavy horizontal letterbox.",
+      "letterbox": "left_right",
+      "letterbox_each_side_px": 415,
+      "effective_canvas_px": { "w": 450, "h": 800 },
+      "tile_size_effective_px": 40,
+      "notes": "Desktop landscape preview. Heavy horizontal letterbox. Canvas appears as a tall portrait window centered in browser. This is expected for a portrait mobile game in desktop preview. Background color fills letterbox areas."
+    }
+  ],
+
+  "coordinate_conversion": {
+    "grid_to_board_local": {
+      "formula": "x = (col + 0.5) * tile_w - board_w * 0.5;  y = board_h * 0.5 - (row + 0.5) * tile_h",
+      "variables": {
+        "tile_w": "board_content_size.w / cols  (e.g. 528/8 = 66)",
+        "tile_h": "board_content_size.h / rows  (e.g. 528/8 = 66)",
+        "board_w": "528 (Board ContentSize width)",
+        "board_h": "528 (Board ContentSize height)"
+      },
+      "note": "Board node anchor is (0.5, 0.5). Row 0 is top of board (highest Y), row N-1 is bottom (lowest Y). Col 0 is left, col N-1 is right."
+    },
+    "grid_to_canvas_world": {
+      "formula": "world_x = board_pos_x + local_x;  world_y = board_pos_y + local_y",
+      "board_pos": { "x": 0, "y": -30 },
+      "note": "Board is positioned at (0, -30) in Canvas local space. VFX and overlay nodes parented to Canvas must add board offset."
+    },
+    "cocos_coordinate_note": "Cocos Creator 3.x UITransform positions are in parent-local space with Y-up. Do NOT use screen pixels directly. All coordinate math operates in design-space pixels (750x1334 coordinate frame)."
+  },
+
+  "layer_sorting_rules": {
+    "engine": "cocos_creator_3x",
+    "sorting_method": "scene_hierarchy_order",
+    "sorting_notes": "In Cocos Creator 3.x Canvas 2D rendering, siblings are drawn in order: earlier children are drawn first (lower z). Later children (higher index) overdraw earlier ones. The z_order values in this contract map to sibling order within the Canvas node hierarchy.",
+    "runtime_z_override": "Use node.setSiblingIndex() or node.setParent() to dynamically reorder if needed. Avoid cc.Node layer flags for 2D UI — use hierarchy position instead.",
+    "vfx_pooling": "VFX nodes must be pooled (NodePool). Spawn to VFX layer, return to pool after animation completes. Never leave orphan VFX nodes in scene.",
+    "popup_backdrop": "Popup backdrop must be the first child of the Popup node (z lower than panel), full-canvas sized, alpha ~0.7."
+  },
+
+  "readability_rules": {
+    "minimum_tile_size_effective_px": 32,
+    "minimum_tile_size_note": "Art-style-guide requires tile silhouette to be recognizable at 32x32px. Effective tile size at iPhone SE (375x667) is 33px — at the minimum threshold.",
+    "text_minimum_size_design_px": 26,
+    "text_minimum_size_note": "Minimum font size in design space is 26px (ClearedLabel in Prototype.scene). At scale 0.5 (iPhone SE) this is 13px effective — borderline. HUD label font sizes should not go below 26px design space.",
+    "touch_target_minimum_design_px": 88,
+    "touch_target_note": "Apple HIG minimum touch target is 44pt physical = 88px at 2x retina. In design space (750px = 375pt * 2), touch targets must be ≥88px design space for buttons.",
+    "tile_touch_target": "Tiles at 66px design space = 33px effective on iPhone SE. Input hit area should be padded to 80px design space per tile if grid layout allows.",
+    "board_safe_margin_from_hud": "Board top edge (y = -30 + 264 = +234 from canvas center) must stay below HUD bottom zone (y = +460 ClearedLabel, y = +520 ComboLabel). Current layout provides ~226px margin between board top and ClearedLabel — adequate.",
+    "background_letterbox_color": "#F7EDD8 (island_sand)",
+    "background_letterbox_color_note": "HTML/CSS background color of the web container must be set to #F7EDD8 to avoid black letterbox bars."
+  },
+
+  "scene_list": {
+    "prototype_scene": "game-client/assets/scenes/Prototype.scene — confirmed, used for development/testing",
+    "production_scenes_inferred": [
+      "MainMenuScene (MainMenuScene.ts)",
+      "GameScene (GameScene.ts)",
+      "IslandMapScene (IslandMapScene.ts)",
+      "LevelSelectScene (director.loadScene reference)",
+      "ShopScene (director.loadScene reference)",
+      "LeaderboardScene (LeaderboardScene.ts)",
+      "SettingsScene (director.loadScene reference, fallback when SettingsPanel node not found)"
+    ],
+    "scene_layer_contract_applies_to": "GameScene (primary gameplay). Other scenes follow the same z_order hierarchy but only activate layers relevant to their context."
+  },
+
+  "validation_status": "passed",
+  "validation_notes": [
+    "All 10 visible runtime layers have owner, z_order, scale_policy, and screenshot_acceptance_criteria defined.",
+    "Coordinate system confirmed from Prototype.scene (Canvas anchorPoint 0.5,0.5, ContentSize 750x1334, Board node position 0,-30).",
+    "Design resolution 750x1334 confirmed from both Prototype.scene and 2d-runtime-profile.json viewport_matrix.design_resolution.",
+    "SHOW_ALL fit mode confirmed from 2d-runtime-profile.json design_scale_policy=SHOW_ALL.",
+    "Tile size 66px derived from Prototype.scene Board ContentSize 528x528 / 8 cols = 66px.",
+    "Safe area insets (top=44, bottom=34) derived from iOS device hardware specifications for notch/home indicator.",
+    "TileGrid row-major indexing confirmed from GameScene.ts _getTileNode() implementation.",
+    "Viewport scale factors calculated from SHOW_ALL formula: min(viewport_w/750, viewport_h/1334).",
+    "Letterbox color #F7EDD8 (island_sand) derived from art-style-guide.json global_palette."
+  ]
+}

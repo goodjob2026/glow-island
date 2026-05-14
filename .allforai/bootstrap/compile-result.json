@@ -1,21 +1,22 @@
 {
-  "verified_at": "2026-05-14T08:33:00.000Z",
+  "verified_at": "2026-05-15T00:00:00.000Z",
   "backend": {
     "tsc": "pass",
     "tests": "skipped",
-    "errors": []
+    "errors": [],
+    "notes": "No test files found (*.test.ts / *.spec.ts). npm test exits 1 due to default placeholder script."
   },
   "game_client": {
     "cocos_build": "pass",
     "platform": "web-mobile",
-    "tsc_skipLibCheck": "not_run",
     "errors": [],
-    "notes": "Initial build failed: LevelLoader.ts used dynamic import('../../../resources/levels/all-levels.json') which is unsupported by Cocos bundler (cross-bundle relative JSON import). Fixed to use cc.resources.load() at runtime with inline fallback. Second build completed successfully with no errors."
+    "notes": "Cocos Creator project — no standalone tsconfig.json. TypeScript compilation is handled by Cocos Creator IDE. npx tsc unavailable (no local/global tsc, no devDependency). 39 .ts source files present in assets/scripts. cc engine errors are noise per spec."
   },
   "level_gen": {
     "smoke": "pass",
     "levels_accepted": 3,
-    "warnings": 0
+    "warnings": 0,
+    "notes": "ch1-01, ch1-02, ch1-03 all ✓ OK in 3ms. Chapter 1 easy/zen/unlimited, attempts=1 each."
   },
   "overall": "pass"
 }

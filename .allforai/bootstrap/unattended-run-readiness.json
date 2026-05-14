@@ -1,0 +1,31 @@
+{
+  "status": "ready",
+  "checked_at": "2026-05-14T19:54:38.306210+00:00",
+  "blockers": [],
+  "warnings": [],
+  "required_capabilities": [
+    {
+      "capability": "codex_cli",
+      "path": "/opt/homebrew/bin/codex"
+    },
+    {
+      "capability": "google_api_key",
+      "present": true
+    }
+  ],
+  "approval_gate_findings": [],
+  "non_interactive_findings": [],
+  "external_tool_findings": [
+    {
+      "capability": "codex_cli",
+      "path": "/opt/homebrew/bin/codex"
+    },
+    {
+      "capability": "google_api_key",
+      "present": true
+    }
+  ],
+  "fallback_findings": [],
+  "long_task_findings": [],
+  "recommended_pre_run_actions": []
+}

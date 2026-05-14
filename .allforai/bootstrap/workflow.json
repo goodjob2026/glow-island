@@ -1,161 +1,568 @@
 {
-  "schema_version": "2.0",
+  "schema_version": "1.0",
   "project": "glow-island",
-  "goals": ["implement", "demo", "product-verify", "quality-checks", "concept-acceptance"],
-  "planned_at": "2026-05-14T12:00:00+08:00",
+  "goals": [
+    "implement",
+    "launch-prep",
+    "ui-forge",
+    "product-verify"
+  ],
+  "planned_at": "2026-05-14T19:46:50Z",
   "bootstrap_version": "0.8.7",
   "nodes": [
     {
-      "node_id": "fix-special-mechanics",
-      "capability": "implement",
-      "human_gate": false,
-      "discipline_owner": null,
+      "node_id": "game-2d-runtime-profile",
+      "capability": "game-2d-production",
+      "goal": "检测 2D 游戏运行时、命令、视口和自动化能力",
+      "exit_artifacts": [
+        ".allforai/game-2d/env/2d-runtime-profile.json"
+      ],
       "hard_blocked_by": [],
       "alignment_refs": [],
-      "unlocks": ["stitch-game-client"],
-      "consumers": ["stitch-game-client"],
-      "exit_artifacts": [
-        ".allforai/implement/fix-special-mechanics-report.json"
+      "unlocks": [
+        "game-2d-view-mode-runtime-contract"
+      ],
+      "consumers": [
+        "game-2d-view-mode-runtime-contract"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
       ]
     },
     {
-      "node_id": "fix-shop-iap",
-      "capability": "implement",
-      "human_gate": false,
-      "discipline_owner": null,
-      "hard_blocked_by": [],
-      "alignment_refs": [],
-      "unlocks": ["stitch-game-client"],
-      "consumers": ["stitch-game-client"],
+      "node_id": "game-2d-view-mode-runtime-contract",
+      "capability": "game-2d-production",
+      "goal": "生成 2D 视角、坐标、相机、层级和缩放运行契约",
       "exit_artifacts": [
-        ".allforai/implement/fix-shop-iap-report.json"
-      ]
-    },
-    {
-      "node_id": "implement-zen-mode",
-      "capability": "implement",
-      "human_gate": false,
-      "discipline_owner": null,
-      "hard_blocked_by": [],
-      "alignment_refs": [],
-      "unlocks": ["stitch-game-client"],
-      "consumers": ["stitch-game-client"],
-      "exit_artifacts": [
-        "game-client/assets/scripts/puzzle/ZenModeManager.ts",
-        "game-client/assets/scripts/ui/ZenModeHUD.ts"
-      ]
-    },
-    {
-      "node_id": "implement-npc-narrative",
-      "capability": "implement",
-      "human_gate": false,
-      "discipline_owner": null,
-      "hard_blocked_by": [],
-      "alignment_refs": [],
-      "unlocks": ["stitch-game-client"],
-      "consumers": ["stitch-game-client"],
-      "exit_artifacts": [
-        "game-client/assets/scripts/meta/NarrativeManager.ts",
-        "game-client/assets/scripts/ui/NPCDialog.ts"
-      ]
-    },
-    {
-      "node_id": "implement-memory-capsule",
-      "capability": "implement",
-      "human_gate": false,
-      "discipline_owner": null,
-      "hard_blocked_by": [],
-      "alignment_refs": [],
-      "unlocks": ["stitch-game-client"],
-      "consumers": ["stitch-game-client"],
-      "exit_artifacts": [
-        "game-client/assets/scripts/meta/MemoryCapsuleManager.ts"
-      ]
-    },
-    {
-      "node_id": "implement-audio",
-      "capability": "implement",
-      "human_gate": false,
-      "discipline_owner": null,
-      "hard_blocked_by": [],
-      "alignment_refs": [],
-      "unlocks": ["stitch-game-client"],
-      "consumers": ["stitch-game-client"],
-      "exit_artifacts": [
-        ".allforai/implement/implement-audio-report.json"
-      ]
-    },
-    {
-      "node_id": "stitch-game-client",
-      "capability": "implement",
-      "human_gate": false,
-      "discipline_owner": null,
+        ".allforai/game-2d/spec/view-mode-runtime-contract.json"
+      ],
       "hard_blocked_by": [
-        "fix-special-mechanics",
-        "fix-shop-iap",
-        "implement-zen-mode",
-        "implement-npc-narrative",
-        "implement-memory-capsule",
-        "implement-audio"
+        "game-2d-runtime-profile"
       ],
       "alignment_refs": [],
-      "unlocks": ["compile-verify"],
-      "consumers": ["compile-verify"],
+      "unlocks": [
+        "game-2d-core-loop-playable-contract"
+      ],
+      "consumers": [
+        "game-2d-core-loop-playable-contract"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-core-loop-playable-contract",
+      "capability": "game-2d-production",
+      "goal": "生成 2D 核心循环可玩性执行契约",
       "exit_artifacts": [
-        ".allforai/bootstrap/stitch-game-client-report.json"
+        ".allforai/game-2d/spec/core-loop-playable-contract.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-view-mode-runtime-contract"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "game-2d-asset-runtime-binding-contract"
+      ],
+      "consumers": [
+        "game-2d-asset-runtime-binding-contract"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-asset-runtime-binding-contract",
+      "capability": "game-2d-production",
+      "goal": "生成 2D 美术、UI、动画、特效和音频运行时绑定契约",
+      "exit_artifacts": [
+        ".allforai/game-2d/spec/asset-runtime-binding-contract.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-core-loop-playable-contract"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "game-2d-input-feedback-contract"
+      ],
+      "consumers": [
+        "game-2d-input-feedback-contract"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-input-feedback-contract",
+      "capability": "game-2d-production",
+      "goal": "生成 2D 输入与反馈闭环契约",
+      "exit_artifacts": [
+        ".allforai/game-2d/spec/input-feedback-contract.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-asset-runtime-binding-contract"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "game-2d-session-flow-contract"
+      ],
+      "consumers": [
+        "game-2d-session-flow-contract"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-session-flow-contract",
+      "capability": "game-2d-production",
+      "goal": "生成 2D 启动、游玩、胜负、重试和继续的 session flow 契约",
+      "exit_artifacts": [
+        ".allforai/game-2d/spec/session-flow-contract.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-input-feedback-contract"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "game-2d-playable-slice-assembly"
+      ],
+      "consumers": [
+        "game-2d-playable-slice-assembly"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
+      ]
+    },
+    {
+      "node_id": "fix-prototype-board",
+      "capability": "implement",
+      "goal": "修复 PrototypeBoard dropColumns 编译 bug + GameScene Canvas 布局",
+      "exit_artifacts": [
+        ".allforai/game-client/fix-prototype-board-report.json"
+      ],
+      "hard_blocked_by": [],
+      "alignment_refs": [],
+      "unlocks": [
+        "ui-forge-game",
+        "compile-verify"
+      ],
+      "consumers": [],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": []
+    },
+    {
+      "node_id": "fix-compliance-urls",
+      "capability": "implement",
+      "goal": "替换 SettingsPanel.ts 占位符 URL（privacy/support/terms）",
+      "exit_artifacts": [
+        ".allforai/game-client/fix-compliance-urls-report.json"
+      ],
+      "hard_blocked_by": [],
+      "alignment_refs": [],
+      "unlocks": [
+        "compile-verify",
+        "compliance-check"
+      ],
+      "consumers": [],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": []
+    },
+    {
+      "node_id": "audio-asset-gen",
+      "capability": "implement",
+      "goal": "生成 22 个占位音频文件（14 SFX + 8 BGM）",
+      "exit_artifacts": [
+        ".allforai/game-client/audio-asset-gen-report.json"
+      ],
+      "hard_blocked_by": [],
+      "alignment_refs": [],
+      "unlocks": [
+        "compile-verify"
+      ],
+      "consumers": [],
+      "human_gate": false,
+      "discipline_owner": "audio-engineer",
+      "knowledge_refs": []
+    },
+    {
+      "node_id": "obstacle-art-gen",
+      "capability": "implement",
+      "goal": "生成障碍物 sprite 占位图（ice_block/chain_lock/portal/corridor/spreading）",
+      "exit_artifacts": [
+        ".allforai/game-client/obstacle-art-gen-report.json"
+      ],
+      "hard_blocked_by": [],
+      "alignment_refs": [],
+      "unlocks": [
+        "compile-verify"
+      ],
+      "consumers": [],
+      "human_gate": false,
+      "discipline_owner": "art-engineer",
+      "knowledge_refs": []
+    },
+    {
+      "node_id": "ui-forge-game",
+      "capability": "ui-forge",
+      "goal": "将纯色方块升级为 Animal Crossing 治愈美学（圆角、主题图标、沙滩色板）",
+      "exit_artifacts": [
+        ".allforai/ui-forge/fidelity-assessment.json",
+        ".allforai/ui-forge/glow-island-tile-upgrade-report.md"
+      ],
+      "hard_blocked_by": [
+        "fix-prototype-board"
+      ],
+      "alignment_refs": [
+        "game-2d-asset-runtime-binding-contract"
+      ],
+      "unlocks": [
+        "compile-verify"
+      ],
+      "consumers": [],
+      "human_gate": false,
+      "discipline_owner": "art-engineer",
+      "knowledge_refs": [
+        "capabilities/ui-forge.md"
       ]
     },
     {
       "node_id": "compile-verify",
       "capability": "compile-verify",
-      "human_gate": false,
-      "discipline_owner": null,
-      "hard_blocked_by": ["stitch-game-client"],
-      "alignment_refs": [],
-      "unlocks": ["demo-forge", "runtime-smoke-verify"],
-      "consumers": ["demo-forge", "runtime-smoke-verify"],
+      "goal": "验证 backend + game-client 干净构建",
       "exit_artifacts": [
         ".allforai/bootstrap/compile-result.json"
+      ],
+      "hard_blocked_by": [
+        "fix-prototype-board",
+        "fix-compliance-urls",
+        "audio-asset-gen",
+        "obstacle-art-gen",
+        "ui-forge-game"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "game-2d-playable-slice-assembly"
+      ],
+      "consumers": [
+        "game-2d-playable-slice-assembly"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/compile-verify.md"
       ]
     },
     {
-      "node_id": "demo-forge",
-      "capability": "demo-forge",
-      "human_gate": false,
-      "discipline_owner": null,
-      "hard_blocked_by": ["compile-verify"],
-      "alignment_refs": [],
-      "unlocks": ["concept-acceptance"],
-      "consumers": ["concept-acceptance"],
+      "node_id": "game-2d-playable-slice-assembly",
+      "capability": "game-2d-production",
+      "goal": "把 2D 设计、美术、UI、音频和前端契约总装为可运行切片",
       "exit_artifacts": [
-        ".allforai/bootstrap/demo-data-report.json"
+        ".allforai/game-2d/assembly/playable-slice-manifest.json",
+        ".allforai/game-2d/assembly/playable-slice-assembly-report.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-session-flow-contract"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "game-2d-core-loop-playability-qa",
+        "game-2d-asset-binding-visual-qa",
+        "game-2d-session-completion-qa"
+      ],
+      "consumers": [
+        "game-2d-core-loop-playability-qa",
+        "game-2d-asset-binding-visual-qa",
+        "game-2d-session-completion-qa"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-core-loop-playability-qa",
+      "capability": "game-2d-production",
+      "goal": "使用运行时输入、状态断言和截图验证 2D 核心循环可玩",
+      "exit_artifacts": [
+        ".allforai/game-2d/qa/core-loop-playability-qa-report.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-playable-slice-assembly"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "game-2d-asset-binding-visual-qa",
+        "game-2d-code-repair-loop"
+      ],
+      "consumers": [
+        "game-2d-asset-binding-visual-qa",
+        "game-2d-code-repair-loop"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-asset-binding-visual-qa",
+      "capability": "game-2d-production",
+      "goal": "使用运行时截图和 Codex CLI 验证 2D 资产真实绑定且可读",
+      "exit_artifacts": [
+        ".allforai/game-2d/qa/asset-binding-visual-qa-report.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-core-loop-playability-qa"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "game-2d-session-completion-qa",
+        "game-2d-code-repair-loop"
+      ],
+      "consumers": [
+        "game-2d-session-completion-qa",
+        "game-2d-code-repair-loop"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-session-completion-qa",
+      "capability": "game-2d-production",
+      "goal": "自动验证 2D 游戏 session 可以启动、进入玩法、完成、重试或继续",
+      "exit_artifacts": [
+        ".allforai/game-2d/qa/session-completion-qa-report.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-asset-binding-visual-qa"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "game-2d-code-repair-loop"
+      ],
+      "consumers": [
+        "game-2d-code-repair-loop"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-code-repair-loop",
+      "capability": "game-2d-production",
+      "goal": "修复 2D QA 发现的代码缺口并重跑受影响验收",
+      "exit_artifacts": [
+        ".allforai/game-2d/repair/code-repair-loop-report.json",
+        ".allforai/game-2d/repair/code-repair-loop-report.md",
+        ".allforai/game-2d/qa/revalidation-report.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-core-loop-playability-qa",
+        "game-2d-asset-binding-visual-qa",
+        "game-2d-session-completion-qa"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "game-2d-production-closure-qa"
+      ],
+      "consumers": [
+        "game-2d-production-closure-qa"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-production-closure-qa",
+      "capability": "game-2d-production",
+      "goal": "执行 2D 游戏最终出厂闭环验收",
+      "exit_artifacts": [
+        ".allforai/game-2d/assembly/playable-slice-assembly-report.json",
+        ".allforai/game-2d/qa/2d-production-closure-report.json",
+        ".allforai/game-2d/qa/2d-production-closure.html",
+        ".allforai/game-2d/qa/asset-binding-visual-qa-report.json",
+        ".allforai/game-2d/qa/core-loop-playability-qa-report.json",
+        ".allforai/game-2d/qa/revalidation-report.json",
+        ".allforai/game-2d/qa/session-completion-qa-report.json",
+        ".allforai/game-2d/repair/code-repair-loop-report.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-code-repair-loop"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "runtime-smoke-verify"
+      ],
+      "consumers": [
+        "runtime-smoke-verify"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/game-2d-production.md"
       ]
     },
     {
       "node_id": "runtime-smoke-verify",
       "capability": "runtime-smoke-verify",
-      "human_gate": false,
-      "discipline_owner": null,
-      "hard_blocked_by": ["compile-verify"],
-      "alignment_refs": [],
-      "unlocks": ["concept-acceptance"],
-      "consumers": ["concept-acceptance"],
+      "goal": "运行时冒烟验证：backend + WebGL 构建健康检查",
       "exit_artifacts": [
         ".allforai/bootstrap/runtime-smoke-result.json"
+      ],
+      "hard_blocked_by": [
+        "game-2d-production-closure-qa"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "competitive-research"
+      ],
+      "consumers": [
+        "competitive-research"
+      ],
+      "human_gate": false,
+      "discipline_owner": "gameplay-frontend-engineer",
+      "knowledge_refs": [
+        "capabilities/runtime-smoke-verify.md"
       ]
     },
     {
-      "node_id": "concept-acceptance",
-      "capability": "concept-acceptance",
+      "node_id": "competitive-research",
+      "capability": "launch-prep",
+      "goal": "竞品调研：休闲手游市场定位与差异化分析（已完成可跳过）",
+      "exit_artifacts": [
+        ".allforai/launch-prep/competitive-research.json"
+      ],
+      "hard_blocked_by": [
+        "runtime-smoke-verify"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "launch-concept-finalize"
+      ],
+      "consumers": [
+        "launch-concept-finalize"
+      ],
       "human_gate": false,
-      "discipline_owner": null,
-      "hard_blocked_by": ["demo-forge", "runtime-smoke-verify"],
+      "discipline_owner": "product-manager",
+      "knowledge_refs": [
+        "capabilities/launch-prep.md"
+      ]
+    },
+    {
+      "node_id": "launch-concept-finalize",
+      "capability": "launch-prep",
+      "goal": "定稿 App Store 元数据、定价策略、关键词",
+      "exit_artifacts": [
+        ".allforai/launch-prep/launch-concept-finalize.json",
+        ".allforai/launch-prep/launch-concept-finalize.md"
+      ],
+      "hard_blocked_by": [
+        "competitive-research"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "launch-gap-implementation",
+        "compliance-check"
+      ],
+      "consumers": [
+        "launch-gap-implementation",
+        "compliance-check"
+      ],
+      "human_gate": false,
+      "discipline_owner": "product-manager",
+      "knowledge_refs": [
+        "capabilities/launch-prep.md"
+      ]
+    },
+    {
+      "node_id": "launch-gap-implementation",
+      "capability": "launch-prep",
+      "goal": "实施上架缺口（截图生产、TestFlight 配置、App Store Connect 元数据填写）",
+      "exit_artifacts": [
+        ".allforai/launch-prep/launch-gap-implementation.json"
+      ],
+      "hard_blocked_by": [
+        "launch-concept-finalize"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "launch-checklist"
+      ],
+      "consumers": [
+        "launch-checklist"
+      ],
+      "human_gate": false,
+      "discipline_owner": "product-manager",
+      "knowledge_refs": [
+        "capabilities/launch-prep.md"
+      ]
+    },
+    {
+      "node_id": "compliance-check",
+      "capability": "launch-prep",
+      "goal": "合规检查：隐私政策 URL、IAP 分类、年龄评级、COPPA、ATT",
+      "exit_artifacts": [
+        ".allforai/launch-prep/compliance-checklist.json"
+      ],
+      "hard_blocked_by": [
+        "launch-concept-finalize",
+        "fix-compliance-urls"
+      ],
+      "alignment_refs": [],
+      "unlocks": [
+        "launch-checklist"
+      ],
+      "consumers": [
+        "launch-checklist"
+      ],
+      "human_gate": false,
+      "discipline_owner": "product-manager",
+      "knowledge_refs": [
+        "capabilities/launch-prep.md"
+      ]
+    },
+    {
+      "node_id": "launch-checklist",
+      "capability": "launch-prep",
+      "goal": "最终上架清单汇总（App Store Connect 提交就绪性）",
+      "exit_artifacts": [
+        ".allforai/launch-prep/launch-checklist.json",
+        ".allforai/launch-prep/launch-checklist.md"
+      ],
+      "hard_blocked_by": [
+        "launch-gap-implementation",
+        "compliance-check"
+      ],
       "alignment_refs": [],
       "unlocks": [],
       "consumers": [],
-      "exit_artifacts": [
-        ".allforai/product-concept/acceptance-report.json",
-        ".allforai/product-concept/acceptance-report.md"
+      "human_gate": false,
+      "discipline_owner": "product-manager",
+      "knowledge_refs": [
+        "capabilities/launch-prep.md"
       ]
     }
   ],
@@ -261,7 +668,348 @@
         ".allforai/product-concept/acceptance-report.json",
         ".allforai/product-concept/acceptance-report.md"
       ]
+    },
+    {
+      "node": "game-2d-runtime-profile",
+      "status": "completed",
+      "started_at": "2026-05-14T09:30:37.587762+00:00",
+      "completed_at": "2026-05-14T09:30:37.587762+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/env/2d-runtime-profile.json"
+      ]
+    },
+    {
+      "node": "competitive-research",
+      "status": "completed",
+      "started_at": "2026-05-14T09:31:48.809193+00:00",
+      "completed_at": "2026-05-14T09:31:48.809193+00:00",
+      "artifacts_created": [
+        ".allforai/launch-prep/competitive-research.json"
+      ]
+    },
+    {
+      "node": "game-2d-view-mode-runtime-contract",
+      "status": "completed",
+      "started_at": "2026-05-14T09:34:00.063637+00:00",
+      "completed_at": "2026-05-14T09:34:00.063637+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/spec/view-mode-runtime-contract.json"
+      ]
+    },
+    {
+      "node": "launch-concept-finalize",
+      "status": "completed",
+      "started_at": "2026-05-14T09:35:43.593127+00:00",
+      "completed_at": "2026-05-14T09:35:43.593127+00:00",
+      "artifacts_created": [
+        ".allforai/launch-prep/launch-concept-finalize.json",
+        ".allforai/launch-prep/launch-concept-finalize.md"
+      ]
+    },
+    {
+      "node": "game-2d-session-flow-contract",
+      "status": "completed",
+      "started_at": "2026-05-14T09:37:47.699089+00:00",
+      "completed_at": "2026-05-14T09:37:47.699089+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/spec/session-flow-contract.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-core-loop-playable-contract",
+      "status": "completed",
+      "started_at": "2026-05-14T09:25:54Z",
+      "completed_at": "2026-05-14T09:40:26.483670Z",
+      "artifacts_created": [
+        ".allforai/game-2d/spec/core-loop-playable-contract.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-asset-runtime-binding-contract",
+      "status": "completed",
+      "started_at": "2026-05-14T09:25:54Z",
+      "completed_at": "2026-05-14T09:40:26.483670Z",
+      "artifacts_created": [
+        ".allforai/game-2d/spec/asset-runtime-binding-contract.json"
+      ]
+    },
+    {
+      "node_id": "compliance-check",
+      "status": "completed",
+      "started_at": "2026-05-14T09:25:54Z",
+      "completed_at": "2026-05-14T09:40:26.483670Z",
+      "artifacts_created": [
+        ".allforai/launch-prep/compliance-checklist.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-playable-slice-assembly",
+      "status": "completed",
+      "started_at": "2026-05-14T09:25:54Z",
+      "completed_at": "2026-05-14T09:40:34.233375+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/assembly/playable-slice-manifest.json",
+        ".allforai/game-2d/assembly/playable-slice-assembly-report.json"
+      ]
+    },
+    {
+      "node_id": "launch-gap-implementation",
+      "status": "completed",
+      "started_at": "2026-05-14T09:25:54Z",
+      "completed_at": "2026-05-14T09:40:59.216867+00:00",
+      "artifacts_created": [
+        ".allforai/launch-prep/launch-gap-implementation.json"
+      ]
+    },
+    {
+      "node_id": "launch-checklist",
+      "status": "completed",
+      "started_at": "2026-05-14T09:41:15Z",
+      "completed_at": "2026-05-14T09:45:12.440180+00:00",
+      "artifacts_created": [
+        ".allforai/launch-prep/launch-checklist.json",
+        ".allforai/launch-prep/launch-checklist.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-core-loop-playability-qa",
+      "status": "completed",
+      "started_at": "2026-05-14T09:41:15Z",
+      "completed_at": "2026-05-14T09:48:11.620044+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/qa/core-loop-playability-qa-report.json"
+      ],
+      "notes": "qa_status=blocked: Prototype.scene not imported into build bundle, cc.director.getScene()=null"
+    },
+    {
+      "node_id": "game-2d-asset-binding-visual-qa",
+      "status": "completed",
+      "started_at": "2026-05-14T09:48:14Z",
+      "completed_at": "2026-05-14T09:52:46.203744+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/qa/asset-binding-visual-qa-report.json"
+      ],
+      "notes": "qa_status=blocked: scene not in build; static audit: 22 audio missing, 7 obstacles missing, 20 chapter tiles missing"
+    },
+    {
+      "node_id": "game-2d-session-completion-qa",
+      "status": "completed",
+      "started_at": "2026-05-14T09:52:46Z",
+      "completed_at": "2026-05-14T09:57:08.671262+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/qa/session-completion-qa-report.json"
+      ],
+      "notes": "qa_status=blocked; critical gaps: FailPopup.ts missing, levelComplete_nextLevel event unhandled, PauseMenu.ts missing"
+    },
+    {
+      "node_id": "game-2d-production-closure-qa",
+      "status": "completed",
+      "started_at": "2026-05-14T09:57:08Z",
+      "completed_at": "2026-05-14T10:03:16.185432+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/qa/2d-production-closure-report.json",
+        ".allforai/game-2d/qa/2d-production-closure.html"
+      ],
+      "notes": "overall_status=blocked; 4 P0: scene not in build, FailPopup.ts missing, 22 audio absent, 7 obstacles absent"
+    },
+    {
+      "node_id": "game-2d-code-repair-loop",
+      "status": "completed",
+      "started_at": "2026-05-14T10:37:52Z",
+      "completed_at": "2026-05-14T10:43:18.784582+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/repair/code-repair-loop-report.json",
+        ".allforai/game-2d/repair/code-repair-loop-report.md",
+        ".allforai/game-2d/qa/revalidation-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-production-closure-qa",
+      "status": "completed",
+      "started_at": "2026-05-14T10:44:01Z",
+      "completed_at": "2026-05-14T10:49:20.674067+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/qa/2d-production-closure-report.json",
+        ".allforai/game-2d/qa/2d-production-closure.html"
+      ]
+    },
+    {
+      "node_id": "launch-checklist",
+      "status": "completed",
+      "started_at": "2026-05-14T10:49:35Z",
+      "completed_at": "2026-05-14T10:54:12.627075+00:00",
+      "artifacts_created": [
+        ".allforai/launch-prep/launch-checklist.json",
+        ".allforai/launch-prep/launch-checklist.md"
+      ]
+    },
+    {
+      "node_id": "fix-prototype-board",
+      "status": "completed",
+      "started_at": "2026-05-14T19:55:05+00:00",
+      "completed_at": "2026-05-14T19:56:30+00:00",
+      "artifacts_created": [
+        ".allforai/game-client/fix-prototype-board-report.json"
+      ]
+    },
+    {
+      "node_id": "fix-compliance-urls",
+      "status": "completed",
+      "started_at": "2026-05-14T19:55:05+00:00",
+      "completed_at": "2026-05-14T19:56:30+00:00",
+      "artifacts_created": [
+        ".allforai/game-client/fix-compliance-urls-report.json"
+      ]
+    },
+    {
+      "node_id": "audio-asset-gen",
+      "status": "completed",
+      "started_at": "2026-05-14T19:55:05+00:00",
+      "completed_at": "2026-05-14T19:56:30+00:00",
+      "artifacts_created": [
+        ".allforai/game-client/audio-asset-gen-report.json"
+      ]
+    },
+    {
+      "node_id": "obstacle-art-gen",
+      "status": "completed",
+      "started_at": "2026-05-14T19:55:05+00:00",
+      "completed_at": "2026-05-14T19:56:30+00:00",
+      "artifacts_created": [
+        ".allforai/game-client/obstacle-art-gen-report.json"
+      ]
+    },
+    {
+      "node_id": "ui-forge-game",
+      "status": "completed",
+      "started_at": "2026-05-14T19:56:40+00:00",
+      "completed_at": "2026-05-14T20:02:00+00:00",
+      "artifacts_created": [
+        ".allforai/ui-forge/fidelity-assessment.json",
+        ".allforai/ui-forge/glow-island-tile-upgrade-report.md"
+      ]
+    },
+    {
+      "node_id": "launch-concept-finalize",
+      "status": "completed",
+      "started_at": "2026-05-14T19:56:40+00:00",
+      "completed_at": "2026-05-14T20:02:00+00:00",
+      "artifacts_created": [
+        ".allforai/launch-prep/launch-concept-finalize.json",
+        ".allforai/launch-prep/launch-concept-finalize.md"
+      ]
+    },
+    {
+      "node_id": "compile-verify",
+      "status": "completed",
+      "started_at": "2026-05-14T20:02:10+00:00",
+      "completed_at": "2026-05-14T20:04:30+00:00",
+      "artifacts_created": [
+        ".allforai/bootstrap/compile-result.json"
+      ]
+    },
+    {
+      "node_id": "compliance-check",
+      "status": "completed",
+      "started_at": "2026-05-14T20:02:10+00:00",
+      "completed_at": "2026-05-14T20:04:30+00:00",
+      "artifacts_created": [
+        ".allforai/launch-prep/compliance-checklist.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-playable-slice-assembly",
+      "status": "completed",
+      "started_at": "2026-05-14T20:04:40+00:00",
+      "completed_at": "2026-05-14T20:08:30+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/assembly/playable-slice-manifest.json",
+        ".allforai/game-2d/assembly/playable-slice-assembly-report.json"
+      ]
+    },
+    {
+      "node_id": "launch-gap-implementation",
+      "status": "completed",
+      "started_at": "2026-05-14T20:04:40+00:00",
+      "completed_at": "2026-05-14T20:08:30+00:00",
+      "artifacts_created": [
+        ".allforai/launch-prep/launch-gap-implementation.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-core-loop-playability-qa",
+      "status": "completed",
+      "started_at": "2026-05-14T20:08:40+00:00",
+      "completed_at": "2026-05-14T20:13:00+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/qa/core-loop-playability-qa-report.json"
+      ]
+    },
+    {
+      "node_id": "launch-checklist",
+      "status": "completed",
+      "started_at": "2026-05-14T20:08:40+00:00",
+      "completed_at": "2026-05-14T20:13:00+00:00",
+      "artifacts_created": [
+        ".allforai/launch-prep/launch-checklist.json",
+        ".allforai/launch-prep/launch-checklist.md"
+      ]
+    },
+    {
+      "node_id": "game-2d-asset-binding-visual-qa",
+      "status": "completed",
+      "started_at": "2026-05-14T20:13:10+00:00",
+      "completed_at": "2026-05-14T20:16:00+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/qa/asset-binding-visual-qa-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-session-completion-qa",
+      "status": "completed",
+      "started_at": "2026-05-14T20:16:10+00:00",
+      "completed_at": "2026-05-14T20:18:00+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/qa/session-completion-qa-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-code-repair-loop",
+      "status": "completed",
+      "started_at": "2026-05-14T20:18:10+00:00",
+      "completed_at": "2026-05-14T20:20:30+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/repair/code-repair-loop-report.json",
+        ".allforai/game-2d/repair/code-repair-loop-report.md",
+        ".allforai/game-2d/qa/revalidation-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-production-closure-qa",
+      "status": "completed",
+      "started_at": "2026-05-14T20:20:40+00:00",
+      "completed_at": "2026-05-14T20:24:00+00:00",
+      "artifacts_created": [
+        ".allforai/game-2d/assembly/playable-slice-assembly-report.json",
+        ".allforai/game-2d/qa/2d-production-closure-report.json",
+        ".allforai/game-2d/qa/2d-production-closure.html",
+        ".allforai/game-2d/qa/asset-binding-visual-qa-report.json",
+        ".allforai/game-2d/qa/core-loop-playability-qa-report.json",
+        ".allforai/game-2d/qa/revalidation-report.json",
+        ".allforai/game-2d/qa/session-completion-qa-report.json",
+        ".allforai/game-2d/repair/code-repair-loop-report.json"
+      ]
+    },
+    {
+      "node_id": "runtime-smoke-verify",
+      "status": "completed",
+      "started_at": "2026-05-14T20:24:10+00:00",
+      "completed_at": "2026-05-14T20:27:00+00:00",
+      "artifacts_created": [
+        ".allforai/bootstrap/runtime-smoke-result.json"
+      ]
     }
   ],
+  "diagnosis_history": [],
   "corrections_applied": []
 }

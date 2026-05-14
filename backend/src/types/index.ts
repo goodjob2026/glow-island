@@ -78,54 +78,74 @@ export interface IapSkuConfig {
   items: Array<{ type: string; item_id: string; quantity: number }>
   is_monthly_card: boolean
   is_starter_pack: boolean
+  is_first_pack: boolean
 }
 
 export type Platform = 'ios' | 'android' | 'taptap'
 
 export const SKU_CONFIG: Record<string, IapSkuConfig> = {
+  // First-purchase pack — $0.99, one-time only, 2× value + exclusive gift
+  first_pack: {
+    product_id: 'com.glowisland.iap.first_pack',
+    amount_cents: 99,
+    glowstone: 120,
+    items: [
+      { type: 'decoration', item_id: 'lighthouse_lantern_exclusive', quantity: 1 },
+    ],
+    is_monthly_card: false,
+    is_starter_pack: false,
+    is_first_pack: true,
+  },
+  // Direct glowstone packs (沙滩币 = glowstones used for continues / special items)
   small_pack: {
     product_id: 'com.glowisland.iap.small_pack',
-    amount_cents: 600,
+    amount_cents: 99,
     glowstone: 60,
     items: [],
     is_monthly_card: false,
     is_starter_pack: false,
+    is_first_pack: false,
   },
   medium_pack: {
     product_id: 'com.glowisland.iap.medium_pack',
-    amount_cents: 1800,
+    amount_cents: 299,
     glowstone: 200,
     items: [],
     is_monthly_card: false,
     is_starter_pack: false,
+    is_first_pack: false,
   },
   large_pack: {
     product_id: 'com.glowisland.iap.large_pack',
-    amount_cents: 4800,
+    amount_cents: 799,
     glowstone: 600,
     items: [],
     is_monthly_card: false,
     is_starter_pack: false,
+    is_first_pack: false,
   },
   mega_pack: {
     product_id: 'com.glowisland.iap.mega_pack',
-    amount_cents: 9800,
+    amount_cents: 1499,
     glowstone: 1400,
     items: [],
     is_monthly_card: false,
     is_starter_pack: false,
+    is_first_pack: false,
   },
-  monthly_card: {
-    product_id: 'com.glowisland.iap.monthly_card',
-    amount_cents: 3000,
-    glowstone: 10,
-    items: [{ type: 'monthly_card', item_id: 'monthly_card', quantity: 1 }],
-    is_monthly_card: true,
+  // Glowstone chest (replaces monthly_card — direct consumable, not a subscription)
+  glowstone_chest: {
+    product_id: 'com.glowisland.iap.glowstone_chest',
+    amount_cents: 499,
+    glowstone: 380,
+    items: [],
+    is_monthly_card: false,
     is_starter_pack: false,
+    is_first_pack: false,
   },
   starter_pack: {
     product_id: 'com.glowisland.iap.starter_pack',
-    amount_cents: 1200,
+    amount_cents: 199,
     glowstone: 100,
     items: [
       { type: 'currency', item_id: 'beach_coins', quantity: 500 },
@@ -133,5 +153,6 @@ export const SKU_CONFIG: Record<string, IapSkuConfig> = {
     ],
     is_monthly_card: false,
     is_starter_pack: true,
+    is_first_pack: false,
   },
 }

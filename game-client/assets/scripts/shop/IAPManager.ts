@@ -7,6 +7,7 @@
 
 import { sys } from 'cc'
 import { ProgressionManager } from '../meta/ProgressionManager'
+import { AnalyticsService } from '../services/AnalyticsService'
 
 const API_BASE_URL: string =
   (typeof process !== 'undefined' && process.env && process.env.GLOW_API_BASE_URL) ||
@@ -104,6 +105,9 @@ export class IAPManager {
    * On success: calls backend /iap/verify then grants beach_coins via ProgressionManager.
    */
   async purchase(productId: string, sku: IAPSku): Promise<PurchaseResult> {
+    // Analytics: IAP flow triggered
+    AnalyticsService.getInstance().iapTriggered(productId, 'purchase_call')
+
     try {
       let receipt: string
 
@@ -126,6 +130,8 @@ export class IAPManager {
             this._persistMonthlyCard(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString())
           }
           const newBalance = pm.getCurrentProgress().currency.beachCoins
+          // Analytics: IAP sandbox completion
+          AnalyticsService.getInstance().iapCompleted(productId, sku.price_usd)
           return { success: true, beachCoins: sku.beach_coins, glowstone: sku.glowstone, newBalance }
         } else {
           receipt = `web_receipt_${productId}_${Date.now()}`
@@ -138,6 +144,8 @@ export class IAPManager {
       }
 
       const progress = ProgressionManager.getInstance().getCurrentProgress()
+      // Analytics: IAP successfully verified and granted
+      AnalyticsService.getInstance().iapCompleted(productId, sku.price_usd)
       return {
         success: true,
         beachCoins: sku.beach_coins,

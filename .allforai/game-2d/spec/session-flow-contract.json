@@ -1,0 +1,280 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-14T00:00:00+08:00",
+  "generated_by": "game-2d-session-flow-contract",
+  "project": "glow-island",
+  "source_refs": [
+    "game-client/assets/scripts/game/GameSession.ts",
+    "game-client/assets/scripts/game/GameScene.ts",
+    "game-client/assets/scripts/game/LevelLoader.ts",
+    "game-client/assets/scripts/ui/MainMenuScene.ts",
+    "game-client/assets/scripts/ui/LevelCompletePopup.ts",
+    "game-client/e2e/glow-island.spec.ts",
+    ".allforai/game-2d/spec/view-mode-runtime-contract.json"
+  ],
+
+  "session_states": [
+    {
+      "state_id": "loading",
+      "screen_id": "SplashScreen",
+      "route_id": "init",
+      "description": "App cold launch. WebGL canvas initialises, Cocos engine boots, asset bundles preload. Anonymous auth is performed via POST /v1/auth/anonymous (body: { device_id, platform }). No hard login wall — anonymous token is issued immediately and stored for subsequent API calls.",
+      "blocking_modals": [],
+      "recoverability": "retry on network timeout; anonymous auth never hard-blocks launch because device_id is generated locally",
+      "save_resume": false,
+      "automated_path": "navigate to GAME_URL → waitForSelector('canvas', visible, 30s) → waitForTimeout(2000ms) — canvas present signals engine ready",
+      "screenshot_checkpoint": "splash logo (Glow Island wordmark) visible, canvas rendered, no black frame"
+    },
+    {
+      "state_id": "authenticated",
+      "screen_id": "MainMenuScene",
+      "route_id": "main_menu",
+      "description": "Anonymous token obtained (or loaded from localStorage). MainMenuScene.start() calls ProgressionManager.loadFromCloud() then sets cloud status to Synced/Offline. Buttons: Start Game → LevelSelectScene, Continue → GameScene (last level via director._lastLevel), Leaderboard, Shop, Settings, Zen Mode.",
+      "blocking_modals": [],
+      "recoverability": "cloud load failure falls back to localStorage; no state loss",
+      "save_resume": true,
+      "save_resume_notes": "GameSession.getPendingResumeLevel() reads localStorage key 'glow_island_resume_level'; if present, director._lastLevel is set and MainMenuScene.continueButton becomes active",
+      "automated_path": "after canvas ready: look for 'Start Game' button (text locator) or click canvas(0.5, 0.6) as fallback",
+      "screenshot_checkpoint": "main menu buttons visible: Start Game, Continue (dimmed if no save), Leaderboard, Shop, ZenMode; cloud-status icon present"
+    },
+    {
+      "state_id": "island_map",
+      "screen_id": "IslandMapScene",
+      "route_id": "island_map",
+      "description": "IslandMapScene shows the 6-chapter island layout. Tapping a level node that is unlocked transitions to GameScene with that level's id stored in director._lastLevel. Locked chapter nodes show a lock-prompt toast. Back navigation returns to MainMenuScene.",
+      "blocking_modals": ["ChapterLockedToast"],
+      "recoverability": "no network required; progression data read from ProgressionManager (localStorage-backed)",
+      "save_resume": false,
+      "automated_path": "from main menu click 'Start Game' → director.loadScene('LevelSelectScene') → tap first unlocked level node (canvas(0.5, 0.5) heuristic for level 1-1)",
+      "screenshot_checkpoint": "island map rendered, chapter 1 nodes visible, locked chapters show lock icon overlay"
+    },
+    {
+      "state_id": "level_start",
+      "screen_id": "GameScene",
+      "route_id": "game_scene_load",
+      "description": "GameScene.start() fires. GameSession.start(levelId) transitions internal state loading → playing. LevelLoader loads level config from Cocos resources bundle 'levels/all-levels' (falls back to INLINE_FALLBACK_LEVELS for editor/test). TileGrid, ObstacleManager, BoardEventManager initialised. Chapter BGM begins. HUD wired.",
+      "blocking_modals": ["NPCDialog (optional narrative beat, auto-dismisses after player tap)"],
+      "recoverability": "if LevelLoader throws (level not found or validation failure), GameScene logs error and remains on loading state; retry requires scene reload",
+      "save_resume": false,
+      "automated_path": "after tapping level on island map, wait 1500ms for GameScene load; verify URL contains 'game' or level=1 indicator",
+      "screenshot_checkpoint": "board grid visible (528x528px at design res), HUD moves counter visible, tiles populated, no FailPopup/LevelCompletePopup active"
+    },
+    {
+      "state_id": "gameplay",
+      "screen_id": "GameScene",
+      "route_id": "game_scene_playing",
+      "description": "GameSession state = 'playing'. Player selects tile pairs; GameScene.tryMatch() validates path (TileMatcher.findPath ≤2-turn L/Z rule), checks ObstacleManager.isPathBlocked(), clears matched cells, fires SFX (TILE_CONNECT, TILE_DISAPPEAR), updates ComboTracker, decrements movesRemaining via GameSession.onMoveMade(). BoardEventManager handles board_rotate, tile_fall, freeze_zone, water_current events. SpecialBlock auto-generation occurs at combo thresholds.",
+      "blocking_modals": ["SwapSelectionOverlay (10s timeout when SWAP special fires)", "PauseMenu"],
+      "recoverability": "PauseMenu → resume(); SwapSelectionOverlay auto-cancels on timeout",
+      "save_resume": false,
+      "automated_path": "click canvas(0.4, 0.35) then canvas(0.5, 0.35) for first tile pair; repeat 3 times for combo attempt",
+      "screenshot_checkpoint": "board shows cleared cells after match, move counter decremented, combo label updates (if combo active)"
+    },
+    {
+      "state_id": "level_complete",
+      "screen_id": "GameScene + LevelCompletePopup",
+      "route_id": "level_complete",
+      "description": "GameSession.onObjectivesMet() → _completeLevel() → state = 'levelComplete'. Stars computed: 3 stars = 0 continues AND movesRemaining ≥ 3; 2 stars = 0 continues; 1 star = any continue used. GameScene._onSessionEnded() fires SFX.LEVEL_COMPLETE and calls LevelCompletePopup.show(). Popup animates: score → stars pop-in sequence → material reward fly-in. ProgressionManager.addMaterials() + updateChapterProgress() + syncToCloud() (PUT /v1/save/:player_id) run immediately. AreaRestorationEffect.playStage() fires if restoration stage advances.",
+      "blocking_modals": ["LevelCompletePopup (modal, must tap Next Level or Back to Map to dismiss)"],
+      "recoverability": "syncToCloud failure is warned but non-blocking; local progress always persists via ProgressionManager localStorage",
+      "save_resume": true,
+      "save_resume_notes": "cloud sync fires PUT /v1/save/:player_id; E2E TC-001 intercepts this request as validation",
+      "automated_path": "after completing all objectives (tiles cleared >= objectiveTarget), wait for LevelCompletePopup to appear; tap 'Next Level' button or 'Back to Map' button",
+      "screenshot_checkpoint": "LevelCompletePopup visible: star row (1-3 stars lit), score label, material reward badges, Next Level and Back to Map buttons"
+    },
+    {
+      "state_id": "level_failed",
+      "screen_id": "GameScene + FailPopup",
+      "route_id": "level_failed",
+      "description": "GameSession state = 'failed'. Triggered when movesRemaining reaches 0 and objectives are unmet (GameSession.onMoveMade), or when ObstacleManager.isBoardOverrun() fires GameSession.failNow(). EVENT: SESSION_FAILED emitted. GameScene._onSessionFailed() looks for scene child 'FailPopup' and sets active=true. If FailPopup node not found, fallback: director.loadScene('IslandMapScene') after 2s delay.",
+      "blocking_modals": ["FailPopup / ContinuePopup"],
+      "recoverability": "continue flow available up to CONTINUE_MAX=3 times if glowstones >= 6; after max continues or no glowstones, exit to island map",
+      "save_resume": false,
+      "automated_path": "exhaust all moves without meeting objectives; FailPopup activates; tap 'Exit' to return to map or tap 'Continue' to trigger continue flow",
+      "screenshot_checkpoint": "FailPopup visible with Continue button (shows glowstone cost=6) and Exit button; board still visible behind dimmed backdrop"
+    },
+    {
+      "state_id": "continue_decision",
+      "screen_id": "GameScene + ContinuePopup (FailPopup)",
+      "route_id": "continue_iap",
+      "description": "Player is on FailPopup after moves exhausted. Two choices: (A) tap Continue → GameSession.continue(glowstones) deducts 6 glowstones, adds CONTINUE_MOVES_ADDED=5 moves, transitions state failed → playing; (B) tap Exit → director.loadScene('IslandMapScene'). continue() returns false if continuesUsed >= CONTINUE_MAX=3 or glowstones < 6.",
+      "blocking_modals": ["FailPopup"],
+      "recoverability": "insufficient glowstones: continue button is disabled or shows IAP shop prompt; exit always available",
+      "save_resume": false,
+      "automated_path": "tap 'Continue' button in popup; verify moves counter resets to +5; board becomes interactive again",
+      "screenshot_checkpoint": "popup dismissed, HUD moves counter shows +5 added, board re-enabled (no dim overlay)"
+    },
+    {
+      "state_id": "result_to_map",
+      "screen_id": "IslandMapScene",
+      "route_id": "back_to_map",
+      "description": "Player taps 'Back to Map' on LevelCompletePopup or 'Exit' on FailPopup. LevelCompletePopup._onBackToMap() calls director.loadScene('IslandMapScene'). Island map shows updated chapter progress (newly unlocked levels/chapters reflected).",
+      "blocking_modals": [],
+      "recoverability": "scene transition via SystemOverlay fade (island_sand #F7EDD8, ≤0.4s); no data loss risk",
+      "save_resume": false,
+      "automated_path": "tap 'Back to Map' button in LevelCompletePopup; waitForTimeout(1500ms); verify island map canvas visible",
+      "screenshot_checkpoint": "IslandMapScene loaded; updated level node states (completed star count badges visible); previously locked nodes potentially unlocked"
+    },
+    {
+      "state_id": "next_level",
+      "screen_id": "GameScene (new level)",
+      "route_id": "next_level",
+      "description": "Player taps 'Next Level' on LevelCompletePopup. LevelCompletePopup._onNextLevel() hides popup and emits director event 'levelComplete_nextLevel'. GameScene listens and loads the sequential next level by incrementing the level id (e.g. '1-1' → '1-2'). New GameSession.start() fires for the next level.",
+      "blocking_modals": [],
+      "recoverability": "if next level not found by LevelLoader, scene falls back to IslandMapScene",
+      "save_resume": false,
+      "automated_path": "tap 'Next Level' button in LevelCompletePopup; wait 1500ms; verify new board is initialised (tile count differs from previous level if grid_size changes)",
+      "screenshot_checkpoint": "new level board rendered; HUD moves counter reset to new level's max_moves; level id updated"
+    },
+    {
+      "state_id": "zen_mode",
+      "screen_id": "GameScene (zen mode)",
+      "route_id": "zen_mode",
+      "description": "Player taps Zen Mode on MainMenuScene. ZenModeManager.consumeSlot() checks daily quota (slots reset daily). If slot available: ZenModeManager.enterZenMode() → director.loadScene('GameScene'). Zen mode sets max_moves = null (no move limit). On moves reaching 0, _triggerZenComplete() emits 'zenComplete' with decoration reward instead of SESSION_FAILED. Toast '今日禅境次数已用完，明天再来' shown if quota exhausted.",
+      "blocking_modals": ["ZenModeHUD (replaces standard GameHUD)"],
+      "recoverability": "quota exhausted: toast shown, no scene change; zen complete: decoration reward emitted, graceful return flow",
+      "save_resume": false,
+      "automated_path": "tap Zen Mode button on main menu; if quota available, GameScene loads in zen mode; play proceeds without move limit",
+      "screenshot_checkpoint": "ZenModeHUD visible (distinct from GameHUD), no moves counter or infinite indicator, board active"
+    },
+    {
+      "state_id": "paused",
+      "screen_id": "GameScene + PauseMenu",
+      "route_id": "pause",
+      "description": "Player taps pause button in GameHUD. GameSession.pause() transitions playing → paused. PauseMenu shown (settings, quit-to-map). Resume: GameSession.resume() → playing. Quit: director.loadScene('IslandMapScene') + GameSession.exitMidSession() which saves current levelId to localStorage key 'glow_island_resume_level' for continue-from-map flow.",
+      "blocking_modals": ["PauseMenu"],
+      "recoverability": "exitMidSession() writes resume key; if storage unavailable, key is lost silently but no crash",
+      "save_resume": true,
+      "save_resume_notes": "localStorage key 'glow_island_resume_level' set; MainMenuScene will activate continueButton on next launch",
+      "automated_path": "tap pause button (top-right of HUD per view-mode-runtime-contract); tap Resume to return, or Quit to exit",
+      "screenshot_checkpoint": "PauseMenu overlay visible with dimmed backdrop; board frozen (no input); Resume and Quit buttons accessible"
+    }
+  ],
+
+  "critical_path": [
+    "loading",
+    "authenticated",
+    "island_map",
+    "level_start",
+    "gameplay",
+    "level_complete",
+    "result_to_map"
+  ],
+
+  "continue_iap_flow": {
+    "trigger": "movesRemaining == 0 AND objectivesMet == false AND GameSession.state transitions to 'failed'",
+    "screen_id": "FailPopup (child node of GameScene named 'FailPopup')",
+    "glowstone_cost": 6,
+    "moves_awarded": 5,
+    "max_continues_per_level": 3,
+    "action_yes": "GameSession.continue(currentGlowstones): deducts 6 glowstones from _glowstones, adds 5 to _movesRemaining, increments _continuesUsed, transitions state failed → playing; continuesUsed > 0 means max star rating drops to 1",
+    "action_no": "player taps Exit on FailPopup → GameScene navigates to IslandMapScene via director.loadScene (or 2s auto-fallback if FailPopup node not found)",
+    "automation": "after board exhausts moves, waitForTimeout(500ms); locate 'Continue' button in FailPopup (canvas(0.5, 0.55) heuristic); tap to confirm continue",
+    "insufficient_glowstones_behaviour": "continue() returns false; UI should show IAP shop prompt (ShopScene) or disable the Continue button",
+    "star_penalty": "any continue usage: final star rating capped at 1 star regardless of movesRemaining at completion",
+    "board_overrun_path": "ObstacleManager.isBoardOverrun() → GameSession.failNow() → same FailPopup flow; no continue allowed for board-overrun if design restricts it (implementation: continue() only checks state==failed, so board-overrun can continue if glowstones allow)"
+  },
+
+  "exit_mid_session_flow": {
+    "trigger": "player taps quit in PauseMenu during active gameplay",
+    "method": "GameSession.exitMidSession()",
+    "saves_resume_key": true,
+    "resume_key": "localStorage key 'glow_island_resume_level'",
+    "resume_on_next_launch": "MainMenuScene._updateContinueButton() enables continueButton; _onContinue() reads ProgressionManager.getCurrentProgress() to find lastLevel and sets director._lastLevel; director.loadScene('GameScene')",
+    "no_material_penalty": true
+  },
+
+  "scene_transition_map": {
+    "MainMenuScene → LevelSelectScene": "startButton click → director.loadScene('LevelSelectScene')",
+    "MainMenuScene → GameScene": "continueButton click → sets director._lastLevel → director.loadScene('GameScene')",
+    "MainMenuScene → LeaderboardScene": "leaderboardButton click → director.loadScene('LeaderboardScene')",
+    "MainMenuScene → ShopScene": "shopButton click → director.loadScene('ShopScene')",
+    "MainMenuScene → GameScene (zen)": "zenModeButton click → ZenModeManager.enterZenMode() → director.loadScene('GameScene')",
+    "LevelSelectScene/IslandMapScene → GameScene": "level node tap → sets director._lastLevel → director.loadScene('GameScene')",
+    "GameScene → IslandMapScene": "LevelCompletePopup 'Back to Map' OR FailPopup 'Exit' OR PauseMenu 'Quit' → director.loadScene('IslandMapScene')",
+    "GameScene → GameScene (next level)": "LevelCompletePopup 'Next Level' → director.emit('levelComplete_nextLevel') → GameScene re-initialises with next level id",
+    "SystemOverlay fade": "all scene transitions use SystemOverlay (z_order=30) fade in/out, colour #F7EDD8 (island_sand), duration ≤0.4s each way"
+  },
+
+  "save_and_sync_contract": {
+    "auth_endpoint": "POST /v1/auth/anonymous, body: { device_id, platform: 'ios'|'android'|'taptap' }, response: { token, player_id, is_new_player, expires_at }",
+    "save_read_endpoint": "GET /v1/save/:player_id, header: Authorization: Bearer <token>",
+    "save_write_endpoint": "PUT /v1/save/:player_id, header: Authorization: Bearer <token>",
+    "save_trigger": "LevelCompletePopup.show() → ProgressionManager.syncToCloud() → PUT /v1/save/:player_id",
+    "save_failure_behaviour": "console.warn only; local progress always preserved in ProgressionManager (localStorage-backed)",
+    "local_resume_key": "localStorage key 'glow_island_resume_level' — written by exitMidSession(), cleared by GameSession._clearResumeEntry() on successful start()",
+    "local_save_key": "localStorage key 'glow_island_save' (injected by E2E tests to bypass tutorial)"
+  },
+
+  "automation_test_route": {
+    "description": "Full automated route from cold launch to level complete (mirrors E2E TC-001)",
+    "source": "game-client/e2e/glow-island.spec.ts TC-001",
+    "steps": [
+      "1. page.goto('http://localhost:8080') — cold launch",
+      "2. waitForSelector('canvas', { state: 'visible', timeout: 30000 }) + waitForTimeout(2000) — engine init",
+      "3. Locate 'Start Game' button (text='Start Game') or clickCanvas(0.5, 0.6) as fallback — enter LevelSelectScene",
+      "4. waitForTimeout(1500) — scene load; verify URL contains 'game' or 'level=1' or page text matches /level\\s*1/i",
+      "5. clickCanvas(0.4, 0.35) — select first tile",
+      "6. waitForTimeout(300)",
+      "7. clickCanvas(0.5, 0.35) — select adjacent matching tile → triggers tryMatch(), TILE_CONNECT SFX, TILE_DISAPPEAR SFX",
+      "8. waitForTimeout(800) — match animation completes, combo label may update",
+      "9. Repeat steps 5-8 two more times at (0.45+i*0.05, 0.4) offsets — completes 3 matches",
+      "10. waitForTimeout(3000) — allow auto-save interval; intercept PUT /v1/save request",
+      "11. Verify LevelCompletePopup visible OR moves counter decremented (acceptance: no crash, combo/score text present)",
+      "12. If LevelCompletePopup visible: tap 'Back to Map' or 'Next Level' button",
+      "13. page.screenshot({ path: 'e2e-screenshots/tc-001-tutorial.png' })"
+    ],
+    "acceptance_criteria": [
+      "canvas renders within 30s of page load (no blank screen)",
+      "level 1-1 board initialised (4x4 grid, 16 tiles per INLINE_FALLBACK_LEVELS[0])",
+      "at least one successful tile match (tryMatch returns true, tile nodes deactivated)",
+      "no unhandled JS errors in browser console",
+      "PUT /v1/save request fired within 5s of level actions (if backend running)",
+      "LevelCompletePopup OR IslandMapScene reached as a completion outcome"
+    ]
+  },
+
+  "failure_recovery_matrix": {
+    "network_timeout_on_auth": "anonymous auth retried; game proceeds to main menu in offline mode after timeout",
+    "level_not_found": "LevelLoader throws; GameScene logs error; board not initialised; player sees blank scene; fix: ensure all-levels.json or INLINE_FALLBACK_LEVELS covers the requested levelId",
+    "fail_popup_node_missing": "GameScene._onSessionFailed() fallback: director.loadScene('IslandMapScene') after 2s — graceful degradation without FailPopup UI",
+    "level_complete_popup_missing": "GameScene._onSessionEnded() fallback: director.loadScene('IslandMapScene') after 1.5s — graceful degradation without LevelCompletePopup UI",
+    "sync_to_cloud_failure": "console.warn; local ProgressionManager state preserved; no UX interruption",
+    "board_overrun": "ObstacleManager.isBoardOverrun() → GameSession.failNow() → SESSION_FAILED event → FailPopup shown",
+    "swap_selection_timeout": "SwapSelectionOverlay auto-cancels after 10s; BoardEventManager.cancelSwapSelection() fires; gameplay resumes normally",
+    "deadlock_no_valid_moves": "TileGrid._onTilesSettled() stub — deadlock detection not yet implemented; future: offer reshuffle or auto-fail"
+  },
+
+  "session_state_machine": {
+    "states": ["loading", "playing", "paused", "levelComplete", "failed"],
+    "transitions": [
+      { "from": "loading",       "to": "playing",       "trigger": "GameSession.start(levelId) resolves" },
+      { "from": "playing",       "to": "paused",        "trigger": "GameSession.pause()" },
+      { "from": "paused",        "to": "playing",       "trigger": "GameSession.resume()" },
+      { "from": "playing",       "to": "levelComplete", "trigger": "GameSession.onObjectivesMet()" },
+      { "from": "playing",       "to": "failed",        "trigger": "GameSession.onMoveMade() with movesRemaining==0 and !objectivesMet, OR GameSession.failNow()" },
+      { "from": "failed",        "to": "playing",       "trigger": "GameSession.continue(glowstones) returns true" },
+      { "from": "any (not loading/levelComplete)", "to": "loading", "trigger": "GameSession.exitMidSession()" }
+    ],
+    "events_emitted": [
+      { "event": "sessionEnded",    "payload": "SessionResult",      "consumer": "GameScene._onSessionEnded → LevelCompletePopup.show()" },
+      { "event": "sessionFailed",   "payload": "none",               "consumer": "GameScene._onSessionFailed → FailPopup.active=true" },
+      { "event": "stateChanged",    "payload": "GameSessionState",   "consumer": "GameHUD (via init subscription)" },
+      { "event": "zenComplete",     "payload": "decorationReward",   "consumer": "game-level/zen flow handler" }
+    ]
+  },
+
+  "validation_status": "passed",
+  "validation_notes": [
+    "Critical path exists: loading → authenticated → island_map → level_start → gameplay → level_complete → result_to_map. All transitions are implemented in source code.",
+    "Automated route confirmed from E2E TC-001: page.goto → waitForCanvas → click Start → click tiles → verify level entered → screenshot.",
+    "Continue flow confirmed: GameSession.continue() (failed → playing) deducts CONTINUE_GLOWSTONE_COST=6, adds CONTINUE_MOVES_ADDED=5, capped at CONTINUE_MAX=3. Star penalty: continuesUsed > 0 → 1 star.",
+    "Exit mid-session confirmed: GameSession.exitMidSession() writes localStorage key 'glow_island_resume_level'; MainMenuScene._onContinue() reads ProgressionManager for lastLevel and fires director.loadScene('GameScene').",
+    "Cloud save confirmed: LevelCompletePopup.show() → ProgressionManager.syncToCloud() → PUT /v1/save/:player_id. E2E TC-001 intercepts this request.",
+    "Failure recovery: both LevelCompletePopup and FailPopup have node-missing fallbacks (director.loadScene('IslandMapScene')) so the critical path cannot dead-end.",
+    "Scene transition map is complete: all director.loadScene() calls in MainMenuScene, LevelCompletePopup, and GameScene are enumerated.",
+    "Zen mode path included: ZenModeManager slot-consumption, toast on quota-exhausted, and zenComplete event documented.",
+    "GameSessionState type from source: 'loading' | 'playing' | 'paused' | 'levelComplete' | 'failed' — matches all states in this contract.",
+    "Board-overrun path confirmed: ObstacleManager.isBoardOverrun() → GameSession.failNow() — same FailPopup flow as move-exhaustion."
+  ]
+}

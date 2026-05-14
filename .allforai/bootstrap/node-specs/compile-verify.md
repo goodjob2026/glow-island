@@ -1,9 +1,10 @@
 ---
+node: compile-verify
 node_id: compile-verify
 capability: compile-verify
 human_gate: false
-hard_blocked_by: [stitch-game-client]
-unlocks: [demo-forge, runtime-smoke-verify]
+hard_blocked_by: [fix-prototype-board, fix-compliance-urls, audio-asset-gen, obstacle-art-gen, ui-forge-game]
+unlocks: [game-2d-playable-slice-assembly]
 exit_artifacts:
   - path: .allforai/bootstrap/compile-result.json
 ---

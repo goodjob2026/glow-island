@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import { PrismaClient } from '@prisma/client'
+import https from 'https'
 import { SKU_CONFIG } from '../types/index'
 
 interface IapVerifyBody {
@@ -12,6 +13,36 @@ interface IapVerifyBody {
 
 const VALID_PLATFORMS = ['ios', 'android', 'taptap']
 const VALID_SKUS = Object.keys(SKU_CONFIG)
+
+const APPLE_VERIFY_PROD = 'https://buy.itunes.apple.com/verifyReceipt'
+const APPLE_VERIFY_SANDBOX = 'https://sandbox.itunes.apple.com/verifyReceipt'
+
+async function verifyAppleReceipt(
+  receiptData: string,
+  useSandbox = false
+): Promise<{ status: number; environment?: string }> {
+  const url = useSandbox ? APPLE_VERIFY_SANDBOX : APPLE_VERIFY_PROD
+  const body = JSON.stringify({
+    'receipt-data': receiptData,
+    password: process.env.APPLE_SHARED_SECRET ?? '',
+  })
+  return new Promise((resolve, reject) => {
+    const req = https.request(url, { method: 'POST' }, (res) => {
+      let data = ''
+      res.on('data', (chunk) => { data += chunk })
+      res.on('end', () => {
+        try {
+          resolve(JSON.parse(data) as { status: number; environment?: string })
+        } catch {
+          reject(new Error('Apple receipt parse failed'))
+        }
+      })
+    })
+    req.on('error', reject)
+    req.write(body)
+    req.end()
+  })
+}
 
 const HOURGLASS_BASE_COINS = 15
 const HOURGLASS_MONTHLY_CARD_COINS = 30
@@ -118,20 +149,15 @@ export async function iapRoutes(app: FastifyInstance, prisma: PrismaClient): Pro
       }
 
       // Business rule checks
-      if (sku.is_starter_pack) {
+      if (sku.is_starter_pack || sku.is_first_pack) {
+        const skuKey = sku.is_first_pack ? body.sku_id : 'starter_pack'
+        const errorCode = sku.is_first_pack ? 'FIRST_PACK_ALREADY_PURCHASED' : 'STARTER_PACK_ALREADY_PURCHASED'
         const alreadyBought = await prisma.iapTransaction.findFirst({
-          where: {
-            playerId,
-            skuId: 'starter_pack',
-            status: 'verified',
-          },
+          where: { playerId, skuId: skuKey, status: 'verified' },
         })
         if (alreadyBought) {
           return reply.status(422).send({
-            error: {
-              code: 'STARTER_PACK_ALREADY_PURCHASED',
-              message: 'Starter pack can only be purchased once',
-            },
+            error: { code: errorCode, message: 'This pack can only be purchased once' },
           })
         }
       }
@@ -157,17 +183,29 @@ export async function iapRoutes(app: FastifyInstance, prisma: PrismaClient): Pro
         }
       }
 
-      // In sandbox/development mode: skip Apple/Google verification
-      // Production: call Apple /verifyReceipt or Google Play Developer API
-      const isDevelopment =
-        process.env.NODE_ENV === 'development' || process.env.APPLE_IAP === 'sandbox'
+      // Apple receipt verification (iOS only)
+      if (body.platform === 'ios') {
+        const isDevelopment =
+          process.env.NODE_ENV === 'development' || process.env.APPLE_IAP === 'sandbox'
 
-      if (!isDevelopment) {
-        // Production IAP verification would go here
-        // For now, we proceed as verified
+        if (!isDevelopment) {
+          let appleResult = await verifyAppleReceipt(body.receipt_data, false)
+          // Apple status 21007 = receipt is from sandbox; retry against sandbox endpoint
+          if (appleResult.status === 21007) {
+            appleResult = await verifyAppleReceipt(body.receipt_data, true)
+          }
+          if (appleResult.status !== 0) {
+            return reply.status(422).send({
+              error: {
+                code: 'APPLE_RECEIPT_INVALID',
+                message: `Apple receipt verification failed (status ${appleResult.status})`,
+              },
+            })
+          }
+        }
       }
 
-      // Generate a synthetic transaction ID for sandbox
+      // Generate a synthetic transaction ID for sandbox / non-iOS platforms
       const platformTransactionId =
         body.transaction_id ?? `sandbox_${Date.now()}_${Math.random().toString(36).slice(2)}`
 
@@ -262,15 +300,8 @@ export async function iapRoutes(app: FastifyInstance, prisma: PrismaClient): Pro
         updated_currency: result.updatedCurrency,
       }
 
-      if (sku.is_monthly_card) {
-        const mc = result.updatedSave.monthlyCard as {
-          active: boolean
-          expires_at: string | null
-        }
-        responseBody.monthly_card = {
-          active: mc.active,
-          expires_at: mc.expires_at,
-        }
+      if (sku.is_first_pack) {
+        responseBody.first_pack_bonus = sku.items
       }
 
       return reply.send(responseBody)

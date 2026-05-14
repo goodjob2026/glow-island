@@ -1,0 +1,18 @@
+{
+  "fixed_at": "2026-05-15T00:00:00.000Z",
+  "fixes": [
+    {
+      "file": "game-client/assets/scripts/prototype/PrototypeBoard.ts",
+      "issue": "dropColumns Set spread compiled to [].concat(Set) instead of spreading",
+      "fix": "Changed [...new Set(cols)] to Array.from(new Set(cols))",
+      "status": "applied"
+    },
+    {
+      "file": "game-client/assets/scenes/GameScene.scene",
+      "issue": "Canvas _lpos at (480, 320) caused board to appear split in certain Chrome window sizes",
+      "fix": "Changed Canvas _lpos to (0, 0, 0)",
+      "status": "applied"
+    }
+  ],
+  "overall_status": "fixed"
+}

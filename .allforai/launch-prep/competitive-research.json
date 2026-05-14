@@ -1,0 +1,208 @@
+{
+  "schema_version": "1.0",
+  "researched_at": "2026-05-14T00:00:00Z",
+  "target_platforms": ["iOS App Store"],
+  "competitors": [
+    {
+      "name": "Zen Match - Relaxing Puzzle",
+      "category": "direct",
+      "pricing_model": "free+iap",
+      "iap_price_points_usd": [1.99, 2.99, 3.99, 4.99, 7.99, 9.99, 16.99],
+      "app_store_category": "Games > Puzzle",
+      "rating": 4.55,
+      "rating_count": 168000,
+      "top_positive_keywords": ["relaxing", "satisfying", "beautiful music", "decompressing", "entertaining"],
+      "top_negative_keywords": ["ads interrupt zen", "expensive lives", "wait 2.5 hours to retry", "too many pop-ups", "lives system"],
+      "screenshot_style": "gameplay-focused",
+      "notes": "Acquired by Moon Active for ~$100-150M. 35M+ users. $900K monthly revenue (iOS). Freemium with lives/energy system — heavy friction. Booster costs 75+ coins per use. Zen Pass subscription available."
+    },
+    {
+      "name": "Triple Tile: Match Puzzle Game",
+      "category": "direct",
+      "pricing_model": "free+iap",
+      "iap_price_points_usd": [0.99, 1.99, 4.99, 9.99],
+      "app_store_category": "Games > Puzzle",
+      "rating": 4.86,
+      "rating_count": 250000,
+      "top_positive_keywords": ["relaxing", "addictive", "satisfying", "offline playable", "challenging"],
+      "top_negative_keywords": ["too many ads", "30-second ads", "forced ad watching", "monetization pressure"],
+      "screenshot_style": "gameplay-focused",
+      "notes": "By Tripledot Studios. Very high rating (4.86). Monetizes primarily via ads; IAP is secondary. Strong brand in triple-tile genre."
+    },
+    {
+      "name": "Tile Match Sweet: Triple Match",
+      "category": "direct",
+      "pricing_model": "free+iap",
+      "iap_price_points_usd": [2.99],
+      "app_store_category": "Games > Puzzle",
+      "rating": 4.4,
+      "rating_count": 15000,
+      "top_positive_keywords": ["relaxing", "fun", "free to play", "offline", "colorful"],
+      "top_negative_keywords": ["too easy", "lacks depth", "repetitive"],
+      "screenshot_style": "gameplay-focused",
+      "notes": "Ad-block deal at $2.99. Free anytime/offline. Simpler monetization. Lower brand recognition."
+    },
+    {
+      "name": "Shanghai Mahjong",
+      "category": "direct",
+      "pricing_model": "premium",
+      "iap_price_points_usd": [1.99],
+      "app_store_category": "Games > Puzzle",
+      "rating": 4.3,
+      "rating_count": 2300,
+      "top_positive_keywords": ["no ads", "clean UI", "no bugs", "photorealistic tiles", "classic"],
+      "top_negative_keywords": ["expensive for genre", "limited layouts", "no story"],
+      "screenshot_style": "ui-showcase",
+      "notes": "Premium paid app at $1.99. No IAP after purchase. 200 layouts, 50+ tilesets. Classic solitaire mahjong, not Onet-style. Niche loyal audience."
+    },
+    {
+      "name": "Onet Connect Plus",
+      "category": "direct",
+      "pricing_model": "free+iap",
+      "iap_price_points_usd": [0.99, 1.99, 4.99],
+      "app_store_category": "Games > Puzzle",
+      "rating": 4.2,
+      "rating_count": 5000,
+      "top_positive_keywords": ["classic", "familiar gameplay", "brain training", "simple rules", "free"],
+      "top_negative_keywords": ["outdated graphics", "intrusive ads", "no story", "generic"],
+      "screenshot_style": "gameplay-focused",
+      "notes": "Classic Onet-style connect game. Free with ads and IAP. Low production value but genre staple. No narrative or meta layer."
+    },
+    {
+      "name": "Lily's Garden: Match & Design",
+      "category": "adjacent",
+      "pricing_model": "free+iap",
+      "iap_price_points_usd": [0.99, 1.99, 4.99, 9.99, 19.99, 74.99],
+      "app_store_category": "Games > Puzzle",
+      "rating": 4.71,
+      "rating_count": 500000,
+      "top_positive_keywords": ["addictive", "wonderful story", "beautiful", "attached to characters", "long-term engagement"],
+      "top_negative_keywords": ["ads freeze game", "coins hard to earn", "misleading ads", "paywall progress", "cheating feeling"],
+      "screenshot_style": "lifestyle",
+      "notes": "By Tactile Games. 80K monthly downloads, $900K monthly revenue (iOS). 6-pack coin IAP from $0.99 to $74.99. Strong narrative + puzzle meta loop. Hybrid ads+IAP model. Key reference for garden/island meta."
+    },
+    {
+      "name": "June's Journey: Hidden Objects",
+      "category": "adjacent",
+      "pricing_model": "free+iap",
+      "iap_price_points_usd": [1.99, 4.99, 9.99, 14.99, 49.99, 99.99],
+      "app_store_category": "Games > Puzzle",
+      "rating": 4.6,
+      "rating_count": 300000,
+      "top_positive_keywords": ["beautiful art", "engaging story", "mystery", "relaxing", "1920s aesthetic"],
+      "top_negative_keywords": ["energy gates", "slow progression", "expensive diamonds", "star boxes"],
+      "screenshot_style": "lifestyle",
+      "notes": "By wooga. 100K monthly downloads, $7M monthly revenue (iOS). Dual currency (diamonds + coins). 6-tier diamond packs $1.99-$99.99. Star loot boxes $7.99-$99.99. Strong narrative-driven meta. Clear benchmark for premium polish."
+    },
+    {
+      "name": "Merge Mansion: Mystery Puzzles",
+      "category": "adjacent",
+      "pricing_model": "free+iap",
+      "iap_price_points_usd": [0.99, 2.99, 4.99, 9.99, 19.99],
+      "app_store_category": "Games > Puzzle",
+      "rating": 4.56,
+      "rating_count": 182000,
+      "top_positive_keywords": ["no ads", "story-driven", "satisfying merge", "characters", "relaxing tasks"],
+      "top_negative_keywords": ["slow late-game progression", "events too short", "merge grind", "energy timer"],
+      "screenshot_style": "lifestyle",
+      "notes": "By Metacore. ~$6M monthly revenue (iOS). Notable: no forced ads — full IAP model, positively reviewed for that. Event design complaints. Energy timer friction. Good reference for no-ad positioning."
+    },
+    {
+      "name": "Flow Free",
+      "category": "reference",
+      "pricing_model": "free+iap",
+      "iap_price_points_usd": [0.99, 1.99, 2.99, 4.99],
+      "app_store_category": "Games > Puzzle",
+      "rating": 4.7,
+      "rating_count": 180000,
+      "top_positive_keywords": ["clean design", "satisfying", "minimalist", "no timer", "offline", "simple rules"],
+      "top_negative_keywords": ["ads in free version", "limited free packs", "lacks story"],
+      "screenshot_style": "gameplay-focused",
+      "notes": "By Big Duck Games. Classic no-timer, no-lives puzzle. IAP = ad removal + extra puzzle packs. Beloved for clean, pressure-free design. Benchmark for no-stamina positioning."
+    }
+  ],
+  "market_insights": {
+    "iap_price_range_usd": {
+      "min": 0.99,
+      "median": 4.99,
+      "max": 99.99,
+      "common_entry_tier": 0.99,
+      "common_mid_tier": 4.99,
+      "common_whale_tier": 19.99
+    },
+    "keyword_opportunities": [
+      "healing puzzle game",
+      "cozy tile match",
+      "island restore puzzle",
+      "relaxing onet",
+      "tile connect no ads",
+      "mahjong connect story",
+      "calm puzzle offline",
+      "no lives puzzle game",
+      "beach puzzle relaxing",
+      "cozy island game"
+    ],
+    "differentiation_strengths": [
+      "No stamina / no lives / no timer: Glow Island's core design philosophy directly addresses the #1 user complaint across Zen Match (wait 2.5h to retry), Lily's Garden (energy gates), and June's Journey (energy system). No competitor in the direct tile-connect category is positioned on this.",
+      "Single currency + continue-stage only IAP: Avoids the dual-currency confusion of June's Journey (diamonds + coins) and the manipulative booster ecosystem of Zen Match. Cleaner, fairer perceived value. Players can trust the economy.",
+      "Narrative + island restoration meta in tile-connect: Zen Match and Triple Tile lack narrative depth entirely. Lily's Garden and June's Journey have narrative but use match-3 or hidden object mechanics. Glow Island is the only healing Onet/tile-connect game with a 6-chapter island restoration story — a blue ocean niche."
+    ],
+    "gap_warnings": [
+      {
+        "gap": "Crash analytics / stability monitoring not yet integrated (Firebase Crashlytics or equivalent)",
+        "priority": "P0",
+        "competitor_example": "All top competitors (Zen Match, Lily's Garden, June's Journey) treat crash-free launch as table stakes; even one crash wave tanks early App Store ratings"
+      },
+      {
+        "gap": "In-app rating prompt (SKStoreReviewRequestAPI) not confirmed implemented",
+        "priority": "P0",
+        "competitor_example": "Merge Mansion (4.56★/182K ratings) and Triple Tile (4.86★/250K ratings) both use well-timed review prompts post positive moments; missing this at launch is leaving rating velocity on the table"
+      },
+      {
+        "gap": "No ad-removal IAP or subscription option (competitors like Flow Free, Tile Match Sweet offer $2.99 ad-block)",
+        "priority": "P1",
+        "competitor_example": "Flow Free (ad-block $0.99–$2.99), Tile Match Sweet ($2.99 no-ads deal) — if Glow Island ever introduces rewarded ads, players expect a buy-out option"
+      },
+      {
+        "gap": "No daily challenge / streak mechanic for retention (Zen Match has daily tile explorer; Lily's Garden has daily quests)",
+        "priority": "P1",
+        "competitor_example": "Zen Match Daily Tile Explorer, Lily's Garden daily events — drives D7/D30 retention significantly; absent in Glow Island spec"
+      },
+      {
+        "gap": "No social / leaderboard / sharing hook (June's Journey has competitive flower collection events; Merge Mansion has seasonal leaderboards)",
+        "priority": "P2",
+        "competitor_example": "June's Journey competitive flower-finding events drive community and UA virality; not required at launch but valuable for scale"
+      }
+    ]
+  },
+  "pricing_recommendation": {
+    "currency": "USD",
+    "tiers": [
+      {
+        "coins": 50,
+        "price_usd": 0.99,
+        "label": "小包",
+        "rationale_note": "Entry tier anchored at market floor ($0.99); matches Lily's Garden smallest pack and Onet Connect entry; covers ~1 continue use; impulse buy for casual spenders"
+      },
+      {
+        "coins": 150,
+        "price_usd": 2.99,
+        "label": "中包",
+        "rationale_note": "Mid tier at industry median for casual puzzle IAP; matches Tile Match Sweet ad-block price and Zen Match Piggy Bank tier; covers 2-3 continues; best-value perception for committed players"
+      },
+      {
+        "coins": 350,
+        "price_usd": 4.99,
+        "label": "大包",
+        "rationale_note": "High-value tier; $4.99 is the most common 'committed casual' price across Lily's Garden, June's Journey, and Zen Match; 17% bonus over linear scaling drives upgrade from mid tier"
+      },
+      {
+        "coins": 800,
+        "price_usd": 9.99,
+        "label": "超值包",
+        "rationale_note": "Whale entry tier; $9.99 is the universal whale-entry price across all surveyed competitors (Zen Match $9.99 bundle, June's Journey $9.99 pack, Lily's Garden); 30% bonus over $4.99 linear rate; avoids $14.99+ that triggers price sensitivity in casual segment"
+      }
+    ],
+    "rationale": "Price tiers are derived from cross-competitor analysis: entry at $0.99 (Lily's Garden, Onet Connect), mid at $2.99-$4.99 (Zen Match, Triple Tile, Merge Mansion), whale entry at $9.99 (Zen Match, June's Journey, Lily's Garden). Glow Island's single-currency, single-IAP-trigger model (continue-stage only) positions it as the most transparent economy in the competitive set — lean into 'fair pricing' as brand value. No high-pressure whale bundles above $9.99 at launch; the $0.99 to $9.99 range covers 85%+ of casual IAP spenders. Coin values are calibrated so $0.99 covers ~1 continue, creating visible value at every tier. Adjust continue cost to 45-55 Sand Coins post-launch via server config based on conversion data."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-05-15T00:00:00.000Z",
+  "obstacle_sprites": [
+    {"name": "obstacle_ice_block.png", "size": "64x64", "type": "placeholder"},
+    {"name": "obstacle_chain_lock.png", "size": "64x64", "type": "placeholder"},
+    {"name": "obstacle_portal.png", "size": "64x64", "type": "placeholder"},
+    {"name": "obstacle_single_path.png", "size": "64x64", "type": "placeholder"},
+    {"name": "obstacle_spreading.png", "size": "64x64", "type": "placeholder"}
+  ],
+  "note": "纯色占位图。正式美术资产需由美术设计师提供并替换。",
+  "overall_status": "generated"
+}

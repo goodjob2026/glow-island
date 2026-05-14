@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "assembled_at": "2026-05-15T05:03:20+08:00",
+  "runtime_entrypoint": "game-client/build/web-mobile/index.html",
+  "serve_command": "npx serve game-client/build/web-mobile -p 8080",
+  "browser_url": "http://localhost:8080",
+  "runtime_runnable": true,
+  "scenes": [
+    "Prototype",
+    "GameScene",
+    "ShopScene",
+    "SettingsScene",
+    "IslandMapScene",
+    "LevelSelectScene",
+    "LeaderboardScene"
+  ],
+  "bound_assets": {
+    "audio_sfx": 17,
+    "audio_bgm": 8,
+    "obstacle_sprites": 5,
+    "tile_sprites": 20
+  },
+  "automation_command": "npx playwright test --config game-client/playwright.config.ts",
+  "known_blockers": [
+    "obstacle_weed, obstacle_wooden_crate, obstacle_water_current sprites absent — obstacle_ice_block, obstacle_chain_lock, obstacle_spreading, obstacle_portal, obstacle_single_path are present (5 of 7 types covered)",
+    "Chapter-specific tile art (chapter1/ through chapter6/) not yet delivered — runtime uses generic tile_01–tile_20.png placeholders",
+    "VFX frame sequences (tile-disappear, wave ripple, light-chain, pierce shimmer, cascade glow) absent — tween fallbacks active",
+    "Special tile cascade badge shares wave.png; pierce badge shares windmill.png — dedicated art not yet delivered",
+    "AreaRestorationEffect ParticleSystem2D .effect file not confirmed"
+  ],
+  "assembly_status": "assembled"
+}

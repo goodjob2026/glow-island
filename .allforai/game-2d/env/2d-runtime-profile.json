@@ -1,0 +1,203 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "glow-island-2d-runtime-profile-v1",
+  "generated_at": "2026-05-14T00:00:00+08:00",
+  "generated_by": "game-2d-runtime-profile skill",
+  "project": "glow-island",
+
+  "runtime_kind": "cocos",
+  "engine": "Cocos Creator",
+  "engine_version": "3.8.8",
+  "engine_app_path": "/Applications/CocosCreator.app",
+  "engine_executable": "/Applications/CocosCreator.app/Contents/MacOS/CocosCreator",
+  "platform_target": "web-mobile",
+  "render_mode": "WebGL",
+  "language": "TypeScript 5.x",
+
+  "can_run": true,
+  "run_notes": "Cocos Creator 3.8.8 GUI app is installed at /Applications/CocosCreator.app. A pre-built web-mobile bundle exists at game-client/build/web-mobile/index.html. The game can be served and run via a static HTTP server without needing cocos-cli.",
+
+  "run_command": "npx serve game-client/build/web-mobile -p 8080",
+  "run_command_note": "Serves the pre-built web-mobile bundle locally; Playwright tests point to http://localhost:8080",
+  "build_command": "npx @cocos/cocos-cli build --platform web-mobile",
+  "build_command_status": "blocked",
+  "build_command_note": "@cocos/cocos-cli is not published on npm (404). Build must be triggered via Cocos Creator GUI (File > Build > web-mobile) or via the installed CocosCreator app with --project and --build flags in headless mode.",
+  "build_command_headless_attempt": "/Applications/CocosCreator.app/Contents/MacOS/CocosCreator --project /Users/aa/workspace/glow-island/game-client --build 'platform=web-mobile;dest=./build/web-mobile'",
+  "build_command_headless_note": "Headless build via CocosCreator app binary requires the project to be opened and is not reliably scriptable without a valid license session. Use GUI build for now.",
+  "test_command": "npx playwright test --config game-client/playwright.config.ts",
+  "test_command_status": "available",
+  "test_command_note": "Playwright 1.60.0 is available via npx. Tests require web-mobile build to be served on port 8080 first.",
+  "screenshot_command": "npx playwright test --config game-client/playwright.config.ts --grep 'TC-001' --headed",
+  "screenshot_output_path": ".allforai/bootstrap/e2e-screenshots/",
+
+  "viewport_matrix": {
+    "primary_target": "mobile",
+    "design_resolution": { "width": 750, "height": 1334 },
+    "min_resolution": { "width": 375, "height": 667 },
+    "viewports": [
+      {
+        "label": "mobile_portrait_min",
+        "width": 375,
+        "height": 667,
+        "device": "iPhone SE",
+        "category": "mobile"
+      },
+      {
+        "label": "mobile_portrait_standard",
+        "width": 390,
+        "height": 844,
+        "device": "iPhone 14",
+        "category": "mobile"
+      },
+      {
+        "label": "mobile_portrait_large",
+        "width": 430,
+        "height": 932,
+        "device": "iPhone 14 Plus",
+        "category": "mobile"
+      },
+      {
+        "label": "tablet_portrait",
+        "width": 768,
+        "height": 1024,
+        "device": "iPad",
+        "category": "tablet"
+      },
+      {
+        "label": "desktop_preview",
+        "width": 1280,
+        "height": 800,
+        "device": "Desktop Chrome",
+        "category": "desktop"
+      }
+    ],
+    "fit_mode": "fit_height",
+    "design_scale_policy": "SHOW_ALL",
+    "target_fps": 60
+  },
+
+  "automation_surface": {
+    "primary": "playwright",
+    "playwright_version": "1.60.0",
+    "playwright_config": "game-client/playwright.config.ts",
+    "playwright_test_dir": "game-client/e2e/",
+    "playwright_base_url": "http://localhost:8080",
+    "test_specs": [
+      "game-client/e2e/glow-island.spec.ts"
+    ],
+    "test_cases": [
+      "TC-001: New game start + tutorial level",
+      "TC-002: Island map view",
+      "TC-003: Shop access + product display",
+      "TC-004: Leaderboard"
+    ],
+    "screenshot_on_failure": true,
+    "canvas_interaction": "coordinate-fraction based clickCanvas() helper",
+    "dom_interaction": "text locators with canvas-coordinate fallback",
+    "engine_test_runner": null,
+    "engine_test_runner_note": "cocos run --test is referenced in design handoff but cocos-cli is not available; tests are Playwright-based",
+    "simulator": null
+  },
+
+  "static_server": {
+    "available_tool": "npx serve",
+    "serve_path": "game-client/build/web-mobile",
+    "port": 8080,
+    "full_command": "npx serve game-client/build/web-mobile -p 8080"
+  },
+
+  "build_artifacts": {
+    "web_mobile_build_present": true,
+    "web_mobile_build_path": "game-client/build/web-mobile",
+    "index_html": "game-client/build/web-mobile/index.html",
+    "application_js": "game-client/build/web-mobile/application.js",
+    "assets_bundled": true,
+    "src_chunks": "game-client/build/web-mobile/src/chunks/"
+  },
+
+  "source_structure": {
+    "game_client_root": "game-client/",
+    "scenes": [
+      "game-client/assets/scenes/Prototype.scene"
+    ],
+    "script_modules": [
+      "game-client/assets/scripts/puzzle/",
+      "game-client/assets/scripts/game/",
+      "game-client/assets/scripts/ui/",
+      "game-client/assets/scripts/audio/",
+      "game-client/assets/scripts/meta/",
+      "game-client/assets/scripts/shop/"
+    ],
+    "key_components": [
+      "BoardEventManager.ts",
+      "BoardGenerator.ts",
+      "ComboTracker.ts",
+      "ObstacleManager.ts",
+      "SpecialBlock.ts",
+      "TileGrid.ts",
+      "TileMatcher.ts",
+      "ZenModeManager.ts",
+      "GameScene.ts",
+      "GameSession.ts",
+      "LevelLoader.ts",
+      "MaterialCollector.ts",
+      "GameHUD.ts",
+      "MainMenuScene.ts",
+      "NPCDialog.ts"
+    ]
+  },
+
+  "backend": {
+    "framework": "Fastify 4.x + Prisma + PostgreSQL 16",
+    "dev_command": "npm run dev",
+    "dev_command_path": "backend/",
+    "health_check": "GET http://localhost:3000/health",
+    "base_url": "http://localhost:3000",
+    "test_command": "npm test",
+    "test_command_path": "backend/",
+    "test_command_note": "No test script configured yet in backend/package.json"
+  },
+
+  "blocking_status": null,
+
+  "partial_blocks": [
+    {
+      "id": "blocked_by_missing_cocos_cli",
+      "severity": "partial",
+      "description": "@cocos/cocos-cli npm package does not exist (404 from npm registry). Scriptable CI builds require either Cocos Creator GUI headless mode or a Docker-based Cocos build environment.",
+      "workaround": "Use pre-built web-mobile bundle in game-client/build/web-mobile/ for Playwright testing. Trigger rebuilds via Cocos Creator 3.8.8 GUI."
+    },
+    {
+      "id": "cocos_run_test_unavailable",
+      "severity": "partial",
+      "description": "Design handoff references 'cocos run --test' commands (e.g. PuzzleCoreSmoke, SpecialTileSmoke) but these require cocos-cli which is unavailable.",
+      "workaround": "Use Playwright E2E tests for smoke validation. Internal unit tests must be run from within Cocos Creator editor."
+    },
+    {
+      "id": "backend_test_script_missing",
+      "severity": "minor",
+      "description": "backend/package.json scripts.test is placeholder ('echo Error: no test specified'). No automated backend test runner configured.",
+      "workaround": "Backend API can be verified manually via curl or Playwright network intercepts."
+    }
+  ],
+
+  "optional_inputs": {
+    ".allforai/game-design/game-design-doc.json": "present",
+    ".allforai/game-design/design/program-development-node-handoff.json": "present",
+    ".allforai/game-runtime/art/engine-ready-art-manifest.json": "present",
+    ".allforai/game-frontend/assembly/playable-client-assembly-report.json": "absent"
+  },
+
+  "art_manifest_state": "engine_ready_with_limits",
+  "art_manifest_target_runtime": "cocos-creator-3.x",
+  "art_manifest_platform": "web-canvas-2d",
+
+  "downstream_qa_instructions": {
+    "step_1_serve": "npx serve game-client/build/web-mobile -p 8080",
+    "step_2_backend": "cd backend && npm run dev  # (separate terminal, port 3000)",
+    "step_3_test": "npx playwright test --config game-client/playwright.config.ts",
+    "screenshot_dir": ".allforai/bootstrap/e2e-screenshots/",
+    "report_dir": ".allforai/bootstrap/e2e-html-report/",
+    "note": "All 4 Playwright test cases (TC-001 through TC-004) are defined in game-client/e2e/glow-island.spec.ts"
+  }
+}

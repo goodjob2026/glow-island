@@ -18,6 +18,8 @@ import { MaterialCollector } from './MaterialCollector';
 import { LevelLoader } from './LevelLoader';
 import { GameHUD } from '../ui/GameHUD';
 import { LevelCompletePopup } from '../ui/LevelCompletePopup';
+import { FailPopup } from '../ui/FailPopup';
+import { PauseMenu } from '../ui/PauseMenu';
 import { AudioManager } from '../audio/AudioManager';
 import { SFXKey, BGMKey } from '../audio/AudioConfig';
 
@@ -63,6 +65,12 @@ export class GameScene extends Component {
 
   @property({ type: LevelCompletePopup, tooltip: 'Level complete popup' })
   levelCompletePopup: LevelCompletePopup | null = null;
+
+  @property({ type: FailPopup, tooltip: 'Fail / continue popup' })
+  failPopup: FailPopup | null = null;
+
+  @property({ type: PauseMenu, tooltip: 'Pause menu overlay' })
+  pauseMenu: PauseMenu | null = null;
 
   /**
    * Container node that holds one child Node per tile cell.
@@ -175,9 +183,17 @@ export class GameScene extends Component {
       this._session.on(GAME_SESSION_EVENT.SESSION_FAILED, this._onSessionFailed, this);
       this._session.on(GAME_SESSION_EVENT.STATE_CHANGED, this._onSessionStateChanged, this);
 
+      // Listen for "Next Level" from LevelCompletePopup
+      director.on('levelComplete_nextLevel', this._onNextLevel, this);
+
       // Wire HUD
       if (this.gameHUD) {
         this.gameHUD.init(this._comboTracker, this._session);
+      }
+
+      // Wire PauseMenu with session reference
+      if (this.pauseMenu) {
+        this.pauseMenu.setSession(this._session);
       }
     } catch (e) {
       console.error('[GameScene] Failed to start level:', e);
@@ -193,6 +209,7 @@ export class GameScene extends Component {
     this._session?.off(GAME_SESSION_EVENT.SESSION_ENDED, this._onSessionEnded, this);
     this._session?.off(GAME_SESSION_EVENT.SESSION_FAILED, this._onSessionFailed, this);
     this._session?.off(GAME_SESSION_EVENT.STATE_CHANGED, this._onSessionStateChanged, this);
+    director.off('levelComplete_nextLevel', this._onNextLevel, this);
   }
 
   update(dt: number): void {
@@ -484,16 +501,23 @@ export class GameScene extends Component {
   }
 
   private _onSessionFailed(): void {
-    // Show failure/continue dialog
-    const failNode = director.getScene()?.getChildByName('FailPopup');
-    if (failNode) {
-      failNode.active = true;
+    if (this.failPopup && this._session) {
+      this.failPopup.show(this._session);
     } else {
-      // Fallback: navigate back to map after a delay
-      this.scheduleOnce(() => {
-        director.loadScene('IslandMapScene');
-      }, 2.0);
+      this.scheduleOnce(() => { director.loadScene('IslandMapScene'); }, 2.0);
     }
+  }
+
+  private _onNextLevel(): void {
+    const directorGlobals = director as unknown as Record<string, unknown>;
+    const currentLevel = (directorGlobals['_lastLevel'] as string) || this.levelId;
+    const parts = currentLevel.split('-');
+    if (parts.length === 2) {
+      const chapter = parseInt(parts[0], 10);
+      const level = parseInt(parts[1], 10);
+      directorGlobals['_lastLevel'] = `${chapter}-${level + 1}`;
+    }
+    director.loadScene('Prototype');
   }
 
   private _onSessionStateChanged(_state: string): void {

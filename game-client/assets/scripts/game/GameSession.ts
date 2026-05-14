@@ -17,6 +17,7 @@ import { MaterialCollector } from './MaterialCollector';
 import { ZenModeManager } from '../puzzle/ZenModeManager';
 import { SFXKey } from '../audio/AudioConfig';
 import { AudioManager } from '../audio/AudioManager';
+import { AnalyticsService } from '../services/AnalyticsService';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -136,6 +137,8 @@ export class GameSession extends EventTarget {
     this._setState('playing');
     // Clear any stale resume entry for this level since we are starting fresh.
     this._clearResumeEntry();
+    // Analytics: track level start
+    AnalyticsService.getInstance().levelStart(levelId);
     return this.config;
   }
 
@@ -223,6 +226,8 @@ export class GameSession extends EventTarget {
   exitMidSession(): void {
     if (this._state === 'loading' || this._state === 'levelComplete') return;
     if (this.config) {
+      // Analytics: track level abandon
+      AnalyticsService.getInstance().levelAbandon(this.config.id, this._movesUsed);
       try {
         localStorage.setItem(RESUME_KEY, this.config.id);
       } catch {
@@ -301,6 +306,14 @@ export class GameSession extends EventTarget {
       ...(partialResult as Required<typeof partialResult>),
       reward,
     };
+
+    // Analytics: track level complete
+    AnalyticsService.getInstance().levelComplete(
+      result.levelId,
+      result.stars,
+      result.movesUsed,
+      result.continuesUsed
+    );
 
     this.emit(GAME_SESSION_EVENT.SESSION_ENDED, result);
   }

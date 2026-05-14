@@ -14,6 +14,7 @@ import { ProgressionManager } from '../meta/ProgressionManager'
 import { AreaRestorationEffect } from '../meta/AreaRestorationEffect'
 import { AudioManager } from '../audio/AudioManager'
 import { SFXKey } from '../audio/AudioConfig'
+import { RatingService } from '../services/RatingService'
 
 const { ccclass, property } = _decorator
 
@@ -135,6 +136,11 @@ export class LevelCompletePopup extends Component {
     pm.syncToCloud().catch((e) => {
       console.warn('[LevelCompletePopup] syncToCloud failed:', e)
     })
+
+    // Rating prompt: fire SKStoreReviewRequest after the 5th completed level (first time only)
+    const totalCompleted = Object.values(pm.getCurrentProgress().chapterProgress)
+      .reduce((sum, cp) => sum + cp.completedLevels, 0)
+    RatingService.getInstance().onLevelCompleted(totalCompleted)
 
     // Advance restoration stage and play AreaRestorationEffect if assigned
     this._tryAdvanceRestoration(result.chapterId)
@@ -296,7 +302,7 @@ export class LevelCompletePopup extends Component {
 
   private _onShare(): void {
     const shareText = `我在 Glow Island 通关了！✨`
-    const shareUrl = 'https://glowisland.example.com'
+    const shareUrl = 'https://glow-island.vercel.app'
 
     if (sys.isNative) {
       // iOS / Android native share sheet via JSB bridge

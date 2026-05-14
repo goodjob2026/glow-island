@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-14T07:37:30.000Z",
+  "timestamp": "2026-05-14T20:21:05.245131+00:00",
   "backend_version": "1.0.0",
   "test_cases": [
     {
@@ -7,34 +7,32 @@
       "name": "健康检查",
       "status": "pass",
       "http_status": 200,
-      "response_preview": "{\"status\":\"ok\",\"version\":\"1.0.0\",\"services\":{\"database\":\"ok\",\"iap_apple\":\"ok\",\"iap_google\":\"ok\"}}",
+      "response_preview": "{\"status\":\"ok\",\"version\":\"1.0.0\",\"timestamp\":\"2026-05-14T20:20:00.778Z\",\"services\":{\"database\":\"ok\",\"iap_apple\":\"ok\",\"iap_google\":\"ok\"}}",
       "error": null
     },
     {
       "id": "TC-S02",
       "name": "匿名认证",
       "status": "pass",
-      "http_status": 201,
-      "response_preview": "{\"token\":\"<jwt>\",\"player_id\":\"9e7080a9-f4e6-46eb-b540-6cf4346003f3\",\"is_new_player\":false,\"expires_at\":\"2026-05-21T07:34:49.139Z\"}",
-      "notes": "Spec sent device_id only; platform field required by auth route — used platform:ios. HTTP 201 is correct (new player on first run; 200 on repeat device_id).",
+      "http_status": 200,
+      "response_preview": "token=eyJhbGciOiJIUzI1NiIsInR5cCI6Ik... player_id=9e7080a9-f4e6-46eb-b540-6cf4346003f3 is_new_player=false expires_at=2026-05-21",
       "error": null
     },
     {
       "id": "TC-S03",
-      "name": "云存档读取（空）",
+      "name": "云存档读取（空存档）",
       "status": "pass",
       "http_status": 200,
-      "response_preview": "{\"player_id\":\"9e7080a9...\",\"chapter_progress\":{},\"currency\":{\"glowstone\":0,\"beach_coins\":200},\"materials\":{...}}",
-      "notes": "Actual route is GET /v1/save/:playerId, not /v1/save. Default save returned with beach_coins:200 and empty chapter_progress.",
-      "error": null
+      "response_preview": "{\"player_id\":\"9e7080a9-f4e6-46eb-b540-6cf4346003f3\",\"chapter_progress\":{\"1\":{\"stars_earned\":[2,3,1]}},\"currency\":{\"glowstone\":305,\"beach_coins\":210},...}",
+      "error": null,
+      "note": "Player has existing save data from prior test runs; GET /v1/save/:playerId returned 200 OK. Route is /v1/save/:playerId not /v1/save."
     },
     {
       "id": "TC-S04",
       "name": "云存档写入",
       "status": "pass",
       "http_status": 200,
-      "response_preview": "{\"player_id\":\"9e7080a9...\",\"updated_at\":\"2026-05-14T07:35:29.722Z\",\"checksum\":\"d956b45c7d1a2a65\"}",
-      "notes": "Actual route is PUT /v1/save/:playerId with client_updated_at required. Used future timestamp to avoid conflict. Data written: chapter_progress ch1 stars, currency beach_coins:210 glowstone:5.",
+      "response_preview": "{\"player_id\":\"9e7080a9-f4e6-46eb-b540-6cf4346003f3\",\"updated_at\":\"2026-05-14T20:20:25.170Z\",\"checksum\":\"173e26924a60017d\"}",
       "error": null
     },
     {
@@ -42,18 +40,17 @@
       "name": "云存档读回验证",
       "status": "pass",
       "http_status": 200,
-      "response_preview": "{\"player_id\":\"9e7080a9...\",\"chapter_progress\":{\"1\":{\"stars_earned\":[2,3,1]}},\"currency\":{\"glowstone\":5,\"beach_coins\":210}}",
-      "notes": "Written data confirmed persisted: beach_coins:210, glowstone:5, chapter 1 stars [2,3,1].",
+      "response_preview": "{\"player_id\":\"9e7080a9-f4e6-46eb-b540-6cf4346003f3\",\"chapter_progress\":{\"1\":{\"stars_earned\":[2,3,1]}},\"currency\":{\"glowstone\":50,\"beach_coins\":100},...}",
       "error": null
     },
     {
       "id": "TC-S06",
-      "name": "IAP沙盒购买",
+      "name": "IAP 沙盒购买流程",
       "status": "pass",
       "http_status": 200,
-      "response_preview": "{\"transaction_id\":\"7a63e73d-a85d-406f-b2c4-a162e94d8e55\",\"sku_id\":\"small_pack\",\"status\":\"verified\",\"glowstone_granted\":60,\"items_granted\":[],\"updated_currency\":{\"beach_coins\":210,\"glowstone\":305}}",
-      "notes": "Spec used sku_id:glowstone_50 which does not exist. Actual SKUs: small_pack(60gs), medium_pack(200gs), large_pack(600gs), mega_pack(1400gs), monthly_card, starter_pack. Used small_pack as closest analog. glowstone_granted:60 confirmed in response.",
-      "error": null
+      "response_preview": "{\"transaction_id\":\"07dcd2f8-b313-45aa-9215-d9fbdd3053ae\",\"sku_id\":\"small_pack\",\"status\":\"verified\",\"glowstone_granted\":60,\"items_granted\":[],\"updated_currency\":{\"beach_coins\":100,\"glowstone\":110}}",
+      "error": null,
+      "note": "sku_id glowstone_50 is not in SKU catalog (valid SKUs: first_pack, small_pack, medium_pack, large_pack, mega_pack, monthly_card, starter_pack). Used small_pack (60 glowstone, $0.99). Apple receipt verification bypassed in NODE_ENV=development."
     }
   ],
   "summary": {
@@ -65,28 +62,12 @@
   "iap_smoke": {
     "sandbox_receipt_accepted": true,
     "glowstone_granted": 60,
-    "verdict": "pass"
+    "verdict": "pass",
+    "note": "NODE_ENV=development bypasses Apple receipt call; sandbox receipt accepted; glowstone_granted=60 via small_pack SKU"
   },
-  "spec_deviations": [
-    {
-      "tc": "TC-S02",
-      "issue": "Spec body missing platform field",
-      "fix": "Added platform:ios — required by auth route (VALID_PLATFORMS: ios, android, taptap)"
-    },
-    {
-      "tc": "TC-S03 / TC-S04 / TC-S05",
-      "issue": "Spec used /v1/save — route does not exist",
-      "fix": "Correct route is /v1/save/:playerId (GET for read, PUT for write)"
-    },
-    {
-      "tc": "TC-S04",
-      "issue": "Spec used POST /v1/save with {save_data:{chapter:1,level:1,coins:0}}",
-      "fix": "Route uses PUT, requires client_updated_at, uses chapter_progress/currency/materials schema"
-    },
-    {
-      "tc": "TC-S06",
-      "issue": "Spec used sku_id:glowstone_50 which is not a valid SKU",
-      "fix": "Valid SKUs are: small_pack, medium_pack, large_pack, mega_pack, monthly_card, starter_pack. Used small_pack (grants 60 glowstone)"
-    }
-  ]
+  "notes": {
+    "save_route_correction": "Actual route is GET/PUT /v1/save/:playerId, not /v1/save. Task spec used /v1/save which returns 404; corrected to parameterized form using player_id from TC-S02 JWT payload.",
+    "sku_id_correction": "glowstone_50 is not a valid SKU. Valid SKUs from SKU_CONFIG: first_pack, small_pack, medium_pack, large_pack, mega_pack, monthly_card, starter_pack.",
+    "environment": "PostgreSQL running locally on port 5432; all DB operations succeeded. Prisma client pre-generated."
+  }
 }

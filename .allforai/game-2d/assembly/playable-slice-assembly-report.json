@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "assembled_at": "2026-05-15T05:03:20+08:00",
+  "assembly_status": "assembled",
+  "runtime_smoke": {
+    "server_started": true,
+    "http_status": 200,
+    "playwright_available": true,
+    "playwright_version": "1.60.0",
+    "serve_tool": "npx serve",
+    "serve_port": 8080
+  },
+  "contracts_read": [
+    "session-flow-contract",
+    "core-loop-playable-contract",
+    "asset-runtime-binding-contract"
+  ],
+  "scenes_found": [
+    "game-client/assets/scenes/Prototype.scene",
+    "game-client/assets/scenes/GameScene.scene",
+    "game-client/assets/scenes/ShopScene.scene",
+    "game-client/assets/scenes/SettingsScene.scene",
+    "game-client/assets/scenes/IslandMapScene.scene",
+    "game-client/assets/scenes/LevelSelectScene.scene",
+    "game-client/assets/scenes/LeaderboardScene.scene"
+  ],
+  "core_scripts_verified": {
+    "PrototypeBoard.ts": "game-client/assets/scripts/prototype/PrototypeBoard.ts",
+    "TileGrid.ts": "game-client/assets/scripts/puzzle/TileGrid.ts"
+  },
+  "iap_scripts_verified": [
+    "game-client/assets/scripts/shop/IAPManager.ts",
+    "game-client/assets/scripts/shop/ShopScene.ts",
+    "game-client/assets/scripts/shop/PurchaseConfirmPopup.ts",
+    "game-client/assets/scripts/shop/CurrencyDisplay.ts"
+  ],
+  "asset_checks": {
+    "audio_sfx": 17,
+    "audio_bgm": 8,
+    "audio_directory_present": true,
+    "obstacle_sprites": 5,
+    "obstacle_sprites_found": [
+      "obstacle_ice_block.png",
+      "obstacle_chain_lock.png",
+      "obstacle_spreading.png",
+      "obstacle_portal.png",
+      "obstacle_single_path.png"
+    ],
+    "obstacle_sprites_missing": [
+      "obstacle_weed.png",
+      "obstacle_wooden_crate.png",
+      "obstacle_water_current.png"
+    ],
+    "tile_sprites": 20,
+    "special_tile_sprites": 4
+  },
+  "missing_inputs": [
+    "playable-client-assembly-report (not generated — game-frontend assembly report absent)",
+    "runtime-gameplay-visual-acceptance-report (not generated — Playwright e2e not yet run against this build)"
+  ],
+  "blockers": [],
+  "warnings": [
+    "asset-runtime-binding-contract validation_status is 'degraded' due to missing obstacle sprites (weed, wooden_crate, water_current) and absent VFX frames — gameplay unblocked via fallbacks",
+    "audio/ directory IS present with 17 SFX + 8 BGM files (contract notes were stale — audio has been delivered)",
+    "Chapter-specific tile art not yet delivered; runtime uses generic tile_XX.png placeholders which satisfy minimum playable requirement",
+    "Special tile cascade badge (cascade→wave) and pierce badge (pierce→windmill) are placeholder mappings — dedicated art pending"
+  ],
+  "ready_for_qa": true,
+  "qa_command": "npx playwright test --config game-client/playwright.config.ts",
+  "qa_screenshot_dir": ".allforai/bootstrap/e2e-screenshots/",
+  "notes": [
+    "Pre-built web-mobile bundle at game-client/build/web-mobile/index.html confirmed serving HTTP 200.",
+    "All 7 scene files present (Prototype, GameScene, ShopScene, SettingsScene, IslandMapScene, LevelSelectScene, LeaderboardScene).",
+    "Core puzzle scripts (TileGrid, TileMatcher, BoardGenerator, ComboTracker, ObstacleManager, SpecialBlock, GameSession) all present.",
+    "IAP/Shop scripts (IAPManager, ShopScene, PurchaseConfirmPopup, CurrencyDisplay) all present.",
+    "Audio resource directory present with full SFX + BGM coverage (17 + 8 files) — overrides contract degraded status.",
+    "5 obstacle sprite PNGs present; 3 missing (weed, wooden_crate, water_current) — non-blocking as obstacle overlay rendering gracefully degrades."
+  ]
+}

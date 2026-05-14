@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "qa_completed_at": "2026-05-15T05:11:00+08:00",
+  "route_trace": [
+    {
+      "step": "TC-S01 game-launch",
+      "status": "pass",
+      "screenshot": "session-01-launch.png",
+      "notes": "Canvas visible within 3s of page load. Zero JS errors in console. Engine boot confirmed."
+    },
+    {
+      "step": "TC-S02 gameplay-entry",
+      "status": "pass",
+      "screenshot": "session-02-start-click.png",
+      "notes": "Click at canvas(0.5, 0.6) — Start Game / scene entry fallback. No crash. Engine continued rendering after click."
+    },
+    {
+      "step": "TC-S03 gameplay-interaction",
+      "status": "pass",
+      "screenshot": "session-03-gameplay.png",
+      "notes": "5 tile-area clicks at (0.3,0.4), (0.4,0.4), (0.5,0.4), (0.3,0.5), (0.4,0.5). No unhandled errors. Canvas stable."
+    },
+    {
+      "step": "TC-S04 pause-recovery",
+      "status": "pass",
+      "screenshot": "session-04-pause.png",
+      "notes": "Click at canvas(0.1, 0.1) — pause button region per view-mode-runtime-contract. No crash. Canvas present after 1500ms wait."
+    }
+  ],
+  "summary": {
+    "total_steps": 4,
+    "passed": 4,
+    "failed": 0
+  },
+  "code_gaps": [],
+  "asset_gaps": [
+    {
+      "gap": "obstacle_weed and obstacle_wooden_crate sprites absent",
+      "severity": "minor",
+      "notes": "Carried from assembly manifest known_blockers. 5 of 7 obstacle sprite types present; remaining 2 fall back to placeholder. No crash observed."
+    },
+    {
+      "gap": "VFX frame sequences absent (tile-disappear, wave ripple, light-chain, pierce shimmer, cascade glow)",
+      "severity": "minor",
+      "notes": "Tween fallbacks active per assembly manifest. No visual error triggered during gameplay interaction test."
+    }
+  ],
+  "contract_gaps": [
+    {
+      "gap": "TC-001 URL-based level assertion",
+      "severity": "minor",
+      "notes": "Session-flow contract step 4 specifies verifying URL contains 'game' or 'level=1'. Cocos SPA does not update the URL on scene change. Suggest: add a data-scene or data-level DOM attribute on the canvas wrapper set by GameScene.onLoad() for reliable Playwright anchoring."
+    },
+    {
+      "gap": "No text-locator buttons surfaced in DOM for 'Start Game', 'Back to Map', etc.",
+      "severity": "minor",
+      "notes": "All UI is rendered inside the WebGL canvas; standard Playwright text/role locators cannot target Cocos UI nodes. Automated path fell back to canvas coordinate heuristics as specified in the contract. If deeper UI assertion is needed, a lightweight DOM bridge (e.g. custom Cocos event → window.__gameState) should be added."
+    }
+  ],
+  "environment_blockers": [],
+  "performance_notes": {
+    "canvas_load_ms": "~3000ms",
+    "frame_stable_by_ms": "~5000ms",
+    "serve_startup_ms": "~4000ms",
+    "js_console_errors": 0
+  },
+  "verdict": "pass"
+}

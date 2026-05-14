@@ -12,13 +12,16 @@ import {
 } from 'cc'
 import { ProgressionManager } from '../meta/ProgressionManager'
 import { AudioManager } from '../audio/AudioManager'
+import { RatingService } from '../services/RatingService'
 
 const { ccclass, property } = _decorator
 
 // Publicly accessible URLs (injected by build or hard-coded for now)
-const URL_ABOUT   = 'https://glowisland.example.com/about'
-const URL_PRIVACY = 'https://glowisland.example.com/privacy'
-const URL_TERMS   = 'https://glowisland.example.com/terms'
+const URL_ABOUT   = 'https://glow-island.vercel.app/about'
+const URL_PRIVACY = 'https://glow-island.vercel.app/privacy'
+const URL_TERMS   = 'https://glow-island.vercel.app/terms'
+/** Customer support mailto – P0 launch requirement */
+const URL_SUPPORT = 'mailto:support@glowisland.game?subject=Glow%20Island%20Support'
 
 export const enum CloudSyncStatus {
   Idle    = 'idle',
@@ -54,6 +57,14 @@ export class SettingsPanel extends Component {
 
   @property(Button)
   termsButton: Button | null = null
+
+  /** Customer support button (mailto link) – P0 launch requirement */
+  @property(Button)
+  supportButton: Button | null = null
+
+  /** "Rate Us" button – triggers SKStoreReviewRequest manually */
+  @property(Button)
+  rateUsButton: Button | null = null
 
   /** Close / back button for the panel */
   @property(Button)
@@ -100,6 +111,8 @@ export class SettingsPanel extends Component {
     this.aboutButton?.node.on(Button.EventType.CLICK, this._onAbout, this)
     this.privacyButton?.node.on(Button.EventType.CLICK, this._onPrivacy, this)
     this.termsButton?.node.on(Button.EventType.CLICK, this._onTerms, this)
+    this.supportButton?.node.on(Button.EventType.CLICK, this._onSupport, this)
+    this.rateUsButton?.node.on(Button.EventType.CLICK, this._onRateUs, this)
     this.closeButton?.node.on(Button.EventType.CLICK, this._onClose, this)
 
     this._updateCloudStatusLabel()
@@ -112,6 +125,8 @@ export class SettingsPanel extends Component {
     this.aboutButton?.node.off(Button.EventType.CLICK, this._onAbout, this)
     this.privacyButton?.node.off(Button.EventType.CLICK, this._onPrivacy, this)
     this.termsButton?.node.off(Button.EventType.CLICK, this._onTerms, this)
+    this.supportButton?.node.off(Button.EventType.CLICK, this._onSupport, this)
+    this.rateUsButton?.node.off(Button.EventType.CLICK, this._onRateUs, this)
     this.closeButton?.node.off(Button.EventType.CLICK, this._onClose, this)
   }
 
@@ -207,6 +222,16 @@ export class SettingsPanel extends Component {
 
   private _onTerms(): void {
     this._openURL(URL_TERMS)
+  }
+
+  /** Open customer support email – P0 launch requirement */
+  private _onSupport(): void {
+    this._openURL(URL_SUPPORT)
+  }
+
+  /** Manually trigger the SKStoreReviewRequest via RatingService */
+  private _onRateUs(): void {
+    RatingService.getInstance().requestReviewManually()
   }
 
   private _openURL(url: string): void {

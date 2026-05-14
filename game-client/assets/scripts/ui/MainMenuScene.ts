@@ -14,6 +14,7 @@ import { ProgressionManager } from '../meta/ProgressionManager'
 import { AudioManager } from '../audio/AudioManager'
 import { BGMKey } from '../audio/AudioConfig'
 import { ZenModeManager } from '../puzzle/ZenModeManager'
+import { GameSession } from '../game/GameSession'
 
 const { ccclass, property } = _decorator
 
@@ -148,6 +149,15 @@ export class MainMenuScene extends Component {
       }
     }
 
+    // SC-004 fix: fall back to the mid-session resume key when there is no
+    // completed chapter progress (e.g. player quit on their first ever level).
+    if (!lastLevel) {
+      const resumeLevel = GameSession.getPendingResumeLevel()
+      if (resumeLevel) {
+        lastLevel = resumeLevel
+      }
+    }
+
     // Pass context via director globals then load scene
     ;(director as unknown as Record<string, unknown>)['_lastChapter'] = lastChapter
     ;(director as unknown as Record<string, unknown>)['_lastLevel'] = lastLevel
@@ -207,6 +217,11 @@ export class MainMenuScene extends Component {
         hasProgress = true
         break
       }
+    }
+    // SC-004 fix: also enable the button when a mid-session resume key exists
+    // (covers players who quit on their very first level, completedLevels still 0)
+    if (!hasProgress && GameSession.getPendingResumeLevel() !== null) {
+      hasProgress = true
     }
     // Dim the button if there's no saved progress to continue
     this.continueButton.interactable = hasProgress

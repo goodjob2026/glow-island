@@ -24,10 +24,9 @@
   ],
   "goals": [
     "implement",
-    "demo",
-    "product-verify",
-    "quality-checks",
-    "concept-acceptance"
+    "launch-prep",
+    "ui-forge",
+    "product-verify"
   ],
   "product_vision": "治愈系节奏连击连连看：快速连接→combo爽感→修复小岛→解锁新章节，6章叙事+律×ひなた暧昧情感线，单货币（沙滩币）唯一付费点是续关，无体力/无PvP。",
   "target_stacks": [
@@ -89,35 +88,25 @@
   "offline_first": false,
   "requires_runtime_env": true,
   "detected_state": {
-    "has_concept_drift": true,
-    "concept_drift_source": "product-concept",
-    "drift_resolved": false,
-    "art_pipeline_status": "art-spec-done-awaiting-approval",
-    "art_nodes_completed": [
-      "art-direction",
-      "art-concept",
-      "art-spec-design"
-    ],
-    "art_nodes_pending": [
-      "concept-freeze",
-      "tile-art-gen",
-      "character-art-gen",
-      "environment-art-gen",
-      "ui-art-gen",
-      "art-qa"
-    ],
-    "design_gates_in_review": 14,
-    "design_gates_approved": 0,
-    "needs_rerun": [
-      "implement-special-mechanics",
-      "implement-shop-iap"
-    ],
-    "updated_at": "2026-05-12T16:10:02.820591+00:00"
+    "has_code": true,
+    "has_product_artifacts": true,
+    "has_bootstrap": true,
+    "has_product_concept": true,
+    "has_experience_map": false,
+    "has_iteration_feedback": false,
+    "has_decision_journal": false,
+    "has_concept_drift": false
   },
   "bootstrap_version": "0.8.7",
-  "has_concept_drift": true,
-  "concept_drift_source": "product-concept",
-  "last_bootstrap_goal": "implement",
-  "last_bootstrap_nodes": 11,
-  "updated_at": "2026-05-14T12:00:00+08:00"
+  "has_concept_drift": false,
+  "last_bootstrap_goal": "implement+launch-prep+ui-forge+product-verify",
+  "last_bootstrap_nodes": 24,
+  "p0_blockers_at_bootstrap": [
+    "dropColumns Set spread bug (PrototypeBoard.ts)",
+    "Audio directory missing (22 files)",
+    "Obstacle sprites missing",
+    "Privacy/support/terms URLs are placeholders",
+    "UI style: plain colored squares (no Animal Crossing aesthetic)"
+  ],
+  "updated_at": "2026-05-15T00:00:00+08:00"
 }

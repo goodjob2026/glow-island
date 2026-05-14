@@ -19,7 +19,8 @@ def check_node_artifacts(node: dict) -> dict:
     node_id = node.get("node_id") or node.get("id", "?")
     artifacts = node.get("exit_artifacts", [])
     results = []
-    for path in artifacts:
+    for artifact in artifacts:
+        path = artifact["path"] if isinstance(artifact, dict) else artifact
         results.append({"path": path, "exists": os.path.exists(path)})
     return {
         "node": node_id,

@@ -13,12 +13,12 @@ import {
 
 const { ccclass, property } = _decorator;
 
-// ── Tile definitions (chapter-1 palette from puzzle-mechanics-spec) ──────────
+// ── Tile definitions (Animal Crossing warm healing palette) ──────────────────
 const TILE_COLORS: Record<number, Color> = {
-    0: new Color(255, 140,  90, 255),  // 珊瑚橙  #FF8C5A
-    1: new Color( 77, 166, 212, 255),  // 海浪蓝  #4DA6D4
-    2: new Color(123, 198, 122, 255),  // 海草绿  #7BC67A
-    3: new Color(232, 213, 163, 255),  // 沙滩米  #E8D5A3
+    0: new Color(255, 182, 108, 255),  // coral orange
+    1: new Color( 94, 188, 221, 255),  // sea blue
+    2: new Color(140, 210, 124, 255),  // leaf green
+    3: new Color(243, 227, 179, 255),  // sand beige
 };
 const TILE_TYPE_COUNT = 4;
 
@@ -48,6 +48,20 @@ function dirIndex(dx: number, dy: number): number {
     if (dy === -1) return 1;
     if (dx ===  1) return 2;
     return 3;
+}
+
+// ── Drawing helpers ───────────────────────────────────────────────────────────
+function roundRect(g: Graphics, x: number, y: number, w: number, h: number, r: number) {
+    g.moveTo(x + r, y);
+    g.lineTo(x + w - r, y);
+    g.arc(x + w - r, y + r, r, -Math.PI / 2, 0);
+    g.lineTo(x + w, y + h - r);
+    g.arc(x + w - r, y + h - r, r, 0, Math.PI / 2);
+    g.lineTo(x + r, y + h);
+    g.arc(x + r, y + h - r, r, Math.PI / 2, Math.PI);
+    g.lineTo(x, y + r);
+    g.arc(x + r, y + r, r, Math.PI, -Math.PI / 2);
+    g.close();
 }
 
 @ccclass('PrototypeBoard')
@@ -122,12 +136,25 @@ export class PrototypeBoard extends Component {
         tile.addComponent(UITransform).setContentSize(CELL_SIZE, CELL_SIZE);
 
         const g = tile.addComponent(Graphics);
-        g.fillColor = TILE_COLORS[type];
-        g.lineWidth = 2;
-        g.strokeColor = new Color(0, 0, 0, 40);
-        g.rect(-CELL_SIZE / 2, -CELL_SIZE / 2, CELL_SIZE, CELL_SIZE);
+
+        // Rounded tile base
+        const fillColor = TILE_COLORS[type];
+        g.fillColor = fillColor;
+        g.strokeColor = new Color(
+            Math.floor(fillColor.r * 0.75),
+            Math.floor(fillColor.g * 0.75),
+            Math.floor(fillColor.b * 0.75),
+            180
+        );
+        g.lineWidth = 1.5;
+        roundRect(g, -CELL_SIZE / 2, -CELL_SIZE / 2, CELL_SIZE, CELL_SIZE, CELL_SIZE * 0.2);
         g.fill();
         g.stroke();
+
+        // Inner glow highlight (top-left shimmer)
+        g.fillColor = new Color(255, 255, 255, 80);
+        g.circle(-CELL_SIZE * 0.18, -CELL_SIZE * 0.18, CELL_SIZE * 0.15);
+        g.fill();
 
         const op = tile.addComponent(UIOpacity);
         op.opacity = 255;
@@ -188,7 +215,7 @@ export class PrototypeBoard extends Component {
         const node = this.tileNodes[r][c];
         if (node) {
             tween(node)
-                .to(0.15, { scale: new Vec3(1.12, 1.12, 1) }, { easing: easing.quadOut })
+                .to(0.12, { scale: new Vec3(1.15, 1.15, 1) }, { easing: easing.backOut })
                 .start();
         }
     }
@@ -199,7 +226,8 @@ export class PrototypeBoard extends Component {
             const node = this.tileNodes[r]?.[c];
             if (node) {
                 tween(node)
-                    .to(0.1, { scale: new Vec3(1, 1, 1) })
+                    .to(0.1, { scale: new Vec3(0.95, 0.95, 1) }, { easing: easing.quadOut })
+                    .to(0.08, { scale: new Vec3(1, 1, 1) }, { easing: easing.quadIn })
                     .start();
             }
         }
@@ -235,19 +263,20 @@ export class PrototypeBoard extends Component {
 
     private vanishTile(node: Node | null, onDone?: () => void) {
         if (!node) { onDone?.(); return; }
+        const op = node.getComponent(UIOpacity);
         tween(node)
-            .to(0.25, { scale: new Vec3(1.3, 1.3, 1) }, { easing: easing.quadOut })
-            .to(0.18, { scale: new Vec3(0, 0, 0) }, { easing: easing.quadIn })
-            .call(() => {
-                node.destroy();
-                onDone?.();
-            })
+            .to(0.12, { scale: new Vec3(1.2, 1.2, 1) }, { easing: easing.quadOut })
+            .parallel(
+                tween(node).to(0.2, { scale: new Vec3(0, 0, 0) }, { easing: easing.quadIn }),
+                op ? tween(op).to(0.2, { opacity: 0 }) : tween(node)
+            )
+            .call(() => { node.destroy(); onDone?.(); })
             .start();
     }
 
     // ── Gravity: drop tiles in affected columns and refill from top ───────────
     private dropColumns(cols: number[]) {
-        const uniqueCols = [...new Set(cols)];
+        const uniqueCols = Array.from(new Set(cols));
         const totalH = ROWS * (CELL_SIZE + CELL_GAP) - CELL_GAP;
         const startX = -(COLS * (CELL_SIZE + CELL_GAP) - CELL_GAP) / 2 + CELL_SIZE / 2;
         const startY =  totalH / 2 - CELL_SIZE / 2;

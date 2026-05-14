@@ -1,119 +1,113 @@
 ---
+node: competitive-research
 node_id: competitive-research
-capability: launch-prep
-human_gate: false
-hard_blocked_by: []
-unlocks: [launch-gap-analysis]
 exit_artifacts:
-  - path: .allforai/launch-prep/competitive-research.json
+  - .allforai/launch-prep/competitive-research.json
 ---
 
-# Task: 竞品调研 — 治愈系连连看 iOS App Store 竞品分析
-
-为 Glow Island 的 iOS 上架定价和定位决策提供竞品情报基础。
+# Task: App Store 竞品调研（Glow Island 上架定位分析）
 
 ## Project Context
 
-- **Product**: Glow Island — 治愈系连连看手游（Healing Casual Tile-Connect）
-- **Platform**: iOS App Store（主要）+ WebGL（次要）
-- **Monetization**: 双货币（沙滩币软货币 + 丹青石硬货币），IAP 购买丹青石，无能量/无订阅
-- **Tech**: Cocos Creator 3.x 客户端 + Fastify/Prisma/PostgreSQL 后端
-- **Genre**: 治愈系休闲（Healing Casual），核心玩法连连看（Tile-Connect），元层玩法岛屿修复
+- 游戏：Glow Island — 治愈系连连看（Onet/Tile-Connect），iOS + WebGL
+- 核心特征：无体力、无倒计时、单货币（沙滩币），步数续关是唯一付费点，6章叙事+岛屿修复Meta
+- 目标受众：25-40岁都市休闲玩家，偏好低压力、精美视觉、有温度的故事
+- 技术栈：Cocos Creator 3.x（游戏端）+ Fastify + PostgreSQL（后端）
+- 目标平台：iOS App Store（主），WebGL（次）
 
 ## Guidance
 
-### 1. 确定竞品范围
+### 调研对象
 
-直接竞品（相同品类）：
-- **Tile-connect / 连连看类**: Tile Busters, Onet Puzzle, Tile Connect, Mahjong-style apps
-- **Match-3 + Meta-loop**: Gardenscapes, Homescapes, Merge Dragons!, Fishdom, Project Makeover
-- **治愈系休闲**: Disney Dreamlight Valley（轻量版）, Stardew Valley Mobile（氛围参考）
+搜索以下品类竞品（WebSearch 驱动，关注 2024-2025 App Store 数据）：
 
-对每个竞品搜索：
-- `"[game name]" iOS App Store pricing 2025`
-- `"[game name]" review "healing" OR "relaxing" OR "no energy"`
-- `"[game name]" monetization model`
+**直接竞品（连连看/Tile-Connect）**：
+- Mahjong Connect
+- Onet Connect Classic
+- Shanghai Mahjong
+- Tile Match
 
-### 2. 提取定价情报
+**邻近竞品（治愈休闲）**：
+- Zen Match
+- Unpuzzle (Relax Puzzle)
+- Lily's Garden
+- June's Journey
+- Merge Mansion
 
-对每个竞品记录：
-- **商业模式**: 免费/付费/混合
-- **IAP 价格点**: 最低/中间/最高档（USD 标准 Tier，例如 $0.99 / $4.99 / $9.99）
-- **有无能量系统**: 是否有体力限制
-- **订阅**: 是否有月订阅或 VIP
-- **付费触点**: 续关、道具包、皮肤、无限制
+**同类优质休闲**：
+- Wordle (NYT)
+- Flow Free
+- Stardew Valley（参考叙事深度定价）
 
-### 3. 提取定位情报
+### 调研维度（每个竞品）
 
-对每个竞品记录：
-- App Store 副标题（30字符以内）
-- 描述中的核心 USP 关键词
-- 评论高频好评词（用于 ASO 关键词提取）
-- 评论高频差评词（差异化机会）
+1. **定价模式**：免费下载 + IAP / Freemium / 买断制
+2. **IAP 价格点**：最低档 / 中档 / 高档（对应沙滩币包大小参考）
+3. **App Store 分类**：Games > Puzzle / Casual
+4. **关键词**：App Store 标题/副标题/关键词字段（通过截图或 ASO 分析）
+5. **评分 & 评分量**：平均分 / 总评分数
+6. **用户评价高频词**：好评关键词 / 差评关键词
+7. **截图风格**：视觉风格、卖点展示方式
 
-### 4. 合成竞品定位图谱
+### 分析输出
 
-分析维度：
-- **压力轴**: 高压力（有能量/计时）↔ 低压力（无限制）
-- **叙事轴**: 无叙事（纯消除）↔ 强叙事（情感线/修复进度）
-- Glow Island 应定位在哪个象限？
+1. **价格区间基准**：同类 IAP 的市场定价范围（USD/CNY）
+2. **关键词机会**：未被头部竞品占领、与 Glow Island 定位匹配的关键词
+3. **差异化优势**：Glow Island 比竞品明显更好的 2-3 个维度
+4. **差距警示**：竞品有而 Glow Island 缺失的 P0/P1 功能或体验
+5. **定价建议**：基于竞品数据的沙滩币定价方案建议（3-4 个价格点）
 
-### 5. 写竞品报告
+> **规则：不得在无竞品数据支撑的情况下直接给出定价建议。**
+> 必须先完成调研，再基于数据给出建议。
 
-生成 `.allforai/launch-prep/competitive-research.json`，字段如下：
+## Exit Artifacts
+
+### `.allforai/launch-prep/competitive-research.json`
 
 ```json
 {
-  "generated_at": "<ISO timestamp>",
-  "target_product": "Glow Island",
-  "target_platform": "iOS App Store",
+  "schema_version": "1.0",
+  "researched_at": "<ISO>",
+  "target_platforms": ["iOS App Store"],
   "competitors": [
     {
-      "name": "<app name>",
-      "genre": "<genre>",
-      "business_model": "freemium | paid | subscription",
-      "iap_price_points_usd": [0.99, 4.99, 9.99],
-      "has_energy_system": true,
-      "has_subscription": false,
-      "paid_touchpoints": ["continue", "booster_pack"],
-      "app_store_subtitle": "<subtitle>",
-      "usp_keywords": ["healing", "relaxing"],
-      "positive_review_themes": ["beautiful art", "no pressure"],
-      "negative_review_themes": ["pay to continue", "too easy"],
-      "positioning_notes": "<synthesis>"
+      "name": "<竞品名>",
+      "category": "direct | adjacent | reference",
+      "pricing_model": "free+iap | freemium | premium",
+      "iap_price_points_usd": [0.99, 2.99, 4.99],
+      "app_store_category": "Games > Puzzle",
+      "rating": 4.5,
+      "rating_count": 12000,
+      "top_positive_keywords": ["relaxing", "satisfying", "addictive"],
+      "top_negative_keywords": ["ads", "paywall", "too easy"],
+      "screenshot_style": "gameplay-focused | lifestyle | ui-showcase"
     }
   ],
-  "synthesis": {
-    "glow_island_position": "<narrative positioning statement>",
-    "price_recommendation": {
-      "model": "freemium",
-      "iap_tiers_usd": [0.99, 2.99, 9.99],
-      "rationale": "<research-based rationale>"
-    },
-    "differentiation": ["no energy system", "narrative-driven meta loop", "dual currency non-P2W"],
-    "aso_keyword_candidates": ["healing puzzle", "relaxing match", "island restore"]
+  "market_insights": {
+    "iap_price_range_usd": {"min": 0.99, "median": 2.99, "max": 9.99},
+    "keyword_opportunities": ["healing puzzle", "cozy tile game", "island restore"],
+    "differentiation_strengths": ["<Glow Island 相比竞品的优势>"],
+    "gap_warnings": [
+      {"gap": "<缺失功能>", "priority": "P0 | P1 | P2", "competitor_example": "<竞品名>"}
+    ]
+  },
+  "pricing_recommendation": {
+    "currency": "USD",
+    "tiers": [
+      {"coins": 50, "price_usd": 0.99, "label": "小包"},
+      {"coins": 150, "price_usd": 2.99, "label": "中包"},
+      {"coins": 350, "price_usd": 4.99, "label": "大包"},
+      {"coins": 800, "price_usd": 9.99, "label": "超值包"}
+    ],
+    "rationale": "<基于竞品数据的定价逻辑>"
   }
 }
 ```
 
-## Theory Anchors
-
-- **竞品情报 → 定价锚点**: 价格区间应与竞品中位数对齐，若有明确差异化（无能量）可设略高定价
-- **ERRC 框架**: 消除（体力系统）、降低（付费压力）、提升（叙事体验）、创造（岛屿修复元层）
-
-## Knowledge References
-
-**§D User Confirmation Gate** (cross-phase-protocols): 本节点仅产出研究数据，不做决策。定价决策在 launch-gap-analysis 节点经用户确认后写入。
-
-**Brave Search 降级链**: 若 `mcp__plugin_meta-skill_ai-gateway__brave_web_search` 可用，优先使用；否则使用内置 WebSearch 工具。每次搜索加 "2025" 确保结果时效性。
-
-## Exit Artifacts
-
-**`.allforai/launch-prep/competitive-research.json`**
-- 包含 5-8 个竞品的完整情报
-- synthesis 部分必须有 `price_recommendation`（含 USD 价格和 rationale）
-- `aso_keyword_candidates` 至少 10 个候选词
-
 ## Downstream Contract
 
-→ launch-gap-analysis 读取: `synthesis.price_recommendation`（定价建议）、`synthesis.differentiation`（差异化定位）、`synthesis.aso_keyword_candidates`（ASO 候选词）
+→ `launch-concept-finalize` 读取：
+- `competitors[]` — 竞品画像，用于定位决策
+- `market_insights.pricing_recommendation` — IAP 定价基准
+- `market_insights.keyword_opportunities` — ASO 关键词候选
+- `market_insights.gap_warnings[]` — P0/P1 差距，影响 launch-gap-implementation 范围

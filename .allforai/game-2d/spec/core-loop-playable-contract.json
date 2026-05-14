@@ -1,0 +1,530 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-14T00:00:00+08:00",
+  "generated_by": "game-2d-core-loop-playable-contract",
+  "project": "glow-island",
+  "source_refs": [
+    ".allforai/game-2d/spec/view-mode-runtime-contract.json",
+    "game-client/assets/scripts/puzzle/TileGrid.ts",
+    "game-client/assets/scripts/puzzle/TileMatcher.ts",
+    "game-client/assets/scripts/puzzle/BoardGenerator.ts",
+    "game-client/assets/scripts/puzzle/ComboTracker.ts",
+    "game-client/assets/scripts/puzzle/BoardEventManager.ts",
+    "game-client/assets/scripts/puzzle/ObstacleManager.ts",
+    "game-client/assets/scripts/puzzle/SpecialBlock.ts",
+    "game-client/assets/scripts/ui/GameHUD.ts",
+    "game-client/assets/scripts/game/GameSession.ts",
+    "game-client/e2e/glow-island.spec.ts"
+  ],
+
+  "loop_steps": [
+    {
+      "step_id": "scene_load",
+      "player_action": "none — system transition",
+      "rule_evaluation": "director.loadScene('GameScene') called; LevelLoader.load(levelId) resolves with LevelConfig; TileGrid.initialize(rows, cols) called; BoardGenerator.generateFromConfig(levelConfig) places tiles; ComboTracker reset; GameSession transitions loading→playing",
+      "state_change": "GameSession.state == 'playing'; TileGrid populated with even-count tile pairs; movesRemaining set to LevelConfig.max_moves",
+      "feedback": "scene fade-in via SystemOverlay; NPC dialog slides in from bottom with chapter narrative text; BGM cross-fades to chapter theme",
+      "screenshot_checkpoint": "sc-01: all board tiles visible within 528×528 board area; GameHUD labels visible (movesLabel shows max_moves value, objectiveProgressBar at 0%); NPC dialog panel visible at bottom; no tile clips outside Board node boundary",
+      "runtime_assertion": "assert TileGrid.getRawGrid() has zero cells with TileType.NONE (all cells filled); assert movesRemaining === LevelConfig.max_moves; assert GameSession.state === 'playing'; assert countMatchablePairs(grid) >= MIN_MATCHABLE_PAIRS (5)"
+    },
+    {
+      "step_id": "select_tile_a",
+      "player_action": "tap tile at grid position (col, row) — player taps anywhere within the 66×66 px design-space cell of the target tile",
+      "rule_evaluation": "input hit-test converts canvas touch point to board-local coord using formula: col = floor((touch_x + board_w/2) / tile_w), row = floor((board_h/2 - touch_y) / tile_h); board_offset (-30 from canvas center) applied; TileCell.isSelected set to true; TileCell must have type != TileType.NONE and isLocked == false and isObstacle == false; ice_block cells (isObstacle==true with obstacleType==ICE_BLOCK) reject selection but path traversal is still allowed",
+      "state_change": "selected tile: TileCell.isSelected = true; no other tile previously selected → first-selection state; movesRemaining unchanged",
+      "feedback": "tile border highlight ring rendered (coral_warm #E8866A glow ring at ≥ 60% tile area); SFX: tile_select sound plays; animation: tile scale 1.0→1.1→1.0 bounce (0.15s)",
+      "screenshot_checkpoint": "sc-02: exactly one tile shows visible highlight ring; highlight ring is distinct from unselected tile borders; ring is at the tapped grid position; movesLabel unchanged from sc-01",
+      "runtime_assertion": "assert exactly one TileCell has isSelected === true; assert selected tile type !== TileType.NONE; assert selected tile isLocked === false; assert selected tile isObstacle === false OR obstacleType !== ObstacleType.WOODEN_CRATE"
+    },
+    {
+      "step_id": "select_tile_b_valid_match",
+      "player_action": "tap a second tile of the SAME type as tile_a within the same game turn",
+      "rule_evaluation": "src.type === dst.type required; TileMatcher.findPath(grid, r1, c1, r2, c2) called — BFS with turns ≤ 2; isPassable returns false for wooden_crate and water_current cells; path may traverse out-of-bounds (perimeter) cells; path result != null indicates valid match; if path result === null, tile_b selection is rejected and tile_a remains selected",
+      "state_change": "TileMatcher.findPath returns path[] of Points; both tile_a and tile_b cells will be cleared; ComboTracker.onTileMatched() called; GameSession.onMoveMade(comboLevel) called → movesRemaining--; TileGrid.clearTile(r1,c1) and clearTile(r2,c2) called; TileGrid emits TILES_MATCHED event with path; ObstacleManager.onTileMatched([pos_a, pos_b]) called for obstacle side-effects",
+      "feedback": "connection line drawn on TileConnectLine layer following the ≤2-bend path (visible for 0.3s); tile disappear VFX burst at both tile positions; movesLabel decrements by 1; objectiveProgressBar increments; if ComboTracker.comboCount >= 2: comboLabel shows 'x{n}  {m}×' with bounce animation and glow ring; SFX: match_success; if combo >= 2: SFX combo_lv1/lv2/lv3",
+      "screenshot_checkpoint": "sc-03: connection line visible between tile_a and tile_b following ≤2-bend path; both tiles in cleared state (cells empty); movesLabel decremented by 1 vs sc-02; no orphan connection line after 0.5s (sc-04)",
+      "runtime_assertion": "assert TileMatcher.findPath result !== null; assert cleared cells have type === TileType.NONE after match; assert movesRemaining === (prev_movesRemaining - 1); assert TILES_MATCHED event was emitted with path length >= 2; assert connection line node is inactive or removed after match animation completes (< 0.5s)"
+    },
+    {
+      "step_id": "select_tile_b_invalid_path",
+      "player_action": "tap a second tile of the SAME type that has NO valid ≤2-bend path to tile_a",
+      "rule_evaluation": "TileMatcher.findPath returns null; game rejects match; no state change to board; tile_a selection may reset or tile_b becomes new selection depending on implementation",
+      "state_change": "no tiles cleared; movesRemaining unchanged; isSelected state may transfer to tile_b as new first-select or both tiles deselected",
+      "feedback": "brief red flash / shake on tile_a or tile_b; SFX: invalid_select or error tone; no connection line drawn; no combo increment",
+      "screenshot_checkpoint": "sc-05: neither tile_a nor tile_b has been removed from board; movesLabel unchanged vs sc-02; no connection line visible",
+      "runtime_assertion": "assert TileMatcher.findPath === null; assert both tile cells still have type !== TileType.NONE; assert movesRemaining unchanged"
+    },
+    {
+      "step_id": "select_tile_b_wrong_type",
+      "player_action": "tap a tile of DIFFERENT type than tile_a",
+      "rule_evaluation": "TileMatcher.findPath returns null early because src.type !== dst.type guard triggers; match rejected",
+      "state_change": "no tiles cleared; tile_a deselected or tile_b becomes new first-select",
+      "feedback": "tile_a selection ring removed; tile_b shows no highlight (or brief deselect flash); no SFX match; no combo",
+      "screenshot_checkpoint": "sc-06: tile_a cell still present; tile_b cell still present; no highlight on either tile within 0.5s",
+      "runtime_assertion": "assert TileMatcher returns null due to type mismatch; assert no tiles cleared; assert movesRemaining unchanged"
+    },
+    {
+      "step_id": "combo_window",
+      "player_action": "player completes a second valid match within 2000ms of the previous match",
+      "rule_evaluation": "ComboTracker.onTileMatched(): elapsed = Date.now() - lastMatchTime; if elapsed < COMBO_WINDOW_MS (2000ms) comboCount = min(comboCount+1, COMBO_MAX=6); multiplier = COMBO_MULTIPLIERS[threshold]: {1:1.0, 2:1.5, 3:2.0, 4+:3.0}; emits COMBO_CHANGED(count, multiplier); if comboCount reaches auto-generation threshold: WAVE at 6, LIGHT_CHAIN at 4, CASCADE at 3",
+      "state_change": "ComboTracker.comboCount incremented; ComboTracker.lastMatchTime updated; if threshold crossed: special tile spawned on board by caller",
+      "feedback": "comboLabel updates to 'x{n}  {m}×' format; comboLabel color changes per COMBO_GLOW_COLORS array (lv1=brand_primary, lv2=brand_secondary, lv3=brand_warm, lv4=gold); comboGlowNode animates with matching tint; SFX: combo_lv1 at ≥2, combo_lv2 at ≥3, combo_lv3 at ≥4; combo-popup animation plays on comboLabel",
+      "screenshot_checkpoint": "sc-07: comboLabel visible at y=+520 design-space with 'x{n}  {m}×' text; comboLabel color matches COMBO_GLOW_COLORS[comboCount-1]; glow ring visible on comboGlowNode; tile board shows both pairs cleared",
+      "runtime_assertion": "assert ComboTracker.comboCount >= 2; assert ComboTracker.getMultiplier() returns 1.5 at combo=2, 2.0 at combo=3, 3.0 at combo>=4; assert comboLabel.string matches pattern /x\\d+\\s+\\d+\\.\\d+×/; assert COMBO_CHANGED event was emitted with correct count and multiplier"
+    },
+    {
+      "step_id": "obstacle_interaction_ice_block",
+      "player_action": "player makes a valid tile match adjacent to an ice_block obstacle cell",
+      "rule_evaluation": "ObstacleManager._handleAdjacentIceBlock: for each adjacent cardinal direction to matched positions, if obs.kind === 'ice_block' then obs.layers--; if obs.layers <= 0 then obstacle removed and cell freed; ice_block initial layers = 2 (set by BoardGenerator.makeObstacleCell); ice_block does NOT block path traversal (TileMatcher.isPassable allows empty ice cells); ice_block DOES block tile selection (cell.isObstacle = true)",
+      "state_change": "adjacent ice_block obs.layers decremented; if layers reaches 0: obstacle removed from obstacleMap, TileGrid cell updated with isObstacle=false/isLocked=false; tile at that cell becomes selectable",
+      "feedback": "ice crack overlay sprite transitions to next damage state (2-layer→1-layer crack art, then cleared); VFX: ice shatter particles on final removal; SFX: ice_crack or ice_shatter",
+      "screenshot_checkpoint": "sc-08: ice_block cell shows cracked layer-2 overlay after first adjacent match; sc-09: ice_block fully removed after second adjacent match, tile underneath visible and selectable",
+      "runtime_assertion": "assert ObstacleManager.getObstacleAt({row,col}) returns obs with layers=1 after first adjacent match (was layers=2); assert getObstacleAt returns null after second adjacent match; assert TileGrid.getTile returns cell with isObstacle===false after removal"
+    },
+    {
+      "step_id": "obstacle_interaction_wooden_crate",
+      "player_action": "player attempts to draw a path through a wooden_crate cell",
+      "rule_evaluation": "TileMatcher.isPassable returns false for cells with isObstacle=true AND obstacleType===ObstacleType.WOODEN_CRATE; path cannot route through wooden_crate; ObstacleManager.isPathBlocked returns true for wooden_crate cells in path",
+      "state_change": "no path through wooden_crate; player must find alternate path or match cannot be made if only route is blocked",
+      "feedback": "path-finding fails for routes through crate; no connection line; tile_a selection persists or is cleared based on whether any valid path exists",
+      "screenshot_checkpoint": "sc-10: match attempt with only route through wooden_crate shows no connection line; wooden_crate cell shows distinctive crate overlay; tiles not cleared",
+      "runtime_assertion": "assert TileMatcher.findPath returns null when only BFS path routes through wooden_crate cell; assert ObstacleManager.isPathBlocked(path) returns true for paths containing wooden_crate"
+    },
+    {
+      "step_id": "special_tile_wave_trigger",
+      "player_action": "player matches two tiles with specialBlockType === 'wave'",
+      "rule_evaluation": "WaveBehavior.trigger(grid, midpoint(a, b), comboCount) called; 3×3 area centered on midpoint cleared of all obstacle overlays via clearObstacleAt; onWaveBuffStart(5, center) callback fires for 5s free-path-zone buff; SPECIAL_BLOCK_GENERATION_COMBO[WAVE] = 6 → auto-generated at combo=6 via ComboTracker._checkSpecialGeneration",
+      "state_change": "all obstacles in 3×3 area around midpoint removed from obstacleMap; waveBuffActive for 5s; matched wave tiles cleared from board",
+      "feedback": "wave ripple VFX on 3×3 area; obstacles in area clear with burst animations; HUD shows wave buff indicator for 5s; SFX: wave_clear or special_trigger",
+      "screenshot_checkpoint": "sc-11: 3×3 area around match midpoint shows cleared obstacle cells (no ice/weed/crate overlays); VFX wave ring visible during animation; HUD wave buff timer visible",
+      "runtime_assertion": "assert ObstacleManager.getObstacleAt returns null for all 9 cells in 3×3 area around midpoint; assert WaveBehavior.onWaveBuffStart was called with duration=5; assert matched wave tiles cleared from TileGrid"
+    },
+    {
+      "step_id": "special_tile_light_chain_trigger",
+      "player_action": "player matches two tiles with specialBlockType === 'light_chain'",
+      "rule_evaluation": "LightChainBehavior.trigger: scans board for TileType with highest count (excluding isObstacle/isLocked/NONE cells); auto-clears all pairs of that type (floor(count/2) pairs); if count odd, last tile remains; SPECIAL_BLOCK_GENERATION_COMBO[LIGHT_CHAIN] = 4 → auto-generated at combo=4",
+      "state_change": "all (or all-but-one) tiles of the dominant type cleared from TileGrid; each cleared pair: TileGrid.clearTile(pos.row, pos.col) called; objectiveProgressBar increments for each cleared pair",
+      "feedback": "chain lightning VFX connecting all cleared pairs; rapid sequential tile disappear animations; multiple TILES_MATCHED events or single batch; SFX: chain_clear with cascading audio",
+      "screenshot_checkpoint": "sc-12: dominant tile type cells all empty on board (or one remaining if odd count); chain VFX visible during animation; objectiveProgressBar shows significant jump",
+      "runtime_assertion": "assert tile type with highest board count has 0 remaining instances (or 1 if original count was odd); assert LightChainBehavior cleared floor(count/2)*2 tiles; assert each cleared position has TileType.NONE"
+    },
+    {
+      "step_id": "special_tile_cascade_trigger",
+      "player_action": "player matches two tiles with specialBlockType === 'cascade'",
+      "rule_evaluation": "CascadeBehavior.trigger: auto-executes up to CASCADE_MAX_CHAINS=5 pair matches; each chain finds shortest-distance valid pair via _findBestPair (Manhattan distance); 300ms delay (CASCADE_DELAY_MS) between each; stops if no valid pair found; SPECIAL_BLOCK_GENERATION_COMBO[CASCADE] = 3 → auto-generated at combo=3",
+      "state_change": "up to 5 pairs auto-matched with 300ms interval; each step: TileGrid.clearTile called for both tiles; each auto-match calls ComboTracker.onTileMatched() incrementing combo; movesRemaining NOT decremented for auto-matches (cascade is a single player move)",
+      "feedback": "cascade glow VFX animates between each auto-matched pair; sequential tile clears visible; combo display may increment during cascade; SFX: cascade chain audio loop",
+      "screenshot_checkpoint": "sc-13: after full cascade resolves, up to 10 additional tiles cleared (5 pairs); combo label may show elevated count; movesLabel decremented by exactly 1 (one player move triggered cascade)",
+      "runtime_assertion": "assert at most 5 additional pairs were cleared after cascade trigger; assert movesRemaining decremented by 1 (not by 5+); assert each auto-match is separated by >= 280ms (timing tolerance)"
+    },
+    {
+      "step_id": "special_tile_pierce_trigger",
+      "player_action": "player matches two tiles with specialBlockType === 'pierce'",
+      "rule_evaluation": "PierceBehavior.trigger: emits onPierceBuffStart(8) → BoardEventManager.handlePierceBuff(8, callback) sets _pierceMode=true for 8s; path-finder in Pierce Mode ignores occupied cell blocks (isPassable returns true for all cells during pierce buff); pierce is editor-preset only (no auto-generation at combo threshold)",
+      "state_change": "BoardEventManager._pierceMode = true for 8s; _pierceTickFn timer begins; matched pierce tiles cleared",
+      "feedback": "pierce shimmer VFX on board; HUD pierce buff indicator active for 8s; tile selection and path lines may pass through occupied cells; SFX: pierce_activate",
+      "screenshot_checkpoint": "sc-14: HUD shows pierce buff timer (≤8s); a path drawn through an occupied cell is visible as connection line during pierce mode",
+      "runtime_assertion": "assert BoardEventManager.isPierceMode() === true immediately after pierce trigger; assert BoardEventManager.isPierceMode() === false after 8s elapsed; assert path-finder finds valid path through occupied cells during pierce mode"
+    },
+    {
+      "step_id": "special_tile_swap_trigger",
+      "player_action": "player matches two tiles with specialBlockType === 'swap'",
+      "rule_evaluation": "SwapBehavior.trigger: calls onSwapSelectionStart(10, onSelect, onTimeout); BoardEventManager.handleSwapSelection(10, ...) sets _swapActive=true with 10s timeout; SwapSelectionOverlay activates; player taps two cells to swap their contents; if 10s elapses without selection: _swapOnTimeout called, swap tiles remain on board",
+      "state_change": "SwapSelectionOverlay layer active; _swapActive=true; on cell selection: grid.setTile(a, cellB) + grid.setTile(b, cellA) swaps tile contents; matched swap tiles cleared",
+      "feedback": "SwapSelectionOverlay shows semi-transparent dim (alpha=0.6) on non-selectable cells and coral_warm glow ring on selectable cells; SFX: swap_select; on timeout: timeout flash VFX; on swap completion: swap animation between two cells",
+      "screenshot_checkpoint": "sc-15: SwapSelectionOverlay visible with dimmed non-selectable cells; sc-16: after swap confirmed, two cells have exchanged tile types; overlay deactivated",
+      "runtime_assertion": "assert BoardEventManager.isSwapSelectionActive() === true after trigger; assert SwapSelectionOverlay node active===true; after swap: assert TileGrid.getTile(a).type === original_type_b AND TileGrid.getTile(b).type === original_type_a; assert isSwapSelectionActive() === false after swap or timeout"
+    },
+    {
+      "step_id": "moves_warning",
+      "player_action": "movesRemaining decrements to ≤ 5 through player matches",
+      "rule_evaluation": "GameHUD._updateMovesLabel: if movesRemaining <= 5 AND > 0, movesLabel color changes to system_error (#E05A4A); GameSession.onMoveMade checks failure at each step; ZenModeManager checked before emitting SESSION_FAILED",
+      "state_change": "movesLabel.color = Color(224, 90, 74, 255) (system_error); player still in 'playing' state; no board change",
+      "feedback": "movesLabel turns red (#E05A4A); optional pulse animation on movesLabel; SFX: low_moves warning tone",
+      "screenshot_checkpoint": "sc-17: movesLabel shows red color (visually distinct from neutral black) when value is 1-5; label is readable at all viewports (≥26px design size)",
+      "runtime_assertion": "assert movesLabel.color equals Color(224, 90, 74, 255) when movesRemaining <= 5; assert movesRemaining is correct integer value displayed; assert GameSession.state === 'playing'"
+    },
+    {
+      "step_id": "win_condition_met",
+      "player_action": "player clears the last tile pair — all objective tiles removed from board",
+      "rule_evaluation": "GameSession.onObjectivesMet() called by board/objective tracker when tilesCleared >= objectiveTarget; _objectivesMet = true; _completeLevel() called; state transitions playing→levelComplete; SessionResult computed with stars (3-star: 0 continues AND movesRemaining >= 3; 2-star: 0 continues; 1-star: with continues); RewardCalculator.calculate(config, partialResult) generates material rewards; SESSION_ENDED event emitted",
+      "state_change": "GameSession.state === 'levelComplete'; SessionResult: {levelId, completed=true, movesRemaining, comboMax, continuesUsed, reward, stars}; MaterialCollector.add(reward.materials) called",
+      "feedback": "board cleared animation plays; LevelCompletePopup appears (z_order=20) with star rating (1-3 stars), score, material rewards displayed; backdrop dims all gameplay layers; SFX: level_complete fanfare; BGM cross-fade to victory theme",
+      "screenshot_checkpoint": "sc-18: LevelCompletePopup fully visible and centered; star icons (1-3) rendered correctly; reward items displayed; backdrop dims game board; all popup content within safe area; Next Level and Back to Map buttons visible",
+      "runtime_assertion": "assert GameSession.state === 'levelComplete'; assert SessionResult.completed === true; assert SessionResult.stars in [1,2,3]; assert LevelCompletePopup node active===true; assert board has 0 tiles with type !== TileType.NONE (all cleared)"
+    },
+    {
+      "step_id": "lose_condition_met",
+      "player_action": "movesRemaining reaches 0 with tiles still on board",
+      "rule_evaluation": "GameSession.onMoveMade: _movesRemaining reaches 0 AND _objectivesMet===false AND ZenModeManager.isActive()===false → state transitions playing→failed; SESSION_FAILED event emitted; FailPopup shown",
+      "state_change": "GameSession.state === 'failed'; SESSION_FAILED emitted; tiles remain on board; FailPopup node activated; continuesUsed < CONTINUE_MAX (3) allows Continue button to show",
+      "feedback": "FailPopup modal appears with Continue (spend glowstones) and Exit options; backdrop dims gameplay; SFX: level_failed; board shows remaining tiles (not cleared)",
+      "screenshot_checkpoint": "sc-19: FailPopup visible and centered; remaining tiles still visible on board (or board dimmed but intact); Continue button present if continuesUsed < 3; movesLabel shows 0",
+      "runtime_assertion": "assert GameSession.state === 'failed'; assert movesRemaining === 0; assert FailPopup node active===true; assert at least 1 TileGrid cell has type !== TileType.NONE; assert SESSION_FAILED event was emitted"
+    },
+    {
+      "step_id": "continue_after_fail",
+      "player_action": "player taps Continue in FailPopup — spends glowstones to add 5 moves",
+      "rule_evaluation": "GameSession.continue(glowstones): validates state==='failed', continuesUsed < CONTINUE_MAX (3), glowstones >= CONTINUE_GLOWSTONE_COST (6); _glowstones -= 6; _movesRemaining += CONTINUE_MOVES_ADDED (5); _continuesUsed++; state transitions failed→playing; returns true",
+      "state_change": "movesRemaining += 5; continuesUsed incremented (max 3); GameSession.state === 'playing'; FailPopup dismissed",
+      "feedback": "FailPopup dismiss animation; movesLabel shows updated count (previous + 5); glowstone balance indicator decremented by 6; board re-activates for input; SFX: continue_granted",
+      "screenshot_checkpoint": "sc-20: FailPopup dismissed; board active; movesLabel shows prev_value+5; player can make another move; glowstone balance updated",
+      "runtime_assertion": "assert GameSession.continue() returns true when valid; assert movesRemaining === prev_movesRemaining + 5; assert continuesUsed incremented; assert GameSession.state === 'playing'; assert GameSession.continue() returns false when continuesUsed >= 3 OR glowstones < 6"
+    },
+    {
+      "step_id": "progression_level_complete_to_next",
+      "player_action": "player taps Next Level button on LevelCompletePopup",
+      "rule_evaluation": "director.loadScene or similar transitions to next level or island map; if final level of chapter: island restoration scene shown; chapter progress updated; SaveManager persists SessionResult to backend via PUT /v1/save/:player_id",
+      "state_change": "GameSession state reset to 'loading' for next level; chapter_progress incremented if chapter complete; backend save triggered",
+      "feedback": "scene fade transition via SystemOverlay (island_sand color #F7EDD8); island restoration VFX if chapter complete; NPC dialog for chapter completion narrative; new level board loads",
+      "screenshot_checkpoint": "sc-21: next level board visible OR island restoration scene visible; SystemOverlay fade covers all layers during transition (no black gaps); chapter completion celebration animation if applicable",
+      "runtime_assertion": "assert new TileGrid initialized with next level dimensions; assert GameSession.state === 'playing' after load; assert backend PUT /v1/save was called with correct SessionResult payload"
+    }
+  ],
+
+  "minimum_playable_scenario": {
+    "description": "Clear a 4×4 grid with 8 matching pairs (4 tile types × 4 tiles each = 16 tiles = 8 pairs) using at most 20 steps — deterministic seed ensures reproducible layout",
+    "initial_state": {
+      "grid_size": { "rows": 4, "cols": 4 },
+      "tile_types": ["T01", "T02", "T03", "T04"],
+      "tiles_per_type": 4,
+      "total_tiles": 16,
+      "total_pairs": 8,
+      "obstacles": [],
+      "locked_cells": [],
+      "special_blocks": [],
+      "step_budget": 20,
+      "board_events": []
+    },
+    "deterministic_seed": "test-seed-001",
+    "seed_numeric": 1,
+    "seeded_random_impl": "SeededRandom(1): seed=(1664525*1+1013904223)>>>0 — lcg in BoardGenerator.ts",
+    "expected_layout_note": "BoardGenerator.generateRandom(4, 4, ['T01','T02','T03','T04'], 1) produces even-distributed 4 tiles per type, shuffled with SeededRandom(1); minimum 5 matchable pairs guaranteed by MAX_REGEN_ATTEMPTS=20 loop",
+    "expected_outcome": "win",
+    "expected_stars": 3,
+    "win_path": "8 sequential valid pair matches, all within 20 steps, 0 continues"
+  },
+
+  "win_condition": "GameSession.onObjectivesMet() called — all objective tiles cleared (tilesCleared >= objectiveTarget); GameSession transitions to 'levelComplete'; SESSION_ENDED emitted with completed=true",
+  "win_condition_source": "GameSession.ts:_onObjectivesMet → _completeLevel",
+
+  "lose_condition": "movesRemaining === 0 AND _objectivesMet === false AND NOT ZenMode; GameSession transitions to 'failed'; SESSION_FAILED emitted",
+  "lose_condition_source": "GameSession.ts:onMoveMade → state='failed'",
+
+  "retry_condition": "GameSession.continue(glowstones): spend CONTINUE_GLOWSTONE_COST=6 glowstones (source: economy-model.json continue_level cost = 6) to gain CONTINUE_MOVES_ADDED=5 extra moves; maximum CONTINUE_MAX=3 continues per level; state failed→playing",
+  "retry_condition_source": "GameSession.ts:continue()",
+
+  "next_condition": "win → director.loadScene to next level; if chapter final level: island restoration scene; SessionResult persisted via backend PUT /v1/save",
+  "next_condition_source": "GameSession.ts:SESSION_ENDED → GameScene transition",
+
+  "progression_condition": "chapter complete → island restoration scene plays; chapter_progress incremented in player save data; next chapter unlocks if island restoration objective met",
+  "progression_condition_source": "view-mode-runtime-contract.json scene_list; GameScene.ts",
+
+  "special_tile_summary": [
+    {
+      "type": "wave",
+      "display_name": { "zh": "光波", "en": "Wave" },
+      "trigger": "match two wave tiles",
+      "effect": "clear all obstacles in 3×3 area around connection midpoint; grant 5s free-path-zone buff",
+      "auto_generation_combo": 6,
+      "source": "SpecialBlock.ts:WaveBehavior"
+    },
+    {
+      "type": "light_chain",
+      "display_name": { "zh": "光链", "en": "Light Chain" },
+      "trigger": "match two light_chain tiles",
+      "effect": "auto-clear all pairs of the dominant tile type on board",
+      "auto_generation_combo": 4,
+      "source": "SpecialBlock.ts:LightChainBehavior"
+    },
+    {
+      "type": "pierce",
+      "display_name": { "zh": "穿透", "en": "Pierce" },
+      "trigger": "match two pierce tiles",
+      "effect": "grant 8s pierce mode — paths may route through any occupied cell",
+      "auto_generation_combo": null,
+      "source": "SpecialBlock.ts:PierceBehavior"
+    },
+    {
+      "type": "swap",
+      "display_name": { "zh": "置换", "en": "Swap" },
+      "trigger": "match two swap tiles",
+      "effect": "open 10s selection window — player taps two cells to swap their contents",
+      "auto_generation_combo": null,
+      "source": "SpecialBlock.ts:SwapBehavior"
+    },
+    {
+      "type": "cascade",
+      "display_name": { "zh": "连锁", "en": "Cascade" },
+      "trigger": "match two cascade tiles",
+      "effect": "auto-execute up to 5 chain matches with 300ms delay between each",
+      "auto_generation_combo": 3,
+      "source": "SpecialBlock.ts:CascadeBehavior"
+    }
+  ],
+
+  "combo_rules": {
+    "window_ms": 2000,
+    "max_combo": 6,
+    "multipliers": {
+      "1": 1.0,
+      "2": 1.5,
+      "3": 2.0,
+      "4": 3.0
+    },
+    "auto_generation_thresholds": {
+      "cascade": 3,
+      "light_chain": 4,
+      "wave": 6
+    },
+    "hud_display_condition": "comboCount >= 2",
+    "hud_format": "x{comboCount}  {multiplier}×",
+    "source": "ComboTracker.ts"
+  },
+
+  "obstacle_rules": [
+    {
+      "type": "ice_block",
+      "initial_layers": 2,
+      "path_blocking": false,
+      "selection_blocking": true,
+      "cleared_by": "2 adjacent tile matches",
+      "source": "ObstacleManager.ts:_handleAdjacentIceBlock; BoardGenerator.ts:makeObstacleCell"
+    },
+    {
+      "type": "wooden_crate",
+      "path_blocking": true,
+      "selection_blocking": true,
+      "cleared_by": "not cleared by player — must be avoided in path-finding",
+      "source": "TileMatcher.ts:isPassable; ObstacleManager.ts:isPathBlocked"
+    },
+    {
+      "type": "weed",
+      "path_blocking": false,
+      "selection_blocking": false,
+      "cleared_by": "1 adjacent tile match",
+      "source": "ObstacleManager.ts:_handleAdjacentWeed"
+    },
+    {
+      "type": "water_current",
+      "path_blocking": true,
+      "selection_blocking": false,
+      "cleared_by": "not cleared — direction rotates every 5s",
+      "source": "ObstacleManager.ts:isPathBlocked; update()"
+    },
+    {
+      "type": "chain_lock",
+      "path_blocking": false,
+      "selection_blocking": false,
+      "cleared_by": "N direct matches on the chain_lock tile (N = obs.chains)",
+      "source": "ObstacleManager.ts:_handleDirectChainLock"
+    },
+    {
+      "type": "spreading_obstacle",
+      "variant": "vine or moss",
+      "path_blocking": false,
+      "selection_blocking": true,
+      "cleared_by": "1 adjacent tile match per cell; expands 1 cell per turn",
+      "board_overrun_condition": "isBoardOverrun() === true → GameSession.failNow()",
+      "source": "ObstacleManager.ts:_handleAdjacentSpread; tickSpread; isBoardOverrun"
+    }
+  ],
+
+  "board_events": [
+    {
+      "type": "water_flow",
+      "chapter_unlock": 1,
+      "effect": "periodic row/column wrap-shift every interval_s seconds",
+      "source": "BoardEventManager.ts:_tickWaterFlow"
+    },
+    {
+      "type": "freeze_zone",
+      "chapter_unlock": 1,
+      "effect": "cells locked until required_hits adjacent matches; emits cellUnfrozen",
+      "source": "BoardEventManager.ts:_tickFreezeZone"
+    },
+    {
+      "type": "vine_spread",
+      "chapter_unlock": 1,
+      "effect": "vine expands to random adjacent cell every interval_s seconds; locks cell",
+      "source": "BoardEventManager.ts:_tickVineSpread"
+    },
+    {
+      "type": "tile_fall",
+      "chapter_unlock": 5,
+      "effect": "TileGrid.applyGravity() after each match; ease_in_bounce animation",
+      "source": "BoardEventManager.ts:_applyTileFall"
+    },
+    {
+      "type": "tile_slide",
+      "chapter_unlock": 5,
+      "effect": "tagged surface cells slide tile horizontally after fall; re-gravity applied",
+      "source": "BoardEventManager.ts:_applyTileSlide"
+    },
+    {
+      "type": "board_rotate",
+      "chapter_unlock": 5,
+      "effect": "sub-rectangle rotates 90° clockwise every N moves; warning flash for warning_flash_s before rotation",
+      "source": "BoardEventManager.ts:onMoveMade; _executeRotate; emits boardRotateWarning + boardRotateExecuted"
+    }
+  ],
+
+  "star_rating_rules": {
+    "3_stars": "completed with 0 continues AND movesRemaining >= 3",
+    "2_stars": "completed with 0 continues AND movesRemaining < 3",
+    "1_star": "completed with at least 1 continue",
+    "source": "GameSession.ts:_computeStars; THREE_STAR_MOVES_REMAINING=3"
+  },
+
+  "continue_economics": {
+    "glowstone_cost": 6,
+    "moves_added": 5,
+    "max_continues": 3,
+    "source": "GameSession.ts: CONTINUE_GLOWSTONE_COST=6; CONTINUE_MOVES_ADDED=5; CONTINUE_MAX=3"
+  },
+
+  "coordinate_system_ref": {
+    "board_size_px": { "w": 528, "h": 528 },
+    "board_offset_from_canvas_center": { "x": 0, "y": -30 },
+    "tile_size_px_design": 66,
+    "grid_to_board_local": "x = (col + 0.5) * tile_w - board_w * 0.5; y = board_h * 0.5 - (row + 0.5) * tile_h",
+    "tile_indexing": "row-major, 0-indexed: children[row * cols + col]",
+    "source": "view-mode-runtime-contract.json:coordinate_conversion"
+  },
+
+  "hud_elements_required": [
+    {
+      "element": "movesLabel",
+      "content": "integer movesRemaining",
+      "color_normal": "Color(61, 53, 48, 255) — neutral_text",
+      "color_warning": "Color(224, 90, 74, 255) — system_error when movesRemaining <= 5",
+      "position_design": "y = +580 to +460 from canvas center (HUD top zone)",
+      "source": "GameHUD.ts:_updateMovesLabel"
+    },
+    {
+      "element": "objectiveProgressBar",
+      "content": "progress = tilesCleared / objectiveTarget (0.0–1.0)",
+      "position_design": "HUD top zone",
+      "source": "GameHUD.ts:_updateObjectiveBar"
+    },
+    {
+      "element": "objectiveCountLabel",
+      "content": "{tilesCleared} / {objectiveTarget}",
+      "source": "GameHUD.ts:_updateObjectiveBar"
+    },
+    {
+      "element": "comboLabel",
+      "content": "format 'x{n}  {m}×'; hidden when comboCount <= 1",
+      "position_design": "y = +520 from canvas center",
+      "visible_condition": "comboCount >= 2",
+      "source": "GameHUD.ts:_updateComboDisplay"
+    },
+    {
+      "element": "pauseButton",
+      "touch_target_min_px": 88,
+      "source": "GameHUD.ts; view-mode-runtime-contract.json readability_rules"
+    },
+    {
+      "element": "shopButton",
+      "touch_target_min_px": 88,
+      "source": "GameHUD.ts"
+    }
+  ],
+
+  "telemetry_assertions": [
+    {
+      "event": "level_start",
+      "trigger": "GameSession transitions to 'playing' state",
+      "required_fields": ["chapter", "level", "step_budget", "level_id"],
+      "optional_fields": ["obstacle_types", "special_blocks_present", "grid_rows", "grid_cols"]
+    },
+    {
+      "event": "match_made",
+      "trigger": "TileGrid.emitTilesMatched(path) called after successful pair clear",
+      "required_fields": ["tile_type", "combo_count", "combo_multiplier", "moves_remaining"],
+      "optional_fields": ["path_turns", "special_block_type", "timestamp_ms"]
+    },
+    {
+      "event": "combo_reached",
+      "trigger": "ComboTracker.COMBO_CHANGED emitted with count >= 2",
+      "required_fields": ["combo_count", "multiplier"],
+      "optional_fields": ["time_since_last_match_ms"]
+    },
+    {
+      "event": "special_tile_triggered",
+      "trigger": "ISpecialBlockBehavior.trigger() called",
+      "required_fields": ["special_type", "combo_count", "trigger_source"],
+      "optional_fields": ["effect_area", "tiles_cleared_by_special"]
+    },
+    {
+      "event": "obstacle_cleared",
+      "trigger": "ObstacleManager removes obstacle from obstacleMap",
+      "required_fields": ["obstacle_type", "row", "col"],
+      "optional_fields": ["layers_remaining"]
+    },
+    {
+      "event": "level_failed",
+      "trigger": "GameSession SESSION_FAILED emitted",
+      "required_fields": ["level_id", "moves_used", "tiles_remaining", "continues_used"],
+      "optional_fields": ["cause"]
+    },
+    {
+      "event": "level_complete",
+      "trigger": "GameSession SESSION_ENDED emitted with completed=true",
+      "required_fields": ["level_id", "steps_remaining", "time_elapsed", "stars", "continues_used", "combo_max"],
+      "optional_fields": ["reward_materials", "glowstones_earned"]
+    },
+    {
+      "event": "continue_used",
+      "trigger": "GameSession.continue() returns true",
+      "required_fields": ["level_id", "continues_used", "glowstones_spent", "moves_added"],
+      "optional_fields": []
+    }
+  ],
+
+  "qa_run_instructions": {
+    "test_environment": "WebGL build served at localhost:8080; backend at localhost:3000; Playwright test runner",
+    "existing_e2e_file": "game-client/e2e/glow-island.spec.ts",
+    "run_command": "npx playwright test --config game-client/playwright.config.ts",
+    "pass_criteria": "all loop_steps complete without assertion failure; all screenshot_checkpoints produced; telemetry_assertions verified via network intercept or console log capture",
+    "fail_criteria": "any runtime_assertion fails OR screenshot shows unexpected state OR telemetry event missing required fields",
+    "blocked_criteria": "WebGL canvas not accessible; scene fails to load; TileGrid.initialize throws; BoardGenerator produces 0 matchable pairs after MAX_REGEN_ATTEMPTS",
+    "screenshot_output_dir": ".allforai/bootstrap/e2e-screenshots/",
+    "required_screenshots": [
+      "sc-01-scene-load.png",
+      "sc-02-tile-a-selected.png",
+      "sc-03-match-connection-line.png",
+      "sc-04-match-line-cleared.png",
+      "sc-05-invalid-path-rejected.png",
+      "sc-07-combo-display.png",
+      "sc-08-ice-block-layer1.png",
+      "sc-09-ice-block-cleared.png",
+      "sc-11-wave-trigger.png",
+      "sc-12-lightchain-trigger.png",
+      "sc-13-cascade-trigger.png",
+      "sc-15-swap-overlay.png",
+      "sc-17-moves-warning-red.png",
+      "sc-18-level-complete-popup.png",
+      "sc-19-fail-popup.png",
+      "sc-20-continue-granted.png",
+      "sc-21-next-level-transition.png"
+    ]
+  },
+
+  "validation_status": "passed",
+  "validation_notes": [
+    "All 17 loop steps mapped from actual source code: TileGrid, TileMatcher, ComboTracker, BoardEventManager, ObstacleManager, SpecialBlock, GameHUD, GameSession.",
+    "Tile type enum confirmed: T01-T20 (TileGrid.ts:TileType); minimum playable scenario uses T01-T04 for deterministic 4×4 layout.",
+    "TileMatcher.findPath implements ≤2-turn BFS with out-of-bounds perimeter traversal; path confirmed from TileMatcher.ts lines 36-111.",
+    "ComboTracker confirmed: COMBO_WINDOW_MS=2000, COMBO_MAX=6, multipliers {1:1.0, 2:1.5, 3:2.0, 4:3.0}, auto-gen thresholds {cascade:3, light_chain:4, wave:6}.",
+    "GameSession continue economics confirmed: 6 glowstones, +5 moves, max 3 continues (CONTINUE_GLOWSTONE_COST, CONTINUE_MOVES_ADDED, CONTINUE_MAX in GameSession.ts).",
+    "Star rating confirmed: 3-star requires 0 continues AND movesRemaining >= THREE_STAR_MOVES_REMAINING=3.",
+    "Obstacle blocking rules confirmed: wooden_crate and water_current block paths; ice_block blocks selection not path; weed clears by 1 adjacent; chain_lock requires N direct matches.",
+    "Special tiles confirmed: Wave (3×3 obstacle clear + 5s buff), LightChain (auto-clear dominant type), Pierce (8s path-through mode), Swap (10s selection window), Cascade (≤5 auto-matches × 300ms).",
+    "HUD elements confirmed: movesLabel (red at ≤5), comboLabel (format 'xN M.M×', visible at combo≥2), objectiveProgressBar, pauseButton/shopButton.",
+    "Coordinate system confirmed from view-mode-runtime-contract.json: board 528×528 at y=-30, tile 66px, row-major 0-indexed.",
+    "E2E test file confirmed at game-client/e2e/glow-island.spec.ts with canvas coordinate click helpers; screenshot output to .allforai/bootstrap/e2e-screenshots/.",
+    "BoardGenerator confirmed: MIN_MATCHABLE_PAIRS=5 guaranteed by MAX_REGEN_ATTEMPTS=20; SeededRandom LCG with provided seed produces deterministic layout.",
+    "Telemetry assertions cover all observable game events: level_start, match_made, combo_reached, special_tile_triggered, obstacle_cleared, level_failed, level_complete, continue_used."
+  ]
+}

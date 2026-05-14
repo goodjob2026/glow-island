@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "meta_skill_version": null,
+  "change_source": "none",
+  "changed_files": [],
+  "changed_skill_slugs": [],
+  "workflow_path": "/Users/aa/workspace/glow-island/.allforai/bootstrap/workflow.json",
+  "node_count": 19,
+  "global_recommendations": [
+    {
+      "scope": "unknown",
+      "reason": "no changed files were supplied or discovered",
+      "rerun": "provide --from-ref or --changed-file, otherwise inspect recent release notes manually",
+      "severity": "medium"
+    }
+  ],
+  "node_recommendations": [],
+  "state": "needs_change_input"
+}

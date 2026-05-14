@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-05-15T00:00:00Z",
+  "platform": "iOS App Store",
+  "items": [
+    {
+      "category": "privacy_policy",
+      "item": "隐私政策页面 URL 已更新为非占位符",
+      "status": "passed",
+      "notes": "SettingsPanel.ts 第21行已硬编码 https://glow-island.vercel.app/privacy，非占位符",
+      "url": "https://glow-island.vercel.app/privacy"
+    },
+    {
+      "category": "privacy_policy",
+      "item": "隐私政策页面实际可访问",
+      "status": "manual_required",
+      "notes": "页面需在提交 App Store 前部署上线并可公网访问",
+      "url": "https://glow-island.vercel.app/privacy"
+    },
+    {
+      "category": "privacy_policy",
+      "item": "服务条款页面 URL 已更新为非占位符",
+      "status": "passed",
+      "notes": "SettingsPanel.ts 第22行已硬编码 https://glow-island.vercel.app/terms，非占位符",
+      "url": "https://glow-island.vercel.app/terms"
+    },
+    {
+      "category": "att",
+      "item": "无第三方广告 SDK，无 IDFA 使用",
+      "status": "passed",
+      "notes": "代码扫描确认无 AdMob/GADMobileAds/FBAudienceNetwork/IDFA 相关代码（扫描范围：game-client/assets/scripts/ 及 backend/src/）",
+      "url": ""
+    },
+    {
+      "category": "iap",
+      "item": "IAP 服务端验证端点存在",
+      "status": "passed",
+      "notes": "backend/src/routes/iap.ts 存在，实现了 POST /iap/verify，包含 Apple receipt 验证（含 sandbox 自动 fallback）及防重放检查",
+      "url": ""
+    },
+    {
+      "category": "iap",
+      "item": "IAP SKU ID 格式符合 App Store 规范",
+      "status": "passed",
+      "notes": "ShopScene.ts 中 iOS SKU 均使用 com.glowisland.iap.* 格式（small_pack / medium_pack / large_pack / mega_pack / monthly_card / starter_pack），与 launch-concept-finalize.json 中 com.glowisland.coins_* 命名有轻微出入，需确认两侧保持一致后在 App Store Connect 中注册",
+      "url": ""
+    },
+    {
+      "category": "age_rating",
+      "item": "年龄分级 4+",
+      "status": "passed",
+      "notes": "launch-concept-finalize.json 中 age_rating=4+；游戏内容无暴力、无成人内容、无恐怖、无赌博元素，符合 4+ 要求",
+      "url": ""
+    },
+    {
+      "category": "app_review",
+      "item": "无禁止关键词（hack/crack/cheat）",
+      "status": "passed",
+      "notes": "grep 扫描 game-client/assets/scripts/ 全目录，唯一命中为 BoardEventManager.ts 中 'freeze' 相关注释（ice-crack 冰块碎裂游戏机制描述），非违规内容；过滤后无有效命中",
+      "url": ""
+    },
+    {
+      "category": "nsprivacy",
+      "item": "NSPrivacyUsageDescription (Info.plist)",
+      "status": "manual_required",
+      "notes": "Glow Island 不使用摄像头/麦克风/位置，仅需在 Cocos Creator iOS 构建输出的 Info.plist 中确认无多余权限声明；需在首次 iOS 构建后人工验证",
+      "url": ""
+    },
+    {
+      "category": "webgl",
+      "item": "WebGL 平台 HTTPS 托管",
+      "status": "manual_required",
+      "notes": "WebGL 版本尚未部署，提交 WebGL 发布前需确保托管在 HTTPS 域名下",
+      "url": ""
+    }
+  ],
+  "blockers": [
+    {
+      "priority": "P1",
+      "item": "隐私政策 / 服务条款 / About 页面需在提交前部署至 glow-island.vercel.app",
+      "action": "部署 Vercel 静态页面（/privacy、/terms、/about）"
+    },
+    {
+      "priority": "P1",
+      "item": "IAP SKU ID 命名不一致：launch-concept-finalize.json 使用 com.glowisland.coins_*，ShopScene.ts 使用 com.glowisland.iap.*_pack；需统一后再在 App Store Connect 注册产品",
+      "action": "统一 SKU ID 命名方案并更新 App Store Connect 产品配置"
+    },
+    {
+      "priority": "P0",
+      "item": "Crash analytics 未集成（来自 gap_warnings_inherited）",
+      "action": "集成 Firebase Crashlytics 或等价方案"
+    },
+    {
+      "priority": "P0",
+      "item": "SKStoreReviewRequestAPI 评分提示未确认实现（来自 gap_warnings_inherited）",
+      "action": "在正向游戏事件后触发 SKStoreReviewRequestAPI"
+    }
+  ],
+  "age_rating": "4+",
+  "contains_iap": true,
+  "iap_compliance": "passed",
+  "att_required": false,
+  "overall_status": "manual_review_required"
+}

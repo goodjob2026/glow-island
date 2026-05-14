@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "finalized_at": "2026-05-15T00:00:00Z",
+  "iap_tiers": [
+    {
+      "tier_id": "com.glowisland.coins_small",
+      "coins": 50,
+      "price_usd": 0.99,
+      "apple_tier": "Tier 1",
+      "name_en": "A Handful of Sand",
+      "name_zh": "一抔沙",
+      "rationale": "Entry tier anchored at market floor; covers ~1 continue use; impulse buy for casual spenders"
+    },
+    {
+      "tier_id": "com.glowisland.coins_medium",
+      "coins": 150,
+      "price_usd": 2.99,
+      "apple_tier": "Tier 3",
+      "name_en": "A Handful of Shells",
+      "name_zh": "一把贝壳",
+      "rationale": "Mid tier at industry median; matches Tile Match Sweet ad-block price and Zen Match Piggy Bank tier; covers 2-3 continues"
+    },
+    {
+      "tier_id": "com.glowisland.coins_large",
+      "coins": 350,
+      "price_usd": 4.99,
+      "apple_tier": "Tier 5",
+      "name_en": "A Basket of Coral",
+      "name_zh": "一篮珊瑚",
+      "rationale": "High-value tier; most common committed-casual price across Lily's Garden, June's Journey, and Zen Match; 17% bonus over linear scaling"
+    },
+    {
+      "tier_id": "com.glowisland.coins_xl",
+      "coins": 800,
+      "price_usd": 9.99,
+      "apple_tier": "Tier 10",
+      "name_en": "Lighthouse Treasure",
+      "name_zh": "灯塔宝藏",
+      "rationale": "Whale entry tier; $9.99 is universal whale-entry price across all surveyed competitors; 30% bonus over $4.99 linear rate"
+    }
+  ],
+  "app_store_metadata": {
+    "app_name_zh": "光辉岛",
+    "app_name_en": "Glow Island",
+    "subtitle_zh": "治愈系连连看",
+    "subtitle_en": "Healing Tile Connect",
+    "keywords_en": "puzzle,tile,connect,healing,cozy,island,relaxing,onet,mahjong,calm,zen,match,offline,no ads",
+    "primary_category": "Games",
+    "secondary_category": "Puzzle",
+    "description_en": "Glow Island is a healing tile-connect puzzle game where you match glowing tiles to restore a sleeping island back to life — no timers, no lives, no pressure, just pure satisfying rhythm.\n\n• NO stamina, NO lives, NO countdown timers — play freely at your own pace, retry any level without penalty\n• 180 hand-crafted puzzles across 6 chapters, each tied to a seasonal island zone that visually transforms as you progress\n• 5 tactical special tiles (Wave, Light Chain, Pierce, Swap, Cascade) create satisfying combo moments and strategic depth\n• Meet warm island residents — a seasoned fisherman, a pottery artisan, a nature guide, and a lighthouse keeper — through an unfolding healing story\n• Zen Mode levels let you relax completely with no step limits — ideal for winding down after a long day\n\nGlow Island is made for the moments when you need to breathe. Whether you have two minutes or two hours, the island is always there — calm, beautiful, and waiting. Connect tiles, feel the rhythm, and watch a forgotten island bloom again. For anyone who has ever wanted a game that truly keeps its promise of relaxation.",
+    "description_zh": "光辉岛是一款治愈系连连看手游——连接同色图块，积累光能，唤醒那座沉睡的小岛，让它重新发光。\n\n• 无体力、无生命值、无倒计时——想玩就玩，失败无惩罚，随时重试，随时退出\n• 6章×30关，共180个精心设计的关卡，每章对应一个岛屿区域，随进度动态焕新视觉\n• 5种战术特殊图块（光波·光链·穿透·置换·连锁），制造爽快连击时刻与策略深度\n• 遇见温暖的岛屿居民——老渔夫、陶艺工匠、自然向导、灯塔守——在无声叙事中感受温度\n• 禅境模式关卡无步数限制，适合需要彻底放松的你\n\n光辉岛，为那些需要喘口气的时刻而生。无论你有两分钟还是两小时，小岛永远在那里——安静、美好、等你。连接图块，感受节奏，看着一座被遗忘的小岛重新绽放。献给每一位真正需要放松的你。",
+    "age_rating": "4+",
+    "contains_iap": true
+  },
+  "screenshot_plan": [
+    {
+      "order": 1,
+      "scene": "core-loop-combo",
+      "headline_en": "Connect tiles, feel the rhythm",
+      "headline_zh": "连接图块，感受节奏",
+      "visual_notes": "Show active combo chain with glowing tile path, combo multiplier UI visible, warm beach-dock setting (Ch1 spring theme). Emphasize satisfying visual feedback."
+    },
+    {
+      "order": 2,
+      "scene": "island-restoration",
+      "headline_en": "Restore the glowing island",
+      "headline_zh": "唤醒光辉岛",
+      "visual_notes": "Split-screen or before/after overlay: left side gray/desaturated island zone, right side fully restored vibrant version. Showcase the visual transformation payoff."
+    },
+    {
+      "order": 3,
+      "scene": "npc-dialogue",
+      "headline_en": "Meet warm island residents",
+      "headline_zh": "遇见温暖的岛屿居民",
+      "visual_notes": "Show NPC interaction moment — e.g. old fisherman Isobe Kenzo on the dock or pottery artisan Kirishima Umeko in the town square. Warm, hand-drawn watercolor style."
+    },
+    {
+      "order": 4,
+      "scene": "special-tiles",
+      "headline_en": "5 tactical special tiles",
+      "headline_zh": "5种战术特殊图块",
+      "visual_notes": "Showcase a Light Chain or Wave special tile triggering — full-board glow cascade effect. Can show small UI labels for each special tile type. High visual impact moment."
+    },
+    {
+      "order": 5,
+      "scene": "island-overview",
+      "headline_en": "Your peaceful escape",
+      "headline_zh": "你的治愈角落",
+      "visual_notes": "Full island map view with partially or fully restored zones glowing warmly. Lighthouse lit. Conveys the meta-game emotional payoff and overall world. Lifestyle feel."
+    }
+  ],
+  "positioning_statement": "无倒计时、无体力限制，在光辉小岛上，用连线消除感受治愈节奏",
+  "gap_warnings_inherited": [
+    {
+      "gap": "Crash analytics / stability monitoring not yet integrated (Firebase Crashlytics or equivalent)",
+      "priority": "P0",
+      "competitor_example": "All top competitors (Zen Match, Lily's Garden, June's Journey) treat crash-free launch as table stakes; even one crash wave tanks early App Store ratings"
+    },
+    {
+      "gap": "In-app rating prompt (SKStoreReviewRequestAPI) not confirmed implemented",
+      "priority": "P0",
+      "competitor_example": "Merge Mansion (4.56★/182K ratings) and Triple Tile (4.86★/250K ratings) both use well-timed review prompts post positive moments; missing this at launch is leaving rating velocity on the table"
+    },
+    {
+      "gap": "No ad-removal IAP or subscription option (competitors like Flow Free, Tile Match Sweet offer $2.99 ad-block)",
+      "priority": "P1",
+      "competitor_example": "Flow Free (ad-block $0.99–$2.99), Tile Match Sweet ($2.99 no-ads deal) — if Glow Island ever introduces rewarded ads, players expect a buy-out option"
+    },
+    {
+      "gap": "No daily challenge / streak mechanic for retention (Zen Match has daily tile explorer; Lily's Garden has daily quests)",
+      "priority": "P1",
+      "competitor_example": "Zen Match Daily Tile Explorer, Lily's Garden daily events — drives D7/D30 retention significantly; absent in Glow Island spec"
+    }
+  ]
+}

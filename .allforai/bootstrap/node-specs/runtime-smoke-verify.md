@@ -1,9 +1,10 @@
 ---
+node: runtime-smoke-verify
 node_id: runtime-smoke-verify
 capability: runtime-smoke-verify
 human_gate: false
-hard_blocked_by: [compile-verify]
-unlocks: [concept-acceptance]
+hard_blocked_by: [game-2d-production-closure-qa]
+unlocks: [competitive-research]
 exit_artifacts:
   - path: .allforai/bootstrap/runtime-smoke-result.json
 ---

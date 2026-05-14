@@ -232,11 +232,17 @@ export class GameHUD extends Component {
   }
 
   private _onPause(): void {
+    // SC-003 fix: look for PauseMenu component on the PauseMenu node and call show()
+    // which also calls session.pause(). Fall back to raw active toggle if component absent.
     const pauseMenuNode = director.getScene()?.getChildByName('PauseMenu')
     if (pauseMenuNode) {
-      pauseMenuNode.active = true
+      const pauseMenu = pauseMenuNode.getComponent('PauseMenu') as { show?: () => void } | null
+      if (pauseMenu?.show) {
+        pauseMenu.show()
+      } else {
+        pauseMenuNode.active = true
+      }
     }
-    this._sessionEventTarget?.on?.(GAME_SESSION_EVENT.PAUSED, () => {}, this)
   }
 
   // -------------------------------------------------------------------------
