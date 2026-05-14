@@ -1,0 +1,16 @@
+{
+  "name": "glow-island-level-gen",
+  "version": "1.0.0",
+  "description": "Match-3 level generation + BFS solver validation pipeline for Glow Island",
+  "private": true,
+  "scripts": {
+    "gen": "ts-node src/cli.ts gen",
+    "validate": "ts-node src/cli.ts validate"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "ts-node": "^10.9.2",
+    "@types/node": "^20.12.0"
+  }
+}
