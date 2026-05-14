@@ -2,8 +2,8 @@
 node_id: compile-verify
 capability: compile-verify
 human_gate: false
-hard_blocked_by: [level-content-pipeline]
-unlocks: [runtime-smoke-verify, cross-module-stitch]
+hard_blocked_by: [stitch-game-client]
+unlocks: [demo-forge, runtime-smoke-verify]
 exit_artifacts:
   - path: .allforai/bootstrap/compile-result.json
 ---
@@ -34,6 +34,15 @@ COCOS_BIN="${COCOS_CREATOR_APP:-/Applications/CocosCreator.app}/Contents/MacOS/C
 Cocos Creator CLI 构建环境内自动解决，**不算构建失败**。
 退出码 0 = 成功。首次运行较慢（项目缓存初始化），等待最多 5 分钟。
 
+若 Cocos Creator CLI 不可用（CI 环境），改为运行 backend tsc 检查 game-client ts 交叉类型：
+
+```bash
+cd game-client
+npx tsc --noEmit --skipLibCheck 2>&1 | grep -v "Cannot find module 'cc'" | head -30
+```
+
+仅 `Cannot find module 'cc'` 类型错误可忽略；其他 TypeScript 错误需修复。
+
 ## 3. Level-Gen Pipeline — 冒烟验证
 
 ```bash
@@ -51,7 +60,8 @@ npm run gen -- --chapter 1 --count 3
 
 ## Exit Artifacts
 
-**compile-result.json**：
+**`.allforai/bootstrap/compile-result.json`**：
+
 ```json
 {
   "verified_at": "<ISO>",
@@ -61,3 +71,8 @@ npm run gen -- --chapter 1 --count 3
   "overall": "pass|fail"
 }
 ```
+
+## Downstream Contract
+
+→ demo-forge 读取: `overall`（pass 时才继续）
+→ runtime-smoke-verify 读取: `backend.tsc`（确认后端代码无类型错误）

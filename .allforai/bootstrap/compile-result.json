@@ -1,22 +1,21 @@
 {
-  "verified_at": "2026-05-13T21:31:30.970811Z",
-  "backend_tsc": "0 errors",
-  "level_editor_tsc": "0 errors",
-  "game_client_build": {
-    "method": "Cocos Creator 3.8.8 CLI (headless, no GUI required)",
-    "command": "/Applications/CocosCreator.app/Contents/MacOS/CocosCreator --project game-client --build platform=web-mobile",
-    "status": "pass",
-    "platform": "web-mobile",
-    "output": "game-client/build/web-mobile/",
-    "output_files": [
-      "src/system.bundle.js",
-      "src/polyfills.bundle.js",
-      "src/chunks/bundle.js",
-      "assets/resources/index.js",
-      "assets/internal/index.js",
-      "assets/main/index.js"
-    ],
-    "output_size": "332K"
+  "verified_at": "2026-05-14T08:33:00.000Z",
+  "backend": {
+    "tsc": "pass",
+    "tests": "skipped",
+    "errors": []
   },
-  "note": "Previous compile-result.json incorrectly stated GUI Dashboard required. Cocos Creator 3.x CLI build confirmed working. TypeScript module cc errors from standalone tsc are engine-type noise only."
+  "game_client": {
+    "cocos_build": "pass",
+    "platform": "web-mobile",
+    "tsc_skipLibCheck": "not_run",
+    "errors": [],
+    "notes": "Initial build failed: LevelLoader.ts used dynamic import('../../../resources/levels/all-levels.json') which is unsupported by Cocos bundler (cross-bundle relative JSON import). Fixed to use cc.resources.load() at runtime with inline fallback. Second build completed successfully with no errors."
+  },
+  "level_gen": {
+    "smoke": "pass",
+    "levels_accepted": 3,
+    "warnings": 0
+  },
+  "overall": "pass"
 }

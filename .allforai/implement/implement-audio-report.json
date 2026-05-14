@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-05-14T12:00:00+08:00",
+  "status": "no_issues_found",
+  "issues_found": [],
+  "enum_counts": {
+    "BGMKey": 8,
+    "SFXKey": 17
+  },
+  "interface_verified": [
+    "playBGM",
+    "stopBGM",
+    "playSFX",
+    "setBGMVolume",
+    "setSFXVolume",
+    "getInstance"
+  ]
+}

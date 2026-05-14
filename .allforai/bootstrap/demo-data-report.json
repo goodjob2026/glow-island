@@ -1,108 +1,80 @@
 {
-  "created_at": "2026-05-07T19:46:10.000Z",
-  "backend_status": "running",
+  "created_at": "2026-05-14T07:36:00Z",
+  "backend_started": true,
   "accounts": [
     {
-      "device_id": "device_test_001",
-      "player_id": "9e069d4e-29f0-485f-b0e0-69c9169890f6",
-      "display_name": "小岛旅人",
+      "name": "小岛旅人",
+      "device_id": "device_demo_001",
+      "status": "created",
+      "player_id": "c5b79d45-f0ab-4be3-86f5-177d92664b9c",
       "platform": "ios",
-      "status": "created",
-      "save_status": "updated",
-      "save_summary": {
-        "chapter_progress": {
-          "current_chapter": 1,
-          "current_level": 3
-        },
-        "currency": {
-          "beach_coins": 80,
-          "glowstone": 0
-        },
-        "materials": {
-          "shell_fragment": 5
-        }
+      "save": {
+        "beach_coins": 80,
+        "glowstone": 0,
+        "chapter": 1,
+        "level": 3
       },
-      "leaderboard_score": 320,
-      "leaderboard_chapter": 1
+      "leaderboard": {
+        "display_name": "小岛旅人",
+        "total_score": 320,
+        "rank": 28
+      }
     },
     {
-      "device_id": "device_test_002",
-      "player_id": "cd842408-42be-40e4-8477-cc0e4f8cb649",
-      "display_name": "海风寻梦",
+      "name": "海风寻梦",
+      "device_id": "device_demo_002",
+      "status": "created",
+      "player_id": "ef9de4ce-e02c-4c81-9dcf-70494014e9af",
       "platform": "android",
-      "status": "created",
-      "save_status": "updated",
-      "save_summary": {
-        "chapter_progress": {
-          "current_chapter": 3,
-          "current_level": 8,
-          "completed_chapters": [
-            1,
-            2
-          ]
-        },
-        "currency": {
-          "beach_coins": 350,
-          "glowstone": 15
-        },
-        "total_score": 1850
+      "save": {
+        "beach_coins": 350,
+        "glowstone": 15,
+        "chapter": 3,
+        "level": 8
       },
-      "leaderboard_score": 1850,
-      "leaderboard_chapter": 3
+      "leaderboard": {
+        "display_name": "海风寻梦",
+        "total_score": 1850,
+        "rank": 18
+      }
     },
     {
-      "device_id": "device_test_003",
-      "player_id": "078050c3-1dda-462b-a176-c9bd933953df",
-      "display_name": "灯塔守望者",
-      "platform": "taptap",
+      "name": "灯塔守望者",
+      "device_id": "device_demo_003",
       "status": "created",
-      "save_status": "updated",
-      "save_summary": {
-        "chapter_progress": {
-          "current_chapter": 6,
-          "current_level": 5,
-          "completed_chapters": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        },
-        "currency": {
-          "beach_coins": 1200,
-          "glowstone": 88
-        },
-        "total_score": 8400
+      "player_id": "b7104348-e24f-4907-ae38-81890345bb70",
+      "platform": "ios",
+      "save": {
+        "beach_coins": 1200,
+        "glowstone": 88,
+        "chapter": 6,
+        "level": 5
       },
-      "leaderboard_score": 8400,
-      "leaderboard_chapter": 6
+      "leaderboard": {
+        "display_name": "灯塔守望者",
+        "total_score": 8400,
+        "rank": 3
+      }
     }
   ],
-  "extra_accounts_created": 12,
-  "leaderboard_entries": 30,
-  "leaderboard_sample": [
+  "leaderboard_records": 5,
+  "additional_leaderboard_entries": [
     {
-      "rank": 1,
-      "player_id": "40266f0a-55cb-41fc-ab5d-236bd2765564",
-      "display_name": "灵光岛长",
-      "total_score": 9900,
-      "chapter_reached": 6
+      "display_name": "浪花追梦人",
+      "device_id": "device_demo_004",
+      "player_id": "aa6373ce-9176-4129-8b58-43d62e711cc8",
+      "total_score": 4200,
+      "chapter_reached": 4,
+      "rank": 12
     },
     {
-      "rank": 2,
-      "player_id": "7c3f48cc-fd6f-478f-b0ca-e475100d78c2",
-      "display_name": "岛屿传说人",
-      "total_score": 9800,
-      "chapter_reached": 6
-    },
-    {
-      "rank": 3,
-      "player_id": "078050c3-1dda-462b-a176-c9bd933953df",
-      "display_name": "灯塔守望者",
-      "total_score": 8400,
-      "chapter_reached": 6
+      "display_name": "珊瑚心愿",
+      "device_id": "device_demo_005",
+      "player_id": "c152b967-9267-4506-afe2-06bbefc2e4a1",
+      "total_score": 6500,
+      "chapter_reached": 5,
+      "rank": 7
     }
   ],
-  "notes": "Backend was not running at task start; started via 'npm run dev' with JWT_SECRET=demo-secret-key. PostgreSQL was already available at localhost:5432. 3 named test accounts created (device_test_001/002/003). Note: is_new_player=false means the accounts already existed from a prior run — data was refreshed. 12 additional anonymous accounts (device_demo_004 through device_demo_015) were created with varied scores covering chapters 1-6 and scores from 100 to 9900. Total leaderboard entries at verification: 30 (includes pre-existing entries from a prior bootstrap run). 灯塔守望者 (device_test_003) ranks #3 overall with score 8400. 海风寻梦 (device_test_002) ranks #18 with score 1850. 小岛旅人 (device_test_001) ranks outside top 20 with score 320. Backend process will be terminated after report write."
+  "notes": "All 3 primary accounts created successfully. Save API uses PUT /v1/save/:playerId with structured fields (currency, materials, chapter_progress) rather than a blob save_data field. Platform field is required for auth. 5 leaderboard entries submitted (3 primary + 2 supplemental)."
 }

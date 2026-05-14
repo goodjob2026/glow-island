@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-05-14T00:24:00.000Z",
+  "status": "fixed",
+  "issues_found": [
+    {
+      "file": "game-client/assets/scripts/shop/IAPManager.ts",
+      "issue": "IAPSku interface lacked glowstone field; all IAP packs are glowstone packs but the interface only had beach_coins, causing glowstone to never be granted to the client in either native or sandbox mode.",
+      "fix_applied": "Added glowstone field to IAPSku interface. Updated PurchaseResult to include glowstone field. Dual-currency comment on module updated."
+    },
+    {
+      "file": "game-client/assets/scripts/shop/IAPManager.ts",
+      "issue": "_verifyWithBackend ignored glowstone_granted and updated_currency.glowstone from backend response. addCurrency was called with hardcoded 0 for glowstones, so verified IAP purchases never credited glowstone.",
+      "fix_applied": "Computed glowstoneDelta = data.updated_currency.glowstone - progress.currency.glowstones and passed it as the second arg to pm.addCurrency(coinDelta, glowstoneDelta)."
+    },
+    {
+      "file": "game-client/assets/scripts/shop/IAPManager.ts",
+      "issue": "Sandbox/WebGL purchase path called pm.addCurrency(sku.beach_coins, 0), always passing 0 for glowstones even for glowstone-only packs.",
+      "fix_applied": "Changed to pm.addCurrency(sku.beach_coins, sku.glowstone) so both currencies are granted in sandbox mode."
+    },
+    {
+      "file": "game-client/assets/scripts/shop/ShopScene.ts",
+      "issue": "IAP_SKUS catalog used beach_coins values (60, 280, 880, 2500) for glowstone packs, mismatching the backend SKU_CONFIG which grants glowstone. Starter pack had beach_coins:300 but backend grants beach_coins:500 + glowstone:100.",
+      "fix_applied": "Added glowstone field to all SKUs. Set beach_coins=0 and glowstone=<correct amount> for pure glowstone packs (small/medium/large/mega). Set starter_pack beach_coins=500, glowstone=100 to match backend. Updated display logic to show '丹青石' for glowstone packs and combined amounts for mixed packs."
+    },
+    {
+      "file": "game-client/assets/scripts/shop/PurchaseConfirmPopup.ts",
+      "issue": "Popup showed only beach_coins amounts and success toast always said '枚沙滩币已到账', incorrect for glowstone purchases.",
+      "fix_applied": "Updated coinsAmountLabel display logic and success toast message to correctly show glowstone, beach_coins, or combined amounts based on what the SKU grants."
+    }
+  ],
+  "sandbox_test": {
+    "purchase_flow_works": true,
+    "currency_granted_correctly": true,
+    "backend_note": "Backend IAP route correctly returns glowstone_granted and updated_currency with both beach_coins and glowstone. Route is registered under /v1 prefix in server.ts. Duplicate receipt detection and sandbox mode (NODE_ENV=development) both work correctly.",
+    "response_preview": {
+      "small_pack": "{\"transaction_id\":\"0bdf6465-ecf4-46ea-aab5-14f86ee0bea8\",\"sku_id\":\"small_pack\",\"status\":\"verified\",\"glowstone_granted\":60,\"items_granted\":[],\"updated_currency\":{\"beach_coins\":200,\"glowstone\":60}}",
+      "starter_pack": "{\"transaction_id\":\"1d4434fe-4724-4f6d-a1b6-26ed8d066ab9\",\"sku_id\":\"starter_pack\",\"status\":\"verified\",\"glowstone_granted\":100,\"items_granted\":[{\"type\":\"currency\",\"item_id\":\"beach_coins\",\"quantity\":500},{\"type\":\"booster\",\"item_id\":\"rainbow_block\",\"quantity\":2}],\"updated_currency\":{\"beach_coins\":700,\"glowstone\":160}}"
+    }
+  }
+}

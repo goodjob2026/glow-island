@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-05-14T00:00:00.000Z",
+  "status": "fixed",
+  "issues_found": [
+    {
+      "file": "game-client/assets/scripts/game/GameScene.ts",
+      "issue": "triggerSpecialBlock() switch statement referenced non-existent SpecialBlockType values: BOMB, WINDMILL, LIGHT. These enum members do not exist; the SpecialBlockType enum defines only WAVE, LIGHT_CHAIN, PIERCE, SWAP, CASCADE.",
+      "fix_applied": "Replaced the stale switch cases with the correct SpecialBlockType values (WAVE, LIGHT_CHAIN, PIERCE, SWAP, CASCADE) and mapped each to the appropriate SFXKey."
+    },
+    {
+      "file": "game-client/assets/scripts/game/GameScene.ts",
+      "issue": "triggerSpecialBlock() created behaviors but did NOT wire any callbacks before calling trigger(). SwapBehavior.onSwapSelectionStart was null so swap never opened the selection UI. PierceBehavior.onPierceBuffStart was null so BoardEventManager.handlePierceBuff() was never called. CascadeBehavior.onCascadeChainStart was null so it fell back to raw setTimeout instead of the Cocos-friendly BoardEventManager.handleCascadeChain(). WaveBehavior.onWaveBuffStart was null (no buff HUD callback).",
+      "fix_applied": "Added pre-trigger callback wiring in triggerSpecialBlock() for all four callback-bearing behaviors: WaveBehavior.onWaveBuffStart, PierceBehavior.onPierceBuffStart (delegates to boardEventManager.handlePierceBuff), SwapBehavior.onSwapSelectionStart (delegates to boardEventManager.handleSwapSelection and emits openSwapUI on the node), CascadeBehavior.onCascadeChainStart (delegates to boardEventManager.handleCascadeChain). Also added public resolveSwapSelection() and cancelSwapSelection() methods to GameScene so the swap UI overlay can close the selection window."
+    },
+    {
+      "file": "game-client/assets/scripts/puzzle/ComboTracker.ts",
+      "issue": "Combo count was hard-capped at 4 (Math.min(..., 4)) but SPECIAL_BLOCK_GENERATION_COMBO defines WAVE threshold = 6, meaning WAVE could never be auto-generated. Additionally ComboTracker had no integration with SPECIAL_BLOCK_GENERATION_COMBO — no check was performed and no callback existed for auto-generating special blocks.",
+      "fix_applied": "Raised COMBO_MAX constant from 4 to 6. Added import of SPECIAL_BLOCK_GENERATION_COMBO and SpecialBlockType from SpecialBlock. Added onSpecialGeneration callback property. Added private _checkSpecialGeneration(comboCount) method that checks for an exact threshold match on each combo tick, preferring the highest threshold when multiple are satisfied. onTileMatched() now calls _checkSpecialGeneration and invokes onSpecialGeneration when a threshold is hit."
+    },
+    {
+      "file": "game-client/assets/scripts/game/GameScene.ts",
+      "issue": "No integration between ComboTracker's special-block auto-generation callback and the board — the onSpecialGeneration hook was not wired in the start() setup block, and there was no method to place a special tile on the grid.",
+      "fix_applied": "In start(), wired _comboTracker.onSpecialGeneration to call _spawnSpecialBlockAtBestPosition(type). Added private _spawnSpecialBlockAtBestPosition() helper that picks the most-central non-obstacle, non-locked, non-empty, non-already-special cell and stamps specialBlockType on it, then emits a 'specialBlockSpawned' event for the renderer."
+    },
+    {
+      "file": "game-client/assets/scripts/puzzle/TileGrid.ts",
+      "issue": "TileCell interface had no field to mark a cell as a special block, so the renderer and input handler had no way to distinguish a special tile from a regular one. Without this field, _spawnSpecialBlockAtBestPosition() and the renderer integration for special blocks could not function.",
+      "fix_applied": "Added optional specialBlockType?: string field to the TileCell interface with inline JSDoc explaining its purpose. Using string (not the enum) avoids a circular dependency between TileGrid and SpecialBlock."
+    },
+    {
+      "file": "game-client/assets/scripts/audio/AudioConfig.ts",
+      "issue": "SFXKey enum was missing entries for the four non-WAVE special block types: LIGHT_CHAIN, PIERCE, SWAP, CASCADE. The fixed GameScene switch needed these keys.",
+      "fix_applied": "Added SPECIAL_LIGHT_CHAIN, SPECIAL_PIERCE, SPECIAL_SWAP, SPECIAL_CASCADE entries to the SFXKey enum."
+    }
+  ],
+  "tests_added": [],
+  "tests_passed": "skipped - no jest config found in game-client/ or repo root"
+}

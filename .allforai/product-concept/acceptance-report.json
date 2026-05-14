@@ -1,107 +1,53 @@
 {
-  "schema_version": "1.0",
-  "report_type": "concept-acceptance",
-  "project": "glow-island",
-  "design_version": "v2.0",
-  "generated_at": "2026-05-08T00:00:00.000Z",
+  "accepted_at": "2026-05-14T08:45:00.000Z",
   "verdict": "pass",
-  "summary": "All 12 acceptance criteria pass. Glow Island v2.0 redesign is fully implemented: Japanese island setting, male protagonist 山田律, romance subplot with 丸山ひなた, Animal Crossing art style, 天天爱消除 gameplay feel, 136 levels with chapter-gated mechanics, all special blocks, obstacles, and backend infrastructure in place. Two non-blocking architectural notes are flagged from the stitch report.",
-  "checklist": [
-    {
-      "id": "AC-01",
-      "title": "136+ levels with chapter-gated mechanics",
-      "status": "pass",
-      "evidence": "level-design.json contains exactly 136 levels across 6 chapters. Chapter-gated mechanics confirmed: ch2=ice_block, ch3=chain_lock+portal, ch4=single_path_corridor, ch5=water_current (gravity/fall/slide), ch6=spreading_obstacle. Cumulative unlocking verified."
-    },
-    {
-      "id": "AC-02",
-      "title": "All 4 special blocks implemented (Bomb, Windmill cross, Light/Lantern, Wave)",
-      "status": "pass",
-      "evidence": "SpecialBlock.ts exports BombBehavior (3x3 clear), WindmillBehavior (row+column cross/十字), LightBehavior (auto-match nearest same type), WaveBehavior (reshuffle with up to 3 auto-retries). All 4 types present and behaviorally distinct."
-    },
-    {
-      "id": "AC-03",
-      "title": "New obstacles in spec: ice_block, chain_lock, portal, single_path_corridor, spreading_obstacle",
-      "status": "pass",
-      "evidence": "puzzle-mechanics-spec.json obstacles array: ['ice_block', 'chain_lock', 'portal', 'single_path_corridor', 'spreading_obstacle', 'weed', 'wooden_crate', 'water_current']. All 5 required types present."
-    },
-    {
-      "id": "AC-04",
-      "title": "BoardEventManager handles tile_fall, tile_slide, board_rotate",
-      "status": "pass",
-      "evidence": "BoardEventManager.ts line 4 declares all three event types. Separate config interfaces TileFallConfig, TileSlideConfig, BoardRotateConfig defined. Handler switch-case processes tile_fall and tile_slide; board_rotate has state management and warning callback support."
-    },
-    {
-      "id": "AC-05",
-      "title": "ProgressionManager cloud sync exists",
-      "status": "pass",
-      "evidence": "ProgressionManager.ts at game-client/assets/scripts/meta/ProgressionManager.ts implements syncToCloud() and loadFromCloud() with retry logic and localStorage fallback. Called from LevelCompletePopup.ts, SettingsPanel.ts, and MainMenuScene.ts."
-    },
-    {
-      "id": "AC-06",
-      "title": "Backend compiles with 0 errors",
-      "status": "pass",
-      "evidence": "cd backend && npx tsc --noEmit produced no output (exit 0, zero errors)."
-    },
-    {
-      "id": "AC-07",
-      "title": "Leaderboard >= 10 entries",
-      "status": "pass",
-      "evidence": "demo-data-report.json reports leaderboard_entries: 30. Exceeds the minimum of 10."
-    },
-    {
-      "id": "AC-08",
-      "title": "Asset directories exist",
-      "status": "pass",
-      "evidence": "game-client/assets/resources/sprites/tiles/ contains chapter subdirectories: chapter1, chapter2, chapter3, chapter4, chapter5, chapter6, plus tile-placeholder-spec.json."
-    },
-    {
-      "id": "AC-09",
-      "title": "Worldbuilding bible has Japanese characters",
-      "status": "pass",
-      "evidence": "grep -c 'ひなた' worldbuilding-bible.md returns 14 matches. Document also contains 山田律, 輝島, 丸山渉, and extensive Japanese text throughout."
-    },
-    {
-      "id": "AC-10",
-      "title": "ひなた romance subplot documented",
-      "status": "pass",
-      "evidence": "worldbuilding-bible.md has a dedicated section for 丸山ひなた (Maruyama Hinata) starting at line 114. Documents her backstory, personality, relationship arc with 律 across all 6 chapters (chance encounters, bonding moments at the lighthouse, fishing lessons, the emotional lighthouse-lighting climax). Romance is restrained and layered throughout."
-    },
-    {
-      "id": "AC-11",
-      "title": "Art direction references Animal Crossing style",
-      "status": "pass",
-      "evidence": "art-direction.md explicitly cites '风格基准：Animal Crossing（どうぶつの森）× 日式离岛美学' and includes dedicated section 'なぜ Animal Crossing 风格' explaining the UX rationale (low cognitive load, intuitive tile recognition, elastic/breathing animation language)."
-    },
-    {
-      "id": "AC-12",
-      "title": "concept-baseline.json has new design (protagonist, romantic_interest, setting)",
-      "status": "pass",
-      "evidence": "concept-baseline.json schema_version=2.0. protagonist: {name_jp:'山田律', name_romaji:'Yamada Ritsu', age:29, gender:'male', occupation:'东京广告公司创意总监'}. romantic_interest: {name_jp:'丸山ひなた', name_romaji:'Maruyama Hinata', age:24}. setting: {island_name:'輝島（Kagayaki-jima）', art_reference:'动物森友会（どうぶつの森）'}."
-    }
+  "feature_coverage": {
+    "core_puzzle_mechanics": "implemented",
+    "special_blocks": "fixed",
+    "combo_tracker": "implemented",
+    "zen_mode": "implemented",
+    "npc_narrative": "implemented",
+    "memory_capsule": "implemented",
+    "island_meta_progression": "implemented",
+    "area_restoration_effect": "implemented",
+    "iap_flow": "verified",
+    "audio_system": "complete",
+    "level_generation": "verified",
+    "backend_api": "verified"
+  },
+  "checklist_summary": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0
+  },
+  "checklist_details": [
+    { "id": "C-01", "item": "关卡资源存在（6 章 × 30 关）", "status": "pass", "evidence": "game-client/assets/resources/levels/ 下含 all-levels.json 及 ch1–ch6 子目录" },
+    { "id": "C-02", "item": "SpecialBlockType 枚举正确（WAVE/LIGHT_CHAIN/PIERCE/SWAP/CASCADE）", "status": "pass", "evidence": "SpecialBlock.ts L9–14 枚举值与概念文档一致" },
+    { "id": "C-03", "item": "ComboTracker 导出、连锁阈值升至 6", "status": "pass", "evidence": "fix-special-mechanics-report: COMBO_MAX 从 4 升至 6，增加 _checkSpecialGeneration" },
+    { "id": "C-04", "item": "GameScene.triggerSpecialBlock() 回调全部挂载", "status": "pass", "evidence": "fix-special-mechanics-report: WaveBehavior/PierceBehavior/SwapBehavior/CascadeBehavior 回调全部接通" },
+    { "id": "C-05", "item": "TileCell 支持 specialBlockType 字段", "status": "pass", "evidence": "fix-special-mechanics-report: TileGrid.ts TileCell 接口新增 specialBlockType?: string" },
+    { "id": "C-06", "item": "AudioConfig SFX 枚举完整（包含 SPECIAL_LIGHT_CHAIN/PIERCE/SWAP/CASCADE）", "status": "pass", "evidence": "fix-special-mechanics-report + AudioConfig.ts 确认 ZEN_AMBIENT, ZEN_COMPLETE 也已添加" },
+    { "id": "C-07", "item": "ZenModeManager.ts 文件存在", "status": "pass", "evidence": "文件路径 scripts/puzzle/ZenModeManager.ts 存在" },
+    { "id": "C-08", "item": "ZenModeHUD.ts 文件存在", "status": "pass", "evidence": "文件路径 scripts/ui/ZenModeHUD.ts 存在" },
+    { "id": "C-09", "item": "MainMenuScene 接入 ZenMode（consumeSlot + enterZenMode）", "status": "pass", "evidence": "MainMenuScene.ts L166–171 确认 consumeSlot() + enterZenMode()" },
+    { "id": "C-10", "item": "NarrativeManager.ts 文件存在", "status": "pass", "evidence": "文件路径 scripts/meta/NarrativeManager.ts 存在" },
+    { "id": "C-11", "item": "NPCDialog.ts 文件存在", "status": "pass", "evidence": "文件路径 scripts/ui/NPCDialog.ts 存在" },
+    { "id": "C-12", "item": "IslandMapScene 监听 narrativeTrigger 事件", "status": "pass", "evidence": "IslandMapScene.ts L115–152 注册 narrativeTrigger 监听，调用 NarrativeManager" },
+    { "id": "C-13", "item": "MemoryCapsuleManager.ts 文件存在", "status": "pass", "evidence": "文件路径 scripts/meta/MemoryCapsuleManager.ts 存在" },
+    { "id": "C-14", "item": "IslandMapScene 在章节通关后调用 unlockForChapter", "status": "pass", "evidence": "IslandMapScene.ts L234 调用 MemoryCapsuleManager.getInstance()?.unlockForChapter(chapterId)" },
+    { "id": "C-15", "item": "IAPManager glowstone 字段完整，货币正确到账", "status": "pass", "evidence": "fix-shop-iap-report: IAPSku 增加 glowstone 字段，sandbox_test.purchase_flow_works=true" },
+    { "id": "C-16", "item": "ShopScene IAP_SKUS 目录与后端 SKU 对齐", "status": "pass", "evidence": "fix-shop-iap-report: SKU 校正为 small/medium/large/mega_pack，glowstone 金额匹配" },
+    { "id": "C-17", "item": "IslandMapScene / ProgressionManager / AreaRestorationEffect 存在", "status": "pass", "evidence": "三文件均在 scripts/meta/ 目录下已确认" },
+    { "id": "C-18", "item": "编译结果（Cocos Web-Mobile Build）", "status": "pass", "evidence": "compile-result.json overall=pass；LevelLoader.ts 动态导入问题已修复" },
+    { "id": "C-19", "item": "运行时冒烟测试（后端 6 个 TC）", "status": "pass", "evidence": "runtime-smoke-result.json summary.verdict=pass，6/6 通过" },
+    { "id": "C-20", "item": "stitch-game-client 整合报告，无未解决问题", "status": "pass", "evidence": "stitch-game-client-report.json unresolved=[]" }
   ],
-  "non_blocking_notes": [
-    {
-      "id": "UNRESOLVED-01",
-      "severity": "non_blocking",
-      "title": "BoardEventManager inspector wiring (Cocos Creator @property limitation)",
-      "description": "BoardEventManager is a plain TypeScript class wired via @property in GameScene, but Cocos Creator @property inspector wiring only works for Component subclasses. The inspector reference will be null at runtime unless BoardEventManager is promoted to Component or instantiated programmatically.",
-      "suggested_fix": "Either extend BoardEventManager from Component and add @ccclass decorator, or remove @property and construct it programmatically in GameScene.start() (matching the ObstacleManager pattern).",
-      "impact": "Runtime null reference for boardEventManager; does not affect TypeScript compilation."
-    },
-    {
-      "id": "UNRESOLVED-02",
-      "severity": "non_blocking",
-      "title": "LevelConfig.board_events type mismatch (string[] vs BoardEvent[])",
-      "description": "LevelConfig.board_events is typed as string[] in LevelLoader.ts but BoardEventManager.loadEvents() expects BoardEvent[]. The initFromLevelConfig() shim converts string[] to BoardEvent[] with chapter_unlock=1 and empty config, losing per-event configuration data.",
-      "suggested_fix": "Update LevelLoader.ts LevelConfig.board_events type to BoardEvent[] | string[] and ensure level-design.json uses the structured BoardEvent[] form for rich event config.",
-      "impact": "Per-event config (intervals, rotate thresholds) cannot be specified from level JSON in current form; simple string event names still work."
-    }
+  "gaps": [],
+  "api_discoveries": [
+    "Auth endpoint requires platform field (ios/android/taptap); spec body was missing this field",
+    "Save route is GET/PUT /v1/save/:playerId (not /v1/save); PUT requires client_updated_at field",
+    "IAP SKUs are small_pack(60gs)/medium_pack(200gs)/large_pack(600gs)/mega_pack(1400gs)/monthly_card/starter_pack — not glowstone_N as spec assumed",
+    "IAP response returns glowstone_granted and updated_currency.glowstone; client must use these fields to compute delta and credit player"
   ],
-  "checks_summary": {
-    "total": 12,
-    "passed": 12,
-    "failed": 0,
-    "non_blocking_issues": 2
-  }
+  "iteration_notes": ""
 }

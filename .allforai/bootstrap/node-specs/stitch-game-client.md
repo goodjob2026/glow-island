@@ -1,89 +1,204 @@
 ---
-node: stitch-game-client
+node_id: stitch-game-client
+capability: implement
+human_gate: false
+hard_blocked_by:
+  - fix-special-mechanics
+  - fix-shop-iap
+  - implement-zen-mode
+  - implement-npc-narrative
+  - implement-memory-capsule
+  - implement-audio
+unlocks: [compile-verify]
 exit_artifacts:
-  - .allforai/bootstrap/stitch-game-client-report.json
+  - path: .allforai/bootstrap/stitch-game-client-report.json
 ---
 
-# Task: Game Client 模块串联整合
+# Task: Game Client 新组件串联整合
 
-读取所有实现模块的产出，识别断开的连接，修复集成缺口，产出覆盖率报告。
+将本轮实现的 6 个新组件连接到现有场景图，修复集成缺口，产出覆盖率报告。
 
 ## Context Pull
 
-**必需：**
-- 读取所有实现节点的exit_artifacts（TypeScript文件），特别是事件名称和接口调用
-- 从 `.allforai/game-design/animation-spec.json` 读取 `trigger` 字段（验证动画触发点）
-- 从 `.allforai/game-design/vfx-spec.json` 读取 `trigger` 字段（验证粒子触发点）
+读取本轮所有 implement 节点的 exit_artifacts，重点关注：
+- `.allforai/implement/fix-special-mechanics-report.json` — `issues_found[]` 中的文件变更
+- `.allforai/implement/fix-shop-iap-report.json` — `sandbox_test.purchase_flow_works`
+- `.allforai/implement/implement-audio-report.json` — 新增枚举值
+- 新建的 TypeScript 文件：`ZenModeManager.ts`, `ZenModeHUD.ts`, `NarrativeManager.ts`, `NPCDialog.ts`, `MemoryCapsuleManager.ts`
 
 ## Theory Anchors
 
-- **Enum Exhaustiveness**: 每个枚举值（TileType/SFXKey/SpecialBlockType）都必须有代码路径
-- **Event Coverage**: 每个发射的事件都必须有至少一个监听者
+- **Event Coverage**: 每个 `node.emit(event)` 都必须有对应的 `node.on(event)` 监听者
+- **Singleton Initialization**: 每个 `Manager.getInstance()` 的单例组件必须挂载到场景中的某个节点
 
 ## Guidance
 
-### 检查清单（逐项验证并修复）
+### 1. ZenModeManager — 接入 MainMenuScene
 
-**1. 游戏主流程连线**
-- [ ] GameScene组件监听 TileGrid.`tilesMatched` → 播放 tile-disappear.anim
-- [ ] GameScene组件监听 ComboTracker.`comboChanged` → 更新 GameHUD 连击显示
-- [ ] GameSession监听目标完成 → 触发 LevelCompletePopup
-- [ ] LevelCompletePopup → 调用 ProgressionManager.recordLevelComplete()
-- [ ] ProgressionManager.`chapterMaterialsSufficient` → 触发 AreaRestorationEffect
+```bash
+grep -n "ZenMode\|zen\|zenButton" \
+  game-client/assets/scripts/ui/MainMenuScene.ts 2>/dev/null | head -10
+```
 
-**2. 岛屿地图流程**
-- [ ] IslandMapScene进入时 → 调用 ProgressionManager.loadFromCloud()
-- [ ] ChapterNode.COMPLETED状态 → AreaRestorationEffect已播放
+若 MainMenuScene 无 ZenMode 入口 → 在按钮回调区添加：
 
-**3. 商店流程**
-- [ ] ShopScene → IAPManager.purchase() → 后端/iap/verify → ProgressionManager.addCurrency()
-- [ ] CurrencyDisplay 监听 ProgressionManager 的货币变化
+```typescript
+import { ZenModeManager } from '../puzzle/ZenModeManager';
 
-**4. 场景跳转**
-- [ ] MainMenu → 关卡选择场景（LevelSelectScene）
-- [ ] GameScene完成 → IslandMap
-- [ ] MainMenu → LeaderboardScene
-- [ ] MainMenu / GameScene → ShopScene（通过浮层入口）
+// 禅境模式入口按钮回调
+onZenModeButtonClick(): void {
+  const mgr = ZenModeManager.getInstance();
+  if (!mgr || !mgr.consumeSlot()) {
+    // 今日次数已用完，弹出提示
+    this.node.emit('showToast', '今日禅境次数已用完，明天再来');
+    return;
+  }
+  mgr.enterZenMode();
+  director.loadScene('GameScene');
+}
+```
 
-**5. 音效绑定**
-- [ ] TileMatcher路径合法 → AudioManager.playSFX(TILE_CONNECT)
-- [ ] 消除 → TILE_DISAPPEAR
-- [ ] ComboTracker等级 → 对应COMBO_LV1/2/3
-- [ ] SpecialBlock触发 → 对应SPECIAL_xxx
-- [ ] AreaRestorationEffect第4阶段 → AREA_RESTORE
-- [ ] LighthouseFinal → LIGHTHOUSE_ON
+确认 `ZenModeManager` 组件已挂载到 MainMenuScene 或持久化节点（PersistentNode）。
 
-**6. 枚举覆盖矩阵**
-验证以下枚举的每个值都有处理代码路径：
-- TileType（20种）：BoardGenerator生成、TileMatcher匹配、UI渲染
-- SFXKey（12种）：AudioManager播放调用点
-- SpecialBlockType（4种）：触发行为 + 粒子特效 + 音效
+### 2. NarrativeManager + NPCDialog — 接入 IslandMapScene
 
-### 修复规则
-- 缺少监听者：在合适的初始化方法中添加 `eventTarget.on()`
-- 场景跳转未接线：在对应UI的按钮回调中添加 `director.loadScene()`
-- 枚举缺少处理：在对应switch中补充case
+```bash
+grep -n "narrativeTrigger\|NPCDialog\|NarrativeManager\|AreaRestoration" \
+  game-client/assets/scripts/meta/IslandMapScene.ts 2>/dev/null | head -15
+```
+
+若 `IslandMapScene` 无 `narrativeTrigger` 监听 → 在 `onLoad` 添加：
+
+```typescript
+import { NarrativeManager } from '../meta/NarrativeManager';
+import { NPCDialog } from '../ui/NPCDialog';
+
+// 在场景初始化中注册：
+this.areaRestorationEffect?.node.on('narrativeTrigger', (data: { chapter: number, trigger: string }) => {
+  const lines = NarrativeManager.getInstance()?.getNPCLines(data.chapter, data.trigger as any);
+  if (lines && lines.length > 0) {
+    const line = lines[0].lines[0];
+    this.npcDialog?.showLine(line.text_zh);
+  }
+  // 解锁日记碎片
+  NarrativeManager.getInstance()?.getChapterFragments(data.chapter).forEach(f => {
+    if (f.unlock_condition === 'area_restore') {
+      NarrativeManager.getInstance()?.unlockFragment(f.id);
+    }
+  });
+});
+```
+
+确认 `NPCDialog` 组件实例（`this.npcDialog`）已通过 `@property` 绑定。
+
+### 3. MemoryCapsuleManager — 接入 IslandMapScene
+
+```bash
+grep -n "memoryCapsule\|MemoryCapsule\|EVENT_CHAPTER_FULLY_RESTORED" \
+  game-client/assets/scripts/meta/IslandMapScene.ts 2>/dev/null | head -10
+```
+
+若未接入 → 添加：
+
+```typescript
+import { MemoryCapsuleManager } from '../meta/MemoryCapsuleManager';
+import { EVENT_CHAPTER_FULLY_RESTORED } from './AreaRestorationEffect';
+
+// 在 onLoad 中：
+this.node.on(EVENT_CHAPTER_FULLY_RESTORED, (chapter: number) => {
+  const capsule = MemoryCapsuleManager.getInstance()?.unlockForChapter(chapter);
+  if (capsule) {
+    this.node.emit('memoryCapsuleUnlocked', capsule);
+    // TODO: 触发胶囊解锁 UI 弹出（后续 UI 迭代实现，当前记录 emit 即可）
+  }
+});
+```
+
+### 4. GameSession — ZenMode 步数旁路
+
+```bash
+grep -n "stepsLeft\|outOfMoves\|triggerFail\|_triggerLevelFail\|zenComplete" \
+  game-client/assets/scripts/game/GameSession.ts | head -15
+```
+
+确认步数耗尽判断中有 ZenMode 旁路：
+
+```typescript
+if (stepsLeft <= 0 && !ZenModeManager.getInstance()?.isActive()) {
+  this._triggerLevelFail();
+} else if (stepsLeft <= 0 && ZenModeManager.getInstance()?.isActive()) {
+  this._triggerZenComplete();
+}
+```
+
+若 `_triggerZenComplete` 缺失 → 添加：
+
+```typescript
+private _triggerZenComplete(): void {
+  this.emit('zenComplete', { type: 'decoration', item_id: 'flower_pot_01', quantity: 1 });
+  AudioManager.getInstance()?.playSFX(SFXKey.ZEN_COMPLETE);
+}
+```
+
+### 5. AudioConfig 枚举覆盖验证
+
+确认 `AudioConfig.ts` 中存在：
+- `BGMKey.ZEN_AMBIENT` （ZenModeManager.enterZenMode() 需要）
+- `SFXKey.ZEN_COMPLETE` （GameSession._triggerZenComplete() 需要）
+
+若不存在 → 添加到对应 enum（见 implement-audio 节点）。
+
+### 6. 单例挂载检查
+
+以下 Manager 单例必须在场景加载时初始化（挂载到 PersistentNode 或各自场景根节点）：
+- `ZenModeManager` — 建议挂到 PersistentNode（跨场景保持 `_active` 状态）
+- `NarrativeManager` — 挂到 IslandMapScene 根节点
+- `MemoryCapsuleManager` — 挂到 IslandMapScene 根节点
+
+```bash
+grep -rn "ZenModeManager\|NarrativeManager\|MemoryCapsuleManager" \
+  game-client/assets --include="*.ts" | grep -v "import\|interface\|type " | head -20
+```
+
+### 7. IAP 流程验证
+
+从 `fix-shop-iap-report.json` 读取 `sandbox_test.purchase_flow_works`：
+- `true` → IAP 集成已验证，无需额外操作
+- `false` / 缺失 → 标注为 unresolved
+
+### 8. SpecialBlock 集成验证
+
+从 `fix-special-mechanics-report.json` 读取 `issues_found[]`：
+- 若 `BoardEventManager.ts` 有变更 → 验证 `onSwapSelectionStart` 已注册
+- 若 `ComboTracker.ts` 有变更 → 验证 `SPECIAL_BLOCK_GENERATION_COMBO` 已被使用
 
 ## Exit Artifacts
 
-**stitch-game-client-report.json**：
+**`.allforai/bootstrap/stitch-game-client-report.json`**：
+
 ```json
 {
-  "stitched_at": "ISO timestamp",
-  "connections_checked": 24,
-  "connections_fixed": 3,
-  "enum_coverage": {
-    "TileType": { "total": 20, "covered": 20, "gaps": [] },
-    "SFXKey": { "total": 12, "covered": 12, "gaps": [] }
+  "stitched_at": "<ISO>",
+  "new_components_integrated": {
+    "ZenModeManager": "connected | missing",
+    "ZenModeHUD": "connected | missing",
+    "NarrativeManager": "connected | missing",
+    "NPCDialog": "connected | missing",
+    "MemoryCapsuleManager": "connected | missing"
   },
+  "connections_checked": 12,
+  "connections_fixed": 3,
+  "iap_flow_verified": true,
+  "special_blocks_verified": true,
   "fixes_applied": [
-    { "location": "GameScene.ts:init()", "fix": "添加tilesMatched事件监听" }
+    { "location": "IslandMapScene.ts:onLoad()", "fix": "添加 narrativeTrigger 事件监听" }
   ],
   "unresolved": []
 }
 ```
 
+`unresolved` 为空时，compile-verify 可安全进行。
+
 ## Downstream Contract
 
-→ `cross-module-stitch` 读取：修复后的 API 调用代码（IAPManager/ProgressionManager 的后端调用点）
-→ `compile-verify` 读取：报告中的 `unresolved[]`，如不为空则编译可能失败
+→ compile-verify 读取: `unresolved[]`（不为空则可能编译失败）

@@ -23,8 +23,11 @@
     }
   ],
   "goals": [
+    "implement",
+    "demo",
     "product-verify",
-    "tune"
+    "quality-checks",
+    "concept-acceptance"
   ],
   "product_vision": "治愈系节奏连击连连看：快速连接→combo爽感→修复小岛→解锁新章节，6章叙事+律×ひなた暧昧情感线，单货币（沙滩币）唯一付费点是续关，无体力/无PvP。",
   "target_stacks": [
@@ -111,8 +114,10 @@
     ],
     "updated_at": "2026-05-12T16:10:02.820591+00:00"
   },
-  "bootstrap_version": "0.8.6",
+  "bootstrap_version": "0.8.7",
   "has_concept_drift": true,
   "concept_drift_source": "product-concept",
-  "updated_at": "2026-05-12T16:10:02.820591+00:00"
+  "last_bootstrap_goal": "implement",
+  "last_bootstrap_nodes": 11,
+  "updated_at": "2026-05-14T12:00:00+08:00"
 }

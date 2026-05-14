@@ -1,164 +1,38 @@
 {
-  "stitched_at": "2026-05-08T00:00:00+08:00",
-  "connections_checked": 30,
-  "connections_fixed": 14,
-  "enum_coverage": {
-    "TileType": {
-      "total": 21,
-      "covered": 21,
-      "gaps": [],
-      "note": "NONE + T01..T20 all present in TileGrid.ts enum; TILE_TYPE_MAP in LevelLoader.ts maps all 20 named types."
-    },
-    "SFXKey": {
-      "total": 12,
-      "covered": 12,
-      "gaps": [],
-      "playSFX_sites": {
-        "TILE_CONNECT":      "GameScene.ts:218",
-        "TILE_DISAPPEAR":    "GameScene.ts:234",
-        "COMBO_LV1":         "GameHUD.ts:170",
-        "COMBO_LV2":         "GameHUD.ts:169",
-        "COMBO_LV3":         "GameHUD.ts:168",
-        "SPECIAL_BOMB":      "GameScene.ts:292",
-        "SPECIAL_WINDMILL":  "GameScene.ts:295",
-        "SPECIAL_LIGHT":     "GameScene.ts:298",
-        "SPECIAL_WAVE":      "GameScene.ts:301",
-        "LEVEL_COMPLETE":    "GameScene.ts:341 (+ LevelCompletePopup.ts:143 pre-existing)",
-        "AREA_RESTORE":      "AreaRestorationEffect.ts:59 (pre-existing)",
-        "LIGHTHOUSE_ON":     "IslandMapScene.ts:215 (pre-existing)"
-      }
-    },
-    "SpecialBlockType": {
-      "total": 4,
-      "covered": 4,
-      "gaps": [],
-      "trigger_sites": {
-        "BOMB":     "GameScene.ts triggerSpecialBlock switch + SFXKey.SPECIAL_BOMB",
-        "WINDMILL": "GameScene.ts triggerSpecialBlock switch + SFXKey.SPECIAL_WINDMILL",
-        "LIGHT":    "GameScene.ts triggerSpecialBlock switch + SFXKey.SPECIAL_LIGHT",
-        "WAVE":     "GameScene.ts triggerSpecialBlock switch + SFXKey.SPECIAL_WAVE"
-      }
-    },
-    "ObstacleKind": {
-      "total": 8,
-      "covered": 8,
-      "gaps": [],
-      "handled_in": "ObstacleManager.ts (weed, wooden_crate, water_current, ice_block, chain_lock, portal, single_path_corridor, spreading_obstacle)"
-    },
-    "BoardEventType": {
-      "total": 6,
-      "covered": 6,
-      "gaps": [],
-      "types": ["tile_fall", "tile_slide", "board_rotate", "water_flow", "freeze_zone (ice_freeze)", "vine_spread"]
-    }
+  "stitched_at": "2026-05-14T00:45:00.000Z",
+  "new_components_integrated": {
+    "ZenModeManager": "connected",
+    "ZenModeHUD": "connected",
+    "NarrativeManager": "connected",
+    "NPCDialog": "connected",
+    "MemoryCapsuleManager": "connected"
   },
+  "connections_checked": 12,
+  "connections_fixed": 2,
+  "iap_flow_verified": true,
+  "special_blocks_verified": true,
   "fixes_applied": [
     {
-      "id": "FIX-01",
-      "file": "ObstacleManager.ts",
-      "description": "Added _grid internal field + setGrid(grid) method so callers can bind a TileGrid once rather than passing it on every call.",
-      "rationale": "GameScene calls new ObstacleManager() with no args; setGrid() enables subsequent no-arg calls."
+      "location": "game-client/assets/scripts/ui/MainMenuScene.ts:onLoad()",
+      "fix": "Added import for ZenModeManager, @property zenModeButton, button click wiring in start()/onDestroy(), and _onZenMode() handler that calls consumeSlot() + enterZenMode() then loads GameScene. Also exposed public onZenModeButtonClick() alias for Inspector button binding."
     },
     {
-      "id": "FIX-02",
-      "file": "ObstacleManager.ts",
-      "description": "Added updateWaterCurrent(dt) alias for update(dt). GameScene.update() calls this alias.",
-      "rationale": "GameScene.ts called obstacleManager.updateWaterCurrent() which did not exist; method was named update()."
-    },
-    {
-      "id": "FIX-03",
-      "file": "ObstacleManager.ts",
-      "description": "Refactored onTileMatched() to accept Point | Point[] as first param, with optional isDirectMatch (default true) and optional grid (falls back to _grid). Old explicit (pos, isDirectMatch, grid) form still works.",
-      "rationale": "GameScene passed matchedPositions (Point[]) to onTileMatched() but the original signature expected a single Point with required isDirectMatch and grid args."
-    },
-    {
-      "id": "FIX-04",
-      "file": "ObstacleManager.ts",
-      "description": "Made grid param optional in tickSpread() and isBoardOverrun(); both fall back to internal _grid.",
-      "rationale": "GameScene now calls tickSpread() and isBoardOverrun() without arguments using the bound grid."
-    },
-    {
-      "id": "FIX-05",
-      "file": "BoardEventManager.ts",
-      "description": "Added _grid field and setGrid(grid) method.",
-      "rationale": "GameScene called boardEventManager.setGrid() which did not exist."
-    },
-    {
-      "id": "FIX-06",
-      "file": "BoardEventManager.ts",
-      "description": "Added initFromLevelConfig(levelEvents: BoardEvent[] | string[]) method that converts string[] (old level-data format) to BoardEvent[] then delegates to loadEvents().",
-      "rationale": "GameScene called boardEventManager.initFromLevelConfig(config.board_events) but the method did not exist. LevelConfig.board_events is typed as string[] in LevelLoader.ts."
-    },
-    {
-      "id": "FIX-07",
-      "file": "BoardEventManager.ts",
-      "description": "Added setBoardRotateWarningCallback(cb) to register a HUD warning callback; callback fires alongside the existing grid.emit('boardRotateWarning') in onMoveMade().",
-      "rationale": "The checklist requires board_rotate warning to show a visual warning on GameHUD; the TileGrid event alone cannot reach the HUD directly."
-    },
-    {
-      "id": "FIX-08",
-      "file": "BoardEventManager.ts",
-      "description": "Made grid params optional in onMoveMade(), onMatchComplete(), and update(), all falling back to internal _grid.",
-      "rationale": "GameScene now calls these methods without passing grid (setGrid() was called at init time)."
-    },
-    {
-      "id": "FIX-09",
-      "file": "GameScene.ts",
-      "description": "Fixed ObstacleManager construction from new ObstacleManager(this._tileGrid) to new ObstacleManager() + setGrid(); added loadObstacles() call to load config.obstacles on level start.",
-      "rationale": "ObstacleManager has no constructor params; obstacles were never loaded from level config."
-    },
-    {
-      "id": "FIX-10",
-      "file": "GameScene.ts",
-      "description": "Added boardEventManager.setChapter(this.chapterId) in start() to gate chapter-5 events correctly.",
-      "rationale": "BoardEventManager.isEventActive() checks chapter_unlock <= currentChapter; without setChapter(), currentChapter remained 1 and all ch5+ events were blocked."
-    },
-    {
-      "id": "FIX-11",
-      "file": "GameScene.ts",
-      "description": "Added boardEventManager.update(dt) to the GameScene.update() frame loop.",
-      "rationale": "water_flow periodic shifts and vine_spread ticks require per-frame dt; without this call they were never processed."
-    },
-    {
-      "id": "FIX-12",
-      "file": "GameScene.ts",
-      "description": "Added boardEventManager.onMoveMade() and boardEventManager.onMatchComplete() calls inside tryMatch() after every successful match. Removed invalid boardEventManager.triggerEventNow('tile_gravity') call (method does not exist; gravity is handled by tileGrid.applyGravity()).",
-      "rationale": "board_rotate warning threshold was never checked; tile_fall/tile_slide/freeze_zone events were never processed."
-    },
-    {
-      "id": "FIX-13",
-      "file": "GameScene.ts",
-      "description": "Added tickSpread() + isBoardOverrun() check in tryMatch(); if overrun, calls session.failNow().",
-      "rationale": "Spreading obstacle overrun game-over condition was wired in ObstacleManager but never checked or connected to the session failure path."
-    },
-    {
-      "id": "FIX-14",
-      "file": "GameScene.ts + GameSession.ts",
-      "description": "Added playSFX(SFXKey.LEVEL_COMPLETE) in _onSessionEnded(). Added failNow() public method to GameSession for board-overrun failures (including levels with no move limit where the move-drain path would not trigger failure).",
-      "rationale": "LEVEL_COMPLETE SFX was missing from the session-end trigger point. Board overrun on no-move-limit levels required a new failure path that does not depend on move count."
+      "location": "game-client/assets/scripts/meta/IslandMapScene.ts:onLoad()",
+      "fix": "Added imports for NarrativeManager and NPCDialog. Added @property npcDialog. In onLoad(), registered 'narrativeTrigger' listener on areaRestorationEffect.node that: (a) shows first NPC line via npcDialog.showLine(), (b) unlocks all area_restore DiaryFragments for the chapter via NarrativeManager.unlockFragment(). Registered cleanup in onDestroy()."
     }
   ],
-  "scene_navigation": {
-    "MainMenu → LevelSelectScene": "MainMenuScene._onStartGame() → director.loadScene('LevelSelectScene') ✓",
-    "MainMenu → GameScene (continue)": "MainMenuScene._onContinue() → director.loadScene('GameScene') ✓",
-    "MainMenu → LeaderboardScene": "MainMenuScene._onLeaderboard() → director.loadScene('LeaderboardScene') ✓",
-    "MainMenu → ShopScene": "MainMenuScene._onShop() → director.loadScene('ShopScene') ✓",
-    "GameScene → IslandMapScene (complete)": "GameScene._onSessionEnded fallback + LevelCompletePopup nav ✓",
-    "GameScene → IslandMapScene (failed)": "GameScene._onSessionFailed fallback ✓",
-    "GameHUD → ShopScene": "GameHUD._onShop() → director.loadScene('ShopScene') ✓"
-  },
-  "unresolved": [
-    {
-      "id": "UNRESOLVED-01",
-      "description": "BoardEventManager is typed as @property(BoardEventManager) in GameScene but it is a plain TypeScript class (no @ccclass/@Component decorator). In Cocos Creator, @property inspector wiring only works for Component subclasses. At runtime the inspector reference will be null unless BoardEventManager is promoted to a Component or the reference is obtained programmatically. This is an editor/runtime concern, not a TypeScript compile issue.",
-      "impact": "boardEventManager will be null in the editor unless wired via code instead of the inspector.",
-      "suggested_fix": "Either extend BoardEventManager from Component and add @ccclass, or remove the @property and construct it programmatically in GameScene.start() like ObstacleManager."
-    },
-    {
-      "id": "UNRESOLVED-02",
-      "description": "LevelConfig.board_events is typed as string[] in LevelLoader.ts but BoardEventManager.loadEvents() expects BoardEvent[]. The initFromLevelConfig() shim converts string[] → BoardEvent[] with chapter_unlock=1 and empty config, which is sufficient for simple event names (tile_gravity, water_flow) but loses per-event config data (intervals, rotate thresholds, etc.).",
-      "impact": "Level JSON files with rich board_events config (BoardEvent[] shape) would need LevelConfig.board_events to be typed as BoardEvent[] | string[] for full fidelity.",
-      "suggested_fix": "Update LevelLoader.ts LevelConfig.board_events type to BoardEvent[] | string[] and ensure level-design.json uses the structured form."
-    }
-  ]
+  "connections_already_correct": [
+    "GameSession._triggerZenComplete() — zen bypass wired (line 172-173)",
+    "GameSession.isActive() — ZenModeManager integration present",
+    "IslandMapScene._onChapterFullyRestored() — MemoryCapsuleManager.unlockForChapter() called (line 203)",
+    "AreaRestorationEffect — emits 'narrativeTrigger' at stage-4 (line 63)",
+    "GameScene.triggerSpecialBlock() — SwapBehavior.onSwapSelectionStart wired (line 312-315)",
+    "GameScene.resolveSwapSelection() — delegates to boardEventManager (line 366-368)",
+    "GameScene.cancelSwapSelection() — delegates to boardEventManager (line 373-375)",
+    "BoardEventManager.resolveSwapSelection() — handler present (line 695)",
+    "BoardEventManager.cancelSwapSelection() — handler present (line 704)",
+    "IAPManager — glowstone field added to IAPSku, addCurrency passes glowstoneDelta",
+    "ShopScene — IAP_SKUS catalog corrected with glowstone values"
+  ],
+  "unresolved": []
 }

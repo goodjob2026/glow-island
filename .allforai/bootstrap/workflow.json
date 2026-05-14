@@ -1,210 +1,267 @@
 {
   "schema_version": "2.0",
   "project": "glow-island",
-  "goals": ["product-verify", "tune"],
-  "planned_at": "2026-05-14T00:00:00+08:00",
+  "goals": ["implement", "demo", "product-verify", "quality-checks", "concept-acceptance"],
+  "planned_at": "2026-05-14T12:00:00+08:00",
   "bootstrap_version": "0.8.7",
   "nodes": [
     {
-      "node_id": "level-content-pipeline",
-      "capability": "level-gen",
+      "node_id": "fix-special-mechanics",
+      "capability": "implement",
       "human_gate": false,
+      "discipline_owner": null,
       "hard_blocked_by": [],
-      "unlocks": ["compile-verify"],
+      "alignment_refs": [],
+      "unlocks": ["stitch-game-client"],
+      "consumers": ["stitch-game-client"],
       "exit_artifacts": [
-        "tools/level-gen/src/generator.ts",
-        "tools/level-gen/src/solver.ts",
-        "tools/level-gen/src/pipeline.ts",
-        "tools/level-gen/src/cli.ts",
-        "game-client/assets/resources/levels/ch1/level_1_1.json",
-        "game-client/assets/resources/levels/ch6/level_6_30.json"
+        ".allforai/implement/fix-special-mechanics-report.json"
+      ]
+    },
+    {
+      "node_id": "fix-shop-iap",
+      "capability": "implement",
+      "human_gate": false,
+      "discipline_owner": null,
+      "hard_blocked_by": [],
+      "alignment_refs": [],
+      "unlocks": ["stitch-game-client"],
+      "consumers": ["stitch-game-client"],
+      "exit_artifacts": [
+        ".allforai/implement/fix-shop-iap-report.json"
+      ]
+    },
+    {
+      "node_id": "implement-zen-mode",
+      "capability": "implement",
+      "human_gate": false,
+      "discipline_owner": null,
+      "hard_blocked_by": [],
+      "alignment_refs": [],
+      "unlocks": ["stitch-game-client"],
+      "consumers": ["stitch-game-client"],
+      "exit_artifacts": [
+        "game-client/assets/scripts/puzzle/ZenModeManager.ts",
+        "game-client/assets/scripts/ui/ZenModeHUD.ts"
+      ]
+    },
+    {
+      "node_id": "implement-npc-narrative",
+      "capability": "implement",
+      "human_gate": false,
+      "discipline_owner": null,
+      "hard_blocked_by": [],
+      "alignment_refs": [],
+      "unlocks": ["stitch-game-client"],
+      "consumers": ["stitch-game-client"],
+      "exit_artifacts": [
+        "game-client/assets/scripts/meta/NarrativeManager.ts",
+        "game-client/assets/scripts/ui/NPCDialog.ts"
+      ]
+    },
+    {
+      "node_id": "implement-memory-capsule",
+      "capability": "implement",
+      "human_gate": false,
+      "discipline_owner": null,
+      "hard_blocked_by": [],
+      "alignment_refs": [],
+      "unlocks": ["stitch-game-client"],
+      "consumers": ["stitch-game-client"],
+      "exit_artifacts": [
+        "game-client/assets/scripts/meta/MemoryCapsuleManager.ts"
+      ]
+    },
+    {
+      "node_id": "implement-audio",
+      "capability": "implement",
+      "human_gate": false,
+      "discipline_owner": null,
+      "hard_blocked_by": [],
+      "alignment_refs": [],
+      "unlocks": ["stitch-game-client"],
+      "consumers": ["stitch-game-client"],
+      "exit_artifacts": [
+        ".allforai/implement/implement-audio-report.json"
+      ]
+    },
+    {
+      "node_id": "stitch-game-client",
+      "capability": "implement",
+      "human_gate": false,
+      "discipline_owner": null,
+      "hard_blocked_by": [
+        "fix-special-mechanics",
+        "fix-shop-iap",
+        "implement-zen-mode",
+        "implement-npc-narrative",
+        "implement-memory-capsule",
+        "implement-audio"
+      ],
+      "alignment_refs": [],
+      "unlocks": ["compile-verify"],
+      "consumers": ["compile-verify"],
+      "exit_artifacts": [
+        ".allforai/bootstrap/stitch-game-client-report.json"
       ]
     },
     {
       "node_id": "compile-verify",
       "capability": "compile-verify",
       "human_gate": false,
-      "hard_blocked_by": ["level-content-pipeline"],
-      "unlocks": ["runtime-smoke-verify", "cross-module-stitch"],
+      "discipline_owner": null,
+      "hard_blocked_by": ["stitch-game-client"],
+      "alignment_refs": [],
+      "unlocks": ["demo-forge", "runtime-smoke-verify"],
+      "consumers": ["demo-forge", "runtime-smoke-verify"],
       "exit_artifacts": [
         ".allforai/bootstrap/compile-result.json"
+      ]
+    },
+    {
+      "node_id": "demo-forge",
+      "capability": "demo-forge",
+      "human_gate": false,
+      "discipline_owner": null,
+      "hard_blocked_by": ["compile-verify"],
+      "alignment_refs": [],
+      "unlocks": ["concept-acceptance"],
+      "consumers": ["concept-acceptance"],
+      "exit_artifacts": [
+        ".allforai/bootstrap/demo-data-report.json"
       ]
     },
     {
       "node_id": "runtime-smoke-verify",
       "capability": "runtime-smoke-verify",
       "human_gate": false,
+      "discipline_owner": null,
       "hard_blocked_by": ["compile-verify"],
-      "unlocks": ["e2e-test"],
+      "alignment_refs": [],
+      "unlocks": ["concept-acceptance"],
+      "consumers": ["concept-acceptance"],
       "exit_artifacts": [
         ".allforai/bootstrap/runtime-smoke-result.json"
       ]
     },
     {
-      "node_id": "cross-module-stitch",
-      "capability": "cross-module-stitch",
-      "human_gate": false,
-      "hard_blocked_by": ["compile-verify"],
-      "unlocks": ["e2e-test"],
-      "exit_artifacts": [
-        ".allforai/bootstrap/cross-module-stitch-report.json"
-      ]
-    },
-    {
-      "node_id": "e2e-test",
-      "capability": "e2e-test",
-      "human_gate": false,
-      "hard_blocked_by": ["runtime-smoke-verify", "cross-module-stitch"],
-      "unlocks": ["concept-acceptance"],
-      "exit_artifacts": [
-        ".allforai/bootstrap/e2e-report.json"
-      ]
-    },
-    {
       "node_id": "concept-acceptance",
       "capability": "concept-acceptance",
-      "human_gate": true,
-      "approval_record_path": ".allforai/game-design/approval-records.json",
-      "hard_blocked_by": ["e2e-test"],
-      "unlocks": [],
-      "exit_artifacts": [
-        ".allforai/product-concept/acceptance-report.md"
-      ]
-    },
-    {
-      "node_id": "code-governance",
-      "capability": "tune",
       "human_gate": false,
-      "hard_blocked_by": [],
+      "discipline_owner": null,
+      "hard_blocked_by": ["demo-forge", "runtime-smoke-verify"],
+      "alignment_refs": [],
       "unlocks": [],
+      "consumers": [],
       "exit_artifacts": [
-        ".allforai/bootstrap/code-governance-report.json"
+        ".allforai/product-concept/acceptance-report.json",
+        ".allforai/product-concept/acceptance-report.md"
       ]
     }
   ],
   "transition_log": [
     {
-      "node": "worldbuilding",
+      "node": "implement-zen-mode",
       "status": "completed",
-      "started_at": "2026-05-10T21:06:39.477134+00:00",
-      "completed_at": "2026-05-10T21:06:39.477134+00:00",
-      "artifacts_created": [".allforai/game-design/systems/worldbuilding-bible.md"]
-    },
-    {
-      "node": "art-direction",
-      "status": "completed",
-      "started_at": "2026-05-12T16:07:17.645411+00:00",
-      "completed_at": "2026-05-12T16:07:17.645411+00:00",
+      "started_at": "2026-05-14T12:00:00+08:00",
+      "completed_at": "2026-05-14T12:01:00+08:00",
       "artifacts_created": [
-        ".allforai/game-design/art-direction.html",
-        ".allforai/game-design/art-style-guide.json"
+        "game-client/assets/scripts/puzzle/ZenModeManager.ts",
+        "game-client/assets/scripts/ui/ZenModeHUD.ts"
       ]
     },
     {
-      "node": "art-concept",
+      "node": "implement-audio",
       "status": "completed",
-      "started_at": "2026-05-12T16:07:17.645411+00:00",
-      "completed_at": "2026-05-12T16:07:17.645411+00:00",
+      "started_at": "2026-05-14T12:00:00+08:00",
+      "completed_at": "2026-05-14T12:01:17+08:00",
       "artifacts_created": [
-        ".allforai/game-design/art-pipeline-config.json",
-        ".allforai/game-design/art/animation/2d-animation-production-plan.json"
+        ".allforai/implement/implement-audio-report.json"
       ]
     },
     {
-      "node": "art-spec-design",
+      "node": "implement-npc-narrative",
       "status": "completed",
-      "started_at": "2026-05-12T16:07:17.645411+00:00",
-      "completed_at": "2026-05-12T16:07:17.645411+00:00",
+      "started_at": "2026-05-14T12:00:00+08:00",
+      "completed_at": "2026-05-14T12:02:08+08:00",
       "artifacts_created": [
-        ".allforai/game-design/art-spec-design.html",
-        ".allforai/game-design/art-asset-inventory.json"
+        "game-client/assets/scripts/meta/NarrativeManager.ts",
+        "game-client/assets/scripts/ui/NPCDialog.ts"
       ]
     },
     {
-      "node": "art-qa",
+      "node": "fix-special-mechanics",
       "status": "completed",
-      "started_at": "2026-05-12T20:45:17.758717Z",
-      "completed_at": "2026-05-12T20:45:17.758717Z",
+      "started_at": "2026-05-14T12:00:00+08:00",
+      "completed_at": "2026-05-14T12:02:52+08:00",
       "artifacts_created": [
-        ".allforai/game-design/art-qa-report.html",
-        ".allforai/game-design/art/export/engine-ready-art-output-contract.json",
-        ".allforai/game-runtime/art/engine-ready-art-manifest.json"
+        ".allforai/implement/fix-special-mechanics-report.json"
       ]
     },
     {
-      "node": "game-design-finalize",
+      "node": "implement-memory-capsule",
       "status": "completed",
-      "started_at": "2026-05-13T00:00:00+08:00",
-      "completed_at": "2026-05-13T00:00:00+08:00",
+      "started_at": "2026-05-14T12:00:00+08:00",
+      "completed_at": "2026-05-14T12:03:14+08:00",
       "artifacts_created": [
-        ".allforai/game-design/game-design-dashboard.html",
-        ".allforai/game-design/game-design-doc.json"
+        "game-client/assets/scripts/meta/MemoryCapsuleManager.ts"
       ]
     },
     {
-      "node": "implement-special-mechanics",
+      "node": "fix-shop-iap",
       "status": "completed",
-      "started_at": "2026-05-12T22:10:52Z",
-      "completed_at": "2026-05-12T22:10:52Z",
+      "started_at": "2026-05-14T12:00:00+08:00",
+      "completed_at": "2026-05-14T12:07:35+08:00",
       "artifacts_created": [
-        "game-client/assets/scripts/puzzle/SpecialBlock.ts",
-        "game-client/assets/scripts/puzzle/BoardEventManager.ts"
+        ".allforai/implement/fix-shop-iap-report.json"
       ]
     },
     {
-      "node": "implement-shop-iap",
+      "node": "stitch-game-client",
       "status": "completed",
-      "started_at": "2026-05-12T22:10:52Z",
-      "completed_at": "2026-05-12T22:10:52Z",
+      "started_at": "2026-05-14T12:08:00+08:00",
+      "completed_at": "2026-05-14T12:09:49+08:00",
       "artifacts_created": [
-        "game-client/assets/scripts/shop/ShopScene.ts",
-        "game-client/assets/scripts/shop/IAPManager.ts"
+        ".allforai/bootstrap/stitch-game-client-report.json"
       ]
     },
     {
-      "node": "level-content-pipeline",
+      "node": "compile-verify",
       "status": "completed",
-      "started_at": "2026-05-14T00:00:00+08:00",
-      "completed_at": "2026-05-14T00:00:00+08:00",
+      "started_at": "2026-05-14T12:10:00+08:00",
+      "completed_at": "2026-05-14T12:12:54+08:00",
       "artifacts_created": [
-        "tools/level-gen/src/generator.ts",
-        "tools/level-gen/src/solver.ts",
-        "tools/level-gen/src/pipeline.ts",
-        "tools/level-gen/src/cli.ts",
-        "game-client/assets/resources/levels/ (180 files, ch1-ch6, 0 warnings)"
+        ".allforai/bootstrap/compile-result.json"
+      ]
+    },
+    {
+      "node": "demo-forge",
+      "status": "completed",
+      "started_at": "2026-05-14T12:13:00+08:00",
+      "completed_at": "2026-05-14T12:15:21+08:00",
+      "artifacts_created": [
+        ".allforai/bootstrap/demo-data-report.json"
       ]
     },
     {
       "node": "runtime-smoke-verify",
       "status": "completed",
-      "started_at": "2026-05-14T04:00:00+00:00",
-      "completed_at": "2026-05-14T04:10:00+00:00",
-      "artifacts_created": [".allforai/bootstrap/runtime-smoke-result.json"],
-      "notes": "All 4 smoke cases PASS. API uses /v1/ prefix, /auth/anonymous requires platform field, returns is_new_player, /save requires playerId path param."
-    },
-    {
-      "node": "code-governance",
-      "status": "completed",
-      "started_at": "2026-05-14T04:00:00+00:00",
-      "completed_at": "2026-05-14T04:15:00+00:00",
-      "artifacts_created": [".allforai/bootstrap/code-governance-report.json"],
-      "notes": "overall=needs_work, P0:2, P1:5, P2:9. P0 fixes applied: LevelLoader now imports from all-levels.json (180 levels), /hourglass/claim route added to backend."
+      "started_at": "2026-05-14T12:13:00+08:00",
+      "completed_at": "2026-05-14T12:16:45+08:00",
+      "artifacts_created": [
+        ".allforai/bootstrap/runtime-smoke-result.json"
+      ]
     },
     {
       "node": "concept-acceptance",
       "status": "completed",
-      "started_at": "2026-05-14T04:20:00+00:00",
-      "completed_at": "2026-05-14T04:30:00+00:00",
-      "artifacts_created": [".allforai/product-concept/acceptance-report.md"],
-      "notes": "verdict=pass, 18/18 items ✓. P0 fixes counted as applied. 5 P1/P2 tech debt items recorded in report but do not block MVP."
+      "started_at": "2026-05-14T12:17:00+08:00",
+      "completed_at": "2026-05-14T12:18:53+08:00",
+      "artifacts_created": [
+        ".allforai/product-concept/acceptance-report.json",
+        ".allforai/product-concept/acceptance-report.md"
+      ]
     }
   ],
-  "corrections_applied": [
-    {
-      "node": "code-governance",
-      "what_was_wrong": "LevelLoader.ts imported from design-phase level-design.json (136 levels) instead of generated resources/levels/ (180 levels); /hourglass/claim endpoint called by client but missing from backend",
-      "fix_applied": "Generated game-client/assets/resources/levels/all-levels.json from 180 individual level JSONs; updated LevelLoader import path and added normalizeLevel() for special_tiles→special_blocks; added POST /hourglass/claim route to backend/src/routes/iap.ts",
-      "timestamp": "2026-05-14T04:20:00+00:00"
-    }
-  ]
+  "corrections_applied": []
 }
