@@ -1,5 +1,5 @@
 // IAPManager.ts — Singleton service for in-app purchases.
-// Single-currency model: all IAP products grant beach_coins only.
+// Dual-currency model: IAP products may grant beach_coins and/or glowstone.
 // Platform strategy:
 //   iOS (sys.isNative): Cocos IAP plugin (ccf.purchaseInApp)
 //   WebGL/dev sandbox (NODE_ENV !== 'production'): auto-succeed, grant coins locally
@@ -18,12 +18,15 @@ const HOURGLASS_MONTHLY_CARD_COINS = 30  // 2× for monthly card holders
 const HOURGLASS_FILL_DURATION_MS = 4 * 60 * 60 * 1000  // 4 hours in ms
 const LS_HOURGLASS_KEY = 'glow_hourglass_start_ts'
 
-/** Matches the iap_skus[] schema in economy-model.json (single-currency) */
+/** Matches the iap_skus[] schema in economy-model.json (dual-currency) */
 export interface IAPSku {
   sku_id: string
   name: string
   name_en: string
+  /** Beach coins granted by this SKU (soft currency; 0 for pure glowstone packs) */
   beach_coins: number
+  /** Glowstone granted by this SKU (hard currency; 0 for non-glowstone products) */
+  glowstone: number
   price_cny: number
   price_usd: number
   bonus_items: string[] | null
@@ -40,6 +43,7 @@ export interface IAPSku {
 export interface PurchaseResult {
   success: boolean
   beachCoins: number
+  glowstone: number
   newBalance: number
   error?: string
 }
@@ -112,9 +116,9 @@ export class IAPManager {
           process.env.NODE_ENV !== 'production'
 
         if (isSandbox) {
-          // Dev/sandbox: simulate success, grant directly
+          // Dev/sandbox: simulate success, grant both beach_coins and glowstone directly
           const pm = ProgressionManager.getInstance()
-          pm.addCurrency(sku.beach_coins, 0)
+          pm.addCurrency(sku.beach_coins, sku.glowstone)
           if (sku.sku_id === 'starter_pack') {
             localStorage.setItem(LS_STARTER_PURCHASED, 'true')
           }
@@ -122,7 +126,7 @@ export class IAPManager {
             this._persistMonthlyCard(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString())
           }
           const newBalance = pm.getCurrentProgress().currency.beachCoins
-          return { success: true, beachCoins: sku.beach_coins, newBalance }
+          return { success: true, beachCoins: sku.beach_coins, glowstone: sku.glowstone, newBalance }
         } else {
           receipt = `web_receipt_${productId}_${Date.now()}`
         }
@@ -130,19 +134,20 @@ export class IAPManager {
 
       const verified = await this._verifyWithBackend(receipt, productId, sku)
       if (!verified) {
-        return { success: false, beachCoins: 0, newBalance: 0, error: 'RECEIPT_INVALID' }
+        return { success: false, beachCoins: 0, glowstone: 0, newBalance: 0, error: 'RECEIPT_INVALID' }
       }
 
       const progress = ProgressionManager.getInstance().getCurrentProgress()
       return {
         success: true,
         beachCoins: sku.beach_coins,
+        glowstone: sku.glowstone,
         newBalance: progress.currency.beachCoins,
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err)
       console.error('[IAPManager] purchase error:', message)
-      return { success: false, beachCoins: 0, newBalance: 0, error: message }
+      return { success: false, beachCoins: 0, glowstone: 0, newBalance: 0, error: message }
     }
   }
 
@@ -255,7 +260,7 @@ export class IAPManager {
 
   /**
    * Call backend /iap/verify.
-   * On success, applies granted beach_coins to ProgressionManager.
+   * On success, applies granted beach_coins and glowstone to ProgressionManager.
    */
   private async _verifyWithBackend(
     receipt: string,
@@ -290,11 +295,12 @@ export class IAPManager {
 
       const data = (await res.json()) as VerifyResponse
 
-      // Apply verified beach_coins balance
+      // Apply verified beach_coins and glowstone balances from authoritative server response
       const pm = ProgressionManager.getInstance()
       const progress = pm.getCurrentProgress()
       const coinDelta = data.updated_currency.beach_coins - progress.currency.beachCoins
-      pm.addCurrency(Math.max(0, coinDelta), 0)
+      const glowstoneDelta = data.updated_currency.glowstone - (progress.currency.glowstones ?? 0)
+      pm.addCurrency(Math.max(0, coinDelta), Math.max(0, glowstoneDelta))
 
       if (sku.sku_id === 'starter_pack') {
         localStorage.setItem(LS_STARTER_PURCHASED, 'true')

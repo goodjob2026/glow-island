@@ -14,6 +14,9 @@ import { EventTarget } from 'cc';
 import { LevelLoader, LevelConfig } from './LevelLoader';
 import { RewardCalculator, Reward } from './RewardCalculator';
 import { MaterialCollector } from './MaterialCollector';
+import { ZenModeManager } from '../puzzle/ZenModeManager';
+import { SFXKey } from '../audio/AudioConfig';
+import { AudioManager } from '../audio/AudioManager';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -166,8 +169,12 @@ export class GameSession extends EventTarget {
 
     // Check failure condition only when there is a move limit.
     if (this.config?.max_moves !== null && this._movesRemaining <= 0 && !this._objectivesMet) {
-      this._setState('failed');
-      this.emit(GAME_SESSION_EVENT.SESSION_FAILED);
+      if (ZenModeManager.getInstance()?.isActive()) {
+        this._triggerZenComplete();
+      } else {
+        this._setState('failed');
+        this.emit(GAME_SESSION_EVENT.SESSION_FAILED);
+      }
     }
   }
 
@@ -311,5 +318,11 @@ export class GameSession extends EventTarget {
       : this._movesRemaining;
     if (remaining >= THREE_STAR_MOVES_REMAINING) return 3;
     return 2;
+  }
+
+  private _triggerZenComplete(): void {
+    const decorationReward = { type: 'decoration', item_id: 'flower_pot_01', quantity: 1 };
+    this.emit('zenComplete', decorationReward);
+    AudioManager.getInstance()?.playSFX(SFXKey.ZEN_COMPLETE);
   }
 }

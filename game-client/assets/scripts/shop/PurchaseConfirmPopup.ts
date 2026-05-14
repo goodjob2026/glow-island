@@ -1,6 +1,6 @@
 // PurchaseConfirmPopup.ts — Modal popup for purchase confirmation.
-// Single-currency: shows beach_coins amount, no hard currency.
-// Success toast: "购买成功，X枚沙滩币已到账"
+// Dual-currency: shows glowstone for glowstone packs, beach_coins for others.
+// Success toast: "购买成功，X丹青石已到账" / "购买成功，X枚沙滩币已到账"
 // Failure toast: "购买失败，请重试（ERROR_CODE）"
 
 import { Component, _decorator, Label, Button, Node, tween, UIOpacity } from 'cc'
@@ -20,7 +20,7 @@ export class PurchaseConfirmPopup extends Component {
   @property(Label)
   productNameLabel: Label | null = null
 
-  /** Shows the beach_coins amount granted by this purchase */
+  /** Shows the currency amount granted by this purchase (beach_coins or glowstone) */
   @property(Label)
   coinsAmountLabel: Label | null = null
 
@@ -93,6 +93,10 @@ export class PurchaseConfirmPopup extends Component {
       if (sku.sku_id === 'monthly_card') {
         // Monthly card grants ongoing benefit, not a lump sum
         this.coinsAmountLabel.string = '每日沙漏奖励×2（30沙滩币/次）'
+      } else if (sku.glowstone > 0 && sku.beach_coins === 0) {
+        this.coinsAmountLabel.string = `${sku.glowstone} 丹青石`
+      } else if (sku.beach_coins > 0 && sku.glowstone > 0) {
+        this.coinsAmountLabel.string = `${sku.beach_coins} 枚沙滩币 + ${sku.glowstone} 丹青石`
       } else {
         this.coinsAmountLabel.string = `${sku.beach_coins} 枚沙滩币`
       }
@@ -133,9 +137,16 @@ export class PurchaseConfirmPopup extends Component {
     if (result.success) {
       this.currencyDisplay?.refresh()
 
-      const coinsText = sku.sku_id === 'monthly_card'
-        ? '月卡已激活，每日沙漏奖励翻倍'
-        : `购买成功，${result.beachCoins}枚沙滩币已到账`
+      let coinsText: string
+      if (sku.sku_id === 'monthly_card') {
+        coinsText = '月卡已激活，每日沙漏奖励翻倍'
+      } else if (result.glowstone > 0 && result.beachCoins === 0) {
+        coinsText = `购买成功，${result.glowstone}丹青石已到账`
+      } else if (result.beachCoins > 0 && result.glowstone > 0) {
+        coinsText = `购买成功，${result.beachCoins}枚沙滩币 + ${result.glowstone}丹青石已到账`
+      } else {
+        coinsText = `购买成功，${result.beachCoins}枚沙滩币已到账`
+      }
       this._showToast(coinsText, true)
 
       this.scheduleOnce(() => { this.hide() }, TOAST_VISIBLE_SECONDS)

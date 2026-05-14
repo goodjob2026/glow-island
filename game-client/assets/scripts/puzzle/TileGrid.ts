@@ -40,6 +40,13 @@ export interface TileCell {
   obstacleHits?: number;
   isSelected: boolean;
   isLocked: boolean;
+  /**
+   * When set, this cell holds a special block of the given type.
+   * The renderer should display the special-tile visual instead of the base
+   * tile sprite, and the input handler should call triggerSpecialBlock() when
+   * either tile in a matched pair has this field set.
+   */
+  specialBlockType?: string;
 }
 
 export interface Point {

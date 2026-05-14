@@ -9,7 +9,10 @@ import { TileMatcher } from '../puzzle/TileMatcher';
 import { ComboTracker, COMBO_EVENT } from '../puzzle/ComboTracker';
 import { BoardEventManager } from '../puzzle/BoardEventManager';
 import { ObstacleManager, ObstacleKind } from '../puzzle/ObstacleManager';
-import { SpecialBlockFactory, SpecialBlockType } from '../puzzle/SpecialBlock';
+import {
+  SpecialBlockFactory, SpecialBlockType,
+  WaveBehavior, PierceBehavior, SwapBehavior, CascadeBehavior,
+} from '../puzzle/SpecialBlock';
 import { GameSession, GAME_SESSION_EVENT, SessionResult } from './GameSession';
 import { MaterialCollector } from './MaterialCollector';
 import { LevelLoader } from './LevelLoader';
@@ -162,6 +165,11 @@ export class GameScene extends Component {
       // Subscribe to ComboTracker events (for HUD)
       this._comboTracker.on(COMBO_EVENT.COMBO_CHANGED, this._onComboChangedFromTracker, this);
 
+      // Wire special-block auto-generation from combo thresholds.
+      this._comboTracker.onSpecialGeneration = (type, _comboCount) => {
+        this._spawnSpecialBlockAtBestPosition(type);
+      };
+
       // Subscribe to GameSession events
       this._session.on(GAME_SESSION_EVENT.SESSION_ENDED, this._onSessionEnded, this);
       this._session.on(GAME_SESSION_EVENT.SESSION_FAILED, this._onSessionFailed, this);
@@ -274,33 +282,147 @@ export class GameScene extends Component {
   /**
    * Trigger a special block at the given grid position.
    * Call this when a special tile is activated by the player.
+   *
+   * Behavior callbacks are wired before trigger() so that swap UI,
+   * pierce buff, cascade chain, and wave buff all integrate with the
+   * live board and BoardEventManager.
    */
   triggerSpecialBlock(row: number, col: number, type: SpecialBlockType): void {
     const behavior = SpecialBlockFactory.create(type);
     const comboCount = this._comboTracker.getComboCount();
+
+    // Wire behavior-specific callbacks before triggering.
+    switch (type) {
+      case SpecialBlockType.WAVE: {
+        const wave = behavior as WaveBehavior;
+        wave.onWaveBuffStart = (_duration: number, _center) => {
+          // Future: drive a wave-buff HUD timer or VFX here.
+        };
+        break;
+      }
+      case SpecialBlockType.PIERCE: {
+        const pierce = behavior as PierceBehavior;
+        pierce.onPierceBuffStart = (duration: number) => {
+          this._boardEventManager?.handlePierceBuff(duration);
+        };
+        break;
+      }
+      case SpecialBlockType.SWAP: {
+        const swap = behavior as SwapBehavior;
+        swap.onSwapSelectionStart = (timeoutSec, onSelect, onTimeout) => {
+          this._boardEventManager?.handleSwapSelection(timeoutSec, onSelect, onTimeout);
+          // Emit event so a UI overlay can highlight selectable cells.
+          this.node?.emit('openSwapUI');
+        };
+        break;
+      }
+      case SpecialBlockType.CASCADE: {
+        const cascade = behavior as CascadeBehavior;
+        cascade.onCascadeChainStart = (maxChains, delayMs, findNextPair, autoMatch) => {
+          this._boardEventManager?.handleCascadeChain(maxChains, delayMs, findNextPair, autoMatch);
+        };
+        break;
+      }
+      default:
+        break;
+    }
+
     behavior.trigger(this._tileGrid, { row, col }, comboCount);
 
     // --- SFX: special block triggers ---
     const audio = AudioManager.getInstance();
     if (audio) {
       switch (type) {
-        case SpecialBlockType.BOMB:
-          audio.playSFX(SFXKey.SPECIAL_BOMB);
-          break;
-        case SpecialBlockType.WINDMILL:
-          audio.playSFX(SFXKey.SPECIAL_WINDMILL);
-          break;
-        case SpecialBlockType.LIGHT:
-          audio.playSFX(SFXKey.SPECIAL_LIGHT);
-          break;
         case SpecialBlockType.WAVE:
           audio.playSFX(SFXKey.SPECIAL_WAVE);
+          break;
+        case SpecialBlockType.LIGHT_CHAIN:
+          audio.playSFX(SFXKey.SPECIAL_LIGHT_CHAIN);
+          break;
+        case SpecialBlockType.PIERCE:
+          audio.playSFX(SFXKey.SPECIAL_PIERCE);
+          break;
+        case SpecialBlockType.SWAP:
+          audio.playSFX(SFXKey.SPECIAL_SWAP);
+          break;
+        case SpecialBlockType.CASCADE:
+          audio.playSFX(SFXKey.SPECIAL_CASCADE);
+          break;
+        default:
           break;
       }
     }
 
-    // Apply gravity after special
-    this._tileGrid.applyGravity();
+    // Apply gravity after special (cascade drives its own timed gravity via callbacks)
+    if (type !== SpecialBlockType.CASCADE) {
+      this._tileGrid.applyGravity();
+    }
+  }
+
+  /**
+   * Called by the swap UI overlay when the player confirms two cell selections.
+   * Forwards to BoardEventManager to complete the swap.
+   */
+  resolveSwapSelection(a: { row: number; col: number }, b: { row: number; col: number }): void {
+    this._boardEventManager?.resolveSwapSelection(a, b);
+  }
+
+  /**
+   * Called by the swap UI overlay when the player cancels or the timeout fires.
+   */
+  cancelSwapSelection(): void {
+    this._boardEventManager?.cancelSwapSelection();
+  }
+
+  // -------------------------------------------------------------------------
+  // Special block auto-generation (triggered by ComboTracker thresholds)
+  // -------------------------------------------------------------------------
+
+  /**
+   * Spawns a special block tile on the board when a combo threshold is reached.
+   * Picks the most central non-obstacle, non-locked, non-empty cell as the host.
+   * The cell retains its original TileType so the pairing rule still applies —
+   * the specialBlockType field signals the renderer and input handler to treat
+   * this cell as a special tile.
+   */
+  private _spawnSpecialBlockAtBestPosition(type: SpecialBlockType): void {
+    const { rows, cols } = this._tileGrid.getSize();
+    const centerRow = Math.floor(rows / 2);
+    const centerCol = Math.floor(cols / 2);
+
+    let bestCell: Point | null = null;
+    let bestDist = Infinity;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const cell = this._tileGrid.getTile(r, c);
+        if (!cell || cell.isObstacle || cell.isLocked || cell.type === 'none') continue;
+        // Skip cells already marked as special.
+        if (cell.specialBlockType) continue;
+        const dist = Math.abs(r - centerRow) + Math.abs(c - centerCol);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestCell = { row: r, col: c };
+        }
+      }
+    }
+
+    if (!bestCell) return;
+
+    const existing = this._tileGrid.getTile(bestCell.row, bestCell.col);
+    if (!existing) return;
+
+    this._tileGrid.setTile(bestCell.row, bestCell.col, {
+      ...existing,
+      specialBlockType: type,
+    });
+
+    // Notify the renderer that a special tile was spawned.
+    (this._tileGrid as any).emit('specialBlockSpawned', {
+      row: bestCell.row,
+      col: bestCell.col,
+      type,
+    });
   }
 
   // -------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 // ShopScene.ts — Main shop / IAP scene component.
-// Single-currency model: all products grant 沙滩币 (beach_coins).
+// Dual-currency model: glowstone packs grant 丹青石 (glowstone), starter pack grants 沙滩币.
 // Renders IAP product cards, the 沙漏奖励 widget, and delegates
 // purchases to PurchaseConfirmPopup → IAPManager.
 
@@ -18,7 +18,8 @@ const IAP_SKUS: IAPSku[] = [
     sku_id: 'small_pack',
     name: '一抔沙',
     name_en: 'A Handful of Sand',
-    beach_coins: 60,
+    beach_coins: 0,
+    glowstone: 60,
     price_cny: 6,
     price_usd: 0.99,
     bonus_items: null,
@@ -33,7 +34,8 @@ const IAP_SKUS: IAPSku[] = [
     sku_id: 'medium_pack',
     name: '一把贝壳',
     name_en: 'A Handful of Shells',
-    beach_coins: 280,
+    beach_coins: 0,
+    glowstone: 200,
     price_cny: 25,
     price_usd: 3.99,
     bonus_items: ['专属图块皮肤×1（随机季节款）'],
@@ -48,7 +50,8 @@ const IAP_SKUS: IAPSku[] = [
     sku_id: 'large_pack',
     name: '一篮珊瑚',
     name_en: 'A Basket of Coral',
-    beach_coins: 880,
+    beach_coins: 0,
+    glowstone: 600,
     price_cny: 68,
     price_usd: 9.99,
     bonus_items: ['限定岛屿装饰件×1', '专属图块皮肤×2'],
@@ -63,7 +66,8 @@ const IAP_SKUS: IAPSku[] = [
     sku_id: 'mega_pack',
     name: '满篮礼',
     name_en: 'Lighthouse Bundle',
-    beach_coins: 2500,
+    beach_coins: 0,
+    glowstone: 1400,
     price_cny: 128,
     price_usd: 19.99,
     bonus_items: ['限定岛屿装饰件×2', '专属图块皮肤×3', '限定NPC互动道具×1'],
@@ -79,6 +83,7 @@ const IAP_SKUS: IAPSku[] = [
     name: '月卡',
     name_en: 'Moonlight Pass',
     beach_coins: 0,  // monthly card grants 2× hourglass, not a lump sum
+    glowstone: 10,   // small glowstone bonus on purchase (matches backend SKU_CONFIG)
     price_cny: 30,
     price_usd: 4.99,
     bonus_items: ['每日沙漏奖励×2（30沙滩币/次）', '专属月光卡图块皮肤×1'],
@@ -95,7 +100,8 @@ const IAP_SKUS: IAPSku[] = [
     sku_id: 'starter_pack',
     name: '新玩家礼包',
     name_en: 'New Islander Bundle',
-    beach_coins: 300,
+    beach_coins: 500,  // matches backend SKU_CONFIG items: beach_coins quantity 500
+    glowstone: 100,    // matches backend SKU_CONFIG glowstone: 100
     price_cny: 18,
     price_usd: 2.99,
     bonus_items: ['专属新玩家装饰件（灯塔小摆件）×1'],
@@ -257,10 +263,14 @@ export class ShopScene extends Component {
       view.nameLabel.string = sku.name
     }
 
-    // Beach coins amount display
+    // Currency amount display: show glowstone for glowstone packs, beach_coins for others
     if (view.coinsLabel) {
       if (sku.sku_id === 'monthly_card') {
         view.coinsLabel.string = '每日×2沙漏奖励'
+      } else if (sku.glowstone > 0 && sku.beach_coins === 0) {
+        view.coinsLabel.string = `${sku.glowstone} 丹青石`
+      } else if (sku.beach_coins > 0 && sku.glowstone > 0) {
+        view.coinsLabel.string = `${sku.beach_coins} 沙滩币 + ${sku.glowstone} 丹青石`
       } else {
         view.coinsLabel.string = `${sku.beach_coins} 沙滩币`
       }

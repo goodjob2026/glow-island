@@ -5,7 +5,8 @@ export enum BGMKey {
   CHAPTER_3 = 'bgm_chapter3_flower',
   CHAPTER_4 = 'bgm_chapter4_forest',
   CHAPTER_5 = 'bgm_chapter5_hotspring',
-  CHAPTER_6 = 'bgm_chapter6_lighthouse'
+  CHAPTER_6 = 'bgm_chapter6_lighthouse',
+  ZEN_AMBIENT = 'bgm_zen_ambient'
 }
 
 export enum SFXKey {
@@ -18,9 +19,14 @@ export enum SFXKey {
   SPECIAL_WINDMILL = 'sfx_special_windmill',
   SPECIAL_LIGHT = 'sfx_special_light',
   SPECIAL_WAVE = 'sfx_special_wave',
+  SPECIAL_LIGHT_CHAIN = 'sfx_special_light_chain',
+  SPECIAL_PIERCE = 'sfx_special_pierce',
+  SPECIAL_SWAP = 'sfx_special_swap',
+  SPECIAL_CASCADE = 'sfx_special_cascade',
   LEVEL_COMPLETE = 'sfx_level_complete',
   AREA_RESTORE = 'sfx_area_restore',
-  LIGHTHOUSE_ON = 'sfx_lighthouse_on'
+  LIGHTHOUSE_ON = 'sfx_lighthouse_on',
+  ZEN_COMPLETE = 'sfx_zen_complete'
 }
 
 export const BGM_VOLUME_KEY = 'audio_bgm_volume'
