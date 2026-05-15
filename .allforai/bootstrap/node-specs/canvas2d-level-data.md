@@ -1,7 +1,7 @@
 ---
 node_id: canvas2d-level-data
 node: canvas2d-level-data
-goal: "生成6章×30关=180关关卡配置：步数、异形棋盘layout、特殊图块、难度曲线"
+goal: "生成6章×30关=180关关卡配置：步数、异形棋盘layoutPool随机选取、特殊图块随机落点"
 capability: canvas2d-engineer
 human_gate: false
 hard_blocked_by: []
@@ -14,142 +14,202 @@ exit_artifacts:
 
 ## Mission
 
-生成全量180关关卡配置，每章有专属棋盘形状，30关内形状随难度逐步演变。
+生成全量180关关卡配置。每关有一个 `layoutPool`（同主题形状池），进关时随机选取一个，
+特殊图块位置在活跃格中随机落点，保证每次游玩体验不同。
+
+## 随机策略
+
+| 元素 | 是否随机 | 说明 |
+|------|---------|------|
+| 棋盘形状变体 | ✅ 每次进关随机 | 从 layoutPool 随机选1个，重试=新形状 |
+| 形状镜像/旋转 | ✅ 对称形状自动变换 | 花/水滴/树形4方向随机，等效形状数×4 |
+| 特殊图块位置 | ✅ 随机落点 | count 指定数量，位置在活跃格中随机 |
+| 图块排列 | ✅ 已有shuffle | 每次进关重新随机 |
+| 步数上限 | ❌ 固定 | 影响三星判定，不可变 |
+| 图块类型数 | ❌ 固定 | 决定难度基线 |
 
 ## 文件结构
 
-- `layouts.js` — 棋盘形状库（字符串掩码）
-- `level-data.js` — 180关配置，引用 layouts.js 中的形状
+- `layouts.js` — 棋盘形状库 + 随机选取/变换函数
+- `level-data.js` — 180关配置，使用 layoutPool
 
 ## 关卡数据结构
 
 ```js
 // level-data.js
-import { LAYOUTS } from './layouts.js';
+import { LAYOUTS, pickLayout } from './layouts.js';
 
 export const LEVELS = {
-  "1-1":  {
+  "1-1": {
     steps: 80,
-    layout: LAYOUTS.harbor_boat_simple,   // 字符串数组
+    layoutPool: [                          // 同主题多变体，进关时随机选1个
+      LAYOUTS.harbor_boat_simple_v1,
+      LAYOUTS.harbor_boat_simple_v2,
+    ],
     types: 3,
-    specials: []
+    specials: []                           // count+type，位置在TileGrid._init()中随机
   },
   "1-15": {
     steps: 60,
-    layout: LAYOUTS.harbor_boat_full,
+    layoutPool: [
+      LAYOUTS.harbor_boat_full_v1,
+      LAYOUTS.harbor_boat_full_v2,
+      LAYOUTS.harbor_boat_full_v3,
+    ],
     types: 4,
-    specials: [{ type: 6, count: 1 }]     // 光波×1
+    specials: [{ type: 6, count: 1 }]
   },
   // ... 全部180关
 };
 
 export function getLevel(chapter, level) {
-  return LEVELS[`${chapter}-${level}`] || null;
+  const lvl = LEVELS[`${chapter}-${level}`];
+  if (!lvl) return null;
+  return {
+    ...lvl,
+    layout: pickLayout(lvl.layoutPool),    // 调用时随机选取+随机变换
+  };
 }
 ```
+
+## layouts.js — 形状库与随机函数
+
+```js
+// 随机选取 + 随机镜像/旋转（对称形状4方向）
+export function pickLayout(pool) {
+  const base = pool[Math.floor(Math.random() * pool.length)];
+  return randomTransform(base);
+}
+
+// 对行列对称的形状应用随机翻转
+function randomTransform(layout) {
+  const flipH = Math.random() < 0.5;  // 水平翻转
+  const flipV = Math.random() < 0.5;  // 垂直翻转
+  let rows = [...layout];
+  if (flipV) rows = rows.reverse();
+  if (flipH) rows = rows.map(r => r.split('').reverse().join(''));
+  return rows;
+}
+```
+
+每章 3 个基础形状变体，加上随机翻转，等效形状数 = 3×4 = 12种/章。
 
 ## layouts.js — 六章棋盘形状
 
 `'X'` = 活跃格（放图块），`'_'` = 非活跃格（空洞，路径不可穿越）
+每章提供 3 个变体，进关时随机选一个再随机镜像/旋转。
 
-### Ch1 码头 — 渔船
+### Ch1 码头 — 渔船（3变体）
 
-**harbor_boat_simple**（关1-10，入门，偏矩形）
+**harbor_boat_v1**（宽体渔船）
 ```
-"_XXXXXXXX_",
-"_XXXXXXXXX",
+"_XXXXXXXXX_",
 "XXXXXXXXXXX",
 "XXXXXXXXXXX",
 "_XXXXXXXXX_",
 "__XXXXXXX__",
+"____XXX____",
 ```
 
-**harbor_boat_full**（关11-30，完整船形）
+**harbor_boat_v2**（尖头船）
 ```
+"_____X_____",
 "____XXX____",
-"___XXXXX___",
 "__XXXXXXX__",
 "XXXXXXXXXXX",
 "XXXXXXXXXXX",
 "__XXXXXXX__",
-"____XXX____",
 ```
-船头尖锐，中段最宽，两侧空格迫使路径沿船体轮廓或走边框。
+
+**harbor_boat_v3**（双桅船，中间细腰）
+```
+"__XX___XX__",
+"_XXXXXXXXX_",
+"XXXXXXXXXXX",
+"XXXXXXXXXXX",
+"_XXXXXXXXX_",
+"__XX___XX__",
+```
 
 ---
 
-### Ch2 陶艺 — 陶罐
+### Ch2 陶艺 — 陶罐（3变体）
 
-**pottery_vase_wide**（关1-15）
+**pottery_vase_v1**（高颈罐）
 ```
+"____XXX____",
 "___XXXXX___",
-"__XXXXXXX__",
+"___XXXXX___",
 "_XXXXXXXXX_",
 "_XXXXXXXXX_",
-"___XXXXX___",  ← 罐颈（最窄处，路径瓶颈）
-"__XXXXXXX__",
-"_XXXXXXXXX_",
+"XXXXXXXXXXX",
 "XXXXXXXXXXX",
 ```
 
-**pottery_vase_hollow**（关16-30，中心空洞增压）
+**pottery_vase_v2**（矮宽罐 + 镂空）
 ```
 "___XXXXX___",
 "__XXXXXXX__",
-"_XXX___XXX_",  ← 罐身中部镂空
 "_XXX___XXX_",
-"___XXXXX___",  ← 罐颈
+"_XXX___XXX_",
+"___XXXXX___",
 "__XXXXXXX__",
 "XXXXXXXXXXX",
-"XXXXXXXXXXX",
 ```
-罐身中部空洞把棋盘分成左右两侧，连线必须绕颈部或走边框。
+
+**pottery_vase_v3**（双耳陶瓶）
+```
+"XX_XXXXX_XX",
+"XX_XXXXX_XX",
+"_XXXXXXXXX_",
+"_XXXXXXXXX_",
+"__XXXXXXX__",
+"___XXXXX___",
+"____XXX____",
+```
 
 ---
 
-### Ch3 花田 — 五瓣花
+### Ch3 花田 — 花朵（3变体）
 
-**flower_simple**（关1-10）
+**flower_v1**（四瓣对称，大间距）
 ```
-"___XXXXX___",
+"___XX_XX___",
+"__XXXXXXX__",
+"_XXXXXXXXX_",
+"XX_XXXXX_XX",
+"_XXXXXXXXX_",
+"__XXXXXXX__",
+"___XX_XX___",
+```
+
+**flower_v2**（六瓣放射）
+```
+"__XXX_XXX__",
+"_XXXXXXXXX_",
+"XXXXXXXXXXX",
+"XXX_____XXX",
+"XXXXXXXXXXX",
+"_XXXXXXXXX_",
+"__XXX_XXX__",
+```
+
+**flower_v3**（花心空洞）
+```
+"__XXXXXXX__",
+"_XXX___XXX_",
+"_XX_____XX_",
+"_XXX___XXX_",
 "__XXXXXXX__",
 "_XXXXXXXXX_",
 "XXXXXXXXXXX",
-"_XXXXXXXXX_",
-"__XXXXXXX__",
-"___XXXXX___",
 ```
-
-**flower_petals**（关11-30，五瓣分区）
-```
-"__XX___XX__",
-"_XXXX_XXXX_",
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-"XXXXXXXXXXX",
-"_XXXXXXXXX_",
-"_XXXX_XXXX_",
-"__XX___XX__",
-```
-花瓣间的 `_` 空隙将棋盘切分为5个松散连通区，连线必须在花瓣内绕行或借助边框，
-难度来自空间约束而非图块数量。
 
 ---
 
-### Ch4 森林 — 圣诞树
+### Ch4 森林 — 树形（3变体）
 
-**forest_tree_simple**（关1-15）
-```
-"____XXX____",
-"___XXXXX___",
-"__XXXXXXX__",
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-"____XXX____",
-"____XXX____",
-```
-
-**forest_tree_dense**（关16-30，多层树 + 树干瓶颈）
+**forest_v1**（等腰三角树）
 ```
 "_____X_____",
 "____XXX____",
@@ -157,45 +217,72 @@ export function getLevel(chapter, level) {
 "__XXXXXXX__",
 "_XXXXXXXXX_",
 "XXXXXXXXXXX",
-"XXXXXXXXXXX",
-"____XXX____",
 "____XXX____",
 ```
-树干仅3格宽，是全图路径的必经瓶颈区，上下区域图块必须绕过树干连接。
+
+**forest_v2**（双峰山脊）
+```
+"_XXX___XXX_",
+"XXXXX_XXXXX",
+"XXXXXXXXXXX",
+"XXXXXXXXXXX",
+"__XXXXXXX__",
+"____XXX____",
+```
+
+**forest_v3**（松树 + 树根分叉）
+```
+"____XXX____",
+"___XXXXX___",
+"__XXXXXXX__",
+"_XXXXXXXXX_",
+"XXXXXXXXXXX",
+"_XX_____XX_",
+"_XX_____XX_",
+```
 
 ---
 
-### Ch5 温泉 — 水滴（中心空洞）
+### Ch5 温泉 — 水滴/泡泡（3变体）
 
-**hotspring_drop**（关1-10）
+**hotspring_v1**（单水滴，中心空洞）
 ```
 "___XXXXX___",
 "__XXXXXXX__",
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-"_XXXXXXXXX_",
-"__XXXXXXX__",
-"___XXXXX___",
-```
-
-**hotspring_hollow**（关11-30，核心空洞）
-```
-"___XXXXX___",
-"__XXXXXXX__",
-"_XXXXXXXXX_",
-"_XXX___XXX_",  ← 中心空洞（3×2格）
+"_XXX___XXX_",
 "_XXX___XXX_",
 "_XXXXXXXXX_",
 "__XXXXXXX__",
 "___XXXXX___",
 ```
-中心空洞把棋盘分为内环+外环两层，内层图块连接必须走外圈，大幅增加转弯约束。
+
+**hotspring_v2**（双泡泡，两区域）
+```
+"_XXXXX_____",
+"XXXXXXX____",
+"XXXXXXX____",
+"_XXXXXXX___",
+"___XXXXXXX_",
+"____XXXXXXX",
+"_____XXXXX_",
+```
+
+**hotspring_v3**（三环嵌套）
+```
+"__XXXXXXX__",
+"_XX_____XX_",
+"_X_XXXXX_X_",
+"_X_X___X_X_",
+"_X_XXXXX_X_",
+"_XX_____XX_",
+"__XXXXXXX__",
+```
 
 ---
 
-### Ch6 灯塔 — 灯塔剪影（最高难度）
+### Ch6 灯塔 — 灯塔剪影（3变体）
 
-**lighthouse_simple**（关1-15）
+**lighthouse_v1**（标准灯塔）
 ```
 "____XXX____",
 "____XXX____",
@@ -203,21 +290,30 @@ export function getLevel(chapter, level) {
 "__XXXXXXX__",
 "_XXXXXXXXX_",
 "XXXXXXXXXXX",
+"XXXXXXXXXXX",
 ```
 
-**lighthouse_complex**（关16-30，灯室+镂空底座）
+**lighthouse_v2**（灯塔 + 镂空底座）
 ```
-"____XXX____",  ← 灯室（3格宽，最受限）
 "____XXX____",
-"___XXXXX___",  ← 塔身渐宽
+"____XXX____",
 "___XXXXX___",
 "__XXXXXXX__",
-"_X_XXXXX_X_",  ← 底座拱门（中部镂空）
+"_X_XXXXX_X_",
 "XXXXX_XXXXX",
 "XXXXXXXXXXX",
 ```
-灯室仅3格，是全游戏最窄的路径区域。底座拱门空洞将底部分割为左右两翼，
-配合最多图块类型（5种）和最少步数（28步），是全游戏最高压力关卡形态。
+
+**lighthouse_v3**（螺旋塔，每层偏移）
+```
+"_____XXX___",
+"____XXXXX__",
+"___XXXXXXX_",
+"__XXXXXXXXX",
+"_XXXXXXXXX_",
+"XXXXXXXXX__",
+"XXXXXXXXXXX",
+```
 
 ---
 
@@ -251,9 +347,12 @@ export function getLevel(chapter, level) {
 
 ## 验收标准
 
-1. `layouts.js` 包含所有6章至少2种变体共≥12个形状定义
+1. `layouts.js` 包含所有6章各3种变体共≥18个形状定义 + `pickLayout` + `randomTransform` 函数
 2. 每个 layout 中活跃格总数为偶数（保证图块成对）
-3. `level-data.js` 包含全部180关数据（LEVELS对象有180个key）
-4. 第6章第30关：steps=25，layout=lighthouse_complex，types=5，specials含全部5种
-5. 所有 layout 字符串行等长（用 `_` 补齐）
-6. `getLevel(chapter, level)` 不存在时返回null，不报错
+3. 所有 layout 字符串行等长（用 `_` 补齐至最长行）
+4. `randomTransform` 对非对称形状（船/灯塔v3）flipH仍然能等长返回
+5. `level-data.js` 包含全部180关数据（LEVELS对象有180个key）
+6. 每关使用 `layoutPool` 数组（≥1个变体），`getLevel()` 调用时随机选取并变换
+7. 第6章第30关：steps=25，layoutPool含lighthouse_v2/v3，types=5，specials含全部5种
+8. `getLevel(chapter, level)` 不存在时返回null，不报错
+9. 特殊图块只指定 `{ type, count }`，不指定位置（位置由 TileGrid 在活跃格中随机分配）

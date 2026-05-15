@@ -48,15 +48,44 @@ function canWalk(r, c, grid, layout) {
 }
 ```
 
-### 棋盘布局（异形）
+### 棋盘布局（异形 + 随机）
 
-棋盘不再是纯矩形。关卡数据通过 `layout` 字符串数组定义棋盘形状：
+关卡数据的 `layoutPool` 包含1-5个同主题形状变体；`getLevel()` 在调用时随机选1个并随机镜像/旋转，返回最终 `layout` 字符串数组给 TileGrid。
+
 - `'X'` = 活跃格（可放图块）
 - `'_'` = 非活跃格（形状空洞，路径不可穿越）
 
-ROWS/COLS 从 layout 数组的行数/最长行推算。
+ROWS/COLS 从 layout 数组的行数/列数推算。
 
 图块生成时只在活跃格（layout='X'）放置，确保总数为偶数，成对出现。
+
+### 特殊图块随机落点
+
+关卡的 `specials: [{ type: 6, count: 1 }]` 只指定类型和数量，不指定位置。
+`_init()` 在 Fisher-Yates shuffle 后，将前 N 个图块替换为对应特殊类型：
+
+```js
+_init(levelData) {
+  const activeCells = /* 解析layout，收集所有活跃格 (r,c) 列表 */;
+  const total = activeCells.length; // 必须为偶数
+  
+  // 生成配对图块
+  let types = [];
+  for (let i = 0; i < total / 2; i++) types.push((i % levelData.types) + 1, (i % levelData.types) + 1);
+  shuffle(types); // Fisher-Yates
+  
+  // 替换特殊图块（随机位置）
+  for (const { type, count } of (levelData.specials || [])) {
+    for (let n = 0; n < count; n++) {
+      const idx = Math.floor(Math.random() * types.length);
+      types[idx] = type; // 随机替换一个图块为特殊类型
+    }
+  }
+  
+  // 填入棋盘
+  activeCells.forEach(({r, c}, i) => { this.grid[r][c] = types[i]; });
+}
+```
 
 ### cellSize 自适应缩放
 
