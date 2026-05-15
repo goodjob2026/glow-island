@@ -799,7 +799,7 @@
         "canvas2d-client-scaffold"
       ],
       "exit_artifacts": [
-        "canvas2d-client/www/capacitor.config.json",
+        "canvas2d-client/capacitor.config.json",
         "canvas2d-client/android/app/src/main/res/values/strings.xml"
       ]
     },

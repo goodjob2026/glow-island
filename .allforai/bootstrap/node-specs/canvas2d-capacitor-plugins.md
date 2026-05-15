@@ -7,7 +7,7 @@ human_gate: false
 hard_blocked_by:
   - canvas2d-client-scaffold
 exit_artifacts:
-  - "canvas2d-client/www/capacitor.config.json"
+  - "canvas2d-client/capacitor.config.json"
   - "canvas2d-client/android/app/src/main/res/values/strings.xml"
 ---
 
@@ -47,7 +47,7 @@ npx cap sync ios
 
 ## capacitor.config.json
 
-写入 `canvas2d-client/www/capacitor.config.json`（如已存在则合并更新）：
+更新 `canvas2d-client/capacitor.config.json`（scaffold 已创建初版，此节点合并插件配置）：
 
 ```json
 {
