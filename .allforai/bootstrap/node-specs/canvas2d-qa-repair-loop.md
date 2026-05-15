@@ -8,6 +8,7 @@ hard_blocked_by:
   - canvas2d-browser-qa
   - canvas2d-performance-qa
   - canvas2d-audio-qa
+  - canvas2d-art-quality-qa
 exit_artifacts:
   - "canvas2d-client/www/qa/repair-loop-report.json"
 ---
@@ -131,6 +132,8 @@ print(json.dumps(failures, indent=2, ensure_ascii=False))
 | `browser_TC-11` | 商店/沙漏 | `src/scenes/ShopScene.js`, `src/ProgressManager.js` |
 | `visual_*` | 渲染/截图 | `src/scenes/*.js`（对应 scene） |
 | `art_animation_*` | 动画 | `src/game/VFXSystem.js` |
+| `art_tile_*` | 图块美术缺失/质量不足 | **资产重生成**：`python3 scripts/gen_tile_art.py`（不是代码修复）；recommended_action 填 "REGENERATE_ASSET"，blocker_for_release=true |
+| `art_screenshot_*` | 截图黑屏/低像素 | 先检查场景渲染代码，再检查 wait 时长是否足够（`waitForTimeout` 加长到 1000ms） |
 
 ## 第三步：读取 node-spec + 修复
 

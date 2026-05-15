@@ -239,6 +239,52 @@ canvas.addEventListener('pointerdown', e => {
 
 ---
 
+## 13. 测试钩子（测试模式必须暴露，勿省略）
+
+ios-build WebKit 触控坐标验证 和 audio-qa 需要两个全局钩子，**必须在构造/初始化时注入**：
+
+```js
+// GameplayScene.onTap(x, y) 首行（DPR 映射测试用）
+if (typeof window !== 'undefined') window._lastTap = { x, y };
+```
+
+```js
+// AudioManager constructor 最后一行（audio-qa 需要访问实例）
+if (typeof window !== 'undefined') window._audioManager = this;
+```
+
+---
+
+## 14. Zen Mode 接口约定（zen-mode 节点依赖此接口）
+
+`GameplayScene.init()` 必须接受 `zenMode` 参数：
+
+```js
+init(params = {}) {
+  this._zenMode = params.zenMode === true;
+  this._steps = this._zenMode ? Infinity : levelData.steps;
+  // ...
+}
+```
+
+HUD 绘制：
+```js
+// _drawHUD()
+const stepsText = this._zenMode ? '∞' : String(this._steps);
+```
+
+失败检测：
+```js
+_checkFailure() {
+  if (this._zenMode) return false; // 禅模式不触发失败
+  return this._steps <= 0 && !this._tileGrid.isCleared();
+}
+```
+
+结算面板（禅模式）：无星评数字，显示"再来一局"按钮，写入 `ProgressManager.updateZenBestCombo()`。
+
+---
+
 ## 验收标准
 
 1. BFS 路径：转弯≤2、边框走廊、非活跃格阻断、Portal 零转弯代价

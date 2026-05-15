@@ -10,6 +10,8 @@ hard_blocked_by:
   - canvas2d-gameplay-quality-qa
   - canvas2d-performance-qa
   - canvas2d-audio-qa
+  - canvas2d-zen-mode
+  - canvas2d-shop-scene
 exit_artifacts:
   - "canvas2d-client/www/qa/browser-qa-report.json"
 ---
