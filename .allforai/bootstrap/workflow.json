@@ -479,7 +479,8 @@
       "human_gate": false,
       "hard_blocked_by": [],
       "exit_artifacts": [
-        "canvas2d-client/www/src/data/level-data.js"
+        "canvas2d-client/www/src/data/level-data.js",
+        "canvas2d-client/www/src/data/layouts.js"
       ]
     },
     {
@@ -645,7 +646,13 @@
         "canvas2d-client/www/qa/art-quality/gameplay_tile_clarity.png",
         "canvas2d-client/www/qa/art-quality/combo_fever_effect.png",
         "canvas2d-client/www/qa/art-quality/mobile_375_layout.png",
-        "canvas2d-client/www/qa/art-quality/mobile_428_layout.png"
+        "canvas2d-client/www/qa/art-quality/mobile_428_layout.png",
+        "canvas2d-client/www/qa/art-quality/ch1_boat_shape.png",
+        "canvas2d-client/www/qa/art-quality/ch2_vase_hollow.png",
+        "canvas2d-client/www/qa/art-quality/ch3_flower_petals.png",
+        "canvas2d-client/www/qa/art-quality/ch4_tree_shape.png",
+        "canvas2d-client/www/qa/art-quality/ch5_drop_hollow.png",
+        "canvas2d-client/www/qa/art-quality/ch6_lighthouse_complex.png"
       ]
     },
     {

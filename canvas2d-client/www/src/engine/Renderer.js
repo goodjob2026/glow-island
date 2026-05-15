@@ -6,13 +6,22 @@ export class Renderer {
     this.ctx = canvas.getContext('2d');
     this.width = canvas.width;
     this.height = canvas.height;
+    this.dpr = 1;
+    this.lw = canvas.width;
+    this.lh = canvas.height;
   }
 
-  resize(w, h) {
+  resize(w, h, dpr = 1) {
     this.canvas.width = w;
     this.canvas.height = h;
     this.width = w;
     this.height = h;
+    this.dpr = dpr;
+    // Scale ctx so draw calls use logical (CSS) pixels
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // Expose logical dimensions for scene layout
+    this.lw = Math.round(w / dpr);
+    this.lh = Math.round(h / dpr);
   }
 
   clear(color = '#1a1a2e') {

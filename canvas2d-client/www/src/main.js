@@ -6,15 +6,39 @@ const canvas = document.getElementById('game');
 const renderer = new Renderer(canvas);
 const assets = new AssetLoader();
 
-// Fit canvas to screen (portrait-first, 9:16 preferred)
+// Design resolution: 390×844 (portrait, ~9:19 like iPhone 14)
+// On real devices the canvas fills the full screen.
+// On desktop/tablet we letterbox: maintain portrait aspect, center horizontally.
+const DESIGN_W = 390;
+const DESIGN_H = 844;
+
 function resize() {
-  const W = window.innerWidth;
-  const H = window.innerHeight;
-  renderer.resize(W, H);
-  if (typeof scene !== 'undefined' && scene) scene.resize();
+  const sw = window.innerWidth;
+  const sh = window.innerHeight;
+  let w, h;
+  if (sh / sw > DESIGN_H / DESIGN_W) {
+    // Taller than design → fit width, letterbox top/bottom
+    w = sw;
+    h = Math.round(sw * DESIGN_H / DESIGN_W);
+  } else {
+    // Wider than design → fit height, letterbox left/right
+    h = sh;
+    w = Math.round(sh * DESIGN_W / DESIGN_H);
+  }
+  canvas.style.width  = w + 'px';
+  canvas.style.height = h + 'px';
+  canvas.style.position = 'absolute';
+  canvas.style.left = Math.round((sw - w) / 2) + 'px';
+  canvas.style.top  = Math.round((sh - h) / 2) + 'px';
+  // Internal resolution matches physical pixels for sharpness on mobile
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width  = Math.round(w * dpr);
+  canvas.height = Math.round(h * dpr);
+  renderer.resize(canvas.width, canvas.height, dpr);
+  if (typeof scene !== 'undefined' && scene && scene.resize) scene.resize(canvas.width, canvas.height);
 }
 window.addEventListener('resize', resize);
-renderer.resize(window.innerWidth, window.innerHeight);
+resize();
 
 // Load tile sprites — bundled in assets/ directory
 assets.loadAll([

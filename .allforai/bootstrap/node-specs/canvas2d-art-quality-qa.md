@@ -13,6 +13,12 @@ exit_artifacts:
   - "canvas2d-client/www/qa/art-quality/combo_fever_effect.png"
   - "canvas2d-client/www/qa/art-quality/mobile_375_layout.png"
   - "canvas2d-client/www/qa/art-quality/mobile_428_layout.png"
+  - "canvas2d-client/www/qa/art-quality/ch1_boat_shape.png"
+  - "canvas2d-client/www/qa/art-quality/ch2_vase_hollow.png"
+  - "canvas2d-client/www/qa/art-quality/ch3_flower_petals.png"
+  - "canvas2d-client/www/qa/art-quality/ch4_tree_shape.png"
+  - "canvas2d-client/www/qa/art-quality/ch5_drop_hollow.png"
+  - "canvas2d-client/www/qa/art-quality/ch6_lighthouse_complex.png"
 ---
 
 # canvas2d-art-quality-qa
@@ -98,7 +104,23 @@ GameplayScene 中触发消除动画 → 连续截图10帧（间隔50ms）
 - HUD文字可读（字号≥14px等效）
 - 按钮可点击区域≥44×44px
 
-## 5. 颜色与对比度（无障碍基础）
+## 5. 异形棋盘视觉质量
+
+截取每章至少1种异形关卡的棋盘截图（共6张），验证：
+
+| 截图 | 验证要点 |
+|------|---------|
+| ch1_boat_shape.png | 船形轮廓清晰，两侧 `_` 区域为背景色（非图块色） |
+| ch2_vase_hollow.png | 罐形镂空区域明显，颈部变窄可辨 |
+| ch3_flower_petals.png | 五瓣分区清晰，花瓣间隙可见 |
+| ch4_tree_shape.png | 树形轮廓，底部树干瓶颈明显 |
+| ch5_drop_hollow.png | 中心空洞显眼，外环图块整齐 |
+| ch6_lighthouse_complex.png | 灯室最窄处（3格）可辨，底座拱门镂空可见 |
+
+判断标准：非活跃格区域颜色与活跃格有明显视觉区分（背景色 vs. 图块底色），
+棋盘整体在屏幕中居中，不超出 HUD 和底部操作区。
+
+## 6. 颜色与对比度（无障碍基础）
 
 - HUD文字（分数/步数）与背景对比度 ≥ 4.5:1
 - 图块类型5种颜色对色盲用户可区分（至少形状辅助区分）
@@ -150,5 +172,6 @@ GameplayScene 中触发消除动画 → 连续截图10帧（间隔50ms）
 2. 所有背景PNG唯一色数≥50（真实资产，非占位）
 3. island_map_saturation_check.png 中Ch1与Ch6有可量化饱和度差异（HSL S值差≥30%）
 4. 消除动画有≥3帧中间状态（不是单帧跳变）
-5. 5种视口宽度下棋盘完整不截断
-6. HUD对比度≥4.5:1
+5. 5种视口宽度下棋盘完整不截断，非活跃格区域为背景色
+6. 异形棋盘6章各1张截图，形状轮廓可辨
+7. HUD对比度≥4.5:1

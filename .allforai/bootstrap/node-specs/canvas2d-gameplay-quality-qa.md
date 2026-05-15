@@ -23,7 +23,7 @@ exit_artifacts:
 用Node.js直接import TileGrid.js跑单元测试，不依赖浏览器：
 
 ```js
-// 测试用例
+// 标准棋盘测试用例（矩形布局）
 const cases = [
   { name: "直线消除（0转弯）", expect: true },
   { name: "L形路径（1转弯）", expect: true },
@@ -35,6 +35,48 @@ const cases = [
   { name: "选中位置=空格（已消除）", expect: false },
   { name: "棋盘清空时isCleared()=true", expect: true },
   { name: "hasMoves()无合法对时=false", expect: true },
+];
+
+// 异形棋盘测试用例（layout mask）
+const shapedCases = [
+  {
+    name: "非活跃格阻断路径：两图块隔着空洞，直线不可达",
+    layout: ["XXXXX", "XX_XX", "XXXXX"],  // 中间行中央为空洞
+    // 将同类图块放在空洞两侧，验证路径只能绕外圈
+    expect: true  // 通过边框绕行仍然可达（≤2转弯）
+  },
+  {
+    name: "非活跃格无法穿越：空洞隔绝导致>2转弯，路径不存在",
+    layout: [
+      "XXX_XXX",
+      "XXX_XXX",
+      "XXX_XXX",
+    ],  // 完整竖列空洞，同类图块分列两侧（非角落）
+    // 图块在行中间，绕行需要>2转弯
+    expect: false
+  },
+  {
+    name: "花瓣形棋盘：同瓣内图块可直连",
+    layout: LAYOUTS.flower_petals,
+    // 同一花瓣内的两个同类图块，路径验证pass
+    expect: true
+  },
+  {
+    name: "花瓣形棋盘：跨瓣连接需走边框",
+    layout: LAYOUTS.flower_petals,
+    // 左上瓣 vs 右下瓣，路径必须绕整个边框，验证≤2转弯是否可达
+    expect: true  // 通过外边框（2次转弯：上→右 or 类似）
+  },
+  {
+    name: "陶罐镂空：左侧图块连右侧图块，必须绕罐颈",
+    layout: LAYOUTS.pottery_vase_hollow,
+    expect: true
+  },
+  {
+    name: "非活跃格不计入isCleared()：只有活跃格全消才算通关",
+    layout: ["X_X", "XXX"],  // 3个非活跃格不影响判断
+    expect: true  // 活跃格全消后isCleared()=true
+  },
 ];
 ```
 

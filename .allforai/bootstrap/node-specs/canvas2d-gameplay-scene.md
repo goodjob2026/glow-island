@@ -27,17 +27,50 @@ exit_artifacts:
 - 两个相同类型图块之间存在路径：经过空格（已消除格），转弯次数 ≤ 2
 - 允许在格子区外1格的边框区域走（即路径可绕到棋盘边框外）
 - 路径不能穿过未消除的图块
+- 路径不能穿过非活跃格（棋盘形状空洞）
 
 ```js
 // BFS状态：(row, col, direction, turnsUsed)
-// direction: null(起始) | 0上 | 1下 | 2左 | 3右
+// direction: -1(起始) | 0上 | 1下 | 2左 | 3右
 // turnsUsed: 0-2
+
+// 格子三态
+// null  → 非活跃格（形状轮廓外/内部空洞）：路径不可穿越
+// 0     → 活跃空格（图块已消除）：路径可穿越
+// 1-10  → 活跃图块：阻挡路径（终点除外）
+
+// 可走判断
+function canWalk(r, c, grid, layout) {
+  if (r < -1 || r > ROWS || c < -1 || c > COLS) return false; // 超出边框
+  if (r === -1 || r === ROWS || c === -1 || c === COLS) return true; // 边框走廊
+  if (layout[r][c] === 0) return false; // 非活跃格，不可走
+  return grid[r][c] === 0; // 活跃空格才可走
+}
 ```
 
-### 棋盘布局
-- 默认 8列×10行 = 80格，可被关卡数据覆盖
-- 图块类型：1-5（5种）+ 0=空格
-- 生成时确保成对出现（总格数为偶数，每类型出现次数为偶数）
+### 棋盘布局（异形）
+
+棋盘不再是纯矩形。关卡数据通过 `layout` 字符串数组定义棋盘形状：
+- `'X'` = 活跃格（可放图块）
+- `'_'` = 非活跃格（形状空洞，路径不可穿越）
+
+ROWS/COLS 从 layout 数组的行数/最长行推算。
+
+图块生成时只在活跃格（layout='X'）放置，确保总数为偶数，成对出现。
+
+### cellSize 自适应缩放
+
+棋盘整体始终填满 HUD 以下的可用区域，不滚动：
+
+```js
+// 设计分辨率 390×844，HUD 80px，底部操作区 60px
+const playW = renderer.lw - 32; // 左右各16px边距
+const playH = renderer.lh - 80 - 60;
+const cellSize = Math.floor(Math.min(playW / COLS, playH / ROWS));
+// 棋盘居中绘制
+const offsetX = Math.round((renderer.lw - cellSize * COLS) / 2);
+const offsetY = 80 + Math.round((playH - cellSize * ROWS) / 2);
+```
 
 ## 步数制
 
@@ -141,9 +174,11 @@ SCORE: 0        COMBO: ×1        [沙滩币辅助按钮]
 
 ## 验收标准
 
-1. `TileGrid.js` BFS路径：转弯≤2、边框绕行、穿透有效
-2. `ComboSystem.js`：2秒计时器，倍率1→1.5→2→3正确
-3. `SpecialTiles.js`：5种效果各自触发正确
-4. `GameplayScene.js`：步数归零弹出失败面板，全消弹出胜利面板
-5. 星评根据剩余步数百分比正确计算并写入 ProgressManager
-6. 沙滩币辅助按钮扣除币后生效
+1. `TileGrid.js` BFS路径：转弯≤2、边框绕行、非活跃格阻挡路径（不可穿越）
+2. 异形棋盘：layout mask 正确解析，非活跃格不放图块，图块只落在活跃格
+3. cellSize 自适应：任意 layout 尺寸的棋盘都完整显示在屏幕内，不截断不滚动
+4. `ComboSystem.js`：2秒计时器，倍率1→1.5→2→3正确
+5. `SpecialTiles.js`：5种效果各自触发正确
+6. `GameplayScene.js`：步数归零弹出失败面板，全消弹出胜利面板
+7. 星评根据剩余步数百分比正确计算并写入 ProgressManager
+8. 沙滩币辅助按钮扣除币后生效
