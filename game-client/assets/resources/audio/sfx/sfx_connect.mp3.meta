@@ -1,5 +1,5 @@
 {
-  "ver": "1.1.2",
+  "ver": "1.0.0",
   "importer": "audio-clip",
   "imported": true,
   "uuid": "d0845f07-2f8a-4aa3-852e-6c288d5d0720",
@@ -9,6 +9,7 @@
   ],
   "subMetas": {},
   "userData": {
-    "loadMode": 0
+    "loadMode": 0,
+    "downloadMode": 0
   }
 }

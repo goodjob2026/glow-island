@@ -1,0 +1,23 @@
+{
+  "completed_at": "2026-05-15T19:30:01.655624+00:00",
+  "platform": "browser",
+  "viewport": "1200x766 + 390x844",
+  "test_cases": {
+    "no_js_errors": "pass",
+    "renders_correctly": "pass",
+    "tap_interaction": "pass",
+    "mobile_viewport": "pass"
+  },
+  "notes": {
+    "no_js_errors": "Only favicon.ico 404 (expected, excluded)",
+    "renders_correctly": "unique_colors=240 (>100), no black screen, canvas present with HUD + 8x8 board",
+    "tap_interaction": "pixel_diff=1.59% (>1%), board state changed after two adjacent taps",
+    "mobile_viewport": "390x844 rendered cleanly, unique_colors=527"
+  },
+  "screenshots": [
+    ".allforai/canvas2d/qa/screenshots/initial-render.png",
+    ".allforai/canvas2d/qa/screenshots/after-tap.png",
+    ".allforai/canvas2d/qa/screenshots/mobile-viewport.png"
+  ],
+  "overall": "pass"
+}

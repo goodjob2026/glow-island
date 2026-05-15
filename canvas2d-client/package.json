@@ -1,0 +1,23 @@
+{
+  "name": "glow-island-canvas2d",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve www -p 3000 --cors --no-clipboard",
+    "build": "tsc --noEmit && echo 'no build needed — ES modules served directly'",
+    "cap:sync": "npx cap sync",
+    "cap:ios": "npx cap open ios",
+    "cap:android": "npx cap open android",
+    "cap:build:android": "npx cap build android --keystorepath android/app/debug.keystore --keystorepass android --keystorealias androiddebugkey --keystorealiaspass android",
+    "test": "node tests/runner.js"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.2.0"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/ios": "^6.2.0",
+    "typescript": "^5.4.0"
+  }
+}

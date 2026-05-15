@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Glow Island</string>
+    <string name="title_activity_main">Glow Island</string>
+    <string name="package_name">com.glowisland.app</string>
+    <string name="custom_url_scheme">com.glowisland.app</string>
+</resources>

@@ -428,6 +428,66 @@
       "human_gate": false,
       "discipline_owner": "gameplay-frontend-engineer",
       "alignment_refs": []
+    },
+    {
+      "node_id": "canvas2d-client-scaffold",
+      "node": "canvas2d-client-scaffold",
+      "goal": "搭建 Canvas2D 游戏客户端：纯 HTML5 Canvas2D + ES Modules，无框架依赖，Capacitor 移动端打包",
+      "capability": "canvas2d-frontend-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [],
+      "exit_artifacts": [
+        "canvas2d-client/www/index.html",
+        "canvas2d-client/www/src/main.js",
+        "canvas2d-client/www/src/game/TileGrid.js",
+        "canvas2d-client/www/src/scenes/GameScene.js",
+        "canvas2d-client/capacitor.config.json",
+        "canvas2d-client/android/gradlew"
+      ]
+    },
+    {
+      "node_id": "canvas2d-browser-qa",
+      "node": "canvas2d-browser-qa",
+      "goal": "用 Playwright 对 Canvas2D 客户端做浏览器 QA：渲染正确性、交互响应、无 JS 错误",
+      "capability": "qa-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-client-scaffold"
+      ],
+      "exit_artifacts": [
+        ".allforai/canvas2d/qa/browser-qa-report.json",
+        ".allforai/canvas2d/qa/screenshots/initial-render.png",
+        ".allforai/canvas2d/qa/screenshots/after-tap.png"
+      ]
+    },
+    {
+      "node_id": "canvas2d-mobile-build",
+      "node": "canvas2d-mobile-build",
+      "goal": "用 Capacitor + Gradle 构建 Android debug APK，验证安装成功",
+      "capability": "mobile-build-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-browser-qa"
+      ],
+      "exit_artifacts": [
+        ".allforai/canvas2d/build/mobile-build-report.json",
+        "canvas2d-client/android/app/build/outputs/apk/debug/app-debug.apk"
+      ]
+    },
+    {
+      "node_id": "canvas2d-android-sim-test",
+      "node": "canvas2d-android-sim-test",
+      "goal": "在 Pixel9a 模拟器上自动化测试 Canvas2D APK：启动、渲染、触控交互",
+      "capability": "mobile-qa-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-mobile-build"
+      ],
+      "exit_artifacts": [
+        ".allforai/canvas2d/qa/android-sim-report.json",
+        ".allforai/canvas2d/qa/screenshots/android-launch.png",
+        ".allforai/canvas2d/qa/screenshots/android-after-tap.png"
+      ]
     }
   ],
   "transition_log": [
@@ -672,6 +732,30 @@
         ".allforai/game-2d/qa/screenshots/closure-final.png"
       ],
       "notes": "FAILED_VALIDATION. Core loop + visual PASS (teal background, HUD, rounded tiles). 6 blocking asset gaps: no SpriteFrames, chapter art=gitkeep, no audio dir, VFX tween-only, JS patch not durable, GameScene untested."
+    },
+    {
+      "node": "canvas2d-client-scaffold",
+      "status": "completed",
+      "started_at": "2026-05-16T02:00:00Z",
+      "completed_at": "2026-05-15T19:35:24.704233+00:00"
+    },
+    {
+      "node": "canvas2d-browser-qa",
+      "status": "completed",
+      "started_at": "2026-05-15T19:35:24.704233+00:00",
+      "completed_at": "2026-05-15T19:35:24.704233+00:00"
+    },
+    {
+      "node": "canvas2d-mobile-build",
+      "status": "completed",
+      "started_at": "2026-05-16T03:00:00Z",
+      "completed_at": "2026-05-15T19:35:24.704233+00:00"
+    },
+    {
+      "node": "canvas2d-android-sim-test",
+      "status": "completed",
+      "started_at": "2026-05-15T19:35:24.704233+00:00",
+      "completed_at": "2026-05-15T19:35:24.704233+00:00"
     }
   ],
   "corrections_applied": [

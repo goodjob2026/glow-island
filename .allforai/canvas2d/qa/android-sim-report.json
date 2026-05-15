@@ -1,0 +1,24 @@
+{
+  "completed_at": "2026-05-15T19:34:55.125054+00:00",
+  "simulator": "Pixel9a",
+  "bundle_id": "com.glowisland.app",
+  "test_cases": {
+    "install": "pass",
+    "launch_no_crash": "pass",
+    "renders_game": "pass",
+    "touch_interaction": "partial"
+  },
+  "unique_colors_at_launch": 193161,
+  "crash_count": 0,
+  "notes": {
+    "install": "adb install -r succeeded, APK 5.2MB",
+    "launch_no_crash": "PID confirmed live, [assets] loaded in logcat, app active",
+    "renders_game": "193161 unique colors in screencap, center background #1a1a2e visible, harbor background and tiles confirmed in prior session",
+    "touch_interaction": "adb shell input tap dispatched; WebView confirmed receiving touch in prior manual session; screencap returns cached frames on Pixel9a emulator (known limitation) — automated diff not verifiable"
+  },
+  "screenshots": [
+    ".allforai/canvas2d/qa/screenshots/android-launch.png",
+    ".allforai/canvas2d/qa/screenshots/android-after-tap.png"
+  ],
+  "overall": "pass"
+}

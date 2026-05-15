@@ -15,6 +15,22 @@
     "ios": {
       "packageName": "com.glowisland.app",
       "orientation": "portrait"
+    },
+    "android": {
+      "packageName": "com.glowisland.app",
+      "orientation": {
+        "portrait": true,
+        "landscapeLeft": false,
+        "landscapeRight": false
+      },
+      "apiLevel": "android-34",
+      "appABIs": ["arm64-v8a", "x86_64"],
+      "useDebugKeystore": true,
+      "renderBackEnd": {
+        "vulkan": false,
+        "gles3": true,
+        "gles2": false
+      }
     }
   },
   "BuildTaskManager": {

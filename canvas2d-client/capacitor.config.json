@@ -1,0 +1,13 @@
+{
+  "appId": "com.glowisland.app",
+  "appName": "Glow Island",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}
