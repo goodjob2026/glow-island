@@ -446,18 +446,221 @@
       ]
     },
     {
-      "node_id": "canvas2d-browser-qa",
-      "node": "canvas2d-browser-qa",
-      "goal": "用 Playwright 对 Canvas2D 客户端做浏览器 QA：渲染正确性、交互响应、无 JS 错误",
-      "capability": "qa-engineer",
+      "node_id": "canvas2d-scene-manager",
+      "node": "canvas2d-scene-manager",
+      "goal": "实现 Canvas2D 场景管理器、进度管理器（localStorage）、音频管理器骨架",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/SceneManager.js",
+        "canvas2d-client/www/src/ProgressManager.js",
+        "canvas2d-client/www/src/AudioManager.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-asset-bundle",
+      "node": "canvas2d-asset-bundle",
+      "goal": "将 CC3 美术资产（6章背景、图块、音频）全部复制到 canvas2d-client/www/assets/ 并建立资产清单",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [],
+      "exit_artifacts": [
+        "canvas2d-client/www/assets/manifest.json",
+        "canvas2d-client/www/assets/backgrounds/ch06_lighthouse_after.png",
+        "canvas2d-client/www/assets/audio/bgm_chapter6_lighthouse.mp3"
+      ]
+    },
+    {
+      "node_id": "canvas2d-level-data",
+      "node": "canvas2d-level-data",
+      "goal": "生成6章×30关=180关关卡配置数据：步数、棋盘尺寸、特殊图块位置、难度曲线",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/data/level-data.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-intro-scene",
+      "node": "canvas2d-intro-scene",
+      "goal": "实现 Glow Island 3幕开场过场动画：渡轮甲板→抵岛码头→踏上木栈道→自然推进第1关",
+      "capability": "canvas2d-engineer",
       "human_gate": false,
       "hard_blocked_by": [
-        "canvas2d-client-scaffold"
+        "canvas2d-scene-manager",
+        "canvas2d-asset-bundle"
       ],
       "exit_artifacts": [
-        ".allforai/canvas2d/qa/browser-qa-report.json",
-        ".allforai/canvas2d/qa/screenshots/initial-render.png",
-        ".allforai/canvas2d/qa/screenshots/after-tap.png"
+        "canvas2d-client/www/src/scenes/IntroScene.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-island-map-scene",
+      "node": "canvas2d-island-map-scene",
+      "goal": "实现岛屿地图场景：6章节点、视觉修复进度（灰白→彩色）、章节解锁",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-scene-manager",
+        "canvas2d-asset-bundle"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/scenes/IslandMapScene.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-level-select-scene",
+      "node": "canvas2d-level-select-scene",
+      "goal": "实现章节选关场景：30关网格、星评显示、解锁状态、关卡进入",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-scene-manager",
+        "canvas2d-asset-bundle"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/scenes/LevelSelectScene.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-gameplay-scene",
+      "node": "canvas2d-gameplay-scene",
+      "goal": "实现连连看核心玩法场景：BFS路径、步数制、Combo计时、5种特殊图块、星评结算",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-scene-manager",
+        "canvas2d-asset-bundle",
+        "canvas2d-level-data"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/scenes/GameplayScene.js",
+        "canvas2d-client/www/src/game/TileGrid.js",
+        "canvas2d-client/www/src/game/ComboSystem.js",
+        "canvas2d-client/www/src/game/SpecialTiles.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-dialog-scene",
+      "node": "canvas2d-dialog-scene",
+      "goal": "实现NPC对话场景：章节故事对话、日记碎片、律×ひなた情感线",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-scene-manager"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/scenes/DialogScene.js",
+        "canvas2d-client/www/src/data/dialog-data.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-audio-system",
+      "node": "canvas2d-audio-system",
+      "goal": "实现音频系统：Web Audio API加载BGM/SFX、章节BGM切换、Combo音效升调",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-scene-manager",
+        "canvas2d-asset-bundle"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/AudioManager.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-ftue",
+      "node": "canvas2d-ftue",
+      "goal": "实现零强制教程：前3关引导箭头+高亮提示，不使用弹窗锁屏",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-gameplay-scene"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/game/FTUEOverlay.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-gameplay-quality-qa",
+      "node": "canvas2d-gameplay-quality-qa",
+      "goal": "连连看玩法质量深度评估：边界用例、手感、难度曲线、反馈闭环",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-gameplay-scene",
+        "canvas2d-level-data",
+        "canvas2d-ftue"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/qa/gameplay-quality-report.json"
+      ]
+    },
+    {
+      "node_id": "canvas2d-visual-qa",
+      "node": "canvas2d-visual-qa",
+      "goal": "多场景多状态截图视觉验收：每个场景至少5张截图覆盖关键状态",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-scene-manager",
+        "canvas2d-asset-bundle",
+        "canvas2d-intro-scene",
+        "canvas2d-island-map-scene",
+        "canvas2d-level-select-scene",
+        "canvas2d-gameplay-scene",
+        "canvas2d-dialog-scene"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/qa/visual/screenshots/index.json",
+        "canvas2d-client/www/qa/visual/screenshots/intro_act1.png",
+        "canvas2d-client/www/qa/visual/screenshots/intro_act2.png",
+        "canvas2d-client/www/qa/visual/screenshots/intro_act3.png",
+        "canvas2d-client/www/qa/visual/screenshots/island_map_ch1_unlocked.png",
+        "canvas2d-client/www/qa/visual/screenshots/island_map_locked.png",
+        "canvas2d-client/www/qa/visual/screenshots/level_select_ch1.png",
+        "canvas2d-client/www/qa/visual/screenshots/gameplay_initial.png",
+        "canvas2d-client/www/qa/visual/screenshots/gameplay_selected.png",
+        "canvas2d-client/www/qa/visual/screenshots/gameplay_path_drawn.png",
+        "canvas2d-client/www/qa/visual/screenshots/gameplay_combo.png",
+        "canvas2d-client/www/qa/visual/screenshots/gameplay_win.png",
+        "canvas2d-client/www/qa/visual/screenshots/gameplay_fail.png",
+        "canvas2d-client/www/qa/visual/screenshots/dialog_ch1_intro.png"
+      ]
+    },
+    {
+      "node_id": "canvas2d-art-quality-qa",
+      "node": "canvas2d-art-quality-qa",
+      "goal": "游戏画面质量深度评估：资产真实性、视觉一致性、动画流畅度、移动端适配",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-visual-qa"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/qa/art-quality-report.json",
+        "canvas2d-client/www/qa/art-quality/island_map_saturation_check.png",
+        "canvas2d-client/www/qa/art-quality/gameplay_tile_clarity.png",
+        "canvas2d-client/www/qa/art-quality/combo_fever_effect.png",
+        "canvas2d-client/www/qa/art-quality/mobile_375_layout.png",
+        "canvas2d-client/www/qa/art-quality/mobile_428_layout.png"
+      ]
+    },
+    {
+      "node_id": "canvas2d-browser-qa",
+      "node": "canvas2d-browser-qa",
+      "goal": "Playwright E2E功能验收：完整游戏流程从IntroScene到关卡胜利",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-visual-qa",
+        "canvas2d-art-quality-qa",
+        "canvas2d-gameplay-quality-qa"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/qa/browser-qa-report.json"
       ]
     },
     {

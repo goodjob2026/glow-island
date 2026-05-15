@@ -6,11 +6,14 @@
   "tech_stacks": [
     {
       "role": "game-client",
-      "language": "TypeScript",
-      "language_version": "5.x",
-      "framework": "Cocos Creator 3.x",
-      "state_management": "Cocos Component lifecycle + EventTarget",
-      "build_tool": "Cocos CLI / cocos-cli"
+      "language": "JavaScript",
+      "language_version": "ES2022 (ES Modules)",
+      "framework": "Pure HTML5 Canvas2D — zero framework, zero build step",
+      "mobile_packaging": "Capacitor 6.x (iOS + Android native shell)",
+      "state_management": "Plain JS module state + localStorage",
+      "build_tool": "none (ES Modules served directly by static server or Capacitor)",
+      "path": "canvas2d-client/",
+      "notes": "CC3 client (game-client/) is archived/reference only — not actively developed"
     },
     {
       "role": "backend",
@@ -23,17 +26,20 @@
     }
   ],
   "goals": [
+    "canvas2d-full-rewrite",
     "ui-forge",
     "visual-verify",
     "product-verify"
   ],
+  "migration_note": "2026-05-16: 决策迁移至 canvas2d-client（纯 Canvas2D + ES Modules + Capacitor）。CC3 game-client 已归档不再开发。原因：CC3 对 LLM 支持差，Android 黑屏问题难以调试。canvas2d-client 需要全量实现完整游戏流程：场景管理器、过场动画、岛屿地图、选关、完整连连看玩法（Combo/特殊图块/步数）、NPC对话、FTUE、音频。",
   "bootstrap_version": "0.8.8",
   "product_vision": "治愈系节奏连击连连看：快速连接→combo爽感→修复小岛→解锁新章节，6章叙事+律×ひなた暧昧情感线，单货币（沙滩币）唯一付费点是续关，无体力/无PvP。",
   "target_stacks": [
     {
       "role": "game-client",
-      "language": "TypeScript",
-      "framework": "Cocos Creator 3.x"
+      "language": "JavaScript ES Modules",
+      "framework": "Pure Canvas2D + Capacitor",
+      "path": "canvas2d-client/"
     },
     {
       "role": "backend",
@@ -45,9 +51,15 @@
   "modules": [
     {
       "id": "M001",
-      "path": "game-client/",
+      "path": "canvas2d-client/",
       "role": "game-client",
-      "description": "Cocos Creator 游戏项目：连连看核心引擎、5种战术特殊图块、节奏连击系统、岛屿地图修复、商店(续关)、UI系统"
+      "description": "纯 Canvas2D + ES Modules 游戏客户端：场景管理器、过场动画、岛屿地图、选关、连连看核心、Combo系统、NPC对话、FTUE、Capacitor 打包"
+    },
+    {
+      "id": "M001-archived",
+      "path": "game-client/",
+      "role": "reference-only",
+      "description": "CC3 客户端（归档）：仅作为设计参考，不再开发"
     },
     {
       "id": "M002",
@@ -57,7 +69,7 @@
     }
   ],
   "build_commands": {
-    "game-client": "npx @cocos/cocos-cli build --platform web-mobile",
+    "game-client": "cd canvas2d-client && npx cap sync android",
     "backend": "npx tsc --project tsconfig.json"
   },
   "test_commands": {
@@ -77,10 +89,10 @@
     "Meta-Loop岛屿视觉修复进度",
     "步数制关卡（无倒计时/无体力）"
   ],
-  "architecture_pattern": "Game-Service Architecture (Cocos + Fastify REST)",
+  "architecture_pattern": "Game-Service Architecture (Canvas2D + Capacitor + Fastify REST)",
   "complexity_estimate": "medium",
   "is_game_project": true,
-  "game_engines_detected": ["Cocos Creator 3.x"],
+  "game_engines_detected": ["Pure Canvas2D (HTML5)"],
   "game_scenario": "casual-mobile",
   "deployment_platform": null,
   "offline_first": false,
