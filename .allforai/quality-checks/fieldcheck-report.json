@@ -1,0 +1,71 @@
+{
+  "checked_at": "2026-05-15T00:00:00.000Z",
+  "repaired_at": "2026-05-15T06:22:00.000Z",
+  "field_mismatches": [
+    {
+      "field": "glowstone",
+      "layer_from": "backend wire / Prisma (currency JSON)",
+      "layer_to": "client internal (GameProgress)",
+      "expected": "glowstone (singular) on wire; glowstones (plural) internally",
+      "actual": "CORRECT — ProgressionManager.ts:179 maps data.currency.glowstone → _progress.currency.glowstones; PUT body maps glowstones → glowstone. Conversion is consistent.",
+      "status": "pass"
+    },
+    {
+      "field": "chapter_progress",
+      "layer_from": "client PUT body",
+      "layer_to": "backend PutSaveBody",
+      "expected": "chapter_progress (snake_case)",
+      "actual": "CORRECT — client sends chapter_progress (ProgressionManager.ts:313), backend reads body.chapter_progress (save.ts:PutSaveBody). Match.",
+      "status": "pass"
+    },
+    {
+      "field": "client_updated_at",
+      "layer_from": "client PUT body",
+      "layer_to": "backend PutSaveBody",
+      "expected": "client_updated_at",
+      "actual": "CORRECT — client sends client_updated_at (ProgressionManager.ts:307), backend requires it (save.ts:118). Match.",
+      "status": "pass"
+    },
+    {
+      "field": "device_id / platform",
+      "layer_from": "client POST /auth/anonymous body",
+      "layer_to": "backend AnonymousBody",
+      "expected": "device_id (snake_case), platform",
+      "actual": "CORRECT — client sends {device_id, platform} (ProgressionManager.ts:71), backend reads body.device_id and body.platform (auth.ts). Match.",
+      "status": "pass"
+    },
+    {
+      "field": "sku_id / receipt_data / product_id",
+      "layer_from": "client POST /iap/verify body",
+      "layer_to": "backend IapVerifyBody",
+      "expected": "sku_id, receipt_data, product_id, platform",
+      "actual": "CORRECT — client sends {sku_id, platform, receipt_data, product_id} (IAPManager.ts:279), backend IapVerifyBody has same fields. Match.",
+      "status": "pass"
+    },
+    {
+      "field": "monthly_card vs glowstone_chest sku_id",
+      "layer_from": "client ShopScene SKU catalog",
+      "layer_to": "backend SKU_CONFIG",
+      "expected": "sku_id 'monthly_card' accepted by backend",
+      "actual": "FIXED — added monthly_card to backend/src/types/index.ts SKU_CONFIG with is_monthly_card=true.",
+      "status": "pass"
+    }
+  ],
+  "sku_format_check": {
+    "status": "pass",
+    "canonical_format": "com.glowisland.iap.*",
+    "verified_backend_skus": [
+      "first_pack → com.glowisland.iap.first_pack",
+      "small_pack → com.glowisland.iap.small_pack",
+      "medium_pack → com.glowisland.iap.medium_pack",
+      "large_pack → com.glowisland.iap.large_pack",
+      "mega_pack → com.glowisland.iap.mega_pack",
+      "monthly_card → com.glowisland.iap.monthly_card",
+      "glowstone_chest → com.glowisland.iap.glowstone_chest",
+      "starter_pack → com.glowisland.iap.starter_pack"
+    ],
+    "mismatches": []
+  },
+  "code_gaps": [],
+  "summary": "pass"
+}

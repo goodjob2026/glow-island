@@ -1,0 +1,108 @@
+{
+  "generated_at": "2026-05-15T17:35:48.980550+00:00",
+  "method": "ai_generation",
+  "model": "google_imagen4",
+  "original_resolution": "1024x1024",
+  "final_resolution": "128x128",
+  "tiles": [
+    {
+      "type": 0,
+      "filename": "tile_01.png",
+      "path": "sprites/tiles/tile_01.png",
+      "color": "coral",
+      "hex": "#ED8B6B",
+      "icon": "seashell",
+      "size_bytes": 19365,
+      "dimensions": "128x128",
+      "chapter_copies": [
+        "sprites/tiles/chapter1/tile_01.png",
+        "sprites/tiles/chapter2/tile_01.png",
+        "sprites/tiles/chapter3/tile_01.png",
+        "sprites/tiles/chapter4/tile_01.png",
+        "sprites/tiles/chapter5/tile_01.png",
+        "sprites/tiles/chapter6/tile_01.png"
+      ]
+    },
+    {
+      "type": 1,
+      "filename": "tile_02.png",
+      "path": "sprites/tiles/tile_02.png",
+      "color": "teal",
+      "hex": "#5BBFB5",
+      "icon": "wave",
+      "size_bytes": 22711,
+      "dimensions": "128x128",
+      "chapter_copies": [
+        "sprites/tiles/chapter1/tile_02.png",
+        "sprites/tiles/chapter2/tile_02.png",
+        "sprites/tiles/chapter3/tile_02.png",
+        "sprites/tiles/chapter4/tile_02.png",
+        "sprites/tiles/chapter5/tile_02.png",
+        "sprites/tiles/chapter6/tile_02.png"
+      ]
+    },
+    {
+      "type": 2,
+      "filename": "tile_03.png",
+      "path": "sprites/tiles/tile_03.png",
+      "color": "green",
+      "hex": "#7DBE77",
+      "icon": "leaf",
+      "size_bytes": 17683,
+      "dimensions": "128x128",
+      "chapter_copies": [
+        "sprites/tiles/chapter1/tile_03.png",
+        "sprites/tiles/chapter2/tile_03.png",
+        "sprites/tiles/chapter3/tile_03.png",
+        "sprites/tiles/chapter4/tile_03.png",
+        "sprites/tiles/chapter5/tile_03.png",
+        "sprites/tiles/chapter6/tile_03.png"
+      ]
+    },
+    {
+      "type": 3,
+      "filename": "tile_04.png",
+      "path": "sprites/tiles/tile_04.png",
+      "color": "pink",
+      "hex": "#F0C4C4",
+      "icon": "cherry blossom",
+      "size_bytes": 13956,
+      "dimensions": "128x128",
+      "chapter_copies": [
+        "sprites/tiles/chapter1/tile_04.png",
+        "sprites/tiles/chapter2/tile_04.png",
+        "sprites/tiles/chapter3/tile_04.png",
+        "sprites/tiles/chapter4/tile_04.png",
+        "sprites/tiles/chapter5/tile_04.png",
+        "sprites/tiles/chapter6/tile_04.png"
+      ]
+    },
+    {
+      "type": 4,
+      "filename": "tile_05.png",
+      "path": "sprites/tiles/tile_05.png",
+      "color": "brown",
+      "hex": "#C4955A",
+      "icon": "driftwood log",
+      "size_bytes": 19827,
+      "dimensions": "128x128",
+      "chapter_copies": [
+        "sprites/tiles/chapter1/tile_05.png",
+        "sprites/tiles/chapter2/tile_05.png",
+        "sprites/tiles/chapter3/tile_05.png",
+        "sprites/tiles/chapter4/tile_05.png",
+        "sprites/tiles/chapter5/tile_05.png",
+        "sprites/tiles/chapter6/tile_05.png"
+      ]
+    }
+  ],
+  "chapter_distribution": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "status": "completed"
+}

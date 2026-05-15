@@ -1,0 +1,48 @@
+{
+  "completed_at": "2026-05-15T06:45:03Z",
+  "simulator_id": "D9F5F3CA-CC37-4FCA-BCA2-EE268882AF37",
+  "simulator_name": "iPhone 17",
+  "bundle_id": "com.glowisland.app",
+  "build_rebuilt": true,
+  "build_attempt_summary": "Multiple rebuild attempts made. arm64 iOS Simulator build blocked by CocosCreator prebuilt native library incompatibility with Xcode 15+/SDK 26.4. x86_64 Simulator build succeeded but was rejected by iPhone 17 simulator (requires arm64 only).",
+  "test_cases": {
+    "install": "fail",
+    "launch_no_crash": "skipped",
+    "game_scene_loaded": "skipped",
+    "touch_response": "skipped",
+    "resolution_fit": "skipped"
+  },
+  "screenshots": [],
+  "crash_count": 0,
+  "code_gaps": [
+    "CocosCreator prebuilt native libraries (libssl.a, libcrypto.a) in both ios/libs/ and ios-m1-simulator/libs/ use old LC_VERSION_MIN_IPHONEOS format for arm64 slice (platform 2 = iOS device), but Xcode 15+ SDK 26.4 linker requires LC_BUILD_VERSION with platform 7 (iOS Simulator) for arm64. This causes linker error: 'building for iOS Simulator, but linking in object file built for iOS'. This is a CocosCreator engine issue requiring updated prebuilt libraries.",
+    "x86_64 iOS Simulator build compiled successfully but installation on iPhone 17 simulator (D9F5F3CA) failed with error 'Needs to Be Updated' - the simulator requires arm64, not x86_64 on Apple Silicon Macs.",
+    "Workaround path: regenerate iOS Xcode project via Cocos Creator dashboard after CocosCreator is updated, OR wait for CocosCreator to provide arm64-simulator-compatible ssl/crypto prebuilt libs.",
+    "Alternative acceptance path: web-mobile build exists at game-client/build/web-mobile/ and could be used for browser-based smoke testing while iOS Simulator issue is resolved."
+  ],
+  "environment_blockers": [
+    {
+      "blocker": "CocosCreator native prebuilt lib arm64 platform mismatch",
+      "detail": "ios-m1-simulator/libs/libssl.a and libcrypto.a are arm64 but tagged as iOS device (LC_VERSION_MIN_IPHONEOS) not iOS Simulator (LC_BUILD_VERSION platform=7). Xcode 15/SDK 26.4 linker rejects this for iphonesimulator target.",
+      "affected_libs": [
+        "/Applications/CocosCreator.app/Contents/Resources/resources/3d/engine/native/external/ios-m1-simulator/libs/libssl.a",
+        "/Applications/CocosCreator.app/Contents/Resources/resources/3d/engine/native/external/ios-m1-simulator/libs/libcrypto.a",
+        "/Applications/CocosCreator.app/Contents/Resources/resources/3d/engine/native/external/ios/libs/libssl.a (arm64 slice)",
+        "/Applications/CocosCreator.app/Contents/Resources/resources/3d/engine/native/external/ios/libs/libcrypto.a (arm64 slice)"
+      ],
+      "linker_error": "ld: in .../libssl.a(bio_ssl.o), building for iOS Simulator, but linking in object file built for iOS"
+    }
+  ],
+  "build_details": {
+    "xcode_sdk": "iPhoneSimulator26.4",
+    "target_arch": "arm64",
+    "scheme": "glow-island-game-client-mobile",
+    "cocos_creator_found": true,
+    "cocos_creator_path": "/Applications/CocosCreator.app",
+    "simulator_booted": true,
+    "app_bundle_exists": true,
+    "native_executable_produced": false,
+    "x86_64_build_succeeded_but_rejected": true
+  },
+  "overall": "blocked"
+}

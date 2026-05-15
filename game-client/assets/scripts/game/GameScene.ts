@@ -3,7 +3,10 @@
 // BoardEventManager, ObstacleManager, and SpecialBlock behaviors together.
 // Also owns all in-game SFX trigger points per audio-bindings spec.
 
-import { _decorator, Component, Animation, Node, director, tween, Vec3, UIOpacity } from 'cc';
+import {
+  _decorator, Component, Animation, Node, director, tween, Vec3, UIOpacity,
+  Label, Graphics, UITransform, Widget, Button, Color, resources, SpriteFrame, Sprite, find,
+} from 'cc';
 import { TileGrid, TILE_GRID_EVENT, Point } from '../puzzle/TileGrid';
 import { TileMatcher } from '../puzzle/TileMatcher';
 import { ComboTracker, COMBO_EVENT } from '../puzzle/ComboTracker';
@@ -37,16 +40,20 @@ function playTileDisappearAnim(tileNode: Node | null): void {
     anim.play('tile-disappear');
   } else {
     // Tween fallback matching tile-disappear.anim keyframes (squash → collapse)
-    const opacity = tileNode.getComponent(UIOpacity) ?? tileNode.addComponent(UIOpacity);
+    const opacity = UIOpacity
+      ? (tileNode.getComponent(UIOpacity) ?? tileNode.addComponent(UIOpacity))
+      : null;
     tween(tileNode)
       .to(0.12, { scale: new Vec3(1.3, 0.7, 1) })
       .to(0.18, { scale: new Vec3(0.0, 0.0, 1) })
       .call(() => { tileNode.active = false; })
       .start();
-    tween(opacity)
-      .delay(0.24)
-      .to(0.06, { opacity: 0 })
-      .start();
+    if (opacity) {
+      tween(opacity)
+        .delay(0.24)
+        .to(0.06, { opacity: 0 })
+        .start();
+    }
   }
 }
 
@@ -110,6 +117,10 @@ export class GameScene extends Component {
   // -------------------------------------------------------------------------
 
   async start(): Promise<void> {
+    // Bootstrap programmatic background and HUD when Inspector refs are not wired
+    this._bootstrapBackground();
+    this._bootstrapHUD();
+
     // Resolve level id — may be overridden by director globals (from MainMenuScene continue flow)
     const directorGlobals = director as unknown as Record<string, unknown>;
     const resumeLevel = (directorGlobals['_lastLevel'] as string) || this.levelId;
@@ -521,7 +532,14 @@ export class GameScene extends Component {
   }
 
   private _onSessionStateChanged(_state: string): void {
-    // Forward state changes; GameHUD listens directly via its own session listener
+    // When the full GameHUD is not wired, update the bootstrap HUD labels directly
+    if (!this.gameHUD && this._hudRegistered && this._session) {
+      const sess = this._session as unknown as {
+        movesRemaining?: number; maxMoves?: number;
+      };
+      const moves = typeof sess.movesRemaining === 'number' ? sess.movesRemaining : 0;
+      this._updateBootstrapHUD(moves, this._tilesCleared, this._objectiveTarget);
+    }
   }
 
   /**
@@ -538,7 +556,10 @@ export class GameScene extends Component {
     const warningNode = scene?.getChildByName('BoardRotateWarning');
     if (warningNode) {
       warningNode.active = true;
-      const opacity = warningNode.getComponent(UIOpacity) ?? warningNode.addComponent(UIOpacity);
+      const opacity = UIOpacity
+        ? (warningNode.getComponent(UIOpacity) ?? warningNode.addComponent(UIOpacity))
+        : null;
+      if (!opacity) { warningNode.active = false; return; }
       opacity.opacity = 200;
       tween(opacity)
         .to(payload.warningDuration * 0.5, { opacity: 60 })
@@ -558,5 +579,172 @@ export class GameScene extends Component {
     const index = row * this._cols + col;
     const child = this.tileContainer.children[index];
     return child ?? null;
+  }
+
+  // -------------------------------------------------------------------------
+  // Programmatic background bootstrap (fires when background is not wired in editor)
+  // -------------------------------------------------------------------------
+
+  private _bootstrapBackground(): void {
+    const canvas = this.node.parent ?? find('Canvas') ?? director.getScene()?.getChildByName('Canvas');
+    if (!canvas) return;
+    if (canvas.getChildByName('Background')) return;
+
+    const bgNode = new Node('Background');
+    const uit = bgNode.addComponent(UITransform);
+    uit.setContentSize(960, 640);
+
+    const widget = bgNode.addComponent(Widget);
+    widget.isAlignLeft   = true;
+    widget.isAlignRight  = true;
+    widget.isAlignTop    = true;
+    widget.isAlignBottom = true;
+    widget.left   = 0;
+    widget.right  = 0;
+    widget.top    = 0;
+    widget.bottom = 0;
+    widget.alignMode = 2;
+
+    canvas.insertChild(bgNode, 0);
+
+    // Load chapter-appropriate background (before restoration state).
+    // Background file stems map to: ch01=harbor, ch02=pottery, ch03=forest,
+    // ch04=path, ch05=cliff, ch06=lighthouse.
+    const CHAPTER_BG_STEM: Record<number, string> = {
+      1: 'harbor', 2: 'pottery', 3: 'forest', 4: 'path', 5: 'cliff', 6: 'lighthouse',
+    };
+    const stem = CHAPTER_BG_STEM[this.chapterId] ?? 'harbor';
+    const chNum = String(this.chapterId).padStart(2, '0');
+    const bgKey = `sprites/backgrounds/ch${chNum}_${stem}_before/spriteFrame`;
+    resources.load(bgKey, SpriteFrame, (err, sf) => {
+      if (!err && sf) {
+        const sprite = bgNode.addComponent(Sprite);
+        sprite.spriteFrame = sf;
+        sprite.sizeMode = 0;  // CUSTOM
+      } else {
+        // Fallback gradient: ocean palette
+        const g = bgNode.addComponent(Graphics);
+        g.fillColor = new Color(72, 158, 180, 255);
+        g.rect(-480, -320, 960, 640);
+        g.fill();
+        g.fillColor = new Color(120, 196, 210, 255);
+        g.rect(-480, 0, 960, 320);
+        g.fill();
+        g.fillColor = new Color(220, 195, 150, 255);
+        g.rect(-480, -320, 960, 130);
+        g.fill();
+      }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Programmatic HUD bootstrap (fires when gameHUD Inspector ref is null)
+  // -------------------------------------------------------------------------
+
+  private _bootstrapHUD(): void {
+    if (this.gameHUD) return;  // Already wired in Inspector — skip
+
+    const canvas = this.node.parent ?? find('Canvas') ?? director.getScene()?.getChildByName('Canvas');
+    if (!canvas) return;
+    if (canvas.getChildByName('HUD')) return;
+
+    const hud = new Node('HUD');
+    const hudUIT = hud.addComponent(UITransform);
+    hudUIT.setContentSize(960, 640);
+    const hudWidget = hud.addComponent(Widget);
+    hudWidget.isAlignLeft   = true;
+    hudWidget.isAlignRight  = true;
+    hudWidget.isAlignTop    = true;
+    hudWidget.isAlignBottom = true;
+    hudWidget.left = hudWidget.right = hudWidget.top = hudWidget.bottom = 0;
+    hudWidget.alignMode = 2;
+    canvas.addChild(hud);
+
+    // --- Moves remaining label (top centre) ---
+    const movesNode = new Node('MovesLabel');
+    movesNode.addComponent(UITransform).setContentSize(200, 44);
+    movesNode.setPosition(new Vec3(0, 280, 0));
+    const movesLbl = movesNode.addComponent(Label);
+    movesLbl.string   = '-- moves';
+    movesLbl.fontSize = 28;
+    movesLbl.color    = new Color(255, 240, 200, 255);
+    movesLbl.isBold   = true;
+    movesLbl.horizontalAlign = 1;
+    hud.addChild(movesNode);
+    this._hudMovesLabel = movesLbl;
+
+    // --- Objective progress label (top left) ---
+    const objNode = new Node('ObjectiveLabel');
+    objNode.addComponent(UITransform).setContentSize(200, 36);
+    objNode.setPosition(new Vec3(-360, 280, 0));
+    const objLbl = objNode.addComponent(Label);
+    objLbl.string   = '0 / --';
+    objLbl.fontSize = 22;
+    objLbl.color    = new Color(255, 255, 255, 210);
+    objLbl.horizontalAlign = 0;
+    hud.addChild(objNode);
+    this._hudObjectiveLabel = objLbl;
+
+    // --- Score / combo label (top right) ---
+    const comboNode = new Node('ComboLabel');
+    comboNode.addComponent(UITransform).setContentSize(220, 36);
+    comboNode.setPosition(new Vec3(360, 280, 0));
+    const comboLbl = comboNode.addComponent(Label);
+    comboLbl.string   = '';
+    comboLbl.fontSize = 22;
+    comboLbl.color    = new Color(255, 220, 80, 255);
+    comboLbl.horizontalAlign = 2;
+    hud.addChild(comboNode);
+    this._hudComboLabel = comboLbl;
+
+    // --- Pause button (top-right corner) ---
+    const pauseNode = new Node('PauseButton');
+    pauseNode.addComponent(UITransform).setContentSize(80, 44);
+    pauseNode.setPosition(new Vec3(420, 300, 0));
+    const pauseG = pauseNode.addComponent(Graphics);
+    pauseG.fillColor = new Color(80, 80, 80, 180);
+    pauseG.rect(-40, -22, 80, 44);
+    pauseG.fill();
+    const pauseLblNode = new Node('PauseLbl');
+    pauseLblNode.addComponent(UITransform).setContentSize(80, 44);
+    const pauseLbl = pauseLblNode.addComponent(Label);
+    pauseLbl.string   = '⏸';
+    pauseLbl.fontSize = 24;
+    pauseLbl.color    = new Color(255, 255, 255, 255);
+    pauseLbl.horizontalAlign = 1;
+    pauseNode.addChild(pauseLblNode);
+    const pauseBtn = pauseNode.addComponent(Button);
+    pauseBtn.node.on(Button.EventType.CLICK, () => {
+      const scene = director.getScene();
+      const pmNode = scene?.getChildByName('PauseMenu');
+      if (pmNode) {
+        const pm = pmNode.getComponent('PauseMenu') as { show?: () => void } | null;
+        pm?.show ? pm.show() : (pmNode.active = true);
+      }
+    }, this);
+    hud.addChild(pauseNode);
+
+    // Register HUD updater so we can push state without a real GameHUD component
+    this._hudRegistered = true;
+  }
+
+  /** Dynamically created label refs from _bootstrapHUD */
+  private _hudMovesLabel: Label | null    = null;
+  private _hudObjectiveLabel: Label | null = null;
+  private _hudComboLabel: Label | null     = null;
+  private _hudRegistered: boolean          = false;
+
+  /** Called by session state change when using the bootstrap HUD */
+  private _updateBootstrapHUD(movesRemaining: number, cleared: number, target: number): void {
+    if (!this._hudRegistered) return;
+    if (this._hudMovesLabel) {
+      this._hudMovesLabel.string = `${movesRemaining} moves`;
+      this._hudMovesLabel.color  = movesRemaining <= 5
+        ? new Color(224, 90, 74, 255)
+        : new Color(255, 240, 200, 255);
+    }
+    if (this._hudObjectiveLabel) {
+      this._hudObjectiveLabel.string = `${cleared} / ${target}`;
+    }
   }
 }

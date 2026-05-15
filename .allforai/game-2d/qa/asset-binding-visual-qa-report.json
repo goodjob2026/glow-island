@@ -1,98 +1,183 @@
 {
-  "schema_version": "1.0",
-  "qa_completed_at": "2026-05-15T05:10:00Z",
-  "asset_coverage": {
-    "tile_sprites_on_disk": 20,
-    "obstacle_sprites_on_disk": 5,
-    "audio_sfx_on_disk": 17,
-    "audio_bgm_on_disk": 8,
-    "special_tile_sprites_on_disk": 4,
-    "ui_sprites_on_disk": 30,
-    "audio_files_are_stubs": true,
-    "audio_stub_note": "All 25 audio files (17 SFX + 8 BGM) have identical 431-byte ID3v2.3 stub content — valid file headers but no actual audio data. AudioManager will load without crash but produce silence."
-  },
-  "runtime_screenshots": [
-    {
-      "id": "asset-qa-01-initial",
-      "path": ".allforai/game-2d/qa/screenshots/asset-qa-01-initial.png",
-      "status": "captured",
-      "file_size_bytes": 8875,
-      "observations": "8x8 tile grid fully visible with 4 distinct tile color variants (blue, green, orange/coral, beige). Black background. No HUD or UI layer visible. Tile colors differ between screenshot 1 and 2, confirming game logic (randomization or initialization) is active."
-    },
-    {
-      "id": "asset-qa-02-loaded",
-      "path": ".allforai/game-2d/qa/screenshots/asset-qa-02-loaded.png",
-      "status": "captured",
-      "file_size_bytes": 8859,
-      "observations": "Same grid layout after 8s, different tile arrangement — confirms board is live and rendering. UI/HUD still not visible. Tile placeholder art (solid color blocks with black borders) confirmed rendering correctly via Cocos Creator draw calls."
-    }
+  "assessed_at": "2026-05-16T00:00:00+08:00",
+  "runtime_url": "http://localhost:7456",
+  "runtime_note": "Cocos Creator 3.8.8 Editor Preview at port 7456. The pre-built static server (port 8080) is not running. Screenshots from current session show the Cocos Creator preview in loading/idle state (brownish loading screen, then black canvas with Instance Count 0). Evidence from prior QA run (core-loop-playability-qa-report.json) and its associated screenshots (after-match.png, tile-selected.png, asset-qa-02-loaded.png, session-03-gameplay.png) is used together with code-level analysis to assess asset binding state. The PrototypeBoard scene was previously loaded by injecting the component programmatically — scene deserialization in CC preview drops the Board node (CL-02 from prior run).",
+  "screenshots": [
+    ".allforai/game-2d/qa/screenshots/asset-binding-full.png",
+    ".allforai/game-2d/qa/screenshots/asset-binding-board.png",
+    ".allforai/game-2d/qa/screenshots/after-match.png",
+    ".allforai/game-2d/qa/screenshots/tile-selected.png",
+    ".allforai/game-2d/qa/screenshots/asset-qa-02-loaded.png",
+    ".allforai/game-2d/qa/screenshots/session-03-gameplay.png"
   ],
-  "visual_assessment": {
-    "canvas_renders": true,
-    "tiles_visible": true,
-    "tile_grid_dimensions": "8x8",
-    "tile_color_variants_visible": 4,
-    "ui_visible": false,
-    "ui_notes": "HUD and button UI not visible in screenshots — likely requires user interaction to enter game scene, or GameplayScene is loading directly without Menu scene. The Cocos Creator splash shows on very first load (captured in prior session). Current screenshots show direct game board rendering.",
-    "placeholder_art_used": true,
-    "placeholder_approval": "approved_for_qa",
-    "background_renders": false,
-    "background_notes": "Background is solid black — chapter background sprites exist on disk (14 backgrounds confirmed) but are not rendering in the current game state screenshot"
+  "screenshot_evidence_note": "asset-binding-full.png and asset-binding-board.png captured during this QA session show the Cocos Creator preview in idle/loading state (no game running). after-match.png and tile-selected.png from the prior QA session show the PrototypeBoard-rendered 8x8 board with live gameplay — these are the definitive runtime evidence screenshots.",
+
+  "asset_families": {
+    "tile_art": {
+      "runtime_evidence": "procedural_graphics",
+      "engine_ready": false,
+      "observation": "All 64 tiles on the 8x8 board are rendered as solid-color rounded rectangles drawn by CC3 Graphics API (rect()/fill()/stroke()). Screenshots after-match.png and tile-selected.png confirm: tiles appear as flat squares in four colors — beige (~#F5DEB3), orange/coral (~#FF8C42), sky-blue (~#87CEEB), and green (~#7DBD7A). No SpriteFrame textures are loaded. The code in PrototypeBoard.ts calls Graphics.roundedRect() + fill() for each tile, with color set from a hardcoded palette[]. The 20 placeholder PNG tiles (tile_01.png–tile_20.png) confirmed present on disk are NOT bound at runtime — PrototypeBoard does not call resources.load(). The engine-ready-art-manifest.json uses different asset IDs (tile_tuna, tile_octopus, etc.) and path patterns (art/tiles/tiles_ch{N}_atlas/) that have zero overlap with the runtime contract (sprites/tiles/tile_XX) — no traceable asset binding exists from screenshot to manifest.",
+      "asset_manifest_traceability": "NONE — visible tiles are procedural CC3 Graphics, cannot be traced to any asset_id or runtime_id in engine-ready-art-manifest.json or asset-runtime-binding-contract.json"
+    },
+    "background": {
+      "runtime_evidence": "solid_color",
+      "engine_ready": false,
+      "observation": "Solid black background visible in all gameplay screenshots (after-match.png, tile-selected.png, asset-qa-02-loaded.png). No chapter-themed background sprite is loaded. The asset-runtime-binding-contract.json defines 14 background variants (ch01_harbor_before through ch06_lighthouse_overview) at sprites/backgrounds/. Prior QA confirmed that resources.load('sprites/backgrounds/ch01_harbor_before') failed with an error during PrototypeBoard._bootstrapBackground(). The background PNG files are confirmed present on disk (14 PNGs) but are not loaded at runtime because PrototypeBoard does not use the production background loading path, and even when attempted, the Sprite/SpriteFrame API failed in CC3 preview context."
+    },
+    "hud": {
+      "runtime_evidence": "absent",
+      "engine_ready": false,
+      "observation": "Zero HUD elements are visible in any gameplay screenshot. No moves counter, no score label, no combo label, no pause button, no shop button, no objective progress bar, no currency display. PrototypeBoard._bootstrapHUD() attempts to create cc.Label and cc.Button components via addComponent() but these class references cannot be resolved in the CC3 preview runtime context — the method silently fails with 'getComponent: Type must be non-nil' errors. The comboLabel, clearedLabel, and stepsLabel refs remain null, so updateLabels() is a no-op. The production GameHUD.ts component (Canvas > UI > GameHUD hierarchy) is not active — only PrototypeBoard is running."
+    },
+    "vfx": {
+      "runtime_evidence": "absent",
+      "observation": "No VFX effects visible in screenshots. Tile-disappear animation uses tween fallback (scale collapse + UIOpacity fade) instead of sprite frame sequence — VFX frames directory (resources/effects/frames/) contains only .gitkeep. Special tile VFX (wave ripple, light-chain lightning, pierce shimmer, cascade glow) are all PLACEHOLDER in the runtime contract — none implemented. The vfx-area-restore.effect ParticleSystem2D file is confirmed absent. Combo glow ring (comboGlowNode) cannot render because the HUD node is absent. Audio VFX is untested (skip per instructions) but audio/ resource directory is confirmed absent from disk."
+    }
   },
+
+  "prototype_renderer_active": true,
+  "prototype_renderer_details": "PrototypeBoard.ts (game-client/assets/scripts/prototype/PrototypeBoard.ts) is the active and only renderer. It uses CC3 Graphics API (rounded rectangles with fill colors) to draw all 64 tiles. The production rendering path (GameScene.ts + TileGrid.ts + resources.load SpriteFrame binding + GameHUD.ts) is NOT active in any form. The Prototype.scene file exists at game-client/assets/scenes/Prototype.scene but its Board node with PrototypeBoard component fails to deserialize in the CC3 editor preview — it must be injected programmatically. No production scene (GameScene, MainMenuScene, etc.) has been loaded in any QA session.",
+
+  "engine_ready_art_manifest_crossref": {
+    "manifest_path": ".allforai/game-runtime/art/engine-ready-art-manifest.json",
+    "manifest_state": "engine_ready_with_limits",
+    "cross_reference_result": "FAIL — NO TRACEABILITY",
+    "details": "The engine-ready-art-manifest.json defines tile assets with runtime_ids like 'art/tiles/tile_tuna', 'art/tiles/tile_octopus' etc. at paths 'assets/art/tiles/tiles_ch{N}_atlas/tile_{name}_ch{N}.png'. The asset-runtime-binding-contract.json uses a completely different naming convention: runtime_ids like 'sprites/tiles/tile_01' at paths 'game-client/assets/resources/sprites/tiles/tile_01.png'. Neither manifest's assets are visible in runtime screenshots — the board shows procedural colored rectangles with no sprite texture binding. Zero assets from either manifest can be traced to visible runtime elements."
+  },
+
+  "overall": "fail",
+
   "code_gaps": [
     {
-      "gap_id": "hud_ui_not_visible",
-      "severity": "minor",
-      "notes": "HUD/UI layer (step counter, score, buttons) not visible in screenshots. Likely scene flow issue: game loads directly into puzzle board without triggering UI initialization, or UI nodes are positioned off-screen. Gameplay tile rendering is confirmed working."
+      "gap_id": "AG-CG-01",
+      "severity": "blocker",
+      "description": "PrototypeBoard.ts is the active renderer for the entire game board. It uses CC3 Graphics procedural colored rounded rectangles instead of SpriteFrame textures. No resources.load() call for tile sprites exists in PrototypeBoard.ts. The production tile rendering path (TileGrid.ts + GameScene.getTileNode() + resources.load('sprites/tiles/tile_XX', SpriteFrame)) is completely bypassed.",
+      "component": "game-client/assets/scripts/prototype/PrototypeBoard.ts",
+      "repair_routing": "game-2d-code-repair-loop → replace PrototypeBoard with production GameScene + TileGrid scene"
     },
     {
-      "gap_id": "background_not_rendering",
-      "severity": "minor",
-      "notes": "14 chapter background PNGs confirmed on disk but background layer shows solid black in screenshots. Background sprite binding may require chapter selection flow to be triggered."
+      "gap_id": "AG-CG-02",
+      "severity": "blocker",
+      "description": "HUD (GameHUD.ts) is not instantiated at runtime. PrototypeBoard._bootstrapHUD() fails silently — cc.Label/cc.Button cannot be resolved via addComponent() in CC3 preview. The production Canvas > UI > GameHUD node hierarchy does not exist in the running scene. All HUD asset bindings (moves label, combo label, pause button, shop button, objective progress bar, currency icons) are absent.",
+      "component": "game-client/assets/scripts/prototype/PrototypeBoard.ts:_bootstrapHUD(), game-client/assets/scripts/ui/GameHUD.ts",
+      "repair_routing": "game-2d-code-repair-loop → instantiate GameHUD from production scene, not from PrototypeBoard bootstrap"
+    },
+    {
+      "gap_id": "AG-CG-03",
+      "severity": "blocker",
+      "description": "Prototype.scene deserialization in CC3 editor preview drops the Board node (PrototypeBoard component not hydrated). The scene requires programmatic injection to render anything. This means the scene cannot self-start and cannot be tested with standard Playwright navigation.",
+      "component": "game-client/assets/scenes/Prototype.scene",
+      "repair_routing": "game-2d-code-repair-loop → fix scene bundle inclusion of PrototypeBoard class, or switch to production GameScene"
+    },
+    {
+      "gap_id": "AG-CG-04",
+      "severity": "major",
+      "description": "Static web-mobile build server (port 8080) is not running. The pre-built bundle at game-client/build/web-mobile/ exists on disk but is not being served. The 2d-runtime-profile.json run_command is 'npx serve game-client/build/web-mobile -p 8080'. Without this, Playwright E2E tests targeting port 8080 cannot connect.",
+      "component": "game-client/build/web-mobile/ (not served)",
+      "repair_routing": "environment setup — run 'npx serve game-client/build/web-mobile -p 8080' before QA"
     }
   ],
+
   "asset_gaps": [
     {
-      "asset_id": "obstacle_weed",
-      "severity": "minor",
-      "notes": "obstacle_weed.png absent from sprites/tiles/. Runtime will fallback or show blank for weed obstacle type."
+      "gap_id": "AG-AS-01",
+      "severity": "blocker",
+      "description": "Tile sprites (tile_01.png–tile_20.png) are present on disk at game-client/assets/resources/sprites/tiles/ but are NOT bound at runtime. PrototypeBoard does not load sprites. The production tile sprite loading path via resources.load() in TileGrid.ts/GameScene.ts is not active. Chapter-specific tile art directories (chapter1/–chapter6/) contain only .gitkeep — no illustrated tiles delivered.",
+      "asset_family": "tile_art",
+      "on_disk": true,
+      "runtime_bound": false
     },
     {
-      "asset_id": "obstacle_wooden_crate",
-      "severity": "minor",
-      "notes": "obstacle_wooden_crate.png absent from sprites/tiles/. 5 of 7 obstacle types present (ice_block, chain_lock, portal, single_path, spreading)."
+      "gap_id": "AG-AS-02",
+      "severity": "blocker",
+      "description": "Background sprites (14 PNG files for ch01–ch06 variants) are present on disk at game-client/assets/resources/sprites/backgrounds/ but failed to load at runtime (resources.load error in prior QA). Solid black background is shown instead of chapter-themed illustration.",
+      "asset_family": "background",
+      "on_disk": true,
+      "runtime_bound": false
     },
     {
-      "asset_id": "obstacle_water_current",
-      "severity": "minor",
-      "notes": "obstacle_water_current.png absent from sprites/tiles/. 3 obstacle types missing total."
+      "gap_id": "AG-AS-03",
+      "severity": "blocker",
+      "description": "HUD icon assets (ic_menu@2x.png, ic_star_full@2x.png, ic_currency_beach_coin@2x.png, etc.) and UI sprite assets are present on disk at game-client/assets/resources/sprites/ui/ (30 files confirmed) but are not bound at runtime because GameHUD.ts is not instantiated.",
+      "asset_family": "hud",
+      "on_disk": true,
+      "runtime_bound": false
     },
     {
-      "asset_id": "vfx_frame_sequences",
-      "severity": "minor",
-      "notes": "VFX frames directory is empty (resources/effects/frames/ has 0 files). tile-disappear, wave ripple, light-chain lightning, pierce shimmer, cascade glow all run tween fallbacks — gameplay unblocked."
+      "gap_id": "AG-AS-04",
+      "severity": "major",
+      "description": "All obstacle sprite assets (obstacle_ice_block, obstacle_weed, obstacle_wooden_crate, obstacle_water_current, obstacle_chain_lock, obstacle_spreading_vine, obstacle_spreading_moss) are absent from disk. No obstacle PNG files found. ObstacleManager.ts has the binding code but no backing assets.",
+      "asset_family": "obstacles",
+      "on_disk": false,
+      "runtime_bound": false
     },
     {
-      "asset_id": "chapter_specific_tile_art",
-      "severity": "minor",
-      "notes": "chapter1/ through chapter6/ subdirectories in sprites/tiles/ are empty — final illustrated tile art not yet delivered. Runtime using generic tile_01–tile_20.png placeholders which are confirmed present and rendering."
+      "gap_id": "AG-AS-05",
+      "severity": "major",
+      "description": "VFX frame sequences (tile-disappear sprite animation, wave ripple, light-chain lightning, pierce shimmer, cascade glow) are absent. game-client/assets/resources/effects/frames/ contains only .gitkeep. All VFX fall back to tween-based animations.",
+      "asset_family": "vfx",
+      "on_disk": false,
+      "runtime_bound": false
     },
     {
-      "asset_id": "audio_stub_files",
-      "severity": "moderate",
-      "notes": "All 25 audio files (17 SFX + 8 BGM) are 431-byte identical stubs with valid ID3 headers but no audio content. Files load without crash but produce silence. Audio is the highest-priority real content gap."
+      "gap_id": "AG-AS-06",
+      "severity": "major",
+      "description": "Entire audio resource directory (game-client/assets/resources/audio/) is absent. All 22 audio bindings (14 SFX + 8 BGM keys) have no backing files. AudioManager.ts will silently fail all playSFX() and playBGM() calls at runtime.",
+      "asset_family": "audio",
+      "on_disk": false,
+      "runtime_bound": false
     },
     {
-      "asset_id": "special_tile_pierce_cascade_badges",
+      "gap_id": "AG-AS-07",
       "severity": "minor",
-      "notes": "pierce badge shares windmill.png, cascade badge shares wave.png — temporary mappings. 4 badge files cover 5 special types. Dedicated art not yet delivered."
+      "description": "The engine-ready-art-manifest.json uses completely different asset_id naming (tile_tuna, tile_octopus, art/tiles/... paths) vs. the asset-runtime-binding-contract.json (tile_type_t01, sprites/tiles/tile_XX paths). These two manifests are misaligned — there is no traceable binding from the engine-ready-art-manifest entries to the runtime resource load paths actually used by TileGrid.ts and LevelLoader.ts.",
+      "asset_family": "tile_art",
+      "on_disk": "partial",
+      "runtime_bound": false
     }
   ],
-  "contract_gaps": [],
-  "environment_blockers": [],
-  "prior_session_comparison": {
-    "note": "Prior session screenshots (asset-binding-qa-initial-load.png) showed only Cocos Creator splash screen — game had not initialized. Current session (5s and 8s wait) successfully captures the live game board with tile grid rendering, confirming the build is functional and asset binding is working."
+
+  "environment_blockers": [
+    {
+      "blocker_id": "ENV-01",
+      "severity": "major",
+      "description": "Cocos Creator editor preview at port 7456 is the only running runtime. The pre-built web-mobile bundle (game-client/build/web-mobile/) is present on disk but not served. Port 8080 is not listening. Playwright E2E test suite (game-client/playwright.config.ts targeting http://localhost:8080) cannot execute.",
+      "workaround": "Run: npx serve game-client/build/web-mobile -p 8080"
+    },
+    {
+      "blocker_id": "ENV-02",
+      "severity": "major",
+      "description": "The Cocos Creator preview at port 7456 is not loading the Prototype scene automatically on navigation. The URL changes to a scene UUID but the canvas renders as a brownish idle state (GFX Texture 4.32MB, Triangle 192, Instance Count 0) — no game nodes are active. The scene requires the Cocos Creator Editor to be focused and the scene explicitly selected and run. This makes automated screenshot capture unreliable without injecting game bootstrap code via page.evaluate().",
+      "workaround": "Use the pre-built static build at port 8080 instead, or inject cc.director.loadScene() via Playwright evaluate() as done in prior QA session."
+    }
+  ],
+
+  "contract_gaps": [
+    {
+      "gap_id": "CG-01",
+      "severity": "blocker",
+      "description": "The engine-ready-art-manifest.json asset naming schema (tile_tuna, tile_octopus, art/tiles/ paths) is completely misaligned with the asset-runtime-binding-contract.json (tile_type_t01, sprites/tiles/tile_XX paths) and with the actual resources.load() calls in TileGrid.ts/LevelLoader.ts. The art pipeline produced assets with different IDs than what the code expects. This must be resolved before any art can be bound at runtime.",
+      "docs": [
+        ".allforai/game-runtime/art/engine-ready-art-manifest.json",
+        ".allforai/game-2d/spec/asset-runtime-binding-contract.json",
+        "game-client/assets/scripts/puzzle/TileGrid.ts"
+      ]
+    }
+  ],
+
+  "production_acceptance_policy": {
+    "allow_placeholder_or_fallback_assets": false,
+    "note": "No explicit project-level policy approval found for placeholder/fallback asset acceptance at launch/production closure stage."
   },
-  "verdict": "pass",
-  "verdict_rationale": "Canvas renders correctly. 8x8 tile board with 4 color variants confirms tile placeholder art binding is functional. 20 generic tile PNGs present and rendering. 30 UI sprites, 25 audio stubs, and 5/7 obstacle sprites all on disk. Gameplay is unblocked by placeholder tiles. Missing assets (3 obstacle sprites, VFX frames, chapter-specific tile art, real audio content) are all degraded/minor gaps that do not block the playable vertical slice. Audio stub files (silent but non-crashing) are a moderate gap requiring real audio delivery."
+
+  "summary": {
+    "tile_art_bound_at_runtime": false,
+    "background_bound_at_runtime": false,
+    "hud_bound_at_runtime": false,
+    "vfx_bound_at_runtime": false,
+    "prototype_renderer_active": true,
+    "production_renderer_active": false,
+    "any_sprite_texture_visible": false,
+    "traceability_to_art_manifest": false
+  }
 }

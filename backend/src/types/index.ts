@@ -133,7 +133,17 @@ export const SKU_CONFIG: Record<string, IapSkuConfig> = {
     is_starter_pack: false,
     is_first_pack: false,
   },
-  // Glowstone chest (replaces monthly_card — direct consumable, not a subscription)
+  // Monthly card — 30-day recurring subscription, delivers daily glowstone
+  monthly_card: {
+    product_id: 'com.glowisland.iap.monthly_card',
+    amount_cents: 499,
+    glowstone: 30,
+    items: [],
+    is_monthly_card: true,
+    is_starter_pack: false,
+    is_first_pack: false,
+  },
+  // Glowstone chest (direct consumable)
   glowstone_chest: {
     product_id: 'com.glowisland.iap.glowstone_chest',
     amount_cents: 499,

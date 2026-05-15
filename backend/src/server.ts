@@ -10,6 +10,7 @@ import { authRoutes } from './routes/auth'
 import { saveRoutes } from './routes/save'
 import { leaderboardRoutes } from './routes/leaderboard'
 import { iapRoutes } from './routes/iap'
+import { analyticsRoutes } from './routes/analytics'
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL ?? 'postgresql://postgres:postgres@localhost:5432/glow_island' })
 const adapter = new PrismaPg(pool)
@@ -67,6 +68,7 @@ app.register(
     await saveRoutes(api, prisma)
     await leaderboardRoutes(api, prisma)
     await iapRoutes(api, prisma)
+    await analyticsRoutes(api)
   },
   { prefix: '/v1' }
 )

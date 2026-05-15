@@ -1,0 +1,36 @@
+{
+  "status": "completed",
+  "fixed_at": "2026-05-15T00:00:00.000Z",
+  "fixes": [
+    {
+      "gap_id": "hud_ui_not_visible",
+      "fix_applied": "Root cause: scenes had only a Camera node — no game controller node attached, so no component ever ran. Fix applied in two layers: (1) Added 'Board' node with PrototypeBoard component to Prototype.scene and 'GameController' node with GameScene component to GameScene.scene. (2) Added _bootstrapHUD() method to both PrototypeBoard.ts and GameScene.ts that programmatically creates an HUD overlay (moves/combo/objective labels + Reset/Pause buttons) at runtime when Inspector refs are null, so the scene is playable without any editor wiring.",
+      "verified": true,
+      "files_changed": [
+        "game-client/assets/scenes/Prototype.scene",
+        "game-client/assets/scenes/GameScene.scene",
+        "game-client/assets/scripts/prototype/PrototypeBoard.ts",
+        "game-client/assets/scripts/game/GameScene.ts"
+      ]
+    },
+    {
+      "gap_id": "background_not_rendering",
+      "fix_applied": "Root cause: no background node existed in either scene, and no code loaded the background PNGs. Fix: added _bootstrapBackground() to PrototypeBoard.ts (loads 'sprites/backgrounds/ch01_harbor_before') and to GameScene.ts (loads chapter-appropriate background using chapter-stem map: ch01=harbor, ch02=pottery, ch03=forest, ch04=path, ch05=cliff, ch06=lighthouse). In both cases the SpriteFrame is bound to a full-screen Sprite via resources.load(); if loading fails (e.g. non-resources build), a coastal gradient is drawn via Graphics as fallback. Background node is inserted as firstChild of Canvas so it renders behind the tile board.",
+      "verified": true,
+      "files_changed": [
+        "game-client/assets/scripts/prototype/PrototypeBoard.ts",
+        "game-client/assets/scripts/game/GameScene.ts"
+      ]
+    },
+    {
+      "gap_id": "compliance_urls",
+      "fix_applied": "verified_clean — grep found no placeholder/TODO/example.com URLs. All URLs use https://glow-island.vercel.app/{privacy,terms,about} and mailto:support@glowisland.game. No changes required.",
+      "verified": true,
+      "files_checked": [
+        "game-client/assets/scripts/ui/PrivacyConsentPopup.ts",
+        "game-client/assets/scripts/ui/SettingsPanel.ts",
+        "game-client/assets/scripts/ui/LevelCompletePopup.ts"
+      ]
+    }
+  ]
+}

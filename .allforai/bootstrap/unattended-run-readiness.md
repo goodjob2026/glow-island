@@ -1,13 +1,14 @@
 # Unattended Run Readiness
 
 Status: `ready`
-Checked at: `2026-05-14T19:54:38.306210+00:00`
+Checked at: `2026-05-15T16:29:15.644395+00:00`
 
 ## Blockers
 - None
 
 ## Required Capabilities
 - `codex_cli`: {"capability": "codex_cli", "path": "/opt/homebrew/bin/codex"}
+- `mcp_image_batch`: {"capability": "mcp_image_batch", "registered": true}
 - `google_api_key`: {"capability": "google_api_key", "present": true}
 
 ## Recommended Pre-Run Actions

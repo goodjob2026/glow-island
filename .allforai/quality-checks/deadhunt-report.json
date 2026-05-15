@@ -1,0 +1,58 @@
+{
+  "checked_at": "2026-05-15T00:00:00.000Z",
+  "repaired_at": "2026-05-15T06:22:00.000Z",
+  "dead_routes": [
+    {
+      "route": "POST /analytics/crashes",
+      "file": "game-client/assets/scripts/services/CrashService.ts:246",
+      "reason": "Client POSTs crash reports to `${apiBase}/analytics/crashes` but no backend route for /analytics/crashes existed.",
+      "status": "fixed",
+      "fix_applied": "Added analyticsRoutes() in backend/src/routes/analytics.ts, registered in server.ts under /v1 prefix."
+    },
+    {
+      "route": "POST /analytics/events",
+      "file": "game-client/assets/scripts/services/AnalyticsService.ts:175",
+      "reason": "Client POSTs queued events to `${apiBase}/analytics/events` but no backend route existed.",
+      "status": "fixed",
+      "fix_applied": "Added to analyticsRoutes() in backend/src/routes/analytics.ts."
+    }
+  ],
+  "ghost_features": [
+    {
+      "function": "SKU: monthly_card",
+      "file": "game-client/assets/scripts/shop/ShopScene.ts:82-96",
+      "reason": "Client ShopScene catalog lists sku_id='monthly_card' but backend SKU_CONFIG had no 'monthly_card' key.",
+      "status": "fixed",
+      "fix_applied": "Added monthly_card entry to backend/src/types/index.ts SKU_CONFIG with is_monthly_card=true, product_id=com.glowisland.iap.monthly_card, amount_cents=499."
+    },
+    {
+      "function": "SKU: first_pack / glowstone_chest",
+      "file": "backend/src/types/index.ts",
+      "reason": "Backend SKU_CONFIG defines 'first_pack' and 'glowstone_chest' not present in client ShopScene catalog.",
+      "status": "warn",
+      "fix_applied": "No action — backend may offer these via direct link or future shop update. Not blocking."
+    }
+  ],
+  "resource_path_gaps": [
+    {
+      "path": "levels/all-levels",
+      "used_in": "game-client/assets/scripts/game/LevelLoader.ts:94",
+      "exists": true,
+      "note": "game-client/assets/resources/levels/all-levels.json exists. OK."
+    },
+    {
+      "path": "audio/bgm/*",
+      "used_in": "game-client/assets/scripts/audio/AudioManager.ts:75",
+      "exists": true,
+      "note": "All 8 BGM files verified present in game-client/assets/resources/audio/bgm/"
+    },
+    {
+      "path": "audio/sfx/*",
+      "used_in": "game-client/assets/scripts/audio/AudioManager.ts:130",
+      "exists": true,
+      "note": "All 17 SFX files verified present in game-client/assets/resources/audio/sfx/"
+    }
+  ],
+  "code_gaps": [],
+  "summary": "pass"
+}

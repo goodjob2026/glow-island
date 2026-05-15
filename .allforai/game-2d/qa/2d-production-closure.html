@@ -3,588 +3,205 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>光辉岛 2D 生产闭环验收报告</title>
+  <title>2D 生产封锁报告 — Glow Island</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: #f0f4f8;
-      color: #2d3748;
-      line-height: 1.6;
-    }
-    .header {
-      background: linear-gradient(135deg, #1a365d 0%, #2a4a7f 100%);
-      color: white;
-      padding: 40px 48px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    }
-    .header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      margin-bottom: 8px;
-    }
-    .header .subtitle {
-      font-size: 14px;
-      opacity: 0.75;
-      letter-spacing: 0.02em;
-    }
-    .badge {
-      display: inline-block;
-      padding: 6px 18px;
-      border-radius: 24px;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-top: 18px;
-    }
-    .badge-accepted-warning {
-      background: #f6ad55;
-      color: #744210;
-    }
-    .badge-pass {
-      background: #68d391;
-      color: #1c4532;
-    }
-    .badge-fail {
-      background: #fc8181;
-      color: #742a2a;
-    }
-    .badge-warn {
-      background: #f6e05e;
-      color: #744210;
-    }
-    .badge-minor {
-      background: #e2e8f0;
-      color: #4a5568;
-    }
-    .badge-moderate {
-      background: #fbd38d;
-      color: #744210;
-    }
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 32px 24px;
-    }
-    .section {
-      background: white;
-      border-radius: 12px;
-      padding: 28px 32px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .section h2 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #1a365d;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #e2e8f0;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    th {
-      background: #edf2f7;
-      color: #4a5568;
-      font-weight: 600;
-      padding: 10px 14px;
-      text-align: left;
-      letter-spacing: 0.03em;
-    }
-    td {
-      padding: 10px 14px;
-      border-bottom: 1px solid #f0f4f8;
-      vertical-align: top;
-    }
+    body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #0f1117; color: #e2e8f0; line-height: 1.6; padding: 24px; }
+    h1 { font-size: 1.6rem; color: #f0f4ff; margin-bottom: 4px; }
+    .subtitle { color: #94a3b8; font-size: 0.9rem; margin-bottom: 24px; }
+    .verdict { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 10px; font-size: 1.3rem; font-weight: 700; margin-bottom: 28px; }
+    .verdict.fail { background: #3b1a1a; border: 2px solid #f87171; color: #f87171; }
+    .verdict.pass { background: #1a3b2a; border: 2px solid #4ade80; color: #4ade80; }
+    .section { background: #1e2330; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+    .section h2 { font-size: 1rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; border-bottom: 1px solid #2d3748; padding-bottom: 8px; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; padding: 8px 12px; font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #2d3748; }
+    td { padding: 10px 12px; border-bottom: 1px solid #1a202c; vertical-align: top; font-size: 0.92rem; }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #f7fafc; }
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 8px;
-    }
-    .meta-item {
-      background: #f7fafc;
-      border-radius: 8px;
-      padding: 14px 18px;
-      border-left: 4px solid #4299e1;
-    }
-    .meta-item .label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #718096;
-      margin-bottom: 4px;
-    }
-    .meta-item .value {
-      font-size: 16px;
-      font-weight: 700;
-      color: #2d3748;
-    }
-    .smoke-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-    }
-    .smoke-item {
-      background: #f0fff4;
-      border: 1px solid #9ae6b4;
-      border-radius: 8px;
-      padding: 12px 16px;
-      text-align: center;
-    }
-    .smoke-item .s-label { font-size: 12px; color: #276749; margin-bottom: 4px; }
-    .smoke-item .s-value { font-size: 20px; font-weight: 800; color: #22543d; }
-    .screenshot-gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 14px;
-    }
-    .screenshot-card {
-      background: #f7fafc;
-      border-radius: 8px;
-      padding: 12px 14px;
-      border: 1px solid #e2e8f0;
-      font-size: 13px;
-    }
-    .screenshot-card .sc-path {
-      font-family: "SF Mono", "Fira Code", monospace;
-      font-size: 11px;
-      color: #4a5568;
-      word-break: break-all;
-      margin-top: 6px;
-    }
-    .screenshot-card .sc-name {
-      font-weight: 600;
-      color: #2d3748;
-      margin-bottom: 2px;
-    }
-    .warning-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px solid #f0f4f8;
-    }
-    .warning-item:last-child { border-bottom: none; }
-    .warning-icon {
-      font-size: 20px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .warning-content .w-title { font-weight: 600; font-size: 14px; color: #2d3748; margin-bottom: 3px; }
-    .warning-content .w-resolution { font-size: 12px; color: #718096; margin-top: 2px; }
-    .verdict-box {
-      background: linear-gradient(135deg, #fffbf0, #fef3c7);
-      border: 2px solid #f6ad55;
-      border-radius: 12px;
-      padding: 24px 28px;
-    }
-    .verdict-box .v-title { font-size: 22px; font-weight: 800; color: #92400e; margin-bottom: 12px; }
-    .verdict-box .v-desc { color: #78350f; font-size: 14px; line-height: 1.7; }
-    .next-steps { counter-reset: steps; }
-    .next-step-item {
-      counter-increment: steps;
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 12px 0;
-      border-bottom: 1px solid #f0f4f8;
-    }
-    .next-step-item:last-child { border-bottom: none; }
-    .next-step-item::before {
-      content: counter(steps);
-      background: #1a365d;
-      color: white;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      font-size: 13px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .step-content .s-title { font-weight: 600; color: #2d3748; font-size: 14px; }
-    .step-content .s-desc { font-size: 13px; color: #718096; margin-top: 2px; }
-    .footer {
-      text-align: center;
-      color: #a0aec0;
-      font-size: 12px;
-      padding: 24px;
-      border-top: 1px solid #e2e8f0;
-      margin-top: 8px;
-    }
-    .tag {
-      display: inline-block;
-      background: #ebf8ff;
-      color: #2b6cb0;
-      border-radius: 4px;
-      padding: 1px 8px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-left: 4px;
-    }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+    .badge.pass { background: #14532d; color: #4ade80; }
+    .badge.fail { background: #450a0a; color: #f87171; }
+    .badge.blocked { background: #1c1917; color: #fb923c; }
+    .badge.skipped { background: #1e293b; color: #94a3b8; }
+    .gap-card { background: #161b27; border-left: 3px solid #f87171; border-radius: 6px; padding: 12px 16px; margin-bottom: 10px; }
+    .gap-card h3 { font-size: 0.88rem; color: #fca5a5; margin-bottom: 4px; }
+    .gap-card p { font-size: 0.85rem; color: #94a3b8; }
+    .gap-card .owner { display: inline-block; margin-top: 6px; font-size: 0.78rem; padding: 2px 8px; background: #1e293b; border-radius: 4px; color: #7dd3fc; }
+    .resolved-card { background: #0d1f17; border-left: 3px solid #4ade80; border-radius: 6px; padding: 10px 14px; margin-bottom: 8px; font-size: 0.88rem; color: #86efac; }
+    .screenshot-box { background: #0a0e1a; border-radius: 8px; overflow: hidden; margin-top: 10px; text-align: center; }
+    .screenshot-box img { max-width: 100%; display: block; margin: 0 auto; }
+    .screenshot-caption { font-size: 0.8rem; color: #475569; padding: 8px; }
+    .summary-text { font-size: 0.95rem; color: #cbd5e1; line-height: 1.7; }
+    .meta-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+    .meta-item { background: #1e2330; border-radius: 8px; padding: 12px 16px; min-width: 160px; }
+    .meta-item .label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
+    .meta-item .value { font-size: 1.1rem; font-weight: 600; color: #e2e8f0; margin-top: 2px; }
+    .category-badge { font-size: 0.75rem; padding: 1px 7px; border-radius: 4px; background: #1e293b; color: #7dd3fc; margin-left: 6px; }
   </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>光辉岛 2D 生产闭环验收报告</h1>
-  <div class="subtitle">项目：glow-island &nbsp;|&nbsp; 引擎：Cocos Creator 3.8.8 &nbsp;|&nbsp; 生成时间：2026-05-15 06:30 UTC</div>
-  <div class="badge badge-accepted-warning">通过（含警告）</div>
-</div>
+  <h1>2D 生产封锁质量报告</h1>
+  <p class="subtitle">Glow Island · 评估时间: 2026-05-16T09:30:00Z · 修复轮次: 1</p>
 
-<div class="container">
+  <div class="verdict fail">
+    ✗ &nbsp;失败验证 (failed_validation)
+  </div>
 
-  <!-- 项目概览 -->
-  <div class="section">
-    <h2>项目概览</h2>
-    <div class="meta-grid">
-      <div class="meta-item">
-        <div class="label">最终裁定</div>
-        <div class="value">accepted_with_warnings</div>
-      </div>
-      <div class="meta-item">
-        <div class="label">修复迭代轮次</div>
-        <div class="value">1 轮</div>
-      </div>
-      <div class="meta-item">
-        <div class="label">E2E 测试通过率</div>
-        <div class="value">4 / 4</div>
-      </div>
-      <div class="meta-item">
-        <div class="label">截图数量</div>
-        <div class="value">20 张</div>
-      </div>
-      <div class="meta-item">
-        <div class="label">剩余阻塞项</div>
-        <div class="value" style="color:#22543d">0 个</div>
-      </div>
-      <div class="meta-item">
-        <div class="label">剩余警告项</div>
-        <div class="value" style="color:#c05621">4 个</div>
-      </div>
+  <div class="meta-row">
+    <div class="meta-item">
+      <div class="label">最终决定</div>
+      <div class="value" style="color:#f87171">未通过</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">修复轮次</div>
+      <div class="value">1</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">已解决缺口</div>
+      <div class="value" style="color:#4ade80">4 项</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">阻塞缺口</div>
+      <div class="value" style="color:#f87171">6 项</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">FPS（截图时）</div>
+      <div class="value">61</div>
     </div>
   </div>
 
-  <!-- 最终冒烟检查 -->
+  <!-- Dimensions Table -->
   <div class="section">
-    <h2>最终冒烟检查（闭环验证）</h2>
-    <div class="smoke-grid">
-      <div class="smoke-item">
-        <div class="s-label">HTTP 状态码</div>
-        <div class="s-value">200</div>
-      </div>
-      <div class="smoke-item">
-        <div class="s-label">Playwright 总测试</div>
-        <div class="s-value">4</div>
-      </div>
-      <div class="smoke-item">
-        <div class="s-label">通过</div>
-        <div class="s-value">4</div>
-      </div>
-      <div class="smoke-item">
-        <div class="s-label">失败</div>
-        <div class="s-value" style="color:#c05621">0</div>
-      </div>
-      <div class="smoke-item">
-        <div class="s-label">总耗时</div>
-        <div class="s-value">38.9s</div>
-      </div>
-      <div class="smoke-item">
-        <div class="s-label">退出码</div>
-        <div class="s-value">0</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- QA 各阶段汇总 -->
-  <div class="section">
-    <h2>QA 各阶段汇总</h2>
+    <h2>验收维度评估</h2>
     <table>
       <thead>
         <tr>
-          <th>阶段</th>
-          <th>状态</th>
-          <th>核心结论</th>
+          <th>维度</th>
+          <th>结果</th>
+          <th>说明</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>产物组装（Assembly）</strong></td>
-          <td><span class="badge badge-pass">已组装</span></td>
-          <td>web-mobile 构建产物完整，HTTP 200，Playwright 可用，7 个 Scene 文件全部存在，核心脚本和 IAP 脚本全部验证通过</td>
+          <td>核心循环可玩性</td>
+          <td><span class="badge pass">通过</span></td>
+          <td>8×8 棋盘渲染正常，61 FPS，BFS 匹配、连击系统（×1.0/1.5/2.0/3.0）、重力补充全部验证通过。</td>
         </tr>
         <tr>
-          <td><strong>核心循环可玩性 QA</strong></td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td>修复前 3/4 通过（TC-001 因 URL 断言问题失败）；修复后 4/4 全部通过。无 JS 崩溃错误</td>
+          <td>视觉验收</td>
+          <td><span class="badge pass">通过</span></td>
+          <td>背景为蒸腾色彩的海岸渐变（天空/海洋/沙滩三段），HUD 标签（Cleared / COMBO / Steps）全部可见，Reset 按钮清晰，无黑屏。</td>
         </tr>
         <tr>
-          <td><strong>资产绑定视觉 QA</strong></td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td>画布正常渲染，8×8 瓷砖网格可见，4 种颜色变体确认。20 张通用瓷砖 PNG 全部存在并正确渲染</td>
+          <td>原型渲染器排除</td>
+          <td><span class="badge fail">失败</span></td>
+          <td>PrototypeBoard.ts 仍是唯一活跃渲染器。所有 64 个格子均为 CC3 Graphics API 程序化绘制（填色圆角矩形），GFX 贴图内存 0.67 MB、Instance Count 0，证实无 SpriteFrame 纹理绑定。</td>
         </tr>
         <tr>
-          <td><strong>会话完整性 QA</strong></td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td>4/4 步骤全部通过：启动 → 游戏进入 → 瓷砖交互 → 暂停恢复。无 JS 控制台错误，画布在整个会话期间保持稳定</td>
+          <td>资产绑定</td>
+          <td><span class="badge fail">失败</span></td>
+          <td>tile_01–20.png 在磁盘存在但运行时未加载；章节插画 tile art 目录仅含 .gitkeep；背景 Sprite、HUD 图标均未绑定。生产渲染路径（TileGrid.ts + resources.load SpriteFrame）从未激活。</td>
         </tr>
         <tr>
-          <td><strong>代码修复循环</strong></td>
-          <td><span class="badge badge-pass">已修复</span></td>
-          <td>TC-001 URL 断言替换为画布可见性检查（Cocos SPA 不更新 URL）。修复文件：game-client/e2e/glow-island.spec.ts</td>
+          <td>音频</td>
+          <td><span class="badge fail">失败</span></td>
+          <td>game-client/assets/resources/audio/ 目录不存在。所有 22 个音频键（14 SFX + 8 BGM）无可加载的运行时文件，AudioManager 静默失败。</td>
         </tr>
         <tr>
-          <td><strong>重验证（Revalidation）</strong></td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td>TC-001 由失败转为通过；TC-002 / TC-003 / TC-004 保持通过状态。无剩余代码缺口</td>
+          <td>VFX</td>
+          <td><span class="badge fail">失败</span></td>
+          <td>effects/frames/ 仅含 .gitkeep，无精灵帧序列。消除/特殊格子/连击特效全部退化为 tween 动画。</td>
+        </tr>
+        <tr>
+          <td>会话流程</td>
+          <td><span class="badge fail">失败</span></td>
+          <td>仅测试了 PrototypeBoard 的无限循环流程（启动→游戏→无限游玩→重置）。完整生产流程（主菜单→岛屿地图→关卡开始→游戏→关卡完成→结果）通过 GameScene 从未加载或测试。</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- E2E 测试用例详情 -->
+  <!-- Resolved Gaps -->
   <div class="section">
-    <h2>E2E 测试用例详情</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>用例编号</th>
-          <th>测试内容</th>
-          <th>修复前状态</th>
-          <th>修复后状态</th>
-          <th>备注</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>TC-001</strong></td>
-          <td>新游戏启动 + 教程关卡</td>
-          <td><span class="badge badge-fail">失败</span></td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td>URL 断言逻辑不适用于 Cocos SPA，替换为画布可见性检查后通过</td>
-        </tr>
-        <tr>
-          <td><strong>TC-002</strong></td>
-          <td>岛屿地图视图</td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td>岛屿地图界面正常渲染</td>
-        </tr>
-        <tr>
-          <td><strong>TC-003</strong></td>
-          <td>商店访问 + 商品展示</td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td>商店交互流程验证通过，后端未运行时优雅降级</td>
-        </tr>
-        <tr>
-          <td><strong>TC-004</strong></td>
-          <td>排行榜</td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td><span class="badge badge-pass">通过</span></td>
-          <td>排行榜流程验证通过，后端未运行时 .catch(() => null) 优雅处理</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- 截图库 -->
-  <div class="section">
-    <h2>截图库（共 20 张）</h2>
-    <p style="font-size:13px;color:#718096;margin-bottom:16px;">已记录 8 张会话截图 + 12 张 E2E 截图，覆盖资产绑定、会话流程及各 TC 测试节点。</p>
-
-    <h3 style="font-size:14px;font-weight:600;color:#4a5568;margin-bottom:12px;margin-top:4px;">会话截图（.allforai/game-2d/qa/screenshots/）</h3>
-    <div class="screenshot-gallery" style="margin-bottom:20px;">
-      <div class="screenshot-card">
-        <div class="sc-name">资产绑定初始加载</div>
-        <div class="sc-path">.allforai/game-2d/qa/screenshots/asset-binding-qa-initial-load.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">资产绑定场景阻塞</div>
-        <div class="sc-path">.allforai/game-2d/qa/screenshots/asset-binding-qa-scene-blocked.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">资产 QA 初始截图</div>
-        <div class="sc-path">.allforai/game-2d/qa/screenshots/asset-qa-01-initial.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">资产 QA 加载完成</div>
-        <div class="sc-path">.allforai/game-2d/qa/screenshots/asset-qa-02-loaded.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">会话步骤1：游戏启动</div>
-        <div class="sc-path">.allforai/game-2d/qa/screenshots/session-01-launch.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">会话步骤2：点击开始</div>
-        <div class="sc-path">.allforai/game-2d/qa/screenshots/session-02-start-click.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">会话步骤3：游戏进行中</div>
-        <div class="sc-path">.allforai/game-2d/qa/screenshots/session-03-gameplay.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">会话步骤4：暂停状态</div>
-        <div class="sc-path">.allforai/game-2d/qa/screenshots/session-04-pause.png</div>
-      </div>
+    <h2>已解决缺口（修复轮次 1）</h2>
+    <div class="resolved-card">
+      <strong>CL-01 / E2E-01</strong> — PrototypeBoard 组件注册修复：将组件移至 Canvas 节点，修复 library 缓存中的 __type__ UUID，修补编译 JS chunk。棋盘现在无需程序化注入即可自动渲染。
     </div>
-
-    <h3 style="font-size:14px;font-weight:600;color:#4a5568;margin-bottom:12px;">E2E 截图（.allforai/bootstrap/e2e-screenshots/）</h3>
-    <div class="screenshot-gallery">
-      <div class="screenshot-card">
-        <div class="sc-name">初始加载状态</div>
-        <div class="sc-path">.allforai/bootstrap/e2e-screenshots/sc-01-initial-load.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">场景加载尝试</div>
-        <div class="sc-path">.allforai/bootstrap/e2e-screenshots/sc-01-scene-load-attempt.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">场景加载成功</div>
-        <div class="sc-path">.allforai/bootstrap/e2e-screenshots/sc-01-scene-load.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">TC-001 修复前失败</div>
-        <div class="sc-path">.allforai/bootstrap/e2e-screenshots/tc-001-tutorial-failed.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">TC-001 最终通过</div>
-        <div class="sc-path">.allforai/bootstrap/e2e-screenshots/tc-001-tutorial.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">TC-002 岛屿地图</div>
-        <div class="sc-path">.allforai/bootstrap/e2e-screenshots/tc-002-island-map.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">TC-003 商店界面</div>
-        <div class="sc-path">.allforai/bootstrap/e2e-screenshots/tc-003-shop.png</div>
-      </div>
-      <div class="screenshot-card">
-        <div class="sc-name">TC-004 排行榜</div>
-        <div class="sc-path">.allforai/bootstrap/e2e-screenshots/tc-004-leaderboard.png</div>
-      </div>
+    <div class="resolved-card">
+      <strong>E2E-02</strong> — HUD 标签回写：_bootstrapHUD() 的 comboLabel / clearedLabel / _stepsLabel 返回引用修复，updateLabels() 在 start() 末尾调用。HUD 标签（Cleared / COMBO / Steps）现在正确显示。
+    </div>
+    <div class="resolved-card">
+      <strong>ARCH-01</strong> — BoardGrid 容器模式：buildNodes() 和 dropColumns() 改用 _boardContainer 专用子节点，避免 destroyAllChildren() 破坏 Camera 及其他 Canvas 子节点。
+    </div>
+    <div class="resolved-card">
+      <strong>CL-01（UIOpacity）</strong> — 为 createTileNode 和 GameScene.playTileDisappearAnim 中的 UIOpacity addComponent 添加了 null 守卫，消除 "Type must be non-nil" 崩溃。
     </div>
   </div>
 
-  <!-- 警告列表 -->
+  <!-- Blocking Gaps -->
   <div class="section">
-    <h2>剩余警告（4 项，无阻塞项）</h2>
+    <h2>阻塞缺口（需在下一轮修复）</h2>
 
-    <div class="warning-item">
-      <div class="warning-icon">&#9888;&#65039;</div>
-      <div class="warning-content">
-        <div class="w-title">3 个障碍物精灵图缺失（weed、wooden_crate、water_current）
-          <span class="badge badge-minor">轻微</span>
-        </div>
-        <div>当前已有 5/7 种障碍物精灵图（ice_block、chain_lock、portal、single_path、spreading）。缺失类型运行时优雅降级，不影响核心玩法。</div>
-        <div class="w-resolution">处理方式：已转交美术团队，待正式美术制作阶段交付</div>
-      </div>
+    <div class="gap-card">
+      <h3>AG-CG-01 <span class="category-badge">代码缺口</span></h3>
+      <p>PrototypeBoard.ts 仍是活跃生产渲染器。所有格子为程序化 Graphics 图元，无 SpriteFrame 纹理。生产渲染路径（GameScene + TileGrid + resources.load SpriteFrame）完全绕过。</p>
+      <span class="owner">负责技能: game-2d-code-repair-loop</span>
     </div>
 
-    <div class="warning-item">
-      <div class="warning-icon">&#128266;</div>
-      <div class="warning-content">
-        <div class="w-title">音频文件为静默存根（25 个 SFX + BGM 文件均为 431 字节占位文件）
-          <span class="badge badge-moderate">中等</span>
-        </div>
-        <div>所有 25 个音频文件（17 SFX + 8 BGM）内容相同，为有效 ID3v2.3 头部但无实际音频数据。AudioManager 加载时不崩溃，但产生静默。音频是优先级最高的真实内容缺口。</div>
-        <div class="w-resolution">处理方式：已转交音频团队，App Store 提审前必须交付真实音频</div>
-      </div>
+    <div class="gap-card">
+      <h3>AG-AS-01 <span class="category-badge">资产缺口</span></h3>
+      <p>Tile sprites（tile_01–20.png）在磁盘存在但运行时未绑定。章节插画 tile art 目录（chapter1–chapter6 atlas）仅含 .gitkeep，无生产图像资产。</p>
+      <span class="owner">负责技能: game-2d-playable-slice-assembly</span>
     </div>
 
-    <div class="warning-item">
-      <div class="warning-icon">&#10024;</div>
-      <div class="warning-content">
-        <div class="w-title">VFX 帧序列缺失 — 补间动画回退已激活
-          <span class="badge badge-minor">轻微</span>
-        </div>
-        <div>resources/effects/frames/ 目录为空。tile-disappear、wave ripple、light-chain lightning、pierce shimmer、cascade glow 等特效均使用补间动画回退方案，游戏玩法不受阻。</div>
-        <div class="w-resolution">处理方式：已转交特效团队，待制作阶段交付</div>
-      </div>
+    <div class="gap-card">
+      <h3>AG-AS-05 <span class="category-badge">资产缺口</span></h3>
+      <p>VFX 精灵帧序列（格子消除、波纹、闪电、穿透、连锁光效）均缺失。effects/frames/ 仅含 .gitkeep，所有视觉特效退化为 tween 动画。</p>
+      <span class="owner">负责技能: game-2d-playable-slice-assembly</span>
     </div>
 
-    <div class="warning-item">
-      <div class="warning-icon">&#127912;</div>
-      <div class="warning-content">
-        <div class="w-title">章节专属瓷砖美术缺失 — 通用占位符激活
-          <span class="badge badge-minor">轻微</span>
-        </div>
-        <div>sprites/tiles/ 下 chapter1–chapter6 子目录均为空，最终图示化瓷砖美术尚未交付。运行时使用 tile_01–tile_20.png 通用占位图，已确认存在并正确渲染（4 种颜色变体）。</div>
-        <div class="w-resolution">处理方式：已转交美术团队，待章节美术制作阶段交付</div>
-      </div>
+    <div class="gap-card">
+      <h3>AG-AS-06 <span class="category-badge">资产缺口</span></h3>
+      <p>game-client/assets/resources/audio/ 目录不存在。所有 22 个音频绑定（14 SFX + 8 BGM）无运行时可加载文件。AudioManager.ts 的所有 playSFX/playBGM 调用静默失败。</p>
+      <span class="owner">负责技能: game-2d-playable-slice-assembly</span>
+    </div>
+
+    <div class="gap-card">
+      <h3>AG-CG-03-partial <span class="category-badge">代码缺口</span></h3>
+      <p>修复通过直接 patch 编译 JS chunk 实现，非持久性修复。若 CC3 编辑器重新编译 TypeScript，修复将被覆盖。需将 TS 源码变更正式编译为持久构建产物。</p>
+      <span class="owner">负责技能: game-2d-code-repair-loop</span>
+    </div>
+
+    <div class="gap-card">
+      <h3>PROD-SCENE-01 <span class="category-badge">代码缺口</span></h3>
+      <p>生产 GameScene（GameScene.ts + TileGrid.ts + GameHUD.ts）从未在任何 QA 会话中加载。完整生产会话流程（主菜单→岛屿地图→关卡开始→游戏→关卡完成→结果）完全未经测试。</p>
+      <span class="owner">负责技能: game-2d-code-repair-loop</span>
     </div>
   </div>
 
-  <!-- 最终裁定 -->
+  <!-- Final Screenshot -->
   <div class="section">
-    <h2>最终裁定</h2>
-    <div class="verdict-box">
-      <div class="v-title">通过（含警告）— accepted_with_warnings</div>
-      <div class="v-desc">
-        核心游戏循环已通过 Playwright E2E 验证（4/4 测试用例全部通过）。画布使用 Animal Crossing 调色板瓷砖正常渲染。会话启动、游戏进行、暂停功能均已验证。整个项目使用占位符资产，已获得 QA 阶段批准。<br><br>
-        <strong>剩余 4 项警告均为资产缺口</strong>（3 个障碍物精灵图、音频存根文件、VFX 帧序列、章节专属瓷砖美术），均为非阻塞项，已分别转交对应团队（美术/音频/特效）。<strong>App Store 提审前必须交付完整的生产级美术和音频资产。</strong>
-      </div>
+    <h2>最终验证截图</h2>
+    <div class="screenshot-box">
+      <img src="screenshots/closure-final.png" alt="closure-final.png — 最终验证截图">
+      <div class="screenshot-caption">closure-final.png · 评估时间 2026-05-16T09:30Z · 61 FPS · Draw Calls 71 · Triangles 32408 · GFX Texture Mem 0.67 MB</div>
     </div>
+    <p style="margin-top:12px; font-size:0.85rem; color:#64748b;">
+      截图显示：蒸腾色调海岸背景（天空/海洋/沙滩三段渐变）+ 8×8 彩色格子棋盘 + HUD 标签（Cleared: 0 / COMBO × 0 (×1.0) / Steps: 0）+ Reset 按钮。
+      格子有装饰性边框和内部形状，但均为程序化 CC3 Graphics 绘制——GFX Texture Mem 仅 0.67 MB 证实无 SpriteFrame 纹理加载。
+    </p>
   </div>
 
-  <!-- 后续步骤 -->
+  <!-- Summary -->
   <div class="section">
-    <h2>后续步骤</h2>
-    <div class="next-steps">
-      <div class="next-step-item">
-        <div class="step-content">
-          <div class="s-title">音频团队：交付真实 SFX + BGM 内容</div>
-          <div class="s-desc">替换 17 个 SFX 和 8 个 BGM 的 431 字节静默存根文件。这是提审前优先级最高的资产缺口。</div>
-        </div>
-      </div>
-      <div class="next-step-item">
-        <div class="step-content">
-          <div class="s-title">美术团队：交付缺失的 3 个障碍物精灵图</div>
-          <div class="s-desc">obstacle_weed.png、obstacle_wooden_crate.png、obstacle_water_current.png — 放置于 sprites/tiles/ 目录。</div>
-        </div>
-      </div>
-      <div class="next-step-item">
-        <div class="step-content">
-          <div class="s-title">美术团队：交付章节专属瓷砖美术</div>
-          <div class="s-desc">填充 sprites/tiles/chapter1–chapter6 子目录，替换通用占位图，呈现各章节的差异化视觉风格。</div>
-        </div>
-      </div>
-      <div class="next-step-item">
-        <div class="step-content">
-          <div class="s-title">特效团队：交付 VFX 帧序列</div>
-          <div class="s-desc">填充 resources/effects/frames/ 目录，包含 tile-disappear、wave ripple、light-chain、pierce shimmer、cascade glow 等效果。</div>
-        </div>
-      </div>
-      <div class="next-step-item">
-        <div class="step-content">
-          <div class="s-title">工程团队：完成后触发完整构建 + 最终 QA 重验证</div>
-          <div class="s-desc">所有资产交付完成后，通过 Cocos Creator 3.8.8 GUI（File &gt; Build &gt; web-mobile）执行正式构建，重新运行全套 Playwright 测试，确认 4/4 通过后方可提审。</div>
-        </div>
-      </div>
-      <div class="next-step-item">
-        <div class="step-content">
-          <div class="s-title">后端团队：配置生产级后端 API 并在 App Store 提审前完成集成测试</div>
-          <div class="s-desc">当前 backend/package.json 中 test 脚本为占位符；排行榜和 IAP 端点需真实后端运行时进行验证。</div>
-        </div>
-      </div>
-    </div>
+    <h2>总结</h2>
+    <p class="summary-text">
+      修复循环成功解决了 4 项关键渲染缺口（UIOpacity null 守卫、场景反序列化、HUD 标签回写、Canvas 架构隔离），产出了一个在 60 FPS 下稳定运行、带海岸背景色、彩色格子和可用 HUD 的视觉完整原型。
+      然而，PrototypeBoard.ts 仍然是唯一活跃渲染器——所有格子均为程序化 Graphics 图元，SpriteFrame 纹理绑定为零，VFX 帧序列缺失，音频资源无法通过 resources.load() 加载，完整生产 GameScene 会话流程从未测试。
+      7 个封锁维度中有 3 个（原型渲染器排除、资产绑定、音频）直接触发拒绝规则，本次封锁结果为 <strong style="color:#f87171">failed_validation</strong>，需进一步修复方可重新提交。
+    </p>
   </div>
-
-</div>
-
-<div class="footer">
-  光辉岛（Glow Island）&nbsp;|&nbsp; 2D 生产闭环验收报告 &nbsp;|&nbsp; 生成时间：2026-05-15 &nbsp;|&nbsp; 引擎：Cocos Creator 3.8.8 &nbsp;|&nbsp; 平台：web-mobile / iOS / Android
-</div>
 
 </body>
 </html>

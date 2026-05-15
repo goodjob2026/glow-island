@@ -1,60 +1,92 @@
 # Code Repair Loop Report
 
-**Repaired at:** 2026-05-15T06:00:00Z  
-**Repair status:** REPAIRED — all 4 tests now pass
+**Completed at:** 2026-05-16T09:17:00Z  
+**Status:** COMPLETED  
+**Code gaps resolved:** 4 / 4  
 
 ---
 
-## Code Gaps Fixed
+## Summary
 
-### TC-001: URL-based level assertion (glow-island.spec.ts:88-93)
+All QA-reported code gaps were resolved. The game prototype is now fully visible and playable in the CC3 preview at `http://localhost:7456/?scene=8edd8f65-6575-4b60-b2fa-cd3875a00721`.
 
-**Root cause:** The assertion checked `url.includes('level=1')`, `url.includes('#level')`,
-`url.includes('game')`, and a DOM text locator for `/level\s*1/i`. Cocos Creator web builds
-are single-page applications — the URL never changes from the root path on scene transitions,
-and all in-game UI labels are rendered inside the WebGL canvas (not as DOM text nodes). Neither
-check can ever succeed for this build type.
-
-**Fix applied:** Removed all URL/DOM assertions and replaced with a canvas visibility check:
-```typescript
-const canvas = page.locator('canvas')
-const canvasVisible = await canvas.isVisible().catch(() => false)
-expect(canvasVisible, 'Canvas should still be visible after gameplay entry').toBeTruthy()
-```
-
-This correctly validates that the engine has not crashed, which is the meaningful runtime
-guarantee a Playwright test can make for a canvas-only Cocos Creator SPA.
-
-**File changed:** `game-client/e2e/glow-island.spec.ts` (lines 84–93)
+### Visual Verification Result
+- Background: PASS — teal coastal gradient (sky/ocean/sand strips) renders behind the board
+- Tiles: PASS — 8×8 grid of rounded-corner colored tiles with warm AC palette and inner glow highlights
+- HUD: PASS — "Cleared: 0" / "COMBO × 0 (×1.0)" / "Steps: 0" all visible
+- Reset button: PASS — teal "Reset" button at bottom center
 
 ---
 
-## Revalidation Results
+## Repairs Applied
 
-| Test | Before | After |
-|------|--------|-------|
-| TC-001: New game start + tutorial level | FAIL | PASS |
-| TC-002: Island map view | PASS | PASS |
-| TC-003: Shop access + product display | PASS | PASS |
-| TC-004: Leaderboard | PASS | PASS |
+### CL-01 — UIOpacity Null Guard (Critical)
 
-**Full suite:** 4/4 passed in 38.9s (no regressions introduced)
+**Root cause:** `tile.addComponent(UIOpacity)` called without null check. If UIOpacity is not registered in the CC3 runtime, this throws "Type must be non-nil" and aborts `start()`.
+
+**Fix:**
+- `PrototypeBoard.ts` line 332: Changed to `const op = UIOpacity ? tile.addComponent(UIOpacity) : null; if (op) op.opacity = 255;`
+- `GameScene.ts` `playTileDisappearAnim`: Guarded `addComponent(UIOpacity)` with `UIOpacity ? ... : null`
+- `GameScene.ts` `_onBoardRotateWarning`: Same guard applied
+- Compiled JS chunk `4d8c86...` patched directly (editor had not auto-recompiled TS changes)
+
+**Verified by:** `repair-b1-verify.png` — tiles render correctly at 60 FPS
 
 ---
 
-## Asset Gaps (Deferred — Not Code Issues)
+### E2E-01 — Board Node Deserialization Failure (Major)
 
-These gaps were identified in the asset-binding and session-completion QA reports.
-They do not block gameplay and have been routed to the appropriate teams:
+**Root cause (multi-layer):**
+1. The CC3 `library/` cache file was stale — it was an older version without the Board node
+2. The `__type__: "PrototypeBoard"` field in scene JSON fails when the class module hasn't been registered yet (race condition during scene load)
+3. Camera clear color was black (`r:0,g:0,b:0`) in the cache, causing black background even when other content rendered
 
-| Gap | Severity | Routed To |
-|-----|----------|-----------|
-| obstacle_weed.png missing | minor | asset-team |
-| obstacle_wooden_crate.png missing | minor | asset-team |
-| obstacle_water_current.png missing | minor | asset-team |
-| All 25 audio files are silent stubs | moderate | audio-team |
-| VFX frame sequences absent | minor | vfx-team |
-| Chapter-specific tile art (ch1–ch6) empty | minor | asset-team |
+**Fix:**
+1. Moved `PrototypeBoard` from a separate Board child node to a component **directly on the Canvas node** — Canvas always deserializes successfully
+2. Updated `__type__` to use the class UUID `"db8860Zy6xMNqsWSyzSrW0I"` instead of the class name string
+3. Updated both `assets/scenes/Prototype.scene` (source) and `library/8e/8edd8f65-6575-4b60-b2fa-cd3875a00721.json` (CC3 runtime cache)
+4. Fixed Camera clear color to teal (`r:134,g:196,b:200`) in the library cache
 
-These do not cause test failures because the game degrades gracefully
-(placeholder tiles render, tween fallbacks replace VFX, silent audio loads without crash).
+**Verified by:** `repair-b1-verify.png` — canvas shows teal background, all nodes in hierarchy
+
+---
+
+### E2E-02 — HUD Label Back-Assignment (Major)
+
+**Root cause:** `_bootstrapHUD()` created labels dynamically but `comboLabel`/`clearedLabel`/`_stepsLabel` were not back-assigned, so `updateLabels()` was a no-op.
+
+**Finding:** TypeScript source already had correct back-assignment (`this.comboLabel = lbl`, `this.clearedLabel = lbl`, `this._stepsLabel = stepsLbl`). The problem was the compiled JS chunk was stale — it didn't include the `_bootstrapBackground()` or `_bootstrapHUD()` methods at all (pre-dating these features).
+
+**Fix:** Updated compiled JS chunk to include all bootstrap methods with correct label back-assignment. `updateLabels()` is called at end of `start()` after bootstrapping completes.
+
+**Verified by:** `repair-b2-verify.png` — "COMBO × 0 (×1.0)", "Cleared: 0", "Steps: 0" visible in HUD
+
+---
+
+### ARCH-01 — Canvas Children Destruction Risk (Structural)
+
+**Root cause:** When `PrototypeBoard` was moved to Canvas, the existing `buildNodes()` called `this.node.destroyAllChildren()` which would destroy Camera and other Canvas children.
+
+**Fix:** Added `_boardContainer` pattern:
+- `start()` creates a dedicated `"BoardGrid"` child node on Canvas
+- `buildNodes()` only destroys nodes named `tile_*` in the container (safe selective destroy)
+- `dropColumns()` adds new tiles to `_boardContainer` instead of `this.node`
+- Added `_getCanvas()` helper to correctly resolve the canvas node regardless of component attachment point
+
+---
+
+## Environment Notes
+
+- **EB-01:** URL param `?scene=8edd8f65-6575-4b60-b2fa-cd3875a00721` correctly maps to `Prototype.scene` ✓
+- **Splash screen:** CC3 preview has a 50-second splash (`totalTime:50` in `_CCSettings`). Screenshots taken after splash completes. This is not a bug — it's a CC3 editor preview setting.
+- **Library cache:** CC3 preview serves compiled scene JSON from `game-client/library/` (not `assets/` source). Both source and cache files must be kept in sync. The CC3 editor did not auto-recompile TypeScript changes during this session — compiled JS chunks were patched directly.
+
+---
+
+## Files Modified
+
+- `/game-client/assets/scripts/prototype/PrototypeBoard.ts` — UIOpacity guards, `_getCanvas()`, `_boardContainer`, bootstrap methods, HUD back-assignment
+- `/game-client/assets/scripts/game/GameScene.ts` — UIOpacity guards in `playTileDisappearAnim` and `_onBoardRotateWarning`
+- `/game-client/assets/scenes/Prototype.scene` — PrototypeBoard moved to Canvas component, UUID __type__, removed Board child node
+- `/game-client/library/8e/8edd8f65-6575-4b60-b2fa-cd3875a00721.json` — Runtime cache: same changes + camera clear color fixed
+- `/game-client/temp/programming/packer-driver/targets/preview/chunks/4d/4d8c86051849e22102f7b5c4360fde75b4a9e165.js` — Compiled JS chunk updated with all fixes since editor did not auto-recompile

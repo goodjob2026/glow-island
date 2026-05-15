@@ -1,0 +1,110 @@
+{
+  "assessed_at": "2026-05-16T10:15:00Z",
+  "run_url": "http://localhost:7456/?scene=8edd8f65-6575-4b60-b2fa-cd3875a00721",
+  "screenshots": [
+    "game-runtime-qa-2026-05-16.png"
+  ],
+  "runtime_evidence": {
+    "scene_structure": {
+      "canvas_children": ["Background", "Camera", "BoardGrid", "HUD"],
+      "board_child_count": 64,
+      "hud_child_count": 4
+    },
+    "background": {
+      "node_found": true,
+      "has_sprite": true,
+      "has_sprite_frame": true,
+      "texture_loaded": true,
+      "texture_width": 768,
+      "texture_height": 1408,
+      "asset_manager_key": "0a454f8b-80b8-47"
+    },
+    "tiles": {
+      "total_nodes": 64,
+      "tiles_with_sprite_component": 64,
+      "tiles_with_graphics_component": 64,
+      "unique_sprite_frame_refs": 5,
+      "sprite_frame_type_distribution": {
+        "type_0": 9,
+        "type_1": 10,
+        "type_2": 12,
+        "type_3": 15,
+        "type_4": 18
+      },
+      "tile_textures_loaded": 5,
+      "tile_texture_dimensions": "512x512 each",
+      "pb_tile_sprites_loaded": 5,
+      "pb_tile_sprites_total": 5
+    },
+    "hud": {
+      "found": true,
+      "active": true,
+      "combo_label": { "found": true, "string": "COMBO × 0  (×1.0)" },
+      "cleared_label": { "found": true, "string": "Cleared: 0" },
+      "steps_label": { "found": true, "string": "Steps: 0" },
+      "reset_button": { "found": true }
+    },
+    "performance": {
+      "fps": 60,
+      "draw_calls": 70,
+      "gfx_texture_mem_mb": 25.79,
+      "gfx_buffer_mem_mb": 146.31
+    },
+    "prototype_board": {
+      "attached": true,
+      "grid": "8x8",
+      "combo": 0,
+      "cleared": 0,
+      "selected": null
+    }
+  },
+  "observations": {
+    "background_observation": "Background node confirmed with Sprite component, SpriteFrame assigned, Texture2D 768x1408 loaded=true. Screenshot confirms teal coastal background visible across full canvas. GFX Texture Memory 25.79 MB confirms real texture binding (vs 0.67 MB in previous failing run). Background asset registered in cc.assetManager under key 0a454f8b-80b8-47.",
+    "tile_observation": "All 64 BoardGrid tiles have both Sprite and Graphics components attached. 5 unique SpriteFrame object references map to 5 distinct tile types, with distribution across all 64 tiles (9+10+12+15+18=64). tile_01/texture through tile_05/texture all load as 512x512 Texture2D assets. Screenshot confirms visual variety: green, orange/brown, pink, teal, and red-orange tile sprites visible with rounded-corner Graphics borders overlaid. cc.assetManager reports 5 tile texture assets (keys f978025f, bb1eaeaa, cdb62bdd, 5e16dcf8, f4953079) each 512x512.",
+    "hud_observation": "HUD node is active with 4 children all active. ComboLabel shows 'COMBO × 0  (×1.0)', ClearedLabel shows 'Cleared: 0', StepsLabel shows 'Steps: 0', ResetButton present. All visible in screenshot at top and bottom of game area. PrototypeBoard component attaches cleanly with comboLabel and clearedLabel bindings confirmed via pb.comboLabel.string and pb.clearedLabel.string properties.",
+    "graphics_observation": "Graphics rounded-corner components confirmed on all 64 tiles alongside Sprite components. Screenshot shows tile frames with rounded rectangular borders, providing the decorative overlay effect as designed."
+  },
+  "dimensions": {
+    "background_non_black": "pass",
+    "tile_color_variety": "pass",
+    "tile_rounded_corners": "pass",
+    "hud_visible": "pass"
+  },
+  "overall": "pass",
+  "dimension_detail": {
+    "background_non_black": "PASS — Background Sprite has 768x1408 texture loaded=true. Teal coastal background visible in screenshot. Not black. Not procedural fallback — real texture asset.",
+    "tile_color_variety": "PASS — 5 unique SpriteFrame object references across 64 tiles. 5 distinct 512x512 tile art textures loaded (f978025f, bb1eaeaa, cdb62bdd, 5e16dcf8, f4953079). Screenshot confirms 5 visually distinct tile colors: green, orange/brown, pink, teal, red-orange.",
+    "tile_rounded_corners": "PASS — All 64 tiles have Graphics component (confirmed tilesWithGraphics=64). Screenshot shows rounded rectangular borders on all tiles. Graphics component coexists with Sprite component on each tile node.",
+    "hud_visible": "PASS — HUD node active, 4 children all active. ComboLabel string='COMBO × 0  (×1.0)', ClearedLabel string='Cleared: 0', StepsLabel string='Steps: 0'. All three text labels visible in screenshot at top of game area. Reset button visible at bottom."
+  },
+  "previous_failures_resolved": [
+    {
+      "dimension": "background_rendered",
+      "previous_status": "fail",
+      "previous_observation": "Background is solid black — camera clear color r:0,g:0,b:0",
+      "current_status": "pass",
+      "resolution": "PrototypeBoard.ts now loads background via resources.load('sprites/backgrounds/ch01_harbor_before/texture', Texture2D) and assigns to Background node Sprite. Camera clear color issue resolved by component boot-order fix."
+    },
+    {
+      "dimension": "tile_rounded_corners",
+      "previous_status": "fail",
+      "previous_observation": "64 tile nodes with Graphics components but nothing visible on screen",
+      "current_status": "pass",
+      "resolution": "UIOpacity null guard resolved PrototypeBoard component attachment. Graphics draw calls now composite correctly. Sprite components added alongside Graphics."
+    },
+    {
+      "dimension": "color_variety_5plus",
+      "previous_status": "fail",
+      "previous_observation": "Zero colors visible — canvas entirely black",
+      "current_status": "pass",
+      "resolution": "PrototypeBoard attaches at boot, _preloadTileSprites() loads 5 tile textures, _applySpritesToType() assigns SpriteFrames to all 64 tiles."
+    },
+    {
+      "dimension": "hud_visible",
+      "previous_status": "fail",
+      "previous_observation": "HUD area completely empty — _bootstrapHUD() never ran",
+      "current_status": "pass",
+      "resolution": "PrototypeBoard component attachment fixed. HUD bootstrapped at start() with ComboLabel, ClearedLabel, StepsLabel all bound and displaying correct initial strings."
+    }
+  ]
+}

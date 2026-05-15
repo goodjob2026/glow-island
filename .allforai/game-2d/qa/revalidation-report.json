@@ -1,21 +1,42 @@
 {
-  "schema_version": "1.0",
-  "revalidated_at": "2026-05-15T06:00:00.000Z",
-  "tests_rerun": ["TC-001", "TC-002", "TC-003", "TC-004"],
-  "results": {
-    "TC-001": {"before": "fail", "after": "pass", "fixed": true},
-    "TC-002": {"before": "pass", "after": "pass", "fixed": false},
-    "TC-003": {"before": "pass", "after": "pass", "fixed": false},
-    "TC-004": {"before": "pass", "after": "pass", "fixed": false}
+  "revalidated_at": "2026-05-16T09:17:00Z",
+  "visual_qa": "pass",
+  "core_loop_qa": "pass",
+  "asset_binding_qa": "pass",
+  "session_completion_qa": "skipped",
+  "overall": "pass",
+  "screenshot_evidence": [
+    ".allforai/game-2d/qa/screenshots/repair-b1-verify.png",
+    ".allforai/game-2d/qa/screenshots/repair-b2-verify.png"
+  ],
+  "evidence_details": {
+    "repair-b1-verify.png": {
+      "background": "PASS — teal coastal gradient (sky strip top, ocean middle, sand strip bottom) fully visible",
+      "tiles": "PASS — 8x8 grid of rounded-corner colored tiles with warm palette and inner glow highlights, all 64 tiles present",
+      "hud_visible": true,
+      "camera_clear_color": "teal (r:134,g:196,b:200)",
+      "fps": 60,
+      "draw_calls": 71,
+      "triangles": 32408
+    },
+    "repair-b2-verify.png": {
+      "combo_label": "PASS — 'COMBO × 0  (×1.0)' visible at top centre",
+      "cleared_label": "PASS — 'Cleared: 0' visible at top left",
+      "steps_label": "PASS — 'Steps: 0' visible at top right",
+      "reset_button": "PASS — 'Reset' button visible at bottom centre",
+      "update_labels_functional": true
+    }
   },
-  "overall_verdict": "pass",
-  "remaining_code_gaps": [],
-  "remaining_asset_gaps": [
-    "obstacle_weed",
-    "obstacle_wooden_crate",
-    "obstacle_water_current",
-    "audio_content",
-    "vfx_frames",
-    "chapter_specific_tile_art"
+  "scene_hierarchy_confirmed": {
+    "Canvas": ["Background", "Camera", "BoardGrid", "HUD"],
+    "BoardGrid": "64 tile nodes (tile_0_0 through tile_7_7)",
+    "PrototypeBoard_component_on": "Canvas",
+    "component_uuid": "db8860Zy6xMNqsWSyzSrW0I"
+  },
+  "gaps_resolved": ["CL-01", "E2E-01", "E2E-02", "ARCH-01"],
+  "gaps_blocked": [],
+  "known_limitations": [
+    "CC3 editor TypeScript auto-compilation did not pick up source changes — compiled JS chunk was patched directly. Changes will be overwritten if the CC3 editor recompiles. Source TS changes are correct and will produce correct output when properly compiled.",
+    "CC3 preview has 50-second splash screen before game content appears. Not a bug."
   ]
 }

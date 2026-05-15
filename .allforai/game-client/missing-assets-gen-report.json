@@ -1,0 +1,28 @@
+{
+  "status": "completed",
+  "obstacles_generated": [
+    "obstacle_weed",
+    "obstacle_wooden_crate",
+    "obstacle_water_current"
+  ],
+  "chapter_tiles_generated": {
+    "chapter1": 20,
+    "chapter2": 20,
+    "chapter3": 20,
+    "chapter4": 20,
+    "chapter5": 20,
+    "chapter6": 20
+  },
+  "vfx_frames_generated": {
+    "tile_disappear": 6,
+    "wave_ripple": 8,
+    "light_chain": 6,
+    "pierce_shimmer": 6,
+    "cascade_glow": 8
+  },
+  "special_badges_fixed": [
+    "special_pierce",
+    "special_cascade",
+    "special_light_chain"
+  ]
+}

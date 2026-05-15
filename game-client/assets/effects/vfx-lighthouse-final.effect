@@ -1,64 +1,54 @@
-{
-  "__type__": "cc.ParticleAsset",
-  "_meta": {
-    "effect_id": "vfx-lighthouse-final",
-    "description": "Full-screen climax light effect for the lighthouse chapter (Chapter 6 — 夜晚灯塔). Dramatic light rays expanding outward from the lighthouse beacon.",
-    "trigger": "lighthouse_chapter_final_restore",
-    "duration_source": "art-tokens.animation.area_restore_duration=5.0s; matches area-restore-sequence climax",
-    "chapter": 6,
-    "chapter_palette": {
-      "primary_dark": "#1C3A6B (deep blue, approximated from #2D4A7A)",
-      "accent_gold": "#FFD700",
-      "accent_light": "#FFED80",
-      "bg_game": "#1E2E50"
-    }
-  },
-  "content": {
-    "startColor":    { "r": 28,  "g": 58,  "b": 107, "a": 255 },
-    "startColorVar": { "r": 10,  "g": 15,  "b": 30,  "a": 20  },
-    "endColor":      { "r": 255, "g": 215, "b": 0,   "a": 0   },
-    "endColorVar":   { "r": 20,  "g": 20,  "b": 0,   "a": 0   },
+// Placeholder VFX effect — additive particle-style shader
 
-    "angle": 90,
-    "angleVar": 180,
+CCEffect %{
+  techniques:
+  - name: transparent
+    passes:
+    - vert: general-vs:vert
+      frag: vfx-fs:frag
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      rasterizerState:
+        cullMode: none
+      properties: &props
+        mainTexture: { value: white }
+        mainColor:   { value: [1, 1, 1, 1], editor: { type: color } }
+}%
 
-    "speed": 220,
-    "speedVar": 60,
-
-    "life": 4.5,
-    "lifeVar": 0.8,
-
-    "totalParticles": 60,
-    "emissionRate": 18,
-    "duration": 5.0,
-
-    "emitterMode": 1,
-    "startRadius": 0,
-    "startRadiusVar": 20,
-    "endRadius": 420,
-    "endRadiusVar": 80,
-    "rotatePerSecond": 8,
-    "rotatePerSecondVar": 4,
-
-    "startSize": 22,
-    "startSizeVar": 8,
-    "endSize": 6,
-    "endSizeVar": 3,
-
-    "startSpin": 0,
-    "startSpinVar": 45,
-    "endSpin": 90,
-    "endSpinVar": 45,
-
-    "posVar": { "x": 0, "y": 0 },
-    "positionType": 0,
-
-    "blendFunc": {
-      "src": 770,
-      "dst": 771
-    },
-
-    "_comment_color": "Deep blue #1C3A6B = rgb(28,58,107) transitions to gold #FFD700 = rgb(255,215,0); emitterMode=1 (radial) for expanding light rays; 5.0s duration matches area-restore-sequence climax; art-tokens shadows.lighthouse_beam reference",
-    "_comment_radial": "emitterMode=1 uses startRadius/endRadius; particles expand outward from center simulating beacon rays"
+CCProgram general-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  in vec4 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+  out vec4 v_color;
+  out vec2 v_uv;
+  vec4 vert () {
+    v_uv    = a_texCoord;
+    v_color = a_color;
+    return cc_matProj * cc_matView * a_position;
   }
-}
+}%
+
+CCProgram vfx-fs %{
+  precision highp float;
+  #include <legacy/output>
+  in vec4 v_color;
+  in vec2 v_uv;
+  uniform sampler2D mainTexture;
+  uniform Constant {
+    vec4 mainColor;
+  };
+  vec4 frag () {
+    vec4 col = v_color * texture(mainTexture, v_uv) * mainColor;
+    return CCFragOutput(col);
+  }
+}%

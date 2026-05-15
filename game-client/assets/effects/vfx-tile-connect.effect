@@ -1,53 +1,54 @@
-{
-  "__type__": "cc.ParticleAsset",
-  "_meta": {
-    "effect_id": "vfx-tile-connect",
-    "description": "Connection path light trail — small bright particles emitted along the connection path when two tiles are linked",
-    "trigger": "tile_connect",
-    "duration_source": "art-tokens.animation.tile_connect_duration = 0.15s"
-  },
-  "content": {
-    "startColor":    { "r": 255, "g": 245, "b": 224, "a": 255 },
-    "startColorVar": { "r": 15,  "g": 10,  "b": 20,  "a": 0   },
-    "endColor":      { "r": 255, "g": 245, "b": 224, "a": 0   },
-    "endColorVar":   { "r": 0,   "g": 0,   "b": 0,   "a": 0   },
+// Placeholder VFX effect — additive particle-style shader
 
-    "angle": 90,
-    "angleVar": 360,
+CCEffect %{
+  techniques:
+  - name: transparent
+    passes:
+    - vert: general-vs:vert
+      frag: vfx-fs:frag
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      rasterizerState:
+        cullMode: none
+      properties: &props
+        mainTexture: { value: white }
+        mainColor:   { value: [1, 1, 1, 1], editor: { type: color } }
+}%
 
-    "speed": 40,
-    "speedVar": 20,
-
-    "life": 0.12,
-    "lifeVar": 0.04,
-
-    "totalParticles": 20,
-    "emissionRate": 140,
-    "duration": 0.15,
-
-    "emitterMode": 0,
-    "gravity": { "x": 0, "y": 0 },
-    "radialAccel": 0,
-    "tangentialAccel": 0,
-
-    "startSize": 6,
-    "startSizeVar": 3,
-    "endSize": 0,
-    "endSizeVar": 0,
-
-    "startSpin": 0,
-    "startSpinVar": 180,
-    "endSpin": 180,
-    "endSpinVar": 90,
-
-    "posVar": { "x": 4, "y": 4 },
-    "positionType": 0,
-
-    "blendFunc": {
-      "src": 770,
-      "dst": 771
-    },
-
-    "_comment_color": "Warm white #FFF5E0 = rgb(255,245,224); soft additive glow; fast fade matching 0.15s connect animation"
+CCProgram general-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  in vec4 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+  out vec4 v_color;
+  out vec2 v_uv;
+  vec4 vert () {
+    v_uv    = a_texCoord;
+    v_color = a_color;
+    return cc_matProj * cc_matView * a_position;
   }
-}
+}%
+
+CCProgram vfx-fs %{
+  precision highp float;
+  #include <legacy/output>
+  in vec4 v_color;
+  in vec2 v_uv;
+  uniform sampler2D mainTexture;
+  uniform Constant {
+    vec4 mainColor;
+  };
+  vec4 frag () {
+    vec4 col = v_color * texture(mainTexture, v_uv) * mainColor;
+    return CCFragOutput(col);
+  }
+}%

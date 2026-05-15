@@ -15,35 +15,77 @@ You are the workflow orchestrator. Execute nodes to achieve the goal.
 
 Read `.allforai/bootstrap/workflow.json` at every iteration. Trust it over conversation history.
 
+## Preflight Gate
+
+Before executing any workflow node, run unattended readiness:
+
+```bash
+python3 .allforai/bootstrap/scripts/record_run_event.py . --event run_started --status started --message "run command invoked"
+python3 .allforai/bootstrap/scripts/validate_unattended_readiness.py . --write-report
+```
+
+If it exits non-zero or `.allforai/bootstrap/unattended-run-readiness.json`
+has `status != "ready"`, stop immediately. Do not start partial execution, do
+not ask the user mid-run, and do not silently weaken validation. Report the
+blockers from `.allforai/bootstrap/unattended-run-readiness.md` and ask the user
+to resolve them through `/setup check`, `/bootstrap`, or the approval dashboard
+before re-running `/run`.
+Before stopping, record `preflight_blocked` with
+`record_run_event.py`, then run `summarize_run_log.py --write-report`.
+
 ## Core Loop
 
 ```
 每轮：
   1. Read workflow.json (nodes + transition_log)
-  2. Run: python3 .allforai/bootstrap/scripts/check_artifacts.py .allforai/bootstrap/workflow.json --json
-  3. Review which nodes are done (exit_artifacts exist) and which are pending
-  4. Decide next node:
+  2. Run project-local dynamic workflow expanders before validation:
+     `python3 .allforai/bootstrap/scripts/record_run_event.py . --event dynamic_expander_started --command "expand_game_2d_production.py"`
+     `python3 .allforai/bootstrap/scripts/expand_game_2d_production.py .`
+     `python3 .allforai/bootstrap/scripts/record_run_event.py . --event dynamic_expander_completed --status completed --command "expand_game_2d_production.py"`
+     - This is idempotent.
+     - It is required because `game-design-finalize` may create
+       `.allforai/game-design/design/program-development-node-handoff.json`
+       during `/run`, after bootstrap has already written the initial workflow.
+     - If it adds or repairs nodes, immediately re-read
+       `.allforai/bootstrap/workflow.json` before selecting the next node.
+  3. Run: python3 .allforai/bootstrap/scripts/validate_bootstrap.py .allforai/bootstrap/
+     - If validation fails, stop before executing any node and fix bootstrap artifacts.
+       Record `bootstrap_validation_failed`, then run
+       `python3 .allforai/bootstrap/scripts/summarize_run_log.py . --write-report`.
+  4. Run: python3 .allforai/bootstrap/scripts/check_artifacts.py .allforai/bootstrap/workflow.json --json
+  5. Review which nodes are done (exit_artifacts exist) and which are pending
+  6. Decide next node:
      - What's done? What's pending? What makes sense next?
      - Can run multiple nodes in parallel if their exit_artifacts don't overlap
+     - **hard_blocked_by**: node cannot start until ALL hard_blocked_by nodes are complete (exit_artifacts exist + gate approved).
+     - **alignment_refs**: node CAN start even if alignment_refs nodes are not complete; read their artifacts if available, degrade gracefully if not. Dispatch in parallel if no hard_blocked_by prevents it.
      - Can skip a node if its goal is already satisfied
      - Can re-run a failed node after fixing the issue
-     - **Game-design nodes with `human_gate: true`:** do NOT advance based on exit_artifact existence alone. Check `.allforai/game-design/approval-records.json` by `node_id`:
-       - `gate_status == "pending"` AND all exit_artifacts exist → auto-set `gate_status` to `"in-review"`. Then:
-         1. Regenerate dashboard: `python3 .allforai/bootstrap/scripts/render_approval_dashboard.py --approval .allforai/game-design/approval-records.json --workflow .allforai/bootstrap/workflow.json --output .allforai/game-design/review-dashboard.html`
-         2. Start server if not running (`lsof -i :43871` to check): `python3 .allforai/bootstrap/scripts/serve_approval.py --approval .allforai/game-design/approval-records.json --directory .allforai --port 43871`
-         3. Tell user: **"请在 Chrome 中打开 http://127.0.0.1:43871/game-design/review-dashboard.html 进行审批"**
-         4. Poll approval-records.json every 30s until `gate_status` changes. Do NOT advance yet.
-       - `gate_status == "in-review"` → remind user of URL, continue polling. Do NOT advance.
-       - `gate_status == "approved"` → advance to unlocked nodes.
-       - `gate_status == "revision-requested"` → re-run the node with `revision_notes`; after completion reset `gate_status` to `"in-review"`.
-  5. Read the node-spec: .allforai/bootstrap/node-specs/<node-id>.md
-  6. Dispatch subagent with node-spec as prompt. Per §D of cross-phase-protocols.md: execution-phase subagents are FORBIDDEN from using AskUserQuestion or any user interaction — all decisions must already be written to .allforai/ files from the Discussion Phase (bootstrap). If a subagent reports UPSTREAM_DEFECT (missing decision information), pause execution and return to Discussion Phase to supplement decisions, then resume.
-  7. On success: record transition (status=completed, artifacts_created)
-  8. On failure: record transition (status=failed, error=<one line>),
+     - **Nodes with `human_gate: true`:** do NOT advance based on exit_artifact existence alone. Read the node's `approval_record_path` field from workflow.json (e.g., `.allforai/game-design/approval-records.json` for game-design nodes, `.allforai/app-design/approval-records.json` for app-design nodes). Look up this node's record by `node_id`:
+       - `gate_status == "pending"` AND all exit_artifacts exist → auto-set `gate_status` to `"in-review"` and notify `discipline_owner`. Do NOT advance yet.
+       - `gate_status == "in-review"` → wait for `discipline_owner` to approve or request revision. Do NOT advance.
+         - 对设计审批节点，使用本地 Web 审批看板流程（不需要 Playwright）：
+           1. 用最新数据重新渲染看板：
+              `python3 .allforai/bootstrap/scripts/render_approval_dashboard.py --approval .allforai/game-design/approval-records.json --approval .allforai/app-design/approval-records.json --workflow .allforai/bootstrap/workflow.json --output .allforai/game-design/review-dashboard.html`
+           2. 在 43871 端口启动或复用审批服务（后台运行）：
+              `python3 .allforai/bootstrap/scripts/serve_approval.py --approval .allforai/game-design/approval-records.json --approval .allforai/app-design/approval-records.json --directory .allforai --port 43871`
+              (check `lsof -i :43871` first; skip if already running)
+           3. Tell the reviewer: **"请在 Chrome 中打开 http://127.0.0.1:43871/game-design/review-dashboard.html 进行审批"**
+           4. Poll `approval-records.json` every 30 seconds: read the record for this node_id and check `gate_status`.
+              Repeat until `gate_status` changes to `"approved"` or `"revision-requested"`.
+       - `gate_status == "approved"` → this node is done; advance to unlocked nodes.
+       - `gate_status == "revision-requested"` → re-run the node passing `revision_notes` as instruction; after re-execution completes, reset `gate_status` to `"in-review"`.
+       - If `approval_record_path` is missing on the node → treat as `gate_status == "pending"` and warn.
+  7. Read the node-spec: .allforai/bootstrap/node-specs/<node_id>.md
+  8. Record `node_started` with node_id, capability, expected_artifacts, and skill_refs if known:
+     `python3 .allforai/bootstrap/scripts/record_run_event.py . --event node_started --node-id <node_id> --capability <capability> --expected-artifacts "<comma-separated-artifacts>"`
+  9. Dispatch subagent with node-spec as prompt. Per §D of cross-phase-protocols.md: execution-phase subagents are FORBIDDEN from using AskUserQuestion or any user interaction — all decisions must already be written to .allforai/ files from the Discussion Phase (bootstrap). If a subagent reports UPSTREAM_DEFECT (missing decision information), pause execution and return to Discussion Phase to supplement decisions, then resume.
+  10. On success: record transition (status=completed, artifacts_created), then record `node_completed`.
+  11. On failure: record transition (status=failed, error=<one line>), record `node_failed`,
      then read .allforai/bootstrap/protocols/diagnosis.md and diagnose.
      After diagnosis + repair: append to workflow.json `corrections_applied[]`:
-     `{"node": "<id>", "what_was_wrong": "<root_cause>", "fix_applied": "<action>", "timestamp": "<ISO>"}`
-  9. Back to 1
+     `{"node_id": "<node_id>", "what_was_wrong": "<root_cause>", "fix_applied": "<action>", "timestamp": "<ISO>"}`
+  12. Back to 1
 ```
 
 ## Recording Transitions
@@ -52,7 +94,7 @@ After each node completes or fails, append to workflow.json transition_log:
 
 ```json
 {
-  "node": "<id>",
+  "node_id": "<node_id>",
   "status": "completed | failed",
   "started_at": "<ISO timestamp>",
   "completed_at": "<ISO timestamp>",
@@ -80,13 +122,18 @@ On first iteration if transition_log is non-empty:
 ## Termination
 
 - All nodes' exit_artifacts exist → success report
-- concept-acceptance verdict = needs_iteration → output acceptance-report.md, present iteration options (fix/re-bootstrap/accept), stop
+- launch-checklist `overall_launch_status` = `blocked` → output launch-checklist.md with blocking reasons, halt submission, present resolution options
 - User interrupts → transition_log is already saved, resume with /run
 - Safety warning acknowledged → continue or stop per user choice
 
 ## Post-Completion
 
 **Run regardless of success or early stop:**
+
+0. **Run log summary:**
+   Run `python3 .allforai/bootstrap/scripts/summarize_run_log.py . --write-report`.
+   Keep `.allforai/bootstrap/run-log.jsonl`, `.allforai/bootstrap/run-summary.json`,
+   and `.allforai/bootstrap/run-summary.md` as the auditable production trace.
 
 1. **Mark concept drift resolved (if applicable):**
    If `.allforai/product-concept/concept-drift.json` exists AND `resolved = false`
@@ -107,4 +154,9 @@ On first iteration if transition_log is non-empty:
      * Write to `.allforai/bootstrap/learned/blind-spots.md` (append, do not overwrite)
 
 3. **Feedback proposal:**
-   Read `.allforai/bootstrap/protocols/feedback-protocol.md` — propose feedback
+   Read `.allforai/bootstrap/protocols/feedback-protocol.md`. If learning
+   extraction found a universally useful meta-skill issue, run:
+   `python3 .allforai/bootstrap/scripts/record_meta_skill_feedback.py . --category "<category>" --message "<deidentified failure pattern>"`
+   This must not ask the user mid-run. Prefer a writable local `myskills`
+   repository; only fall back to anonymous GitHub issue draft/auto mode when no
+   local repo is available.

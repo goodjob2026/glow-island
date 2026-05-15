@@ -23,11 +23,11 @@
     }
   ],
   "goals": [
-    "implement",
-    "launch-prep",
     "ui-forge",
+    "visual-verify",
     "product-verify"
   ],
+  "bootstrap_version": "0.8.8",
   "product_vision": "治愈系节奏连击连连看：快速连接→combo爽感→修复小岛→解锁新章节，6章叙事+律×ひなた暧昧情感线，单货币（沙滩币）唯一付费点是续关，无体力/无PvP。",
   "target_stacks": [
     {
@@ -80,9 +80,7 @@
   "architecture_pattern": "Game-Service Architecture (Cocos + Fastify REST)",
   "complexity_estimate": "medium",
   "is_game_project": true,
-  "game_engines_detected": [
-    "Cocos Creator 3.x"
-  ],
+  "game_engines_detected": ["Cocos Creator 3.x"],
   "game_scenario": "casual-mobile",
   "deployment_platform": null,
   "offline_first": false,
@@ -99,14 +97,26 @@
   },
   "bootstrap_version": "0.8.7",
   "has_concept_drift": false,
-  "last_bootstrap_goal": "implement+launch-prep+ui-forge+product-verify",
-  "last_bootstrap_nodes": 24,
-  "p0_blockers_at_bootstrap": [
-    "dropColumns Set spread bug (PrototypeBoard.ts)",
-    "Audio directory missing (22 files)",
-    "Obstacle sprites missing",
-    "Privacy/support/terms URLs are placeholders",
-    "UI style: plain colored squares (no Animal Crossing aesthetic)"
+  "last_bootstrap_goal": "implement+ui-forge+product-verify+visual-verify+quality-checks+launch-prep",
+  "last_bootstrap_nodes": 13,
+  "remaining_gaps_at_bootstrap": [
+    "Audio: 25 files all 431B (stubs) — real audio never generated",
+    "Chapter tile art: chapter1-6 dirs exist but empty",
+    "VFX frame sequences: effects/frames/ directory missing",
+    "Special tile badges: special_pierce.png and special_cascade.png missing",
+    "HUD/UI layer not visible in game scene (fix-code-gaps never ran)",
+    "Background not rendering despite PNGs existing (fix-code-gaps never ran)"
   ],
-  "updated_at": "2026-05-15T00:00:00+08:00"
+  "completed_in_prior_runs": [
+    "game-2d-runtime-profile", "game-2d-view-mode-runtime-contract",
+    "game-2d-core-loop-playable-contract", "game-2d-asset-runtime-binding-contract",
+    "game-2d-input-feedback-contract", "game-2d-session-flow-contract",
+    "game-2d-playable-slice-assembly", "game-2d-core-loop-playability-qa",
+    "game-2d-asset-binding-visual-qa", "game-2d-session-completion-qa",
+    "game-2d-code-repair-loop", "game-2d-production-closure-qa",
+    "competitive-research", "launch-concept-finalize",
+    "launch-gap-implementation", "compliance-check"
+  ],
+  "launch_checklist_note": "overall_launch_status=ready; remaining items are manual store registration tasks (App Store Connect, Firebase iOS SDK, screenshot upload)",
+  "updated_at": "2026-05-15T06:00:00+08:00"
 }

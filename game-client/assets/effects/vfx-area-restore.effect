@@ -1,55 +1,54 @@
-{
-  "__type__": "cc.ParticleAsset",
-  "_meta": {
-    "effect_id": "vfx-area-restore",
-    "description": "Ambient fireflies / flower petals — gentle floating particles during island area restoration sequence",
-    "trigger": "area_restore_start",
-    "duration_source": "duration=-1 continuous loop; art-tokens.animation.area_restore_duration=5.0s for the restoration phase",
-    "loop": true,
-    "usage_note": "Spawn this effect when restoration animation begins; stop/destroy it when restoration completes. Two color variants used: warm moccasin (#FFE4B5) and pale green (#98FB98) — alternate via tint override in script."
-  },
-  "content": {
-    "startColor":    { "r": 255, "g": 228, "b": 181, "a": 220 },
-    "startColorVar": { "r": 30,  "g": 40,  "b": 30,  "a": 30  },
-    "endColor":      { "r": 152, "g": 251, "b": 152, "a": 0   },
-    "endColorVar":   { "r": 40,  "g": 30,  "b": 30,  "a": 0   },
+// Placeholder VFX effect — additive particle-style shader
 
-    "angle": 80,
-    "angleVar": 25,
+CCEffect %{
+  techniques:
+  - name: transparent
+    passes:
+    - vert: general-vs:vert
+      frag: vfx-fs:frag
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      rasterizerState:
+        cullMode: none
+      properties: &props
+        mainTexture: { value: white }
+        mainColor:   { value: [1, 1, 1, 1], editor: { type: color } }
+}%
 
-    "speed": 28,
-    "speedVar": 12,
-
-    "life": 2.0,
-    "lifeVar": 0.6,
-
-    "totalParticles": 25,
-    "emissionRate": 12,
-    "duration": -1,
-
-    "emitterMode": 0,
-    "gravity": { "x": 5, "y": 30 },
-    "radialAccel": -8,
-    "tangentialAccel": 6,
-
-    "startSize": 14,
-    "startSizeVar": 6,
-    "endSize": 4,
-    "endSizeVar": 2,
-
-    "startSpin": 0,
-    "startSpinVar": 180,
-    "endSpin": 270,
-    "endSpinVar": 90,
-
-    "posVar": { "x": 40, "y": 20 },
-    "positionType": 1,
-
-    "blendFunc": {
-      "src": 770,
-      "dst": 771
-    },
-
-    "_comment_color": "Moccasin #FFE4B5 = rgb(255,228,181) start, fades to pale green #98FB98 = rgb(152,251,152) then transparent; gentle upward drift simulates fireflies/petals; positionType=1 (relative) for world-space floating"
+CCProgram general-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  in vec4 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+  out vec4 v_color;
+  out vec2 v_uv;
+  vec4 vert () {
+    v_uv    = a_texCoord;
+    v_color = a_color;
+    return cc_matProj * cc_matView * a_position;
   }
-}
+}%
+
+CCProgram vfx-fs %{
+  precision highp float;
+  #include <legacy/output>
+  in vec4 v_color;
+  in vec2 v_uv;
+  uniform sampler2D mainTexture;
+  uniform Constant {
+    vec4 mainColor;
+  };
+  vec4 frag () {
+    vec4 col = v_color * texture(mainTexture, v_uv) * mainColor;
+    return CCFragOutput(col);
+  }
+}%

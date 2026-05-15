@@ -1,0 +1,54 @@
+{
+  "completed_at": "2026-05-16T00:00:00Z",
+  "compiled_cache_patched": true,
+  "compiled_files_patched": [
+    "game-client/temp/programming/packer-driver/targets/preview/chunks/4d/4d8c86051849e22102f7b5c4360fde75b4a9e165.js"
+  ],
+  "patch_detail": {
+    "old": "resources.load('sprites/backgrounds/ch01_harbor_before', SpriteFrame, ...)",
+    "new": "resources.load('sprites/backgrounds/ch01_harbor_before/spriteFrame', SpriteFrame, ...)",
+    "note": "Only one compiled chunk contained the old path. GameScene template-literal pattern was not present in compiled cache (GameScene chunk uses a different compiled file or had already been rebuilt)."
+  },
+  "sfx_generated": [
+    "sfx_connect.mp3",
+    "sfx_disappear.mp3",
+    "sfx_combo1.mp3",
+    "sfx_combo2.mp3",
+    "sfx_combo3.mp3",
+    "sfx_special_swap.mp3",
+    "sfx_special_pierce.mp3",
+    "sfx_special_cascade.mp3",
+    "sfx_special_light.mp3",
+    "sfx_special_light_chain.mp3",
+    "sfx_area_restore.mp3",
+    "sfx_level_complete.mp3",
+    "sfx_lighthouse_on.mp3",
+    "sfx_special_bomb.mp3",
+    "sfx_ui_button.mp3",
+    "sfx_special_wave.mp3",
+    "sfx_special_windmill.mp3",
+    "sfx_zen_complete.mp3"
+  ],
+  "sfx_method": "programmatic WAV (sine wave with fade-out) written with .mp3 extension; CC3 AudioClip detects format from RIFF header",
+  "sfx_sizes_bytes": {
+    "sfx_connect.mp3": 13274,
+    "sfx_disappear.mp3": 17684,
+    "sfx_combo1.mp3": 8864,
+    "sfx_combo2.mp3": 8864,
+    "sfx_combo3.mp3": 13274,
+    "sfx_special_swap.mp3": 17684,
+    "sfx_special_pierce.mp3": 13274,
+    "sfx_special_cascade.mp3": 17684,
+    "sfx_special_light.mp3": 13274,
+    "sfx_special_light_chain.mp3": 17684,
+    "sfx_area_restore.mp3": 26504,
+    "sfx_level_complete.mp3": 44144,
+    "sfx_lighthouse_on.mp3": 44144,
+    "sfx_special_bomb.mp3": 26504,
+    "sfx_ui_button.mp3": 7100,
+    "sfx_special_wave.mp3": 22094,
+    "sfx_special_windmill.mp3": 26504,
+    "sfx_zen_complete.mp3": 52964
+  },
+  "status": "completed"
+}

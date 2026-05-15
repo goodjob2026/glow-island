@@ -1,114 +1,181 @@
 ---
-node: launch-checklist
 node_id: launch-checklist
+node: launch-checklist
+capability: launch-prep
+human_gate: false
+hard_blocked_by: [runtime-smoke-verify]
+unlocks: []
 exit_artifacts:
   - .allforai/launch-prep/launch-checklist.json
-  - .allforai/launch-prep/launch-checklist.md
 ---
 
-# Task: 最终上架清单（Glow Island App Store Connect 提交）
+# Task: 上架清单最终验收
 
-## Project Context
+## 背景
 
-- 游戏：Glow Island — 治愈系连连看，iOS + WebGL
-- 这是最后一个 bootstrap 节点，汇总所有上架准备结果
+上次运行已完成：competitive-research、launch-concept-finalize、launch-gap-implementation、compliance-check。
+本节点在本轮修复（音频 + 资产 + 代码绑定）完成后，执行最终上架就绪验证。
 
-## Context Pull
+## Phase 1: 自动化验收项
 
-**必需（缺失则报错返回）：**
-- 读取 `.allforai/launch-prep/launch-concept-finalize.json` → `app_store_metadata`
-- 读取 `.allforai/launch-prep/compliance-checklist.json` → `overall_status`、`blockers[]`
-- 读取 `.allforai/launch-prep/launch-gap-implementation.json` → `launch_readiness`、`p0_gaps[]`
+### 1.1 资产完整性检查
 
-## Guidance
+```bash
+# 验证音频文件不再是空占位符
+find game-client/assets/resources/audio -name "*.mp3" -size -1k | wc -l
+# 应为 0（所有文件 > 1KB）
 
-### 汇总逻辑
+# 验证章节图块存在
+for ch in 1 2 3 4 5 6; do
+  count=$(ls game-client/assets/resources/sprites/tiles/chapter${ch}/ 2>/dev/null | wc -l)
+  echo "chapter${ch}: ${count} files"
+done
+# 每章至少 1 个 PNG
 
-1. 读取所有上游 launch-prep 节点的产物
-2. 检查所有 P0 阻塞项（来自 gap-implementation 和 compliance-check）
-3. 生成可操作的 App Store Connect 提交步骤清单
-4. 输出 `overall_launch_status`：
-   - `ready`：所有 P0 通过，可以提交 App Store 审核
-   - `blocked`：存在未解决的 P0，不得提交
+# 验证特殊图块完整
+ls game-client/assets/resources/sprites/tiles/special/
+# 必须包含 special_pierce.png 和 special_cascade.png
 
-### App Store Connect 提交步骤（生成为清单）
+# 验证 VFX 帧序列
+ls game-client/assets/resources/effects/frames/ 2>/dev/null | head -5
+# 至少一个帧目录
+```
 
-**第一阶段：准备阶段（提交前）**
-- [ ] 在 Xcode 中 Archive 构建（Release 配置）
-- [ ] 上传到 App Store Connect（Transporter 或 Xcode Organizer）
-- [ ] 完成 App 信息填写（名称、副标题、关键词、描述）
-- [ ] 上传 6.7" iPhone 截图（5-10张）
-- [ ] 填写 Privacy Nutrition Label（数据类型声明）
-- [ ] 填写年龄分级问卷
-- [ ] 设置 IAP 产品（4个价格档位）并提交 Apple 审核
-- [ ] 填写客服 URL 和隐私政策 URL
+### 1.2 合规内容检查
 
-**第二阶段：TestFlight 测试**
-- [ ] 发布到 TestFlight Internal Testing
-- [ ] 完成至少 1 轮完整关卡测试（Ch1-5关）
-- [ ] 确认 IAP 在 Sandbox 环境正常
+```bash
+# 隐私政策 URL 一致性
+grep -rn "privacy\|terms" game-client/assets/scripts/ --include="*.ts" | grep "http" | head -10
+# 应全部指向 https://glow-island.vercel.app/privacy 和 /terms
 
-**第三阶段：提交审核**
-- [ ] 确认所有 P0 阻塞项已解决
-- [ ] 提交审核（通常 1-3 个工作日）
-- [ ] 准备好可能的追加信息（Demo 账号 / 功能说明）
+# COPPA/数据采集说明
+grep -rn "COPPA\|data_collection\|privacy_policy" game-client/assets/scripts/ --include="*.ts" | head -5
 
-**第四阶段：上线准备**
-- [ ] 设置发布日期（手动发布 vs 审核通过后自动发布）
-- [ ] 准备营销素材（如果需要）
-- [ ] 配置 App Analytics 追踪
+# 无测试/占位符内容残留
+grep -rn "TODO\|FIXME\|placeholder\|test-only\|sandbox" game-client/assets/scripts/ --include="*.ts" | grep -v "sandbox.*iap\|sandbox.*receipt" | head -10
+```
 
-### WebGL 上线步骤（次）
-- [ ] 构建 WebGL 版本（`npx @cocos/cocos-cli build --platform web-mobile`）
-- [ ] 部署到 HTTPS CDN（Vercel / Cloudflare Pages 推荐）
-- [ ] 更新隐私政策页面链接
-- [ ] 提交 Google Play（如后续计划 Android）
+### 1.3 App Store 截图生成（自动化）
 
-## Exit Artifacts
+使用 Playwright 生成 5 张 App Store 截图（6.7"，1290×2796px）：
 
-### `.allforai/launch-prep/launch-checklist.json`
+```typescript
+// 场景列表（优先级排序）
+const scenes = [
+  { name: "core-loop-combo", description: "核心连线+Combo演示" },
+  { name: "island-restoration", description: "岛屿修复Meta进度" },
+  { name: "npc-dialogue", description: "NPC对话治愈场景" },
+  { name: "special-tiles", description: "5种特殊图块展示" },
+  { name: "island-overview", description: "灯塔与小岛全景" }
+];
+```
+
+截图保存至 `.allforai/launch-prep/screenshots/` 并在清单中记录路径。
+
+### 1.4 SKU ID 格式验证
+
+```bash
+# 从代码中提取实际 SKU ID
+grep -rn "small_pack\|medium_pack\|large_pack\|mega_pack\|monthly_card\|starter_pack" \
+  game-client/assets/scripts/ --include="*.ts" | head -10
+
+# 验证格式一致性（应为 com.glowisland.iap.* 或简短格式 small_pack）
+grep -rn "iap\." game-client/assets/scripts/ --include="*.ts" | head -10
+```
+
+## Phase 2: 读取已完成的 launch-prep 产物
+
+```bash
+cat .allforai/launch-prep/launch-concept-finalize.json | python3 -c "
+import json,sys; d=json.load(sys.stdin)
+print('tier_structure:', json.dumps(d.get('tier_structure',{}), ensure_ascii=False)[:200])
+print('app_name:', d.get('app_name_localized',{}))
+"
+
+cat .allforai/launch-prep/compliance-checklist.json | python3 -c "
+import json,sys; d=json.load(sys.stdin)
+items=d.get('items',[])
+blockers=[i for i in items if i.get('severity')=='P0' and i.get('status')!='resolved']
+print('P0 blockers remaining:', len(blockers))
+for b in blockers[:5]: print(' -', b.get('description','')[:80])
+" 2>/dev/null || echo "compliance-checklist.json format differs — reading raw"
+```
+
+## Phase 3: 生成最终上架清单
+
+输出更新后的 `.allforai/launch-prep/launch-checklist.json`：
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "generated_at": "<ISO>",
-  "overall_launch_status": "ready | blocked",
+  "overall_launch_status": "ready|blocked",
   "blocking_reasons": [],
-  "app_store_metadata_summary": {
-    "app_name": "Glow Island",
-    "subtitle": "Healing Tile Connect",
+  "automated_checks": {
+    "audio_stubs_cleared": true,
+    "chapter_tiles_present": true,
+    "special_badges_complete": true,
+    "vfx_frames_present": true,
+    "compliance_urls_clean": true,
+    "no_placeholder_content": true,
+    "sku_format_consistent": true
+  },
+  "screenshots_generated": {
+    "count": 5,
+    "paths": [".allforai/launch-prep/screenshots/core-loop-combo.png", "..."]
+  },
+  "manual_actions_required": [
+    {
+      "action": "Deploy privacy/terms pages",
+      "url": "https://glow-island.vercel.app/privacy",
+      "priority": "P0",
+      "owner": "developer"
+    },
+    {
+      "action": "Add Firebase iOS SDK (CocoaPods + GoogleService-Info.plist)",
+      "priority": "P1",
+      "owner": "developer"
+    },
+    {
+      "action": "Create App Store Connect app record (bundle ID: com.glowisland.game)",
+      "priority": "P0",
+      "owner": "developer"
+    },
+    {
+      "action": "Register 6 IAP products in App Store Connect (com.glowisland.iap.*)",
+      "priority": "P0",
+      "owner": "developer"
+    },
+    {
+      "action": "Upload generated screenshots to App Store Connect",
+      "priority": "P1",
+      "owner": "developer"
+    },
+    {
+      "action": "Fill Privacy Nutrition Label (UUID, game progress, purchase history)",
+      "priority": "P0",
+      "owner": "developer"
+    },
+    {
+      "action": "Archive iOS build in Xcode (Release scheme) and upload to TestFlight",
+      "priority": "P0",
+      "owner": "developer"
+    }
+  ],
+  "app_store_metadata": {
+    "app_name_ja": "光輝島",
+    "app_name_en": "Glow Island",
+    "subtitle_en": "Healing Tile Connect",
     "category": "Games > Puzzle",
     "age_rating": "4+",
-    "iap_tiers_count": 4,
-    "screenshots_ready": true,
-    "description_ready": true,
-    "keywords_ready": true
-  },
-  "iap_readiness": {
-    "products_defined": true,
-    "sandbox_tested": false,
-    "receipt_validation_backend": true
-  },
-  "compliance_summary": {
-    "privacy_policy_url": "<URL>",
-    "att_required": false,
-    "age_rating": "4+",
-    "overall_status": "compliant"
-  },
-  "checklist_items": [
-    {"phase": "preparation", "item": "<描述>", "status": "pending | done | blocked"},
-    {"phase": "testflight", "item": "<描述>", "status": "pending"},
-    {"phase": "submit", "item": "<描述>", "status": "pending"}
-  ],
-  "estimated_review_days": "1-3",
-  "notes": "<任何特殊注意事项>"
+    "bundle_id": "com.glowisland.game"
+  }
 }
 ```
 
-### `.allforai/launch-prep/launch-checklist.md`
+## 完成标准
 
-人类可阅读的完整上架清单，格式为 Markdown Checkbox 列表，包含：
-- App Store Connect 操作步骤（带 checkbox）
-- 关键数据汇总（IAP 价格、关键词列表、截图规格）
-- 发布时间建议
-- 如有阻塞项：明确列出阻塞原因和解决方案
+- `overall_launch_status == "ready"` 时：所有自动化检查通过，manual_actions 列表完整
+- `overall_launch_status == "blocked"` 时：`blocking_reasons` 必须具体列明自动化检查失败项
+- **不因 manual_actions 阻塞**：人工动作不在自动化验证范围内，不触发 run_halted
+- 截图至少生成 1 张（Playwright 可用时生成 5 张，不可用时记录为 skipped）

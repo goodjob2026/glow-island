@@ -1,29 +1,33 @@
 {
   "schema_version": "1.0",
-  "event_count": 86,
+  "event_count": 135,
   "run_ids": [
     "20260514T092554Z-6d244a80"
   ],
   "first_ts": "2026-05-14T09:25:54.724049+00:00",
-  "last_ts": "2026-05-14T20:21:36.819248+00:00",
+  "last_ts": "2026-05-15T18:21:40.915051+00:00",
   "events_by_type": {
-    "bootstrap_completed": 2,
-    "dynamic_expander_completed": 3,
-    "dynamic_expander_started": 3,
-    "node_completed": 36,
-    "node_started": 36,
-    "run_completed": 1,
+    "bootstrap_completed": 3,
+    "dynamic_expander_completed": 6,
+    "dynamic_expander_started": 6,
+    "node_completed": 55,
+    "node_started": 54,
+    "run_completed": 3,
     "run_halted": 2,
-    "run_started": 3
+    "run_started": 6
   },
   "events_by_status": {
     "blocked": 1,
-    "completed": 42,
+    "completed": 67,
     "halted": 1,
-    "started": 3
+    "started": 6
   },
   "nodes": {
     "audio-asset-gen": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "code-repair-loop": {
       "node_started": 1,
       "node_completed": 1
     },
@@ -32,12 +36,20 @@
       "node_completed": 1
     },
     "compile-verify": {
-      "node_started": 1,
-      "node_completed": 1
+      "node_started": 2,
+      "node_completed": 2
     },
     "compliance-check": {
       "node_started": 2,
       "node_completed": 2
+    },
+    "e2e-gameplay": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "fix-code-gaps": {
+      "node_started": 1,
+      "node_completed": 1
     },
     "fix-compliance-urls": {
       "node_started": 1,
@@ -48,20 +60,20 @@
       "node_completed": 1
     },
     "game-2d-asset-binding-visual-qa": {
-      "node_started": 2,
-      "node_completed": 2
+      "node_started": 3,
+      "node_completed": 3
     },
     "game-2d-asset-runtime-binding-contract": {
       "node_started": 1,
       "node_completed": 1
     },
     "game-2d-code-repair-loop": {
-      "node_started": 2,
-      "node_completed": 2
+      "node_started": 3,
+      "node_completed": 3
     },
     "game-2d-core-loop-playability-qa": {
-      "node_started": 2,
-      "node_completed": 2
+      "node_started": 3,
+      "node_completed": 3
     },
     "game-2d-core-loop-playable-contract": {
       "node_started": 1,
@@ -76,22 +88,34 @@
       "node_completed": 2
     },
     "game-2d-production-closure-qa": {
-      "node_started": 3,
-      "node_completed": 3
+      "node_started": 4,
+      "node_completed": 6
     },
     "game-2d-runtime-profile": {
       "node_started": 1,
       "node_completed": 1
     },
     "game-2d-session-completion-qa": {
-      "node_started": 2,
-      "node_completed": 2
+      "node_started": 3,
+      "node_completed": 3
     },
     "game-2d-session-flow-contract": {
       "node_started": 1,
       "node_completed": 1
     },
     "game-2d-view-mode-runtime-contract": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "generate-missing-assets": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "generate-real-audio": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "ios-simulator-acceptance": {
       "node_started": 1,
       "node_completed": 1
     },
@@ -111,13 +135,21 @@
       "node_started": 1,
       "node_completed": 1
     },
+    "quality-checks": {
+      "node_started": 1,
+      "node_completed": 1
+    },
     "runtime-smoke-verify": {
       "node_started": 1,
       "node_completed": 1
     },
     "ui-forge-game": {
-      "node_started": 1,
-      "node_completed": 1
+      "node_started": 4,
+      "node_completed": 3
+    },
+    "visual-qa-game": {
+      "node_started": 2,
+      "node_completed": 2
     }
   },
   "blocker_count": 0,

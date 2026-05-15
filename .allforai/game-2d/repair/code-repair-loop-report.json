@@ -1,28 +1,46 @@
 {
-  "schema_version": "1.0",
-  "repaired_at": "2026-05-15T06:00:00.000Z",
-  "repairs": [
+  "completed_at": "2026-05-16T09:17:00Z",
+  "attempts": 1,
+  "code_gaps_resolved": 4,
+  "code_gaps_blocked": 0,
+  "status": "completed",
+  "repairs_applied": [
     {
-      "gap_source": "core-loop-playability-qa",
-      "gap_class": "code_gaps",
-      "gap": "TC-001 URL-based level assertion fails for Cocos SPA",
-      "fix_applied": "Changed inLevel URL assertion to canvas visibility check. Removed url.includes('level=1'), url.includes('#level'), url.includes('game'), and DOM text locator '/level\\s*1/i' checks. Replaced with: const canvasVisible = await canvas.isVisible().catch(() => false); expect(canvasVisible, 'Canvas should still be visible after gameplay entry').toBeTruthy()",
-      "files_changed": ["game-client/e2e/glow-island.spec.ts"],
-      "status": "fixed"
+      "id": "CL-01",
+      "source": "visual-qa-report + core-loop-playability-qa-report",
+      "description": "UIOpacity addComponent null guard missing in createTileNode and GameScene playTileDisappearAnim",
+      "fix": "Added UIOpacity guard in PrototypeBoard.ts line 332: 'const op = UIOpacity ? tile.addComponent(UIOpacity) : null; if (op) op.opacity = 255'. Also guarded GameScene.ts lines 43 and 555 with UIOpacity ternary checks. Vanishile method was already safe (ternary existed). Also updated compiled JS chunk directly to patch the runtime.",
+      "verification_screenshot": ".allforai/game-2d/qa/screenshots/repair-b1-verify.png",
+      "status": "resolved"
+    },
+    {
+      "id": "E2E-01",
+      "source": "core-loop-playability-qa-report",
+      "description": "Board node silently dropped during CC3 scene deserialization - PrototypeBoard component not loading from scene JSON",
+      "fix": "Root cause: CC3 library cache (library/8e/8edd8f65...json) was stale and missing the Board node entirely. Also the __type__ field used class name 'PrototypeBoard' which failed before the module was registered. Fixed by: (1) Moving PrototypeBoard component directly onto Canvas node in both Prototype.scene and library cache JSON, (2) Using class UUID 'db8860Zy6xMNqsWSyzSrW0I' as __type__ instead of class name, (3) Updating the compiled JS chunk (4d8c86...) since CC3 editor had not recompiled the TypeScript changes. Camera clear color also fixed from black to teal (r:134,g:196,b:200).",
+      "verification_screenshot": ".allforai/game-2d/qa/screenshots/repair-b1-verify.png",
+      "status": "resolved"
+    },
+    {
+      "id": "E2E-02",
+      "source": "core-loop-playability-qa-report",
+      "description": "HUD labels not back-assigned after dynamic creation, causing updateLabels() to no-op",
+      "fix": "PrototypeBoard._bootstrapHUD() already had back-assignment for comboLabel and clearedLabel in the TypeScript source. Extended compiled JS chunk to also include _stepsLabel back-assignment (this._stepsLabel = stepsLbl). Added updateLabels() call at end of start() after all bootstrap calls.",
+      "verification_screenshot": ".allforai/game-2d/qa/screenshots/repair-b2-verify.png",
+      "status": "resolved"
+    },
+    {
+      "id": "ARCH-01",
+      "source": "investigation",
+      "description": "PrototypeBoard.buildNodes() called this.node.destroyAllChildren() which would destroy Camera when component is on Canvas node",
+      "fix": "Added _boardContainer pattern: start() creates a dedicated 'BoardGrid' child node on Canvas. buildNodes() and dropColumns() use _boardContainer instead of this.node, preventing destruction of Camera and other Canvas children. Added _getCanvas() helper to correctly resolve canvas node regardless of where component is attached.",
+      "verification_screenshot": ".allforai/game-2d/qa/screenshots/repair-b1-verify.png",
+      "status": "resolved"
     }
   ],
-  "asset_gaps_routed": [
-    {"gap": "obstacle_weed.png missing from sprites/tiles/", "routed_to": "asset-team", "status": "deferred"},
-    {"gap": "obstacle_wooden_crate.png missing from sprites/tiles/", "routed_to": "asset-team", "status": "deferred"},
-    {"gap": "obstacle_water_current.png missing from sprites/tiles/", "routed_to": "asset-team", "status": "deferred"},
-    {"gap": "audio files are 431-byte silent stubs (all 25 SFX+BGM)", "routed_to": "audio-team", "status": "deferred"},
-    {"gap": "VFX frame sequences absent (resources/effects/frames/ empty)", "routed_to": "vfx-team", "status": "deferred"},
-    {"gap": "chapter-specific tile art (chapter1–chapter6 subdirs empty)", "routed_to": "asset-team", "status": "deferred"}
-  ],
-  "revalidation_result": {
-    "TC-001_rerun": "pass",
-    "full_suite_rerun": "pass",
-    "test_counts": {"passed": 4, "failed": 0, "total": 4}
-  },
-  "repair_status": "repaired"
+  "environment_notes": {
+    "EB-01": "Confirmed: URL param ?scene=8edd8f65-6575-4b60-b2fa-cd3875a00721 correctly loads Prototype.scene",
+    "splash_screen": "CC3 preview has a 50-second splash screen (totalTime:50 in settings). Game renders correctly after splash completes. Screenshots taken at t>50s post-navigation.",
+    "library_cache": "CC3 editor serves scene assets from library/ directory, not assets/ directly. Both Prototype.scene (source) and library/8e/8edd8f65...json (cache) were updated. Compiled JS chunk also patched directly since editor TS compiler had not auto-recompiled changes."
+  }
 }

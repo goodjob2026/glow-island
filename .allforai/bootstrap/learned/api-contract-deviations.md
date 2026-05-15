@@ -17,3 +17,17 @@ When writing node-specs for runtime-smoke or demo-forge, grep actual route files
 ```bash
 grep -rn "router\.\|fastify\.\|app\." backend/src/routes/ | head -30
 ```
+
+## [2026-05-15] glow-island code-repair-loop round
+
+### Discovery — SKU catalog drift between client catalog and backend config
+
+- **monthly_card SKU**: Client ShopScene catalog listed `sku_id='monthly_card'` with platform product IDs, but backend SKU_CONFIG had replaced it with `glowstone_chest` (a non-subscription direct consumable). Result: any purchase attempt returned INVALID_SKU 400.
+- **Analytics routes**: Client AnalyticsService POSTs to `/analytics/events` and CrashService POSTs to `/analytics/crashes`, but these routes were never added to the backend. Both are fire-and-forget; absence causes silent 404s in production.
+
+### Source
+- Discovered during: quality-checks (deadhunt + fieldcheck)
+- Severity: high (monthly_card purchase completely broken)
+
+### Fix pattern
+When a new SKU type is planned (subscription vs consumable), always update BOTH client catalog and backend SKU_CONFIG atomically. When adding a client analytics/crash service, add a corresponding backend stub route simultaneously.

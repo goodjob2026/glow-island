@@ -37,6 +37,9 @@
     "_children": [
       {
         "__id__": 3
+      },
+      {
+        "__id__": 15
       }
     ],
     "_active": true,
@@ -141,9 +144,9 @@
     "_far": 2000,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 134,
+      "g": 196,
+      "b": 200,
       "a": 255
     },
     "_depth": 1,
@@ -374,5 +377,90 @@
     "__type__": "cc.SkinInfo",
     "_enabled": false,
     "_scale": 5
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "GameController",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 16
+      },
+      {
+        "__id__": 17
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_layer": 33554432,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_id": "cd5e8f3a71b29406"
+  },
+  {
+    "__type__": "GameScene",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 15
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "gameHUD": null,
+    "levelCompletePopup": null,
+    "failPopup": null,
+    "pauseMenu": null,
+    "tileContainer": null,
+    "levelId": "1-1",
+    "chapterId": 1,
+    "_id": "cd5e8f3a71b29407"
+  },
+  {
+    "__type__": "cc.UITransform",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 15
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 960,
+      "height": 640
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_id": "cd5e8f3a71b29408"
   }
 ]

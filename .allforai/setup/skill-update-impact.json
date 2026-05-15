@@ -1,19 +1,394 @@
 {
   "schema_version": "1.0",
-  "meta_skill_version": null,
-  "change_source": "none",
-  "changed_files": [],
-  "changed_skill_slugs": [],
+  "meta_skill_version": "0.6.29",
+  "change_source": "explicit",
+  "changed_files": [
+    "claude/meta-skill/skills/game-2d-production/40-qa/code-repair-loop/SKILL.md",
+    "claude/meta-skill/skills/game-frontend/40-qa/runtime-gameplay-visual-acceptance/SKILL.md",
+    "claude/meta-skill/skills/visual-qa/20-spec/visual-acceptance-criteria/SKILL.md",
+    "claude/meta-skill/skills/game-2d-production/30-generate/playable-slice-assembly/SKILL.md"
+  ],
+  "changed_skill_slugs": [
+    "game-2d-production/40-qa/code-repair-loop",
+    "game-frontend/40-qa/runtime-gameplay-visual-acceptance",
+    "visual-qa/20-spec/visual-acceptance-criteria",
+    "game-2d-production/30-generate/playable-slice-assembly"
+  ],
   "workflow_path": "/Users/aa/workspace/glow-island/.allforai/bootstrap/workflow.json",
-  "node_count": 19,
+  "node_count": 25,
   "global_recommendations": [
     {
-      "scope": "unknown",
-      "reason": "no changed files were supplied or discovered",
-      "rerun": "provide --from-ref or --changed-file, otherwise inspect recent release notes manually",
+      "scope": "game-2d-production",
+      "reason": "2D game production closure or workflow expansion contract changed",
+      "rerun": "rerun /bootstrap or run expand_game_2d_production.py, then rerun 2D production closure nodes",
+      "severity": "high"
+    },
+    {
+      "scope": "game-frontend",
+      "reason": "game frontend runtime contract changed",
+      "rerun": "rerun game frontend binding, smoke, and visual runtime QA nodes",
       "severity": "medium"
+    },
+    {
+      "scope": "visual-qa",
+      "reason": "visual QA/review contract changed",
+      "rerun": "rerun visual acceptance, screenshot review, and art-qa nodes",
+      "severity": "high"
+    },
+    {
+      "scope": "game-2d-production",
+      "reason": "2D game production closure or workflow expansion contract changed",
+      "rerun": "rerun /bootstrap or run expand_game_2d_production.py, then rerun 2D production closure nodes",
+      "severity": "high"
     }
   ],
-  "node_recommendations": [],
-  "state": "needs_change_input"
+  "node_recommendations": [
+    {
+      "node_id": "code-repair-loop",
+      "capability": "implement",
+      "severity": "high",
+      "reasons": [
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/bootstrap/repair-loop-report.json"
+      ]
+    },
+    {
+      "node_id": "compile-verify",
+      "capability": "compile-verify",
+      "severity": "high",
+      "reasons": [
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/bootstrap/compile-result.json"
+      ]
+    },
+    {
+      "node_id": "concept-acceptance",
+      "capability": "concept-acceptance",
+      "severity": "high",
+      "reasons": [
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/product-concept/acceptance-report.json"
+      ]
+    },
+    {
+      "node_id": "e2e-gameplay",
+      "capability": "product-verify",
+      "severity": "high",
+      "reasons": [
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/bootstrap/e2e-results.json",
+        ".allforai/bootstrap/e2e-report.json"
+      ]
+    },
+    {
+      "node_id": "fix-code-gaps",
+      "capability": "implement",
+      "severity": "high",
+      "reasons": [
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-client/fix-code-gaps-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-asset-binding-visual-qa",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/qa/asset-binding-visual-qa-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-asset-runtime-binding-contract",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/spec/asset-runtime-binding-contract.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-code-repair-loop",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "node-spec references changed skill game-2d-production/40-qa/code-repair-loop",
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/repair/code-repair-loop-report.json",
+        ".allforai/game-2d/repair/code-repair-loop-report.md",
+        ".allforai/game-2d/qa/revalidation-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-core-loop-playability-qa",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/qa/core-loop-playability-qa-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-core-loop-playable-contract",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/spec/core-loop-playable-contract.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-input-feedback-contract",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/spec/input-feedback-contract.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-playable-slice-assembly",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "node-spec references changed skill game-2d-production/30-generate/playable-slice-assembly",
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/assembly/playable-slice-manifest.json",
+        ".allforai/game-2d/assembly/playable-slice-assembly-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-production-closure-qa",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/assembly/playable-slice-assembly-report.json",
+        ".allforai/game-2d/qa/2d-production-closure-report.json",
+        ".allforai/game-2d/qa/2d-production-closure.html",
+        ".allforai/game-2d/qa/asset-binding-visual-qa-report.json",
+        ".allforai/game-2d/qa/core-loop-playability-qa-report.json",
+        ".allforai/game-2d/qa/revalidation-report.json",
+        ".allforai/game-2d/qa/session-completion-qa-report.json",
+        ".allforai/game-2d/repair/code-repair-loop-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-runtime-profile",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/env/2d-runtime-profile.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-session-completion-qa",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/qa/session-completion-qa-report.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-session-flow-contract",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/spec/session-flow-contract.json"
+      ]
+    },
+    {
+      "node_id": "game-2d-view-mode-runtime-contract",
+      "capability": "game-2d-production",
+      "severity": "high",
+      "reasons": [
+        "2D game production closure or workflow expansion contract changed",
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-2d/spec/view-mode-runtime-contract.json"
+      ]
+    },
+    {
+      "node_id": "ios-simulator-acceptance",
+      "capability": "product-verify",
+      "severity": "high",
+      "reasons": [
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/bootstrap/ios-sim-report.json"
+      ]
+    },
+    {
+      "node_id": "launch-checklist",
+      "capability": "launch-prep",
+      "severity": "high",
+      "reasons": [
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/launch-prep/launch-checklist.json"
+      ]
+    },
+    {
+      "node_id": "ui-forge-game",
+      "capability": "ui-forge",
+      "severity": "high",
+      "reasons": [
+        "game frontend runtime contract changed",
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/ui-forge/fidelity-assessment.json",
+        ".allforai/ui-forge/glow-island-tile-upgrade-report.md"
+      ]
+    },
+    {
+      "node_id": "visual-qa-game",
+      "capability": "visual-verify",
+      "severity": "high",
+      "reasons": [
+        "visual QA/review contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/visual-qa/visual-qa-report.json"
+      ]
+    },
+    {
+      "node_id": "generate-missing-assets",
+      "capability": "implement",
+      "severity": "medium",
+      "reasons": [
+        "game frontend runtime contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-client/missing-assets-gen-report.json"
+      ]
+    },
+    {
+      "node_id": "generate-real-audio",
+      "capability": "implement",
+      "severity": "medium",
+      "reasons": [
+        "game frontend runtime contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/game-client/real-audio-gen-report.json"
+      ]
+    },
+    {
+      "node_id": "quality-checks",
+      "capability": "quality-checks",
+      "severity": "medium",
+      "reasons": [
+        "game frontend runtime contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/quality-checks/deadhunt-report.json",
+        ".allforai/quality-checks/fieldcheck-report.json"
+      ]
+    },
+    {
+      "node_id": "runtime-smoke-verify",
+      "capability": "runtime-smoke-verify",
+      "severity": "medium",
+      "reasons": [
+        "game frontend runtime contract changed"
+      ],
+      "recommended_action": "rerun node and downstream consumers if its output changed",
+      "exit_artifacts": [
+        ".allforai/bootstrap/runtime-smoke-result.json"
+      ]
+    }
+  ],
+  "state": "completed"
 }

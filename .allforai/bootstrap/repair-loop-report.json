@@ -1,0 +1,68 @@
+{
+  "completed_at": "2026-05-15T06:46:00Z",
+  "attempts": 1,
+  "code_gaps_resolved": 6,
+  "code_gaps_blocked": 0,
+  "contract_gaps_updated": 0,
+  "environment_blockers": 1,
+  "status": "partial",
+  "blocked_reason": "iOS arm64 Simulator linker incompatibility: CocosCreator prebuilt libssl.a/libcrypto.a use deprecated LC_VERSION_MIN_IPHONEOS (platform 2 = iOS device) instead of LC_BUILD_VERSION (platform 7 = iOS Simulator) required by Xcode 15+ SDK. This is an environment/toolchain issue, not a code gap. Web-mobile build confirmed working.",
+  "repairs_applied": [
+    {
+      "id": "DH-1",
+      "source": "deadhunt-report",
+      "description": "Backend missing POST /v1/analytics/crashes route",
+      "fix": "Created backend/src/routes/analytics.ts with fire-and-forget POST /analytics/crashes handler. Registered in server.ts under /v1 prefix.",
+      "status": "resolved"
+    },
+    {
+      "id": "DH-2",
+      "source": "deadhunt-report",
+      "description": "Backend missing POST /v1/analytics/events route",
+      "fix": "Added POST /analytics/events handler to backend/src/routes/analytics.ts. Registered in server.ts under /v1 prefix.",
+      "status": "resolved"
+    },
+    {
+      "id": "DH-3",
+      "source": "deadhunt-report + fieldcheck-report",
+      "description": "Client ShopScene sku_id='monthly_card' not in backend SKU_CONFIG — INVALID_SKU 400 on any monthly card purchase",
+      "fix": "Added monthly_card entry to backend/src/types/index.ts SKU_CONFIG: product_id=com.glowisland.iap.monthly_card, amount_cents=499, glowstone=30/day, is_monthly_card=true.",
+      "status": "resolved"
+    },
+    {
+      "id": "CG-01",
+      "source": "visual-qa-report",
+      "description": "Board node in Prototype.scene not instantiated at runtime — non-standard _id strings (proto-board-node-0001) caused CC3 to silently skip deserialization",
+      "fix": "Replaced all 3 non-standard _id values in Prototype.scene with proper 16-char hex UUIDs: Board node bd4a7c3e8f219d05, PrototypeBoard component bd4a7c3e8f219d06, UITransform bd4a7c3e8f219d07. Same fix applied to GameScene.scene GameController node (cd5e8f3a71b29406/07/08).",
+      "status": "resolved"
+    },
+    {
+      "id": "CG-02",
+      "source": "visual-qa-report",
+      "description": "_bootstrapHUD() produced no visible HUD nodes — root cause was Board node not instantiated from scene (CG-01)",
+      "fix": "Root cause fixed by CG-01. Also added find('Canvas') ?? director.getScene()?.getChildByName('Canvas') fallback in both _bootstrapHUD() methods (PrototypeBoard.ts:160, GameScene.ts:637) for robustness when externally instantiated.",
+      "status": "resolved"
+    },
+    {
+      "id": "CG-03",
+      "source": "visual-qa-report",
+      "description": "_bootstrapBackground() did not render — root cause was Board node not instantiated from scene (CG-01)",
+      "fix": "Root cause fixed by CG-01. Same canvas fallback added to _bootstrapBackground() in both files.",
+      "status": "resolved"
+    }
+  ],
+  "environment_blockers_detail": [
+    {
+      "id": "ENV-01",
+      "source": "ios-simulator-acceptance",
+      "description": "iOS arm64 Simulator build blocked: CocosCreator prebuilt native libs (libssl.a, libcrypto.a) use LC_VERSION_MIN_IPHONEOS (platform=iOS device) but Xcode 15+ linker requires LC_BUILD_VERSION (platform=iOS Simulator) for arm64-iphonesimulator target.",
+      "action": "Cannot be fixed in code — requires CocosCreator engine update or use of older Xcode. Web-mobile build confirmed working as alternative smoke test target.",
+      "blocking": false
+    }
+  ],
+  "post_repair_verification": {
+    "backend_tsc": "pass",
+    "scene_json_valid": true,
+    "code_gaps_in_qa_reports": 0
+  }
+}

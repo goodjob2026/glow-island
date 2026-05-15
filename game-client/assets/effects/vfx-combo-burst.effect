@@ -1,61 +1,54 @@
-{
-  "__type__": "cc.ParticleAsset",
-  "_meta": {
-    "effect_id": "vfx-combo-burst",
-    "description": "Tile elimination star burst — colorful sparkles on tile elimination, intensity scales with combo level",
-    "trigger": "tile_eliminate",
-    "duration_source": "art-tokens.animation.combo_popup_duration = 0.40s",
-    "combo_scale_note": "Base config is for combo level 1 (threshold=1). Script multiplies totalParticles and startSize by combo_scale_factors below.",
-    "combo_scale_factors": {
-      "combo_1": { "particle_scale": 1.0, "size_scale": 1.0 },
-      "combo_2": { "particle_scale": 1.5, "size_scale": 1.1 },
-      "combo_3": { "particle_scale": 2.0, "size_scale": 1.2 },
-      "combo_4": { "particle_scale": 3.0, "size_scale": 1.5 }
-    },
-    "combo_thresholds_source": "puzzle-mechanics-spec.combo.thresholds = [1, 2, 3, 4]"
-  },
-  "content": {
-    "startColor":    { "r": 255, "g": 215, "b": 0,   "a": 255 },
-    "startColorVar": { "r": 30,  "g": 20,  "b": 60,  "a": 0   },
-    "endColor":      { "r": 255, "g": 255, "b": 255, "a": 0   },
-    "endColorVar":   { "r": 20,  "g": 20,  "b": 20,  "a": 0   },
+// Placeholder VFX effect — additive particle-style shader
 
-    "angle": 90,
-    "angleVar": 360,
+CCEffect %{
+  techniques:
+  - name: transparent
+    passes:
+    - vert: general-vs:vert
+      frag: vfx-fs:frag
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      rasterizerState:
+        cullMode: none
+      properties: &props
+        mainTexture: { value: white }
+        mainColor:   { value: [1, 1, 1, 1], editor: { type: color } }
+}%
 
-    "speed": 180,
-    "speedVar": 80,
-
-    "life": 0.38,
-    "lifeVar": 0.10,
-
-    "totalParticles": 40,
-    "emissionRate": 200,
-    "duration": 0.40,
-
-    "emitterMode": 0,
-    "gravity": { "x": 0, "y": -120 },
-    "radialAccel": 20,
-    "tangentialAccel": 10,
-
-    "startSize": 10,
-    "startSizeVar": 5,
-    "endSize": 0,
-    "endSizeVar": 0,
-
-    "startSpin": 0,
-    "startSpinVar": 360,
-    "endSpin": 720,
-    "endSpinVar": 180,
-
-    "posVar": { "x": 8, "y": 8 },
-    "positionType": 0,
-
-    "blendFunc": {
-      "src": 770,
-      "dst": 771
-    },
-
-    "_comment_color": "Golden #FFD700 = rgb(255,215,0) start fading to bright white; radial outward burst; combo_4 threshold triggers screen shake + particle burst per puzzle-mechanics-spec"
+CCProgram general-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  in vec4 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+  out vec4 v_color;
+  out vec2 v_uv;
+  vec4 vert () {
+    v_uv    = a_texCoord;
+    v_color = a_color;
+    return cc_matProj * cc_matView * a_position;
   }
-}
+}%
+
+CCProgram vfx-fs %{
+  precision highp float;
+  #include <legacy/output>
+  in vec4 v_color;
+  in vec2 v_uv;
+  uniform sampler2D mainTexture;
+  uniform Constant {
+    vec4 mainColor;
+  };
+  vec4 frag () {
+    vec4 col = v_color * texture(mainTexture, v_uv) * mainColor;
+    return CCFragOutput(col);
+  }
+}%
