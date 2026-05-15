@@ -8,6 +8,8 @@ hard_blocked_by:
   - canvas2d-gameplay-scene
   - canvas2d-level-data
   - canvas2d-ftue
+  - canvas2d-obstacles
+  - canvas2d-vfx-effects
 exit_artifacts:
   - "canvas2d-client/www/qa/gameplay-quality-report.json"
 ---
@@ -86,7 +88,7 @@ const shapedCases = [
 
 - 每次成功消除：`steps` 精确扣1，不多不少
 - 失败点击（路径不通）：`steps` 不变
-- 特殊图块消除（光波消一整行）：`steps` 仍只扣1（光波效果为额外消除，不额外扣步）
+- 特殊图块消除（如Bomb消3×3、Windmill消整行列）：`steps` 仍只扣1（额外消除不额外扣步）
 
 ## 3. Combo 计时器精度测试
 
@@ -103,13 +105,89 @@ Combo倍率验证：
 
 ## 4. 特殊图块效果验证
 
+按设计文档正确的4种特殊图块：
+
 | 特殊类型 | 测试验证点 |
 |----------|-----------|
-| 光波(6) | 消除后同行所有非空格都变为空 |
-| 光链(7) | 消除后相邻同类图块都清除 |
-| 穿透(8) | 与任意图块配对成功（不限类型） |
-| 置换(9) | 目标格类型改变，然后两格都消除 |
-| 连锁(10) | 额外随机消除一对（棋盘图块总数减少>2） |
+| Bomb (type=6) | 消除后以炸弹格为中心3×3范围内所有图块清除（无视类型）；爆炸粒子VFX触发 |
+| Windmill (type=7) | 消除后整行+整列图块全部清除（十字形）；光柱VFX触发 |
+| Lantern (type=8) | 消除后自动寻找最近同类图块连线消除；若无可达同类则持续脉冲等待 |
+| Wave (type=9) | 消除后棋盘所有图块随机重排（类型数量不变）；最多重排3次直到有合法对 |
+
+Combo生成验证：
+- combo=3时棋盘随机活跃空格生成1个Bomb（type=6）
+- combo=4时棋盘随机活跃空格生成1个Windmill（type=7）
+- combo=5+时不额外生成，仅累加倍率
+
+## 4b. 障碍物系统正确性测试（ObstacleSystem 单元测试）
+
+用 Node.js 直接 import ObstacleSystem.js 跑单元测试：
+
+```js
+// 冰封块削层
+const obs = new ObstacleSystem(grid, layout);
+obs.init({ obstacles: [{ type: 'ice_block', r: 2, c: 2, layers: 2 }] });
+assert(obs.isPassable(2, 2) === false, '冰封格不可穿越');
+obs.onMatch(2, 1, 2, 3); // 相邻消除 → 削一层
+const layers = obs._obstacles[2][2].layers;
+assert(layers === 1, '第一次削层后剩1层');
+obs.onMatch(2, 1, 2, 3); // 再次消除
+assert(obs._obstacles[2][2] === null, '削至0层后移除障碍物');
+assert(obs.isPassable(2, 2) === true, '障碍物移除后可通行');
+
+// Portal 传送
+obs.init({ obstacles: [
+  { type: 'portal', r: 0, c: 0, pair_id: 'A' },
+  { type: 'portal', r: 5, c: 5, pair_id: 'A' },
+]});
+const exit = obs.getPortalExit(0, 0);
+assert(exit.r === 5 && exit.c === 5, 'Portal A (0,0) → (5,5)');
+const exitRev = obs.getPortalExit(5, 5);
+assert(exitRev.r === 0 && exitRev.c === 0, 'Portal 双向映射');
+
+// 锁链环数递减
+obs.init({ obstacles: [{ type: 'chain_lock', r: 3, c: 3, rings: 2 }] });
+obs.onMatch(3, 3, 0, 0); // 直接消除锁链格
+assert(obs._obstacles[3][3].rings === 1, '第一次消除后剩1环');
+obs.onMatch(3, 3, 0, 0);
+assert(obs._obstacles[3][3] === null, '环数归零后格子消除');
+
+// 木箱 hp=3，相邻消除打击一次
+obs.init({ obstacles: [{ type: 'wooden_crate', r: 2, c: 2, hp: 3 }] });
+assert(obs.isPassable(2, 2) === false, '木箱不可通行');
+obs.onMatch(2, 1, 2, 3); // 相邻消除 → 打击一次
+assert(obs._obstacles[2][2].hp === 2, 'hp: 3→2');
+
+// 杂草N步蔓延
+obs.init({ obstacles: [{ type: 'weed', r: 3, c: 3, spread_interval: 5 }] });
+for (let i = 0; i < 4; i++) obs.onStep(i);
+// 未蔓延（步数<5）
+assert(obs._weedCells.size === 1, '4步内未蔓延');
+obs.onStep(5);
+// 第5步触发蔓延
+assert(obs._weedCells.size > 1, '第5步蔓延至相邻格');
+```
+
+## 4c. VFX 触发验证（Playwright 截图帧分析）
+
+```js
+// 触发 Bomb 消除，截连续10帧（50ms间隔）
+const frames = [];
+for (let i = 0; i < 10; i++) {
+  await page.waitForTimeout(50);
+  frames.push(await page.screenshot());
+}
+
+// 验证爆炸中间帧存在白色冲击波像素
+const hasShockwave = frames.some(buf => hasWhitePixels(buf, threshold=50));
+expect(hasShockwave).toBe(true);
+
+// 验证路径连线帧存在 #FFE566 黄色虚线像素
+await tapTile(page, 0, 0); // 选中
+await tapTile(page, 0, 3); // 消除（触发 showPath 动画）
+const pathFrame = await page.screenshot();
+expect(hasYellowPixels(pathFrame)).toBe(true); // #FFE566 ± 10
+```
 
 ## 5. 难度曲线合理性评估
 
@@ -135,11 +213,11 @@ Ch1  | 67.5     | 48       | 0%→3.1%
 
 ## 7. 结算正确性验证
 
-对10个不同步数剩余比例，验证星评计算：
-- 剩余40%+ → 3星
-- 剩余10-40% → 2星
-- 剩余<10%（恰好清完）→ 1星
-- 步数归零有残余 → 失败（0星）
+对10个不同步数剩余比例，验证星评计算（所有章节统一标准）：
+- 剩余步数≥40% → 3星
+- 剩余步数≥20%（<40%）→ 2星
+- 剩余步数>0（<20%）→ 1星
+- 步数归零时仍有图块 → 失败（0星，触发失败面板）
 
 ## 报告格式
 
@@ -166,5 +244,5 @@ Ch1  | 67.5     | 48       | 0%→3.1%
 2. BFS规则10个测试用例全部通过
 3. 步数扣减精度：0误差
 4. Combo计时器：2秒边界误差<50ms
-5. 5种特殊图块效果全部验证通过
+5. 4种特殊图块效果全部验证通过（Bomb/Windmill/Lantern/Wave）
 6. 难度曲线：Ch1平均步数>Ch6平均步数，每章单调递减

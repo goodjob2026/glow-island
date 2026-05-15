@@ -8,6 +8,8 @@ hard_blocked_by:
   - canvas2d-visual-qa
   - canvas2d-art-quality-qa
   - canvas2d-gameplay-quality-qa
+  - canvas2d-performance-qa
+  - canvas2d-audio-qa
 exit_artifacts:
   - "canvas2d-client/www/qa/browser-qa-report.json"
 ---
@@ -85,6 +87,52 @@ GameplayScene → 点击静音按钮
 → 再次点击 → 验证：isMuted() === false
 ```
 
+### TC-09：禅模式流程
+```
+IslandMapScene → 点击禅模式按钮 → LevelSelectScene（禅模式标签）
+→ 点击关卡1 → ZenGameplayScene
+→ 验证：HUD 显示 "∞" 符号，无步数进度条
+→ 注入 JavaScript：将 _steps 设为 0
+→ 验证：不出现失败面板（禅模式不触发失败）
+→ 消除所有图块
+→ 验证：出现完成面板（含"再来一局"按钮，无星评数字）
+```
+
+### TC-10：经济流程 E2E（沙滩币完整链路）
+```
+初始状态：ProgressManager.getCoins() === 200
+→ 进入 GameplayScene（1-1，注入 steps=2，剩余图块=4对）
+→ 消除1对（steps→1）→ 消除1对（steps→0）
+→ 验证：失败面板出现，显示"30沙滩币续关+5步"按钮
+→ 点击续关
+→ 验证：getCoins() === 170（200-30=170）
+→ 验证：当前步数 = 5（续关+5步）
+→ 消除剩余2对
+→ 验证：关卡通关（星评出现）
+```
+
+### TC-11：ShopScene 沙漏奖励
+```
+IslandMapScene → 点击商店按钮 → ShopScene
+→ 验证：双货币余额显示正确（沙滩币≥170，丹青石=0）
+→ 强制设置 hourglassLastClaim = 0（过期）
+→ 验证：沙漏按钮可点击（不灰色）
+→ 点击领取
+→ 验证：沙滩币增加10-20（在合理范围内）
+→ 验证：hourglassLastClaim 已更新（≈ Date.now()）
+→ 再次点击：验证按钮灰色（冷却中）
+```
+
+### TC-12：DialogScene 对话推进
+```
+触发 ch1_intro 对话（chapter 1 首次进入）
+→ 验证：对话框出现，说话者姓名显示
+→ 验证：文字逐字显示（点击前不是全部文字立即显示）
+→ 点击屏幕（加速）→ 点击屏幕（下一句）
+→ 推进完所有对话
+→ 验证：对话结束后调用 onComplete()，场景跳转
+```
+
 ## 报告格式
 
 ```json
@@ -96,7 +144,7 @@ GameplayScene → 点击静音按钮
     { "id": "TC-01", "name": "完整游戏主流程", "status": "pass", "duration_ms": 4200 },
     { "id": "TC-02", "name": "连连看路径验证", "status": "pass", "duration_ms": 1800 }
   ],
-  "summary": { "total": 8, "pass": 8, "fail": 0 },
+  "summary": { "total": 12, "pass": 12, "fail": 0 },
   "overall": "pass"
 }
 ```

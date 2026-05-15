@@ -12,6 +12,7 @@ hard_blocked_by:
   - canvas2d-level-select-scene
   - canvas2d-gameplay-scene
   - canvas2d-dialog-scene
+  - canvas2d-vfx-effects
 exit_artifacts:
   - "canvas2d-client/www/qa/visual/screenshots/index.json"
   - "canvas2d-client/www/qa/visual/screenshots/intro_act1.png"

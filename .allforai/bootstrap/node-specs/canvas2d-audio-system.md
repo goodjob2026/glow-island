@@ -9,6 +9,7 @@ hard_blocked_by:
   - canvas2d-asset-bundle
 exit_artifacts:
   - "canvas2d-client/www/src/AudioManager.js"
+  - "canvas2d-client/www/src/audio-manifest.js"
 ---
 
 # canvas2d-audio-system
@@ -82,11 +83,39 @@ export class AudioManager {
 | 灯塔点亮（Ch6通关）| sfx_lighthouse_on |
 | 区域修复 | sfx_area_restore |
 | UI按钮 | sfx_ui_button |
-| 特殊-光波 | sfx_special_wave |
-| 特殊-光链 | sfx_special_light_chain |
-| 特殊-穿透 | sfx_special_pierce |
-| 特殊-置换 | sfx_special_swap |
-| 特殊-连锁 | sfx_special_cascade |
+| 特殊-炸弹爆炸 | sfx_special_bomb |
+| 特殊-风车十字扫 | sfx_special_windmill |
+| 特殊-灯光自动连线 | sfx_special_light |
+| 特殊-海浪重排 | sfx_special_wave |
+| 冰封削层 | sfx_ice_crack |
+| 锁链断裂 | sfx_chain_break |
+| 木箱被击 | sfx_crate_hit |
+| 水流移动 | sfx_water_flow |
+
+## audio-manifest.js
+
+此节点同时产出 `audio-manifest.js`，定义所有音频资产路径，供 AudioManager 批量预加载：
+
+```js
+// canvas2d-client/www/src/audio-manifest.js
+export const AUDIO_MANIFEST = {
+  bgm: {
+    bgm_menu:             'assets/audio/bgm_menu.mp3',
+    bgm_chapter1_seaside: 'assets/audio/bgm_chapter1.mp3',
+    bgm_chapter2_pottery: 'assets/audio/bgm_chapter2.mp3',
+    bgm_chapter3_flower:  'assets/audio/bgm_chapter3.mp3',
+    bgm_chapter4_forest:  'assets/audio/bgm_chapter4.mp3',
+    bgm_chapter5_hotspring:'assets/audio/bgm_chapter5.mp3',
+    bgm_chapter6_lighthouse:'assets/audio/bgm_chapter6.mp3',
+    bgm_zen_ambient:      'assets/audio/bgm_zen.mp3',
+  },
+  sfx: {
+    sfx_connect:          'assets/audio/sfx_connect.mp3',
+    sfx_disappear:        'assets/audio/sfx_disappear.mp3',
+    // ... 以上所有 SFX
+  }
+};
+```
 
 ## 集成到游戏循环
 

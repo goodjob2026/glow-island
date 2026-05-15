@@ -99,251 +99,299 @@ function randomTransform(layout) {
 `'X'` = 活跃格（放图块），`'_'` = 非活跃格（空洞，路径不可穿越）
 每章提供 3 个变体，进关时随机选一个再随机镜像/旋转。
 
-### Ch1 码头 — 渔船（3变体）
+**严格约束：**
+- 每行字符数 = 该章棋盘列数（Ch1=6, Ch2=7, Ch3=8, Ch4=8, Ch5=9, Ch6=10）
+- 行数 = 该章棋盘行数（Ch1=6, Ch2=7, Ch3=8, Ch4=8, Ch5=9, Ch6=10）
+- 每个 layout 活跃格总数必须为偶数（图块成对消除）
+- 每行等长，禁止补齐后不等
 
-**harbor_boat_v1**（宽体渔船）
-```
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-"XXXXXXXXXXX",
-"_XXXXXXXXX_",
-"__XXXXXXX__",
-"____XXX____",
-```
+### Ch1 码头 — 渔船（3变体，6行×6列）
 
-**harbor_boat_v2**（尖头船）
-```
-"_____X_____",
-"____XXX____",
-"__XXXXXXX__",
-"XXXXXXXXXXX",
-"XXXXXXXXXXX",
-"__XXXXXXX__",
+**harbor_boat_v1**（船壳形，船头船尾收窄）
+```js
+// 活跃格: 4+6+6+4+2+2 = 24 ✓
+"_XXXX_",
+"XXXXXX",
+"XXXXXX",
+"_XXXX_",
+"__XX__",
+"__XX__",
 ```
 
-**harbor_boat_v3**（双桅船，中间细腰）
-```
-"__XX___XX__",
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-"XXXXXXXXXXX",
-"_XXXXXXXXX_",
-"__XX___XX__",
-```
-
----
-
-### Ch2 陶艺 — 陶罐（3变体）
-
-**pottery_vase_v1**（高颈罐）
-```
-"____XXX____",
-"___XXXXX___",
-"___XXXXX___",
-"_XXXXXXXXX_",
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-"XXXXXXXXXXX",
+**harbor_boat_v2**（收尖船头，侧翼渐宽）
+```js
+// 活跃格: 2+3+5+6+4+2 = 22 ✓
+"__XX__",
+"__XXX_",
+"_XXXXX",
+"XXXXXX",
+"_XXXX_",
+"__XX__",
 ```
 
-**pottery_vase_v2**（矮宽罐 + 镂空）
-```
-"___XXXXX___",
-"__XXXXXXX__",
-"_XXX___XXX_",
-"_XXX___XXX_",
-"___XXXXX___",
-"__XXXXXXX__",
-"XXXXXXXXXXX",
-```
-
-**pottery_vase_v3**（双耳陶瓶）
-```
-"XX_XXXXX_XX",
-"XX_XXXXX_XX",
-"_XXXXXXXXX_",
-"_XXXXXXXXX_",
-"__XXXXXXX__",
-"___XXXXX___",
-"____XXX____",
+**harbor_boat_v3**（双体船，中间有水道）
+```js
+// 活跃格: 4+6+6+4+4+4 = 28 ✓
+"XX__XX",
+"XXXXXX",
+"XXXXXX",
+"XX__XX",
+"XX__XX",
+"_XXXX_",
 ```
 
 ---
 
-### Ch3 花田 — 花朵（3变体）
+### Ch2 陶艺 — 陶罐（3变体，7行×7列）
 
-**flower_v1**（四瓣对称，大间距）
-```
-"___XX_XX___",
-"__XXXXXXX__",
-"_XXXXXXXXX_",
-"XX_XXXXX_XX",
-"_XXXXXXXXX_",
-"__XXXXXXX__",
-"___XX_XX___",
-```
-
-**flower_v2**（六瓣放射）
-```
-"__XXX_XXX__",
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-"XXX_____XXX",
-"XXXXXXXXXXX",
-"_XXXXXXXXX_",
-"__XXX_XXX__",
+**pottery_vase_v1**（高颈罐，颈部细腰）
+```js
+// 活跃格: 3+5+2+5+5+7+7 = 34 ✓
+"__XXX__",
+"_XXXXX_",
+"_X___X_",
+"_XXXXX_",
+"_XXXXX_",
+"XXXXXXX",
+"XXXXXXX",
 ```
 
-**flower_v3**（花心空洞）
-```
-"__XXXXXXX__",
-"_XXX___XXX_",
-"_XX_____XX_",
-"_XXX___XXX_",
-"__XXXXXXX__",
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-```
-
----
-
-### Ch4 森林 — 树形（3变体）
-
-**forest_v1**（等腰三角树）
-```
-"_____X_____",
-"____XXX____",
-"___XXXXX___",
-"__XXXXXXX__",
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-"____XXX____",
+**pottery_vase_v2**（圆肚矮罐，罐口镂空）
+```js
+// 活跃格: 3+2+5+7+7+5+3 = 32 ✓
+"__XXX__",
+"_X___X_",
+"_XXXXX_",
+"XXXXXXX",
+"XXXXXXX",
+"_XXXXX_",
+"__XXX__",
 ```
 
-**forest_v2**（双峰山脊）
-```
-"_XXX___XXX_",
-"XXXXX_XXXXX",
-"XXXXXXXXXXX",
-"XXXXXXXXXXX",
-"__XXXXXXX__",
-"____XXX____",
-```
-
-**forest_v3**（松树 + 树根分叉）
-```
-"____XXX____",
-"___XXXXX___",
-"__XXXXXXX__",
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-"_XX_____XX_",
-"_XX_____XX_",
+**pottery_vase_v3**（双耳陶瓶，上窄下宽）
+```js
+// 活跃格: 4+7+7+5+3+3+1 = 30 ✓
+"XX___XX",
+"XXXXXXX",
+"XXXXXXX",
+"_XXXXX_",
+"__XXX__",
+"__XXX__",
+"___X___",
 ```
 
 ---
 
-### Ch5 温泉 — 水滴/泡泡（3变体）
+### Ch3 花田 — 花朵（3变体，8行×8列）
 
-**hotspring_v1**（单水滴，中心空洞）
-```
-"___XXXXX___",
-"__XXXXXXX__",
-"_XXX___XXX_",
-"_XXX___XXX_",
-"_XXXXXXXXX_",
-"__XXXXXXX__",
-"___XXXXX___",
-```
-
-**hotspring_v2**（双泡泡，两区域）
-```
-"_XXXXX_____",
-"XXXXXXX____",
-"XXXXXXX____",
-"_XXXXXXX___",
-"___XXXXXXX_",
-"____XXXXXXX",
-"_____XXXXX_",
+**flower_v1**（椭圆花形，上下收窄）
+```js
+// 活跃格: 2+6+6+8+8+6+6+2 = 44 ✓
+"___XX___",
+"_XXXXXX_",
+"_XXXXXX_",
+"XXXXXXXX",
+"XXXXXXXX",
+"_XXXXXX_",
+"_XXXXXX_",
+"___XX___",
 ```
 
-**hotspring_v3**（三环嵌套）
+**flower_v2**（六瓣花，花瓣间缝隙）
+```js
+// 活跃格: 4+4+6+8+8+6+4+4 = 44 ✓
+"__XXXX__",
+"_XX__XX_",
+"XX_XX_XX",
+"XXXXXXXX",
+"XXXXXXXX",
+"XX_XX_XX",
+"_XX__XX_",
+"__XXXX__",
 ```
-"__XXXXXXX__",
-"_XX_____XX_",
-"_X_XXXXX_X_",
-"_X_X___X_X_",
-"_X_XXXXX_X_",
-"_XX_____XX_",
-"__XXXXXXX__",
+
+**flower_v3**（花心空洞，内外两圈）
+```js
+// 活跃格: 2+4+4+6+6+4+4+2 = 32 ✓
+"___XX___",
+"__XXXX__",
+"_XX__XX_",
+"_XXXXXX_",
+"_XXXXXX_",
+"_XX__XX_",
+"__XXXX__",
+"___XX___",
 ```
 
 ---
 
-### Ch6 灯塔 — 灯塔剪影（3变体）
+### Ch4 森林 — 树形（3变体，8行×8列）
 
-**lighthouse_v1**（标准灯塔）
-```
-"____XXX____",
-"____XXX____",
-"___XXXXX___",
-"__XXXXXXX__",
-"_XXXXXXXXX_",
-"XXXXXXXXXXX",
-"XXXXXXXXXXX",
-```
-
-**lighthouse_v2**（灯塔 + 镂空底座）
-```
-"____XXX____",
-"____XXX____",
-"___XXXXX___",
-"__XXXXXXX__",
-"_X_XXXXX_X_",
-"XXXXX_XXXXX",
-"XXXXXXXXXXX",
+**forest_v1**（等腰三角松，树干居中）
+```js
+// 活跃格: 2+4+6+8+8+6+2+2 = 38 ✓
+"___XX___",
+"__XXXX__",
+"_XXXXXX_",
+"XXXXXXXX",
+"XXXXXXXX",
+"_XXXXXX_",
+"___XX___",
+"___XX___",
 ```
 
-**lighthouse_v3**（螺旋塔，每层偏移）
+**forest_v2**（双峰山脊，中间谷地）
+```js
+// 活跃格: 6+8+8+8+4+2+2+2 = 40 ✓
+"_XXX_XXX",
+"XXXXXXXX",
+"XXXXXXXX",
+"XXXXXXXX",
+"__XXXX__",
+"___XX___",
+"___XX___",
+"___XX___",
 ```
-"_____XXX___",
-"____XXXXX__",
-"___XXXXXXX_",
-"__XXXXXXXXX",
-"_XXXXXXXXX_",
-"XXXXXXXXX__",
-"XXXXXXXXXXX",
+
+**forest_v3**（松树+树根分叉）
+```js
+// 活跃格: 2+4+6+8+8+6+4+4 = 42 ✓
+"___XX___",
+"__XXXX__",
+"_XXXXXX_",
+"XXXXXXXX",
+"XXXXXXXX",
+"_XXXXXX_",
+"_XX__XX_",
+"_XX__XX_",
+```
+
+---
+
+### Ch5 温泉 — 水滴/泡泡（3变体，9行×9列）
+
+**hotspring_v1**（水滴形，中心空洞）
+```js
+// 活跃格: 1+3+5+7+6+7+5+3+1 = 38 ✓
+"____X____",
+"___XXX___",
+"__XXXXX__",
+"_XXXXXXX_",
+"_XXX_XXX_",
+"_XXXXXXX_",
+"__XXXXX__",
+"___XXX___",
+"____X____",
+```
+
+**hotspring_v2**（双泡泡，两区域对角分布）
+```js
+// 活跃格: 5+7+7+6+7+7+7+5+3 = 54 ✓
+"_XXXXX___",
+"XXXXXXX__",
+"XXXXXXX__",
+"_XXXXXX__",
+"__XXXXXXX",
+"__XXXXXXX",
+"__XXXXXXX",
+"___XXXXX_",
+"____XXX__",
+```
+
+**hotspring_v3**（三层嵌套环，中心可达）
+```js
+// 活跃格: 3+5+4+4+4+5+5+7+5 = 42 ✓
+"___XXX___",
+"__XXXXX__",
+"_XX___XX_",
+"_XX___XX_",
+"_XX___XX_",
+"__XXXXX__",
+"__XXXXX__",
+"_XXXXXXX_",
+"__XXXXX__",
+```
+
+---
+
+### Ch6 灯塔 — 灯塔剪影（3变体，10行×10列）
+
+**lighthouse_v1**（标准灯塔，塔身渐宽）
+```js
+// 活跃格: 2+2+4+6+8+8+10+10+10+10 = 70 ✓
+"____XX____",
+"____XX____",
+"___XXXX___",
+"__XXXXXX__",
+"_XXXXXXXX_",
+"_XXXXXXXX_",
+"XXXXXXXXXX",
+"XXXXXXXXXX",
+"XXXXXXXXXX",
+"XXXXXXXXXX",
+```
+
+**lighthouse_v2**（灯塔+镂空底座拱门）
+```js
+// 活跃格: 2+2+4+6+8+8+10+10+10+10 = 70 ✓
+"____XX____",
+"____XX____",
+"___XXXX___",
+"__XXXXXX__",
+"_XXXXXXXX_",
+"XX_XXXX_XX",
+"XXXXXXXXXX",
+"XXXXXXXXXX",
+"XXXXXXXXXX",
+"XXXXXXXXXX",
+```
+
+**lighthouse_v3**（螺旋塔，每层向右偏移）
+```js
+// 活跃格: 2+4+6+8+9+9+8+6+10+10 = 72 ✓
+"_____XX___",
+"____XXXX__",
+"___XXXXXX_",
+"__XXXXXXXX",
+"_XXXXXXXXX",
+"XXXXXXXXX_",
+"XXXXXXXX__",
+"XXXXXX____",
+"XXXXXXXXXX",
+"XXXXXXXXXX",
 ```
 
 ---
 
 ## 难度曲线
 
-| 章节 | 关卡段 | 形状 | 步数范围 | 类型数 | 特殊图块 |
-|------|-------|------|---------|-------|---------|
-| Ch1 | 1-10 | 船形（偏矩形） | 80-68 | 3 | 无 |
-| Ch1 | 11-20 | 船形（完整） | 65-55 | 4 | 光波 |
-| Ch1 | 21-30 | 船形（完整） | 55-45 | 4 | 光波+光链 |
-| Ch2 | 1-15 | 陶罐（实心） | 62-50 | 4 | 光波+光链 |
-| Ch2 | 16-30 | 陶罐（镂空） | 50-40 | 5 | +穿透+置换 |
-| Ch3 | 1-10 | 花形（整体） | 52-46 | 5 | 光波+光链+穿透 |
-| Ch3 | 11-30 | 花形（五瓣） | 46-38 | 5 | +连锁 |
-| Ch4 | 1-15 | 树形（简单） | 46-40 | 5 | 2种特殊 |
-| Ch4 | 16-30 | 树形（密集） | 40-34 | 5 | 3种特殊 |
-| Ch5 | 1-10 | 水滴（实心） | 42-38 | 5 | 3种特殊 |
-| Ch5 | 11-30 | 水滴（镂空） | 38-30 | 5 | 3-4种特殊 |
-| Ch6 | 1-15 | 灯塔（简单） | 36-30 | 5 | 3种特殊 |
-| Ch6 | 16-29 | 灯塔（复杂） | 30-28 | 5 | 4种特殊 |
-| Ch6 | 30 | 灯塔（复杂） | 25 | 5 | 全部5种 |
+棋盘尺寸按章节固定（来自设计文档）：
+Ch1=6×6，Ch2=7×7，Ch3=8×8，Ch4=8×8，Ch5=9×9，Ch6=10×10
 
-## 三星判定标准
+特殊图块对应设计文档的4种：Bomb(type=6)、Windmill(type=7)、Lantern(type=8)、Wave(type=9)
 
-| 章节 | ★★★ | ★★☆ | ★☆☆ |
-|------|-----|-----|-----|
-| Ch1 | 剩余步数≥40% | 10%-40% | 消清即得 |
-| Ch2-3 | ≥35% | 10%-35% | 消清即得 |
-| Ch4-5 | ≥30% | 10%-30% | 消清即得 |
-| Ch6 | ≥25% | 10%-25% | 消清即得 |
+| 章节 | 关卡段 | 形状 | 棋盘 | 步数范围 | 类型数 | 特殊图块 |
+|------|-------|------|------|---------|-------|---------|
+| Ch1 | 1-10 | 船形（偏矩形） | 6×6 | 80-68 | 3 | 无 |
+| Ch1 | 11-20 | 船形（完整） | 6×6 | 65-55 | 4 | Wave |
+| Ch1 | 21-30 | 船形（完整） | 6×6 | 55-45 | 4 | Wave+Lantern |
+| Ch2 | 1-15 | 陶罐（实心） | 7×7 | 62-50 | 4 | Wave+Lantern |
+| Ch2 | 16-30 | 陶罐（镂空） | 7×7 | 50-40 | 5 | +Bomb |
+| Ch3 | 1-10 | 花形（整体） | 8×8 | 52-46 | 5 | Wave+Lantern+Bomb |
+| Ch3 | 11-30 | 花形（五瓣） | 8×8 | 46-38 | 5 | +Windmill |
+| Ch4 | 1-15 | 树形（简单） | 8×8 | 46-40 | 5 | Bomb+Windmill |
+| Ch4 | 16-30 | 树形（密集） | 8×8 | 40-34 | 5 | Bomb+Windmill+Wave |
+| Ch5 | 1-10 | 水滴（实心） | 9×9 | 42-38 | 5 | 3种特殊 |
+| Ch5 | 11-30 | 水滴（镂空） | 9×9 | 38-30 | 5 | 3-4种特殊 |
+| Ch6 | 1-15 | 灯塔（简单） | 10×10 | 36-30 | 5 | 3种特殊 |
+| Ch6 | 16-29 | 灯塔（复杂） | 10×10 | 30-28 | 5 | 全部4种 |
+| Ch6 | 30 | 灯塔（复杂） | 10×10 | 25 | 5 | 全部4种（多个） |
+
+## 三星判定标准（所有章节统一）
+
+| ★★★ | ★★☆ | ★☆☆ |
+|-----|-----|-----|
+| 剩余步数≥40% | 剩余步数≥20% | 清关即得（剩余步数>0）|
 
 ## 验收标准
 

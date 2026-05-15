@@ -1,13 +1,14 @@
 ---
 node_id: canvas2d-gameplay-scene
 node: canvas2d-gameplay-scene
-goal: "实现连连看核心玩法场景：BFS路径、步数制、Combo计时、5种特殊图块、星评结算"
+goal: "实现连连看核心玩法：BFS路径+Portal零转弯+异形棋盘+Combo生成特殊图块+4种关卡目标+步数结算"
 capability: canvas2d-engineer
 human_gate: false
 hard_blocked_by:
   - canvas2d-scene-manager
   - canvas2d-asset-bundle
   - canvas2d-level-data
+  - canvas2d-obstacles
 exit_artifacts:
   - "canvas2d-client/www/src/scenes/GameplayScene.js"
   - "canvas2d-client/www/src/game/TileGrid.js"
@@ -19,195 +20,234 @@ exit_artifacts:
 
 ## Mission
 
-实现完整连连看玩法：格子连接消除、步数扣减、Combo加速、5种特殊图块触发、关卡通关/失败结算。
+实现完整连连看玩法，严格对照 `.allforai/game-design/puzzle-mechanics-spec.json`。
 
-## 连连看规则
+---
 
-### 路径规则（BFS）
-- 两个相同类型图块之间存在路径：经过空格（已消除格），转弯次数 ≤ 2
-- 允许在格子区外1格的边框区域走（即路径可绕到棋盘边框外）
-- 路径不能穿过未消除的图块
-- 路径不能穿过非活跃格（棋盘形状空洞）
+## 1. BFS 路径规则（来自 path_rules）
+
+- 两格可连条件：类型相同 + 路径转弯 ≤ 2 + 不穿过已占用格
+- 棋盘外1格边框走廊可通行
+- 已消除的活跃格（值=0）可通行
+- 非活跃格（layout='_'，值=null）不可通行（形状空洞）
+
+### Portal 障碍物 BFS（零转弯代价）
 
 ```js
-// BFS状态：(row, col, direction, turnsUsed)
-// direction: -1(起始) | 0上 | 1下 | 2左 | 3右
-// turnsUsed: 0-2
-
-// 格子三态
-// null  → 非活跃格（形状轮廓外/内部空洞）：路径不可穿越
-// 0     → 活跃空格（图块已消除）：路径可穿越
-// 1-10  → 活跃图块：阻挡路径（终点除外）
-
-// 可走判断
-function canWalk(r, c, grid, layout) {
-  if (r < -1 || r > ROWS || c < -1 || c > COLS) return false; // 超出边框
-  if (r === -1 || r === ROWS || c === -1 || c === COLS) return true; // 边框走廊
-  if (layout[r][c] === 0) return false; // 非活跃格，不可走
-  return grid[r][c] === 0; // 活跃空格才可走
+// Portal 格子：进入时坐标跳至出口，方向和 turns 不变
+if (grid[nr][nc] === OBSTACLE.portal) {
+  const exit = levelData.portalMap[`${nr},${nc}`]; // {r, c}
+  queue.push({ r: exit.r, c: exit.c, dir: newDir, turns: newTurns, path: [...] });
+  continue; // 不再以 (nr,nc) 继续扩展
 }
 ```
 
-### 棋盘布局（异形 + 随机）
+### 格子三态
 
-关卡数据的 `layoutPool` 包含1-5个同主题形状变体；`getLevel()` 在调用时随机选1个并随机镜像/旋转，返回最终 `layout` 字符串数组给 TileGrid。
+```
+null  → 非活跃格（layout 空洞）：不可走，不放图块
+0     → 活跃空格（已消除 or 初始空格）：路径可穿越
+1-5   → 普通图块（阻断路径，除终点外）
+6     → 炸弹（Bomb）
+7     → 风车（Windmill）
+8     → 灯光（Lantern）
+9     → 海浪（Wave）
+100+  → 障碍物覆盖层（见 canvas2d-obstacles）
+```
 
-- `'X'` = 活跃格（可放图块）
-- `'_'` = 非活跃格（形状空洞，路径不可穿越）
+---
 
-ROWS/COLS 从 layout 数组的行数/列数推算。
+## 2. 特殊图块（来自 special_blocks，设计文档权威）
 
-图块生成时只在活跃格（layout='X'）放置，确保总数为偶数，成对出现。
+### Bomb（炸弹） type=6
 
-### 特殊图块随机落点
+- 生成：3-Combo 时系统自动在棋盘随机活跃格生成1个；或关卡预置
+- 效果：消除以炸弹格为中心 3×3 范围内所有图块（无视路径，无视障碍覆盖层）
+- 动画：0.5s 爆炸粒子 + 冲击波环扩散，SFX: `sfx_special_bomb`
 
-关卡的 `specials: [{ type: 6, count: 1 }]` 只指定类型和数量，不指定位置。
-`_init()` 在 Fisher-Yates shuffle 后，将前 N 个图块替换为对应特殊类型：
+### Windmill（风车） type=7
+
+- 生成：4-Combo 时系统自动生成1个；或关卡预置
+- 效果：消除风车格所在整行 + 整列（十字消除，同时触发）
+- 动画：0.4s 横竖双光柱扫过，SFX: `sfx_special_windmill`
+
+### Lantern（灯光） type=8
+
+- 生成：仅关卡预置，不可由 Combo 生成
+- 效果：自动寻路连接最近同类型图块并消除；若无可达同类则持续脉冲等待
+- 动画：0.3s 发光连线飞向目标，SFX: `sfx_special_light`
+
+### Wave（海浪） type=9
+
+- 生成：仅关卡预置，不可由 Combo 生成
+- 效果：重排棋盘所有图块位置（类型数量不变）；重排后若仍无合法对则再次重排（最多3次）
+- 动画：波浪扫过整盘，SFX: `sfx_special_wave`
+
+### Combo → 特殊图块生成逻辑
 
 ```js
-_init(levelData) {
-  const activeCells = /* 解析layout，收集所有活跃格 (r,c) 列表 */;
-  const total = activeCells.length; // 必须为偶数
-  
-  // 生成配对图块
-  let types = [];
-  for (let i = 0; i < total / 2; i++) types.push((i % levelData.types) + 1, (i % levelData.types) + 1);
-  shuffle(types); // Fisher-Yates
-  
-  // 替换特殊图块（随机位置）
-  for (const { type, count } of (levelData.specials || [])) {
-    for (let n = 0; n < count; n++) {
-      const idx = Math.floor(Math.random() * types.length);
-      types[idx] = type; // 随机替换一个图块为特殊类型
-    }
-  }
-  
-  // 填入棋盘
-  activeCells.forEach(({r, c}, i) => { this.grid[r][c] = types[i]; });
+// ComboSystem.onMatch() 返回后检查
+const { combo } = comboSystem.onMatch();
+if (combo === 3) spawnSpecial(BOMB, randomActiveCell());
+if (combo === 4) spawnSpecial(WINDMILL, randomActiveCell());
+// 5+ combo: 继续累加分数倍率，不再额外生成
+
+function randomActiveCell() {
+  // 从空活跃格（grid[r][c]===0）中随机选一个
+  const empties = activeCells.filter(({r,c}) => grid[r][c] === 0);
+  return empties[Math.floor(Math.random() * empties.length)];
 }
 ```
 
-### cellSize 自适应缩放
+---
 
-棋盘整体始终填满 HUD 以下的可用区域，不滚动：
+## 3. 棋盘尺寸（严格按设计文档）
 
-```js
-// 设计分辨率 390×844，HUD 80px，底部操作区 60px
-const playW = renderer.lw - 32; // 左右各16px边距
-const playH = renderer.lh - 80 - 60;
-const cellSize = Math.floor(Math.min(playW / COLS, playH / ROWS));
-// 棋盘居中绘制
-const offsetX = Math.round((renderer.lw - cellSize * COLS) / 2);
-const offsetY = 80 + Math.round((playH - cellSize * ROWS) / 2);
-```
+| 章节 | 棋盘 | 最大活跃格 | 说明 |
+|------|------|-----------|------|
+| Ch1 | **6×6** | ≤36 | 入门，layout空洞后活跃格更少（约22-28） |
+| Ch2 | **7×7** | ≤49 | 含障碍层 |
+| Ch3 | **8×8** | ≤64 | |
+| Ch4 | **8×8** | ≤64 | |
+| Ch5 | **9×9** | ≤81 | |
+| Ch6 | **10×10** | 100格 |
 
-## 步数制
+---
 
-- 每关有固定步数上限（来自关卡数据，默认60步）
-- 每次成功消除一对：步数-1
-- 步数归零还有图块未消除 → 失败
-- HUD右上角显示剩余步数
-
-## Combo 系统
+## 4. Combo 系统
 
 ```
-连续消除间隔 < 2秒 → Combo +1
-Combo 1x → 普通分数
-Combo 2x → 分数×1.5
-Combo 3x → 分数×2，屏幕边缘金色光效
-Combo 4x+ → 分数×3，"FEVER!" 大字特效
+消除间隔 < 2秒 → Combo +1
+Combo 1x → 分数×1.0
+Combo 2x → 分数×1.5，音效增强
+Combo 3x → 分数×2.0，特效升级 + 生成 Bomb
+Combo 4x → 分数×3.0，屏幕震动 + 粒子爆发 + 生成 Windmill
 超过2秒无操作 → Combo 归零
 ```
 
-ComboSystem.js 接口：
 ```js
 export class ComboSystem {
-  constructor()
-  onMatch()          // 每次消除成功调用，返回 { combo, multiplier }
-  onMiss()           // 消除失败或超时，重置combo
-  getCombo()         // 当前combo数
-  getTimeLeft()      // 距离combo超时剩余秒数
-  update(dt)         // 每帧更新计时
+  onMatch()       // 返回 { combo, multiplier }，内部处理计时重置
+  onMiss()        // 错误点击，combo 不重置（只有超时重置）
+  update(dt)
+  getCombo()
+  reset()         // 场景退出时调用
 }
 ```
 
-## 5种特殊图块
+---
 
-特殊图块由关卡数据指定初始位置，或由消除触发生成。
+## 5. 关卡目标（4种，来自 level_completion）
 
-### 1. 光波 (Light Wave) — type=6
-- 消除时：消除同行所有图块（无视路径）
-- 视觉：图块带波纹光环图案
+关卡数据中 `goal` 字段指定：
 
-### 2. 光链 (Light Chain) — type=7
-- 消除时：消除与之相邻的所有同类图块（链式）
-- 视觉：图块带连接节点图案
-
-### 3. 穿透 (Pierce) — type=8
-- 消除时：可与任意一个图块配对（无需同类型），路径仍需BFS合法
-- 视觉：图块带箭头穿透图案
-
-### 4. 置换 (Swap) — type=9
-- 消除时：将目标位置的图块类型与自身交换后再消除
-- 视觉：图块带双向箭头图案
-
-### 5. 连锁 (Cascade) — type=10
-- 消除时：触发额外一次随机合法消除
-- 视觉：图块带星爆图案
-
-SpecialTiles.js 接口：
 ```js
-export class SpecialTiles {
-  static applyEffect(type, r, c, grid)  // 返回额外消除的格子列表 [{r,c}]
+// goal 类型
+{ type: 'tile_target',    target_type: 2, required_count: 10 }  // 消除10个type=2图块
+{ type: 'obstacle_clear', obstacle_type: 'ice_block', required_clear_count: 5 }
+{ type: 'score_target',   required_score: 5000 }
+{ type: 'clear_all' }  // 默认：消清所有图块（前期章节）
+```
+
+HUD 显示当前目标进度，不同目标有不同进度条样式。
+
+---
+
+## 6. 计分
+
+```
+base_score_per_match = 100
+score = base_score_per_match × combo_multiplier
+结算时剩余步数每步 +50分
+```
+
+---
+
+## 7. 星评（统一标准，来自 scoring.star_rating）
+
+**所有章节统一：**
+- ★☆☆：完成关卡目标（任意步数）
+- ★★☆：完成目标 + 剩余步数 ≥ **20%** 上限
+- ★★★：完成目标 + 剩余步数 ≥ **40%** 上限
+
+---
+
+## 8. 沙滩币辅助（正确费用）
+
+```
+续关（Continue）：30沙滩币，追加 +5步（不是+20）
+重排（Reshuffle）：30沙滩币，保证新布局有合法对
+预判（Hint）：10沙滩币，高亮最优下一步，持续3秒（不是5秒）
+```
+
+---
+
+## 9. hasMoves 死局处理
+
+```js
+// 每次消除后检查
+if (!tileGrid.hasMoves() && !tileGrid.isCleared()) {
+  // 显示提示："棋盘无法继续，自动重排？"
+  // 玩家可选：免费重排一次（本关首次免费）/ 花30币再排
+  autoReshuffleIfNeeded();
 }
 ```
 
-## HUD 布局
+棋盘生成后也必须验证（`_init()`最后调用`hasMoves()`，若为false则重新生成，最多尝试10次）。
 
-```
-[← 退出]   第1章-第1关    步数: 60    [提示]
-                                    [重排]
-   [棋盘区域：8×10格]
+---
 
-SCORE: 0        COMBO: ×1        [沙滩币辅助按钮]
-```
+## 10. 场景生命周期
 
-## 沙滩币辅助（场外）
-
-- 重排（Shuffle）：15沙滩币，重新随机排列棋盘
-- 预判（Hint）：10沙滩币，高亮一对可消除的图块5秒
-- 续关（Continue）：30沙滩币，失败时追加20步
-
-## 结算面板
-
-### 胜利
-```
-    ★★★（三星满分条件：步数剩余≥30%）
-    ★★☆（二星：步数剩余10%-30%）
-    ★☆☆（一星：步数耗尽前消清）
-    
-    得分: 12,480
-    [下一关]  [返回岛图]
+```js
+export class GameplayScene {
+  init(params)    // 初始化，从 LevelData 加载配置
+  update(dt)
+  draw()
+  resize(w, h)    // 重新计算 cellSize
+  destroy()       // 清理：comboSystem.reset()，取消所有计时器，释放事件监听
+  onTap(x, y)
+  onBack()        // Android 返回键 → 弹出暂停/退出确认
+}
 ```
 
-### 失败
-```
-    步数耗尽…
-    [续关 30币]  [重试]  [退出]
+---
+
+## 11. cellSize 自适应
+
+```js
+// 设计分辨率 390×844，HUD 80px，底部操作区 60px
+const playW = renderer.lw - 32;
+const playH = renderer.lh - 80 - 60;
+const cellSize = Math.floor(Math.min(playW / COLS, playH / ROWS));
+const offsetX  = Math.round((renderer.lw - cellSize * COLS) / 2);
+const offsetY  = 80 + Math.round((playH - cellSize * ROWS) / 2);
 ```
 
-## 场景参数
+---
 
-由 SceneManager.go(GameplayScene, { chapter, level }) 传入，
-从 LevelData.getLevel(chapter, level) 加载关卡配置。
+## 12. 多触点保护
+
+只处理第一个触点，忽略后续同时触点：
+
+```js
+canvas.addEventListener('pointerdown', e => {
+  if (e.isPrimary === false) return; // 忽略非主触点
+  // ... 处理点击
+});
+```
+
+---
 
 ## 验收标准
 
-1. `TileGrid.js` BFS路径：转弯≤2、边框绕行、非活跃格阻挡路径（不可穿越）
-2. 异形棋盘：layout mask 正确解析，非活跃格不放图块，图块只落在活跃格
-3. cellSize 自适应：任意 layout 尺寸的棋盘都完整显示在屏幕内，不截断不滚动
-4. `ComboSystem.js`：2秒计时器，倍率1→1.5→2→3正确
-5. `SpecialTiles.js`：5种效果各自触发正确
-6. `GameplayScene.js`：步数归零弹出失败面板，全消弹出胜利面板
-7. 星评根据剩余步数百分比正确计算并写入 ProgressManager
-8. 沙滩币辅助按钮扣除币后生效
+1. BFS 路径：转弯≤2、边框走廊、非活跃格阻断、Portal 零转弯代价
+2. 特殊图块：Bomb(3×3消除)、Windmill(十字消除)、Lantern(自动连接)、Wave(重排最多3次)
+3. Combo 3 → 生成 Bomb，Combo 4 → 生成 Windmill
+4. 棋盘尺寸：Ch1=6×6、Ch2=7×7、Ch3-4=8×8、Ch5=9×9、Ch6=10×10
+5. 星评：2星≥20%步数剩余，3星≥40%，所有章节统一
+6. 续关+5步/30币，重排30币，预判3秒/10币
+7. hasMoves=false 自动提示重排，生成时校验有效性
+8. destroy() 清理所有计时器和监听器
+9. 多触点只处理 isPrimary
+10. onBack() 弹出退出确认面板

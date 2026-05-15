@@ -534,7 +534,8 @@
       "hard_blocked_by": [
         "canvas2d-scene-manager",
         "canvas2d-asset-bundle",
-        "canvas2d-level-data"
+        "canvas2d-level-data",
+        "canvas2d-obstacles"
       ],
       "exit_artifacts": [
         "canvas2d-client/www/src/scenes/GameplayScene.js",
@@ -568,7 +569,8 @@
         "canvas2d-asset-bundle"
       ],
       "exit_artifacts": [
-        "canvas2d-client/www/src/AudioManager.js"
+        "canvas2d-client/www/src/AudioManager.js",
+        "canvas2d-client/www/src/audio-manifest.js"
       ]
     },
     {
@@ -593,7 +595,9 @@
       "hard_blocked_by": [
         "canvas2d-gameplay-scene",
         "canvas2d-level-data",
-        "canvas2d-ftue"
+        "canvas2d-ftue",
+        "canvas2d-obstacles",
+        "canvas2d-vfx-effects"
       ],
       "exit_artifacts": [
         "canvas2d-client/www/qa/gameplay-quality-report.json"
@@ -612,7 +616,8 @@
         "canvas2d-island-map-scene",
         "canvas2d-level-select-scene",
         "canvas2d-gameplay-scene",
-        "canvas2d-dialog-scene"
+        "canvas2d-dialog-scene",
+        "canvas2d-vfx-effects"
       ],
       "exit_artifacts": [
         "canvas2d-client/www/qa/visual/screenshots/index.json",
@@ -664,7 +669,9 @@
       "hard_blocked_by": [
         "canvas2d-visual-qa",
         "canvas2d-art-quality-qa",
-        "canvas2d-gameplay-quality-qa"
+        "canvas2d-gameplay-quality-qa",
+        "canvas2d-performance-qa",
+        "canvas2d-audio-qa"
       ],
       "exit_artifacts": [
         "canvas2d-client/www/qa/browser-qa-report.json"
@@ -697,6 +704,158 @@
         ".allforai/canvas2d/qa/android-sim-report.json",
         ".allforai/canvas2d/qa/screenshots/android-launch.png",
         ".allforai/canvas2d/qa/screenshots/android-after-tap.png"
+      ]
+    },
+    {
+      "node_id": "canvas2d-obstacles",
+      "node": "canvas2d-obstacles",
+      "goal": "实现8种障碍物系统：冰封/锁链/传送门/单行通道/木箱/杂草/水流/蔓延，按章节解锁",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-scene-manager"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/game/ObstacleSystem.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-vfx-effects",
+      "node": "canvas2d-vfx-effects",
+      "goal": "实现游戏全量特效：路径连线、图块消除、炸弹爆炸、风车十字扫、Combo爆光、章节解锁粒子",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-gameplay-scene"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/game/VFXSystem.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-backend-client",
+      "node": "canvas2d-backend-client",
+      "goal": "实现 ApiClient.js：匿名登录、云存档同步、IAP 收据提交，离线优先",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/ApiClient.js",
+        "canvas2d-client/www/src/config.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-shop-scene",
+      "node": "canvas2d-shop-scene",
+      "goal": "实现商店场景：双货币展示、沙滩币包、Glowstone IAP、Capacitor 支付集成",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-scene-manager",
+        "canvas2d-backend-client",
+        "canvas2d-capacitor-plugins"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/scenes/ShopScene.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-zen-mode",
+      "node": "canvas2d-zen-mode",
+      "goal": "实现禅模式：无步数限制、无失败、使用专属 BGM、保留 Combo 和特殊图块",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-gameplay-scene"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/src/scenes/ZenGameplayScene.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-concept-acceptance",
+      "node": "canvas2d-concept-acceptance",
+      "goal": "Canvas2D 重写版产品概念终验：对照设计文档验证核心体验闭合、经济模型、双货币、禅模式",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-mobile-build",
+        "canvas2d-ios-build",
+        "canvas2d-qa-repair-loop"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/qa/canvas2d-acceptance-report.json"
+      ]
+    },
+    {
+      "node_id": "canvas2d-capacitor-plugins",
+      "node": "canvas2d-capacitor-plugins",
+      "goal": "安装必需的 Capacitor 插件：IAP、状态栏、键盘、Haptic，生成 Android/iOS 原生配置",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-client-scaffold"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/capacitor.config.json",
+        "canvas2d-client/android/app/src/main/res/values/strings.xml"
+      ]
+    },
+    {
+      "node_id": "canvas2d-ios-build",
+      "node": "canvas2d-ios-build",
+      "goal": "构建 canvas2d iOS 包：Capacitor 生成 Xcode 项目、xcodebuild 编译、iPhone 模拟器安装验收",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-capacitor-plugins",
+        "canvas2d-qa-repair-loop"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/ios/build/canvas2d-sim-test-report.json"
+      ]
+    },
+    {
+      "node_id": "canvas2d-performance-qa",
+      "node": "canvas2d-performance-qa",
+      "goal": "性能基线验收：帧率≥30fps、内存不泄漏、Canvas2D绘制延迟、多关卡连续游玩压力测试",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-gameplay-scene",
+        "canvas2d-vfx-effects"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/qa/performance-report.json"
+      ]
+    },
+    {
+      "node_id": "canvas2d-audio-qa",
+      "node": "canvas2d-audio-qa",
+      "goal": "音频系统验收：BGM实际加载、SFX在正确时机触发、Combo升调量化、静音切换即时生效",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-audio-system",
+        "canvas2d-gameplay-scene"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/qa/audio-qa-report.json"
+      ]
+    },
+    {
+      "node_id": "canvas2d-qa-repair-loop",
+      "node": "canvas2d-qa-repair-loop",
+      "goal": "读取全部QA报告→分类失败→定点修复→仅重跑受影响QA→收敛判定，最多3轮迭代",
+      "capability": "canvas2d-engineer",
+      "human_gate": false,
+      "hard_blocked_by": [
+        "canvas2d-browser-qa",
+        "canvas2d-performance-qa",
+        "canvas2d-audio-qa"
+      ],
+      "exit_artifacts": [
+        "canvas2d-client/www/qa/repair-loop-report.json"
       ]
     }
   ],
