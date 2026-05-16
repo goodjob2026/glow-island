@@ -3,6 +3,7 @@ import { AssetLoader }      from './engine/AssetLoader.js';
 import { SceneManager }     from './SceneManager.js';
 import { ProgressManager }  from './ProgressManager.js';
 import { AudioManager }     from './AudioManager.js';
+import { AUDIO_MANIFEST }   from './audio-manifest.js';
 import { GameScene }        from './scenes/GameScene.js';
 
 // ── Design resolution ──────────────────────────────────────────────────────
@@ -44,6 +45,16 @@ progress.load();
 
 // ── Audio ──────────────────────────────────────────────────────────────────
 const audio = new AudioManager();
+
+// Load all BGMs and SFXs from manifest (fire-and-forget; plays silently if files missing)
+(async () => {
+  for (const [key, url] of Object.entries(AUDIO_MANIFEST.bgm)) {
+    audio.loadBGM(key, url).catch(() => {});
+  }
+  for (const [key, url] of Object.entries(AUDIO_MANIFEST.sfx)) {
+    audio.loadSFX(key, url).catch(() => {});
+  }
+})();
 
 // ── Scene manager ──────────────────────────────────────────────────────────
 const sceneManager = new SceneManager(renderer, assets, audio, progress);
@@ -111,6 +122,7 @@ function toLogical(clientX, clientY) {
 
 canvas.addEventListener('pointerdown', (e) => {
   e.preventDefault();
+  audio.resume(); // unlock AudioContext on first user gesture
   const { x, y } = toLogical(e.clientX, e.clientY);
   sceneManager.handleTap(x, y);
 });
