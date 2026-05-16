@@ -4,7 +4,7 @@ import { SceneManager }     from './SceneManager.js';
 import { ProgressManager }  from './ProgressManager.js';
 import { AudioManager }     from './AudioManager.js';
 import { AUDIO_MANIFEST }   from './audio-manifest.js';
-import { GameScene }        from './scenes/GameScene.js';
+import { IntroScene }       from './scenes/IntroScene.js';
 
 // ── Design resolution ──────────────────────────────────────────────────────
 const LOGICAL_W = 390;
@@ -105,7 +105,7 @@ resize();
 // Use go() so the SceneManager owns the lifecycle from the start.
 // SceneManager._pushScene falls back to the legacy (renderer, assets) constructor
 // if GameScene doesn't accept the new 5-arg signature.
-sceneManager.go(GameScene);
+sceneManager.go(IntroScene);
 
 // ── Input ──────────────────────────────────────────────────────────────────
 function toLogical(clientX, clientY) {
