@@ -230,16 +230,11 @@ export class TileGrid {
         if (onBorder) {
           // Border cells are freely passable
         } else {
-          // Inactive (null) cells block path
-          if (this.grid[nr][nc] === null) continue;
+          // Filled tile cells (1-9) block path — null (inactive) and 0 (cleared) are both passable
+          const cellVal = this.grid[nr][nc];
+          if (cellVal !== null && cellVal !== 0) continue;
 
-          // Non-zero tile cells block path (except start/end handled above)
-          if (this.grid[nr][nc] !== 0) {
-            // Check obstacle passability for non-zero active tile cells — always blocked
-            continue;
-          }
-
-          // Check obstacle passability for empty cells
+          // Check obstacle passability for in-bounds cells
           if (this.obstacles && !this.obstacles.isPassable(nr, nc)) continue;
 
           // Portal redirect: if stepping into a portal entry, redirect to exit
