@@ -480,14 +480,40 @@ export class GameplayScene {
     const grid = this._tileGrid.grid;
     const sel  = this._tileGrid.selected;
     const rad  = Math.max(4, Math.floor(cellSize * 0.12));
+    const boardW = cellSize * COLS;
+    const boardH = cellSize * ROWS;
+
+    // Board panel background — semi-transparent surface behind all cells
+    ctx.save();
+    const pad = Math.round(cellSize * 0.08);
+    const panelRad = Math.max(10, Math.floor(cellSize * 0.22));
+    ctx.fillStyle = 'rgba(20,30,50,0.45)';
+    this._roundRect(ctx, offsetX - pad, offsetY - pad, boardW + pad * 2, boardH + pad * 2, panelRad);
+    ctx.fill();
+    // Gold accent border
+    ctx.strokeStyle = 'rgba(220,180,80,0.55)';
+    ctx.lineWidth   = 2.5;
+    ctx.stroke();
+    ctx.restore();
 
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
         const v = grid[r][c];
-        if (v === null) continue; // inactive — skip
-
         const x = offsetX + c * cellSize;
         const y = offsetY + r * cellSize;
+
+        if (v === null) {
+          // Inactive cell — subtle recessed slot so players see the full grid
+          ctx.save();
+          ctx.fillStyle = 'rgba(0,0,0,0.22)';
+          this._roundRect(ctx, x + 3, y + 3, cellSize - 6, cellSize - 6, rad);
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          ctx.restore();
+          continue;
+        }
 
         // Shake offset
         let sx = 0, sy = 0;
