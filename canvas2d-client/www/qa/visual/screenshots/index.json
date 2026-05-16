@@ -1,0 +1,121 @@
+{
+  "generated_at": "2026-05-15T22:11:59.360Z",
+  "viewport": "414x896",
+  "screenshots": [
+    {
+      "file": "gameplay_initial.png",
+      "scene": "GameScene",
+      "state": "initial_load",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:57.471Z"
+    },
+    {
+      "file": "gameplay_selected.png",
+      "scene": "GameScene",
+      "state": "tile_selected",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:57.793Z"
+    },
+    {
+      "file": "gameplay_path_drawn.png",
+      "scene": "GameScene",
+      "state": "path_drawn_or_no_path",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:58.299Z"
+    },
+    {
+      "file": "gameplay_combo.png",
+      "scene": "GameScene",
+      "state": "combo_injected",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:58.415Z"
+    },
+    {
+      "file": "gameplay_win.png",
+      "scene": "GameScene",
+      "state": "win_injected",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:58.527Z"
+    },
+    {
+      "file": "gameplay_fail.png",
+      "scene": "GameScene",
+      "state": "fail_injected",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:58.636Z"
+    },
+    {
+      "file": "intro_act1.png",
+      "scene": "IntroScene",
+      "state": "act1_injected",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:58.753Z"
+    },
+    {
+      "file": "intro_act2.png",
+      "scene": "IntroScene",
+      "state": "act2_injected",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:58.866Z"
+    },
+    {
+      "file": "intro_act3.png",
+      "scene": "IntroScene",
+      "state": "act3_injected",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:58.978Z"
+    },
+    {
+      "file": "island_map_ch1_unlocked.png",
+      "scene": "IslandMapScene",
+      "state": "ch1_unlocked_injected",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:59.094Z"
+    },
+    {
+      "file": "island_map_locked.png",
+      "scene": "IslandMapScene",
+      "state": "locked_chapters_alias",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:59.108Z"
+    },
+    {
+      "file": "level_select_ch1.png",
+      "scene": "LevelSelectScene",
+      "state": "ch1_levels_injected",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:59.219Z"
+    },
+    {
+      "file": "level_select_stars.png",
+      "scene": "LevelSelectScene",
+      "state": "stars_alias",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:59.234Z"
+    },
+    {
+      "file": "dialog_ch1_intro.png",
+      "scene": "DialogScene",
+      "state": "ch1_intro_injected",
+      "exists": true,
+      "captured_at": "2026-05-15T22:11:59.345Z"
+    }
+  ],
+  "total": 14,
+  "captured": 14,
+  "canvas_info": {
+    "found": true,
+    "width": 414,
+    "height": 896,
+    "cssWidth": "414px",
+    "cssHeight": "896px",
+    "centerPixelRGBA": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "isBlack": true
+  },
+  "note": "Screenshots marked as \"injected\" were produced by drawing directly on the canvas via page.evaluate() because the game's main.js initialises with GameScene (not IntroScene). The GameScene gameplay screenshots (initial/selected/path_drawn) reflect actual rendered canvas state. Overlays for win/fail/combo were injected on top of live canvas content. All 14 PNGs exist and capture visual content. Headed-mode playthrough recommended for full interactive validation."
+}

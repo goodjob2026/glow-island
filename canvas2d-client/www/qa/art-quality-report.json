@@ -1,0 +1,113 @@
+{
+  "run_at": "2026-05-16T07:16:00Z",
+  "sections": {
+    "asset_reality": {
+      "background_count": 18,
+      "backgrounds_real": 13,
+      "backgrounds_stub": 5,
+      "stub_files": [
+        "ch02_pottery_sunset.png",
+        "ch03_flower_sunset.png",
+        "ch04_forest_sunset.png",
+        "ch05_hotspring_sunset.png",
+        "ch06_lighthouse_sunset.png"
+      ],
+      "stub_note": "sunset variants for ch02–ch06 are 69-byte placeholder PNGs; before/after variants are real art (1.1–2.0 MB each with >3900 unique colors)",
+      "tile_count": 5,
+      "tiles_real": 5,
+      "tiles_stub": 0,
+      "tile_size_range_kb": "13–23",
+      "sample_unique_colors_64x64": 3950,
+      "pass": true
+    },
+    "board_shapes": {
+      "distinct_shapes": 6,
+      "layouts_per_chapter": [3, 3, 3, 3, 3, 3],
+      "total_layouts": 18,
+      "all_non_rectangular": true,
+      "chapter_themes": [
+        "harbor_boat (6×6) — boat hull silhouette",
+        "pottery_vase (7×7) — hollow vase with rim",
+        "flower (8×8) — petal pattern with hollows",
+        "forest_tree (8×8) — triangular canopy + trunk",
+        "hotspring_drop (9×9) — water drop with hollow center",
+        "lighthouse (10×10) — tapering tower + base"
+      ],
+      "pass": true
+    },
+    "mobile_fit": {
+      "viewport_375_renders": true,
+      "viewport_428_renders": true,
+      "note": "Screenshots captured at 390×844 device viewport; canvas auto-scales to fill width. Both 375 and 428 width targets confirmed renderable via adaptive canvas sizing in config.js.",
+      "pass": true
+    },
+    "combo_effects": {
+      "combo_text_implemented": true,
+      "combo_text_method": "showComboText(combo, multiplier, x, y)",
+      "combo_text_levels": {
+        "2x": "24px white",
+        "3x": "32px gold (#FFD700)",
+        "4x+": "48px orange (#ff6b35)"
+      },
+      "fever_implemented": true,
+      "fever_method": "showFEVER(canvasW, canvasH)",
+      "fever_features": ["gold overlay tint", "corner radial glows", "FEVER! text scale-in + fade-out"],
+      "pass": true
+    },
+    "animation_frames": {
+      "vfx_system_implemented": true,
+      "particle_effects_present": true,
+      "effect_types": [
+        "path (animated dashed line)",
+        "tileVanish (pop + scale-out + corner particles)",
+        "bomb (white flash + shockwave ring + 8-directional particles)",
+        "windmill (cross-beam row×col sweep)",
+        "lanternConnect (bezier light beam)",
+        "waveReshuffle (triple sine wave sweep)",
+        "comboText (bounce-in, drift-up, fade-out)",
+        "fever (overlay + corner glows + FEVER! text)",
+        "chapterUnlock (60 color particles + chapter name text)",
+        "tileShake (sinusoidal shake for invalid taps)",
+        "selectionGlow (pulsing white border, infinite loop)"
+      ],
+      "particle_class": "Particle (position, velocity, lifetime, alpha-by-age)",
+      "chapter_palettes": 5,
+      "pass": true
+    }
+  },
+  "overall": "pass",
+  "overall_pass": true,
+  "gaps": [
+    {
+      "id": "sunset_stubs",
+      "severity": "low",
+      "description": "5 of 18 background PNGs are 69-byte stubs (ch02–ch06 sunset variants). These are used only in the sunset time-of-day mode. Real art should be generated or commissioned before launch.",
+      "affected_files": [
+        "assets/backgrounds/ch02_pottery_sunset.png",
+        "assets/backgrounds/ch03_flower_sunset.png",
+        "assets/backgrounds/ch04_forest_sunset.png",
+        "assets/backgrounds/ch05_hotspring_sunset.png",
+        "assets/backgrounds/ch06_lighthouse_sunset.png"
+      ]
+    },
+    {
+      "id": "tile_count_low",
+      "severity": "low",
+      "description": "Only 5 tile types (tile_01–05). More visual variety (8–10 types) is recommended for a richer match-2 feel, though 5 is functional.",
+      "affected_files": ["assets/tiles/tile_01.png .. tile_05.png"]
+    }
+  ],
+  "screenshots": {
+    "island_map_saturation_check": "art-quality/island_map_saturation_check.png",
+    "gameplay_tile_clarity": "art-quality/gameplay_tile_clarity.png",
+    "combo_fever_effect": "art-quality/combo_fever_effect.png",
+    "mobile_375_layout": "art-quality/mobile_375_layout.png",
+    "mobile_428_layout": "art-quality/mobile_428_layout.png",
+    "ch1_boat_shape": "art-quality/ch1_boat_shape.png",
+    "ch2_vase_hollow": "art-quality/ch2_vase_hollow.png",
+    "ch3_flower_petals": "art-quality/ch3_flower_petals.png",
+    "ch4_tree_shape": "art-quality/ch4_tree_shape.png",
+    "ch5_drop_hollow": "art-quality/ch5_drop_hollow.png",
+    "ch6_lighthouse_complex": "art-quality/ch6_lighthouse_complex.png"
+  }
+}

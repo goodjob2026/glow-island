@@ -1,0 +1,47 @@
+{
+  "run_at": "2026-05-16T06:11:00.474Z",
+  "method": "playwright_live_browser",
+  "playwright_version": "1.60.0",
+  "server": "python3 -m http.server 8765",
+  "stats": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0
+  },
+  "sections": {
+    "hook_exists": {
+      "pass": true,
+      "detail": "window._audioManager is set in AudioManager constructor; confirmed present in headless Chromium after 3s wait"
+    },
+    "bgm_keys": {
+      "pass": true,
+      "keys_found": [],
+      "detail": "_bgmBuffer exists as empty object (no BGM loaded yet — correct, loadBGM() is async and requires AudioContext)"
+    },
+    "mute_toggle": {
+      "pass": true,
+      "detail": "isMuted() returns boolean false (starts unmuted)"
+    },
+    "combo_level": {
+      "pass": true,
+      "level_4_detune": 200,
+      "detail": "setComboLevel(4) sets _comboLevel=4; clamped to [0,4] range"
+    },
+    "combo_pitch": {
+      "pass": true,
+      "detune_cents": 200,
+      "detail": "_comboLevel * 50 = 4 * 50 = 200 cents; matches SFX source.detune.value formula"
+    }
+  },
+  "bugs_found": [
+    {
+      "severity": "medium",
+      "file": "canvas2d-client/www/src/game/TileGrid.js",
+      "description": "Missing named exports ROWS and COLS. GameScene.js imports { TileGrid, ROWS, COLS } but TileGrid.js only exported the class.",
+      "fix_applied": "Added 'export const ROWS = 6; export const COLS = 6;' to TileGrid.js",
+      "impact": "Module link error prevented game from loading at all in headless browser, blocking audio QA"
+    }
+  ],
+  "overall": "pass",
+  "overall_pass": true
+}

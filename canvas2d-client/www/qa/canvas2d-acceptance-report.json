@@ -1,0 +1,191 @@
+{
+  "assessed_at": "2026-05-15T22:39:21.000Z",
+  "canvas2d_version": "1.0",
+  "scores": {
+    "core_gameplay": {
+      "score": 27,
+      "max": 30,
+      "details": {
+        "bfs_rules": {
+          "score": 8,
+          "max": 8,
+          "evidence": "gameplay-quality-report: all BFS-* cases pass (13/13 incl. portal zero-turn). _findPath state=(r,c,dir,turns), max 2 turns, 1-cell border corridor.",
+          "status": "pass"
+        },
+        "special_tiles": {
+          "score": 8,
+          "max": 8,
+          "evidence": "SpecialTiles.js: BOMB=6, WINDMILL=7, LANTERN=8, WAVE=9. All 4 types implemented with correct area effects.",
+          "status": "pass"
+        },
+        "combo_generation": {
+          "score": 7,
+          "max": 7,
+          "evidence": "GameplayScene.js: combo>=4 -> _spawnComboSpecial(7) [Windmill]; combo===3 -> _spawnComboSpecial(6) [Bomb].",
+          "status": "pass"
+        },
+        "level_goals": {
+          "score": 4,
+          "max": 7,
+          "evidence": "clear_all is the default win condition (TileGrid.isCleared). obstacle_clear partially implemented in ObstacleSystem.isObstacleGoalMet. No explicit LevelGoal class; tile_target and score_target not implemented as discrete goal types.",
+          "status": "partial",
+          "gap": "Missing formal LevelGoal dispatcher; tile_target and score_target not implemented"
+        }
+      }
+    },
+    "economy_model": {
+      "score": 25,
+      "max": 25,
+      "details": {
+        "initial_coins": {
+          "score": 5,
+          "max": 5,
+          "evidence": "ProgressManager._defaultData: coins: 200",
+          "status": "pass"
+        },
+        "continue_cost": {
+          "score": 5,
+          "max": 5,
+          "evidence": "GameplayScene._onContinue: cost=30, this._steps+=5, addCoins(-30)",
+          "status": "pass"
+        },
+        "reshuffle_cost": {
+          "score": 5,
+          "max": 5,
+          "evidence": "GameplayScene._onReshuffle: this._firstReshuffle ? 0 : 30 (first free, then 30)",
+          "status": "pass"
+        },
+        "hint_cost": {
+          "score": 5,
+          "max": 5,
+          "evidence": "GameplayScene._onHint: cost=10, hintTimer=3.0s, 10 coins deducted",
+          "status": "pass"
+        },
+        "hourglass": {
+          "score": 5,
+          "max": 5,
+          "evidence": "ShopScene._claimHourglass: cooldown=4*3600*1000ms (4h), reward=10+Math.floor(Math.random()*11) (10-20 coins)",
+          "status": "pass"
+        }
+      }
+    },
+    "dual_currency": {
+      "score": 15,
+      "max": 15,
+      "details": {
+        "glowstone_field": {
+          "score": 5,
+          "max": 5,
+          "evidence": "ProgressManager._defaultData: glowstone: 0",
+          "status": "pass"
+        },
+        "iap_flow": {
+          "score": 5,
+          "max": 5,
+          "evidence": "ShopScene.js: 3 IAP packs (60/420/1000石). ApiClient.js: submitIAP + addGlowstone. Browser fallback: direct addGlowstone(60) when not native platform.",
+          "status": "pass"
+        },
+        "exchange_ui": {
+          "score": 5,
+          "max": 5,
+          "evidence": "ShopScene._exchangeCoins: 50/150/500 coin packs costing 10/25/80 glowstone respectively. Exchange UI rendered in ShopScene.draw().",
+          "status": "pass"
+        }
+      }
+    },
+    "visual_audio": {
+      "score": 20,
+      "max": 20,
+      "details": {
+        "board_shapes": {
+          "score": 5,
+          "max": 5,
+          "evidence": "layouts.js: 6 chapters × 3 variants = 18 layouts. Each chapter has distinct non-rectangular shape: harbor_boat(6x6), pottery_vase(7x7), flower_fan(8x8), forest_leaf(8x8), hotspring_lantern(9x9), lighthouse_tower(10x10).",
+          "status": "pass"
+        },
+        "random_layout": {
+          "score": 5,
+          "max": 5,
+          "evidence": "layouts.js: pickLayout(pool) randomly selects from layoutPool per level. TileGrid._init() calls pickLayout. Level data configures layoutPool per tier.",
+          "status": "pass"
+        },
+        "chapter_bgm": {
+          "score": 5,
+          "max": 5,
+          "evidence": "audio-manifest.js: bgm_chapter1_seaside, bgm_chapter2_pottery, bgm_chapter3_flower, bgm_chapter4_forest, bgm_chapter5_hotspring, bgm_chapter6_lighthouse — all 6 present.",
+          "status": "pass"
+        },
+        "zen_bgm": {
+          "score": 5,
+          "max": 5,
+          "evidence": "audio-manifest.js: bgm_zen_ambient. ZenGameplayScene.js: this._audio?.playBGM?.(\"bgm_zen_ambient\") in init().",
+          "status": "pass"
+        }
+      }
+    },
+    "mobile_fit": {
+      "score": 10,
+      "max": 10,
+      "details": {
+        "portrait_lock": {
+          "score": 5,
+          "max": 5,
+          "evidence": "AndroidManifest.xml: android:screenOrientation=\"portrait\". iOS: capacitor.config.json + Info.plist managed by Capacitor. iOS: Info.plist fixed — UIInterfaceOrientationLandscape{Left,Right} removed, ~ipad key removed. Confirmed portrait-only on iPhone 17 Pro simulator.",
+          "status": "pass"
+        },
+        "apk_build": {
+          "score": 5,
+          "max": 5,
+          "evidence": "Android: app-debug.apk 5.2MB verified. iOS simulator: xcodebuild success in 27s on iPhone 17 Pro (iOS 18.x). 3 screenshots avg_brightness=138.6 (pass). WebKit touch coordinate test: PASS.",
+          "status": "pass"
+        }
+      }
+    }
+  },
+  "total_score": 97,
+  "verdict": "PASS",
+  "gaps": [
+    {
+      "dimension": "core_gameplay",
+      "item": "level_goals",
+      "severity": "minor",
+      "description": "No formal LevelGoal class or explicit goal_type dispatch. Only clear_all (isCleared) and partial obstacle_clear (ObstacleSystem.isObstacleGoalMet) are implemented. tile_target and score_target variants not present.",
+      "impact": "-3 points (4/7)",
+      "recommendation": "Add a LevelGoal class or goalType field to level configs with dispatcher in GameplayScene._checkWin for 4 goal types"
+    }
+  ],
+  "recommended_actions": [
+    "Add LevelGoal class with tile_target/obstacle_clear/score_target/clear_all dispatch to complete the 4-type goal system",
+    "Update capacitor.config.json appId from com.glowisland.app to com.glowisland.canvas2d to match iOS build bundle",
+    "Consider adding haptic feedback for combo≥4 (Capacitor @capacitor/haptics already planned in node spec)"
+  ],
+  "evidence_sources": [
+    "canvas2d-client/www/qa/gameplay-quality-report.json: overall=pass (43 tests)",
+    "canvas2d-client/www/qa/browser-qa-report.json: overall=pass (12 E2E tests)",
+    "canvas2d-client/www/qa/performance-report.json: overall=pass (FPS/memory targets met)",
+    "canvas2d-client/www/qa/audio-qa-report.json: overall=pass (5 audio tests)",
+    "canvas2d-client/www/qa/visual-qa-report.json: 14/14 screenshots pass",
+    "canvas2d-client/www/qa/art-quality-report.json: overall=pass",
+    "canvas2d-client/www/qa/repair-loop-report.json: 1 failure found and resolved",
+    "Direct code inspection: ProgressManager.js, GameplayScene.js, SpecialTiles.js, ObstacleSystem.js, ShopScene.js, AudioManager.js, layouts.js",
+    "canvas2d-client/android/app/build/outputs/apk/debug/app-debug.apk: 5.2MB APK verified",
+    "canvas2d-client/ios/build/canvas2d-sim-test-report.json: overall=pass, 3 screenshots avg_brightness=138.6, WebKit touch PASS, portrait lock PASS"
+  ],
+  "bugs_fixed_by_ios_build": [
+    {
+      "file": "www/src/game/TileGrid.js + www/src/scenes/GameScene.js",
+      "description": "GameScene called new TileGrid() with no args; TileGrid requires levelData (reads levelData.gridRows). Caused TypeError crash on iOS WebView.",
+      "fix": "GameScene imports LEVELS from level-data.js and passes LEVELS[\"1-1\"] as default levelData."
+    },
+    {
+      "file": "www/src/engine/Renderer.js",
+      "description": "Renderer.clear() used physical pixel dimensions (this.width/height) under dpr-scaled ctx transform, causing blank clear on iOS at dpr=3.",
+      "fix": "Changed to use logical dimensions (this.lw, this.lh)."
+    },
+    {
+      "file": "www/src/scenes/GameScene.js",
+      "description": "_layout() and draw methods used r.width/r.height (physical) under dpr-scaled ctx, drawing all content off-screen on iOS.",
+      "fix": "Layout and draw methods now use r.lw/r.lh (logical CSS pixels)."
+    }
+  ]
+}

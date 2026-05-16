@@ -1128,6 +1128,48 @@
       "status": "completed",
       "started_at": "2026-05-15T19:35:24.704233+00:00",
       "completed_at": "2026-05-15T19:35:24.704233+00:00"
+    },
+    {
+      "node_id": "canvas2d-backend-client",
+      "status": "completed",
+      "started_at": "2026-05-15T21:46:59Z",
+      "completed_at": "2026-05-15T21:49:26.055393Z",
+      "artifacts_created": [
+        "canvas2d-client/www/src/ApiClient.js",
+        "canvas2d-client/www/src/config.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-asset-bundle",
+      "status": "completed",
+      "started_at": "2026-05-15T21:46:59Z",
+      "completed_at": "2026-05-15T21:49:26.055393Z",
+      "artifacts_created": [
+        "canvas2d-client/www/assets/manifest.json",
+        "canvas2d-client/www/assets/backgrounds/ch06_lighthouse_after.png",
+        "canvas2d-client/www/assets/audio/bgm_chapter6_lighthouse.mp3"
+      ]
+    },
+    {
+      "node_id": "canvas2d-level-data",
+      "status": "completed",
+      "started_at": "2026-05-15T21:46:59Z",
+      "completed_at": "2026-05-15T21:50:24.945996+00:00",
+      "artifacts_created": [
+        "canvas2d-client/www/src/data/level-data.js",
+        "canvas2d-client/www/src/data/layouts.js"
+      ]
+    },
+    {
+      "node_id": "canvas2d-scene-manager",
+      "status": "completed",
+      "started_at": "2026-05-15T21:46:59Z",
+      "completed_at": "2026-05-15T21:50:31.610664+00:00",
+      "artifacts_created": [
+        "canvas2d-client/www/src/SceneManager.js",
+        "canvas2d-client/www/src/ProgressManager.js",
+        "canvas2d-client/www/src/AudioManager.js"
+      ]
     }
   ],
   "corrections_applied": [

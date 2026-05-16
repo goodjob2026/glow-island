@@ -26,7 +26,8 @@ export class Renderer {
 
   clear(color = '#1a1a2e') {
     this.ctx.fillStyle = color;
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    // Use logical dimensions — ctx has dpr scale applied via setTransform
+    this.ctx.fillRect(0, 0, this.lw, this.lh);
   }
 
   roundRect(x, y, w, h, r, fill, stroke, lineWidth = 2) {

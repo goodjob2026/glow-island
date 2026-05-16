@@ -370,8 +370,8 @@ export class PrototypeBoard extends Component {
         const sf = this._tileSprites[type];
         if (sf) {
             let sp = tile.addComponent(Sprite);
+            sp.sizeMode = 0; // CUSTOM — set before spriteFrame to keep UITransform at CELL_SIZE
             sp.spriteFrame = sf;
-            sp.sizeMode = 0; // CUSTOM
         }
 
         tile.on(Node.EventType.TOUCH_END, () => this.onTileTap(c, r), this);
@@ -382,7 +382,7 @@ export class PrototypeBoard extends Component {
     private _preloadTileSprites(): void {
         for (let t = 0; t < TILE_TYPE_COUNT; t++) {
             const idx = t + 1;
-            const path = `sprites/tiles/tile_0${idx}/texture`;
+            const path = `sprites/tiles/chapter1/tile_0${idx}/texture`;
             resources.load(path, Texture2D, (err: Error | null, tex: Texture2D) => {
                 if (!err && tex) {
                     const sf = new SpriteFrame();
@@ -446,8 +446,8 @@ export class PrototypeBoard extends Component {
                     const tileNode = this.tileNodes[r][c]!;
                     let sp = tileNode.getComponent(Sprite);
                     if (!sp) sp = tileNode.addComponent(Sprite);
+                    sp.sizeMode = 0; // CUSTOM — must be set BEFORE spriteFrame to prevent CC3 resizing UITransform
                     sp.spriteFrame = sf;
-                    sp.sizeMode = 0; // CUSTOM
                 }
             }
         }

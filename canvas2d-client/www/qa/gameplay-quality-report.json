@@ -1,0 +1,295 @@
+{
+  "run_at": "2026-05-15T22:17:09.164Z",
+  "node_version": "v26.0.0",
+  "module_load": "es_module_dynamic_import_via_file_url",
+  "sections": {
+    "bfs_rules": {
+      "total": 13,
+      "pass": 13,
+      "fail": 0,
+      "cases": [
+        {
+          "name": "BFS-1: direct line 0 turns (same row, empties between)",
+          "pass": true
+        },
+        {
+          "name": "BFS-2: L-shape 1 turn",
+          "pass": true
+        },
+        {
+          "name": "BFS-3: open 3x5 grid path within 2 turns",
+          "pass": true
+        },
+        {
+          "name": "BFS-4: border corridor provides 2-turn bypass when interior routes exceed 2 turns",
+          "pass": true
+        },
+        {
+          "name": "BFS-5: border route (top corridor) rescues same-row pair blocked by middle non-zero tile",
+          "pass": true
+        },
+        {
+          "name": "BFS-6: _findPath geometry-only; type=2 destination still reachable from type=1 source",
+          "pass": true
+        },
+        {
+          "name": "BFS-6b: null blocks interior; border corridor (row -1) rescues 1x3 grid",
+          "pass": true
+        },
+        {
+          "name": "BFS-6c: null-filled 3x3 correctly yields null -- no 2-turn path across null interior",
+          "pass": true
+        },
+        {
+          "name": "BFS-7: hasMoves() = false when no two cells share the same non-zero type",
+          "pass": true
+        },
+        {
+          "name": "BFS-7b: hasMoves() = true when matching pair has a valid 2-turn path",
+          "pass": true
+        },
+        {
+          "name": "BFS-8: isCleared() = true (all active cells are 0)",
+          "pass": true
+        },
+        {
+          "name": "BFS-8b: isCleared() = false (one tile remains)",
+          "pass": true
+        },
+        {
+          "name": "BFS-8c: isCleared() = true (null inactive cells ignored, active cells all 0)",
+          "pass": true
+        }
+      ],
+      "note": "runtime tested: direct line, L-shape, 2-turn, border corridor, null-cell blocking, geometry-only semantics, hasMoves, isCleared"
+    },
+    "combo_timer": {
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "cases": [
+        {
+          "name": "COMBO-1: combo=1 -> mult=1.0",
+          "pass": true
+        },
+        {
+          "name": "COMBO-2: combo=2 -> mult=1.5",
+          "pass": true
+        },
+        {
+          "name": "COMBO-3: combo=3 -> mult=2.0",
+          "pass": true
+        },
+        {
+          "name": "COMBO-4: combo=4 -> mult=3.0",
+          "pass": true
+        },
+        {
+          "name": "COMBO-5: combo=5+ -> mult=3.0 (capped)",
+          "pass": true
+        },
+        {
+          "name": "COMBO-6: combo resets to 0 after timeout (2.5s > 2.0s timeout)",
+          "pass": true
+        },
+        {
+          "name": "COMBO-7: onMiss() does not reset combo (combo remains 2)",
+          "pass": true
+        },
+        {
+          "name": "COMBO-8: reset() clears combo to 0 immediately",
+          "pass": true
+        },
+        {
+          "name": "COMBO-SRC: multiplier array [1.0,1.0,1.5,2.0,3.0] present in source",
+          "pass": true
+        },
+        {
+          "name": "COMBO-SRC2: timeout = 2.0s confirmed in source",
+          "pass": true
+        }
+      ],
+      "multipliers_correct": true,
+      "timeout_seconds": 2,
+      "miss_resets": false,
+      "multiplier_table": {
+        "1": 1,
+        "2": 1.5,
+        "3": 2,
+        "4+": 3
+      }
+    },
+    "star_rating": {
+      "total": 8,
+      "pass": 8,
+      "fail": 0,
+      "cases": [
+        {
+          "name": "STAR-1: used=5/10 (pct=0.50) -> 3 stars",
+          "pass": true
+        },
+        {
+          "name": "STAR-2: used=7/10 (pct=0.30) -> 2 stars",
+          "pass": true
+        },
+        {
+          "name": "STAR-3: used=9/10 (pct=0.10) -> 1 star",
+          "pass": true
+        },
+        {
+          "name": "STAR-4: pct=0.40 exact boundary -> 3 stars",
+          "pass": true
+        },
+        {
+          "name": "STAR-5: pct=0.20 exact boundary -> 2 stars",
+          "pass": true
+        },
+        {
+          "name": "STAR-6: all steps used (pct=0.0) -> 1 star",
+          "pass": true
+        },
+        {
+          "name": "STAR-SRC1: 3-star threshold (pct>=0.4) verified in GameplayScene.js",
+          "pass": true
+        },
+        {
+          "name": "STAR-SRC2: 2-star threshold (pct>=0.2) verified in GameplayScene.js",
+          "pass": true
+        }
+      ],
+      "thresholds": {
+        "3_stars": "remaining/max >= 0.4",
+        "2_stars": "remaining/max >= 0.2",
+        "1_star": "remaining/max < 0.2"
+      }
+    },
+    "special_tiles": {
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "cases": [
+        {
+          "name": "SPECIAL-1: clearRect (Bomb 3x3 area) method present in TileGrid.js",
+          "pass": true
+        },
+        {
+          "name": "SPECIAL-1b: clearRect iterates dr from -radius to +radius (Chebyshev area)",
+          "pass": true
+        },
+        {
+          "name": "SPECIAL-2: clearCross (Windmill row+col) method present",
+          "pass": true
+        },
+        {
+          "name": "SPECIAL-2b: clearCross iterates full column width (this.COLS)",
+          "pass": true
+        },
+        {
+          "name": "SPECIAL-2c: clearCross iterates full row height (this.ROWS)",
+          "pass": true
+        },
+        {
+          "name": "SPECIAL-3: spawnSpecial method present",
+          "pass": true
+        },
+        {
+          "name": "SPECIAL-4: portal BFS redirect (getPortalExit) present",
+          "pass": true
+        },
+        {
+          "name": "SPECIAL-5: SpecialTiles.js exists and has content",
+          "pass": true
+        },
+        {
+          "name": "SPECIAL-6: clearRect(1,1,1) clears full 3x3 grid (Bomb radius=1)",
+          "pass": true
+        },
+        {
+          "name": "SPECIAL-7: clearCross(1,1) clears full row 1 and col 1 (Windmill)",
+          "pass": true
+        }
+      ],
+      "note": "source inspection + runtime clearRect/clearCross behavior verified",
+      "specials_identified": [
+        "Bomb (type 6) -- clearRect radius=1 -> 3x3 Chebyshev area",
+        "Windmill (type 7) -- clearCross -> full row + col",
+        "Lantern (type 8) -- hint/wildcard special tile",
+        "Wave (type 9) -- spawned special tile",
+        "Portal -- BFS getPortalExit redirect at zero turn cost"
+      ]
+    },
+    "difficulty_curve": {
+      "total": 12,
+      "pass": 12,
+      "fail": 0,
+      "cases": [
+        {
+          "name": "LAYOUT-1: exactly 18 layout templates defined (got 18)",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-2-harbor_boat: has 3 variants (got 3)",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-2-pottery_vase: has 3 variants (got 3)",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-2-flower: has 3 variants (got 3)",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-2-forest: has 3 variants (got 3)",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-2-hotspring: has 3 variants (got 3)",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-2-lighthouse: has 3 variants (got 3)",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-3: pickLayout returns string[] of correct row count (6)",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-4: Ch1 early levels: steps 80->68 via lerp",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-5: Ch6 early levels: steps 36->30 via lerp",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-6: Ch6 boss level: steps=25 (hardest point in game)",
+          "pass": true
+        },
+        {
+          "name": "LAYOUT-7: difficulty curve: Ch1 avg steps (74) > Ch6 avg steps (33)",
+          "pass": true
+        }
+      ],
+      "ch1_avg_steps": 74,
+      "ch6_avg_steps": 33,
+      "verified": "steps decrease monotonically from Ch1 (80->45) to Ch6 (36->25) via lerp()"
+    },
+    "step_precision": {
+      "pass": true,
+      "total": 1,
+      "fail": 0,
+      "cases": [
+        {
+          "name": "step_precision_lerp_rounds",
+          "pass": true
+        }
+      ],
+      "note": "all step values integer-rounded via Math.round() inside lerp(); no float precision issue"
+    }
+  },
+  "overall": "pass",
+  "overall_pass": true,
+  "blockers": []
+}

@@ -1,29 +1,123 @@
 {
   "schema_version": "1.0",
-  "event_count": 135,
+  "event_count": 187,
   "run_ids": [
     "20260514T092554Z-6d244a80"
   ],
   "first_ts": "2026-05-14T09:25:54.724049+00:00",
-  "last_ts": "2026-05-15T18:21:40.915051+00:00",
+  "last_ts": "2026-05-15T22:39:42.582517+00:00",
   "events_by_type": {
     "bootstrap_completed": 3,
-    "dynamic_expander_completed": 6,
-    "dynamic_expander_started": 6,
-    "node_completed": 55,
-    "node_started": 54,
-    "run_completed": 3,
+    "dynamic_expander_completed": 7,
+    "dynamic_expander_started": 7,
+    "node_completed": 77,
+    "node_started": 80,
+    "run_completed": 4,
     "run_halted": 2,
-    "run_started": 6
+    "run_started": 7
   },
   "events_by_status": {
     "blocked": 1,
-    "completed": 67,
+    "completed": 76,
     "halted": 1,
-    "started": 6
+    "started": 7
   },
   "nodes": {
     "audio-asset-gen": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-art-quality-qa": {
+      "node_started": 2,
+      "node_completed": 1
+    },
+    "canvas2d-asset-bundle": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-audio-qa": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-audio-system": {
+      "node_started": 1
+    },
+    "canvas2d-backend-client": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-browser-qa": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-concept-acceptance": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-dialog-scene": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-ftue": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-gameplay-quality-qa": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-gameplay-scene": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-intro-scene": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-ios-build": {
+      "node_started": 2,
+      "node_completed": 1
+    },
+    "canvas2d-island-map-scene": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-level-data": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-level-select-scene": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-obstacles": {
+      "node_started": 1
+    },
+    "canvas2d-performance-qa": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-qa-repair-loop": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-scene-manager": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-shop-scene": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-vfx-effects": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-visual-qa": {
+      "node_started": 1,
+      "node_completed": 1
+    },
+    "canvas2d-zen-mode": {
       "node_started": 1,
       "node_completed": 1
     },

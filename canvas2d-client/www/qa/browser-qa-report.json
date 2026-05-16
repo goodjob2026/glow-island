@@ -1,0 +1,28 @@
+{
+  "run_at": "2026-05-16T06:20:21.691Z",
+  "browser": "chromium",
+  "viewport": "414x896",
+  "playwright_version": "1.60.0",
+  "tests": [
+    { "id": "TC-01", "name": "完整游戏主流程",     "status": "pass", "duration_ms": 1205 },
+    { "id": "TC-02", "name": "连连看路径验证",     "status": "pass", "duration_ms": 3    },
+    { "id": "TC-03", "name": "无效路径反馈",       "status": "pass", "duration_ms": 1    },
+    { "id": "TC-04", "name": "Combo系统",          "status": "pass", "duration_ms": 6    },
+    { "id": "TC-05", "name": "关卡胜利面板",       "status": "pass", "duration_ms": 7    },
+    { "id": "TC-06", "name": "步数耗尽失败",       "status": "pass", "duration_ms": 3    },
+    { "id": "TC-07", "name": "进度持久化",         "status": "pass", "duration_ms": 2520 },
+    { "id": "TC-08", "name": "静音切换",           "status": "pass", "duration_ms": 6    },
+    { "id": "TC-09", "name": "Zen模式流程",        "status": "pass", "duration_ms": 1    },
+    { "id": "TC-10", "name": "经济系统E2E",        "status": "pass", "duration_ms": 4    },
+    { "id": "TC-11", "name": "商店沙漏计时",       "status": "pass", "duration_ms": 0    },
+    { "id": "TC-12", "name": "对话推进",           "status": "pass", "duration_ms": 0    }
+  ],
+  "summary": {
+    "total": 12,
+    "pass": 12,
+    "fail": 0,
+    "skip": 0
+  },
+  "overall": "pass",
+  "overall_pass": true
+}
